@@ -1,0 +1,58 @@
+name: Build and Extract JSON
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_slicers:
+    strategy:
+      fail-fast: false
+      matrix:
+        slicer: 
+          - OrcaSlicer
+          - PrusaSlicer
+          - BambuStudio
+        include:
+          - slicer: OrcaSlicer
+            repo: https://github.com/SoftFever/OrcaSlicer
+          - slicer: PrusaSlicer
+            repo: https://github.com/prusa3d/PrusaSlicer
+          - slicer: BambuStudio
+            repo: https://github.com/BambuLab/BambuStudio
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup
+        run: |
+          # Global dependencies  
+          sudo apt update
+          sudo apt install -y xvfb
+
+          # Setup slicer for build
+          mkdir -p slicer-out
+          git clone ${{ matrix.repo }} slicer-src
+          pushd slicer-src
+          git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch
+          popd
+
+      - name: Install dependencies
+        run: |
+          ./dump_slicer_steps/${{ matrix.slicer }}/install-deps.sh
+
+      - name: Build slicer
+        run: |
+          ./dump_slicer_steps/${{ matrix.slicer }}/build.sh
+
+      - name: Run slicer
+        run: |
+          ./dump_slicer_steps/${{ matrix.slicer }}/run.sh
+
+      - name: Upload extracted JSON files
+        uses: actions/upload-artifact@v4
+        with:
+          name: configs-${{ matrix.slicer }}
+          path: slicer-out/*.json
