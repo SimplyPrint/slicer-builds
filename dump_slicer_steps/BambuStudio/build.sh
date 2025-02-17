@@ -3,6 +3,6 @@
 
 pushd slicer-src
 
-./BuildLinux.sh -dsi
+./BuildLinux.sh -dsir
 
 popd
