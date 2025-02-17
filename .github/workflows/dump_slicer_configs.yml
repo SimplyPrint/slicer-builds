@@ -28,7 +28,6 @@ jobs:
 
       - name: Setup
         run: |
-          # Global dependencies  
           sudo apt update
           sudo apt install -y xvfb
 
@@ -39,11 +38,45 @@ jobs:
           git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch
           popd
 
+      - name: Cache installed dependencies
+        id: cache-install-deps
+        uses: actions/cache@v4
+        with:
+          path: slicer-src/deps
+          key: ${{ runner.os }}-${{ matrix.slicer }}-install-${{ hashFiles('dump_slicer_steps/${{ matrix.slicer }}/install-deps.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.slicer }}-install-
+
       - name: Install dependencies
+        if: steps.cache-install-deps.outputs.cache-hit != 'true'
         run: |
           ./dump_slicer_steps/${{ matrix.slicer }}/install-deps.sh
 
+      - name: Cache built dependencies
+        id: cache-build-deps
+        uses: actions/cache@v4
+        with:
+          path: slicer-src/deps/build
+          key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ hashFiles('dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.slicer }}-build-deps-
+
+      - name: Build dependencies
+        if: steps.cache-build-deps.outputs.cache-hit != 'true'
+        run: |
+          ./dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh
+
+      - name: Cache final build
+        id: cache-build
+        uses: actions/cache@v4
+        with:
+          path: slicer-src/build
+          key: ${{ runner.os }}-${{ matrix.slicer }}-build-${{ hashFiles('dump_slicer_steps/${{ matrix.slicer }}/build.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.slicer }}-build-
+
       - name: Build slicer
+        if: steps.cache-build.outputs.cache-hit != 'true'
         run: |
           ./dump_slicer_steps/${{ matrix.slicer }}/build.sh
 
