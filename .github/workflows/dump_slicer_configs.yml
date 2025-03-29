@@ -1,6 +1,8 @@
 name: Build and Extract JSON
 
 on:
+  schedule:
+    - cron: "0 22 * * *"
   workflow_dispatch:
 
 jobs:
@@ -20,7 +22,7 @@ jobs:
           - slicer: BambuStudio
             repo: https://github.com/BambuLab/BambuStudio
 
-    runs-on: large-ubuntu-24.04-x16
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
@@ -33,7 +35,7 @@ jobs:
 
           # Setup slicer for build
           mkdir -p slicer-out
-          git clone ${{ matrix.repo }} slicer-src
+          git clone ${{ matrix.repo }} slicer-src --depth 1
           pushd slicer-src
           git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch
           popd
@@ -47,16 +49,22 @@ jobs:
         uses: actions/cache@v4
         with:
           path: slicer-src/deps/build
-          key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ hashFiles('slicer-src/deps/**/*', 'dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.slicer }}-build-deps-
+          key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ hashFiles('slicer-src/deps/**', 'dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh') }}
 
       - name: Build dependencies
         if: steps.cache-build-deps.outputs.cache-hit != 'true'
         run: |
           ./dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh
 
+      - name: Cache built slicer
+        id: cache-build-slicer
+        uses: actions/cache@v4
+        with:
+          path: slicer-src/build
+          key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ hashFiles('slicer-src/src/libslic3r/PrintConfig.cpp', 'slicer-src/src/slic3r/GUI/Tab.cpp') }}
+
       - name: Build slicer
+        if: steps.cache-build-slicer.outputs.cache-hit != 'true'
         run: |
           ./dump_slicer_steps/${{ matrix.slicer }}/build.sh
 
@@ -69,3 +77,38 @@ jobs:
         with:
           name: configs-${{ matrix.slicer }}
           path: slicer-out/*.json
+          
+          
+  commit_artifacts:
+    needs: build_slicers
+    runs-on: ubuntu-24.04
+    if: success() || failure()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: slicer-config-artifacts
+      
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ~
+          
+      - name: Rename artifact folders
+        run: |
+          for f in $(ls | grep configs-); do
+            new_name="${f#configs-}"
+            if [[ -d $new_name ]]; then
+              rm -r $new_name
+            fi
+            mv "$f" $new_name; 
+          done
+          
+      - name: Commit to repo
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if git commit -m "Update artifacts"; then
+              git push origin
+          fi
