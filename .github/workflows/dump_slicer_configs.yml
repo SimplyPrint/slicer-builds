@@ -92,6 +92,16 @@ jobs:
         with:
           path: ~
           
+      - name: Rename artifact folders
+        run: |
+          for f in $(ls | grep configs-); do
+            new_name="${f#configs-}"
+            if [[ -d $new_name ]]; then
+              rm -r $new_name
+            fi
+            mv "$f" $new_name; 
+          done
+          
       - name: Commit to repo
         run: |
           git config --global user.name "github-actions[bot]"
