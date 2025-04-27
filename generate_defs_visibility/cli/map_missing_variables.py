@@ -55,6 +55,7 @@ def map_missing_variables(cv: ConditionalVisibility, config_def: dict):
     # Call OpenAI API to map variables to enum values
     try:
         mappings = map_enum_variables(mapping_request)
+        print("Mappings received from OpenAI API:", mappings)
     except Exception as e:
         print(f"Error calling OpenAI API: {e}")
         exit(1)
@@ -85,7 +86,7 @@ def map_enum_variables(enum_definitions, model="gpt-4o") -> dict:
 
     messages = [
         {"role":    "system",
-         "content": "Your only purpose is to decide what variables correspond to which enum values and only store the mapping between every variable and its enum value."},
+         "content": "Your only purpose is to decide what variable correspond to what single enum value and only store the mapping between every variable and its enum value."},
         {
             "role":    "user",
             "content": f"""{json.dumps(enum_definitions, indent=2)}"""
