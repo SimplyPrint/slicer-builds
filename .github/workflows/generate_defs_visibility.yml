@@ -1,0 +1,51 @@
+name: Generate visibility configuration files
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate_defs_visibility:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        slicer:
+          - OrcaSlicer
+          - PrusaSlicer
+          - BambuStudio
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: 3.13
+
+      - name: Install generate_defs_visibility cli tool
+        run: |
+          uv tool install ./generate_defs_visibility
+
+      - name: Generate visibility configuration files
+        env:
+          OPENAI_API_KEY: ${{ secrets.SLICER_BUILDS_OPENAI_API_KEY }}
+        run: |
+          # Checkout to artifact branch
+          git switch slicer-config-artifacts
+          pushd ${{ matrix.slicer }}
+          
+          uvx generate_defs_visibility --slicer ${{ matrix.slicer }}
+          
+          git add .
+          
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -m "Update visibility configuration files for ${{ matrix.slicer }}"
+            git push origin slicer-config-artifacts
+          fi
