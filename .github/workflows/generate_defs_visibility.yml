@@ -33,6 +33,11 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.SLICER_BUILDS_OPENAI_API_KEY }}
         run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Fetch ref
+          git fetch origin slicer-config-artifacts
           # Checkout to artifact branch
           git switch slicer-config-artifacts
           pushd ${{ matrix.slicer }}
@@ -44,8 +49,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
             git commit -m "Update visibility configuration files for ${{ matrix.slicer }}"
             git push origin slicer-config-artifacts
           fi
