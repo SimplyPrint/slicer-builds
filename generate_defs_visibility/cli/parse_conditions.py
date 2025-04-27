@@ -391,7 +391,7 @@ class ParseConditionalVisibility:
         # Already is a variable
         if ident in self.defs:
             self._resolved_state[ident] = True
-            return  Variable(name=ident)
+            return Variable(name=ident)
 
         if ident in self.internal_variables:
             return self.internal_variables[ident]
@@ -469,21 +469,66 @@ class ParseConditionalVisibility:
 
                 return LitStr(value=value)
 
+            case 'true':
+                return LitBool(value=True)
+
+            case 'false':
+                return LitBool(value=False)
+
             case _:
                 print(f"Unknown node type: {node.type} - {self.node_to_str(node)}")
                 return None
 
-    def register_setting_with_conditions(self, setting: Node, *conditions: Node):
+    def register_setting_with_condition(self, setting: Node, direct_condition: Node, parent_node: Node):
         assert setting.type == 'string_content', f"Expected string_content, got {setting.type}"
         setting_key = self.node_to_str(setting)
 
-        for cond in conditions:
-            prev = self.conditions.get(setting_key)
+        previous_condition = self.conditions.get(setting_key)
 
-            if prev is None:
-                self.conditions[setting_key] = self.expand_condition(cond)
-            else:
-                self.conditions[setting_key] = BinaryOp(op=Op.AND, left=prev, right=self.expand_condition(cond))
+        condition = self.expand_condition(direct_condition)
+        precondition = None
+        negate_next_if = False
+
+        while parent_node:
+            if parent_node.type == 'function_definition':
+                break
+
+            if parent_node.type == 'else_clause':
+                negate_next_if = True
+
+            if parent_node.type == 'if_statement':
+                condition_matches = q_if_condition.captures(parent_node).get('condition', [])
+
+                if len(condition_matches) == 1:
+                    additional_condition = self.expand_condition(condition_matches[0])
+
+                    if negate_next_if:
+                        additional_condition = UnaryOp(op=Op.NOT, expr=additional_condition)
+
+                    if precondition:
+                        precondition = BinaryOp(op=Op.AND, left=precondition, right=additional_condition)
+                    else:
+                        precondition = additional_condition
+
+                if len(condition_matches) > 1:
+                    print(f"Multiple conditions in if statement: {condition_matches}")
+
+                negate_next_if = False
+
+            parent_node = parent_node.parent
+
+        if precondition:
+            # When the precondition is literally false we dont need to add it.
+            # as it's a dead path.
+            if isinstance(condition, LitBool) and condition.value is False:
+                return
+
+            condition = BinaryOp(op=Op.AND, left=precondition, right=condition)
+
+        if previous_condition:
+            condition = BinaryOp(op=Op.OR, left=previous_condition, right=condition)
+
+        self.conditions[setting_key] = condition
 
     def process(self) -> ConditionalVisibility:
         # process all init assignments first
@@ -504,26 +549,7 @@ class ParseConditionalVisibility:
             name = match.get('func.name')[0]
             setting = match.get('func.setting')[0]
             condition = match.get('func.condition')[0]
-
-            p_node = name.parent
-
-            constrained_by_ifs = []
-
-            while p_node is not None:
-                if p_node.type == 'function_definition':
-                    break
-
-                if p_node.type == 'if_statement':
-                    if_condition = q_if_condition.captures(p_node)
-
-                    if if_condition:
-                        constrained_by_ifs.extend(if_condition['condition'])
-
-                p_node = p_node.parent
-            else:
-                continue
-
-            self.register_setting_with_conditions(setting, condition, *constrained_by_ifs)
+            self.register_setting_with_condition(setting, condition, name)
 
         for ret, match in q_for_loop_toggle.matches(self.tree.root_node):
             if ret != 0:
@@ -544,19 +570,17 @@ class ParseConditionalVisibility:
 
             for setting in setting_matches['string_content']:
                 # if there is multiple here the last one wins.
-                self.register_setting_with_conditions(setting, *body_matches[0][1]['func.condition'])
+                # TODO think about this
+                self.register_setting_with_condition(setting, body_matches[0][1]['func.condition'][-1], loop_var)
 
-        self.substitute_dict_of_internal_variables(self.conditions)
+        for k, v in self.conditions.items():
+            self.conditions[k] = self.substitute_internal_variables(v)
 
         return ConditionalVisibility(
             variables=list(self.external_variables),
             functions=list(self.external_functions),
             conditions=self.conditions
         )
-
-    def substitute_dict_of_internal_variables(self, d: dict[str, TExpr]) -> dict[str, TExpr]:
-        for k, v in d.items():
-            d[k] = self.substitute_internal_variables(v)
 
     def substitute_internal_variables(self, condition: TExpr) -> TExpr:
         match condition:
