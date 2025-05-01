@@ -271,7 +271,7 @@
     "bridge_no_support": {
         "type": "bool",
         "label": "Don't support bridges",
-        "tooltip": "Don't support the whole bridge area which make support very large. Bridge usually can be printing directly without support if not very long",
+        "tooltip": "Don't support the whole bridge area which make support very large. Bridges can usually be printed directly without support if not very long.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -366,7 +366,7 @@
         "type": "ints",
         "label": "Chamber temperature",
         "full_label": "Chamber temperature",
-        "tooltip": "For high-temperature materials like ABS, ASA, PC, and PA, a higher chamber temperature can help suppress or reduce warping and potentially lead to higher interlayer bonding strength. However, at the same time, a higher chamber temperature will reduce the efficiency of air filtration for ABS and ASA. \n\nFor PLA, PETG, TPU, PVA, and other low-temperature materials, this option should be disabled (set to 0) as the chamber temperature should be low to avoid extruder clogging caused by material softening at the heat break.\n\nIf enabled, this parameter also sets a gcode variable named chamber_temperature, which can be used to pass the desired chamber temperature to your print start macro, or a heat soak macro like this: PRINT_START (other variables) CHAMBER_TEMP=[chamber_temperature]. This may be useful if your printer does not support M141\/M191 commands, or if you desire to handle heat soaking in the print start macro if no active chamber heater is installed.",
+        "tooltip": "For high-temperature materials like ABS, ASA, PC, and PA, a higher chamber temperature can help suppress or reduce warping and potentially lead to higher interlayer bonding strength. However, at the same time, a higher chamber temperature will reduce the efficiency of air filtration for ABS and ASA.\n\nFor PLA, PETG, TPU, PVA, and other low-temperature materials, this option should be disabled (set to 0) as the chamber temperature should be low to avoid extruder clogging caused by material softening at the heat break.\n\nIf enabled, this parameter also sets a G-code variable named chamber_temperature, which can be used to pass the desired chamber temperature to your print start macro, or a heat soak macro like this: PRINT_START (other variables) CHAMBER_TEMP=[chamber_temperature]. This may be useful if your printer does not support M141\/M191 commands, or if you desire to handle heat soaking in the print start macro if no active chamber heater is installed.",
         "sidetext": "°C",
         "min": "0",
         "max": "1500",
@@ -376,7 +376,7 @@
     "change_extrusion_role_gcode": {
         "type": "string",
         "label": "Change extrusion role G-code",
-        "tooltip": "This gcode is inserted when the extrusion role is changed",
+        "tooltip": "This G-code is inserted when the extrusion role is changed.",
         "full_width": "true",
         "multiline": "true",
         "height": "5",
@@ -386,7 +386,7 @@
     "change_filament_gcode": {
         "type": "string",
         "label": "Change filament G-code",
-        "tooltip": "This gcode is inserted when change filament, including T command to trigger tool change",
+        "tooltip": "This G-code is inserted when filament is changed, including T commands to trigger tool change.",
         "full_width": "true",
         "multiline": "true",
         "height": "5",
@@ -465,7 +465,7 @@
         "type": "ints",
         "label": "Other layers",
         "full_label": "Bed temperature",
-        "tooltip": "Bed temperature for layers except the initial one. Value 0 means the filament does not support to print on the Cool Plate",
+        "tooltip": "Bed temperature for layers except the initial one. A value of 0 means the filament does not support printing on the Cool Plate.",
         "sidetext": "°C",
         "min": "0",
         "max": "300",
@@ -476,7 +476,7 @@
         "type": "ints",
         "label": "Initial layer",
         "full_label": "Initial layer bed temperature",
-        "tooltip": "Bed temperature of the initial layer. Value 0 means the filament does not support to print on the Cool Plate",
+        "tooltip": "Bed temperature of the initial layer. A value of 0 means the filament does not support printing on the Cool Plate.",
         "sidetext": "°C",
         "min": "0",
         "max": "120",
@@ -604,7 +604,7 @@
     "detect_narrow_internal_solid_infill": {
         "type": "bool",
         "label": "Detect narrow internal solid infill",
-        "tooltip": "This option will auto detect narrow internal solid infill area. If enabled, concentric pattern will be used for the area to speed printing up. Otherwise, rectilinear pattern is used by default.",
+        "tooltip": "This option will auto-detect narrow internal solid infill areas. If enabled, the concentric pattern will be used for the area to speed up printing. Otherwise, the rectilinear pattern will be used by default.",
         "mode": "advanced",
         "default_value": "1"
     },
@@ -633,7 +633,7 @@
     "disable_m73": {
         "type": "bool",
         "label": "Disable set remaining print time",
-        "tooltip": "Disable generating of the M73: Set remaining print time in the final gcode",
+        "tooltip": "Disable generating of the M73: Set remaining print time in the final G-code.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -679,7 +679,7 @@
     "during_print_exhaust_fan_speed": {
         "type": "ints",
         "label": "Fan speed",
-        "tooltip": "Speed of exhaust fan during printing.This speed will overwrite the speed in filament custom gcode",
+        "tooltip": "Speed of exhaust fan during printing. This speed will override the speed in filament custom G-code.",
         "sidetext": "%",
         "min": "0",
         "max": "100",
@@ -707,7 +707,7 @@
     "emit_machine_limits_to_gcode": {
         "type": "bool",
         "label": "Emit limits to G-code",
-        "tooltip": "If enabled, the machine limits will be emitted to G-code file.\nThis option will be ignored if the g-code flavor is set to Klipper.",
+        "tooltip": "If enabled, the machine limits will be emitted to G-code file.\nThis option will be ignored if the G-code flavor is set to Klipper.",
         "mode": "advanced",
         "default_value": "1"
     },
@@ -800,7 +800,7 @@
         "type": "ints",
         "label": "Other layers",
         "full_label": "Bed temperature",
-        "tooltip": "Bed temperature for layers except the initial one. Value 0 means the filament does not support to print on the Engineering Plate",
+        "tooltip": "Bed temperature for layers except the initial one. A value of 0 means the filament does not support printing on the Engineering Plate.",
         "sidetext": "°C",
         "min": "0",
         "max": "300",
@@ -811,7 +811,7 @@
         "type": "ints",
         "label": "Initial layer",
         "full_label": "Initial layer bed temperature",
-        "tooltip": "Bed temperature of the initial layer. Value 0 means the filament does not support to print on the Engineering Plate",
+        "tooltip": "Bed temperature of the initial layer. A value of 0 means the filament does not support printing on the Engineering Plate.",
         "sidetext": "°C",
         "min": "0",
         "max": "300",
@@ -840,7 +840,7 @@
     "exclude_object": {
         "type": "bool",
         "label": "Exclude objects",
-        "tooltip": "Enable this option to add EXCLUDE OBJECT command in g-code",
+        "tooltip": "Enable this option to add EXCLUDE OBJECT command in G-code.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -966,7 +966,7 @@
     "fan_speedup_time": {
         "type": "float",
         "label": "",
-        "tooltip": "Start the fan this number of seconds earlier than its target start time (you can use fractional seconds). It assumes infinite acceleration for this time estimation, and will only take into account G1 and G0 moves (arc fitting is unsupported).\nIt won't move fan commands from custom gcodes (they act as a sort of 'barrier').\nIt won't move fan commands into the start gcode if the 'only custom start gcode' is activated.\nUse 0 to deactivate.",
+        "tooltip": "Start the fan this number of seconds earlier than its target start time (you can use fractional seconds). It assumes infinite acceleration for this time estimation, and will only take into account G1 and G0 moves (arc fitting is unsupported).\nIt won't move fan commands from custom G-code (they act as a sort of 'barrier').\nIt won't move fan commands into the start G-code if the 'only custom start G-code' is activated.\nUse 0 to deactivate.",
         "sidetext": "s",
         "mode": "advanced",
         "default_value": "0"
@@ -1035,7 +1035,7 @@
     "filament_diameter": {
         "type": "floats",
         "label": "Diameter",
-        "tooltip": "Filament diameter is used to calculate extrusion in gcode, so it's important and should be accurate",
+        "tooltip": "Filament diameter is used to calculate extrusion in G-code, so it is important and should be accurate.",
         "sidetext": "mm",
         "min": "0",
         "mode": "simple",
@@ -1054,7 +1054,7 @@
     "filament_flow_ratio": {
         "type": "floats",
         "label": "Flow ratio",
-        "tooltip": "The material may have volumetric change after switching between molten state and crystalline state. This setting changes all extrusion flow of this filament in gcode proportionally. Recommended value range is between 0.95 and 1.05. Maybe you can tune this value to get nice flat surface when there has slight overflow or underflow",
+        "tooltip": "The material may have volumetric change after switching between molten and crystalline states. This setting changes all extrusion flow of this filament in G-code proportionally. The recommended value range is between 0.95 and 1.05. You may be able to tune this value to get a nice flat surface if there is slight overflow or underflow.",
         "max": "2",
         "mode": "advanced",
         "default_value": "1"
@@ -1120,14 +1120,14 @@
     "filament_multitool_ramming": {
         "type": "bools",
         "label": "Enable ramming for multi-tool setups",
-        "tooltip": "Perform ramming when using multi-tool printer (i.e. when the 'Single Extruder Multimaterial' in Printer Settings is unchecked). When checked, a small amount of filament is rapidly extruded on the wipe tower just before the toolchange. This option is only used when the wipe tower is enabled.",
+        "tooltip": "Perform ramming when using multi-tool printer (i.e. when the 'Single Extruder Multimaterial' in Printer Settings is unchecked). When checked, a small amount of filament is rapidly extruded on the wipe tower just before the tool change. This option is only used when the wipe tower is enabled.",
         "mode": "advanced",
         "default_value": "0"
     },
     "filament_multitool_ramming_flow": {
         "type": "floats",
         "label": "Multi-tool ramming flow",
-        "tooltip": "Flow used for ramming the filament before the toolchange.",
+        "tooltip": "Flow used for ramming the filament before the tool change.",
         "sidetext": "mm³\/s",
         "min": "0",
         "mode": "advanced",
@@ -1136,7 +1136,7 @@
     "filament_multitool_ramming_volume": {
         "type": "floats",
         "label": "Multi-tool ramming volume",
-        "tooltip": "The volume to be rammed before the toolchange.",
+        "tooltip": "The volume to be rammed before the tool change.",
         "sidetext": "mm³",
         "min": "0",
         "mode": "advanced",
@@ -1188,7 +1188,7 @@
     "filament_retract_lift_enforce": {
         "type": "enums",
         "label": "On surfaces",
-        "tooltip": "Enforce Z Hop behavior. This setting is impacted by the above settings (Only lift Z above\/below).",
+        "tooltip": "Enforce Z-Hop behavior. This setting is impacted by the above settings (Only lift Z above\/below).",
         "enum_values": [
             "All Surfaces",
             "Top Only",
@@ -1295,7 +1295,7 @@
     "filament_stamping_distance": {
         "type": "floats",
         "label": "Stamping distance measured from the center of the cooling tube",
-        "tooltip": "If set to nonzero value, filament is moved toward the nozzle between the individual cooling moves (\"stamping\"). This option configures how long this movement should be before the filament is retracted again.",
+        "tooltip": "If set to non-zero value, filament is moved toward the nozzle between the individual cooling moves (\"stamping\"). This option configures how long this movement should be before the filament is retracted again.",
         "min": "0",
         "mode": "advanced",
         "default_value": "0"
@@ -1321,7 +1321,7 @@
     "filament_toolchange_delay": {
         "type": "floats",
         "label": "Delay after unloading",
-        "tooltip": "Time to wait after the filament is unloaded. May help to get reliable toolchanges with flexible materials that may need more time to shrink to original dimensions.",
+        "tooltip": "Time to wait after the filament is unloaded. May help to get reliable tool changes with flexible materials that may need more time to shrink to original dimensions.",
         "sidetext": "s",
         "min": "0",
         "mode": "advanced",
@@ -1364,7 +1364,7 @@
     "filament_wipe": {
         "type": "bools",
         "label": "Wipe while retracting",
-        "tooltip": "Move nozzle along the last extrusion path when retracting to clean leaked material on nozzle. This can minimize blob when print new part after travel",
+        "tooltip": "Move nozzle along the last extrusion path when retracting to clean any leaked material on the nozzle. This can minimize blobs when printing a new part after traveling.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -1390,7 +1390,7 @@
     "filament_z_hop_types": {
         "type": "enums",
         "label": "Z-hop type",
-        "tooltip": "Z hop type",
+        "tooltip": "Type of Z-hop.",
         "enum_values": [
             "Auto Lift",
             "Normal Lift",
@@ -1455,7 +1455,7 @@
     "flush_into_objects": {
         "type": "bool",
         "label": "Flush into this object",
-        "tooltip": "This object will be used to purge the nozzle after a filament change to save filament and decrease the print time. Colours of the objects will be mixed as a result. It will not take effect, unless the prime tower is enabled.",
+        "tooltip": "This object will be used to purge the nozzle after a filament change to save filament and decrease the print time. Colors of the objects will be mixed as a result. It will not take effect unless the prime tower is enabled.",
         "mode": "simple",
         "default_value": "0"
     },
@@ -1621,7 +1621,7 @@
     "gcode_add_line_number": {
         "type": "bool",
         "label": "Add line number",
-        "tooltip": "Enable this to add line number(Nx) at the beginning of each G-Code line",
+        "tooltip": "Enable this to add line number(Nx) at the beginning of each G-code line.",
         "mode": "develop",
         "default_value": "0"
     },
@@ -1635,7 +1635,7 @@
     "gcode_flavor": {
         "type": "enum",
         "label": "G-code flavor",
-        "tooltip": "What kind of gcode the printer is compatible with",
+        "tooltip": "What kind of G-code the printer is compatible with.",
         "enum_values": [
             "marlin",
             "klipper",
@@ -1654,7 +1654,7 @@
     "gcode_label_objects": {
         "type": "bool",
         "label": "Label objects",
-        "tooltip": "Enable this to add comments into the G-Code labeling print moves with what object they belong to, which is useful for the Octoprint CancelObject plugin. This settings is NOT compatible with Single Extruder Multi Material setup and Wipe into Object \/ Wipe into Infill.",
+        "tooltip": "Enable this to add comments into the G-code labeling print moves with what object they belong to, which is useful for the Octoprint CancelObject plugin. This settings is NOT compatible with Single Extruder Multi Material setup and Wipe into Object \/ Wipe into Infill.",
         "mode": "advanced",
         "default_value": "1"
     },
@@ -1745,7 +1745,7 @@
         "type": "ints",
         "label": "Other layers",
         "full_label": "Bed temperature",
-        "tooltip": "Bed temperature for layers except the initial one. Value 0 means the filament does not support to print on the High Temp Plate",
+        "tooltip": "Bed temperature for layers except the initial one. A value of 0 means the filament does not support printing on the High Temp Plate.",
         "sidetext": "°C",
         "min": "0",
         "max": "300",
@@ -1756,7 +1756,7 @@
         "type": "ints",
         "label": "Initial layer",
         "full_label": "Initial layer bed temperature",
-        "tooltip": "Bed temperature of the initial layer. Value 0 means the filament does not support to print on the High Temp Plate",
+        "tooltip": "Bed temperature of the initial layer. A value of 0 means the filament does not support printing on the High Temp Plate.",
         "sidetext": "°C",
         "max": "300",
         "mode": "simple",
@@ -2240,7 +2240,7 @@
     "layer_change_gcode": {
         "type": "string",
         "label": "Layer change G-code",
-        "tooltip": "This gcode part is inserted at every layer change after lift z",
+        "tooltip": "This G-code is inserted at every layer change after the Z lift.",
         "full_width": "true",
         "multiline": "true",
         "height": "5",
@@ -2276,7 +2276,7 @@
     "machine_end_gcode": {
         "type": "string",
         "label": "End G-code",
-        "tooltip": "End G-code when finish the whole printing",
+        "tooltip": "End G-code when finishing the entire print.",
         "full_width": "true",
         "multiline": "true",
         "height": "12",
@@ -2475,7 +2475,7 @@
     "machine_pause_gcode": {
         "type": "string",
         "label": "Pause G-code",
-        "tooltip": "This G-code will be used as a code for the pause print. User can insert pause G-code in gcode viewer",
+        "tooltip": "This G-code will be used as a code for the pause print. Users can insert pause G-code in the G-code viewer.",
         "full_width": "true",
         "multiline": "true",
         "height": "12",
@@ -2485,7 +2485,7 @@
     "machine_start_gcode": {
         "type": "string",
         "label": "Start G-code",
-        "tooltip": "Start G-code when start the whole printing",
+        "tooltip": "Start G-code when starting the entire print.",
         "full_width": "true",
         "multiline": "true",
         "height": "12",
@@ -2582,7 +2582,7 @@
     "max_volumetric_extrusion_rate_slope_segment_length": {
         "type": "float",
         "label": "Smoothing segment length",
-        "tooltip": "A lower value results in smoother extrusion rate transitions. However, this results in a significantly larger gcode file and more instructions for the printer to process. \n\nDefault value of 3 works well for most cases. If your printer is stuttering, increase this value to reduce the number of adjustments made\n\nAllowed values: 0.5-5",
+        "tooltip": "A lower value results in smoother extrusion rate transitions. However, this results in a significantly larger G-code file and more instructions for the printer to process.\n\nDefault value of 3 works well for most cases. If your printer is stuttering, increase this value to reduce the number of adjustments made.\n\nAllowed values: 0.5-5",
         "sidetext": "mm",
         "min": "0",
         "max": "5",
@@ -2630,7 +2630,7 @@
         "type": "float",
         "label": "Skirt minimum extrusion length",
         "full_label": "Skirt minimum extrusion length",
-        "tooltip": "Minimum filament extrusion length in mm when printing the skirt. Zero means this feature is disabled.\n\nUsing a non zero value is useful if the printer is set up to print without a prime line.\nFinal number of loops is not taling into account whli arranging or validating objects distance. Increase loop number in such case.",
+        "tooltip": "Minimum filament extrusion length in mm when printing the skirt. Zero means this feature is disabled.\n\nUsing a non-zero value is useful if the printer is set up to print without a prime line.\nFinal number of loops is not taking into account while arranging or validating objects distance. Increase loop number in such case.",
         "sidetext": "mm",
         "min": "0",
         "mode": "advanced",
@@ -2725,7 +2725,7 @@
         "type": "ints",
         "label": "Initial layer",
         "full_label": "Initial layer nozzle temperature",
-        "tooltip": "Nozzle temperature to print initial layer when using this filament",
+        "tooltip": "Nozzle temperature for printing initial layer when using this filament",
         "sidetext": "°C",
         "min": "0",
         "max": "1500",
@@ -3111,7 +3111,7 @@
     "print_flow_ratio": {
         "type": "float",
         "label": "Flow ratio",
-        "tooltip": "The material may have volumetric change after switching between molten state and crystalline state. This setting changes all extrusion flow of this filament in gcode proportionally. Recommended value range is between 0.95 and 1.05. Maybe you can tune this value to get nice flat surface when there has slight overflow or underflow. \n\nThe final object flow ratio is this value multiplied by the filament flow ratio.",
+        "tooltip": "The material may have volumetric change after switching between molten and crystalline states. This setting changes all extrusion flow of this filament in G-code proportionally. The recommended value range is between 0.95 and 1.05. You may be able to tune this value to get a nice flat surface if there is slight overflow or underflow.\n\nThe final object flow ratio is this value multiplied by the filament flow ratio.",
         "min": "0",
         "max": "2",
         "mode": "advanced",
@@ -3320,8 +3320,8 @@
     },
     "printing_by_object_gcode": {
         "type": "string",
-        "label": "Between Object Gcode",
-        "tooltip": "Insert Gcode between objects. This parameter will only come into effect when you print your models object by object",
+        "label": "Between Object G-code",
+        "tooltip": "Insert G-code between objects. This parameter will only come into effect when you print your models object by object.",
         "full_width": "true",
         "multiline": "true",
         "height": "12",
@@ -3375,7 +3375,7 @@
     "raft_layers": {
         "type": "int",
         "label": "Raft layers",
-        "tooltip": "Object will be raised by this number of support layers. Use this function to avoid wrapping when print ABS",
+        "tooltip": "Object will be raised by this number of support layers. Use this function to avoid warping when printing ABS.",
         "sidetext": "layers",
         "min": "0",
         "max": "100",
@@ -3415,7 +3415,7 @@
     "resolution": {
         "type": "float",
         "label": "Resolution",
-        "tooltip": "G-code path is generated after simplifying the contour of model to avoid too much points and gcode lines in gcode file. Smaller value means higher resolution and more time to slice",
+        "tooltip": "The G-code path is generated after simplifying the contour of models to avoid too many points and G-code lines. Smaller value means higher resolution and more time to slice.",
         "sidetext": "mm",
         "min": "0",
         "mode": "advanced",
@@ -3459,7 +3459,7 @@
     "retract_lift_enforce": {
         "type": "enums",
         "label": "On surfaces",
-        "tooltip": "Enforce Z Hop behavior. This setting is impacted by the above settings (Only lift Z above\/below).",
+        "tooltip": "Enforce Z-Hop behavior. This setting is impacted by the above settings (Only lift Z above\/below).",
         "enum_values": [
             "All Surfaces",
             "Top Only",
@@ -3818,7 +3818,7 @@
     "slow_down_layer_time": {
         "type": "floats",
         "label": "Layer time",
-        "tooltip": "The printing speed in exported gcode will be slowed down, when the estimated layer time is shorter than this value, to get better cooling for these layers",
+        "tooltip": "The printing speed in exported G-code will be slowed down when the estimated layer time is shorter than this value in order to get better cooling for these layers.",
         "sidetext": "s",
         "min": "0",
         "max": "1000",
@@ -4054,7 +4054,7 @@
     "standby_temperature_delta": {
         "type": "int",
         "label": "Temperature variation",
-        "tooltip": "Temperature difference to be applied when an extruder is not active. The value is not used when 'idle_temperature' in filament settings is set to non zero value.",
+        "tooltip": "Temperature difference to be applied when an extruder is not active. The value is not used when 'idle_temperature' in filament settings is set to non-zero value.",
         "sidetext": "∆°C",
         "min": "-1500",
         "max": "1500",
@@ -4073,7 +4073,7 @@
         "type": "ints",
         "label": "Other layers",
         "full_label": "Bed temperature",
-        "tooltip": "Bed temperature for layers except the initial one. Value 0 means the filament does not support to print on the Cool Plate",
+        "tooltip": "Bed temperature for layers except the initial one. A value of 0 means the filament does not support printing on the Cool Plate SuperTack.",
         "sidetext": "°C",
         "min": "0",
         "max": "120",
@@ -4084,7 +4084,7 @@
         "type": "ints",
         "label": "Initial layer",
         "full_label": "Initial layer bed temperature",
-        "tooltip": "Bed temperature of the initial layer. Value 0 means the filament does not support to print on the Cool Plate SuperTack",
+        "tooltip": "Bed temperature of the initial layer. A value of 0 means the filament does not support printing on the Cool Plate SuperTack.",
         "sidetext": "°C",
         "min": "0",
         "max": "120",
@@ -4436,7 +4436,7 @@
         "type": "ints",
         "label": "Other layers",
         "full_label": "Bed temperature",
-        "tooltip": "Bed temperature for layers except the initial one. Value 0 means the filament does not support to print on the Textured Cool Plate",
+        "tooltip": "Bed temperature for layers except the initial one. A value of 0 means the filament does not support printing on the Textured Cool Plate.",
         "sidetext": "°C",
         "min": "0",
         "max": "300",
@@ -4447,7 +4447,7 @@
         "type": "ints",
         "label": "Initial layer",
         "full_label": "Initial layer bed temperature",
-        "tooltip": "Bed temperature of the initial layer. Value 0 means the filament does not support to print on the Textured Cool Plate",
+        "tooltip": "Bed temperature of the initial layer. A value of 0 means the filament does not support printing on the Textured Cool Plate.",
         "sidetext": "°C",
         "min": "0",
         "max": "120",
@@ -4458,7 +4458,7 @@
         "type": "ints",
         "label": "Other layers",
         "full_label": "Bed temperature",
-        "tooltip": "Bed temperature for layers except the initial one. Value 0 means the filament does not support to print on the Textured PEI Plate",
+        "tooltip": "Bed temperature for layers except the initial one. A value of 0 means the filament does not support printing on the Textured PEI Plate.",
         "sidetext": "°C",
         "min": "0",
         "max": "300",
@@ -4469,7 +4469,7 @@
         "type": "ints",
         "label": "Initial layer",
         "full_label": "Initial layer bed temperature",
-        "tooltip": "Bed temperature of the initial layer. Value 0 means the filament does not support to print on the Textured PEI Plate",
+        "tooltip": "Bed temperature of the initial layer. A value of 0 means the filament does not support printing on the Textured PEI Plate.",
         "sidetext": "°C",
         "min": "0",
         "max": "300",
@@ -4675,7 +4675,7 @@
     "travel_slope": {
         "type": "floats",
         "label": "Traveling angle",
-        "tooltip": "Traveling angle for Slope and Spiral Z hop type. Setting it to 90° results in Normal Lift",
+        "tooltip": "Traveling angle for Slope and Spiral Z-hop type. Setting it to 90° results in Normal Lift.",
         "sidetext": "°",
         "min": "1",
         "max": "90",
@@ -4965,7 +4965,7 @@
     "wipe": {
         "type": "bools",
         "label": "Wipe while retracting",
-        "tooltip": "Move nozzle along the last extrusion path when retracting to clean leaked material on nozzle. This can minimize blob when print new part after travel",
+        "tooltip": "Move nozzle along the last extrusion path when retracting to clean any leaked material on the nozzle. This can minimize blobs when printing a new part after traveling.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -5060,7 +5060,7 @@
     "wipe_tower_no_sparse_layers": {
         "type": "bool",
         "label": "No sparse layers (beta)",
-        "tooltip": "If enabled, the wipe tower will not be printed on layers with no toolchanges. On layers with a toolchange, extruder will travel downward to print the wipe tower. User is responsible for ensuring there is no collision with the print.",
+        "tooltip": "If enabled, the wipe tower will not be printed on layers with no tool changes. On layers with a tool change, extruder will travel downward to print the wipe tower. User is responsible for ensuring there is no collision with the print.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -5122,7 +5122,7 @@
     "z_hop_types": {
         "type": "enums",
         "label": "Z-hop type",
-        "tooltip": "Z hop type",
+        "tooltip": "Type of Z-hop.",
         "enum_values": [
             "Auto Lift",
             "Normal Lift",
