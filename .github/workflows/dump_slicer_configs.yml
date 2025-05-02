@@ -98,10 +98,9 @@ jobs:
         run: |
           for f in $(ls | grep configs-); do
             new_name="${f#configs-}"
-            if [[ -d $new_name ]]; then
-              rm -r $new_name
-            fi
-            mv "$f" $new_name; 
+            mkdir -p $new_name
+            cp -rf $f/* $new_name || true
+            rm -r $f 
           done
 
       - name: Commit to repo
