@@ -290,9 +290,18 @@ index a4466b04..ed49f9dd 100644
 +        auto& page_pt = pt.put_child(page->title().ToStdString(), ptree());
 +        for (const auto& optgroup : page->m_optgroups) {
 +            auto& optgroup_pt = page_pt.put_child(optgroup->title.ToStdString(), ptree());
-+            for (auto& line : optgroup->get_lines())
++            for (auto& line : optgroup->get_lines()) {
++                std::vector<std::string> option_ids;
 +                for (auto& option : line.get_options())
-+                    optgroup_pt.add("", option.opt_id);
++                    option_ids.emplace_back(option.opt_id);
++                if (option_ids.size() == 1)
++                    optgroup_pt.add("", option_ids[0]);
++                else if (option_ids.size() > 1) {
++                    auto& line_pt = optgroup_pt.add_child("", ptree());
++                    for (auto& id : option_ids)
++                        line_pt.add("", id);
++                }
++            }
 +        }
 +    }
 +
