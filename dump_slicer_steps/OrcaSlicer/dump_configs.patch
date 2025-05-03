@@ -25,7 +25,7 @@ index 2fe0e3b55..77fe2503a 100644
  #include <set>
  #include <boost/algorithm/string/replace.hpp>
  #include <boost/algorithm/string/case_conv.hpp>
-@@ -456,6 +459,160 @@ PrintConfigDef::PrintConfigDef()
+@@ -456,6 +459,192 @@ PrintConfigDef::PrintConfigDef()
      assign_printer_technology_to_unknown(this->options, ptFFF);
      this->init_sla_params();
      assign_printer_technology_to_unknown(this->options, ptSLA);
@@ -143,6 +143,13 @@ index 2fe0e3b55..77fe2503a 100644
 +#undef SET_VALUE
 +    };
 +
++    auto program_parent_dir = boost::dll::program_location().parent_path();
++    auto images_dir = program_parent_dir;
++#ifdef __linux__
++    images_dir = images_dir.parent_path();
++#endif
++    images_dir = images_dir / "resources" / "images";
++
 +    ptree pt;
 +    for (auto& [opt_key, opt] : this->options) {
 +        if (opt.printer_technology == ptSLA) continue;
@@ -159,6 +166,31 @@ index 2fe0e3b55..77fe2503a 100644
 +        if (opt.type == coEnum || opt.type == coEnums) {
 +            put_array(opt_pt, "enum_values", opt.enum_values);
 +            put_array(opt_pt, "enum_labels", opt.enum_labels);
++
++            // Get enum icon data
++            std::vector<ptree> icon_values;
++            int valid_icons = 0;
++            for (auto& enum_value : opt.enum_values) {
++                auto filename = "param_" + enum_value + ".svg";
++                auto& this_icon_pt = icon_values.emplace_back();
++                if (auto icon_path = images_dir / filename; exists(icon_path)) {
++                    this_icon_pt.put("icon_filename", filename);
++                    std::ifstream icon_fstream(icon_path.string());
++                    if (!icon_fstream.is_open())
++                        throw Exception("Unable to open icon file");
++                    std::stringstream data;
++                    data << icon_fstream.rdbuf();
++                    this_icon_pt.put("icon_svg_data", data.str());
++                    valid_icons++;
++                } else {
++                    this_icon_pt.put_value("null");
++                }
++            }
++            if (valid_icons > 0) {
++                auto& arr_pt = opt_pt.put_child("enum_icons", ptree());
++                for (auto& val : icon_values)
++                    arr_pt.add_child("", val);
++            }
 +        }
 +        if (opt.min != INT_MIN)
 +            opt_pt.put("min", opt.min);
@@ -181,7 +213,7 @@ index 2fe0e3b55..77fe2503a 100644
 +            opt_pt.put("nocli", true);
 +        get_default_value(opt, opt_pt);
 +    }
-+    auto path = boost::dll::program_location().parent_path() / "print_config_def.json";
++    auto path = program_parent_dir / "print_config_def.json";
 +    write_json(path.string(), pt);
  }
  
@@ -271,7 +303,7 @@ index b95ace823..7c418304d 100644
      // ys_FIXME: Following should not be needed, the function will be called later
      // (update_mode->update_visibility->rebuild_page_tree). This does not work, during the
      // second call of rebuild_page_tree m_tabctrl->GetFirstVisibleItem(); returns zero
-@@ -540,6 +543,41 @@ void Tab::create_preset_tab()
+@@ -540,6 +543,64 @@ void Tab::create_preset_tab()
      m_completed = true;
  }
  
@@ -287,10 +319,31 @@ index b95ace823..7c418304d 100644
 +        return;
 +
 +    ptree pt;
++    ptree icon_data_pt;
 +    for (const auto& page : m_pages) {
 +        auto& page_pt = pt.put_child(page->title().ToStdString(), ptree());
 +        for (const auto& optgroup : page->m_optgroups) {
-+            auto& optgroup_pt = page_pt.put_child(optgroup->title.ToStdString(), ptree());
++            const auto& title = optgroup->title.ToStdString();
++            auto& optgroup_pt = page_pt.put_child(title, ptree());
++
++            // Get option group icon
++            auto icon_filename = optgroup->icon.ToStdString();
++            if (!icon_filename.empty()) {
++                boost::replace_last(icon_filename, ".png", "");
++                icon_filename += ".svg";
++                auto icon_path = Slic3r::var(icon_filename);
++                if (icon_path != icon_filename) {
++                    auto& this_icon_pt = icon_data_pt.put_child(title, ptree());
++                    this_icon_pt.put("icon_filename", icon_filename);
++                    std::ifstream icon_fstream(icon_path);
++                    if (!icon_fstream.is_open())
++                        throw Exception("Unable to open icon file");
++                    std::stringstream data;
++                    data << icon_fstream.rdbuf();
++                    this_icon_pt.put("icon_svg_data", data.str());
++                }
++            }
++
 +            for (auto& line : optgroup->get_lines()) {
 +                std::vector<std::string> option_ids;
 +                for (auto& option : line.get_options())
@@ -305,6 +358,8 @@ index b95ace823..7c418304d 100644
 +            }
 +        }
 +    }
++
++    pt.put_child("icon_data", icon_data_pt);
 +
 +    auto path = boost::dll::program_location().parent_path() / this->m_title.Lower().ToStdString().append(".json");
 +    write_json(path.string(), pt);
