@@ -24,7 +24,7 @@ index 7025d021..1ba13b0f 100644
  
  #include <float.h>
  
-@@ -390,6 +392,192 @@ PrintConfigDef::PrintConfigDef()
+@@ -390,6 +392,196 @@ PrintConfigDef::PrintConfigDef()
      assign_printer_technology_to_unknown(this->options, ptFFF);
      this->init_sla_params();
      assign_printer_technology_to_unknown(this->options, ptSLA);
@@ -63,6 +63,8 @@ index 7025d021..1ba13b0f 100644
 +        { coBools, "bools" },
 +        { coEnum, "enum" },
 +        { coEnums, "enums" },
++        { coPointsGroups, "pointsgroups" },
++        { coIntsGroups, "intsgroups" },
 +    };
 +
 +    static std::map<ConfigOptionMode, std::string> mode_map = {
@@ -136,6 +138,8 @@ index 7025d021..1ba13b0f 100644
 +            case coBools:           SET_VALUE(opt.get_default_value<ConfigOptionBools>()); break;
 +            case coEnum:            tree.put("default_value", get_enum_name(opt)); break;
 +            case coEnums:           tree.put("default_value", get_enum_name(opt)); break;
++            case coPointsGroups:    SET_VALUE(opt.get_default_value<ConfigOptionPointsGroups>()); break;
++            case coIntsGroups:      SET_VALUE(opt.get_default_value<ConfigOptionIntsGroups>()); break;
 +            default: break;
 +            }
 +		}
