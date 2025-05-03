@@ -23,7 +23,8 @@ jobs:
             repo: https://github.com/BambuLab/BambuStudio
 
     runs-on: ubuntu-24.04
-
+    env:
+      DEPS_CACHE_KEY:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -44,12 +45,17 @@ jobs:
         run: |
           ./dump_slicer_steps/${{ matrix.slicer }}/install-deps.sh
 
+      - name: Get dependencies cache key
+        run: |
+          cd slicer-src
+          echo "DEPS_CACHE_KEY=$(git log -1 --pretty="format:%H" -- deps)" >> $GITHUB_ENV
+
       - name: Cache built dependencies
         id: cache-build-deps
         uses: actions/cache@v4
         with:
           path: slicer-src/deps/build
-          key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ hashFiles('slicer-src/deps/**', 'dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh') }}
+          key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ env.DEPS_CACHE_KEY }}-${{ hashFiles('dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh') }}
 
       - name: Build dependencies
         if: steps.cache-build-deps.outputs.cache-hit != 'true'
