@@ -306,7 +306,7 @@ index a4466b04..ed49f9dd 100644
      // ys_FIXME: Following should not be needed, the function will be called later
      // (update_mode->update_visibility->rebuild_page_tree). This does not work, during the
      // second call of rebuild_page_tree m_tabctrl->GetFirstVisibleItem(); returns zero
-@@ -533,6 +536,64 @@ void Tab::create_preset_tab()
+@@ -533,6 +536,67 @@ void Tab::create_preset_tab()
      m_completed = true;
  }
  
@@ -355,8 +355,11 @@ index a4466b04..ed49f9dd 100644
 +                    optgroup_pt.add("", option_ids[0]);
 +                else if (option_ids.size() > 1) {
 +                    auto& line_pt = optgroup_pt.add_child("", ptree());
++                    line_pt.put("label", line.label.ToStdString());
++                    line_pt.put("tooltip", line.label_tooltip.ToStdString());
++                    auto& options_pt = line_pt.put_child("options", ptree());
 +                    for (auto& id : option_ids)
-+                        line_pt.add("", id);
++                        options_pt.add("", id);
 +                }
 +            }
 +        }
