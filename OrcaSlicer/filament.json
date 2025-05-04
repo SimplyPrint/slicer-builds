@@ -14,10 +14,14 @@
             "filament_cost",
             "temperature_vitrification",
             "idle_temperature",
-            [
-                "nozzle_temperature_range_low",
-                "nozzle_temperature_range_high"
-            ]
+            {
+                "label": "Recommended nozzle temperature",
+                "tooltip": "Recommended nozzle temperature range of this filament. 0 means no set",
+                "options": [
+                    "nozzle_temperature_range_low",
+                    "nozzle_temperature_range_high"
+                ]
+            }
         ],
         "Flow ratio and Pressure Advance": [
             "pellet_flow_coefficient",
@@ -34,36 +38,64 @@
             "activate_chamber_temp_control"
         ],
         "Print temperature": [
-            [
-                "nozzle_temperature_initial_layer",
-                "nozzle_temperature"
-            ]
+            {
+                "label": "Nozzle",
+                "tooltip": "Nozzle temperature when printing",
+                "options": [
+                    "nozzle_temperature_initial_layer",
+                    "nozzle_temperature"
+                ]
+            }
         ],
         "Bed temperature": [
-            [
-                "supertack_plate_temp_initial_layer",
-                "supertack_plate_temp"
-            ],
-            [
-                "cool_plate_temp_initial_layer",
-                "cool_plate_temp"
-            ],
-            [
-                "textured_cool_plate_temp_initial_layer",
-                "textured_cool_plate_temp"
-            ],
-            [
-                "eng_plate_temp_initial_layer",
-                "eng_plate_temp"
-            ],
-            [
-                "hot_plate_temp_initial_layer",
-                "hot_plate_temp"
-            ],
-            [
-                "textured_plate_temp_initial_layer",
-                "textured_plate_temp"
-            ]
+            {
+                "label": "Cool Plate (SuperTack)",
+                "tooltip": "Bed temperature when the Cool Plate SuperTack is installed. A value of 0 means the filament does not support printing on the Cool Plate SuperTack.",
+                "options": [
+                    "supertack_plate_temp_initial_layer",
+                    "supertack_plate_temp"
+                ]
+            },
+            {
+                "label": "Cool Plate",
+                "tooltip": "Bed temperature when the Cool Plate is installed. A value of 0 means the filament does not support printing on the Cool Plate.",
+                "options": [
+                    "cool_plate_temp_initial_layer",
+                    "cool_plate_temp"
+                ]
+            },
+            {
+                "label": "Textured Cool Plate",
+                "tooltip": "Bed temperature when the Textured Cool Plate is installed. A value of 0 means the filament does not support printing on the Textured Cool Plate.",
+                "options": [
+                    "textured_cool_plate_temp_initial_layer",
+                    "textured_cool_plate_temp"
+                ]
+            },
+            {
+                "label": "Engineering Plate",
+                "tooltip": "Bed temperature when the Engineering Plate is installed. A value of 0 means the filament does not support printing on the Engineering Plate.",
+                "options": [
+                    "eng_plate_temp_initial_layer",
+                    "eng_plate_temp"
+                ]
+            },
+            {
+                "label": "Smooth PEI Plate \/ High Temp Plate",
+                "tooltip": "Bed temperature when the Smooth PEI Plate\/High Temperature Plate is installed. A value of 0 means the filament does not support printing on the Smooth PEI Plate\/High Temp Plate.",
+                "options": [
+                    "hot_plate_temp_initial_layer",
+                    "hot_plate_temp"
+                ]
+            },
+            {
+                "label": "Textured PEI Plate",
+                "tooltip": "Bed temperature when the Textured PEI Plate is installed. A value of 0 means the filament does not support printing on the Textured PEI Plate.",
+                "options": [
+                    "textured_plate_temp_initial_layer",
+                    "textured_plate_temp"
+                ]
+            }
         ],
         "Volumetric speed limitation": [
             "filament_max_volumetric_speed"
@@ -75,14 +107,22 @@
             "full_fan_speed_layer"
         ],
         "Part cooling fan": [
-            [
-                "fan_min_speed",
-                "fan_cooling_layer_time"
-            ],
-            [
-                "fan_max_speed",
-                "slow_down_layer_time"
-            ],
+            {
+                "label": "Min fan speed threshold",
+                "tooltip": "Part cooling fan speed will start to run at min speed when the estimated layer time is no longer than the layer time in setting. When layer time is shorter than threshold, fan speed is interpolated between the minimum and maximum fan speed according to layer printing time",
+                "options": [
+                    "fan_min_speed",
+                    "fan_cooling_layer_time"
+                ]
+            },
+            {
+                "label": "Max fan speed threshold",
+                "tooltip": "Part cooling fan speed will be max when the estimated layer time is shorter than the setting value",
+                "options": [
+                    "fan_max_speed",
+                    "slow_down_layer_time"
+                ]
+            },
             "reduce_fan_stop_start_freq",
             "slow_down_for_layer_cooling",
             "dont_slow_down_outer_wall",

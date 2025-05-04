@@ -21,37 +21,65 @@
             "temperature_vitrification",
             "filament_ramming_travel_time#0",
             "filament_pre_cooling_temperature#0",
-            [
-                "nozzle_temperature_range_low",
-                "nozzle_temperature_range_high"
-            ]
+            {
+                "label": "Recommended nozzle temperature",
+                "tooltip": "Recommended nozzle temperature range of this filament. 0 means no set",
+                "options": [
+                    "nozzle_temperature_range_low",
+                    "nozzle_temperature_range_high"
+                ]
+            }
         ],
         "Print temperature": [
             "chamber_temperatures",
-            [
-                "supertack_plate_temp_initial_layer",
-                "supertack_plate_temp"
-            ],
-            [
-                "cool_plate_temp_initial_layer",
-                "cool_plate_temp"
-            ],
-            [
-                "eng_plate_temp_initial_layer",
-                "eng_plate_temp"
-            ],
-            [
-                "hot_plate_temp_initial_layer",
-                "hot_plate_temp"
-            ],
-            [
-                "textured_plate_temp_initial_layer",
-                "textured_plate_temp"
-            ],
-            [
-                "nozzle_temperature_initial_layer#0",
-                "nozzle_temperature#0"
-            ]
+            {
+                "label": "Bambu Cool Plate SuperTack",
+                "tooltip": "Bed temperature when cool plate is installed. Value 0 means the filament does not support to print on the Bambu Cool Plate SuperTack",
+                "options": [
+                    "supertack_plate_temp_initial_layer",
+                    "supertack_plate_temp"
+                ]
+            },
+            {
+                "label": "Cool Plate",
+                "tooltip": "Bed temperature when cool plate is installed. Value 0 means the filament does not support to print on the Cool Plate",
+                "options": [
+                    "cool_plate_temp_initial_layer",
+                    "cool_plate_temp"
+                ]
+            },
+            {
+                "label": "Engineering Plate",
+                "tooltip": "Bed temperature when engineering plate is installed. Value 0 means the filament does not support to print on the Engineering Plate",
+                "options": [
+                    "eng_plate_temp_initial_layer",
+                    "eng_plate_temp"
+                ]
+            },
+            {
+                "label": "Smooth PEI Plate \/ High Temp Plate",
+                "tooltip": "Bed temperature when Smooth PEI Plate\/High temperature plate is installed. Value 0 means the filament does not support to print on the Smooth PEI Plate\/High Temp Plate",
+                "options": [
+                    "hot_plate_temp_initial_layer",
+                    "hot_plate_temp"
+                ]
+            },
+            {
+                "label": "Textured PEI Plate",
+                "tooltip": "Bed temperature when Textured PEI Plate is installed. Value 0 means the filament does not support to print on the Textured PEI Plate",
+                "options": [
+                    "textured_plate_temp_initial_layer",
+                    "textured_plate_temp"
+                ]
+            },
+            {
+                "label": "Nozzle",
+                "tooltip": "Nozzle temperature when printing",
+                "options": [
+                    "nozzle_temperature_initial_layer#0",
+                    "nozzle_temperature#0"
+                ]
+            }
         ],
         "Volumetric speed limitation": [
             "filament_max_volumetric_speed#0",
@@ -69,14 +97,22 @@
             "close_fan_the_first_x_layers"
         ],
         "Part cooling fan": [
-            [
-                "fan_min_speed",
-                "fan_cooling_layer_time"
-            ],
-            [
-                "fan_max_speed",
-                "slow_down_layer_time"
-            ],
+            {
+                "label": "Min fan speed threshold",
+                "tooltip": "Part cooling fan speed will start to run at min speed when the estimated layer time is no longer than the layer time in setting. When layer time is shorter than threshold, fan speed is interpolated between the minimum and maximum fan speed according to layer printing time",
+                "options": [
+                    "fan_min_speed",
+                    "fan_cooling_layer_time"
+                ]
+            },
+            {
+                "label": "Max fan speed threshold",
+                "tooltip": "Part cooling fan speed will be max when the estimated layer time is shorter than the setting value",
+                "options": [
+                    "fan_max_speed",
+                    "slow_down_layer_time"
+                ]
+            },
             "reduce_fan_stop_start_freq",
             "slow_down_for_layer_cooling",
             "slow_down_min_speed",
