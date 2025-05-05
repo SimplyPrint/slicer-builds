@@ -276,15 +276,142 @@ diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
 index b8a80420..ae40d8a2 100644
 --- a/src/slic3r/GUI/MainFrame.cpp
 +++ b/src/slic3r/GUI/MainFrame.cpp
-@@ -1324,6 +1324,8 @@ void MainFrame::create_preset_tabs()
+@@ -1324,6 +1324,10 @@ void MainFrame::create_preset_tabs()
      //add_created_tab(new TabSLAMaterial(m_param_panel));
      add_created_tab(new TabPrinter(m_param_dialog->panel()), "printer");
  
++    wxGetApp().plater()->get_partplate_list().load_bedtype_textures();
++
 +    exit(0);
 +
      m_param_panel->rebuild_panels();
      m_param_dialog->panel()->rebuild_panels();
      //m_tabpanel->AddPage(m_param_panel, "Parameters", "notebook_presets_active");
+diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
+index 2c9beea49..092eef224 100644
+--- a/src/slic3r/GUI/PartPlate.cpp
++++ b/src/slic3r/GUI/PartPlate.cpp
+@@ -39,6 +39,8 @@
+ #include "format.hpp"
+ #include <imgui/imgui_internal.h>
+ #include <wx/dcgraph.h>
++
++#include "boost/dll/runtime_symbol_info.hpp"
+ using boost::optional;
+ namespace fs = boost::filesystem;
+ 
+@@ -6050,7 +6052,9 @@ void PartPlateList::BedTextureInfo::reset()
+         parts[i].reset();
+ }
+ 
+-void PartPlateList::init_bed_type_info()
++bool PartPlateList::bed_textures_dumped = false;
++
++void PartPlateList::init_bed_type_info(bool is_single_extruder)
+ {
+     BedTextureInfo::TexturePart st_part1(10, 52, 8.393f, 192, "bbl_bed_st_left.svg");
+     BedTextureInfo::TexturePart st_part2(74, -10, 148, 12, "bbl_bed_st_bottom.svg");
+@@ -6063,7 +6067,8 @@ void PartPlateList::init_bed_type_info()
+     BedTextureInfo::TexturePart pte_part1(10, 52, 8.393f, 192, "bbl_bed_pte_left.svg");
+     BedTextureInfo::TexturePart pte_part2(74, -10, 148, 12, "bbl_bed_pte_bottom.svg");
+ 
+-    auto is_single_extruder = wxGetApp().preset_bundle->get_printer_extruder_count() == 1;
++	if (bed_textures_dumped)
++		is_single_extruder = wxGetApp().preset_bundle->get_printer_extruder_count() == 1;
+     if (!is_single_extruder) {
+         m_allow_bed_type_in_double_nozzle.clear();
+         pte_part1 = BedTextureInfo::TexturePart(57, 300, 236.12f, 10.f, "bbl_bed_pte_middle.svg");
+@@ -6090,6 +6095,9 @@ void PartPlateList::init_bed_type_info()
+ 	bed_texture_info[btPTE].parts.push_back(pte_part1);
+ 	bed_texture_info[btPTE].parts.push_back(pte_part2);
+ 
++	if (!bed_textures_dumped)
++		return;
++
+ 	auto  bed_ext     = get_extents(m_shape);
+ 	int   bed_width   = bed_ext.size()(0);
+ 	int   bed_height  = bed_ext.size()(1);
+@@ -6205,6 +6213,66 @@ void PartPlateList::load_bedtype_textures()
+ {
+ 	if (PartPlateList::is_load_bedtype_textures) return;
+ 
++	if (!bed_textures_dumped) {
++		using boost::property_tree::ptree;
++
++		static std::map<BedType, std::string> bt_map = {
++			{ btPC, "pc"},
++			{ btEP, "ep"},
++			{ btPEI, "pei"},
++			{ btPTE, "pte"},
++			{ btSuperTack, "supertack"},
++		};
++
++		if ((BedType::btCount - 1) != bt_map.size())
++			throw Exception("The number of bed types does not match the bed type map");
++
++		auto export_bed_data = [&](ptree& parent_pt, int index) {
++			auto& bed_pt = parent_pt.add_child(bt_map[static_cast<BedType>(index)], ptree());
++			for (auto& part : bed_texture_info[index].parts) {
++				auto& part_pt = bed_pt.add_child("", ptree());
++				part_pt.add("filename", part.filename);
++
++				std::string filename = resources_dir() + "/images/" + part.filename;
++				if (!boost::filesystem::exists(filename))
++					throw Exception("A parts file does not exist");
++
++				std::ifstream part_fstream(filename);
++				if (!part_fstream.is_open())
++					throw Exception("Unable to open part file");
++				std::stringstream data;
++				data << part_fstream.rdbuf();
++				part_pt.add("svg_data", data.str());
++
++				part_pt.add("x", part.x);
++				part_pt.add("y", part.y);
++				part_pt.add("w", part.w);
++				part_pt.add("h", part.h);
++			}
++		};
++
++		ptree pt;
++		init_bed_type_info();
++
++		auto& single_extruder_pt = pt.add_child("single_extruder", ptree());
++		for (int i = 1; i < static_cast<unsigned int>(btCount); ++i)
++			export_bed_data(single_extruder_pt, i);
++
++		init_bed_type_info(false);
++
++		auto& dual_extruder_pt = pt.add_child("dual_extruder", ptree());
++		for (int i = 1; i < static_cast<unsigned int>(btCount); ++i) {
++			if (m_allow_bed_type_in_double_nozzle.count(i) == 0 || !m_allow_bed_type_in_double_nozzle[i])
++				continue;
++			export_bed_data(dual_extruder_pt, i);
++		}
++
++		auto path = boost::dll::program_location().parent_path() / "bed_textures.json";
++		write_json(path.string(), pt);
++
++		bed_textures_dumped = true;
++	}
++
+ 	init_bed_type_info();
+ 	GLint max_tex_size = OpenGLManager::get_gl_info().get_max_tex_size();
+ 	GLint logo_tex_size = (max_tex_size < 2048) ? max_tex_size : 2048;
+diff --git a/src/slic3r/GUI/PartPlate.hpp b/src/slic3r/GUI/PartPlate.hpp
+index b35d56439..9e87ced8b 100644
+--- a/src/slic3r/GUI/PartPlate.hpp
++++ b/src/slic3r/GUI/PartPlate.hpp
+@@ -925,7 +925,8 @@ public:
+         int h;
+     };
+     bool calc_extruder_only_area(Rect &left_only_rect, Rect &right_only_rect);
+-    void init_bed_type_info();
++    static bool bed_textures_dumped;
++    void init_bed_type_info(bool is_single_extruder = true);
+     bool init_extruder_only_area_info();
+     void load_bedtype_textures();
+     void load_extruder_only_area_textures();
 diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
 index a4466b04..ed49f9dd 100644
 --- a/src/slic3r/GUI/Tab.cpp
