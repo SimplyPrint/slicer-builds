@@ -1,16 +1,14 @@
-diff --git a/deps/+GMP/GMP.cmake b/deps/+GMP/GMP.cmake
-index 724db2e..c3e8817 100644
---- a/deps/+GMP/GMP.cmake
-+++ b/deps/+GMP/GMP.cmake
-@@ -54,7 +54,7 @@ else ()
- 
-     ExternalProject_Add(dep_GMP
-         EXCLUDE_FROM_ALL ON
--        URL https://gmplib.org/download/gmp/gmp-6.2.1.tar.bz2
-+        URL https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.bz2
-         URL_HASH SHA256=eae9326beb4158c386e39a356818031bd28f3124cf915f8c5b1dc4c7a36b4d7c
-         DOWNLOAD_DIR ${${PROJECT_NAME}_DEP_DOWNLOAD_DIR}/GMP
-         BUILD_IN_SOURCE ON 
+diff --git a/deps/+Eigen/Eigen.cmake b/deps/+Eigen/Eigen.cmake
+index e14b0f8fa..f472eca57 100644
+--- a/deps/+Eigen/Eigen.cmake
++++ b/deps/+Eigen/Eigen.cmake
+@@ -1,4 +1,4 @@
+ add_cmake_project(Eigen
+-    URL "https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip"
+-    URL_HASH SHA256=e09b89aae054e9778ee3f606192ee76d645eec82c402c01c648b1fe46b6b9857
++    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
++    GIT_TAG 3.3.7
+ )
 diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
 index f141107..d9bf2d2 100644
 --- a/src/libslic3r/PrintConfig.cpp
