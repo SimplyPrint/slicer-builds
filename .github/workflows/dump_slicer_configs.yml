@@ -67,7 +67,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: slicer-src/build
-          key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ hashFiles('slicer-src/src/libslic3r/PrintConfig.cpp', 'slicer-src/src/slic3r/GUI/Tab.cpp') }}
+          key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ hashFiles('slicer-src/src/libslic3r/PrintConfig.cpp', 'slicer-src/src/slic3r/GUI/Tab.cpp', 'dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch') }}
 
       - name: Build slicer
         if: steps.cache-build-slicer.outputs.cache-hit != 'true'
