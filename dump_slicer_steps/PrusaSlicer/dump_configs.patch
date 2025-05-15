@@ -260,7 +260,7 @@ index 5a95888..b83a59e 100644
      // ys_FIXME: Following should not be needed, the function will be called later
      // (update_mode->update_visibility->rebuild_page_tree). This does not work, during the
      // second call of rebuild_page_tree m_treectrl->GetFirstVisibleItem(); returns zero
-@@ -366,6 +370,44 @@ void Tab::create_preset_tab()
+@@ -366,6 +370,50 @@ void Tab::create_preset_tab()
      m_completed = true;
  }
  
@@ -298,7 +298,13 @@ index 5a95888..b83a59e 100644
 +        }
 +    }
 +
-+    auto path = boost::dll::program_location().parent_path() / (this->m_title.Lower().ToStdString() + ".json");
++    std::map<std::string, std::string> title_to_filename = {
++        {"filaments", "filament"},
++        {"print settings", "process"},
++        {"printers", "machine"},
++    };
++
++    auto path = boost::dll::program_location().parent_path() / (title_to_filename[this->m_title.Lower().ToStdString()] + ".json");
 +    boost::property_tree::write_json(path.string(), pt);
 +}
 +
