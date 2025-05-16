@@ -26,7 +26,7 @@
     "activate_chamber_temp_control": {
         "type": "bools",
         "label": "Activate temperature control",
-        "tooltip": "Enable this option for automated chamber temperature control. This option activates the emitting of an M191 command before the \"machine_start_gcode\"\n which sets the chamber temperature and waits until it is reached. In addition, it emits an M141 command at the end of the print to turn off the chamber heater, if present. \n\nThis option relies on the firmware supporting the M191 and M141 commands either via macros or natively and is usually used when an active chamber heater is installed.",
+        "tooltip": "Enable this option for automated chamber temperature control. This option activates the emitting of an M191 command before the \"machine_start_gcode\"\n which sets the chamber temperature and waits until it is reached. In addition, it emits an M141 command at the end of the print to turn off the chamber heater, if present.\n\nThis option relies on the firmware supporting the M191 and M141 commands either via macros or natively and is usually used when an active chamber heater is installed.",
         "mode": "simple",
         "default_value": "0"
     },
@@ -48,7 +48,7 @@
     "adaptive_pressure_advance_bridges": {
         "type": "floats",
         "label": "Pressure advance for bridges",
-        "tooltip": "Pressure advance value for bridges. Set to 0 to disable. \n\n A lower PA value when printing bridges helps reduce the appearance of slight under extrusion immediately after bridges. This is caused by the pressure drop in the nozzle when printing in the air and a lower PA helps counteract this.",
+        "tooltip": "Pressure advance value for bridges. Set to 0 to disable.\n\nA lower PA value when printing bridges helps reduce the appearance of slight under extrusion immediately after bridges. This is caused by the pressure drop in the nozzle when printing in the air and a lower PA helps counteract this.",
         "max": "2",
         "mode": "advanced",
         "default_value": "0"
@@ -56,7 +56,7 @@
     "adaptive_pressure_advance_model": {
         "type": "strings",
         "label": "Adaptive pressure advance measurements (beta)",
-        "tooltip": "Add sets of pressure advance (PA) values, the volumetric flow speeds and accelerations they were measured at, separated by a comma. One set of values per line. For example\n0.04,3.96,3000\n0.033,3.96,10000\n0.029,7.91,3000\n0.026,7.91,10000\n\nHow to calibrate:\n1. Run the pressure advance test for at least 3 speeds per acceleration value. It is recommended that the test is run for at least the speed of the external perimeters, the speed of the internal perimeters and the fastest feature print speed in your profile (usually its the sparse or solid infill). Then run them for the same speeds for the slowest and fastest print accelerations,and no faster than the recommended maximum acceleration as given by the Klipper input shaper.\n2. Take note of the optimal PA value for each volumetric flow speed and acceleration. You can find the flow number by selecting flow from the color scheme drop down and move the horizontal slider over the PA pattern lines. The number should be visible at the bottom of the page. The ideal PA value should be decreasing the higher the volumetric flow is. If it is not, confirm that your extruder is functioning correctly.The slower and with less acceleration you print, the larger the range of acceptable PA values. If no difference is visible, use the PA value from the faster test.3. Enter the triplets of PA values, Flow and Accelerations in the text box here and save your filament profile\n\n",
+        "tooltip": "Add sets of pressure advance (PA) values, the volumetric flow speeds and accelerations they were measured at, separated by a comma. One set of values per line. For example\n0.04,3.96,3000\n0.033,3.96,10000\n0.029,7.91,3000\n0.026,7.91,10000\n\nHow to calibrate:\n1. Run the pressure advance test for at least 3 speeds per acceleration value. It is recommended that the test is run for at least the speed of the external perimeters, the speed of the internal perimeters and the fastest feature print speed in your profile (usually its the sparse or solid infill). Then run them for the same speeds for the slowest and fastest print accelerations,and no faster than the recommended maximum acceleration as given by the Klipper input shaper.\n2. Take note of the optimal PA value for each volumetric flow speed and acceleration. You can find the flow number by selecting flow from the color scheme drop down and move the horizontal slider over the PA pattern lines. The number should be visible at the bottom of the page. The ideal PA value should be decreasing the higher the volumetric flow is. If it is not, confirm that your extruder is functioning correctly. The slower and with less acceleration you print, the larger the range of acceptable PA values. If no difference is visible, use the PA value from the faster test.\n3. Enter the triplets of PA values, Flow and Accelerations in the text box here and save your filament profile\n\n",
         "full_width": "true",
         "multiline": "true",
         "height": "15",
@@ -83,7 +83,7 @@
     "alternate_extra_wall": {
         "type": "bool",
         "label": "Alternate extra wall",
-        "tooltip": "This setting adds an extra wall to every other layer. This way the infill gets wedged vertically between the walls, resulting in stronger prints. \n\nWhen this option is enabled, the ensure vertical shell thickness option needs to be disabled. \n\nUsing lightning infill together with this option is not recommended as there is limited infill to anchor the extra perimeters to.",
+        "tooltip": "This setting adds an extra wall to every other layer. This way the infill gets wedged vertically between the walls, resulting in stronger prints.\n\nWhen this option is enabled, the ensure vertical shell thickness option needs to be disabled.\n\nUsing lightning infill together with this option is not recommended as there is limited infill to anchor the extra perimeters to.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -198,7 +198,7 @@
     "bottom_solid_infill_flow_ratio": {
         "type": "float",
         "label": "Bottom surface flow ratio",
-        "tooltip": "This factor affects the amount of material for bottom solid infill. \n\nThe actual bottom solid infill flow used is calculated by multiplying this value with the filament flow ratio, and if set, the object's flow ratio.",
+        "tooltip": "This factor affects the amount of material for bottom solid infill.\n\nThe actual bottom solid infill flow used is calculated by multiplying this value with the filament flow ratio, and if set, the object's flow ratio.",
         "min": "0",
         "max": "2",
         "mode": "advanced",
@@ -296,7 +296,7 @@
     "bridge_flow": {
         "type": "float",
         "label": "Bridge flow ratio",
-        "tooltip": "Decrease this value slightly(for example 0.9) to reduce the amount of material for bridge, to improve sag. \n\nThe actual bridge flow used is calculated by multiplying this value with the filament flow ratio, and if set, the object's flow ratio.",
+        "tooltip": "Decrease this value slightly (for example 0.9) to reduce the amount of material for bridge, to improve sag.\n\nThe actual bridge flow used is calculated by multiplying this value with the filament flow ratio, and if set, the object's flow ratio.",
         "min": "0",
         "max": "2",
         "mode": "advanced",
@@ -312,7 +312,7 @@
     "bridge_speed": {
         "type": "float",
         "label": "External",
-        "tooltip": "Speed of the externally visible bridge extrusions. \n\nIn addition, if Slow down for curled perimeters is disabled or Classic overhang mode is enabled, it will be the print speed of overhang walls that are supported by less than 13%, whether they are part of a bridge or an overhang.",
+        "tooltip": "Speed of the externally visible bridge extrusions.\n\nIn addition, if Slow down for curled perimeters is disabled or Classic overhang mode is enabled, it will be the print speed of overhang walls that are supported by less than 13%, whether they are part of a bridge or an overhang.",
         "sidetext": "mm\/s",
         "min": "1",
         "mode": "advanced",
@@ -337,7 +337,7 @@
     "brim_ears_max_angle": {
         "type": "float",
         "label": "Brim ear max angle",
-        "tooltip": "Maximum angle to let a brim ear appear. \nIf set to 0, no brim will be created. \nIf set to ~180, brim will be created on everything but straight sections.",
+        "tooltip": "Maximum angle to let a brim ear appear.\nIf set to 0, no brim will be created.\nIf set to ~180, brim will be created on everything but straight sections.",
         "sidetext": "°",
         "min": "0",
         "max": "180",
@@ -674,7 +674,7 @@
     "dont_filter_internal_bridges": {
         "type": "enum",
         "label": "Filter out small internal bridges",
-        "tooltip": "This option can help reduce pillowing on top surfaces in heavily slanted or curved models.\n\nBy default, small internal bridges are filtered out and the internal solid infill is printed directly over the sparse infill. This works well in most cases, speeding up printing without too much compromise on top surface quality. \n\nHowever, in heavily slanted or curved models, especially where too low a sparse infill density is used, this may result in curling of the unsupported solid infill, causing pillowing.\n\nEnabling limited filtering or no filtering will print internal bridge layer over slightly unsupported internal solid infill. The options below control the sensitivity of the filtering, i.e. they control where internal bridges are created.\n\n1. Filter - enables this option. This is the default behavior and works well in most cases.\n\n2. Limited filtering - creates internal bridges on heavily slanted surfaces while avoiding unnecessary bridges. This works well for most difficult models.\n\n3. No filtering - creates internal bridges on every potential internal overhang. This option is useful for heavily slanted top surface models; however, in most cases, it creates too many unnecessary bridges.",
+        "tooltip": "This option can help reduce pillowing on top surfaces in heavily slanted or curved models.\n\nBy default, small internal bridges are filtered out and the internal solid infill is printed directly over the sparse infill. This works well in most cases, speeding up printing without too much compromise on top surface quality.\n\nHowever, in heavily slanted or curved models, especially where too low a sparse infill density is used, this may result in curling of the unsupported solid infill, causing pillowing.\n\nEnabling limited filtering or no filtering will print internal bridge layer over slightly unsupported internal solid infill. The options below control the sensitivity of the filtering, i.e. they control where internal bridges are created.\n\n1. Filter - enables this option. This is the default behavior and works well in most cases.\n\n2. Limited filtering - creates internal bridges on heavily slanted surfaces while avoiding unnecessary bridges. This works well for most difficult models.\n\n3. No filtering - creates internal bridges on every potential internal overhang. This option is useful for heavily slanted top surface models; however, in most cases, it creates too many unnecessary bridges.",
         "enum_values": [
             "disabled",
             "limited",
@@ -698,7 +698,7 @@
     "draft_shield": {
         "type": "enum",
         "label": "Draft shield",
-        "tooltip": "A draft shield is useful to protect an ABS or ASA print from warping and detaching from print bed due to wind draft. It is usually needed only with open frame printers, i.e. without an enclosure. \n\nEnabled = skirt is as tall as the highest printed object. Otherwise 'Skirt height' is used.\nNote: With the draft shield active, the skirt will be printed at skirt distance from the object. Therefore, if brims are active it may intersect with them. To avoid this, increase the skirt distance value.\n",
+        "tooltip": "A draft shield is useful to protect an ABS or ASA print from warping and detaching from print bed due to wind draft. It is usually needed only with open frame printers, i.e. without an enclosure.\n\nEnabled = skirt is as tall as the highest printed object. Otherwise 'Skirt height' is used.\nNote: With the draft shield active, the skirt will be printed at skirt distance from the object. Therefore, if brims are active it may intersect with them. To avoid this, increase the skirt distance value.\n",
         "enum_values": [
             "disabled",
             "enabled"
@@ -748,7 +748,7 @@
     "enable_arc_fitting": {
         "type": "bool",
         "label": "Arc fitting",
-        "tooltip": "Enable this to get a G-code file which has G2 and G3 moves. The fitting tolerance is same as the resolution. \n\nNote: For Klipper machines, this option is recommended to be disabled. Klipper does not benefit from arc commands as these are split again into line segments by the firmware. This results in a reduction in surface quality as line segments are converted to arcs by the slicer and then back to line segments by the firmware.",
+        "tooltip": "Enable this to get a G-code file which has G2 and G3 moves. The fitting tolerance is same as the resolution.\n\nNote: For Klipper machines, this option is recommended to be disabled. Klipper does not benefit from arc commands as these are split again into line segments by the firmware. This results in a reduction in surface quality as line segments are converted to arcs by the slicer and then back to line segments by the firmware.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -881,7 +881,7 @@
     "extra_loading_move": {
         "type": "float",
         "label": "Extra loading distance",
-        "tooltip": "When set to zero, the distance the filament is moved from parking position during load is exactly the same as it was moved back during unload. When positive, it is loaded further,  if negative, the loading move is shorter than unloading.",
+        "tooltip": "When set to zero, the distance the filament is moved from parking position during load is exactly the same as it was moved back during unload. When positive, it is loaded further, if negative, the loading move is shorter than unloading.",
         "sidetext": "mm",
         "mode": "advanced",
         "default_value": "-2"
@@ -1128,8 +1128,8 @@
     },
     "filament_long_retractions_when_cut": {
         "type": "bools",
-        "label": "Long retraction when cut(beta)",
-        "tooltip": "Experimental feature.Retracting and cutting off the filament at a longer distance during changes to minimize purge.While this reduces flush significantly, it may also raise the risk of nozzle clogs or other printing problems.",
+        "label": "Long retraction when cut (beta)",
+        "tooltip": "Experimental feature: Retracting and cutting off the filament at a longer distance during changes to minimize purge. While this reduces flush significantly, it may also raise the risk of nozzle clogs or other printing problems.",
         "mode": "simple",
         "default_value": "0"
     },
@@ -1262,7 +1262,7 @@
     "filament_retraction_distances_when_cut": {
         "type": "floats",
         "label": "Retraction distance when cut",
-        "tooltip": "Experimental feature.Retraction length before cutting off during filament change",
+        "tooltip": "Experimental feature: Retraction length before cutting off during filament change.",
         "min": "10",
         "max": "18",
         "mode": "simple",
@@ -1372,7 +1372,7 @@
     "filament_unloading_speed": {
         "type": "floats",
         "label": "Unloading speed",
-        "tooltip": "Speed used for unloading the filament on the wipe tower (does not affect  initial part of unloading just after ramming).",
+        "tooltip": "Speed used for unloading the filament on the wipe tower (does not affect initial part of unloading just after ramming).",
         "sidetext": "mm\/s",
         "min": "0",
         "mode": "advanced",
@@ -1405,7 +1405,7 @@
     "filament_wipe_distance": {
         "type": "floats",
         "label": "Wipe Distance",
-        "tooltip": "Describe how long the nozzle will move along the last path when retracting. \n\nDepending on how long the wipe operation lasts, how fast and long the extruder\/filament retraction settings are, a retraction move may be needed to retract the remaining filament. \n\nSetting a value in the retract amount before wipe setting below will perform any excess retraction before the wipe, else it will be performed after.",
+        "tooltip": "Describe how long the nozzle will move along the last path when retracting.\n\nDepending on how long the wipe operation lasts, how fast and long the extruder\/filament retraction settings are, a retraction move may be needed to retract the remaining filament.\n\nSetting a value in the retract amount before wipe setting below will perform any excess retraction before the wipe, else it will be performed after.",
         "sidetext": "mm",
         "min": "0",
         "mode": "advanced",
@@ -1629,7 +1629,7 @@
     "gap_fill_target": {
         "type": "enum",
         "label": "Apply gap fill",
-        "tooltip": "Enables gap fill for the selected solid surfaces. The minimum gap length that will be filled can be controlled from the filter out tiny gaps option below.\n\nOptions:\n1. Everywhere: Applies gap fill to top, bottom and internal solid surfaces for maximum strength\n2. Top and Bottom surfaces: Applies gap fill to top and bottom surfaces only, balancing print speed, reducing potential over extrusion in the solid infill and making sure the top and bottom surfaces have no pin hole gaps\n3. Nowhere: Disables gap fill for all solid infill areas. \n\nNote that if using the classic perimeter generator, gap fill may also be generated between perimeters, if a full width line cannot fit between them. That perimeter gap fill is not controlled by this setting. \n\nIf you would like all gap fill, including the classic perimeter generated one, removed, set the filter out tiny gaps value to a large number, like 999999. \n\nHowever this is not advised, as gap fill between perimeters is contributing to the model's strength. For models where excessive gap fill is generated between perimeters, a better option would be to switch to the arachne wall generator and use this option to control whether the cosmetic top and bottom surface gap fill is generated",
+        "tooltip": "Enables gap fill for the selected solid surfaces. The minimum gap length that will be filled can be controlled from the filter out tiny gaps option below.\n\nOptions:\n1. Everywhere: Applies gap fill to top, bottom and internal solid surfaces for maximum strength\n2. Top and Bottom surfaces: Applies gap fill to top and bottom surfaces only, balancing print speed, reducing potential over extrusion in the solid infill and making sure the top and bottom surfaces have no pin hole gaps\n3. Nowhere: Disables gap fill for all solid infill areas.\n\nNote that if using the classic perimeter generator, gap fill may also be generated between perimeters, if a full width line cannot fit between them. That perimeter gap fill is not controlled by this setting.\n\nIf you would like all gap fill, including the classic perimeter generated one, removed, set the filter out tiny gaps value to a large number, like 999999.\n\nHowever this is not advised, as gap fill between perimeters is contributing to the model's strength. For models where excessive gap fill is generated between perimeters, a better option would be to switch to the arachne wall generator and use this option to control whether the cosmetic top and bottom surface gap fill is generated",
         "enum_values": [
             "everywhere",
             "topbottom",
@@ -1799,7 +1799,7 @@
     "idle_temperature": {
         "type": "ints",
         "label": "Idle temperature",
-        "tooltip": "Nozzle temperature when the tool is currently not used in multi-tool setups.This is only used when 'Ooze prevention' is active in Print Settings. Set to 0 to disable.",
+        "tooltip": "Nozzle temperature when the tool is currently not used in multi-tool setups. This is only used when 'Ooze prevention' is active in Print Settings. Set to 0 to disable.",
         "sidetext": "°C",
         "min": "0",
         "max": "1500",
@@ -1809,14 +1809,14 @@
     "independent_support_layer_height": {
         "type": "bool",
         "label": "Independent support layer height",
-        "tooltip": "Support layer uses layer height independent with object layer. This is to support customizing z-gap and save print time.This option will be invalid when the prime tower is enabled.",
+        "tooltip": "Support layer uses layer height independent with object layer. This is to support customizing z-gap and save print time. This option will be invalid when the prime tower is enabled.",
         "mode": "advanced",
         "default_value": "1"
     },
     "infill_anchor": {
         "type": "floatorpercent",
         "label": "Sparse infill anchor length",
-        "tooltip": "Connect an infill line to an internal perimeter with a short segment of an additional perimeter. If expressed as percentage (example: 15%) it is calculated over infill extrusion width. Orca Slicer tries to connect two close infill lines to a short perimeter segment. If no such perimeter segment shorter than infill_anchor_max is found, the infill line is connected to a perimeter segment at just one side and the length of the perimeter segment taken is limited to this parameter, but no longer than anchor_length_max. \nSet this parameter to zero to disable anchoring perimeters connected to a single infill line.",
+        "tooltip": "Connect an infill line to an internal perimeter with a short segment of an additional perimeter. If expressed as percentage (example: 15%) it is calculated over infill extrusion width. Orca Slicer tries to connect two close infill lines to a short perimeter segment. If no such perimeter segment shorter than infill_anchor_max is found, the infill line is connected to a perimeter segment at just one side and the length of the perimeter segment taken is limited to this parameter, but no longer than anchor_length_max.\nSet this parameter to zero to disable anchoring perimeters connected to a single infill line.",
         "sidetext": "mm or %",
         "gui_type": "f_enum_open",
         "mode": "advanced",
@@ -1825,7 +1825,7 @@
     "infill_anchor_max": {
         "type": "floatorpercent",
         "label": "Maximum length of the infill anchor",
-        "tooltip": "Connect an infill line to an internal perimeter with a short segment of an additional perimeter. If expressed as percentage (example: 15%) it is calculated over infill extrusion width. Orca Slicer tries to connect two close infill lines to a short perimeter segment. If no such perimeter segment shorter than this parameter is found, the infill line is connected to a perimeter segment at just one side and the length of the perimeter segment taken is limited to infill_anchor, but no longer than this parameter. \nIf set to 0, the old algorithm for infill connection will be used, it should create the same result as with 1000 & 0.",
+        "tooltip": "Connect an infill line to an internal perimeter with a short segment of an additional perimeter. If expressed as percentage (example: 15%) it is calculated over infill extrusion width. Orca Slicer tries to connect two close infill lines to a short perimeter segment. If no such perimeter segment shorter than this parameter is found, the infill line is connected to a perimeter segment at just one side and the length of the perimeter segment taken is limited to infill_anchor, but no longer than this parameter.\nIf set to 0, the old algorithm for infill connection will be used, it should create the same result as with 1000 & 0.",
         "sidetext": "mm or %",
         "gui_type": "f_enum_open",
         "mode": "advanced",
@@ -1841,7 +1841,7 @@
     "infill_combination_max_layer_height": {
         "type": "floatorpercent",
         "label": "Infill combination - Max layer height",
-        "tooltip": "Maximum layer height for the combined sparse infill. \n\nSet it to 0 or 100% to use the nozzle diameter (for maximum reduction in print time) or a value of ~80% to maximize sparse infill strength.\n\nThe number of layers over which infill is combined is derived by dividing this value with the layer height and rounded down to the nearest decimal.\n\nUse either absolute mm values (eg. 0.32mm for a 0.4mm nozzle) or % values (eg 80%). This value must not be larger than the nozzle diameter.",
+        "tooltip": "Maximum layer height for the combined sparse infill.\n\nSet it to 0 or 100% to use the nozzle diameter (for maximum reduction in print time) or a value of ~80% to maximize sparse infill strength.\n\nThe number of layers over which infill is combined is derived by dividing this value with the layer height and rounded down to the nearest decimal.\n\nUse either absolute mm values (eg. 0.32mm for a 0.4mm nozzle) or % values (eg 80%). This value must not be larger than the nozzle diameter.",
         "sidetext": "mm or %",
         "min": "0",
         "mode": "advanced",
@@ -2071,7 +2071,7 @@
     "internal_bridge_density": {
         "type": "percent",
         "label": "Internal bridge density",
-        "tooltip": "Controls the density (spacing) of internal bridge lines. 100% means solid bridge. Default is 100%.\n\n Lower density internal bridges can help reduce top surface pillowing and improve internal bridge reliability as there is more space for air to circulate around the extruded bridge, improving its cooling speed. \n\nThis option works particularly well when combined with the second internal bridge over infill option, further improving internal bridging structure before solid infill is extruded.",
+        "tooltip": "Controls the density (spacing) of internal bridge lines. 100% means solid bridge. Default is 100%.\n\nLower density internal bridges can help reduce top surface pillowing and improve internal bridge reliability as there is more space for air to circulate around the extruded bridge, improving its cooling speed.\n\nThis option works particularly well when combined with the second internal bridge over infill option, further improving internal bridging structure before solid infill is extruded.",
         "sidetext": "%",
         "min": "10",
         "max": "100",
@@ -2346,8 +2346,8 @@
     },
     "long_retractions_when_cut": {
         "type": "bools",
-        "label": "Long retraction when cut(beta)",
-        "tooltip": "Experimental feature.Retracting and cutting off the filament at a longer distance during changes to minimize purge.While this reduces flush significantly, it may also raise the risk of nozzle clogs or other printing problems.",
+        "label": "Long retraction when cut (beta)",
+        "tooltip": "Experimental feature: Retracting and cutting off the filament at a longer distance during changes to minimize purge. While this reduces flush significantly, it may also raise the risk of nozzle clogs or other printing problems.",
         "mode": "develop",
         "default_value": "0"
     },
@@ -2608,7 +2608,7 @@
     "make_overhang_printable_hole_size": {
         "type": "float",
         "label": "Make overhangs printable - Hole area",
-        "tooltip": "Maximum area of a hole in the base of the model before it's filled by conical material.A value of 0 will fill all the holes in the model base.",
+        "tooltip": "Maximum area of a hole in the base of the model before it's filled by conical material. A value of 0 will fill all the holes in the model base.",
         "sidetext": "mm²",
         "min": "0",
         "mode": "advanced",
@@ -2651,7 +2651,7 @@
     "max_volumetric_extrusion_rate_slope": {
         "type": "float",
         "label": "Extrusion rate smoothing",
-        "tooltip": "This parameter smooths out sudden extrusion rate changes that happen when the printer transitions from printing a high flow (high speed\/larger width) extrusion to a lower flow (lower speed\/smaller width) extrusion and vice versa.\n\nIt defines the maximum rate by which the extruded volumetric flow in mm3\/sec can change over time. Higher values mean higher extrusion rate changes are allowed, resulting in faster speed transitions.\n\nA value of 0 disables the feature. \n\nFor a high speed, high flow direct drive printer (like the Bambu lab or Voron) this value is usually not needed. However it can provide some marginal benefit in certain cases where feature speeds vary greatly. For example, when there are aggressive slowdowns due to overhangs. In these cases a high value of around 300-350mm3\/s2 is recommended as this allows for just enough smoothing to assist pressure advance achieve a smoother flow transition.\n\nFor slower printers without pressure advance, the value should be set much lower. A value of 10-15mm3\/s2 is a good starting point for direct drive extruders and 5-10mm3\/s2 for Bowden style. \n\nThis feature is known as Pressure Equalizer in Prusa slicer.\n\nNote: this parameter disables arc fitting.",
+        "tooltip": "This parameter smooths out sudden extrusion rate changes that happen when the printer transitions from printing a high flow (high speed\/larger width) extrusion to a lower flow (lower speed\/smaller width) extrusion and vice versa.\n\nIt defines the maximum rate by which the extruded volumetric flow in mm3\/sec can change over time. Higher values mean higher extrusion rate changes are allowed, resulting in faster speed transitions.\n\nA value of 0 disables the feature.\n\nFor a high speed, high flow direct drive printer (like the Bambu lab or Voron) this value is usually not needed. However it can provide some marginal benefit in certain cases where feature speeds vary greatly. For example, when there are aggressive slowdowns due to overhangs. In these cases a high value of around 300-350mm3\/s2 is recommended as this allows for just enough smoothing to assist pressure advance achieve a smoother flow transition.\n\nFor slower printers without pressure advance, the value should be set much lower. A value of 10-15mm3\/s2 is a good starting point for direct drive extruders and 5-10mm3\/s2 for Bowden style.\n\nThis feature is known as Pressure Equalizer in Prusa slicer.\n\nNote: this parameter disables arc fitting.",
         "sidetext": "mm³\/s²",
         "min": "0",
         "mode": "advanced",
@@ -3031,7 +3031,7 @@
         "type": "bool",
         "label": "Reverse only internal perimeters",
         "full_label": "Reverse only internal perimeters",
-        "tooltip": "Apply the reverse perimeters logic only on internal perimeters. \n\nThis setting greatly reduces part stresses as they are now distributed in alternating directions. This should reduce part warping while also maintaining external wall quality. This feature can be very useful for warp prone material, like ABS\/ASA, and also for elastic filaments, like TPU and Silk PLA. It can also help reduce warping on floating regions over supports.\n\nFor this setting to be the most effective, it is recommended to set the Reverse Threshold to 0 so that all internal walls print in alternating directions on even layers irrespective of their overhang degree.",
+        "tooltip": "Apply the reverse perimeters logic only on internal perimeters.\n\nThis setting greatly reduces part stresses as they are now distributed in alternating directions. This should reduce part warping while also maintaining external wall quality. This feature can be very useful for warp prone material, like ABS\/ASA, and also for elastic filaments, like TPU and Silk PLA. It can also help reduce warping on floating regions over supports.\n\nFor this setting to be the most effective, it is recommended to set the Reverse Threshold to 0 so that all internal walls print in alternating directions on even layers irrespective of their overhang degree.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -3113,7 +3113,7 @@
     "preheat_steps": {
         "type": "int",
         "label": "Preheat steps",
-        "tooltip": "Insert multiple preheat commands(e.g. M104.1). Only useful for Prusa XL. For other printers, please set it to 1.",
+        "tooltip": "Insert multiple preheat commands (e.g. M104.1). Only useful for Prusa XL. For other printers, please set it to 1.",
         "min": "1",
         "max": "10",
         "mode": "develop",
@@ -3146,7 +3146,7 @@
     "pressure_advance": {
         "type": "floats",
         "label": "Pressure advance",
-        "tooltip": "Pressure advance(Klipper) AKA Linear advance factor(Marlin)",
+        "tooltip": "Pressure advance (Klipper) AKA Linear advance factor (Marlin).",
         "max": "2",
         "mode": "advanced",
         "default_value": "0.02"
@@ -3586,7 +3586,7 @@
     "retraction_distances_when_cut": {
         "type": "floats",
         "label": "Retraction distance when cut",
-        "tooltip": "Experimental feature.Retraction length before cutting off during filament change",
+        "tooltip": "Experimental feature: Retraction length before cutting off during filament change.",
         "min": "10",
         "max": "18",
         "mode": "develop",
@@ -3621,7 +3621,7 @@
     "role_based_wipe_speed": {
         "type": "bool",
         "label": "Role base wipe speed",
-        "tooltip": "The wipe speed is determined by the speed of the current extrusion role.e.g. if a wipe action is executed immediately following an outer wall extrusion, the speed of the outer wall extrusion will be utilized for the wipe action.",
+        "tooltip": "The wipe speed is determined by the speed of the current extrusion role. e.g. if a wipe action is executed immediately following an outer wall extrusion, the speed of the outer wall extrusion will be utilized for the wipe action.",
         "mode": "advanced",
         "default_value": "1"
     },
@@ -3660,7 +3660,7 @@
     "scarf_joint_speed": {
         "type": "floatorpercent",
         "label": "Scarf joint speed",
-        "tooltip": "This option sets the printing speed for scarf joints. It is recommended to print scarf joints at a slow speed (less than 100 mm\/s).  It's also advisable to enable 'Extrusion rate smoothing' if the set speed varies significantly from the speed of the outer or inner walls. If the speed specified here is higher than the speed of the outer or inner walls, the printer will default to the slower of the two speeds. When specified as a percentage (e.g., 80%), the speed is calculated based on the respective outer or inner wall speed. The default value is set to 100%.",
+        "tooltip": "This option sets the printing speed for scarf joints. It is recommended to print scarf joints at a slow speed (less than 100 mm\/s). It's also advisable to enable 'Extrusion rate smoothing' if the set speed varies significantly from the speed of the outer or inner walls. If the speed specified here is higher than the speed of the outer or inner walls, the printer will default to the slower of the two speeds. When specified as a percentage (e.g., 80%), the speed is calculated based on the respective outer or inner wall speed. The default value is set to 100%.",
         "sidetext": "mm\/s or %",
         "min": "1",
         "mode": "advanced",
@@ -4486,7 +4486,7 @@
     "support_material_interface_fan_speed": {
         "type": "ints",
         "label": "Support interface fan speed",
-        "tooltip": "This part cooling fan speed is applied when printing support interfaces. Setting this parameter to a higher than regular speed  reduces the layer binding strength between supports and the supported part, making them easier to separate.\nSet to -1 to disable it.\nThis setting is overridden by disable_fan_first_layers.",
+        "tooltip": "This part cooling fan speed is applied when printing support interfaces. Setting this parameter to a higher than regular speed reduces the layer binding strength between supports and the supported part, making them easier to separate.\nSet to -1 to disable it.\nThis setting is overridden by disable_fan_first_layers.",
         "sidetext": "%",
         "min": "-1",
         "max": "100",
@@ -4798,7 +4798,7 @@
     "top_solid_infill_flow_ratio": {
         "type": "float",
         "label": "Top surface flow ratio",
-        "tooltip": "This factor affects the amount of material for top solid infill. You can decrease it slightly to have smooth surface finish. \n\nThe actual top surface flow used is calculated by multiplying this value with the filament flow ratio, and if set, the object's flow ratio.",
+        "tooltip": "This factor affects the amount of material for top solid infill. You can decrease it slightly to have smooth surface finish.\n\nThe actual top surface flow used is calculated by multiplying this value with the filament flow ratio, and if set, the object's flow ratio.",
         "min": "0",
         "max": "2",
         "mode": "advanced",
@@ -4951,7 +4951,7 @@
     "tree_support_adaptive_layer_height": {
         "type": "bool",
         "label": "Adaptive layer height",
-        "tooltip": "Enabling this option means the height of  tree support layer except the first will be automatically calculated ",
+        "tooltip": "Enabling this option means the height of tree support layer except the first will be automatically calculated ",
         "mode": "simple",
         "default_value": "1"
     },
@@ -4975,7 +4975,7 @@
     "tree_support_branch_angle": {
         "type": "float",
         "label": "Tree support branch angle",
-        "tooltip": "This setting determines the maximum overhang angle that t he branches of tree support allowed to make.If the angle is increased, the branches can be printed more horizontally, allowing them to reach farther.",
+        "tooltip": "This setting determines the maximum overhang angle that the branches of tree support are allowed to make. If the angle is increased, the branches can be printed more horizontally, allowing them to reach farther.",
         "sidetext": "°",
         "min": "0",
         "max": "60",
@@ -4985,7 +4985,7 @@
     "tree_support_branch_angle_organic": {
         "type": "float",
         "label": "Tree support branch angle",
-        "tooltip": "This setting determines the maximum overhang angle that t he branches of tree support allowed to make.If the angle is increased, the branches can be printed more horizontally, allowing them to reach farther.",
+        "tooltip": "This setting determines the maximum overhang angle that the branches of tree support are allowed to make. If the angle is increased, the branches can be printed more horizontally, allowing them to reach farther.",
         "sidetext": "°",
         "min": "0",
         "max": "60",
@@ -5103,7 +5103,7 @@
     "use_relative_e_distances": {
         "type": "bool",
         "label": "Use relative E distances",
-        "tooltip": "Relative extrusion is recommended when using \"label_objects\" option.Some extruders work better with this option unchecked (absolute extrusion mode). Wipe tower is only compatible with relative mode. It is recommended on most printers. Default is checked",
+        "tooltip": "Relative extrusion is recommended when using \"label_objects\" option. Some extruders work better with this option unchecked (absolute extrusion mode). Wipe tower is only compatible with relative mode. It is recommended on most printers. Default is checked.",
         "mode": "advanced",
         "default_value": "1"
     },
@@ -5168,7 +5168,7 @@
     "wall_sequence": {
         "type": "enum",
         "label": "Walls printing order",
-        "tooltip": "Print sequence of the internal (inner) and external (outer) walls. \n\nUse Inner\/Outer for best overhangs. This is because the overhanging walls can adhere to a neighbouring perimeter while printing. However, this option results in slightly reduced surface quality as the external perimeter is deformed by being squashed to the internal perimeter.\n\nUse Inner\/Outer\/Inner for the best external surface finish and dimensional accuracy as the external wall is printed undisturbed from an internal perimeter. However, overhang performance will reduce as there is no internal perimeter to print the external wall against. This option requires a minimum of 3 walls to be effective as it prints the internal walls from the 3rd perimeter onwards first, then the external perimeter and, finally, the first internal perimeter. This option is recommended against the Outer\/Inner option in most cases. \n\nUse Outer\/Inner for the same external wall quality and dimensional accuracy benefits of Inner\/Outer\/Inner option. However, the z seams will appear less consistent as the first extrusion of a new layer starts on a visible surface.\n\n ",
+        "tooltip": "Print sequence of the internal (inner) and external (outer) walls.\n\nUse Inner\/Outer for best overhangs. This is because the overhanging walls can adhere to a neighbouring perimeter while printing. However, this option results in slightly reduced surface quality as the external perimeter is deformed by being squashed to the internal perimeter.\n\nUse Inner\/Outer\/Inner for the best external surface finish and dimensional accuracy as the external wall is printed undisturbed from an internal perimeter. However, overhang performance will reduce as there is no internal perimeter to print the external wall against. This option requires a minimum of 3 walls to be effective as it prints the internal walls from the 3rd perimeter onwards first, then the external perimeter and, finally, the first internal perimeter. This option is recommended against the Outer\/Inner option in most cases.\n\nUse Outer\/Inner for the same external wall quality and dimensional accuracy benefits of Inner\/Outer\/Inner option. However, the z seams will appear less consistent as the first extrusion of a new layer starts on a visible surface.\n\n ",
         "enum_values": [
             "inner wall\/outer wall",
             "outer wall\/inner wall",
@@ -5220,14 +5220,14 @@
     "wipe_before_external_loop": {
         "type": "bool",
         "label": "Wipe before external loop",
-        "tooltip": "To minimize visibility of potential overextrusion at the start of an external perimeter when printing with Outer\/Inner or Inner\/Outer\/Inner wall print order, the de-retraction is performed slightly on the inside from the start of the external perimeter. That way any potential over extrusion is hidden from the outside surface. \n\nThis is useful when printing with Outer\/Inner or Inner\/Outer\/Inner wall print order as in these modes it is more likely an external perimeter is printed immediately after a de-retraction move.",
+        "tooltip": "To minimize visibility of potential overextrusion at the start of an external perimeter when printing with Outer\/Inner or Inner\/Outer\/Inner wall print order, the de-retraction is performed slightly on the inside from the start of the external perimeter. That way any potential over extrusion is hidden from the outside surface.\n\nThis is useful when printing with Outer\/Inner or Inner\/Outer\/Inner wall print order as in these modes it is more likely an external perimeter is printed immediately after a de-retraction move.",
         "mode": "advanced",
         "default_value": "0"
     },
     "wipe_distance": {
         "type": "floats",
         "label": "Wipe Distance",
-        "tooltip": "Describe how long the nozzle will move along the last path when retracting. \n\nDepending on how long the wipe operation lasts, how fast and long the extruder\/filament retraction settings are, a retraction move may be needed to retract the remaining filament. \n\nSetting a value in the retract amount before wipe setting below will perform any excess retraction before the wipe, else it will be performed after.",
+        "tooltip": "Describe how long the nozzle will move along the last path when retracting.\n\nDepending on how long the wipe operation lasts, how fast and long the extruder\/filament retraction settings are, a retraction move may be needed to retract the remaining filament.\n\nSetting a value in the retract amount before wipe setting below will perform any excess retraction before the wipe, else it will be performed after.",
         "sidetext": "mm",
         "min": "0",
         "mode": "advanced",
@@ -5243,7 +5243,7 @@
     "wipe_speed": {
         "type": "floatorpercent",
         "label": "Wipe speed",
-        "tooltip": "The wipe speed is determined by the speed setting specified in this configuration.If the value is expressed as a percentage (e.g. 80%), it will be calculated based on the travel speed setting above.The default value for this parameter is 80%",
+        "tooltip": "The wipe speed is determined by the speed setting specified in this configuration. If the value is expressed as a percentage (e.g. 80%), it will be calculated based on the travel speed setting above. The default value for this parameter is 80%.",
         "sidetext": "mm\/s or %",
         "min": "0",
         "mode": "advanced",
