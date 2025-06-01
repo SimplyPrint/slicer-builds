@@ -430,7 +430,7 @@
     "close_fan_the_first_x_layers": {
         "type": "ints",
         "label": "No cooling for the first",
-        "tooltip": "Close all cooling fan for the first certain layers. Cooling fan of the first layer used to be closed to get better build plate adhesion",
+        "tooltip": "Turn off all cooling fans for the first few layers. This can be used to improve build plate adhesion.",
         "sidetext": "layers",
         "min": "0",
         "max": "1000",
@@ -973,7 +973,7 @@
     "fan_max_speed": {
         "type": "floats",
         "label": "Fan speed",
-        "tooltip": "Part cooling fan speed may be increased when auto cooling is enabled. This is the maximum speed limitation of part cooling fan",
+        "tooltip": "Part cooling fan speed may be increased when auto cooling is enabled. This is the maximum speed for the part cooling fan.",
         "sidetext": "%",
         "min": "0",
         "max": "100",
@@ -1078,7 +1078,7 @@
     "filament_end_gcode": {
         "type": "strings",
         "label": "End G-code",
-        "tooltip": "End G-code when finish the printing of this filament",
+        "tooltip": "End G-code when finishing the printing of this filament.",
         "full_width": "true",
         "multiline": "true",
         "height": "120",
@@ -1345,7 +1345,7 @@
     "filament_start_gcode": {
         "type": "strings",
         "label": "Start G-code",
-        "tooltip": "Start G-code when start the printing of this filament",
+        "tooltip": "Start G-code when starting the printing of this filament.",
         "full_width": "true",
         "multiline": "true",
         "height": "12",
@@ -1414,7 +1414,7 @@
     "filament_z_hop": {
         "type": "floats",
         "label": "Z-hop height",
-        "tooltip": "Whenever the retraction is done, the nozzle is lifted a little to create clearance between nozzle and the print. It prevents nozzle from hitting the print when travel move. Using spiral line to lift z can prevent stringing",
+        "tooltip": "Whenever the retraction is done, the nozzle is lifted a little to create clearance between nozzle and the print. It prevents nozzle from hitting the print when travel move. Using spiral lines to lift Z can prevent stringing.",
         "sidetext": "mm",
         "min": "0",
         "max": "5",
@@ -1442,7 +1442,7 @@
     "filename_format": {
         "type": "string",
         "label": "Filename format",
-        "tooltip": "User can self-define the project file name when export",
+        "tooltip": "Users can define the project file name when exporting.",
         "full_width": "true",
         "mode": "advanced",
         "default_value": "{input_filename_base}_{filament_type[initial_tool]}_{print_time}.gcode"
@@ -1895,7 +1895,7 @@
     "initial_layer_acceleration": {
         "type": "float",
         "label": "Initial layer",
-        "tooltip": "Acceleration of initial layer. Using a lower value can improve build plate adhesive",
+        "tooltip": "Acceleration of initial layer. Using a lower value can improve build plate adhesion.",
         "sidetext": "mm\/s²",
         "min": "0",
         "mode": "advanced",
@@ -2633,7 +2633,7 @@
     "max_layer_height": {
         "type": "floats",
         "label": "Max",
-        "tooltip": "The largest printable layer height for extruder. Used tp limits the maximum layer hight when enable adaptive layer height",
+        "tooltip": "The highest printable layer height for the extruder. Used to limit the maximum layer height when enable adaptive layer height.",
         "sidetext": "mm",
         "min": "0",
         "mode": "advanced",
@@ -2641,8 +2641,8 @@
     },
     "max_travel_detour_distance": {
         "type": "floatorpercent",
-        "label": "Avoid crossing wall - Max detour length",
-        "tooltip": "Maximum detour distance for avoiding crossing wall. Don't detour if the detour distance is large than this value. Detour length could be specified either as an absolute value or as percentage (for example 50%) of a direct travel path. Zero to disable",
+        "label": "Avoid crossing walls - Max detour length",
+        "tooltip": "Maximum detour distance for avoiding crossing wall. Don't detour if the detour distance is larger than this value. Detour length could be specified either as an absolute value or as percentage (for example 50%) of a direct travel path. Zero to disable.",
         "sidetext": "mm or %",
         "min": "0",
         "mode": "advanced",
@@ -2679,7 +2679,7 @@
     "min_feature_size": {
         "type": "percent",
         "label": "Minimum feature size",
-        "tooltip": "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum feature size will be widened to the Minimum wall width. It's expressed as a percentage over nozzle diameter",
+        "tooltip": "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than than this value will be widened to the minimum wall width. It's expressed as a percentage over nozzle diameter.",
         "sidetext": "%",
         "min": "0",
         "mode": "advanced",
@@ -2688,7 +2688,7 @@
     "min_layer_height": {
         "type": "floats",
         "label": "Min",
-        "tooltip": "The lowest printable layer height for extruder. Used tp limits the minimum layer hight when enable adaptive layer height",
+        "tooltip": "The lowest printable layer height for the extruder. Used to limit the minimum layer height when enable adaptive layer height.",
         "sidetext": "mm",
         "min": "0",
         "mode": "advanced",
@@ -2735,7 +2735,7 @@
     "mmu_segmented_region_interlocking_depth": {
         "type": "float",
         "label": "Interlocking depth of a segmented region",
-        "tooltip": "Interlocking depth of a segmented region. It will be ignored if \"mmu_segmented_region_max_width\" is zero or if \"mmu_segmented_region_interlocking_depth\"is bigger then \"mmu_segmented_region_max_width\". Zero disables this feature.",
+        "tooltip": "Interlocking depth of a segmented region. It will be ignored if \"mmu_segmented_region_max_width\" is zero or if \"mmu_segmented_region_interlocking_depth\" is bigger than \"mmu_segmented_region_max_width\". Zero disables this feature.",
         "sidetext": "mm",
         "min": "0",
         "mode": "advanced",
@@ -3462,15 +3462,15 @@
     },
     "reduce_crossing_wall": {
         "type": "bool",
-        "label": "Avoid crossing wall",
-        "tooltip": "Detour and avoid to travel across wall which may cause blob on surface",
+        "label": "Avoid crossing walls",
+        "tooltip": "Detour to avoid traveling across walls, which may cause blobs on the surface.",
         "mode": "advanced",
         "default_value": "0"
     },
     "reduce_fan_stop_start_freq": {
         "type": "bools",
         "label": "Keep fan always on",
-        "tooltip": "If enable this setting, part cooling fan will never be stopped and will run at least at minimum speed to reduce the frequency of starting and stopping",
+        "tooltip": "Enabling this setting means that the part cooling fan will never stop completely and will run at least at minimum speed to reduce the frequency of starting and stopping.",
         "mode": "simple",
         "default_value": "0"
     },
@@ -4612,7 +4612,7 @@
     "support_type": {
         "type": "enum",
         "label": "Type",
-        "tooltip": "Normal (auto) and Tree (auto) is used to generate support automatically. If Normal (manual) or Tree (manual) is selected, only support enforcers are generated",
+        "tooltip": "Normal (auto) and Tree (auto) are used to generate support automatically. If Normal (manual) or Tree (manual) is selected, only support enforcers are generated.",
         "enum_values": [
             "normal(auto)",
             "tree(auto)",
@@ -4631,7 +4631,7 @@
     "temperature_vitrification": {
         "type": "ints",
         "label": "Softening temperature",
-        "tooltip": "The material softens at this temperature, so when the bed temperature is equal to or greater than it, it's highly recommended to open the front door and\/or remove the upper glass to avoid clogging.",
+        "tooltip": "The material softens at this temperature, so when the bed temperature is equal to or greater than this, it's highly recommended to open the front door and\/or remove the upper glass to avoid clogging.",
         "sidetext": "°C",
         "mode": "simple",
         "default_value": "100"
@@ -4744,7 +4744,7 @@
     },
     "time_lapse_gcode": {
         "type": "string",
-        "label": "Time lapse G-code",
+        "label": "Timelapse G-code",
         "tooltip": "",
         "full_width": "true",
         "multiline": "true",
@@ -5344,7 +5344,7 @@
     "xy_contour_compensation": {
         "type": "float",
         "label": "X-Y contour compensation",
-        "tooltip": "Contour of object will be grown or shrunk in XY plane by the configured value. Positive value makes contour bigger. Negative value makes contour smaller. This function is used to adjust size slightly when the object has assembling issue",
+        "tooltip": "Contours of objects will expand or contract in the XY plane by the configured value. Positive values make contours bigger, negative values make contours smaller. This function is used to adjust sizes slightly when the objects have assembling issues.",
         "sidetext": "mm",
         "mode": "advanced",
         "default_value": "0"
@@ -5352,7 +5352,7 @@
     "xy_hole_compensation": {
         "type": "float",
         "label": "X-Y hole compensation",
-        "tooltip": "Holes of object will be grown or shrunk in XY plane by the configured value. Positive value makes holes bigger. Negative value makes holes smaller. This function is used to adjust size slightly when the object has assembling issue",
+        "tooltip": "Holes in objects will expand or contract in the XY plane by the configured value. Positive values make holes bigger, negative values make holes smaller. This function is used to adjust sizes slightly when the objects have assembling issues.",
         "sidetext": "mm",
         "mode": "advanced",
         "default_value": "0"
@@ -5360,7 +5360,7 @@
     "z_hop": {
         "type": "floats",
         "label": "Z-hop height",
-        "tooltip": "Whenever the retraction is done, the nozzle is lifted a little to create clearance between nozzle and the print. It prevents nozzle from hitting the print when travel move. Using spiral line to lift z can prevent stringing",
+        "tooltip": "Whenever the retraction is done, the nozzle is lifted a little to create clearance between nozzle and the print. It prevents nozzle from hitting the print when travel move. Using spiral lines to lift Z can prevent stringing.",
         "sidetext": "mm",
         "min": "0",
         "max": "5",
