@@ -1,0 +1,411 @@
+diff --git a/deps/MPFR/MPFR.cmake b/deps/MPFR/MPFR.cmake
+index 1161a1c..9bf2b5b 100644
+--- a/deps/MPFR/MPFR.cmake
++++ b/deps/MPFR/MPFR.cmake
+@@ -25,7 +25,7 @@ else ()
+     endif ()
+ 
+     ExternalProject_Add(dep_MPFR
+-        URL https://www.mpfr.org/mpfr-current/mpfr-4.2.1.tar.bz2
++        URL https://www.mpfr.org/mpfr-4.2.1/mpfr-4.2.1.tar.bz2
+         URL_HASH SHA256=b9df93635b20e4089c29623b19420c4ac848a1b29df1cfd59f26cab0d2666aa0
+         DOWNLOAD_DIR ${DEP_DOWNLOAD_DIR}/MPFR
+         BUILD_IN_SOURCE ON
+diff --git a/deps/TIFF/TIFF.cmake b/deps/TIFF/TIFF.cmake
+index e48744d..c89c588 100644
+--- a/deps/TIFF/TIFF.cmake
++++ b/deps/TIFF/TIFF.cmake
+@@ -17,7 +17,7 @@ if (APPLE)
+ else()
+     elegooslicer_add_cmake_project(TIFF
+         URL https://gitlab.com/libtiff/libtiff/-/archive/v4.1.0/libtiff-v4.1.0.zip
+-        URL_HASH SHA256=c56edfacef0a60c0de3e6489194fcb2f24c03dbb550a8a7de5938642d045bd32
++        URL_HASH SHA256=17a3e875acece9be40b093361cfef47385d4ef22c995ffbf36b2871f5785f9b8
+         DEPENDS ${ZLIB_PKG} ${PNG_PKG} dep_JPEG
+         CMAKE_ARGS
+             -Dlzma:BOOL=OFF
+diff --git a/src/libslic3r/Format/OBJ.cpp b/src/libslic3r/Format/OBJ.cpp
+index abaae36..f7ee084 100644
+--- a/src/libslic3r/Format/OBJ.cpp
++++ b/src/libslic3r/Format/OBJ.cpp
+@@ -17,7 +17,7 @@
+ 
+ //Translation
+ #include "I18N.hpp"
+-#define _L(s) Slic3r::I18N::translate(s)
++#define _L(s) s/*Slic3r::I18N::translate(s)*/
+ 
+ namespace Slic3r {
+ 
+diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
+index 26282b9..9fc915b 100644
+--- a/src/libslic3r/PrintConfig.cpp
++++ b/src/libslic3r/PrintConfig.cpp
+@@ -5,6 +5,9 @@
+ #include "format.hpp"
+ 
+ #include "GCode/Thumbnails.hpp"
++#include "boost/dll/runtime_symbol_info.hpp"
++#include "boost/property_tree/json_parser.hpp"
++
+ #include <set>
+ #include <boost/algorithm/string/replace.hpp>
+ #include <boost/algorithm/string/case_conv.hpp>
+@@ -437,6 +440,192 @@ PrintConfigDef::PrintConfigDef()
+     assign_printer_technology_to_unknown(this->options, ptFFF);
+     this->init_sla_params();
+     assign_printer_technology_to_unknown(this->options, ptSLA);
++    this->dump_to_json();
++}
++
++namespace {
++template<typename T>
++void put_array(boost::property_tree::ptree& pt, const std::string& key, const std::vector<T>& values)
++{
++    auto& arr_pt = pt.put_child(key, boost::property_tree::ptree());
++    for (auto val : values)
++        arr_pt.add("", val);
++}
++}
++
++void PrintConfigDef::dump_to_json()
++{
++    using boost::property_tree::ptree;
++
++    static std::map<ConfigOptionType, std::string> type_map = {
++        { coFloat, "float" },
++        { coFloats, "floats" },
++        { coInt, "int" },
++        { coInts, "ints" },
++        { coString, "string" },
++        { coStrings, "strings" },
++        { coPercent, "percent" },
++        { coPercents, "percents" },
++        { coFloatOrPercent, "floatorpercent" },
++        { coFloatsOrPercents, "floatorpercents" },
++        { coPoint, "point" },
++        { coPoints, "points" },
++        { coPoint3, "point3" },
++        { coBool, "bool" },
++        { coBools, "bools" },
++        { coEnum, "enum" },
++        { coEnums, "enums" },
++    };
++
++    static std::map<ConfigOptionMode, std::string> mode_map = {
++        { comSimple, "simple" },
++        { comAdvanced, "advanced" },
++        { comDevelop, "develop" }
++    };
++
++    static std::map<ConfigOptionDef::GUIType, std::string> gui_type_map = {
++        { ConfigOptionDef::GUIType::i_enum_open, "i_enum_open" },
++        { ConfigOptionDef::GUIType::f_enum_open, "f_enum_open" },
++        { ConfigOptionDef::GUIType::color, "color" },
++        { ConfigOptionDef::GUIType::select_open, "select_open" },
++        { ConfigOptionDef::GUIType::slider, "slider" },
++        { ConfigOptionDef::GUIType::legend, "legend" },
++        { ConfigOptionDef::GUIType::one_string, "one_string" }
++    };
++
++    auto get_default_value = [&](ConfigOptionDef& opt, ptree& tree) {
++#define SET_VALUE(val) tree.put("default_value", val->serialize())
++
++        if (opt.default_value.get() == nullptr) return;
++        ptree arr_pt;
++        if (opt.nullable) {
++            switch (opt.type) {
++            case coFloats:      SET_VALUE(opt.get_default_value<ConfigOptionFloatsNullable>()); break;
++            case coInts:        SET_VALUE(opt.get_default_value<ConfigOptionIntsNullable>()); break;
++            case coPercents:    SET_VALUE(opt.get_default_value<ConfigOptionPercentsNullable>()); break;
++            case coBools:       SET_VALUE(opt.get_default_value<ConfigOptionBoolsNullable>()); break;
++            default: break;
++            }
++        } else {
++
++            auto get_enum_name = [](ConfigOptionDef& def) {
++                const ConfigOption* option = def.default_value.get();
++                int idx = 0;
++                if (auto* enum_opt = dynamic_cast<const ConfigOptionEnumGeneric*>(option)) {
++                    idx = enum_opt->getInt();
++                } else if (auto* enums_opt = dynamic_cast<const ConfigOptionEnumsGeneric*>(option)) {
++                    const auto& vals = enums_opt->values;
++                    if (vals.size() == 1)
++                        idx = vals[0];
++                    else
++                        throw ConfigurationError("More than one enum values");
++                } else {
++                    idx = option->getInt();
++                }
++
++                if (def.enum_keys_map)
++                    return enum_names_from_keys_map(*def.enum_keys_map)[idx];
++                if (idx < def.enum_values.size())
++                    return def.enum_values[idx];
++
++                throw ConfigurationError("");
++            };
++
++            switch (opt.type) {
++            case coFloat:           SET_VALUE(opt.get_default_value<ConfigOptionFloat>()); break;
++            case coFloats:          SET_VALUE(opt.get_default_value<ConfigOptionFloats>()); break;
++            case coInt:             SET_VALUE(opt.get_default_value<ConfigOptionInt>()); break;
++            case coInts:            SET_VALUE(opt.get_default_value<ConfigOptionInts>()); break;
++            case coString:          SET_VALUE(opt.get_default_value<ConfigOptionString>()); break;
++            case coStrings:         SET_VALUE(opt.get_default_value<ConfigOptionStrings>()); break;
++            case coPercent:         SET_VALUE(opt.get_default_value<ConfigOptionPercent>()); break;
++            case coPercents:        SET_VALUE(opt.get_default_value<ConfigOptionPercents>()); break;
++            case coFloatOrPercent:  SET_VALUE(opt.get_default_value<ConfigOptionFloatOrPercent>()); break;
++            case coPoint:           SET_VALUE(opt.get_default_value<ConfigOptionPoint>()); break;
++            case coPoints:          SET_VALUE(opt.get_default_value<ConfigOptionPoints>()); break;
++            case coPoint3:          SET_VALUE(opt.get_default_value<ConfigOptionPoint3>()); break;
++            case coBool:            SET_VALUE(opt.get_default_value<ConfigOptionBool>()); break;
++            case coBools:           SET_VALUE(opt.get_default_value<ConfigOptionBools>()); break;
++            case coEnum:            tree.put("default_value", get_enum_name(opt)); break;
++            case coEnums:           tree.put("default_value", get_enum_name(opt)); break;
++            default: break;
++            }
++		}
++#undef SET_VALUE
++    };
++
++    auto program_parent_dir = boost::dll::program_location().parent_path();
++    auto images_dir = program_parent_dir;
++#ifdef __linux__
++    images_dir = images_dir.parent_path();
++#endif
++    images_dir = images_dir / "resources" / "images";
++
++    ptree pt;
++    for (auto& [opt_key, opt] : this->options) {
++        if (opt.printer_technology == ptSLA) continue;
++
++        auto& opt_pt = pt.put_child(opt_key, ptree());
++
++        opt_pt.put("type", type_map[opt.type]);
++        opt_pt.put("label", opt.label);
++        if (!opt.full_label.empty())
++            opt_pt.put("full_label", opt.full_label);
++        opt_pt.put("tooltip", opt.tooltip);
++        if (!opt.sidetext.empty())
++            opt_pt.put("sidetext", opt.sidetext);
++        if (opt.type == coEnum || opt.type == coEnums) {
++            put_array(opt_pt, "enum_values", opt.enum_values);
++            put_array(opt_pt, "enum_labels", opt.enum_labels);
++
++            // Get enum icon data
++            std::vector<ptree> icon_values;
++            int valid_icons = 0;
++            for (auto& enum_value : opt.enum_values) {
++                auto filename = "param_" + enum_value + ".svg";
++                auto& this_icon_pt = icon_values.emplace_back();
++                if (auto icon_path = images_dir / filename; exists(icon_path)) {
++                    this_icon_pt.put("icon_filename", filename);
++                    std::ifstream icon_fstream(icon_path.string());
++                    if (!icon_fstream.is_open())
++                        throw Exception("Unable to open icon file");
++                    std::stringstream data;
++                    data << icon_fstream.rdbuf();
++                    this_icon_pt.put("icon_svg_data", data.str());
++                    valid_icons++;
++                } else {
++                    this_icon_pt.put_value("null");
++                }
++            }
++            if (valid_icons > 0) {
++                auto& arr_pt = opt_pt.put_child("enum_icons", ptree());
++                for (auto& val : icon_values)
++                    arr_pt.add_child("", val);
++            }
++        }
++        if (opt.min != INT_MIN)
++            opt_pt.put("min", opt.min);
++        if (opt.max != INT_MAX)
++            opt_pt.put("max", opt.max);
++        if (opt.full_width)
++            opt_pt.put("full_width", opt.full_width);
++        if (opt.multiline)
++            opt_pt.put("multiline", opt.multiline);
++        if (opt.height != -1)
++            opt_pt.put("height", opt.height);
++        if (opt.width != -1)
++            opt_pt.put("width", opt.width);
++        if (opt.readonly)
++            opt_pt.put("readonly", opt.readonly);
++        if (opt.gui_type != ConfigOptionDef::GUIType::undefined)
++            opt_pt.put("gui_type", gui_type_map[opt.gui_type]);
++        opt_pt.put("mode", mode_map[opt.mode]);
++        if (opt.cli == ConfigOptionDef::nocli)
++            opt_pt.put("nocli", true);
++        get_default_value(opt, opt_pt);
++    }
++    auto path = program_parent_dir / "print_config_def.json";
++    write_json(path.string(), pt);
+ }
+ 
+ void PrintConfigDef::init_common_params()
+diff --git a/src/libslic3r/PrintConfig.hpp b/src/libslic3r/PrintConfig.hpp
+index 19c9782..49140ac 100644
+--- a/src/libslic3r/PrintConfig.hpp
++++ b/src/libslic3r/PrintConfig.hpp
+@@ -426,6 +426,8 @@ class PrintConfigDef : public ConfigDef
+ public:
+     PrintConfigDef();
+ 
++    void dump_to_json();
++
+     static void handle_legacy(t_config_option_key &opt_key, std::string &value);
+     static void handle_legacy_composite(DynamicPrintConfig &config);
+ 
+diff --git a/src/slic3r/GUI/I18N.hpp b/src/slic3r/GUI/I18N.hpp
+index c80c9a1..27b8ac2 100644
+--- a/src/slic3r/GUI/I18N.hpp
++++ b/src/slic3r/GUI/I18N.hpp
+@@ -40,11 +40,11 @@
+ namespace Slic3r { namespace GUI { 
+ 
+ namespace I18N {
+-	inline wxString translate(const char         *s) { return wxGetTranslation(wxString(s, wxConvUTF8)); }
+-	inline wxString translate(const wchar_t      *s) { return wxGetTranslation(s); }
+-	inline wxString translate(const std::string  &s) { return wxGetTranslation(wxString(s.c_str(), wxConvUTF8)); }
+-	inline wxString translate(const std::wstring &s) { return wxGetTranslation(s.c_str()); }
+-	inline wxString translate(const wxString     &s) { return wxGetTranslation(s); }
++	inline wxString translate(const char         *s) { return wxString(s, wxConvUTF8); }
++	inline wxString translate(const wchar_t      *s) { return wxString(s); }
++	inline wxString translate(const std::string  &s) { return wxString(s.c_str(), wxConvUTF8); }
++	inline wxString translate(const std::wstring &s) { return wxString(s.c_str()); }
++	inline wxString translate(const wxString     &s) { return s; }
+ 
+ 	inline wxString translate(const char         *s, const char 	    *plural, unsigned int n) { return wxGetTranslation(wxString(s, wxConvUTF8), wxString(plural, wxConvUTF8), n); }
+ 	inline wxString translate(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return wxGetTranslation(s, plural, n); }
+@@ -52,11 +52,11 @@ namespace I18N {
+ 	inline wxString translate(const std::wstring &s, const std::wstring &plural, unsigned int n) { return wxGetTranslation(s.c_str(), plural.c_str(), n); }
+ 	inline wxString translate(const wxString     &s, const wxString     &plural, unsigned int n) { return wxGetTranslation(s, plural, n); }
+ 
+-	inline std::string translate_utf8(const char         *s) { return wxGetTranslation(wxString(s, wxConvUTF8)).ToUTF8().data(); }
+-	inline std::string translate_utf8(const wchar_t      *s) { return wxGetTranslation(s).ToUTF8().data(); }
+-	inline std::string translate_utf8(const std::string  &s) { return wxGetTranslation(wxString(s.c_str(), wxConvUTF8)).ToUTF8().data(); }
+-	inline std::string translate_utf8(const std::wstring &s) { return wxGetTranslation(s.c_str()).ToUTF8().data(); }
+-	inline std::string translate_utf8(const wxString     &s) { return wxGetTranslation(s).ToUTF8().data(); }
++	inline std::string translate_utf8(const char         *s) { return wxString(s, wxConvUTF8).ToUTF8().data(); }
++	inline std::string translate_utf8(const wchar_t      *s) { return wxString(s).ToUTF8().data(); }
++	inline std::string translate_utf8(const std::string  &s) { return wxString(s.c_str(), wxConvUTF8).ToUTF8().data(); }
++	inline std::string translate_utf8(const std::wstring &s) { return wxString(s.c_str()).ToUTF8().data(); }
++	inline std::string translate_utf8(const wxString     &s) { return s.ToUTF8().data(); }
+ 
+ 	inline std::string translate_utf8(const char         *s, const char 	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
+ 	inline std::string translate_utf8(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
+diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
+index 916d9c5..583a300 100644
+--- a/src/slic3r/GUI/MainFrame.cpp
++++ b/src/slic3r/GUI/MainFrame.cpp
+@@ -1244,6 +1244,8 @@ void MainFrame::create_preset_tabs()
+     //add_created_tab(new TabSLAMaterial(m_param_panel));
+     add_created_tab(new TabPrinter(m_param_dialog->panel()), "printer");
+ 
++    exit(0);
++
+     m_param_panel->rebuild_panels();
+     m_param_dialog->panel()->rebuild_panels();
+     //m_tabpanel->AddPage(m_param_panel, "Parameters", "notebook_presets_active");
+diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
+index 2d21996..00a4c43 100644
+--- a/src/slic3r/GUI/Tab.cpp
++++ b/src/slic3r/GUI/Tab.cpp
+@@ -51,6 +51,7 @@
+ #include "libslic3r/GCode/Thumbnails.hpp"
+ 
+ #include "BedShapeDialog.hpp"
++#include "boost/dll/runtime_symbol_info.hpp"
+ // #include "BonjourDialog.hpp"
+ #ifdef WIN32
+ 	#include <commctrl.h>
+@@ -531,6 +532,8 @@ void Tab::create_preset_tab()
+     // Initialize the DynamicPrintConfig by default keys/values.
+     build();
+ 
++    dump_to_json();
++
+     // ys_FIXME: Following should not be needed, the function will be called later
+     // (update_mode->update_visibility->rebuild_page_tree). This does not work, during the
+     // second call of rebuild_page_tree m_tabctrl->GetFirstVisibleItem(); returns zero
+@@ -540,6 +543,67 @@ void Tab::create_preset_tab()
+     m_completed = true;
+ }
+ 
++void Tab::dump_to_json()
++{
++    using boost::property_tree::ptree;
++
++    auto& this_type = typeid(*this);
++    auto& filament_type = typeid(TabFilament);
++    auto& printer_type  = typeid(TabPrinter);
++    auto& print_type = typeid(TabPrint);
++    if (this_type != filament_type && this_type != printer_type && this_type != print_type)
++        return;
++
++    ptree pt;
++    ptree icon_data_pt;
++    for (const auto& page : m_pages) {
++        auto& page_pt = pt.put_child(page->title().ToStdString(), ptree());
++        for (const auto& optgroup : page->m_optgroups) {
++            const auto& title = optgroup->title.ToStdString();
++            auto& optgroup_pt = page_pt.put_child(title, ptree());
++
++            // Get option group icon
++            auto icon_filename = optgroup->icon.ToStdString();
++            if (!icon_filename.empty()) {
++                boost::replace_last(icon_filename, ".png", "");
++                icon_filename += ".svg";
++                auto icon_path = Slic3r::var(icon_filename);
++                if (icon_path != icon_filename) {
++                    auto& this_icon_pt = icon_data_pt.put_child(title, ptree());
++                    this_icon_pt.put("icon_filename", icon_filename);
++                    std::ifstream icon_fstream(icon_path);
++                    if (!icon_fstream.is_open())
++                        throw Exception("Unable to open icon file");
++                    std::stringstream data;
++                    data << icon_fstream.rdbuf();
++                    this_icon_pt.put("icon_svg_data", data.str());
++                }
++            }
++
++            for (auto& line : optgroup->get_lines()) {
++                std::vector<std::string> option_ids;
++                for (auto& option : line.get_options())
++                    option_ids.emplace_back(option.opt_id);
++                if (option_ids.size() == 1)
++                    optgroup_pt.add("", option_ids[0]);
++                else if (option_ids.size() > 1) {
++                    auto& line_pt = optgroup_pt.add_child("", ptree());
++                    line_pt.put("label", line.label.ToStdString());
++                    line_pt.put("tooltip", line.label_tooltip.ToStdString());
++                    auto& options_pt = line_pt.put_child("options", ptree());
++                    for (auto& id : option_ids)
++                        options_pt.add("", id);
++                }
++            }
++        }
++    }
++
++    pt.put_child("icon_data", icon_data_pt);
++
++    auto path = boost::dll::program_location().parent_path() / this->m_title.Lower().ToStdString().append(".json");
++    write_json(path.string(), pt);
++}
++
+ void Tab::add_scaled_button(wxWindow* parent,
+                             ScalableButton** btn,
+                             const std::string& icon_name,
+diff --git a/src/slic3r/GUI/Tab.hpp b/src/slic3r/GUI/Tab.hpp
+index cab9990..74d0f57 100644
+--- a/src/slic3r/GUI/Tab.hpp
++++ b/src/slic3r/GUI/Tab.hpp
+@@ -315,6 +315,7 @@ public:
+ 	virtual bool supports_printer_technology(const PrinterTechnology tech) const = 0;
+ 
+ 	void		create_preset_tab();
++    void        dump_to_json();
+     void        add_scaled_button(wxWindow* parent, ScalableButton** btn, const std::string& icon_name,
+                                   const wxString& label = wxEmptyString,
+                                   long style = wxBU_EXACTFIT | wxNO_BORDER);
