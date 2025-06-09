@@ -1,0 +1,258 @@
+{
+    "Filament": {
+        "Basic information": [
+            "filament_type",
+            "filament_vendor",
+            "filament_soluble",
+            "filament_is_support",
+            "required_nozzle_HRC",
+            "default_filament_colour",
+            "filament_diameter",
+            "filament_density",
+            "filament_shrink",
+            "filament_shrinkage_compensation_z",
+            "filament_cost",
+            "temperature_vitrification",
+            "idle_temperature",
+            {
+                "label": "Recommended nozzle temperature",
+                "tooltip": "Recommended nozzle temperature range of this filament. 0 means no set",
+                "options": [
+                    "nozzle_temperature_range_low",
+                    "nozzle_temperature_range_high"
+                ]
+            }
+        ],
+        "Flow ratio and Pressure Advance": [
+            "pellet_flow_coefficient",
+            "filament_flow_ratio",
+            "enable_pressure_advance",
+            "pressure_advance",
+            "adaptive_pressure_advance",
+            "adaptive_pressure_advance_overhangs",
+            "adaptive_pressure_advance_bridges",
+            "adaptive_pressure_advance_model"
+        ],
+        "Print chamber temperature": [
+            "chamber_temperature",
+            "activate_chamber_temp_control"
+        ],
+        "Print temperature": [
+            {
+                "label": "Nozzle",
+                "tooltip": "Nozzle temperature when printing",
+                "options": [
+                    "nozzle_temperature_initial_layer",
+                    "nozzle_temperature"
+                ]
+            }
+        ],
+        "Bed temperature": [
+            {
+                "label": "Cool plate",
+                "tooltip": "Bed temperature when cool plate is installed. Value 0 means the filament does not support to print on the Cool Plate",
+                "options": [
+                    "cool_plate_temp_initial_layer",
+                    "cool_plate_temp"
+                ]
+            },
+            {
+                "label": "Textured Cool plate",
+                "tooltip": "Bed temperature when cool plate is installed. Value 0 means the filament does not support to print on the Textured Cool Plate",
+                "options": [
+                    "textured_cool_plate_temp_initial_layer",
+                    "textured_cool_plate_temp"
+                ]
+            },
+            {
+                "label": "Engineering plate",
+                "tooltip": "Bed temperature when engineering plate is installed. Value 0 means the filament does not support to print on the Engineering Plate",
+                "options": [
+                    "eng_plate_temp_initial_layer",
+                    "eng_plate_temp"
+                ]
+            },
+            {
+                "label": "Smooth PEI Plate \/ High Temp Plate",
+                "tooltip": "Bed temperature when Smooth PEI Plate\/High temperature plate is installed. Value 0 means the filament does not support to print on the Smooth PEI Plate\/High Temp Plate",
+                "options": [
+                    "hot_plate_temp_initial_layer",
+                    "hot_plate_temp"
+                ]
+            },
+            {
+                "label": "Textured PEI Plate",
+                "tooltip": "Bed temperature when Textured PEI Plate is installed. Value 0 means the filament does not support to print on the Textured PEI Plate",
+                "options": [
+                    "textured_plate_temp_initial_layer",
+                    "textured_plate_temp"
+                ]
+            }
+        ],
+        "Volumetric speed limitation": [
+            "filament_max_volumetric_speed"
+        ]
+    },
+    "Cooling": {
+        "Cooling for specific layer": [
+            "close_fan_the_first_x_layers",
+            "full_fan_speed_layer"
+        ],
+        "Part cooling fan": [
+            {
+                "label": "Min fan speed threshold",
+                "tooltip": "Part cooling fan speed will start to run at min speed when the estimated layer time is no longer than the layer time in setting. When layer time is shorter than threshold, fan speed is interpolated between the minimum and maximum fan speed according to layer printing time",
+                "options": [
+                    "fan_min_speed",
+                    "fan_cooling_layer_time"
+                ]
+            },
+            {
+                "label": "Max fan speed threshold",
+                "tooltip": "Part cooling fan speed will be max when the estimated layer time is shorter than the setting value",
+                "options": [
+                    "fan_max_speed",
+                    "slow_down_layer_time"
+                ]
+            },
+            "reduce_fan_stop_start_freq",
+            "slow_down_for_layer_cooling",
+            "dont_slow_down_outer_wall",
+            "slow_down_min_speed",
+            "enable_overhang_bridge_fan",
+            "overhang_fan_threshold",
+            "overhang_fan_speed",
+            "support_material_interface_fan_speed"
+        ],
+        "Auxiliary part cooling fan": [
+            "additional_cooling_fan_speed"
+        ],
+        "Exhaust fan": [
+            "activate_air_filtration",
+            "during_print_exhaust_fan_speed",
+            "complete_print_exhaust_fan_speed"
+        ]
+    },
+    "Setting Overrides": {
+        "Retraction": [
+            "filament_retraction_length",
+            "filament_z_hop",
+            "filament_z_hop_types",
+            "filament_retract_lift_above",
+            "filament_retract_lift_below",
+            "filament_retract_lift_enforce",
+            "filament_retraction_speed",
+            "filament_deretraction_speed",
+            "filament_retract_restart_extra",
+            "filament_retraction_minimum_travel",
+            "filament_retract_when_changing_layer",
+            "filament_wipe",
+            "filament_wipe_distance",
+            "filament_retract_before_wipe",
+            "filament_long_retractions_when_cut",
+            "filament_retraction_distances_when_cut"
+        ]
+    },
+    "Advanced": {
+        "Filament start G-code": [
+            "filament_start_gcode"
+        ],
+        "Filament end G-code": [
+            "filament_end_gcode"
+        ]
+    },
+    "Multimaterial": {
+        "Wipe tower parameters": [
+            "filament_minimal_purge_on_wipe_tower"
+        ],
+        "Toolchange parameters with single extruder MM printers": [
+            "filament_loading_speed_start",
+            "filament_loading_speed",
+            "filament_unloading_speed_start",
+            "filament_unloading_speed",
+            "filament_toolchange_delay",
+            "filament_cooling_moves",
+            "filament_cooling_initial_speed",
+            "filament_cooling_final_speed",
+            "filament_stamping_loading_speed",
+            "filament_stamping_distance",
+            "filament_ramming_parameters"
+        ],
+        "Toolchange parameters with multi extruder MM printers": [
+            "filament_multitool_ramming",
+            "filament_multitool_ramming_volume",
+            "filament_multitool_ramming_flow"
+        ]
+    },
+    "Notes": {
+        "Notes": [
+            "filament_notes"
+        ]
+    },
+    "icon_data": {
+        "Basic information": {
+            "icon_filename": "param_information.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><rect x=\"0.5\" y=\"0.5\" width=\"16\" height=\"16\" rx=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M6.5,2.5h8m-8,2h4m-4,3h8m-8,2h4m-4,5h4m-4-2h8\" style=\"fill:none;stroke:#0066bd;stroke-linecap:square;stroke-linejoin:round\"\/><path d=\"M3.5,4.5h0a1,1,0,0,1-1-1h0a1,1,0,0,1,1-1h0a1,1,0,0,1,1,1h0A1,1,0,0,1,3.5,4.5Zm1,4h0a1,1,0,0,0-1-1h0a1,1,0,0,0-1,1h0a1,1,0,0,0,1,1h0A1,1,0,0,0,4.5,8.5Zm0,5h0a1,1,0,0,0-1-1h0a1,1,0,0,0-1,1h0a1,1,0,0,0,1,1h0A1,1,0,0,0,4.5,13.5Z\" style=\"fill:none;stroke:#0066bd;stroke-miterlimit:10\"\/><\/svg>"
+        },
+        "Flow ratio and Pressure Advance": {
+            "icon_filename": "param_information.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><rect x=\"0.5\" y=\"0.5\" width=\"16\" height=\"16\" rx=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M6.5,2.5h8m-8,2h4m-4,3h8m-8,2h4m-4,5h4m-4-2h8\" style=\"fill:none;stroke:#0066bd;stroke-linecap:square;stroke-linejoin:round\"\/><path d=\"M3.5,4.5h0a1,1,0,0,1-1-1h0a1,1,0,0,1,1-1h0a1,1,0,0,1,1,1h0A1,1,0,0,1,3.5,4.5Zm1,4h0a1,1,0,0,0-1-1h0a1,1,0,0,0-1,1h0a1,1,0,0,0,1,1h0A1,1,0,0,0,4.5,8.5Zm0,5h0a1,1,0,0,0-1-1h0a1,1,0,0,0-1,1h0a1,1,0,0,0,1,1h0A1,1,0,0,0,4.5,13.5Z\" style=\"fill:none;stroke:#0066bd;stroke-miterlimit:10\"\/><\/svg>"
+        },
+        "Print chamber temperature": {
+            "icon_filename": "param_chamber_temp.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><rect x=\"0.5\" y=\"0.5\" width=\"16\" height=\"16\" rx=\"1\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"2.5\" y1=\"14.5\" x2=\"14.5\" y2=\"14.5\" style=\"fill:none;stroke:#949494;stroke-linecap:square;stroke-linejoin:round\"\/><path d=\"M13.5,12.5l.4-.495a1.263,1.263,0,0,0,0-1.51l-.792-.99A1.263,1.263,0,0,1,13.1,8l.792-.99a1.263,1.263,0,0,0,0-1.51l-.792-.99A1.263,1.263,0,0,1,13.1,3l.4-.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M8.5,12.5l.4-.495a1.263,1.263,0,0,0,0-1.51L8.1,9.505A1.263,1.263,0,0,1,8.1,8l.792-.99a1.263,1.263,0,0,0,0-1.51L8.1,4.505A1.263,1.263,0,0,1,8.1,3l.4-.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M3.5,12.5l.4-.495a1.263,1.263,0,0,0,0-1.51L3.1,9.505A1.263,1.263,0,0,1,3.1,8l.792-.99a1.263,1.263,0,0,0,0-1.51L3.1,4.505A1.263,1.263,0,0,1,3.1,3l.4-.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Print temperature": {
+            "icon_filename": "param_extruder_temp.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><path d=\"M1,16.5l.306-.792a3.853,3.853,0,0,0,0-2.416L.694,11.708a3.853,3.853,0,0,1,0-2.416l.612-1.584a3.853,3.853,0,0,0,0-2.416L.694,3.708a3.853,3.853,0,0,1,0-2.416L1,.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M6,16.5l.306-.549a1.9,1.9,0,0,0,0-1.676l-.612-1.1a1.9,1.9,0,0,1,0-1.676\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M11,16.5l.306-.549a1.9,1.9,0,0,0,0-1.676l-.612-1.1a1.9,1.9,0,0,1,0-1.676\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M16,16.5l.306-.792a3.853,3.853,0,0,0,0-2.416l-.612-1.584a3.853,3.853,0,0,1,0-2.416l.612-1.584a3.853,3.853,0,0,0,0-2.416l-.612-1.584a3.853,3.853,0,0,1,0-2.416L16,.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M5.5,4.5c-1,1-1,1-2,0\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M13.5,4.5c-1,1-1,1-2,0\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M11.5.5v4a6.375,6.375,0,0,1-6,0V.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><polygon points=\"3.5 0.5 13.5 0.5 13.5 4.5 8.5 9.5 3.5 4.5 3.5 0.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Bed temperature": {
+            "icon_filename": "param_bed_temp.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><line x1=\"0.5\" y1=\"16.5\" x2=\"16.5\" y2=\"16.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:square;stroke-linejoin:round\"\/><path d=\"M1.5,13.5l.613-.643a1.439,1.439,0,0,0,0-1.964L.887,9.607a1.439,1.439,0,0,1,0-1.964L2.113,6.357a1.439,1.439,0,0,0,0-1.964L.887,3.107a1.439,1.439,0,0,1,0-1.964L1.5.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M8.5,13.5l.613-.643a1.439,1.439,0,0,0,0-1.964L7.887,9.607a1.439,1.439,0,0,1,0-1.964L9.113,6.357a1.439,1.439,0,0,0,0-1.964L7.887,3.107a1.439,1.439,0,0,1,0-1.964L8.5.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M15.5,13.5l.613-.643a1.439,1.439,0,0,0,0-1.964L14.887,9.607a1.439,1.439,0,0,1,0-1.964l1.226-1.286a1.439,1.439,0,0,0,0-1.964L14.887,3.107a1.439,1.439,0,0,1,0-1.964L15.5.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Volumetric speed limitation": {
+            "icon_filename": "param_volumetric_speed.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><path d=\"M8.5,8.5v1a1,1,0,0,1-1,1h-4a1,1,0,0,0-1,1h0a1,1,0,0,0,1,1h10a1,1,0,0,1,1,1h0a1,1,0,0,1-1,1H1.5a1,1,0,0,0-1,1h0a1,1,0,0,0,1,1h15\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"0.5\" y1=\"3.5\" x2=\"5.5\" y2=\"3.5\" style=\"fill:none;stroke:#949494;stroke-linecap:square;stroke-linejoin:round\"\/><line x1=\"11.5\" y1=\"3.5\" x2=\"16.5\" y2=\"3.5\" style=\"fill:none;stroke:#949494;stroke-linecap:square;stroke-linejoin:round\"\/><rect x=\"5.5\" y=\"0.5\" width=\"6\" height=\"7\" rx=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><circle cx=\"8.5\" cy=\"4.5\" r=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"7.5 7.5 8.5 8.5 8.5 8.5 9.5 7.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Cooling for specific layer": {
+            "icon_filename": "param_cooling_specific_layer.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><path d=\"M.5,5.5l.594.613a1.254,1.254,0,0,0,1.812,0L4.094,4.887a1.254,1.254,0,0,1,1.812,0L6.5,5.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M.5,8.5l.594.613a1.254,1.254,0,0,0,1.812,0L4.094,7.887a1.254,1.254,0,0,1,1.812,0L6.5,8.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M.5,11.5l.594.613a1.254,1.254,0,0,0,1.812,0l1.188-1.226a1.254,1.254,0,0,1,1.812,0L6.5,11.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"14\" y1=\"4.5\" x2=\"17\" y2=\"4.5\" style=\"fill:none;stroke:#0066bd;stroke-linejoin:round\"\/><line x1=\"8\" y1=\"4.5\" x2=\"11\" y2=\"4.5\" style=\"fill:none;stroke:#0066bd;stroke-linejoin:round\"\/><line x1=\"12.5\" x2=\"12.5\" y2=\"3\" style=\"fill:none;stroke:#0066bd;stroke-linejoin:round\"\/><line x1=\"12.5\" y1=\"6\" x2=\"12.5\" y2=\"9\" style=\"fill:none;stroke:#0066bd;stroke-linejoin:round\"\/><line x1=\"8\" y1=\"14.5\" x2=\"17\" y2=\"14.5\" style=\"fill:none;stroke:#949494;stroke-linejoin:round\"\/><line x1=\"8\" y1=\"12.5\" x2=\"17\" y2=\"12.5\" style=\"fill:none;stroke:#949494;stroke-linejoin:round\"\/><line x1=\"8\" y1=\"10.5\" x2=\"17\" y2=\"10.5\" style=\"fill:none;stroke:#0066bd;stroke-linejoin:round\"\/><line x1=\"8\" y1=\"16.5\" x2=\"17\" y2=\"16.5\" style=\"fill:none;stroke:#949494;stroke-linejoin:round\"\/><circle cx=\"12.5\" cy=\"4.5\" r=\"3\" style=\"fill:none;stroke:#0066bd;stroke-linejoin:round\"\/><circle cx=\"12.5\" cy=\"4.5\" r=\"0.5\" style=\"fill:#0066bd\"\/><\/svg>"
+        },
+        "Part cooling fan": {
+            "icon_filename": "param_cooling_part_fan.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><rect x=\"3\" y=\"14\" width=\"1\" height=\"1\" style=\"fill:#0066bd\"\/><rect x=\"4\" y=\"15\" width=\"1\" height=\"1\" style=\"fill:#0066bd\"\/><rect x=\"5\" y=\"16\" width=\"1\" height=\"1\" style=\"fill:#0066bd\"\/><rect x=\"1\" y=\"14\" width=\"1\" height=\"1\" style=\"fill:#0066bd\"\/><rect x=\"2\" y=\"15\" width=\"1\" height=\"1\" style=\"fill:#0066bd\"\/><rect x=\"3\" y=\"16\" width=\"1\" height=\"1\" style=\"fill:#0066bd\"\/><rect x=\"13\" y=\"14\" width=\"1\" height=\"1\" transform=\"translate(27 29) rotate(-180)\" style=\"fill:#0066bd\"\/><rect x=\"12\" y=\"15\" width=\"1\" height=\"1\" transform=\"translate(25 31) rotate(-180)\" style=\"fill:#0066bd\"\/><rect x=\"11\" y=\"16\" width=\"1\" height=\"1\" transform=\"translate(23 33) rotate(-180)\" style=\"fill:#0066bd\"\/><rect x=\"15\" y=\"14\" width=\"1\" height=\"1\" transform=\"translate(31 29) rotate(-180)\" style=\"fill:#0066bd\"\/><rect x=\"14\" y=\"15\" width=\"1\" height=\"1\" transform=\"translate(29 31) rotate(-180)\" style=\"fill:#0066bd\"\/><rect x=\"13\" y=\"16\" width=\"1\" height=\"1\" transform=\"translate(27 33) rotate(-180)\" style=\"fill:#0066bd\"\/><path d=\"M16.5.5v12a1,1,0,0,1-1,1H1.5a1,1,0,0,1-1-1V.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><circle cx=\"8.5\" cy=\"5.5\" r=\"5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><circle cx=\"8.5\" cy=\"5.5\" r=\"1.229\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M7.886,1.813c1.228-.614,2.765.922,1.228,2.458\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M9.114,9.187C7.886,9.8,6.349,8.265,7.886,6.729\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M11.386,3.125c1.146.757.584,2.855-1.515,2.293\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M5.614,7.875C4.468,7.118,5.03,5.02,7.129,5.582\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M12,6.811c-.082,1.372-2.181,1.934-2.743-.164\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M5,4.189c.082-1.372,2.181-1.934,2.743.164\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"6.5 14.5 8.5 16.5 8.5 16.5 10.5 14.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Auxiliary part cooling fan": {
+            "icon_filename": "param_cooling_aux_fan.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><path d=\"M.5,7.5l.594.613a1.254,1.254,0,0,0,1.812,0L4.094,6.887a1.254,1.254,0,0,1,1.812,0L6.5,7.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M.5,10.5l.594.613a1.254,1.254,0,0,0,1.812,0L4.094,9.887a1.254,1.254,0,0,1,1.812,0L6.5,10.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M.5,13.5l.594.613a1.254,1.254,0,0,0,1.812,0l1.188-1.226a1.254,1.254,0,0,1,1.812,0L6.5,13.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"8\" y1=\"14.5\" x2=\"17\" y2=\"14.5\" style=\"fill:none;stroke:#949494;stroke-linejoin:round\"\/><line x1=\"8\" y1=\"12.5\" x2=\"17\" y2=\"12.5\" style=\"fill:none;stroke:#949494;stroke-linejoin:round\"\/><line x1=\"8\" y1=\"10.5\" x2=\"17\" y2=\"10.5\" style=\"fill:none;stroke:#949494;stroke-linejoin:round\"\/><line x1=\"8\" y1=\"16.5\" x2=\"17\" y2=\"16.5\" style=\"fill:none;stroke:#949494;stroke-linejoin:round\"\/><line x1=\"0.5\" y1=\"3.5\" x2=\"9.5\" y2=\"3.5\" style=\"fill:none;stroke:#949494;stroke-linecap:square;stroke-linejoin:round\"\/><line x1=\"15.5\" y1=\"3.5\" x2=\"16.5\" y2=\"3.5\" style=\"fill:none;stroke:#949494;stroke-linecap:square;stroke-linejoin:round\"\/><rect x=\"9.5\" y=\"0.5\" width=\"6\" height=\"7\" rx=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><circle cx=\"12.5\" cy=\"4.5\" r=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"11.5 7.5 12.5 8.5 12.5 8.5 13.5 7.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Exhaust fan": {
+            "icon_filename": "param_cooling_exhaust.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><line x1=\"9.5\" y1=\"14.5\" x2=\"0.5\" y2=\"14.5\" style=\"fill:none;stroke:#949494;stroke-linecap:square;stroke-linejoin:round\"\/><path d=\"M2,12.5l-.306-.495a1.564,1.564,0,0,1,0-1.51l.612-.99a1.564,1.564,0,0,0,0-1.51L2,7.5l-.306-.5a1.564,1.564,0,0,1,0-1.51l.612-.99a1.564,1.564,0,0,0,0-1.51L2,2.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M7,12.5l-.306-.495a1.564,1.564,0,0,1,0-1.51l.612-.99a1.564,1.564,0,0,0,0-1.51L7,7.5l-.306-.5a1.564,1.564,0,0,1,0-1.51l.612-.99a1.564,1.564,0,0,0,0-1.51L7,2.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M11.5,1.5a1,1,0,0,0-1-1H.5\" style=\"fill:none;stroke:#949494;stroke-linecap:square;stroke-linejoin:round\"\/><path d=\"M.5,16.5h10a1,1,0,0,0,1-1v-3\" style=\"fill:none;stroke:#949494;stroke-linecap:square;stroke-linejoin:round\"\/><path d=\"M16.5,9.5l-.594-.613a1.254,1.254,0,0,0-1.812,0l-1.188,1.226a1.254,1.254,0,0,1-1.812,0L10.5,9.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M16.5,6.5l-.594-.613a1.254,1.254,0,0,0-1.812,0L12.906,7.113a1.254,1.254,0,0,1-1.812,0L10.5,6.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M16.5,3.5l-.594-.613a1.254,1.254,0,0,0-1.812,0L12.906,4.113a1.254,1.254,0,0,1-1.812,0L10.5,3.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Retraction": {
+            "icon_filename": "param_retraction.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><line x1=\"0.5\" y1=\"3.5\" x2=\"5.5\" y2=\"3.5\" style=\"fill:none;stroke:#949494;stroke-linecap:square;stroke-linejoin:round\"\/><line x1=\"11.5\" y1=\"3.5\" x2=\"16.5\" y2=\"3.5\" style=\"fill:none;stroke:#949494;stroke-linecap:square;stroke-linejoin:round\"\/><rect x=\"5.5\" y=\"0.5\" width=\"6\" height=\"7\" rx=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><circle cx=\"8.5\" cy=\"4.5\" r=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"7.5 7.5 8.5 8.5 8.5 8.5 9.5 7.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"5.5\" y1=\"12.5\" x2=\"8.5\" y2=\"10.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"11.5\" y1=\"12.5\" x2=\"8.5\" y2=\"10.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"5.5\" y1=\"16.5\" x2=\"8.5\" y2=\"14.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"11.5\" y1=\"16.5\" x2=\"8.5\" y2=\"14.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Filament start G-code": {
+            "icon_filename": "param_gcode.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><line x1=\"9.5\" y1=\"3.5\" x2=\"7.5\" y2=\"13.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"12.5 12.5 16.5 8.5 12.5 4.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"4.5 4.5 0.5 8.5 4.5 12.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M.5,13.5v2a1,1,0,0,0,1,1h14a1,1,0,0,0,1-1v-2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M16.5,3.5v-2a1,1,0,0,0-1-1H1.5a1,1,0,0,0-1,1v2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Filament end G-code": {
+            "icon_filename": "param_gcode.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><line x1=\"9.5\" y1=\"3.5\" x2=\"7.5\" y2=\"13.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"12.5 12.5 16.5 8.5 12.5 4.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"4.5 4.5 0.5 8.5 4.5 12.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M.5,13.5v2a1,1,0,0,0,1,1h14a1,1,0,0,0,1-1v-2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M16.5,3.5v-2a1,1,0,0,0-1-1H1.5a1,1,0,0,0-1,1v2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Wipe tower parameters": {
+            "icon_filename": "param_tower.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><line x1=\"0.5\" y1=\"16.5\" x2=\"16.5\" y2=\"16.5\" style=\"fill:none;stroke:#949494;stroke-linecap:square;stroke-linejoin:round\"\/><rect x=\"12.5\" y=\"0.5\" width=\"4\" height=\"14\" rx=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"0.5\" y1=\"2.5\" x2=\"1.5\" y2=\"3.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"10.5\" y1=\"2.5\" x2=\"9.5\" y2=\"3.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"9.5\" y1=\"3.5\" x2=\"10.5\" y2=\"4.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"1.5\" y1=\"3.5\" x2=\"0.5\" y2=\"4.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"1.5\" y1=\"14.5\" x2=\"8.682\" y2=\"10.409\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"2.167\" y1=\"11.167\" x2=\"8.136\" y2=\"7.682\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"2.833\" y1=\"7.833\" x2=\"7.591\" y2=\"4.955\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"6.5 4.5 7.5 1.5 5.5 0.5 5.5 0.5 3.5 1.5 4.5 4.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"1.5 14.5 3.5 4.5 7.5 4.5 9.5 14.5 5.5 14.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"3.5\" y1=\"1.5\" x2=\"7.5\" y2=\"1.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Toolchange parameters with single extruder MM printers": {
+            "icon_filename": "param_toolchange.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><rect x=\"10.5\" y=\"8.5\" width=\"6\" height=\"7\" rx=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><circle cx=\"13.5\" cy=\"12.5\" r=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"12.5 15.5 13.5 16.5 13.5 16.5 14.5 15.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"0.5\" y=\"0.5\" width=\"6\" height=\"7\" rx=\"1\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><circle cx=\"3.5\" cy=\"4.5\" r=\"1\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><polyline points=\"2.5 7.5 3.5 8.5 3.5 8.5 4.5 7.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"10.5\" y1=\"5.5\" x2=\"8.5\" y2=\"3.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"10.5\" y1=\"1.5\" x2=\"8.5\" y2=\"3.5\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"6.5\" y1=\"11.5\" x2=\"8.5\" y2=\"13.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><line x1=\"6.5\" y1=\"15.5\" x2=\"8.5\" y2=\"13.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M13.5,6.5v-2a1,1,0,0,0-1-1h-4\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M8.5,13.5h-4a1,1,0,0,1-1-1v-2\" style=\"fill:none;stroke:#0066bd;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        },
+        "Notes": {
+            "icon_filename": "note.svg",
+            "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\"><line x1=\"3.5\" y1=\"3.5\" x2=\"13.5\" y2=\"3.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:square;stroke-linejoin:round\"\/><line x1=\"3.5\" y1=\"9.5\" x2=\"13.5\" y2=\"9.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:square;stroke-linejoin:round\"\/><line x1=\"3.5\" y1=\"6.5\" x2=\"13.5\" y2=\"6.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:square;stroke-linejoin:round\"\/><line x1=\"3.5\" y1=\"12.5\" x2=\"6.5\" y2=\"12.5\" style=\"fill:none;stroke:#0066bd;stroke-linecap:square;stroke-linejoin:round\"\/><rect x=\"0.5\" y=\"0.5\" width=\"16\" height=\"16\" rx=\"1\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+        }
+    }
+}
