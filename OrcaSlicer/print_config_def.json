@@ -80,6 +80,13 @@
         "mode": "simple",
         "default_value": "0"
     },
+    "align_infill_direction_to_model": {
+        "type": "bool",
+        "label": "Align infill direction to model",
+        "tooltip": "Aligns infill and surface fill directions to follow the model's orientation on the build plate. When enabled, fill directions rotate with the model to maintain optimal strength characteristics.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "alternate_extra_wall": {
         "type": "bool",
         "label": "Alternate extra wall",
@@ -1568,6 +1575,23 @@
         "tooltip": "Whether to apply fuzzy skin on the first layer.",
         "mode": "simple",
         "default_value": "0"
+    },
+    "fuzzy_skin_mode": {
+        "type": "enum",
+        "label": "Fuzzy skin generator mode",
+        "tooltip": "Fuzzy skin generation mode. Works only with Arachne!\nDisplacement: Сlassic mode when the pattern is formed by shifting the nozzle sideways from the original path.\nExtrusion: The mode when the pattern formed by the amount of extruded plastic. This is the fast and straight algorithm without unnecessary nozzle shake that gives a smooth pattern. But it is more useful for forming loose walls in the entire they array.\nCombined: Joint mode [Displacement] + [Extrusion]. The appearance of the walls is similar to [Displacement] Mode, but it leaves no pores between the perimeters.\n\nAttention! The [Extrusion] and [Combined] modes works only the fuzzy_skin_thickness parameter not more than the thickness of printed loop.At the same time, the width of the extrusion for a particular layer should also not be below a certain level. It is usually equal 15-25%% of a layer height. Therefore, the maximum fuzzy skin thickness with a perimeter width of 0.4 mm and a layer height of 0.2 mm will be 0.4-(0.2*0.25)=±0.35mm! If you enter a higher parameter than this, the error Flow::spacing() will displayed, and the model will not be sliced. You can choose this number until this error is repeated.",
+        "enum_values": [
+            "displacement",
+            "extrusion",
+            "combined"
+        ],
+        "enum_labels": [
+            "Displacement",
+            "Extrusion",
+            "Combined"
+        ],
+        "mode": "simple",
+        "default_value": "displacement"
     },
     "fuzzy_skin_noise_type": {
         "type": "enum",
@@ -3747,12 +3771,14 @@
         "enum_values": [
             "nearest",
             "aligned",
+            "aligned_back",
             "back",
             "random"
         ],
         "enum_labels": [
             "Nearest",
             "Aligned",
+            "Aligned back",
             "Back",
             "Random"
         ],
@@ -4426,16 +4452,16 @@
             "default",
             "rectilinear",
             "rectilinear-grid",
-            "lightning",
             "honeycomb",
+            "lightning",
             "hollow"
         ],
         "enum_labels": [
             "Default",
             "Rectilinear",
             "Rectilinear grid",
-            "Lightning",
             "Honeycomb",
+            "Lightning",
             "Hollow"
         ],
         "enum_icons": [
@@ -4449,12 +4475,12 @@
                 "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M8.5,22.5l14-14m-21,7,14-14m0,21,7-7m-21-7,7-7m13.414.586L2.086,21.914M15.5,22.5l-14-14m21,7-14-14m0,21-7-7m21-7-7-7M2.086,2.086,21.914,21.914\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
             {
-                "icon_filename": "param_lightning.svg",
-                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M20.5,13.5l-1,3h-2l-4.848,3.879M17.5,20.5l-3.529-1.176M12.5,3.5l-2,4,3,6-2,4m3-9-2,3m6,0-2,2v3.8M6.5,7.5l2,3-1,3,4,4,2,5m-9-11-1,2,2,3m9-11,4-1,2.176,2.176M17.5,9.5l2-1v-1l3-2m-7-2,2,1m-9,16-2,1m-2-2,1,1m1-2-1,2,1,2m12-4,2,1,2-2m-17-13-1,2-3,1m7-4,1-2m-6,16,2-1,4-1m-5-13,1,2,3,1m-6,2,1,1\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" transform=\"translate(24 24) rotate(180)\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
-            },
-            {
                 "icon_filename": "param_honeycomb.svg",
                 "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M7.5,22.5v-3l4-2v-5l-4-2v-5l4-2v-2m8,0v2l-4,2v5l4,2v5l-4,2v3m-4-19,4,2m0,5-4,2m3.884,6.942L11.5,17.5m-4-7-4,2v5l4,2m-4-18v2l4,2m15-.5-3-1.5m0,9,3-1.5m-3,6.5,3,1.5M3.5,3.5l-2,1m2,8-2-1m2,6-2,1\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+            },
+            {
+                "icon_filename": "param_lightning.svg",
+                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M20.5,13.5l-1,3h-2l-4.848,3.879M17.5,20.5l-3.529-1.176M12.5,3.5l-2,4,3,6-2,4m3-9-2,3m6,0-2,2v3.8M6.5,7.5l2,3-1,3,4,4,2,5m-9-11-1,2,2,3m9-11,4-1,2.176,2.176M17.5,9.5l2-1v-1l3-2m-7-2,2,1m-9,16-2,1m-2-2,1,1m1-2-1,2,1,2m12-4,2,1,2-2m-17-13-1,2-3,1m7-4,1-2m-6,16,2-1,4-1m-5-13,1,2,3,1m-6,2,1,1\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" transform=\"translate(24 24) rotate(180)\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
             {
                 "icon_filename": "param_hollow.svg",
