@@ -49,6 +49,7 @@ jobs:
           mkdir -p slicer-out
           git clone ${{ matrix.repo }} slicer-src --depth 1 --
           pushd slicer-src
+          git fetch --tags
           git fetch origin ${{ matrix.ref }}
           git checkout ${{ matrix.ref }}
           git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch
