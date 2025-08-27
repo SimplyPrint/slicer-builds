@@ -19,18 +19,23 @@ jobs:
         include:
           - slicer: OrcaSlicer
             repo: https://github.com/SoftFever/OrcaSlicer
+            ref: tags/v2.3.0
           - slicer: PrusaSlicer
             repo: https://github.com/prusa3d/PrusaSlicer
+            ref: tags/version_2.8.1
           - slicer: BambuStudio
             repo: https://github.com/BambuLab/BambuStudio
+            ref: tags/v02.01.01.52
           - slicer: ElegooSlicer
-            repo: https://github.com/ELEGOO-3D/ElegooSlicer
+            repo: https://github.com/ELEGOO-3D/
+            ref: tags/v1.1.8.2
           - slicer: QidiSlicer
             repo: https://github.com/QIDITECH/QIDISlicer
+            ref: tags/V1.2.4
 
     runs-on: ubuntu-24.04
     env:
-      DEPS_CACHE_KEY:
+      DEPS_CACHE_KEY: ""
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -42,8 +47,9 @@ jobs:
 
           # Setup slicer for build
           mkdir -p slicer-out
-          git clone ${{ matrix.repo }} slicer-src --depth 1
+          git clone ${{ matrix.repo }} slicer-src --depth 1 --
           pushd slicer-src
+          git checkout ${{ matrix.ref }}
           git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch
           popd
 
@@ -104,7 +110,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          path: ~
+          path: "~"
 
       - name: Rename artifact folders
         run: |

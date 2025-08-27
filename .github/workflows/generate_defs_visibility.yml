@@ -19,6 +19,13 @@ jobs:
           - OrcaSlicer
           - PrusaSlicer
           - BambuStudio
+        include:
+          - slicer: OrcaSlicer
+            ref: refs/tags/v02.01.01.52
+          - slicer: PrusaSlicer
+            ref: refs/tags/version_2.8.1
+          - slicer: BambuStudio
+            ref: refs/tags/v2.3.0
 
     steps:
       - name: Checkout repository
@@ -46,7 +53,7 @@ jobs:
           git switch slicer-config-artifacts
           pushd ${{ matrix.slicer }}
           
-          uvx generate-defs-visibility --slicer ${{ matrix.slicer }}
+          uvx generate-defs-visibility --slicer ${{ matrix.slicer }} --ref ${{ matrix.ref }}
           
           git add .
           

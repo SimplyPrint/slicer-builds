@@ -12,21 +12,24 @@ from .parse_conditions import ParseConditionalVisibility, ConditionalVisibility
 SUPPORTED_SLICERS = {
     'OrcaSlicer':  {
         'toggle_print_fff_options': (
-            "https://raw.githubusercontent.com/SoftFever/OrcaSlicer/main/src/slic3r/GUI/ConfigManipulation.cpp",
-            "ConfigManipulation::toggle_print_fff_options"
+            "https://raw.githubusercontent.com/SoftFever/OrcaSlicer/{}/src/slic3r/GUI/ConfigManipulation.cpp",
+            "ConfigManipulation::toggle_print_fff_options",
+            "main",
         )
     },
     'PrusaSlicer': {
         'toggle_print_fff_options': (
-            "https://raw.githubusercontent.com/prusa3d/PrusaSlicer/main/src/slic3r/GUI/ConfigManipulation.cpp",
-            "ConfigManipulation::toggle_print_fff_options"
+            "https://raw.githubusercontent.com/prusa3d/PrusaSlicer/{}/src/slic3r/GUI/ConfigManipulation.cpp",
+            "ConfigManipulation::toggle_print_fff_options",
+            "main",
         ),
     },
     'BambuStudio': {
 
         'toggle_print_fff_options': (
-            "https://raw.githubusercontent.com/bambulab/BambuStudio/master/src/slic3r/GUI/ConfigManipulation.cpp",
-            "ConfigManipulation::toggle_print_fff_options"
+            "https://raw.githubusercontent.com/bambulab/BambuStudio/{}/src/slic3r/GUI/ConfigManipulation.cpp",
+            "ConfigManipulation::toggle_print_fff_options",
+            "master",
         )
     },
 }
@@ -76,6 +79,14 @@ def main():
     )
 
     parser.add_argument(
+        "--ref", "-r",
+        type=str,
+        choices=SUPPORTED_SLICERS.keys(),
+        required=True,
+        help="Slicer version (git ref) to use"
+    )
+
+    parser.add_argument(
         "--work-dir", "-w",
         type=Path,
         default=Path('.'),
@@ -107,9 +118,9 @@ def main():
 
     slicer_settings = SUPPORTED_SLICERS[args.slicer]
 
-    code_url, func_name = slicer_settings['toggle_print_fff_options']
+    code_url, func_name, default_ref = slicer_settings['toggle_print_fff_options']
 
-    code = fetch_and_extract(code_url, func_name)
+    code = fetch_and_extract(code_url.format(args.ref or default_ref), func_name)
 
     # Process input.
     p = ParseConditionalVisibility(config_def, code=code)
