@@ -33,7 +33,7 @@ jobs:
             repo: https://github.com/QIDITECH/QIDISlicer
             ref: tags/V1.2.4
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       DEPS_CACHE_KEY: ""
     steps:
@@ -52,7 +52,7 @@ jobs:
           git fetch --tags
           git fetch origin ${{ matrix.ref }}
           git checkout ${{ matrix.ref }}
-          git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch --reject --whitespace=fix
+          git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch --reject --whitespace=fix || true
           popd
 
       - name: Install dependencies
