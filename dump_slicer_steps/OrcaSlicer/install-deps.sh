@@ -8,7 +8,7 @@ else
   mv CMakeLists.txt CMakeLists.txt.prev
   cat <<EOF > CMakeLists.txt
 if(POLICY CMP0167)
-  cmake_policy(SET CMP0167 OLD)
+  cmake_policy(SET CMP0167 NEW)
 endif()
 EOF
   cat CMakeLists.txt.prev >> CMakeLists.txt
