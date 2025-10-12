@@ -88,7 +88,8 @@ jobs:
           fi
           
           # Create config file
-          echo -e "build_type=${{ matrix.build-type }}\ntag=${latest_release_tag}\nslicer=${{ matrix.slicer }}\nlatest_release_at_head=${latest_release_at_head}" > config.sh
+          mkdir -p slicer-out
+          echo -e "build_type=${{ matrix.build-type }}\ntag=${latest_release_tag}\nslicer=${{ matrix.slicer }}\nlatest_release_at_head=${latest_release_at_head}" > slicer-out/config.sh
 
       - name: Finalize Setup
         if: env.continue_build == 'true'
@@ -99,7 +100,6 @@ jobs:
           sudo apt-get install -y xvfb
 
           # Setup slicer for build
-          mkdir -p slicer-out
           pushd slicer-src
             git checkout ${{ env.build_ref }}
             git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch --reject --whitespace=fix || true
