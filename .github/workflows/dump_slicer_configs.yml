@@ -53,7 +53,7 @@ jobs:
           # Check if the latest tag has been built
           git clone https://github.com/${{ github.repository }} --branch slicer-config-artifacts --depth=1 artifacts
           
-          mkdir artifacts/${{ matrix.slicer }}
+          mkdir -p artifacts/${{ matrix.slicer }}
           pushd artifacts/${{ matrix.slicer }}
             if [[ -e "${{ env.version_file }}" ]]; then
               latest_stored_tag=$(jq '.latest' ${{ env.version_file }} | xargs echo)
