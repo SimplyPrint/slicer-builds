@@ -53,6 +53,7 @@ jobs:
           # Check if the latest tag has been built
           git clone https://github.com/${{ github.repository }} --branch slicer-config-artifacts --depth=1 artifacts
           
+          mkdir artifacts/${{ matrix.slicer }}
           pushd artifacts/${{ matrix.slicer }}
             if [[ -e "${{ env.version_file }}" ]]; then
               latest_stored_tag=$(jq '.latest' ${{ env.version_file }} | xargs echo)
@@ -60,10 +61,12 @@ jobs:
           popd
           
           if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
-            git fetch origin refs/tags/$latest_release_tag
-          
-            head_hash=$(git rev-parse HEAD)
-            tag_hash=$(git rev-parse FETCH_HEAD)
+            pushd slicer-src
+              git fetch origin refs/tags/$latest_release_tag
+            
+              head_hash=$(git rev-parse HEAD)
+              tag_hash=$(git rev-parse FETCH_HEAD)
+            popd
           
             if [[ $head_hash == $tag_hash ]]; then
               latest_release_at_head=true
