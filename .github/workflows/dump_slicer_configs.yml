@@ -51,7 +51,7 @@ jobs:
           latest_release_tag=$(curl "https://api.github.com/repos/${{ matrix.repo }}/releases/latest" | jq '.tag_name' | xargs echo)
           
           # Check if the latest tag has been built
-          git clone ${{ github.repositoryUrl }} --branch slicer-config-artifacts --depth=1 artifacts
+          git clone https://github.com/${{ github.repository }} --branch slicer-config-artifacts --depth=1 artifacts
           
           pushd artifacts/${{ matrix.slicer }}
             if [[ -e "${{ env.version_file }}" ]]; then
