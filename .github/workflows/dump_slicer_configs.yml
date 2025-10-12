@@ -74,6 +74,7 @@ jobs:
           else
             # Latest release has not changed, do not continue to build
             if [[ "${{ matrix.build-type }}" == "latest_release" ]]; then
+              echo "The latest release has already been built. Exiting..."
               echo "continue_build=false" >> "$GITHUB_ENV"
               exit 0
             fi
@@ -81,6 +82,7 @@ jobs:
           
           # If the commits are the same between latest and nightly, cancel the latest_release build. The nightly build will handle both cases
           if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "$latest_release_at_head" == "true" ]]; then
+            echo "The latest release is at the HEAD of the repo. The nightly build will be used to generate the release files. Exiting..."
             echo "continue_build=false" >> "$GITHUB_ENV"
             exit 0
           fi
