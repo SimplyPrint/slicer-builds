@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write
 
+env:
+  version_file: def_visibility_versions.json
+
 jobs:
   generate_defs_visibility:
     runs-on: ubuntu-latest
@@ -19,13 +22,16 @@ jobs:
           - OrcaSlicer
           - PrusaSlicer
           - BambuStudio
+        build-type:
+          - nightly
+          - latest_release
         include:
           - slicer: OrcaSlicer
-            ref: refs/tags/v02.01.01.52
+            repo: SoftFever/OrcaSlicer
           - slicer: PrusaSlicer
-            ref: refs/tags/version_2.8.1
+            repo: prusa3d/PrusaSlicer
           - slicer: BambuStudio
-            ref: refs/tags/v2.3.0
+            repo: BambuLab/BambuStudio
 
     steps:
       - name: Checkout repository
@@ -47,14 +53,68 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Fetch ref
+          # Fetch artifacts
           git fetch origin slicer-config-artifacts
           # Checkout to artifact branch
           git switch slicer-config-artifacts
           pushd ${{ matrix.slicer }}
+      
+          # Ensure the version file is initialized
+          if ! [[ -e "${{ env.version_file }}" ]]; then
+            echo "{}" > ${{ env.version_file }}
+          fi
           
-          uvx generate-defs-visibility --slicer ${{ matrix.slicer }} --ref ${{ matrix.ref }}
+          # Get latest tags/hashes
+          latest_release_tag=$(curl "https://api.github.com/repos/${{ matrix.repo }}/releases/latest" | jq '.tag_name' | xargs echo)
+          latest_release_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq '.sha' | xargs echo)
+          latest_stored_tag=$(jq '.latest' ${{ env.version_file }} | xargs echo)
+          head_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq '.sha' | xargs echo)
           
+          if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
+            if [[ $head_hash == $latest_release_hash ]]; then
+              latest_release_at_head=true
+            fi
+          else
+            # Latest release has not changed, do not continue to build
+            if [[ "${{ matrix.build-type }}" == "latest_release" ]]; then
+              exit 0
+            fi
+          fi
+          
+          # If the commits are the same between latest and nightly, cancel the latest_release build. The nightly build will handle both cases
+          if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "$latest_release_at_head" == "true" ]]; then
+            echo "continue_build=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          
+          if [[ "${{ matrix.build-type }}" == "nightly" ]]; then
+            ref=HEAD
+          else
+            ref=refs/tags/$latest_release_tag
+          fi
+          
+          uvx generate-defs-visibility --slicer ${{ matrix.slicer }} --ref $ref
+        
+          # If handling a release, save it to its own folder
+          if [[ "${{ matrix.build-type }}" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
+            mkdir -p $slicer/$tag
+            
+            # Update the version file
+            pushd $slicer
+              jq '.latest = "${tag}" || .available += ["${tag}"]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
+            popd
+          
+            cp -rf conditional_visibility.json $slicer/$tag || true
+          fi
+        
+          # Update the nightly build folder
+          if [[ "$build_type" == "nightly" ]]; then
+            mkdir -p nightly
+            cp -rf conditional_visibility.json $slicer/nightly || true
+          fi
+          
+          # Remove the original copy
+          rm conditional_visibility.json
           git add .
           
           if git diff --cached --quiet; then
