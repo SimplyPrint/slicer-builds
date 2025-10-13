@@ -1,3 +1,17 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8105345..d31bbc7 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,5 +1,9 @@
+ cmake_minimum_required(VERSION 3.13)
+ 
++if (NOT DEFINED ELEGOO_TEST)
++    set(ELEGOO_TEST OFF)
++endif ()
++
+ if (APPLE)
+     # if CMAKE_OSX_DEPLOYMENT_TARGET is not set, set it to 11.3
+     if (NOT CMAKE_OSX_DEPLOYMENT_TARGET)
 diff --git a/deps/MPFR/MPFR.cmake b/deps/MPFR/MPFR.cmake
 index 1161a1c..9bf2b5b 100644
 --- a/deps/MPFR/MPFR.cmake
@@ -38,7 +52,7 @@ index abaae36..f7ee084 100644
  namespace Slic3r {
  
 diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
-index 26282b9..9fc915b 100644
+index 118227e..d98b975 100644
 --- a/src/libslic3r/PrintConfig.cpp
 +++ b/src/libslic3r/PrintConfig.cpp
 @@ -5,6 +5,9 @@
@@ -309,7 +323,7 @@ index 916d9c5..583a300 100644
      m_param_dialog->panel()->rebuild_panels();
      //m_tabpanel->AddPage(m_param_panel, "Parameters", "notebook_presets_active");
 diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
-index 2d21996..00a4c43 100644
+index 40b5869..d3443d4 100644
 --- a/src/slic3r/GUI/Tab.cpp
 +++ b/src/slic3r/GUI/Tab.cpp
 @@ -51,6 +51,7 @@
