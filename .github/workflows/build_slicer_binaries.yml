@@ -81,7 +81,8 @@ jobs:
           
           if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
             if [[ $head_hash == $latest_release_hash ]]; then
-              echo "latest_release_at_head=true" >> "$GITHUB_ENV"
+              latest_release_at_head=true
+              echo "latest_release_at_head=$latest_release_at_head" >> "$GITHUB_ENV"
             fi
           else
             # Latest release has not changed, do not continue to build
