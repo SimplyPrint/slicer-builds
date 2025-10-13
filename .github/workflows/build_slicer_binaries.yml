@@ -80,6 +80,8 @@ jobs:
           latest_stored_tag=$(curl "https://raw.githubusercontent.com/${{ matrix.repo }}/refs/heads/slicer-config-artifacts/${{ matrix.slicer }}/${{ env.version_file }}" | jq '.latest' | xargs echo) || ''
           head_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq '.sha' | xargs echo)
           
+          echo "latest_release_tag=$latest_release_tag" >> "$GITHUB_ENV"
+          
           if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
             if [[ $head_hash == $latest_release_hash ]]; then
               latest_release_at_head=true
