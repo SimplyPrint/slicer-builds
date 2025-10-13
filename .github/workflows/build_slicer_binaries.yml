@@ -101,7 +101,7 @@ jobs:
       - name: Finalize Setup
         if: env.continue_build == 'true'
         env:
-          build_ref: ${{ matrix.build-type == 'latest_release' && 'FETCH_HEAD' || 'HEAD' }}
+          build_ref: ${{ matrix.build-type == 'latest_release' && env.latest_release_tag || 'HEAD' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
