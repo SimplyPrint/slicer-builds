@@ -83,6 +83,9 @@ jobs:
           echo "latest_release_tag=$latest_release_tag" >> "$GITHUB_ENV"
           
           if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
+            pushd slicer-src
+              git fetch origin refs/tags/$latest_release_tag
+            popd
             if [[ $head_hash == $latest_release_hash ]]; then
               latest_release_at_head=true
               echo "latest_release_at_head=$latest_release_at_head" >> "$GITHUB_ENV"
@@ -110,7 +113,7 @@ jobs:
       - name: Finalize Setup
         if: env.continue_build == 'true'
         env:
-          build_ref: ${{ matrix.build-type == 'latest_release' && env.latest_release_tag || 'HEAD' }}
+          build_ref: ${{ matrix.build-type == 'latest_release' && 'FETCH_HEAD' || 'HEAD' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
