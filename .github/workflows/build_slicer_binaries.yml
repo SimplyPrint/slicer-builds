@@ -19,6 +19,17 @@ env:
   version_file: slicer_binary_versions.json
 
 jobs:
+  update_nightly_tag:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Update nightly tag
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: "nightly"
+          tag_exists_error: false
+          force_push_tag: true
+          message: "nightly"
+
   build_slicers:
     strategy:
       fail-fast: false
@@ -42,39 +53,24 @@ jobs:
     env:
       DEPS_CACHE_KEY: ''
       SLICER_CACHE_KEY: ''
+      latest_release_tag: ''
+      latest_release_at_head: 'false'
       continue_build: 'true'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Setup
         run: |
           # Clone slicer repo
           git clone https://github.com/${{ matrix.repo }} slicer-src --depth 1 --
           
-          # Get the latest release tag
+          # Get latest tags/hashes
           latest_release_tag=$(curl "https://api.github.com/repos/${{ matrix.repo }}/releases/latest" | jq '.tag_name' | xargs echo)
-          
-          # Check if the latest tag has been built
-          git clone https://github.com/${{ github.repository }} --branch slicer-config-artifacts --depth=1 artifacts
-          
-          mkdir -p artifacts/${{ matrix.slicer }}
-          pushd artifacts/${{ matrix.slicer }}
-            if [[ -e "${{ env.version_file }}" ]]; then
-              latest_stored_tag=$(jq '.latest' ${{ env.version_file }} | xargs echo)
-            fi
-          popd
+          latest_release_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq '.sha' | xargs echo)
+          latest_stored_tag=$(curl "https://raw.githubusercontent.com/${{ matrix.repo }}/refs/heads/slicer-config-artifacts/${{ matrix.slicer }}/${{ env.version_file }}" | jq '.latest' | xargs echo) || ''
+          head_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq '.sha' | xargs echo)
           
           if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
-            pushd slicer-src
-              git fetch origin refs/tags/$latest_release_tag
-            
-              head_hash=$(git rev-parse HEAD)
-              tag_hash=$(git rev-parse FETCH_HEAD)
-            popd
-          
-            if [[ $head_hash == $tag_hash ]]; then
-              latest_release_at_head=true
+            if [[ $head_hash == $latest_release_hash ]]; then
+              echo "latest_release_at_head=true" >> "$GITHUB_ENV"
             fi
           else
             # Latest release has not changed, do not continue to build
@@ -94,7 +90,7 @@ jobs:
           
           # Create config file
           mkdir -p slicer-out
-          echo -e "build_type=${{ matrix.build-type }}\ntag=${latest_release_tag}\nslicer=${{ matrix.slicer }}\nlatest_release_at_head=${latest_release_at_head}" > slicer-out/config.sh
+          echo -e "build_type=${{ matrix.build-type }}\ntag=${latest_release_tag}\nslicer=${{ matrix.slicer }}\nlatest_release_at_head=${latest_release_at_head}" > slicer-out/config-${{ matrix.slicer }}-${{ matrix.build-type }}.sh
 
       - name: Finalize Setup
         if: env.continue_build == 'true'
@@ -107,7 +103,6 @@ jobs:
           # Setup slicer for build
           pushd slicer-src
             git checkout ${{ env.build_ref }}
-            git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch --reject --whitespace=fix || true
           popd
 
       - name: Install dependencies
@@ -157,16 +152,37 @@ jobs:
         if: env.continue_build == 'true'
         run: |
           ./build_slicer_binaries/${{ matrix.slicer }}/package_binary.sh
+          cd slicer-out
+          mv binary.zip ${{ matrix.slicer }}-${{ env.latest_release_tag }}.zip
 
-      - name: Upload extracted JSON files
+      - name: Upload latest release
+        if: env.continue_build == 'true' && (matrix.build-type == 'latest_release' || env.latest_release_at_head == 'true')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ matrix.slicer }}-${{ env.latest_release_tag }}
+          files: slicer-out/${{ matrix.slicer }}-${{ env.latest_release_tag }}.zip
+          make_latest: false
+
+      - name: Upload nightly release
+        if: env.continue_build == 'true' && matrix.build-type == 'nightly'
+        uses: WebFreak001/deploy-nightly@v3.2.0
+        with:
+          upload_url: https://uploads.github.com/repos/SimplyPrint/slicer-builds/releases/254161481/assets{?name,label}
+          release_id: 254161481
+          asset_path: slicer-out/${{ matrix.slicer }}-${{ env.latest_release_tag }}.zip
+          asset_name: ${{ matrix.slicer }}-nightly.zip
+          asset_content_type: application/zip
+          max_releases: 1
+
+      - name: Upload config file
         if: env.continue_build == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: configs-${{ matrix.slicer }}-${{ matrix.build-type }}
-          path: slicer-out/*
+          name: config-${{ matrix.slicer }}-${{ matrix.build-type }}.sh
+          path: slicer-out/config-${{ matrix.slicer }}-${{ matrix.build-type }}.sh
 
 
-  commit_artifacts:
+  update_version_files:
     needs: build_slicers
     runs-on: ubuntu-24.04
     if: success() || failure()
@@ -183,12 +199,12 @@ jobs:
 
       - name: Rename artifact folders
         run: |
-          for folder in $(ls ~ | grep configs-); do
-            echo "Begin processing $folder"
+          for file in $(ls ~ | grep config-*.sh); do
+            echo "Begin processing $file"
             # import the config variables
-            source ~/${folder}/config.sh
-            rm ~/${folder}/config.sh
-            
+            source ~/${file}
+            rm ~/${file}
+          
             # If handling a release, save it to its own folder
             if [[ "$build_type" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
               echo "Handling release"
@@ -199,18 +215,7 @@ jobs:
               pushd $slicer
                 jq --arg tag "$tag" '.latest = $tag | .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
               popd
-              cp -rf ~/$folder/* $slicer/$tag || true
             fi
-            
-            # Update the nightly build folder
-            if [[ "$build_type" == "nightly" ]]; then
-              echo "Handle nightly"
-              mkdir -p $slicer/nightly
-              cp -rf ~/$folder/* $slicer/nightly || true
-            fi
-          
-            # Delete the processed artifact folder
-            rm -r ~/$folder 
           done
 
       - name: Commit to repo
@@ -218,6 +223,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          if git commit -m "Update slicer binary artifacts"; then
+          if git commit -m "Update slicer binary versions"; then
               git push origin
           fi
