@@ -29,14 +29,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: slicer-config-artifacts
 
       - name: Update nightly tag
-        uses: rickstaa/action-create-tag@v1
-        with:
-          tag: "nightly"
-          tag_exists_error: false
-          force_push_tag: true
-          message: "nightly"
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -f "nightly"
+          git push --force --tags origin
 
   build_slicers:
     strategy:
@@ -173,6 +174,8 @@ jobs:
         with:
           name: ${{ matrix.slicer }}-${{ env.latest_release_tag }}
           files: slicer-out/${{ matrix.slicer }}-${{ env.latest_release_tag }}.zip
+          tag_name: ${{ matrix.slicer }}_${{ env.latest_release_tag }}
+          target_commitish: slicer-config-artifacts
           make_latest: false
 
       - name: Upload nightly release
@@ -209,13 +212,12 @@ jobs:
         with:
           path: "~"
 
-      - name: Rename artifact folders
+      - name: Update version files
         run: |
           for file in $(ls ~ | grep config-*.sh); do
             echo "Begin processing $file"
             # import the config variables
             source ~/${file}
-            rm ~/${file}
           
             # If handling a release, save it to its own folder
             if [[ "$build_type" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
@@ -238,3 +240,17 @@ jobs:
           if git commit -m "Update slicer binary versions"; then
               git push origin
           fi
+
+      - name: Bump tags forward
+        run: |
+          for file in $(ls ~ | grep config-*.sh); do
+            echo "Begin processing $file"
+            # import the config variables
+            source ~/${file}
+          
+            if [[ "$build_type" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
+              echo "Handling release"
+              git tag -f "${slicer}_${tag}"
+            fi
+          done
+          git push --force --tags origin
