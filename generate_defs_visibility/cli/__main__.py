@@ -81,7 +81,6 @@ def main():
     parser.add_argument(
         "--ref", "-r",
         type=str,
-        choices=SUPPORTED_SLICERS.keys(),
         required=True,
         help="Slicer version (git ref) to use"
     )

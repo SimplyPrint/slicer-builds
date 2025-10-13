@@ -69,6 +69,7 @@ jobs:
           latest_release_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq '.sha' | xargs echo)
           latest_stored_tag=$(jq '.latest' ${{ env.version_file }} | xargs echo)
           head_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq '.sha' | xargs echo)
+          popd
           
           if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
             if [[ $head_hash == $latest_release_hash ]]; then
@@ -85,7 +86,6 @@ jobs:
           # If the commits are the same between latest and nightly, cancel the latest_release build. The nightly build will handle both cases
           if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "$latest_release_at_head" == "true" ]]; then
             echo "The latest release is at the HEAD of the repo. The nightly build will be used to generate the release files. Exiting..."
-            echo "continue_build=false" >> "$GITHUB_ENV"
             exit 0
           fi
           
@@ -103,7 +103,7 @@ jobs:
             
             # Update the version file
             pushd $slicer
-              jq '.latest = "${tag}" || .available += ["${tag}"]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
+              jq --arg tag "$tag" '.latest = $tag" || .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
             popd
           
             cp -rf conditional_visibility.json $slicer/$tag || true
