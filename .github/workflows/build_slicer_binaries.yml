@@ -167,8 +167,9 @@ jobs:
         if: env.continue_build == 'true'
         run: |
           ./build_slicer_binaries/${{ matrix.slicer }}/package_binary.sh
-          cd slicer-out
-          mv binary.zip ${{ matrix.slicer }}-${{ env.latest_release_tag }}.zip
+          cd slicer-src/build/slicer_out
+          zip -r ../binary.zip *
+          mv ../binary.zip ../../../slicer-out/${{ matrix.slicer }}-${{ env.latest_release_tag }}.zip
 
       - name: Upload latest release
         if: env.continue_build == 'true' && (matrix.build-type == 'latest_release' || env.latest_release_at_head == 'true')
