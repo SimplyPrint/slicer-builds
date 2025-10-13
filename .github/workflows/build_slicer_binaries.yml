@@ -108,7 +108,7 @@ jobs:
           
           # Create config file
           mkdir -p slicer-out
-          echo -e "build_type=${{ matrix.build-type }}\ntag=${latest_release_tag}\nslicer=${{ matrix.slicer }}\nlatest_release_at_head=${latest_release_at_head}" > slicer-out/config-${{ matrix.slicer }}-${{ matrix.build-type }}.sh
+          echo -e "build_type=${{ matrix.build-type }}\ntag=${latest_release_tag}\nslicer=${{ matrix.slicer }}\nlatest_release_at_head=${latest_release_at_head}" > slicer-out/config.sh
 
       - name: Finalize Setup
         if: env.continue_build == 'true'
@@ -199,8 +199,8 @@ jobs:
         if: env.continue_build == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: config-${{ matrix.slicer }}-${{ matrix.build-type }}.sh
-          path: slicer-out/config-${{ matrix.slicer }}-${{ matrix.build-type }}.sh
+          name: config-${{ matrix.slicer }}-${{ matrix.build-type }}
+          path: slicer-out/config.sh
 
 
   update_version_files:
@@ -220,10 +220,10 @@ jobs:
 
       - name: Update version files
         run: |
-          for file in $(ls ~ | grep config-*.sh); do
-            echo "Begin processing $file"
+          for folder in $(ls ~ | grep config-*); do
+            echo "Begin processing $folder"
             # import the config variables
-            source ~/${file}
+            source ~/${folder}/config.sh
           
             # If handling a release, save it to its own folder
             if [[ "$build_type" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
@@ -249,10 +249,10 @@ jobs:
 
       - name: Bump tags forward
         run: |
-          for file in $(ls ~ | grep config-*.sh); do
-            echo "Begin processing $file"
+          for folder in $(ls ~ | grep config-*); do
+            echo "Begin processing $folder"
             # import the config variables
-            source ~/${file}
+            source ~/${folder}/config.sh
           
             if [[ "$build_type" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
               echo "Handling release"
