@@ -9,6 +9,6 @@ cp -r resources/* slicer_out/resources
 
 cp src/prusa-slicer slicer_out/bin
 
-zip -r ../../slicer-out/binary.zip slicer_out/
+zip -r ../../slicer-out/binary.zip slicer_out/*
 
 popd
