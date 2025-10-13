@@ -9,8 +9,8 @@ on:
         type: choice
         options:
           - ubuntu-24.04
-          - ubicloud-standard-16-ubuntu-24.04
-          - ubicloud-standard-30-ubuntu-24.04
+          - ubicloud-standard-16-ubuntu-2404
+          - ubicloud-standard-30-ubuntu-2404
         default: ubuntu-24.04
         description: The runner for this action
         required: true
@@ -185,8 +185,8 @@ jobs:
           for folder in $(ls | grep configs-); do
             echo "Begin processing $folder"
             # import the config variables
-            source ${folder}/config.sh
-            rm ${folder}/config.sh
+            source ~/${folder}/config.sh
+            rm ~/${folder}/config.sh
             
             # If handling a release, save it to its own folder
             if [[ "$build_type" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
@@ -198,18 +198,18 @@ jobs:
               pushd $slicer
                 jq --arg tag "$tag" '.latest = $tag | .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
               popd
-              cp -rf $folder/* $slicer/$tag || true
+              cp -rf ~/$folder/* $slicer/$tag || true
             fi
             
             # Update the nightly build folder
             if [[ "$build_type" == "nightly" ]]; then
               echo "Handle nightly"
               mkdir -p $slicer/nightly
-              cp -rf $folder/* $slicer/nightly || true
+              cp -rf ~/$folder/* $slicer/nightly || true
             fi
           
             # Delete the processed artifact folder
-            rm -r $folder 
+            rm -r ~/$folder 
           done
 
       - name: Commit to repo
