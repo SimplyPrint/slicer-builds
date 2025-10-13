@@ -108,7 +108,7 @@ jobs:
           # If handling a release, save it to its own folder
           if [[ "${{ matrix.build-type }}" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
             # Update the version file
-            jq --arg tag "$latest_release_tag" '.latest = $tag" || .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
+            jq --arg tag "$latest_release_tag" '.latest = $tag | .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
           
             if [[ "$latest_release_at_head" == "true" ]]; then
               cp -rf nightly/conditional_visibility.json $latest_release_tag || true
