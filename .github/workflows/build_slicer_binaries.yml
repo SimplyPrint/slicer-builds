@@ -240,3 +240,17 @@ jobs:
           if git commit -m "Update slicer binary versions"; then
               git push origin
           fi
+
+      - name: Bump tags forward
+        run: |
+          for file in $(ls ~ | grep config-*.sh); do
+            echo "Begin processing $file"
+            # import the config variables
+            source ~/${file}
+          
+            if [[ "$build_type" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
+              echo "Handling release"
+              git tag -f "${slicer}_${tag}"
+            fi
+          done
+          git push --force --tags origin
