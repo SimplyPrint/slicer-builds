@@ -57,7 +57,7 @@ jobs:
           git fetch origin slicer-config-artifacts
           # Checkout to artifact branch
           git switch slicer-config-artifacts
-          pushd ${{ matrix.slicer }}
+          cd ${{ matrix.slicer }}
       
           # Ensure the version file is initialized
           if ! [[ -e "${{ env.version_file }}" ]]; then
@@ -69,7 +69,6 @@ jobs:
           latest_release_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq '.sha' | xargs echo)
           latest_stored_tag=$(jq '.latest' ${{ env.version_file }} | xargs echo)
           head_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq '.sha' | xargs echo)
-          popd
           
           if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
             if [[ $head_hash == $latest_release_hash ]]; then
@@ -91,32 +90,31 @@ jobs:
           
           if [[ "${{ matrix.build-type }}" == "nightly" ]]; then
             ref=HEAD
+            folder_name=nightly
           else
             ref=refs/tags/$latest_release_tag
+            folder_name=$latest_release_tag
           fi
           
-          uvx generate-defs-visibility --slicer ${{ matrix.slicer }} --ref $ref
+          if ! [[ -d "$folder_name" ]]; then
+            echo "The folder for the specified version does not exist"
+            exit 1
+          fi
+          
+          pushd $folder_name
+            uvx generate-defs-visibility --slicer ${{ matrix.slicer }} --ref $ref
+          popd
         
           # If handling a release, save it to its own folder
           if [[ "${{ matrix.build-type }}" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
-            mkdir -p $slicer/$tag
-            
             # Update the version file
-            pushd $slicer
-              jq --arg tag "$tag" '.latest = $tag" || .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
-            popd
+            jq --arg tag "$latest_release_tag" '.latest = $tag" || .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
           
-            cp -rf conditional_visibility.json $slicer/$tag || true
-          fi
-        
-          # Update the nightly build folder
-          if [[ "$build_type" == "nightly" ]]; then
-            mkdir -p nightly
-            cp -rf conditional_visibility.json $slicer/nightly || true
+            if [[ "$latest_release_at_head" == "true" ]]; then
+              cp -rf nightly/conditional_visibility.json $latest_release_tag || true
+            fi
           fi
           
-          # Remove the original copy
-          rm conditional_visibility.json
           git add .
           
           if git diff --cached --quiet; then
