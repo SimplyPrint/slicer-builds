@@ -4,6 +4,16 @@ on:
   schedule:
     - cron: "0 22 * * *"
   workflow_dispatch:
+    inputs:
+      runner:
+        type: choice
+        options:
+          - ubuntu-24.04
+          - ubicloud-standard-16
+          - ubicloud-standard-30
+        default: ubuntu-24.04
+        description: The runner for this action
+        required: true
 
 env:
   version_file: dump_versions.json
@@ -34,7 +44,7 @@ jobs:
           - slicer: QIDISlicer
             repo: QIDITECH/QIDISlicer
 
-    runs-on: ubuntu-24.04
+    runs-on: ${{ inputs.runner || 'ubuntu-24.04' }}
     env:
       DEPS_CACHE_KEY: ''
       continue_build: 'true'
