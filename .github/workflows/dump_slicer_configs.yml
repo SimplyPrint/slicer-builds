@@ -15,6 +15,11 @@ on:
         description: The runner for this action
         required: true
 
+      disable-caching:
+        type: boolean
+        default: false
+        description: Disable caching
+
 env:
   version_file: dump_versions.json
 
@@ -135,7 +140,7 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ env.DEPS_CACHE_KEY }}-${{ hashFiles('dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh') }}
 
       - name: Build dependencies
-        if: env.continue_build == 'true' && steps.cache-build-deps.outputs.cache-hit != 'true'
+        if: env.continue_build == 'true' && (inputs.disable-caching || steps.cache-build-deps.outputs.cache-hit != 'true')
         run: |
           ./dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh
 
@@ -148,7 +153,7 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.slicer }}-build-slicer-${{ hashFiles('slicer-src/src/libslic3r/PrintConfig.cpp', 'slicer-src/src/slic3r/GUI/Tab.cpp', 'dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch') }}
 
       - name: Build slicer
-        if: env.continue_build == 'true' && steps.cache-build-slicer.outputs.cache-hit != 'true'
+        if: env.continue_build == 'true' && (inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
         run: |
           ./dump_slicer_steps/${{ matrix.slicer }}/build.sh
 
