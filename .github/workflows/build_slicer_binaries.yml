@@ -1,0 +1,223 @@
+name: Build Slicer Binaries
+
+on:
+  schedule:
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+    inputs:
+      runner:
+        type: choice
+        options:
+          - ubuntu-24.04
+          - ubicloud-standard-16-ubuntu-2404
+          - ubicloud-standard-30-ubuntu-2404
+        default: ubuntu-24.04
+        description: The runner for this action
+        required: true
+
+env:
+  version_file: slicer_binary_versions.json
+
+jobs:
+  build_slicers:
+    strategy:
+      fail-fast: false
+      matrix:
+        slicer:
+          - OrcaSlicer
+          - PrusaSlicer
+          - BambuStudio
+        build-type:
+          - nightly
+          - latest_release
+        include:
+          - slicer: OrcaSlicer
+            repo: SoftFever/OrcaSlicer
+          - slicer: PrusaSlicer
+            repo: prusa3d/PrusaSlicer
+          - slicer: BambuStudio
+            repo: BambuLab/BambuStudio
+
+    runs-on: ${{ inputs.runner || 'ubuntu-24.04' }}
+    env:
+      DEPS_CACHE_KEY: ''
+      SLICER_CACHE_KEY: ''
+      continue_build: 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup
+        run: |
+          # Clone slicer repo
+          git clone https://github.com/${{ matrix.repo }} slicer-src --depth 1 --
+          
+          # Get the latest release tag
+          latest_release_tag=$(curl "https://api.github.com/repos/${{ matrix.repo }}/releases/latest" | jq '.tag_name' | xargs echo)
+          
+          # Check if the latest tag has been built
+          git clone https://github.com/${{ github.repository }} --branch slicer-config-artifacts --depth=1 artifacts
+          
+          mkdir -p artifacts/${{ matrix.slicer }}
+          pushd artifacts/${{ matrix.slicer }}
+            if [[ -e "${{ env.version_file }}" ]]; then
+              latest_stored_tag=$(jq '.latest' ${{ env.version_file }} | xargs echo)
+            fi
+          popd
+          
+          if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
+            pushd slicer-src
+              git fetch origin refs/tags/$latest_release_tag
+            
+              head_hash=$(git rev-parse HEAD)
+              tag_hash=$(git rev-parse FETCH_HEAD)
+            popd
+          
+            if [[ $head_hash == $tag_hash ]]; then
+              latest_release_at_head=true
+            fi
+          else
+            # Latest release has not changed, do not continue to build
+            if [[ "${{ matrix.build-type }}" == "latest_release" ]]; then
+              echo "The latest release has already been built. Exiting..."
+              echo "continue_build=false" >> "$GITHUB_ENV"
+              exit 0
+            fi
+          fi
+          
+          # If the commits are the same between latest and nightly, cancel the latest_release build. The nightly build will handle both cases
+          if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "$latest_release_at_head" == "true" ]]; then
+            echo "The latest release is at the HEAD of the repo. The nightly build will be used to generate the release files. Exiting..."
+            echo "continue_build=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          
+          # Create config file
+          mkdir -p slicer-out
+          echo -e "build_type=${{ matrix.build-type }}\ntag=${latest_release_tag}\nslicer=${{ matrix.slicer }}\nlatest_release_at_head=${latest_release_at_head}" > slicer-out/config.sh
+
+      - name: Finalize Setup
+        if: env.continue_build == 'true'
+        env:
+          build_ref: ${{ matrix.build-type == 'latest_release' && 'FETCH_HEAD' || 'HEAD' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+
+          # Setup slicer for build
+          pushd slicer-src
+            git checkout ${{ env.build_ref }}
+            git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch --reject --whitespace=fix || true
+          popd
+
+      - name: Install dependencies
+        if: env.continue_build == 'true'
+        run: |
+          ./dump_slicer_steps/${{ matrix.slicer }}/install-deps.sh
+
+      - name: Get dependencies cache key
+        if: env.continue_build == 'true'
+        run: |
+          cd slicer-src
+          echo "DEPS_CACHE_KEY=$(git log -1 --pretty="format:%H" -- deps)" >> $GITHUB_ENV
+
+      - name: Cache built dependencies
+        if: env.continue_build == 'true'
+        id: cache-build-deps
+        uses: actions/cache@v4
+        with:
+          path: slicer-src/deps/build
+          key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ env.DEPS_CACHE_KEY }}-${{ hashFiles('dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh') }}
+
+      - name: Build dependencies
+        if: env.continue_build == 'true' && steps.cache-build-deps.outputs.cache-hit != 'true'
+        run: |
+          ./dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh
+
+      - name: Get dependencies cache key
+        if: env.continue_build == 'true'
+        run: |
+          cd slicer-src
+          echo "DEPS_CACHE_KEY=$(git log -1 --pretty="format:%H" -- src)" >> $GITHUB_ENV
+
+      - name: Cache built slicer
+        if: env.continue_build == 'true'
+        id: cache-build-slicer
+        uses: actions/cache@v4
+        with:
+          path: slicer-src/build
+          key: ${{ runner.os }}-${{ matrix.slicer }}-build-slicer-${{ env.SLICER_CACHE_KEY }}
+
+      - name: Build slicer
+        if: env.continue_build == 'true' && steps.cache-build-slicer.outputs.cache-hit != 'true'
+        run: |
+          ./dump_slicer_steps/${{ matrix.slicer }}/build.sh
+
+      - name: Package binaries
+        if: env.continue_build == 'true'
+        run: |
+          ./build_slicer_binaries/${{ matrix.slicer }}/package_binary.sh
+
+      - name: Upload extracted JSON files
+        if: env.continue_build == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: configs-${{ matrix.slicer }}-${{ matrix.build-type }}
+          path: slicer-out/*
+
+
+  commit_artifacts:
+    needs: build_slicers
+    runs-on: ubuntu-24.04
+    if: success() || failure()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: slicer-config-artifacts
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: "~"
+
+      - name: Rename artifact folders
+        run: |
+          for folder in $(ls ~ | grep configs-); do
+            echo "Begin processing $folder"
+            # import the config variables
+            source ~/${folder}/config.sh
+            rm ~/${folder}/config.sh
+            
+            # If handling a release, save it to its own folder
+            if [[ "$build_type" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
+              echo "Handling release"
+              mkdir -p $slicer/$tag
+              if ! [[ -e "$slicer/${{ env.version_file }}" ]]; then
+                echo "{}" > $slicer/${{ env.version_file }}
+              fi
+              pushd $slicer
+                jq --arg tag "$tag" '.latest = $tag | .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
+              popd
+              cp -rf ~/$folder/* $slicer/$tag || true
+            fi
+            
+            # Update the nightly build folder
+            if [[ "$build_type" == "nightly" ]]; then
+              echo "Handle nightly"
+              mkdir -p $slicer/nightly
+              cp -rf ~/$folder/* $slicer/nightly || true
+            fi
+          
+            # Delete the processed artifact folder
+            rm -r ~/$folder 
+          done
+
+      - name: Commit to repo
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if git commit -m "Update slicer binary artifacts"; then
+              git push origin
+          fi
