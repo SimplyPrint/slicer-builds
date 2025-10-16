@@ -96,11 +96,6 @@ jobs:
             folder_name=$latest_release_tag
           fi
           
-          if ! [[ -d "$folder_name" ]]; then
-            echo "The folder for the specified version does not exist"
-            exit 1
-          fi
-          
           pushd $folder_name
             uvx generate-defs-visibility --slicer ${{ matrix.slicer }} --ref $ref
           popd
@@ -111,6 +106,7 @@ jobs:
             jq --arg tag "$latest_release_tag" '.latest = $tag | .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
           
             if [[ "$latest_release_at_head" == "true" ]]; then
+              mkdir -p $latest_release_tag
               cp -rf nightly/conditional_visibility.json $latest_release_tag || true
             fi
           fi
