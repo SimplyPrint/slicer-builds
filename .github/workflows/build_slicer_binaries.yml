@@ -62,7 +62,7 @@ jobs:
           # Get latest tags/hashes
           latest_release_tag=$(curl "https://api.github.com/repos/${{ matrix.repo }}/releases/latest" | jq '.tag_name' | xargs echo)
           latest_release_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq '.sha' | xargs echo)
-          latest_stored_tag=$(curl "https://raw.githubusercontent.com/${{ matrix.repo }}/refs/heads/slicer-config-artifacts/${{ matrix.slicer }}/${{ env.version_file }}" | jq '.latest' | xargs echo) || ''
+          latest_stored_tag=$(curl "https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/slicer-config-artifacts/${{ matrix.slicer }}/${{ env.version_file }}" | jq '.latest' | xargs echo) || ''
           head_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq '.sha' | xargs echo)
           
           echo "latest_release_tag=$latest_release_tag" >> "$GITHUB_ENV"
