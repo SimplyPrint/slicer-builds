@@ -12,7 +12,7 @@ index d54a66f..694cf2d 100644
  namespace Slic3r {
  
 diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
-index 287d68c..010c9af 100644
+index 6e2c8b4..7aa36e2 100644
 --- a/src/libslic3r/PrintConfig.cpp
 +++ b/src/libslic3r/PrintConfig.cpp
 @@ -11,6 +11,8 @@
@@ -24,7 +24,7 @@ index 287d68c..010c9af 100644
  
  #include <float.h>
  
-@@ -522,6 +524,196 @@ PrintConfigDef::PrintConfigDef()
+@@ -531,6 +533,196 @@ PrintConfigDef::PrintConfigDef()
      assign_printer_technology_to_unknown(this->options, ptFFF);
      this->init_sla_params();
      assign_printer_technology_to_unknown(this->options, ptSLA);
@@ -222,10 +222,10 @@ index 287d68c..010c9af 100644
  
  void PrintConfigDef::init_common_params()
 diff --git a/src/libslic3r/PrintConfig.hpp b/src/libslic3r/PrintConfig.hpp
-index e9ebb11..6bff618 100644
+index a80f2d3..c64d7c0 100644
 --- a/src/libslic3r/PrintConfig.hpp
 +++ b/src/libslic3r/PrintConfig.hpp
-@@ -430,6 +430,8 @@ class PrintConfigDef : public ConfigDef
+@@ -440,6 +440,8 @@ class PrintConfigDef : public ConfigDef
  public:
      PrintConfigDef();
  
@@ -273,10 +273,10 @@ index c80c9a1..27b8ac2 100644
  	inline std::string translate_utf8(const char         *s, const char 	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
  	inline std::string translate_utf8(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
 diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
-index 82121c3..b3cc3e9 100644
+index f224d7e..be5fa58 100644
 --- a/src/slic3r/GUI/MainFrame.cpp
 +++ b/src/slic3r/GUI/MainFrame.cpp
-@@ -1425,6 +1425,10 @@ void MainFrame::create_preset_tabs()
+@@ -1427,6 +1427,10 @@ void MainFrame::create_preset_tabs()
      //add_created_tab(new TabSLAMaterial(m_param_panel));
      add_created_tab(new TabPrinter(m_param_dialog->panel()), "printer");
  
@@ -288,7 +288,7 @@ index 82121c3..b3cc3e9 100644
      m_param_dialog->panel()->rebuild_panels();
      //m_tabpanel->AddPage(m_param_panel, "Parameters", "notebook_presets_active");
 diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
-index 99ba7a3..9b45b86 100644
+index 3ce2545..a64106b 100644
 --- a/src/slic3r/GUI/PartPlate.cpp
 +++ b/src/slic3r/GUI/PartPlate.cpp
 @@ -39,6 +39,8 @@
@@ -300,7 +300,7 @@ index 99ba7a3..9b45b86 100644
  using boost::optional;
  namespace fs = boost::filesystem;
  
-@@ -6261,7 +6263,9 @@ void PartPlateList::BedTextureInfo::reset()
+@@ -6308,7 +6310,9 @@ void PartPlateList::BedTextureInfo::reset()
          parts[i].reset();
  }
  
@@ -311,17 +311,17 @@ index 99ba7a3..9b45b86 100644
  {
      BedTextureInfo::TexturePart st_part1(10, 52, 8.393f, 192, "bbl_bed_st_left.svg");
      BedTextureInfo::TexturePart st_part2(74, -10, 148, 12, "bbl_bed_st_bottom.svg");
-@@ -6298,7 +6302,8 @@ void PartPlateList::init_bed_type_info()
+@@ -6357,7 +6361,8 @@ void PartPlateList::init_bed_type_info()
              }
          }
      }
 -    auto is_single_extruder = wxGetApp().preset_bundle->get_printer_extruder_count() == 1;
 +	if (bed_textures_dumped)
 +		is_single_extruder = wxGetApp().preset_bundle->get_printer_extruder_count() == 1;
-     if (!is_single_extruder) {
-         m_allow_bed_type_in_double_nozzle.clear();
+     bool use_double_extruder_texture = !is_single_extruder || use_double_extruder_default_texture == "true";
+     if (use_double_extruder_texture) {
          pte_part1 = BedTextureInfo::TexturePart(57, 300, 236.12f, 10.f, "bbl_bed_pte_middle.svg");
-@@ -6340,6 +6345,9 @@ void PartPlateList::init_bed_type_info()
+@@ -6456,6 +6461,9 @@ void PartPlateList::init_bed_type_info()
  	bed_texture_info[btPTE].parts.push_back(pte_part1);
  	bed_texture_info[btPTE].parts.push_back(pte_part2);
  
@@ -331,7 +331,7 @@ index 99ba7a3..9b45b86 100644
  	auto  bed_ext     = get_extents(m_shape);
  	int   bed_width   = bed_ext.size()(0);
  	int   bed_height  = bed_ext.size()(1);
-@@ -6455,6 +6463,66 @@ void PartPlateList::load_bedtype_textures()
+@@ -6575,6 +6583,66 @@ void PartPlateList::load_bedtype_textures()
  {
  	if (PartPlateList::is_load_bedtype_textures) return;
  
@@ -399,10 +399,10 @@ index 99ba7a3..9b45b86 100644
  	GLint max_tex_size = OpenGLManager::get_gl_info().get_max_tex_size();
  	GLint logo_tex_size = (max_tex_size < 2048) ? max_tex_size : 2048;
 diff --git a/src/slic3r/GUI/PartPlate.hpp b/src/slic3r/GUI/PartPlate.hpp
-index 9750b5a..db79d03 100644
+index efe88f0..fffb301 100644
 --- a/src/slic3r/GUI/PartPlate.hpp
 +++ b/src/slic3r/GUI/PartPlate.hpp
-@@ -954,7 +954,8 @@ public:
+@@ -970,7 +970,8 @@ public:
          int h;
      };
      bool calc_extruder_only_area(Rect &left_only_rect, Rect &right_only_rect);
@@ -413,7 +413,7 @@ index 9750b5a..db79d03 100644
      void load_bedtype_textures();
      void load_extruder_only_area_textures();
 diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
-index e245874..29d8adc 100644
+index 5d3ea9a..bd23525 100644
 --- a/src/slic3r/GUI/Tab.cpp
 +++ b/src/slic3r/GUI/Tab.cpp
 @@ -24,6 +24,7 @@
@@ -502,7 +502,7 @@ index e245874..29d8adc 100644
                              ScalableButton** btn,
                              const std::string& icon_name,
 diff --git a/src/slic3r/GUI/Tab.hpp b/src/slic3r/GUI/Tab.hpp
-index 53e8ada..043f113 100644
+index 3c0c465..4d48e00 100644
 --- a/src/slic3r/GUI/Tab.hpp
 +++ b/src/slic3r/GUI/Tab.hpp
 @@ -322,6 +322,7 @@ public:
