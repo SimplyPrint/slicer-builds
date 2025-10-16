@@ -142,7 +142,7 @@ jobs:
         if: env.continue_build == 'true'
         run: |
           cd slicer-src
-          echo "DEPS_CACHE_KEY=$(git log -1 --pretty="format:%H" -- src)" >> $GITHUB_ENV
+          echo "SLICER_CACHE_KEY=$(git log -1 --pretty="format:%H" -- src)" >> $GITHUB_ENV
 
       - name: Cache built slicer
         if: env.continue_build == 'true'
