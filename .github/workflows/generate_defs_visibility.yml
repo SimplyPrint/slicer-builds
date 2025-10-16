@@ -73,8 +73,14 @@ jobs:
           latest_stored_tag=$(jq '.latest' ${{ env.version_file }} | xargs echo)
           head_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq '.sha' | xargs echo)
           
+          echo latest_release_tag=$latest_release_tag
+          echo latest_release_hash=$latest_release_hash
+          echo latest_stored_tag=$latest_stored_tag
+          echo head_hash=$head_hash
+          
           if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
             if [[ $head_hash == $latest_release_hash ]]; then
+              echo "Latest release found at HEAD"
               latest_release_at_head=true
             fi
           else

@@ -75,6 +75,9 @@ jobs:
             fi
           popd
           
+          echo latest_release_tag=$latest_release_tag
+          echo latest_stored_tag=$latest_stored_tag
+          
           if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
             pushd slicer-src
               git fetch origin refs/tags/$latest_release_tag
@@ -83,7 +86,11 @@ jobs:
               tag_hash=$(git rev-parse FETCH_HEAD)
             popd
           
+            echo head_hash=$head_hash
+            echo tag_hash=$tag_hash
+          
             if [[ $head_hash == $tag_hash ]]; then
+              echo "Latest release found at HEAD"
               latest_release_at_head=true
             fi
           else
