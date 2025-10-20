@@ -1330,7 +1330,8 @@
         "label": "Shrinkage (XY)",
         "tooltip": "Enter the shrinkage percentage that the filament will get after cooling (94% if you measure 94mm instead of 100mm). The part will be scaled in xy to compensate. Only the filament used for the perimeter is taken into account.\nBe sure to allow enough space between objects, as this compensation is done after the checks.",
         "sidetext": "%",
-        "min": "10",
+        "min": "50",
+        "max": "150",
         "mode": "advanced",
         "default_value": "100%"
     },
@@ -1339,7 +1340,8 @@
         "label": "Shrinkage (Z)",
         "tooltip": "Enter the shrinkage percentage that the filament will get after cooling (94% if you measure 94mm instead of 100mm). The part will be scaled in Z to compensate.",
         "sidetext": "%",
-        "min": "10",
+        "min": "50",
+        "max": "150",
         "mode": "advanced",
         "default_value": "100%"
     },
@@ -1487,6 +1489,15 @@
         "sidetext": "mm",
         "mode": "advanced",
         "default_value": "0"
+    },
+    "first_layer_flow_ratio": {
+        "type": "float",
+        "label": "First layer flow ratio",
+        "tooltip": "This factor affects the amount of material on the first layer for the extrusion path roles listed in this section.\n\nFor the first layer, the actual flow ratio for each path role (does not affect brims and skirts) will be multiplied by this value.",
+        "min": "0",
+        "max": "2",
+        "mode": "advanced",
+        "default_value": "1"
     },
     "first_layer_print_sequence": {
         "type": "ints",
@@ -1675,6 +1686,15 @@
         "max": "1",
         "mode": "simple",
         "default_value": "0.2"
+    },
+    "gap_fill_flow_ratio": {
+        "type": "float",
+        "label": "Gap fill flow ratio",
+        "tooltip": "This factor affects the amount of material for filling the gaps.\n\nThe actual gap filling flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio.",
+        "min": "0",
+        "max": "2",
+        "mode": "advanced",
+        "default_value": "1"
     },
     "gap_fill_target": {
         "type": "enum",
@@ -2054,6 +2074,15 @@
         "mode": "advanced",
         "default_value": "10000"
     },
+    "inner_wall_flow_ratio": {
+        "type": "float",
+        "label": "Inner wall flow ratio",
+        "tooltip": "This factor affects the amount of material for inner walls.\n\nThe actual inner wall flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio.",
+        "min": "0",
+        "max": "2",
+        "mode": "advanced",
+        "default_value": "1"
+    },
     "inner_wall_jerk": {
         "type": "float",
         "label": "Inner wall",
@@ -2195,6 +2224,15 @@
         "mode": "advanced",
         "default_value": "100%"
     },
+    "internal_solid_infill_flow_ratio": {
+        "type": "float",
+        "label": "Internal solid infill flow ratio",
+        "tooltip": "This factor affects the amount of material for internal solid infill.\n\nThe actual internal solid infill flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio.",
+        "min": "0",
+        "max": "2",
+        "mode": "advanced",
+        "default_value": "1"
+    },
     "internal_solid_infill_line_width": {
         "type": "floatorpercent",
         "label": "Internal solid infill",
@@ -2277,13 +2315,13 @@
     },
     "ironing_angle": {
         "type": "float",
-        "label": "Ironing angle",
-        "tooltip": "The angle ironing is done at. A negative number disables this function and uses the default method.",
+        "label": "Ironing angle offset",
+        "tooltip": "The angle of ironing lines offset from the top surface.",
         "sidetext": "°",
-        "min": "-1",
+        "min": "0",
         "max": "359",
         "mode": "advanced",
-        "default_value": "-1"
+        "default_value": "0"
     },
     "ironing_fan_speed": {
         "type": "ints",
@@ -3026,6 +3064,15 @@
         "mode": "advanced",
         "default_value": "500"
     },
+    "outer_wall_flow_ratio": {
+        "type": "float",
+        "label": "Outer wall flow ratio",
+        "tooltip": "This factor affects the amount of material for outer walls.\n\nThe actual outer wall flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio.",
+        "min": "0",
+        "max": "2",
+        "mode": "advanced",
+        "default_value": "1"
+    },
     "outer_wall_jerk": {
         "type": "float",
         "label": "Outer wall",
@@ -3126,6 +3173,15 @@
         ],
         "mode": "advanced",
         "default_value": "95%"
+    },
+    "overhang_flow_ratio": {
+        "type": "float",
+        "label": "Overhang flow ratio",
+        "tooltip": "This factor affects the amount of material for overhangs.\n\nThe actual overhang flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio.",
+        "min": "0",
+        "max": "2",
+        "mode": "advanced",
+        "default_value": "1"
     },
     "overhang_reverse": {
         "type": "bool",
@@ -3863,6 +3919,13 @@
         "mode": "advanced",
         "default_value": "none"
     },
+    "set_other_flow_ratios": {
+        "type": "bool",
+        "label": "Set other flow ratios",
+        "tooltip": "Change flow ratios for other extrusion path types.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "silent_mode": {
         "type": "bool",
         "label": "Supports silent mode",
@@ -4159,6 +4222,15 @@
         "tooltip": "Filament to print internal sparse infill.",
         "min": "1",
         "gui_type": "i_enum_open",
+        "mode": "advanced",
+        "default_value": "1"
+    },
+    "sparse_infill_flow_ratio": {
+        "type": "float",
+        "label": "Sparse infill flow ratio",
+        "tooltip": "This factor affects the amount of material for sparse infill.\n\nThe actual sparse infill flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio.",
+        "min": "0",
+        "max": "2",
         "mode": "advanced",
         "default_value": "1"
     },
@@ -4568,6 +4640,15 @@
         "mode": "simple",
         "default_value": "0"
     },
+    "support_flow_ratio": {
+        "type": "float",
+        "label": "Support flow ratio",
+        "tooltip": "This factor affects the amount of material for support.\n\nThe actual support flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio.",
+        "min": "0",
+        "max": "2",
+        "mode": "advanced",
+        "default_value": "1"
+    },
     "support_interface_bottom_layers": {
         "type": "int",
         "label": "Bottom interface layers",
@@ -4586,6 +4667,15 @@
         "gui_type": "i_enum_open",
         "mode": "simple",
         "default_value": "0"
+    },
+    "support_interface_flow_ratio": {
+        "type": "float",
+        "label": "Support interface flow ratio",
+        "tooltip": "This factor affects the amount of material for the support interface.\n\nThe actual support interface flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio.",
+        "min": "0",
+        "max": "2",
+        "mode": "advanced",
+        "default_value": "1"
     },
     "support_interface_loop_pattern": {
         "type": "bool",
