@@ -1,18 +1,5 @@
-diff --git a/deps/TIFF/TIFF.cmake b/deps/TIFF/TIFF.cmake
-index e48744d..c89c588 100644
---- a/deps/TIFF/TIFF.cmake
-+++ b/deps/TIFF/TIFF.cmake
-@@ -17,7 +17,7 @@ if (APPLE)
- else()
-     orcaslicer_add_cmake_project(TIFF
-         URL https://gitlab.com/libtiff/libtiff/-/archive/v4.1.0/libtiff-v4.1.0.zip
--        URL_HASH SHA256=c56edfacef0a60c0de3e6489194fcb2f24c03dbb550a8a7de5938642d045bd32
-+        URL_HASH SHA256=17a3e875acece9be40b093361cfef47385d4ef22c995ffbf36b2871f5785f9b8
-         DEPENDS ${ZLIB_PKG} ${PNG_PKG} dep_JPEG
-         CMAKE_ARGS
-             -Dlzma:BOOL=OFF
 diff --git a/src/libslic3r/Format/OBJ.cpp b/src/libslic3r/Format/OBJ.cpp
-index abaae3692..f7ee0847d 100644
+index 71f7d1e..cbffb76 100644
 --- a/src/libslic3r/Format/OBJ.cpp
 +++ b/src/libslic3r/Format/OBJ.cpp
 @@ -17,7 +17,7 @@
@@ -25,10 +12,10 @@ index abaae3692..f7ee0847d 100644
  namespace Slic3r {
  
 diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
-index 2fe0e3b55..77fe2503a 100644
+index c525c00..96dfbfb 100644
 --- a/src/libslic3r/PrintConfig.cpp
 +++ b/src/libslic3r/PrintConfig.cpp
-@@ -5,6 +5,9 @@
+@@ -6,6 +6,9 @@
  #include "format.hpp"
  
  #include "GCode/Thumbnails.hpp"
@@ -36,9 +23,9 @@ index 2fe0e3b55..77fe2503a 100644
 +#include "boost/property_tree/json_parser.hpp"
 +
  #include <set>
- #include <boost/algorithm/string/replace.hpp>
  #include <boost/algorithm/string/case_conv.hpp>
-@@ -456,6 +459,192 @@ PrintConfigDef::PrintConfigDef()
+ #include <boost/algorithm/string/replace.hpp>
+@@ -613,6 +616,192 @@ PrintConfigDef::PrintConfigDef()
      assign_printer_technology_to_unknown(this->options, ptFFF);
      this->init_sla_params();
      assign_printer_technology_to_unknown(this->options, ptSLA);
@@ -232,10 +219,10 @@ index 2fe0e3b55..77fe2503a 100644
  
  void PrintConfigDef::init_common_params()
 diff --git a/src/libslic3r/PrintConfig.hpp b/src/libslic3r/PrintConfig.hpp
-index 288c9e9c7..598e991d3 100644
+index e70ff7f..7ad8a8f 100644
 --- a/src/libslic3r/PrintConfig.hpp
 +++ b/src/libslic3r/PrintConfig.hpp
-@@ -450,6 +450,8 @@ class PrintConfigDef : public ConfigDef
+@@ -517,6 +517,8 @@ class PrintConfigDef : public ConfigDef
  public:
      PrintConfigDef();
  
@@ -245,7 +232,7 @@ index 288c9e9c7..598e991d3 100644
      static void handle_legacy_composite(DynamicPrintConfig &config);
  
 diff --git a/src/slic3r/GUI/I18N.hpp b/src/slic3r/GUI/I18N.hpp
-index c80c9a165..27b8ac2cd 100644
+index c80c9a1..27b8ac2 100644
 --- a/src/slic3r/GUI/I18N.hpp
 +++ b/src/slic3r/GUI/I18N.hpp
 @@ -40,11 +40,11 @@
@@ -283,10 +270,10 @@ index c80c9a165..27b8ac2cd 100644
  	inline std::string translate_utf8(const char         *s, const char 	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
  	inline std::string translate_utf8(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
 diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
-index 945e8b493..631579106 100644
+index 635549d..18b09dc 100644
 --- a/src/slic3r/GUI/MainFrame.cpp
 +++ b/src/slic3r/GUI/MainFrame.cpp
-@@ -1306,6 +1306,8 @@ void MainFrame::create_preset_tabs()
+@@ -1363,6 +1363,8 @@ void MainFrame::create_preset_tabs()
      //add_created_tab(new TabSLAMaterial(m_param_panel));
      add_created_tab(new TabPrinter(m_param_dialog->panel()), "printer");
  
@@ -296,18 +283,19 @@ index 945e8b493..631579106 100644
      m_param_dialog->panel()->rebuild_panels();
      //m_tabpanel->AddPage(m_param_panel, "Parameters", "notebook_presets_active");
 diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
-index b95ace823..7c418304d 100644
+index 8c242e1..818ca85 100644
 --- a/src/slic3r/GUI/Tab.cpp
 +++ b/src/slic3r/GUI/Tab.cpp
-@@ -51,6 +51,7 @@
- #include "libslic3r/GCode/Thumbnails.hpp"
- 
- #include "BedShapeDialog.hpp"
-+#include "boost/dll/runtime_symbol_info.hpp"
- // #include "BonjourDialog.hpp"
+@@ -55,7 +55,7 @@
  #ifdef WIN32
  	#include <commctrl.h>
-@@ -531,6 +532,8 @@ void Tab::create_preset_tab()
+ #endif // WIN32
+-
++#include "boost/dll/runtime_symbol_info.hpp"
+ #include <algorithm>
+ 
+ namespace Slic3r {
+@@ -553,6 +553,8 @@ void Tab::create_preset_tab()
      // Initialize the DynamicPrintConfig by default keys/values.
      build();
  
@@ -316,7 +304,7 @@ index b95ace823..7c418304d 100644
      // ys_FIXME: Following should not be needed, the function will be called later
      // (update_mode->update_visibility->rebuild_page_tree). This does not work, during the
      // second call of rebuild_page_tree m_tabctrl->GetFirstVisibleItem(); returns zero
-@@ -540,6 +543,67 @@ void Tab::create_preset_tab()
+@@ -562,6 +564,67 @@ void Tab::create_preset_tab()
      m_completed = true;
  }
  
@@ -385,10 +373,10 @@ index b95ace823..7c418304d 100644
                              ScalableButton** btn,
                              const std::string& icon_name,
 diff --git a/src/slic3r/GUI/Tab.hpp b/src/slic3r/GUI/Tab.hpp
-index cab9990bb..74d0f5778 100644
+index dbcff30..f31d296 100644
 --- a/src/slic3r/GUI/Tab.hpp
 +++ b/src/slic3r/GUI/Tab.hpp
-@@ -315,6 +315,7 @@ public:
+@@ -321,6 +321,7 @@ public:
  	virtual bool supports_printer_technology(const PrinterTechnology tech) const = 0;
  
  	void		create_preset_tab();
