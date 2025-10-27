@@ -165,6 +165,21 @@
         "mode": "advanced",
         "default_value": "50,50"
     },
+    "bed_temperature_formula": {
+        "type": "enum",
+        "label": "Bed temperature type",
+        "tooltip": "This option determines how the bed temperature is set during slicing: based on the temperature of the first filament or the highest temperature of the printed filaments.",
+        "enum_values": [
+            "by_first_filament",
+            "by_highest_temp"
+        ],
+        "enum_labels": [
+            "By First filament",
+            "By Highest Temp"
+        ],
+        "mode": "develop",
+        "default_value": "by_first_filament"
+    },
     "before_layer_change_gcode": {
         "type": "string",
         "label": "Before layer change G-code",
@@ -642,6 +657,21 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "default_nozzle_volume_type": {
+        "type": "enums",
+        "label": "Default Nozzle Volume Type.",
+        "tooltip": "Default Nozzle volume type for extruders in this printer.",
+        "enum_values": [
+            "Standard",
+            "High Flow"
+        ],
+        "enum_labels": [
+            "Standard",
+            "High Flow"
+        ],
+        "mode": "develop",
+        "default_value": "Standard"
+    },
     "default_print_profile": {
         "type": "string",
         "label": "Default process profile",
@@ -844,6 +874,13 @@
         "mode": "simple",
         "default_value": "0"
     },
+    "enable_wrapping_detection": {
+        "type": "bool",
+        "label": "Enable clumping detection",
+        "tooltip": "Enable clumping detection",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "enforce_support_layers": {
         "type": "int",
         "label": "",
@@ -932,6 +969,13 @@
         "gui_type": "i_enum_open",
         "mode": "advanced"
     },
+    "extruder_ams_count": {
+        "type": "strings",
+        "label": "Extruder ams count",
+        "tooltip": "Ams counts of per extruder.",
+        "mode": "simple",
+        "default_value": ""
+    },
     "extruder_clearance_height_to_lid": {
         "type": "float",
         "label": "Height to lid",
@@ -974,6 +1018,46 @@
         "sidetext": "mm",
         "mode": "advanced",
         "default_value": "0x0"
+    },
+    "extruder_printable_area": {
+        "type": "",
+        "label": "Extruder printable area",
+        "tooltip": "",
+        "gui_type": "one_string",
+        "mode": "advanced"
+    },
+    "extruder_printable_height": {
+        "type": "floats",
+        "label": "Extruder printable height",
+        "tooltip": "Maximum printable height of this extruder which is limited by mechanism of printer.",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "1000",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "extruder_type": {
+        "type": "enums",
+        "label": "Type",
+        "tooltip": "This setting is only used for initial value of manual calibration of pressure advance. Bowden extruder usually has larger pa value. This setting doesn't influence normal slicing.",
+        "enum_values": [
+            "Direct Drive",
+            "Bowden"
+        ],
+        "enum_labels": [
+            "Direct Drive",
+            "Bowden"
+        ],
+        "mode": "advanced",
+        "default_value": "Direct Drive"
+    },
+    "extruder_variant_list": {
+        "type": "strings",
+        "label": "Extruder variant list",
+        "tooltip": "Extruder variant list.",
+        "mode": "simple",
+        "nocli": "true",
+        "default_value": "\"Direct Drive Standard\""
     },
     "extrusion_rate_smoothing_external_perimeter_only": {
         "type": "bool",
@@ -1036,6 +1120,30 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "filament_adaptive_volumetric_speed": {
+        "type": "bools",
+        "label": "Adaptive volumetric speed",
+        "tooltip": "When enabled, the extrusion flow is limited by the smaller of the fitted value (calculated from line width and layer height) and the user-defined maximum flow. When disabled, only the user-defined maximum flow is applied.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "filament_adhesiveness_category": {
+        "type": "ints",
+        "label": "Adhesiveness Category",
+        "tooltip": "Filament category.",
+        "min": "0",
+        "mode": "develop",
+        "default_value": "0"
+    },
+    "filament_change_length": {
+        "type": "floats",
+        "label": "Filament ramming length",
+        "tooltip": "When changing the extruder, it is recommended to extrude a certain length of filament from the original extruder. This helps minimize nozzle oozing.",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "10"
+    },
     "filament_colour": {
         "type": "strings",
         "label": "Color",
@@ -1043,6 +1151,13 @@
         "gui_type": "color",
         "mode": "advanced",
         "default_value": "#F2754E"
+    },
+    "filament_colour_type": {
+        "type": "strings",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "1"
     },
     "filament_cooling_final_speed": {
         "type": "floats",
@@ -1116,6 +1231,14 @@
         "mode": "advanced",
         "default_value": "\" \""
     },
+    "filament_extruder_variant": {
+        "type": "strings",
+        "label": "Filament's extruder variant",
+        "tooltip": "Filament's extruder variant.",
+        "mode": "simple",
+        "nocli": "true",
+        "default_value": "\"Direct Drive Standard\""
+    },
     "filament_flow_ratio": {
         "type": "floats",
         "label": "Flow ratio",
@@ -1123,6 +1246,26 @@
         "max": "2",
         "mode": "advanced",
         "default_value": "1"
+    },
+    "filament_flush_temp": {
+        "type": "ints",
+        "label": "Flush temperature",
+        "tooltip": "Temperature when flushing filament. 0 indicates the upper bound of the recommended nozzle temperature range.",
+        "sidetext": "°C",
+        "min": "0",
+        "max": "1500",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "filament_flush_volumetric_speed": {
+        "type": "floats",
+        "label": "Flush volumetric speed",
+        "tooltip": "Volumetric speed when flushing filament. 0 indicates the max volumetric speed.",
+        "sidetext": "mm³\/s",
+        "min": "0",
+        "max": "200",
+        "mode": "advanced",
+        "default_value": "0"
     },
     "filament_ids": {
         "type": "strings",
@@ -1164,6 +1307,32 @@
         "mode": "simple",
         "default_value": "0"
     },
+    "filament_map": {
+        "type": "ints",
+        "label": "Filament map to extruder",
+        "tooltip": "Filament map to extruder.",
+        "mode": "develop",
+        "default_value": "1"
+    },
+    "filament_map_mode": {
+        "type": "enum",
+        "label": "filament mapping mode",
+        "tooltip": "Filament mapping mode used as plate param.",
+        "enum_values": [
+            "Auto For Flush",
+            "Auto For Match",
+            "Manual",
+            "Default"
+        ],
+        "enum_labels": [
+            "Auto For Flush",
+            "Auto For Match",
+            "Manual",
+            "Default"
+        ],
+        "mode": "advanced",
+        "default_value": "Auto For Flush"
+    },
     "filament_max_volumetric_speed": {
         "type": "floats",
         "label": "Max volumetric speed",
@@ -1181,6 +1350,13 @@
         "min": "0",
         "mode": "advanced",
         "default_value": "15"
+    },
+    "filament_multi_colour": {
+        "type": "strings",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "\"\""
     },
     "filament_multitool_ramming": {
         "type": "bools",
@@ -1216,6 +1392,13 @@
         "height": "13",
         "mode": "advanced",
         "default_value": "\"\""
+    },
+    "filament_printable": {
+        "type": "ints",
+        "label": "Filament printable",
+        "tooltip": "The filament is printable in extruder.",
+        "mode": "develop",
+        "default_value": "3"
     },
     "filament_ramming_parameters": {
         "type": "strings",
@@ -1317,6 +1500,14 @@
         "sidetext": "mm\/s",
         "mode": "advanced",
         "default_value": "30"
+    },
+    "filament_self_index": {
+        "type": "ints",
+        "label": "Filament self index",
+        "tooltip": "Filament self index.",
+        "mode": "simple",
+        "nocli": "true",
+        "default_value": "1"
     },
     "filament_settings_id": {
         "type": "strings",
@@ -1545,7 +1736,7 @@
         "default_value": "1"
     },
     "flush_multiplier": {
-        "type": "float",
+        "type": "floats",
         "label": "Flush multiplier",
         "tooltip": "The actual flushing volumes is equal to the flush multiplier multiplied by the flushing volumes in the table.",
         "mode": "simple",
@@ -1761,6 +1952,15 @@
         "tooltip": "Enable this to add comments into the G-code labeling print moves with what object they belong to, which is useful for the Octoprint CancelObject plugin. This settings is NOT compatible with Single Extruder Multi Material setup and Wipe into Object \/ Wipe into Infill.",
         "mode": "advanced",
         "default_value": "1"
+    },
+    "grab_length": {
+        "type": "floats",
+        "label": "Grab length",
+        "tooltip": "",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "develop",
+        "default_value": "0"
     },
     "has_scarf_joint_seam": {
         "type": "bool",
@@ -2479,6 +2679,13 @@
         "mode": "develop",
         "default_value": "0"
     },
+    "long_retractions_when_ec": {
+        "type": "bools",
+        "label": "Long retraction when extruder change",
+        "tooltip": "",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "machine_end_gcode": {
         "type": "string",
         "label": "End G-code",
@@ -2612,11 +2819,12 @@
         "type": "floats",
         "label": "",
         "full_label": "Maximum Junction Deviation",
-        "tooltip": "Maximum junction deviation (M205 J, only apply if JD > 0 for Marlin Firmware)",
+        "tooltip": "Maximum junction deviation (M205 J, only apply if JD > 0 for Marlin Firmware\nIf your Marlin 2 printer uses Classic Jerk set this value to 0.)",
         "sidetext": "mm",
         "min": "0",
+        "max": "1",
         "mode": "advanced",
-        "default_value": "0,0"
+        "default_value": "0.01"
     },
     "machine_max_speed_e": {
         "type": "floats",
@@ -2748,6 +2956,13 @@
         "tooltip": "Enable this option to omit the custom Change filament G-code only at the beginning of the print. The tool change command (e.g., T0) will be skipped throughout the entire print. This is useful for manual multi-material printing, where we use M600\/PAUSE to trigger the manual filament change action.",
         "mode": "advanced",
         "default_value": "0"
+    },
+    "master_extruder_id": {
+        "type": "int",
+        "label": "Master extruder id",
+        "tooltip": "Default extruder id to place filament.",
+        "mode": "simple",
+        "default_value": "1"
     },
     "max_bridge_length": {
         "type": "float",
@@ -2915,6 +3130,13 @@
         "mode": "advanced",
         "default_value": "0.4"
     },
+    "nozzle_flush_dataset": {
+        "type": "ints",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "0"
+    },
     "nozzle_height": {
         "type": "float",
         "label": "Nozzle height",
@@ -2977,31 +3199,47 @@
         "default_value": "190"
     },
     "nozzle_type": {
-        "type": "enum",
+        "type": "enums",
         "label": "Nozzle type",
         "tooltip": "The metallic material of nozzle. This determines the abrasive resistance of nozzle, and what kind of filament can be printed.",
         "enum_values": [
             "undefine",
             "hardened_steel",
             "stainless_steel",
+            "tungsten_carbide",
             "brass"
         ],
         "enum_labels": [
             "Undefine",
             "Hardened steel",
             "Stainless steel",
+            "Tungsten carbide",
             "Brass"
         ],
-        "mode": "advanced",
-        "default_value": "undefine"
+        "mode": "advanced"
     },
     "nozzle_volume": {
-        "type": "float",
+        "type": "floats",
         "label": "Nozzle volume",
         "tooltip": "Volume of nozzle between the cutter and the end of nozzle.",
         "sidetext": "mm³",
         "mode": "advanced",
         "default_value": "0"
+    },
+    "nozzle_volume_type": {
+        "type": "enums",
+        "label": "Nozzle Volume Type",
+        "tooltip": "Nozzle volume type.",
+        "enum_values": [
+            "Standard",
+            "High Flow"
+        ],
+        "enum_labels": [
+            "Standard",
+            "High Flow"
+        ],
+        "mode": "simple",
+        "default_value": "Standard"
     },
     "only_one_wall_first_layer": {
         "type": "bool",
@@ -3103,8 +3341,8 @@
     },
     "overhang_1_4_speed": {
         "type": "floatorpercent",
-        "label": "(10%, 25%)",
-        "full_label": "(10%, 25%)",
+        "label": "10%",
+        "full_label": "10%",
         "tooltip": "",
         "sidetext": "mm\/s or %",
         "min": "0",
@@ -3113,8 +3351,8 @@
     },
     "overhang_2_4_speed": {
         "type": "floatorpercent",
-        "label": "[25%, 50%)",
-        "full_label": "[25%, 50%)",
+        "label": "25%",
+        "full_label": "25%",
         "tooltip": "",
         "sidetext": "mm\/s or %",
         "min": "0",
@@ -3123,8 +3361,8 @@
     },
     "overhang_3_4_speed": {
         "type": "floatorpercent",
-        "label": "[50%, 75%)",
-        "full_label": "[50%, 75%)",
+        "label": "50%",
+        "full_label": "50%",
         "tooltip": "",
         "sidetext": "mm\/s or %",
         "min": "0",
@@ -3133,8 +3371,8 @@
     },
     "overhang_4_4_speed": {
         "type": "floatorpercent",
-        "label": "[75%, 100%)",
-        "full_label": "[75%, 100%)",
+        "label": "75%",
+        "full_label": "75%",
         "tooltip": "",
         "sidetext": "mm\/s or %",
         "min": "0",
@@ -3233,6 +3471,13 @@
         "mode": "simple",
         "default_value": "0"
     },
+    "physical_extruder_map": {
+        "type": "ints",
+        "label": "Map the logical extruder to physical extruder",
+        "tooltip": "Map the logical extruder to physical extruder.",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "post_process": {
         "type": "strings",
         "label": "Post-processing Scripts",
@@ -3311,11 +3556,42 @@
     "prime_tower_brim_width": {
         "type": "float",
         "label": "Brim width",
-        "tooltip": "Width of the brim.",
+        "tooltip": "Brim width of prime tower, negative number means auto calculated width based on the height of prime tower.",
         "sidetext": "mm",
-        "min": "0",
+        "min": "-1",
+        "gui_type": "f_enum_open",
         "mode": "advanced",
         "default_value": "3"
+    },
+    "prime_tower_enable_framework": {
+        "type": "bool",
+        "label": "Internal ribs",
+        "tooltip": "Enable internal ribs to increase the stability of the prime tower.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "prime_tower_flat_ironing": {
+        "type": "bool",
+        "label": "",
+        "tooltip": "",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "prime_tower_infill_gap": {
+        "type": "percent",
+        "label": "Infill gap",
+        "tooltip": "Infill gap.",
+        "sidetext": "%",
+        "min": "100",
+        "mode": "advanced",
+        "default_value": "150%"
+    },
+    "prime_tower_skip_points": {
+        "type": "bool",
+        "label": "Skip points",
+        "tooltip": "The wall of prime tower will skip the start points of wipe path.",
+        "mode": "advanced",
+        "default_value": "1"
     },
     "prime_tower_width": {
         "type": "float",
@@ -3342,6 +3618,22 @@
         "mode": "simple",
         "nocli": "true",
         "default_value": ""
+    },
+    "print_extruder_id": {
+        "type": "ints",
+        "label": "Print extruder id",
+        "tooltip": "Print extruder id.",
+        "mode": "simple",
+        "nocli": "true",
+        "default_value": "1"
+    },
+    "print_extruder_variant": {
+        "type": "strings",
+        "label": "Print's extruder variant",
+        "tooltip": "Print's extruder variant.",
+        "mode": "simple",
+        "nocli": "true",
+        "default_value": "\"Direct Drive Standard\""
     },
     "print_flow_ratio": {
         "type": "float",
@@ -3421,6 +3713,22 @@
         "max": "214700",
         "mode": "simple",
         "default_value": "100"
+    },
+    "printer_extruder_id": {
+        "type": "ints",
+        "label": "Printer extruder id",
+        "tooltip": "Printer extruder id.",
+        "mode": "simple",
+        "nocli": "true",
+        "default_value": "1"
+    },
+    "printer_extruder_variant": {
+        "type": "strings",
+        "label": "Printer's extruder variant",
+        "tooltip": "Printer's extruder variant.",
+        "mode": "simple",
+        "nocli": "true",
+        "default_value": "\"Direct Drive Standard\""
     },
     "printer_model": {
         "type": "string",
@@ -3748,6 +4056,16 @@
         "max": "18",
         "mode": "develop",
         "default_value": "18"
+    },
+    "retraction_distances_when_ec": {
+        "type": "floats",
+        "label": "Retraction distance when extruder change",
+        "tooltip": "",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "10",
+        "mode": "advanced",
+        "default_value": "10"
     },
     "retraction_length": {
         "type": "floats",
@@ -5462,6 +5780,13 @@
         "mode": "advanced",
         "default_value": "1"
     },
+    "volumetric_speed_coefficients": {
+        "type": "strings",
+        "label": "Max volumetric speed multinomial coefficients",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "\"\""
+    },
     "wall_direction": {
         "type": "enum",
         "label": "Wall loop direction",
@@ -5737,6 +6062,32 @@
         "tooltip": "This vector saves required volumes to change from\/to each tool used on the wipe tower. These values are used to simplify creation of the full purging volumes below.",
         "mode": "simple",
         "default_value": "70,70,70,70,70,70,70,70,70,70"
+    },
+    "wrapping_detection_gcode": {
+        "type": "string",
+        "label": "Clumping detection G-code",
+        "tooltip": "",
+        "full_width": "true",
+        "multiline": "true",
+        "height": "5",
+        "mode": "advanced",
+        "default_value": ""
+    },
+    "wrapping_detection_layers": {
+        "type": "int",
+        "label": "Clumping detection layers",
+        "tooltip": "Clumping detection layers.",
+        "min": "0",
+        "mode": "develop",
+        "default_value": "20"
+    },
+    "wrapping_exclude_area": {
+        "type": "points",
+        "label": "Probing exclude area of clumping",
+        "tooltip": "Probing exclude area of clumping.",
+        "gui_type": "one_string",
+        "mode": "advanced",
+        "default_value": ""
     },
     "xy_contour_compensation": {
         "type": "float",
