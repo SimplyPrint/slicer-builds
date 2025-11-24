@@ -309,7 +309,7 @@
     "bridge_angle": {
         "type": "float",
         "label": "External bridge infill direction",
-        "tooltip": "Bridging angle override. If left to zero, the bridging angle will be calculated automatically. Otherwise the provided angle will be used for external bridges. Use 180°for zero angle.",
+        "tooltip": "Bridging angle override. If left to zero, the bridging angle will be calculated automatically. Otherwise the provided angle will be used for external bridges. Use 180° for zero angle.",
         "sidetext": "°",
         "min": "0",
         "mode": "advanced",
@@ -318,10 +318,10 @@
     "bridge_density": {
         "type": "percent",
         "label": "External bridge density",
-        "tooltip": "Controls the density (spacing) of external bridge lines. 100% means solid bridge. Default is 100%.\n\nLower density external bridges can help improve reliability as there is more space for air to circulate around the extruded bridge, improving its cooling speed.",
+        "tooltip": "Controls the density (spacing) of external bridge lines. Default is 100%.\n\nLower density external bridges can help improve reliability as there is more space for air to circulate around the extruded bridge, improving its cooling speed. Minimum is 10%.\n\nHigher densities can produce smoother bridge surfaces, as overlapping lines provide additional support during printing. Maximum is 120%.\nNote: Bridge density that is too high can cause warping or overextrusion.",
         "sidetext": "%",
         "min": "10",
-        "max": "100",
+        "max": "120",
         "mode": "advanced",
         "default_value": "100%"
     },
@@ -971,8 +971,8 @@
     },
     "extruder_ams_count": {
         "type": "strings",
-        "label": "Extruder ams count",
-        "tooltip": "Ams counts of per extruder.",
+        "label": "Extruder AMS count",
+        "tooltip": "AMS counts per extruder.",
         "mode": "simple",
         "default_value": ""
     },
@@ -1039,7 +1039,7 @@
     "extruder_type": {
         "type": "enums",
         "label": "Type",
-        "tooltip": "This setting is only used for initial value of manual calibration of pressure advance. Bowden extruder usually has larger pa value. This setting doesn't influence normal slicing.",
+        "tooltip": "This setting is only used for initial value of manual calibration of pressure advance. Bowden extruder usually has larger PA value. This setting doesn't influence normal slicing.",
         "enum_values": [
             "Direct Drive",
             "Bowden"
@@ -1251,7 +1251,7 @@
         "type": "ints",
         "label": "Flush temperature",
         "tooltip": "Temperature when flushing filament. 0 indicates the upper bound of the recommended nozzle temperature range.",
-        "sidetext": "°C",
+        "sidetext": "℃",
         "min": "0",
         "max": "1500",
         "mode": "advanced",
@@ -1274,6 +1274,45 @@
         "mode": "simple",
         "nocli": "true",
         "default_value": ""
+    },
+    "filament_ironing_flow": {
+        "type": "percents",
+        "label": "Ironing flow",
+        "tooltip": "Filament-specific override for ironing flow. This allows you to customize the ironing flow for each filament type. Too high value results in overextrusion on the surface.",
+        "sidetext": "%",
+        "min": "0",
+        "max": "100",
+        "mode": "advanced",
+        "default_value": "nil"
+    },
+    "filament_ironing_inset": {
+        "type": "floats",
+        "label": "Ironing inset",
+        "tooltip": "Filament-specific override for ironing inset. This allows you to customize the distance to keep from the edges when ironing for each filament type.",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "100",
+        "mode": "advanced",
+        "default_value": "nil"
+    },
+    "filament_ironing_spacing": {
+        "type": "floats",
+        "label": "Ironing line spacing",
+        "tooltip": "Filament-specific override for ironing line spacing. This allows you to customize the spacing between ironing lines for each filament type.",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "1",
+        "mode": "advanced",
+        "default_value": "nil"
+    },
+    "filament_ironing_speed": {
+        "type": "floats",
+        "label": "Ironing speed",
+        "tooltip": "Filament-specific override for ironing speed. This allows you to customize the print speed of ironing lines for each filament type.",
+        "sidetext": "mm\/s",
+        "min": "1",
+        "mode": "advanced",
+        "default_value": "nil"
     },
     "filament_is_support": {
         "type": "bools",
@@ -1519,7 +1558,7 @@
     "filament_shrink": {
         "type": "percents",
         "label": "Shrinkage (XY)",
-        "tooltip": "Enter the shrinkage percentage that the filament will get after cooling (94% if you measure 94mm instead of 100mm). The part will be scaled in xy to compensate. Only the filament used for the perimeter is taken into account.\nBe sure to allow enough space between objects, as this compensation is done after the checks.",
+        "tooltip": "Enter the shrinkage percentage that the filament will get after cooling (94% if you measure 94mm instead of 100mm). The part will be scaled in XY to compensate. Only the filament used for the perimeter is taken into account.\nBe sure to allow enough space between objects, as this compensation is done after the checks.",
         "sidetext": "%",
         "min": "50",
         "max": "150",
@@ -2079,7 +2118,7 @@
     "independent_support_layer_height": {
         "type": "bool",
         "label": "Independent support layer height",
-        "tooltip": "Support layer uses layer height independent with object layer. This is to support customizing z-gap and save print time. This option will be invalid when the prime tower is enabled.",
+        "tooltip": "Support layer uses layer height independent with object layer. This is to support customizing Z-gap and save print time. This option will be invalid when the prime tower is enabled.",
         "mode": "advanced",
         "default_value": "1"
     },
@@ -2371,7 +2410,7 @@
     "internal_bridge_angle": {
         "type": "float",
         "label": "Internal bridge infill direction",
-        "tooltip": "Internal bridging angle override. If left to zero, the bridging angle will be calculated automatically. Otherwise the provided angle will be used for internal bridges. Use 180°for zero angle.\n\nIt is recommended to leave it at 0 unless there is a specific model need not to.",
+        "tooltip": "Internal bridging angle override. If left to zero, the bridging angle will be calculated automatically. Otherwise the provided angle will be used for internal bridges. Use 180° for zero angle.\n\nIt is recommended to leave it at 0 unless there is a specific model need not to.",
         "sidetext": "°",
         "min": "0",
         "mode": "advanced",
@@ -2520,6 +2559,13 @@
         "sidetext": "°",
         "min": "0",
         "max": "359",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "ironing_angle_fixed": {
+        "type": "bool",
+        "label": "Fixed ironing angle",
+        "tooltip": "Use a fixed absolute angle for ironing.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -3229,7 +3275,7 @@
     "nozzle_volume_type": {
         "type": "enums",
         "label": "Nozzle Volume Type",
-        "tooltip": "Nozzle volume type.",
+        "tooltip": "Nozzle volume type for extruders.",
         "enum_values": [
             "Standard",
             "High Flow"
@@ -3498,14 +3544,14 @@
     "precise_z_height": {
         "type": "bool",
         "label": "Precise Z height",
-        "tooltip": "Enable this to get precise z height of object after slicing. It will get the precise object height by fine-tuning the layer heights of the last few layers. Note that this is an experimental parameter.",
+        "tooltip": "Enable this to get precise Z height of object after slicing. It will get the precise object height by fine-tuning the layer heights of the last few layers. Note that this is an experimental parameter.",
         "mode": "advanced",
         "default_value": "0"
     },
     "preferred_orientation": {
         "type": "float",
         "label": "Preferred orientation",
-        "tooltip": "Automatically orient stls on the Z axis upon initial import.",
+        "tooltip": "Automatically orient STL files on the Z axis upon initial import.",
         "sidetext": "°",
         "min": "-360",
         "max": "360",
@@ -4760,7 +4806,7 @@
     "spiral_mode": {
         "type": "bool",
         "label": "Spiral vase",
-        "tooltip": "Spiralize smooths out the z moves of the outer contour. And turns a solid model into a single walled print with solid bottom layers. The final generated model has no seam.",
+        "tooltip": "Spiralize smooths out the Z moves of the outer contour. And turns a solid model into a single walled print with solid bottom layers. The final generated model has no seam.",
         "mode": "simple",
         "default_value": "0"
     },
@@ -5166,9 +5212,16 @@
         "mode": "advanced",
         "default_value": "0.2"
     },
+    "support_object_skip_flush": {
+        "type": "bool",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "0"
+    },
     "support_object_xy_distance": {
         "type": "float",
-        "label": "Support\/object xy distance",
+        "label": "Support\/object XY distance",
         "tooltip": "XY separation between an object and its support.",
         "sidetext": "mm",
         "min": "0",
@@ -5841,7 +5894,7 @@
     "wall_sequence": {
         "type": "enum",
         "label": "Walls printing order",
-        "tooltip": "Print sequence of the internal (inner) and external (outer) walls.\n\nUse Inner\/Outer for best overhangs. This is because the overhanging walls can adhere to a neighbouring perimeter while printing. However, this option results in slightly reduced surface quality as the external perimeter is deformed by being squashed to the internal perimeter.\n\nUse Inner\/Outer\/Inner for the best external surface finish and dimensional accuracy as the external wall is printed undisturbed from an internal perimeter. However, overhang performance will reduce as there is no internal perimeter to print the external wall against. This option requires a minimum of 3 walls to be effective as it prints the internal walls from the 3rd perimeter onwards first, then the external perimeter and, finally, the first internal perimeter. This option is recommended against the Outer\/Inner option in most cases.\n\nUse Outer\/Inner for the same external wall quality and dimensional accuracy benefits of Inner\/Outer\/Inner option. However, the z seams will appear less consistent as the first extrusion of a new layer starts on a visible surface.\n\n ",
+        "tooltip": "Print sequence of the internal (inner) and external (outer) walls.\n\nUse Inner\/Outer for best overhangs. This is because the overhanging walls can adhere to a neighbouring perimeter while printing. However, this option results in slightly reduced surface quality as the external perimeter is deformed by being squashed to the internal perimeter.\n\nUse Inner\/Outer\/Inner for the best external surface finish and dimensional accuracy as the external wall is printed undisturbed from an internal perimeter. However, overhang performance will reduce as there is no internal perimeter to print the external wall against. This option requires a minimum of 3 walls to be effective as it prints the internal walls from the 3rd perimeter onwards first, then the external perimeter and, finally, the first internal perimeter. This option is recommended against the Outer\/Inner option in most cases.\n\nUse Outer\/Inner for the same external wall quality and dimensional accuracy benefits of Inner\/Outer\/Inner option. However, the Z seams will appear less consistent as the first extrusion of a new layer starts on a visible surface.",
         "enum_values": [
             "inner wall\/outer wall",
             "outer wall\/inner wall",
@@ -6004,9 +6057,10 @@
     "wipe_tower_rib_width": {
         "type": "float",
         "label": "Rib width",
-        "tooltip": "Rib width.",
+        "tooltip": "Rib width is always less than half the prime tower side length.",
         "sidetext": "mm",
         "min": "0",
+        "max": "300",
         "mode": "advanced",
         "default_value": "8"
     },
