@@ -1,5 +1,5 @@
 diff --git a/src/libslic3r/Format/OBJ.cpp b/src/libslic3r/Format/OBJ.cpp
-index d54a66f..694cf2d 100644
+index 9d9fd70a2..b01946136 100644
 --- a/src/libslic3r/Format/OBJ.cpp
 +++ b/src/libslic3r/Format/OBJ.cpp
 @@ -18,7 +18,7 @@
@@ -12,7 +12,7 @@ index d54a66f..694cf2d 100644
  namespace Slic3r {
  
 diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
-index 6e2c8b4..7aa36e2 100644
+index 157fa0d47..eef0f9a48 100644
 --- a/src/libslic3r/PrintConfig.cpp
 +++ b/src/libslic3r/PrintConfig.cpp
 @@ -11,6 +11,8 @@
@@ -24,7 +24,7 @@ index 6e2c8b4..7aa36e2 100644
  
  #include <float.h>
  
-@@ -531,6 +533,196 @@ PrintConfigDef::PrintConfigDef()
+@@ -587,6 +589,196 @@ PrintConfigDef::PrintConfigDef()
      assign_printer_technology_to_unknown(this->options, ptFFF);
      this->init_sla_params();
      assign_printer_technology_to_unknown(this->options, ptSLA);
@@ -222,10 +222,10 @@ index 6e2c8b4..7aa36e2 100644
  
  void PrintConfigDef::init_common_params()
 diff --git a/src/libslic3r/PrintConfig.hpp b/src/libslic3r/PrintConfig.hpp
-index a80f2d3..c64d7c0 100644
+index e8c7b6cd0..9cff03449 100644
 --- a/src/libslic3r/PrintConfig.hpp
 +++ b/src/libslic3r/PrintConfig.hpp
-@@ -440,6 +440,8 @@ class PrintConfigDef : public ConfigDef
+@@ -449,6 +449,8 @@ class PrintConfigDef : public ConfigDef
  public:
      PrintConfigDef();
  
@@ -235,7 +235,7 @@ index a80f2d3..c64d7c0 100644
  
      // Array options growing with the number of extruders
 diff --git a/src/slic3r/GUI/I18N.hpp b/src/slic3r/GUI/I18N.hpp
-index c80c9a1..27b8ac2 100644
+index c80c9a165..27b8ac2cd 100644
 --- a/src/slic3r/GUI/I18N.hpp
 +++ b/src/slic3r/GUI/I18N.hpp
 @@ -40,11 +40,11 @@
@@ -273,10 +273,10 @@ index c80c9a1..27b8ac2 100644
  	inline std::string translate_utf8(const char         *s, const char 	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
  	inline std::string translate_utf8(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
 diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
-index f224d7e..be5fa58 100644
+index 7cc36eaee..6d7de9778 100644
 --- a/src/slic3r/GUI/MainFrame.cpp
 +++ b/src/slic3r/GUI/MainFrame.cpp
-@@ -1427,6 +1427,10 @@ void MainFrame::create_preset_tabs()
+@@ -1437,6 +1437,10 @@ void MainFrame::create_preset_tabs()
      //add_created_tab(new TabSLAMaterial(m_param_panel));
      add_created_tab(new TabPrinter(m_param_dialog->panel()), "printer");
  
@@ -288,7 +288,7 @@ index f224d7e..be5fa58 100644
      m_param_dialog->panel()->rebuild_panels();
      //m_tabpanel->AddPage(m_param_panel, "Parameters", "notebook_presets_active");
 diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
-index 3ce2545..a64106b 100644
+index 9b55d2152..ca9d6d25f 100644
 --- a/src/slic3r/GUI/PartPlate.cpp
 +++ b/src/slic3r/GUI/PartPlate.cpp
 @@ -39,6 +39,8 @@
@@ -300,7 +300,7 @@ index 3ce2545..a64106b 100644
  using boost::optional;
  namespace fs = boost::filesystem;
  
-@@ -6308,7 +6310,9 @@ void PartPlateList::BedTextureInfo::reset()
+@@ -6569,7 +6571,9 @@ void PartPlateList::BedTextureInfo::reset()
          parts[i].reset();
  }
  
@@ -311,7 +311,7 @@ index 3ce2545..a64106b 100644
  {
      BedTextureInfo::TexturePart st_part1(10, 52, 8.393f, 192, "bbl_bed_st_left.svg");
      BedTextureInfo::TexturePart st_part2(74, -10, 148, 12, "bbl_bed_st_bottom.svg");
-@@ -6357,7 +6361,8 @@ void PartPlateList::init_bed_type_info()
+@@ -6618,7 +6622,8 @@ void PartPlateList::init_bed_type_info()
              }
          }
      }
@@ -321,7 +321,7 @@ index 3ce2545..a64106b 100644
      bool use_double_extruder_texture = !is_single_extruder || use_double_extruder_default_texture == "true";
      if (use_double_extruder_texture) {
          pte_part1 = BedTextureInfo::TexturePart(57, 300, 236.12f, 10.f, "bbl_bed_pte_middle.svg");
-@@ -6456,6 +6461,9 @@ void PartPlateList::init_bed_type_info()
+@@ -6717,6 +6722,9 @@ void PartPlateList::init_bed_type_info()
  	bed_texture_info[btPTE].parts.push_back(pte_part1);
  	bed_texture_info[btPTE].parts.push_back(pte_part2);
  
@@ -331,7 +331,7 @@ index 3ce2545..a64106b 100644
  	auto  bed_ext     = get_extents(m_shape);
  	int   bed_width   = bed_ext.size()(0);
  	int   bed_height  = bed_ext.size()(1);
-@@ -6575,6 +6583,66 @@ void PartPlateList::load_bedtype_textures()
+@@ -6836,6 +6844,66 @@ void PartPlateList::load_bedtype_textures()
  {
  	if (PartPlateList::is_load_bedtype_textures) return;
  
@@ -399,10 +399,10 @@ index 3ce2545..a64106b 100644
  	GLint max_tex_size = OpenGLManager::get_gl_info().get_max_tex_size();
  	GLint logo_tex_size = (max_tex_size < 2048) ? max_tex_size : 2048;
 diff --git a/src/slic3r/GUI/PartPlate.hpp b/src/slic3r/GUI/PartPlate.hpp
-index efe88f0..fffb301 100644
+index 4c96f8b6f..68219e445 100644
 --- a/src/slic3r/GUI/PartPlate.hpp
 +++ b/src/slic3r/GUI/PartPlate.hpp
-@@ -970,7 +970,8 @@ public:
+@@ -982,7 +982,8 @@ public:
          int h;
      };
      bool calc_extruder_only_area(Rect &left_only_rect, Rect &right_only_rect);
@@ -413,10 +413,10 @@ index efe88f0..fffb301 100644
      void load_bedtype_textures();
      void load_extruder_only_area_textures();
 diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
-index 5d3ea9a..bd23525 100644
+index bb9073ded..e15a2a24b 100644
 --- a/src/slic3r/GUI/Tab.cpp
 +++ b/src/slic3r/GUI/Tab.cpp
-@@ -24,6 +24,7 @@
+@@ -25,6 +25,7 @@
  
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/replace.hpp>
@@ -424,7 +424,7 @@ index 5d3ea9a..bd23525 100644
  #include "wxExtensions.hpp"
  #include "PresetComboBoxes.hpp"
  #include <wx/wupdlock.h>
-@@ -567,6 +568,8 @@ void Tab::create_preset_tab()
+@@ -625,6 +626,8 @@ void Tab::create_preset_tab()
      // Initialize the DynamicPrintConfig by default keys/values.
      build();
  
@@ -433,7 +433,7 @@ index 5d3ea9a..bd23525 100644
      // ys_FIXME: Following should not be needed, the function will be called later
      // (update_mode->update_visibility->rebuild_page_tree). This does not work, during the
      // second call of rebuild_page_tree m_tabctrl->GetFirstVisibleItem(); returns zero
-@@ -576,6 +579,67 @@ void Tab::create_preset_tab()
+@@ -634,6 +637,67 @@ void Tab::create_preset_tab()
      m_completed = true;
  }
  
@@ -498,14 +498,14 @@ index 5d3ea9a..bd23525 100644
 +    write_json(path.string(), pt);
 +}
 +
- void Tab::add_scaled_button(wxWindow* parent,
-                             ScalableButton** btn,
-                             const std::string& icon_name,
+ void Tab::parse_extruder_selection(int selection, int &extruder_id, NozzleVolumeType &nozzle_type)
+ {
+     auto nozzle_volumes = m_preset_bundle->project_config.option<ConfigOptionEnumsGeneric>("nozzle_volume_type");
 diff --git a/src/slic3r/GUI/Tab.hpp b/src/slic3r/GUI/Tab.hpp
-index 3c0c465..4d48e00 100644
+index d2849b504..d4207abfa 100644
 --- a/src/slic3r/GUI/Tab.hpp
 +++ b/src/slic3r/GUI/Tab.hpp
-@@ -322,6 +322,7 @@ public:
+@@ -332,6 +332,7 @@ public:
  	virtual bool supports_printer_technology(const PrinterTechnology tech) const = 0;
  
  	void		create_preset_tab();
