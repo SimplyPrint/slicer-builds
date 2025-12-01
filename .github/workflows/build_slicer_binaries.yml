@@ -111,7 +111,13 @@ jobs:
 
           # Setup slicer for build
           pushd slicer-src
-            git checkout ${{ env.build_ref }}
+            # Temporary override for OrcaSlicer nightly
+            if [[ "${{ matrix.slicer }}" == "OrcaSlicer" ]] && [[ "${{ matrix.build-type }}" == "nightly" ]]; then
+              git fetch origin e349ccc
+              git checkout e349ccc
+            else
+              git checkout ${{ env.build_ref }}
+            fi
           popd
 
       - name: Install dependencies
