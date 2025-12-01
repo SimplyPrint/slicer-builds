@@ -113,8 +113,8 @@ jobs:
           pushd slicer-src
             # Temporary override for OrcaSlicer nightly
             if [[ "${{ matrix.slicer }}" == "OrcaSlicer" ]] && [[ "${{ matrix.build-type }}" == "nightly" ]]; then
-              git fetch origin e349ccc
-              git checkout e349ccc
+              git fetch origin e349cccdb92d6a839d10ef4462f511b83bba5f51
+              git checkout e349cccdb92d6a839d10ef4462f511b83bba5f51
             else
               git checkout ${{ env.build_ref }}
             fi
