@@ -424,6 +424,31 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "cooling_perimeter_transition_distance": {
+        "type": "floats",
+        "label": "Perimeter transition distance",
+        "tooltip": "Distance in millimeters before the end of slowed perimeters where the original print speed is gradually restored. This reduces quality issues when transitioning from slowed features to fast external perimeter printing.\n\nOnly applies when 'Consistent surface' cooling logic is selected.\nRecommended value: 5-10mm. Set to 0 to disable.",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "50",
+        "mode": "develop",
+        "default_value": "10"
+    },
+    "cooling_slowdown_logic": {
+        "type": "enums",
+        "label": "Cooling slowdown logic",
+        "tooltip": "Determines how the printer slows down when minimum layer time isn't reached.\n\n'Uniform cooling' slows down all print features equally (current default behavior).\n\n'Consistent surface' prioritizes slowing infill and internal perimeters first, preserving external perimeter speed for better surface finish on glossy filaments. This helps reduce VFA (Vertical Fine Artifacts) and maintains consistent surface shine.",
+        "enum_values": [
+            "uniform_cooling",
+            "consistent_surface"
+        ],
+        "enum_labels": [
+            "Uniform cooling",
+            "Consistent surface"
+        ],
+        "mode": "develop",
+        "default_value": "uniform_cooling"
+    },
     "counter_coef_1": {
         "type": "floats",
         "label": "Counter Coef 1",
@@ -5112,6 +5137,15 @@
         "min": "0",
         "mode": "advanced",
         "default_value": "9"
+    },
+    "travel_short_distance_acceleration": {
+        "type": "floats",
+        "label": "Short travel",
+        "tooltip": "Acceleration used for short travel moves near external perimeters. Short travels are moves shorter than the 'Retraction minimum travel' distance.\n\nLower values (e.g., 250-500 mm\/s²) reduce ringing artifacts on sharp corners without significantly impacting print time.\n\nSet to 0 to disable (uses normal travel acceleration).",
+        "sidetext": "mm\/s²",
+        "min": "0",
+        "mode": "develop",
+        "default_value": "250"
     },
     "travel_speed": {
         "type": "floats",
