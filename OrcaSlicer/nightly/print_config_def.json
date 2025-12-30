@@ -861,11 +861,21 @@
         "default_value": "1"
     },
     "enable_power_loss_recovery": {
-        "type": "bool",
-        "label": "Turn on Power Loss Recovery",
-        "tooltip": "Enable this to insert power loss recovery commands in generated G-code.(Only for Bambu Lab printers and Marlin firmware based printers)",
+        "type": "enum",
+        "label": "Power Loss Recovery",
+        "tooltip": "Choose how to control power loss recovery. When set to Printer configuration, the slicer will not emit power loss recovery G-code and will leave the printer's configuration unchanged. Applicable to Bambu Lab or Marlin 2 firmware based printers.",
+        "enum_values": [
+            "printer_configuration",
+            "enable",
+            "disable"
+        ],
+        "enum_labels": [
+            "Printer configuration",
+            "Enable",
+            "Disable"
+        ],
         "mode": "advanced",
-        "default_value": "0"
+        "default_value": "printer_configuration"
     },
     "enable_pressure_advance": {
         "type": "bools",
