@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # https://github.com/prusa3d/PrusaSlicer/blob/master/doc/How%20to%20build%20-%20Linux%20et%20al.md
 
 # Build dependencies
