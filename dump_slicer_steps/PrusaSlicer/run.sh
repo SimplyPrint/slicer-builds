@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 pushd slicer-src
 SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt xvfb-run ./build/src/prusa-slicer

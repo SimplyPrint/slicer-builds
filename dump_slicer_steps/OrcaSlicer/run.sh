@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 pushd slicer-src/build/package
 
