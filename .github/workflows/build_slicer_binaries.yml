@@ -42,7 +42,7 @@ jobs:
             repo: prusa3d/PrusaSlicer
           - slicer: BambuStudio
             repo: BambuLab/BambuStudio
-
+          
     runs-on: ${{ inputs.runner || 'ubuntu-24.04' }}
     env:
       DEPS_CACHE_KEY: ''
@@ -210,6 +210,7 @@ jobs:
           files: slicer-out/${{ matrix.slicer }}-${{ env.latest_release_tag }}.zip
           tag_name: ${{ matrix.slicer }}_${{ env.latest_release_tag }}
           target_commitish: slicer-config-artifacts
+          body: "Link to workflow run: https://github.com/SimplyPrint/slicer-builds/actions/runs/${{ github.run_id }}"
           make_latest: false
 
       - name: Upload nightly release
