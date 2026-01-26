@@ -63,29 +63,34 @@ jobs:
           while (( i > 0 )) do
             # Get latest tags/hashes
             latest_release_tag_json=$(curl "https://api.github.com/repos/${{ matrix.repo }}/releases/latest")
-            latest_release_hash_json=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}")
-            latest_stored_tag_json=$(curl "https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/slicer-config-artifacts/${{ matrix.slicer }}/${{ env.version_file }}") || ''
-            head_hash_json=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD")
+            latest_release_tag=$(echo $latest_release_tag_json | jq '.tag_name' | xargs echo)
 
+            latest_release_hash_json=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}")
+            latest_release_hash=$(echo $latest_release_hash_json| jq '.sha' | xargs echo)
+
+            latest_stored_tag_json=$(curl "https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/slicer-config-artifacts/${{ matrix.slicer }}/${{ env.version_file }}") || ''
+            if [[ -n "$latest_stored_tag_json" ]]; then
+              latest_stored_tag=$(echo $latest_stored_tag_json | jq '.latest' | xargs echo)
+            fi
+
+            head_hash_json=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD")
+            head_hash=$(echo $head_hash_json | jq '.sha' | xargs echo)
+
+            echo "::group::API Debug Data"
             echo latest_release_tag_json=$latest_release_tag_json
             echo latest_release_hash_json=$latest_release_hash_json
             echo latest_stored_tag_json=$latest_stored_tag_json
             echo head_hash_json=$head_hash_json
-
-            latest_release_tag=$(echo $latest_release_tag_json | jq '.tag_name' | xargs echo)
-            latest_release_hash=$(echo $latest_release_hash_json| jq '.sha' | xargs echo)
-            if [[ -n "$latest_stored_tag_json" ]]; then
-              latest_stored_tag=$(echo $latest_stored_tag_json | jq '.latest' | xargs echo)
-            fi
-            head_hash=$(echo $head_hash_json | jq '.sha' | xargs echo)
             
             echo latest_release_tag=$latest_release_tag
             echo latest_release_hash=$latest_release_hash
             echo latest_stored_tag=$latest_stored_tag
             echo head_hash=$head_hash
+            echo "::endgroup::"
 
             if [[ "$latest_release_tag" == "null" || "$latest_release_hash" == "null" || "$head_hash" == "null" ]]; then
-              --i
+              echo "Failed to get data from Github API. Retrying in 5 seconds..."
+              ((--i))
               sleep 5
               continue
             fi
