@@ -51,6 +51,9 @@ jobs:
             repo: QIDITECH/QIDISlicer
           - slicer: SuperSlicer
             repo: supermerill/SuperSlicer
+        exclude: # disable temporarily until build is fixed upstream
+          - slicer: QIDISlicer
+            build-type: nightly
 
     runs-on: ${{ inputs.runner || 'ubuntu-24.04' }}
     env:
