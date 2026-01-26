@@ -32,6 +32,9 @@ jobs:
           - OrcaSlicer
           - PrusaSlicer
           - BambuStudio
+          - ElegooSlicer
+          - QIDISlicer
+          - SuperSlicer
         build-type:
           - nightly
           - latest_release
@@ -42,7 +45,13 @@ jobs:
             repo: prusa3d/PrusaSlicer
           - slicer: BambuStudio
             repo: BambuLab/BambuStudio
-          
+          - slicer: ElegooSlicer
+            repo: ELEGOO-3D/ElegooSlicer
+          - slicer: QIDISlicer
+            repo: QIDITECH/QIDISlicer
+          - slicer: SuperSlicer
+            repo: supermerill/SuperSlicer
+
     runs-on: ${{ inputs.runner || 'ubuntu-24.04' }}
     env:
       DEPS_CACHE_KEY: ''
