@@ -22,7 +22,7 @@ apply_from_dir() {
     for patch_file in $(find "$dir" -maxdepth 1 -name '*.patch' -type f | sort); do
         echo "Applying patch: ${patch_file}"
         git -C slicer-src apply "${patch_file}" --whitespace=fix
-        ((applied++))
+        ((++applied))
     done
 }
 
