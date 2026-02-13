@@ -898,6 +898,20 @@
         "mode": "simple",
         "default_value": "0"
     },
+    "enable_tower_interface_cooldown_during_tower": {
+        "type": "bool",
+        "label": "Cool down from interface boost during prime tower",
+        "tooltip": "When interface-layer temperature boost is active, set the nozzle back to print temperature at the start of the prime tower so it cools down during the tower.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "enable_tower_interface_features": {
+        "type": "bool",
+        "label": "Enable tower interface features",
+        "tooltip": "Enable optimized prime tower interface behavior when different materials meet.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "enable_wrapping_detection": {
         "type": "bool",
         "label": "Enable clumping detection",
@@ -1640,6 +1654,51 @@
         "min": "0",
         "mode": "advanced",
         "default_value": "0"
+    },
+    "filament_tower_interface_pre_extrusion_dist": {
+        "type": "floats",
+        "label": "Interface layer pre-extrusion distance",
+        "tooltip": "Pre-extrusion distance for prime tower interface layer (where different materials meet).",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "10"
+    },
+    "filament_tower_interface_pre_extrusion_length": {
+        "type": "floats",
+        "label": "Interface layer pre-extrusion length",
+        "tooltip": "Pre-extrusion length for prime tower interface layer (where different materials meet).",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "filament_tower_interface_print_temp": {
+        "type": "ints",
+        "label": "Interface layer print temperature",
+        "tooltip": "Print temperature for prime tower interface layer (where different materials meet). If set to -1, use max recommended nozzle temperature.",
+        "sidetext": "°C",
+        "min": "-1",
+        "mode": "advanced",
+        "default_value": "-1"
+    },
+    "filament_tower_interface_purge_volume": {
+        "type": "floats",
+        "label": "Interface layer purge length",
+        "tooltip": "Purge length for prime tower interface layer (where different materials meet).",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "20"
+    },
+    "filament_tower_ironing_area": {
+        "type": "floats",
+        "label": "Tower ironing area",
+        "tooltip": "Ironing area for prime tower interface layer (where different materials meet).",
+        "sidetext": "mm²",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "4"
     },
     "filament_type": {
         "type": "strings",
