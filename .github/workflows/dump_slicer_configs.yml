@@ -20,6 +20,11 @@ on:
         default: false
         description: Disable caching
 
+      force-latest-release-rebuild:
+        type: boolean
+        default: false
+        description: Force rebuilding latest_release even when the tag was already built
+
 env:
   version_file: dump_versions.json
 
@@ -98,7 +103,7 @@ jobs:
             fi
           else
             # Latest release has not changed, do not continue to build
-            if [[ "${{ matrix.build-type }}" == "latest_release" ]]; then
+            if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "${{ inputs.force-latest-release-rebuild || false }}" != "true" ]]; then
               echo "The latest release has already been built. Exiting..."
               echo "continue_build=false" >> "$GITHUB_ENV"
               exit 0
