@@ -1,5 +1,5 @@
 diff --git a/src/libslic3r/Format/OBJ.cpp b/src/libslic3r/Format/OBJ.cpp
-index 71f7d1e..cbffb76 100644
+index 71f7d1e7e2..cbffb7646b 100644
 --- a/src/libslic3r/Format/OBJ.cpp
 +++ b/src/libslic3r/Format/OBJ.cpp
 @@ -17,7 +17,7 @@
@@ -12,10 +12,10 @@ index 71f7d1e..cbffb76 100644
  namespace Slic3r {
  
 diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
-index c525c00..96dfbfb 100644
+index 50be57e0f8..9e4aabca87 100644
 --- a/src/libslic3r/PrintConfig.cpp
 +++ b/src/libslic3r/PrintConfig.cpp
-@@ -6,6 +6,9 @@
+@@ -7,6 +7,9 @@
  #include "format.hpp"
  
  #include "GCode/Thumbnails.hpp"
@@ -25,7 +25,7 @@ index c525c00..96dfbfb 100644
  #include <set>
  #include <boost/algorithm/string/case_conv.hpp>
  #include <boost/algorithm/string/replace.hpp>
-@@ -613,6 +616,192 @@ PrintConfigDef::PrintConfigDef()
+@@ -629,6 +632,192 @@ PrintConfigDef::PrintConfigDef()
      assign_printer_technology_to_unknown(this->options, ptFFF);
      this->init_sla_params();
      assign_printer_technology_to_unknown(this->options, ptSLA);
@@ -219,10 +219,10 @@ index c525c00..96dfbfb 100644
  
  void PrintConfigDef::init_common_params()
 diff --git a/src/libslic3r/PrintConfig.hpp b/src/libslic3r/PrintConfig.hpp
-index e70ff7f..7ad8a8f 100644
+index 54c26c312a..d567f154aa 100644
 --- a/src/libslic3r/PrintConfig.hpp
 +++ b/src/libslic3r/PrintConfig.hpp
-@@ -517,6 +517,8 @@ class PrintConfigDef : public ConfigDef
+@@ -534,6 +534,8 @@ class PrintConfigDef : public ConfigDef
  public:
      PrintConfigDef();
  
@@ -231,11 +231,121 @@ index e70ff7f..7ad8a8f 100644
      static void handle_legacy(t_config_option_key &opt_key, std::string &value);
      static void handle_legacy_composite(DynamicPrintConfig &config);
  
+diff --git a/src/slic3r/GUI/GUI_Factories.cpp b/src/slic3r/GUI/GUI_Factories.cpp
+index 9486bed67a..13529317bf 100644
+--- a/src/slic3r/GUI/GUI_Factories.cpp
++++ b/src/slic3r/GUI/GUI_Factories.cpp
+@@ -8,6 +8,9 @@
+ #include "GUI_App.hpp"
+ #include "I18N.hpp"
+ #include "Plater.hpp"
++#include <boost/dll/runtime_symbol_info.hpp>
++#include <boost/property_tree/json_parser.hpp>
++
+ #include "ObjectDataViewModel.hpp"
+ 
+ #include "OptionsGroup.hpp"
+@@ -31,6 +34,47 @@ namespace Slic3r
+ namespace GUI
+ {
+ 
++namespace {
++template <typename T>
++void put_array(boost::property_tree::ptree& pt, const std::string& key, const std::vector<T>& values)
++{
++    auto& arr_pt = pt.put_child(key, boost::property_tree::ptree());
++    for (const auto& val : values)
++        arr_pt.add("", val);
++}
++
++boost::property_tree::ptree build_categories_tree(const std::map<std::string, std::vector<SimpleSettingData>>& categories)
++{
++    using boost::property_tree::ptree;
++
++    ptree categories_tree;
++    for (const auto& category_entry : categories) {
++        ptree category_tree;
++        ptree settings_tree;
++        for (const auto& option : category_entry.second)
++            settings_tree.add("", option.name);
++        category_tree.add_child("Settings", settings_tree);
++        categories_tree.add_child(category_entry.first, category_tree);
++    }
++
++    return categories_tree;
++}
++
++void write_subset_json(
++    const boost::filesystem::path& output_path,
++    const std::vector<std::string>& eligible_keys,
++    const std::map<std::string, std::vector<SimpleSettingData>>& categories)
++{
++    using boost::property_tree::ptree;
++
++    ptree pt;
++    put_array(pt, "eligible_keys", eligible_keys);
++    pt.add_child("categoriesAndSettings", build_categories_tree(categories));
++    pt.add_child("icon_data", ptree());
++    write_json(output_path.string(), pt);
++}
++}
++
+ static PrinterTechnology printer_technology()
+ {
+     return wxGetApp().preset_bundle->printers.get_selected_preset().printer_technology();
+@@ -214,6 +258,35 @@ std::map<std::string, std::vector<SimpleSettingData>> SettingsFactory::get_all_v
+     return option_maps;
+ }
+ 
++void SettingsFactory::dump_settings_subsets_to_json()
++{
++    auto program_parent_dir = boost::dll::program_location().parent_path();
++
++    auto object_options = get_options(false);
++    auto object_categories = get_all_visible_options(false);
++    write_subset_json(program_parent_dir / "object_settings.json", object_options, object_categories);
++
++    auto part_options = get_options(true);
++    auto part_categories = get_all_visible_options(true);
++    write_subset_json(program_parent_dir / "part_settings.json", part_options, part_categories);
++
++    auto height_range_options = get_options(true);
++    height_range_options.push_back("layer_height");
++    auto height_range_categories = get_all_visible_options(true);
++    auto quality_it = height_range_categories.find(L("Quality"));
++    if (quality_it == height_range_categories.end()) {
++        height_range_categories.emplace(L("Quality"), std::vector<SimpleSettingData>{{"layer_height", "", 0}});
++    } else {
++        quality_it->second.insert(quality_it->second.begin(), {"layer_height", "", 0});
++        auto sort_func = [](SimpleSettingData& setting1, SimpleSettingData& setting2) {
++            return setting1.priority < setting2.priority;
++        };
++        std::sort(quality_it->second.begin(), quality_it->second.end(), sort_func);
++    }
++
++    write_subset_json(program_parent_dir / "height_range_settings.json", height_range_options, height_range_categories);
++}
++
+ 
+ SettingsFactory::Bundle SettingsFactory::get_bundle(const DynamicPrintConfig* config, bool is_object_settings, bool is_layer_settings/* = false*/)
+ {
+diff --git a/src/slic3r/GUI/GUI_Factories.hpp b/src/slic3r/GUI/GUI_Factories.hpp
+index 0ae0e96a73..562f39e08f 100644
+--- a/src/slic3r/GUI/GUI_Factories.hpp
++++ b/src/slic3r/GUI/GUI_Factories.hpp
+@@ -42,6 +42,7 @@ struct SettingsFactory
+     //BBS: add api to get options for catogary
+     static std::vector<SimpleSettingData> get_visible_options(const std::string& category, const bool is_part);
+     static std::map<std::string, std::vector<SimpleSettingData>> get_all_visible_options(const bool is_part);
++    static void dump_settings_subsets_to_json();
+ };
+ 
+ class MenuFactory
 diff --git a/src/slic3r/GUI/I18N.hpp b/src/slic3r/GUI/I18N.hpp
-index c80c9a1..27b8ac2 100644
+index c80c9a1659..27b8ac2cd8 100644
 --- a/src/slic3r/GUI/I18N.hpp
 +++ b/src/slic3r/GUI/I18N.hpp
-@@ -40,11 +40,11 @@
+@@ -40,23 +40,23 @@
  namespace Slic3r { namespace GUI { 
  
  namespace I18N {
@@ -252,7 +362,7 @@ index c80c9a1..27b8ac2 100644
  
  	inline wxString translate(const char         *s, const char 	    *plural, unsigned int n) { return wxGetTranslation(wxString(s, wxConvUTF8), wxString(plural, wxConvUTF8), n); }
  	inline wxString translate(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return wxGetTranslation(s, plural, n); }
-@@ -52,11 +52,11 @@ namespace I18N {
+ 	inline wxString translate(const std::string  &s, const std::string  &plural, unsigned int n) { return wxGetTranslation(wxString(s.c_str(), wxConvUTF8), wxString(plural.c_str(), wxConvUTF8), n); }
  	inline wxString translate(const std::wstring &s, const std::wstring &plural, unsigned int n) { return wxGetTranslation(s.c_str(), plural.c_str(), n); }
  	inline wxString translate(const wxString     &s, const wxString     &plural, unsigned int n) { return wxGetTranslation(s, plural, n); }
  
@@ -270,23 +380,25 @@ index c80c9a1..27b8ac2 100644
  	inline std::string translate_utf8(const char         *s, const char 	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
  	inline std::string translate_utf8(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
 diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
-index 635549d..18b09dc 100644
+index 7e7bdb04dc..4c02d7ec9d 100644
 --- a/src/slic3r/GUI/MainFrame.cpp
 +++ b/src/slic3r/GUI/MainFrame.cpp
-@@ -1363,6 +1363,8 @@ void MainFrame::create_preset_tabs()
+@@ -1549,6 +1549,10 @@ void MainFrame::create_preset_tabs()
      //add_created_tab(new TabSLAMaterial(m_param_panel));
      add_created_tab(new TabPrinter(m_param_dialog->panel()), "printer");
  
++    SettingsFactory::dump_settings_subsets_to_json();
++
 +    exit(0);
 +
      m_param_panel->rebuild_panels();
      m_param_dialog->panel()->rebuild_panels();
      //m_tabpanel->AddPage(m_param_panel, "Parameters", "notebook_presets_active");
 diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
-index 8c242e1..818ca85 100644
+index c94fd1c7a4..ebebf84fe5 100644
 --- a/src/slic3r/GUI/Tab.cpp
 +++ b/src/slic3r/GUI/Tab.cpp
-@@ -55,7 +55,7 @@
+@@ -56,7 +56,7 @@
  #ifdef WIN32
  	#include <commctrl.h>
  #endif // WIN32
@@ -295,7 +407,7 @@ index 8c242e1..818ca85 100644
  #include <algorithm>
  
  namespace Slic3r {
-@@ -553,6 +553,8 @@ void Tab::create_preset_tab()
+@@ -558,15 +558,78 @@ void Tab::create_preset_tab()
      // Initialize the DynamicPrintConfig by default keys/values.
      build();
  
@@ -304,7 +416,9 @@ index 8c242e1..818ca85 100644
      // ys_FIXME: Following should not be needed, the function will be called later
      // (update_mode->update_visibility->rebuild_page_tree). This does not work, during the
      // second call of rebuild_page_tree m_tabctrl->GetFirstVisibleItem(); returns zero
-@@ -562,6 +564,67 @@ void Tab::create_preset_tab()
+     // for some unknown reason (and the page is not refreshed until user does a selection).
+     rebuild_page_tree();
+ 
      m_completed = true;
  }
  
@@ -373,7 +487,7 @@ index 8c242e1..818ca85 100644
                              ScalableButton** btn,
                              const std::string& icon_name,
 diff --git a/src/slic3r/GUI/Tab.hpp b/src/slic3r/GUI/Tab.hpp
-index dbcff30..f31d296 100644
+index 96b35b26e1..db992de579 100644
 --- a/src/slic3r/GUI/Tab.hpp
 +++ b/src/slic3r/GUI/Tab.hpp
 @@ -321,6 +321,7 @@ public:
