@@ -231,116 +231,6 @@ index 54c26c312a..d567f154aa 100644
      static void handle_legacy(t_config_option_key &opt_key, std::string &value);
      static void handle_legacy_composite(DynamicPrintConfig &config);
  
-diff --git a/src/slic3r/GUI/GUI_Factories.cpp b/src/slic3r/GUI/GUI_Factories.cpp
-index 9486bed67a..13529317bf 100644
---- a/src/slic3r/GUI/GUI_Factories.cpp
-+++ b/src/slic3r/GUI/GUI_Factories.cpp
-@@ -8,6 +8,9 @@
- #include "GUI_App.hpp"
- #include "I18N.hpp"
- #include "Plater.hpp"
-+#include <boost/dll/runtime_symbol_info.hpp>
-+#include <boost/property_tree/json_parser.hpp>
-+
- #include "ObjectDataViewModel.hpp"
- 
- #include "OptionsGroup.hpp"
-@@ -31,6 +34,47 @@ namespace Slic3r
- namespace GUI
- {
- 
-+namespace {
-+template <typename T>
-+void put_array(boost::property_tree::ptree& pt, const std::string& key, const std::vector<T>& values)
-+{
-+    auto& arr_pt = pt.put_child(key, boost::property_tree::ptree());
-+    for (const auto& val : values)
-+        arr_pt.add("", val);
-+}
-+
-+boost::property_tree::ptree build_categories_tree(const std::map<std::string, std::vector<SimpleSettingData>>& categories)
-+{
-+    using boost::property_tree::ptree;
-+
-+    ptree categories_tree;
-+    for (const auto& category_entry : categories) {
-+        ptree category_tree;
-+        ptree settings_tree;
-+        for (const auto& option : category_entry.second)
-+            settings_tree.add("", option.name);
-+        category_tree.add_child("Settings", settings_tree);
-+        categories_tree.add_child(category_entry.first, category_tree);
-+    }
-+
-+    return categories_tree;
-+}
-+
-+void write_subset_json(
-+    const boost::filesystem::path& output_path,
-+    const std::vector<std::string>& eligible_keys,
-+    const std::map<std::string, std::vector<SimpleSettingData>>& categories)
-+{
-+    using boost::property_tree::ptree;
-+
-+    ptree pt;
-+    put_array(pt, "eligible_keys", eligible_keys);
-+    pt.add_child("categoriesAndSettings", build_categories_tree(categories));
-+    pt.add_child("icon_data", ptree());
-+    write_json(output_path.string(), pt);
-+}
-+}
-+
- static PrinterTechnology printer_technology()
- {
-     return wxGetApp().preset_bundle->printers.get_selected_preset().printer_technology();
-@@ -214,6 +258,35 @@ std::map<std::string, std::vector<SimpleSettingData>> SettingsFactory::get_all_v
-     return option_maps;
- }
- 
-+void SettingsFactory::dump_settings_subsets_to_json()
-+{
-+    auto program_parent_dir = boost::dll::program_location().parent_path();
-+
-+    auto object_options = get_options(false);
-+    auto object_categories = get_all_visible_options(false);
-+    write_subset_json(program_parent_dir / "object_settings.json", object_options, object_categories);
-+
-+    auto part_options = get_options(true);
-+    auto part_categories = get_all_visible_options(true);
-+    write_subset_json(program_parent_dir / "part_settings.json", part_options, part_categories);
-+
-+    auto height_range_options = get_options(true);
-+    height_range_options.push_back("layer_height");
-+    auto height_range_categories = get_all_visible_options(true);
-+    auto quality_it = height_range_categories.find(L("Quality"));
-+    if (quality_it == height_range_categories.end()) {
-+        height_range_categories.emplace(L("Quality"), std::vector<SimpleSettingData>{{"layer_height", "", 0}});
-+    } else {
-+        quality_it->second.insert(quality_it->second.begin(), {"layer_height", "", 0});
-+        auto sort_func = [](SimpleSettingData& setting1, SimpleSettingData& setting2) {
-+            return setting1.priority < setting2.priority;
-+        };
-+        std::sort(quality_it->second.begin(), quality_it->second.end(), sort_func);
-+    }
-+
-+    write_subset_json(program_parent_dir / "height_range_settings.json", height_range_options, height_range_categories);
-+}
-+
- 
- SettingsFactory::Bundle SettingsFactory::get_bundle(const DynamicPrintConfig* config, bool is_object_settings, bool is_layer_settings/* = false*/)
- {
-diff --git a/src/slic3r/GUI/GUI_Factories.hpp b/src/slic3r/GUI/GUI_Factories.hpp
-index 0ae0e96a73..562f39e08f 100644
---- a/src/slic3r/GUI/GUI_Factories.hpp
-+++ b/src/slic3r/GUI/GUI_Factories.hpp
-@@ -42,6 +42,7 @@ struct SettingsFactory
-     //BBS: add api to get options for catogary
-     static std::vector<SimpleSettingData> get_visible_options(const std::string& category, const bool is_part);
-     static std::map<std::string, std::vector<SimpleSettingData>> get_all_visible_options(const bool is_part);
-+    static void dump_settings_subsets_to_json();
- };
- 
- class MenuFactory
 diff --git a/src/slic3r/GUI/I18N.hpp b/src/slic3r/GUI/I18N.hpp
 index c80c9a1659..27b8ac2cd8 100644
 --- a/src/slic3r/GUI/I18N.hpp
@@ -380,22 +270,20 @@ index c80c9a1659..27b8ac2cd8 100644
  	inline std::string translate_utf8(const char         *s, const char 	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
  	inline std::string translate_utf8(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
 diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
-index 7e7bdb04dc..4c02d7ec9d 100644
+index 7e7bdb04dc..4a481e6a86 100644
 --- a/src/slic3r/GUI/MainFrame.cpp
 +++ b/src/slic3r/GUI/MainFrame.cpp
-@@ -1549,6 +1549,10 @@ void MainFrame::create_preset_tabs()
+@@ -1549,6 +1549,8 @@ void MainFrame::create_preset_tabs()
      //add_created_tab(new TabSLAMaterial(m_param_panel));
      add_created_tab(new TabPrinter(m_param_dialog->panel()), "printer");
  
-+    SettingsFactory::dump_settings_subsets_to_json();
-+
 +    exit(0);
 +
      m_param_panel->rebuild_panels();
      m_param_dialog->panel()->rebuild_panels();
      //m_tabpanel->AddPage(m_param_panel, "Parameters", "notebook_presets_active");
 diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
-index c94fd1c7a4..ebebf84fe5 100644
+index c94fd1c7a4..2a537fcb57 100644
 --- a/src/slic3r/GUI/Tab.cpp
 +++ b/src/slic3r/GUI/Tab.cpp
 @@ -56,7 +56,7 @@
@@ -407,7 +295,7 @@ index c94fd1c7a4..ebebf84fe5 100644
  #include <algorithm>
  
  namespace Slic3r {
-@@ -558,15 +558,78 @@ void Tab::create_preset_tab()
+@@ -558,15 +558,104 @@ void Tab::create_preset_tab()
      // Initialize the DynamicPrintConfig by default keys/values.
      build();
  
@@ -428,27 +316,37 @@ index c94fd1c7a4..ebebf84fe5 100644
 +
 +    auto& this_type = typeid(*this);
 +    auto& filament_type = typeid(TabFilament);
-+    auto& printer_type  = typeid(TabPrinter);
++    auto& printer_type = typeid(TabPrinter);
 +    auto& print_type = typeid(TabPrint);
-+    if (this_type != filament_type && this_type != printer_type && this_type != print_type)
++    auto& object_type = typeid(TabPrintObject);
++    auto& part_type = typeid(TabPrintPart);
++    auto& layer_type = typeid(TabPrintLayer);
++
++    const bool is_regular_tab = this_type == filament_type || this_type == printer_type || this_type == print_type;
++    const bool is_subset_tab = this_type == object_type || this_type == part_type || this_type == layer_type;
++    if (!is_regular_tab && !is_subset_tab)
 +        return;
 +
 +    ptree pt;
 +    ptree icon_data_pt;
++    ptree categories_pt;
 +    for (const auto& page : m_pages) {
-+        auto& page_pt = pt.put_child(page->title().ToStdString(), ptree());
++        auto& page_pt = is_regular_tab ? pt.put_child(page->title().ToStdString(), ptree()) : categories_pt.put_child(page->title().ToStdString(), ptree());
++        auto& settings_pt = is_subset_tab ? page_pt.put_child("Settings", ptree()) : page_pt;
 +        for (const auto& optgroup : page->m_optgroups) {
-+            const auto& title = optgroup->title.ToStdString();
-+            auto& optgroup_pt = page_pt.put_child(title, ptree());
++            ptree* optgroup_pt = nullptr;
++            if (!is_subset_tab) {
++                const auto& title = optgroup->title.ToStdString();
++                optgroup_pt = &page_pt.put_child(title, ptree());
++            }
 +
-+            // Get option group icon
 +            auto icon_filename = optgroup->icon.ToStdString();
 +            if (!icon_filename.empty()) {
 +                boost::replace_last(icon_filename, ".png", "");
 +                icon_filename += ".svg";
 +                auto icon_path = Slic3r::var(icon_filename);
 +                if (icon_path != icon_filename) {
-+                    auto& this_icon_pt = icon_data_pt.put_child(title, ptree());
++                    auto& this_icon_pt = icon_data_pt.put_child(page->title().ToStdString(), ptree());
 +                    this_icon_pt.put("icon_filename", icon_filename);
 +                    std::ifstream icon_fstream(icon_path);
 +                    if (!icon_fstream.is_open())
@@ -464,9 +362,9 @@ index c94fd1c7a4..ebebf84fe5 100644
 +                for (auto& option : line.get_options())
 +                    option_ids.emplace_back(option.opt_id);
 +                if (option_ids.size() == 1)
-+                    optgroup_pt.add("", option_ids[0]);
++                    (is_subset_tab ? settings_pt : *optgroup_pt).add("", option_ids[0]);
 +                else if (option_ids.size() > 1) {
-+                    auto& line_pt = optgroup_pt.add_child("", ptree());
++                    auto& line_pt = (is_subset_tab ? settings_pt : *optgroup_pt).add_child("", ptree());
 +                    line_pt.put("label", line.label.ToStdString());
 +                    line_pt.put("tooltip", line.label_tooltip.ToStdString());
 +                    auto& options_pt = line_pt.put_child("options", ptree());
@@ -477,9 +375,25 @@ index c94fd1c7a4..ebebf84fe5 100644
 +        }
 +    }
 +
-+    pt.put_child("icon_data", icon_data_pt);
++    boost::filesystem::path path;
++    if (is_subset_tab) {
++        auto& eligible_keys_pt = pt.put_child("eligible_keys", ptree());
++        for (const auto& key : m_config->keys())
++            eligible_keys_pt.add("", key);
++        pt.put_child("categoriesAndSettings", categories_pt);
++        pt.put_child("icon_data", icon_data_pt);
 +
-+    auto path = boost::dll::program_location().parent_path() / this->m_title.Lower().ToStdString().append(".json");
++        if (this_type == object_type)
++            path = boost::dll::program_location().parent_path() / "object_settings.json";
++        else if (this_type == part_type)
++            path = boost::dll::program_location().parent_path() / "part_settings.json";
++        else
++            path = boost::dll::program_location().parent_path() / "height_range_settings.json";
++    } else {
++        pt.put_child("icon_data", icon_data_pt);
++        path = boost::dll::program_location().parent_path() / this->m_title.Lower().ToStdString().append(".json");
++    }
++
 +    write_json(path.string(), pt);
 +}
 +
