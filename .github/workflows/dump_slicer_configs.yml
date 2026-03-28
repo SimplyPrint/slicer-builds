@@ -35,21 +35,21 @@ jobs:
       matrix:
         slicer:
           - OrcaSlicer
- #         - PrusaSlicer
- #         - BambuStudio
-#          - ElegooSlicer
-#          - QIDISlicer
-#          - CrealityPrint
+          - PrusaSlicer
+          - BambuStudio
+ #          - ElegooSlicer
+ #          - QIDISlicer
+ #          - CrealityPrint
         build-type:
           - nightly
           - latest_release
         include:
           - slicer: OrcaSlicer
             repo: OrcaSlicer/OrcaSlicer
- #         - slicer: PrusaSlicer
- #           repo: prusa3d/PrusaSlicer
- #         - slicer: BambuStudio
- #           repo: BambuLab/BambuStudio
+          - slicer: PrusaSlicer
+            repo: prusa3d/PrusaSlicer
+          - slicer: BambuStudio
+            repo: BambuLab/BambuStudio
 #          - slicer: ElegooSlicer
 #            repo: ELEGOO-3D/ElegooSlicer
 #          - slicer: QIDISlicer
@@ -132,7 +132,8 @@ jobs:
           # Setup slicer for build
           pushd slicer-src
             git checkout ${{ env.build_ref }}
-            git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch --reject --whitespace=fix || true
+            git apply --check ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch
+            git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch --whitespace=fix
           popd
 
       - name: Install dependencies
