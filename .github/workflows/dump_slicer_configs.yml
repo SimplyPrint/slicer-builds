@@ -91,6 +91,7 @@ jobs:
           
           echo latest_release_tag=$latest_release_tag
           echo latest_stored_tag=$latest_stored_tag
+          echo "latest_release_tag=$latest_release_tag" >> "$GITHUB_ENV"
           
           if [[ "$latest_stored_tag" != "$latest_release_tag" ]] || [[ "${{ inputs.force-latest-release-rebuild || false }}" == "true" ]]; then
             pushd slicer-src
@@ -140,7 +141,7 @@ jobs:
             git checkout ${{ env.build_ref }}
           popd
 
-          bash ./dump_slicer_steps/apply_patches.sh ${{ matrix.slicer }} ${{ matrix.build-type == 'nightly' && 'nightly' || env.latest_release_tag }}
+          bash ./dump_slicer_steps/apply_patches.sh "${{ matrix.slicer }}" "${{ matrix.build-type == 'nightly' && 'nightly' || env.latest_release_tag }}"
 
       - name: Install dependencies
         if: env.continue_build == 'true'
