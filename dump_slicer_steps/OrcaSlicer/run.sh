@@ -7,13 +7,13 @@ SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt xvfb-run ./orca-slicer &
 pid=$!
 
 expected_files=(
-  "bin/print_config_def.json"
-  "bin/process.json"
-  "bin/machine.json"
-  "bin/filament.json"
-  "bin/object_settings.json"
-  "bin/part_settings.json"
-  "bin/height_range_settings.json"
+  "print_config_def.json"
+  "process.json"
+  "machine.json"
+  "filament.json"
+  "object_settings.json"
+  "part_settings.json"
+  "height_range_settings.json"
 )
 
 for _ in $(seq 1 180); do
@@ -46,4 +46,4 @@ fi
 
 popd
 
-cp ./slicer-src/build/package/bin/*.json ./slicer-out
+cp ./slicer-src/build/package/*.json ./slicer-out
