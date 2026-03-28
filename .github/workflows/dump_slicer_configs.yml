@@ -46,10 +46,13 @@ jobs:
         include:
           - slicer: OrcaSlicer
             repo: OrcaSlicer/OrcaSlicer
+            release_tag: ''
           - slicer: PrusaSlicer
             repo: prusa3d/PrusaSlicer
+            release_tag: version_2.9.3
           - slicer: BambuStudio
             repo: BambuLab/BambuStudio
+            release_tag: v02.05.00.67
 #          - slicer: ElegooSlicer
 #            repo: ELEGOO-3D/ElegooSlicer
 #          - slicer: QIDISlicer
@@ -70,8 +73,11 @@ jobs:
           # Clone slicer repo
           git clone https://github.com/${{ matrix.repo }} slicer-src --depth 1 --
           
-          # Get the latest release tag
-          latest_release_tag=$(curl "https://api.github.com/repos/${{ matrix.repo }}/releases/latest" | jq '.tag_name' | xargs echo)
+          # Get the release tag we want to extract from
+          latest_release_tag="${{ matrix.release_tag }}"
+          if [[ -z "$latest_release_tag" ]]; then
+            latest_release_tag=$(curl "https://api.github.com/repos/${{ matrix.repo }}/releases/latest" | jq '.tag_name' | xargs echo)
+          fi
           
           # Check if the latest tag has been built
           git clone https://github.com/${{ github.repository }} --branch slicer-config-artifacts --depth=1 artifacts
@@ -132,9 +138,9 @@ jobs:
           # Setup slicer for build
           pushd slicer-src
             git checkout ${{ env.build_ref }}
-            git apply --check ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch
-            git apply ../dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch --whitespace=fix
           popd
+
+          bash ./dump_slicer_steps/apply_patches.sh ${{ matrix.slicer }} ${{ matrix.build-type == 'nightly' && 'nightly' || env.latest_release_tag }}
 
       - name: Install dependencies
         if: env.continue_build == 'true'
@@ -166,7 +172,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: slicer-src/build
-          key: ${{ runner.os }}-${{ matrix.slicer }}-build-slicer-${{ hashFiles('slicer-src/src/libslic3r/PrintConfig.cpp', 'slicer-src/src/slic3r/GUI/Tab.cpp', 'dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch') }}
+          key: ${{ runner.os }}-${{ matrix.slicer }}-build-slicer-${{ hashFiles('slicer-src/src/libslic3r/PrintConfig.cpp', 'slicer-src/src/slic3r/GUI/Tab.cpp', 'dump_slicer_steps/apply_patches.sh', 'dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch', 'dump_slicer_steps/${{ matrix.slicer }}/patches/**/*.patch') }}
 
       - name: Build slicer
         if: env.continue_build == 'true' && (inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
