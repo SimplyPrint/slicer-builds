@@ -373,10 +373,19 @@
         "default_value": "0"
     },
     "cooling_slowdown_logic": {
-        "type": "",
+        "type": "enums",
         "label": "Cooling slowdown logic",
         "tooltip": "Determines how the printer slows down layer printing when the minimum layer time isn't reached. 'Consistent surface' first tries to preserve the print speeds of the first two perimeters by slowing all other features. Only if this isn't sufficient, it also slows down those first two perimeters. 'Uniform cooling' slows down all print features, including the first two perimeters.",
-        "mode": "simple"
+        "enum_values": [
+            "uniform_cooling",
+            "consistent_surface"
+        ],
+        "enum_labels": [
+            "Uniform cooling",
+            "Consistent surface"
+        ],
+        "mode": "simple",
+        "default_value": "Uniform cooling"
     },
     "cooling_tube_length": {
         "type": "float",
