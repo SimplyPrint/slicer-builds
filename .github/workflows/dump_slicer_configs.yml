@@ -92,6 +92,7 @@ jobs:
           echo latest_release_tag=$latest_release_tag
           echo latest_stored_tag=$latest_stored_tag
           echo "latest_release_tag=$latest_release_tag" >> "$GITHUB_ENV"
+          echo "build_cache_ref=${{ matrix.build-type }}-$latest_release_tag" >> "$GITHUB_ENV"
           
           if [[ "$latest_stored_tag" != "$latest_release_tag" ]] || [[ "${{ inputs.force-latest-release-rebuild || false }}" == "true" ]]; then
             pushd slicer-src
@@ -173,7 +174,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: slicer-src/build
-          key: ${{ runner.os }}-${{ matrix.slicer }}-build-slicer-${{ hashFiles('slicer-src/src/libslic3r/PrintConfig.cpp', 'slicer-src/src/slic3r/GUI/Tab.cpp', 'dump_slicer_steps/apply_patches.sh', 'dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch', 'dump_slicer_steps/${{ matrix.slicer }}/patches/**/*.patch') }}
+          key: ${{ runner.os }}-${{ matrix.slicer }}-build-slicer-${{ env.build_cache_ref }}-${{ hashFiles('slicer-src/src/libslic3r/PrintConfig.cpp', 'slicer-src/src/slic3r/GUI/Tab.cpp', 'dump_slicer_steps/apply_patches.sh', 'dump_slicer_steps/${{ matrix.slicer }}/dump_configs.patch', 'dump_slicer_steps/${{ matrix.slicer }}/patches/**/*.patch') }}
 
       - name: Build slicer
         if: env.continue_build == 'true' && (inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
