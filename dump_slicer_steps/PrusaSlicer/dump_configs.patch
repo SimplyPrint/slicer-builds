@@ -101,14 +101,14 @@ index f141107..d9bf2d2 100644
 +            auto get_enum_name = [](ConfigOptionDef& def) {
 +                const ConfigOption* option = def.default_value.get();
 +                int idx = 0;
-+                if (auto* enum_opt = dynamic_cast<const ConfigOptionEnumGeneric*>(option)) {
-+                    idx = enum_opt->getInt();
-+                } else if (auto* enums_opt = dynamic_cast<const ConfigOptionEnumsGeneric*>(option)) {
-+                    const auto& vals = enums_opt->values;
++                if (def.type == coEnums) {
++                    const auto vals = option->getInts();
 +                    if (vals.size() == 1)
 +                        idx = vals[0];
 +                    else
 +                        throw ConfigurationError("More than one enum values");
++                } else if (auto* enum_opt = dynamic_cast<const ConfigOptionEnumGeneric*>(option)) {
++                    idx = enum_opt->getInt();
 +                } else {
 +                    idx = option->getInt();
 +                }
