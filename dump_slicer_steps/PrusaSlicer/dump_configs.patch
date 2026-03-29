@@ -23,7 +23,7 @@ index f141107..d9bf2d2 100644
  
  #include "Config.hpp"
  #include "I18N.hpp"
-@@ -344,6 +347,150 @@ PrintConfigDef::PrintConfigDef()
+@@ -344,6 +347,158 @@ PrintConfigDef::PrintConfigDef()
      this->init_sla_tilt_params();
      assign_printer_technology_to_unknown(this->options, ptSLA);
      this->finalize();
@@ -61,6 +61,7 @@ index f141107..d9bf2d2 100644
 +        { coBool, "bool" },
 +        { coBools, "bools" },
 +        { coEnum, "enum" },
++        { coEnums, "enums" },
 +    };
 +
 +    static std::map<ConfigOptionMode, std::string> mode_map = {
@@ -102,6 +103,12 @@ index f141107..d9bf2d2 100644
 +                int idx = 0;
 +                if (auto* enum_opt = dynamic_cast<const ConfigOptionEnumGeneric*>(option)) {
 +                    idx = enum_opt->getInt();
++                } else if (auto* enums_opt = dynamic_cast<const ConfigOptionEnumsGeneric*>(option)) {
++                    const auto& vals = enums_opt->values;
++                    if (vals.size() == 1)
++                        idx = vals[0];
++                    else
++                        throw ConfigurationError("More than one enum values");
 +                } else {
 +                    idx = option->getInt();
 +                }
@@ -125,6 +132,7 @@ index f141107..d9bf2d2 100644
 +            case coBool:            SET_VALUE(opt.get_default_value<ConfigOptionBool>()); break;
 +            case coBools:           SET_VALUE(opt.get_default_value<ConfigOptionBools>()); break;
 +            case coEnum:            tree.put("default_value", get_enum_name(opt)); break;
++            case coEnums:           tree.put("default_value", get_enum_name(opt)); break;
 +            default: break;
 +            }
 +		}
@@ -144,7 +152,7 @@ index f141107..d9bf2d2 100644
 +        opt_pt.put("tooltip", opt.tooltip);
 +        if (!opt.sidetext.empty())
 +            opt_pt.put("sidetext", opt.sidetext);
-+        if (opt.type == coEnum) {
++        if (opt.type == coEnum || opt.type == coEnums) {
 +            put_array(opt_pt, "enum_values", opt.enum_def->values());
 +            put_array(opt_pt, "enum_labels", opt.enum_def->labels());
 +        }
