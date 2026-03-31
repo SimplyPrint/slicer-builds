@@ -182,7 +182,7 @@ jobs:
           echo "DEPS_CACHE_KEY=$(git log -1 --pretty="format:%H" -- deps)" >> $GITHUB_ENV
 
       - name: Cache built dependencies
-        if: env.continue_build == 'true'
+        if: env.continue_build == 'true' && !inputs.disable-caching
         id: cache-build-deps
         uses: actions/cache@v4
         with:
@@ -214,7 +214,7 @@ jobs:
           echo "SLICER_CACHE_KEY=${SLICER_CACHE_KEY}" >> $GITHUB_ENV
 
       - name: Cache built slicer
-        if: env.continue_build == 'true'
+        if: env.continue_build == 'true' && !inputs.disable-caching
         id: cache-build-slicer
         uses: actions/cache@v4
         with:
