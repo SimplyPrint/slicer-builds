@@ -15,6 +15,21 @@ on:
         description: The runner for this action
         required: true
 
+      runner-arm:
+        type: choice
+        options:
+          - ubuntu-24.04-arm
+          - ubicloud-standard-16-arm-ubuntu-2404
+          - ubicloud-standard-30-arm-ubuntu-2404
+        default: ubuntu-24.04-arm
+        description: The ARM runner for this action
+        required: true
+
+      use-arm:
+        type: boolean
+        default: false
+        description: Should use ARM builder
+
       disable-caching:
         type: boolean
         default: false
@@ -47,10 +62,13 @@ jobs:
         include:
           - slicer: OrcaSlicer
             repo: OrcaSlicer/OrcaSlicer
+            use_arm: true
           - slicer: PrusaSlicer
             repo: prusa3d/PrusaSlicer
+            use_arm: true
           - slicer: BambuStudio
             repo: BambuLab/BambuStudio
+            use_arm: true
           - slicer: ElegooSlicer
             repo: ELEGOO-3D/ElegooSlicer
           - slicer: QIDISlicer
@@ -63,13 +81,14 @@ jobs:
           - slicer: QIDISlicer
             build-type: nightly
 
-    runs-on: ${{ inputs.runner || 'ubuntu-24.04' }}
+    runs-on: ${{ inputs.use-arm && matrix.use_arm && inputs.runner-arm || inputs.runner }}
     env:
       DEPS_CACHE_KEY: ''
       SLICER_CACHE_KEY: ''
       latest_release_tag: ''
       latest_release_at_head: 'false'
       continue_build: 'true'
+      dash-arm: ${{ inputs.use-arm && matrix.use_arm && '-arm' || '' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -78,10 +97,6 @@ jobs:
         run: |
           # Clone slicer repo
           git clone https://github.com/${{ matrix.repo }} slicer-src --depth 1 --
-
-          if [[ "${{inputs.force-rebuild}}" == "true" ]]; then
-            exit 0
-          fi
           
           i=5
           while (( i > 0 )) do
@@ -138,7 +153,7 @@ jobs:
             fi
           else
             # Latest release has not changed, do not continue to build
-            if [[ "${{ matrix.build-type }}" == "latest_release" ]]; then
+            if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "${{inputs.force-rebuild}}" == "false" ]]; then
               echo "The latest release has already been built. Exiting..."
               echo "continue_build=false" >> "$GITHUB_ENV"
               exit 0
