@@ -19,6 +19,11 @@ on:
         type: boolean
         default: false
         description: Disable caching
+      
+      force-rebuild:
+        type: boolean
+        default: false
+        description: Force rebuild
 
 env:
   version_file: slicer_binary_versions.json
@@ -73,6 +78,10 @@ jobs:
         run: |
           # Clone slicer repo
           git clone https://github.com/${{ matrix.repo }} slicer-src --depth 1 --
+
+          if [[ "${{inputs.force-rebuild}}" == "true" ]]; then
+            exit 0
+          fi
           
           i=5
           while (( i > 0 )) do
@@ -288,9 +297,14 @@ jobs:
               if ! [[ -e "$slicer/${{ env.version_file }}" ]]; then
                 echo "{}" > $slicer/${{ env.version_file }}
               fi
-              pushd $slicer
-                jq --arg tag "$tag" '.latest = $tag | .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
-              popd
+
+              if [[ "$(jq --arg tag "$tag" 'any(.available == $tag)')" == "false" ]]; then
+                pushd $slicer
+                  jq --arg tag "$tag" '.latest = $tag | .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
+                popd
+              else
+                echo Tag already in version file
+              fi
             fi
           done
 
