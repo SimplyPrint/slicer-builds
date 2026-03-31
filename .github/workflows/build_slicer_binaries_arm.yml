@@ -21,7 +21,7 @@ on:
         description: Disable caching
 
 env:
-  version_file: slicer_binary_versions.json
+  version_file: arm/slicer_binary_versions.json
 
 jobs:
   build_slicers:
@@ -58,7 +58,7 @@ jobs:
           - slicer: QIDISlicer
             build-type: nightly
 
-    runs-on: ${{ inputs.runner || 'ubuntu-24.04' }}
+    runs-on: ${{ inputs.runner || 'ubuntu-24.04-arm' }}
     env:
       DEPS_CACHE_KEY: ''
       SLICER_CACHE_KEY: ''
