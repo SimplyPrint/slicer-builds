@@ -174,7 +174,7 @@ jobs:
         if: env.continue_build == 'true'
         run: |
           cd slicer-src
-          echo "DEPS_CACHE_KEY=$(git log -1 --pretty="format:%H" -- deps)" >> $GITHUB_ENV
+          echo "DEPS_CACHE_KEY=$(git log -1 --pretty="format:%H" -- deps)-arm" >> $GITHUB_ENV
 
       - name: Cache built dependencies
         if: env.continue_build == 'true'
@@ -206,7 +206,7 @@ jobs:
             SLICER_CACHE_KEY="${SLICER_CACHE_KEY}-${PATCHES_HASH}"
           fi
 
-          echo "SLICER_CACHE_KEY=${SLICER_CACHE_KEY}" >> $GITHUB_ENV
+          echo "SLICER_CACHE_KEY=${SLICER_CACHE_KEY}-arm" >> $GITHUB_ENV
 
       - name: Cache built slicer
         if: env.continue_build == 'true'
