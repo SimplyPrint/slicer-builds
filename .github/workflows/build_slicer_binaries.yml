@@ -71,16 +71,13 @@ jobs:
             use_arm: true
           - slicer: ElegooSlicer
             repo: ELEGOO-3D/ElegooSlicer
-          - slicer: QIDISlicer
-            repo: QIDITECH/QIDISlicer
+          - slicer: QIDIStudio
+            repo: QIDITECH/QIDIStudio
           - slicer: SuperSlicer
             repo: supermerill/SuperSlicer
             use_arm: true
           - slicer: CrealityPrint
             repo: CrealityOfficial/CrealityPrint
-        exclude: # disable temporarily until build is fixed upstream
-          - slicer: QIDISlicer
-            build-type: nightly
 
     runs-on: ${{ inputs.use-arm && matrix.use_arm && inputs.runner-arm || inputs.runner }}
     env:
