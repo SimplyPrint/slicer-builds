@@ -7,6 +7,7 @@ sudo apt-get install -y python3-numpy
 
 pushd slicer-src
 
+chmod +x ./BuildLinux.sh
 sudo ./BuildLinux.sh -u
 
 popd
