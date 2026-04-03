@@ -41,7 +41,7 @@ on:
         description: Force rebuild
 
 env:
-  version_file: slicer_binary_versions.json
+  version_file: slicer_binary_versions
 
 jobs:
   build_slicers:
@@ -73,6 +73,7 @@ jobs:
             repo: ELEGOO-3D/ElegooSlicer
           - slicer: QIDIStudio
             repo: QIDITECH/QIDIStudio
+            use_arm: true
           - slicer: SuperSlicer
             repo: supermerill/SuperSlicer
             use_arm: true
@@ -87,6 +88,7 @@ jobs:
       latest_release_at_head: 'false'
       continue_build: 'true'
       dash-arm: ${{ inputs.use-arm && matrix.use_arm && '-arm' || '' }}
+      underscore-arm: ${{ inputs.use-arm && matrix.use_arm && '_arm' || '' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -105,7 +107,7 @@ jobs:
             latest_release_hash_json=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}")
             latest_release_hash=$(echo $latest_release_hash_json| jq '.sha' | xargs echo)
 
-            latest_stored_tag_json=$(curl "https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/slicer-config-artifacts/${{ matrix.slicer }}/${{ env.version_file }}") || ''
+            latest_stored_tag_json=$(curl "https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/slicer-config-artifacts/${{ matrix.slicer }}/${{ env.version_file }}${{ env.dash-arm }}.json") || ''
             if [[ -n "$latest_stored_tag_json" ]]; then
               latest_stored_tag=$(echo $latest_stored_tag_json | jq '.latest' | xargs echo)
             fi
@@ -167,7 +169,7 @@ jobs:
           
           # Create config file
           mkdir -p slicer-out
-          echo -e "build_type=${{ matrix.build-type }}\ntag=${latest_release_tag}\nslicer=${{ matrix.slicer }}\nlatest_release_at_head=${latest_release_at_head}" > slicer-out/config.sh
+          echo -e "build_type=${{ matrix.build-type }}\ntag=${latest_release_tag}\nslicer=${{ matrix.slicer }}\nlatest_release_at_head=${latest_release_at_head}\narm_build=${{ matrix.use_arm }}" > slicer-out/config.sh
 
       - name: Finalize Setup
         if: env.continue_build == 'true'
@@ -204,7 +206,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: slicer-src/deps/build
-          key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ env.DEPS_CACHE_KEY }}-${{ hashFiles('dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh') }}
+          key: ${{ runner.os }}-${{ matrix.slicer }}${{ env.dash-arm }}-build-deps-${{ env.DEPS_CACHE_KEY }}-${{ hashFiles('dump_slicer_steps/${{ matrix.slicer }}/build-deps.sh') }}
 
       - name: Build dependencies
         if: env.continue_build == 'true' && (inputs.disable-caching || steps.cache-build-deps.outputs.cache-hit != 'true')
@@ -236,7 +238,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: slicer-src/build
-          key: ${{ runner.os }}-${{ matrix.slicer }}-build-slicer-${{ env.SLICER_CACHE_KEY }}
+          key: ${{ runner.os }}-${{ matrix.slicer }}${{ env.dash-arm }}-build-slicer-${{ env.SLICER_CACHE_KEY }}
 
       - name: Build slicer
         if: env.continue_build == 'true' && (inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
@@ -255,9 +257,9 @@ jobs:
         if: env.continue_build == 'true' && (matrix.build-type == 'latest_release' || env.latest_release_at_head == 'true')
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ matrix.slicer }}-${{ env.latest_release_tag }}
+          name: ${{ matrix.slicer }}-${{ env.latest_release_tag }}${{ env.dash-arm }}
           files: slicer-out/${{ matrix.slicer }}-${{ env.latest_release_tag }}.zip
-          tag_name: ${{ matrix.slicer }}_${{ env.latest_release_tag }}
+          tag_name: ${{ matrix.slicer }}_${{ env.latest_release_tag }}${{ env.underscore-arm }}
           target_commitish: slicer-config-artifacts
           body: "Link to workflow run: https://github.com/SimplyPrint/slicer-builds/actions/runs/${{ github.run_id }}"
           make_latest: false
@@ -269,7 +271,7 @@ jobs:
           upload_url: https://uploads.github.com/repos/SimplyPrint/slicer-builds/releases/254161481/assets{?name,label}
           release_id: 254161481
           asset_path: slicer-out/${{ matrix.slicer }}-${{ env.latest_release_tag }}.zip
-          asset_name: ${{ matrix.slicer }}-nightly.zip
+          asset_name: ${{ matrix.slicer }}${{ env.dash-arm }}-nightly.zip
           asset_content_type: application/zip
           max_releases: 1
 
@@ -306,14 +308,21 @@ jobs:
             # If handling a release, save it to its own folder
             if [[ "$build_type" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
               echo "Handling release"
+
+              VER_FILE=${{ env.version_file }}
+              if [[ "$arm_build" == "true"]]; then
+                VER_FILE+=-arm
+              fi
+              VER_FILE+=.json
+
               mkdir -p $slicer/$tag
-              if ! [[ -e "$slicer/${{ env.version_file }}" ]]; then
-                echo "{}" > $slicer/${{ env.version_file }}
+              if ! [[ -e "$slicer/${VER_FILE}" ]]; then
+                echo "{}" > $slicer/${VER_FILE}
               fi
 
               if [[ "$(jq --arg tag "$tag" 'any(.available == $tag)')" == "false" ]]; then
                 pushd $slicer
-                  jq --arg tag "$tag" '.latest = $tag | .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
+                  jq --arg tag "$tag" '.latest = $tag | .available += [$tag]' ${VER_FILE} > ${VER_FILE}.tmp && mv ${VER_FILE}.tmp ${VER_FILE}
                 popd
               else
                 echo Tag already in version file
@@ -339,7 +348,10 @@ jobs:
           
             if [[ "$build_type" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
               echo "Handling release"
-              git tag -f "${slicer}_${tag}"
+              if [ "$arm_build" == "true" ]; then
+                underscore_arm=_arm
+              fi
+              git tag -f "${slicer}_${tag}_${underscore_arm}"
             fi
           done
           git push --force --tags origin
