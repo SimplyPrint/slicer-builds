@@ -334,3 +334,17 @@ index f024cc6..3ddc64e 100644
      void        add_scaled_button(wxWindow* parent, ScalableButton** btn, const std::string& icon_name, 
                                    const wxString& label = wxEmptyString, 
                                    long style = wxBU_EXACTFIT | wxNO_BORDER);
+diff --git a/BuildLinux.sh b/BuildLinux.sh
+index 263163f..accfea8 100755
+--- a/BuildLinux.sh
++++ b/BuildLinux.sh
+@@ -61,7 +61,7 @@ function check_operating_system() {
+ 
+     echo
+     if [ $TARGET_OS == "linux" ]; then
+-        if [ $(uname -m) == "x86_64" ]; then
++        if [ $(uname -m) == "x86_64" || $(uname -m) == "aarch64" ]; then
+             echo -e "$(tput setaf 2)Linux 64-bit found$(tput sgr0)\n"
+             Processor="64"
+         elif [[ $(uname -m) == "i386" || $(uname -m) == "i686" ]]; then
+ 
