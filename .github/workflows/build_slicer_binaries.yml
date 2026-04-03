@@ -319,14 +319,14 @@ jobs:
               if ! [[ -e "$slicer/${VER_FILE}" ]]; then
                 echo "{}" > $slicer/${VER_FILE}
               fi
-
-              if [[ "$(jq --arg tag "$tag" 'any(.available == $tag)')" == "false" ]]; then
-                pushd $slicer
-                  jq --arg tag "$tag" '.latest = $tag | .available += [$tag]' ${VER_FILE} > ${VER_FILE}.tmp && mv ${VER_FILE}.tmp ${VER_FILE}
-                popd
-              else
-                echo Tag already in version file
-              fi
+              
+              pushd $slicer
+                if [[ "$(jq --arg tag "$tag" 'any(.available == $tag)' ${VER_FILE})" == "false" ]]; then
+                    jq --arg tag "$tag" '.latest = $tag | .available += [$tag]' ${VER_FILE} > ${VER_FILE}.tmp && mv ${VER_FILE}.tmp ${VER_FILE}
+                else
+                  echo Tag already in version file
+                fi
+              popd
             fi
           done
 
