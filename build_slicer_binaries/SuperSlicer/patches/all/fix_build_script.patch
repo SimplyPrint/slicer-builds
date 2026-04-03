@@ -7,7 +7,7 @@ index 263163f..accfea8 100755
      echo
      if [ $TARGET_OS == "linux" ]; then
 -        if [ $(uname -m) == "x86_64" ]; then
-+        if [ $(uname -m) == "x86_64" || $(uname -m) == "aarch64" ]; then
++        if [[ $(uname -m) == "x86_64" || $(uname -m) == "aarch64" ]]; then
              echo -e "$(tput setaf 2)Linux 64-bit found$(tput sgr0)\n"
              Processor="64"
          elif [[ $(uname -m) == "i386" || $(uname -m) == "i686" ]]; then
