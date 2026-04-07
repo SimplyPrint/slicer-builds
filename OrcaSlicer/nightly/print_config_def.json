@@ -476,6 +476,13 @@
         "mode": "simple",
         "default_value": "1"
     },
+    "combine_brims": {
+        "type": "bool",
+        "label": "Combine brims",
+        "tooltip": "Combine multiple brims into one when they are close to each other. This can improve brim adhesion.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "compatible_machine_expression_group": {
         "type": "strings",
         "label": "",
@@ -5940,19 +5947,17 @@
     "wall_direction": {
         "type": "enum",
         "label": "Wall loop direction",
-        "tooltip": "The direction which the wall loops are extruded when looking down from the top.\n\nBy default all walls are extruded in counter-clockwise, unless Reverse on even is enabled. Set this to any option other than Auto will force the wall direction regardless of the Reverse on even.\n\nThis option will be disabled if spiral vase mode is enabled.",
+        "tooltip": "The direction which the contour wall loops are extruded when looking down from the top.\nHoles are printed in the opposite direction to the contour to maintain alignment with layers whose contour polygons are incomplete and change direction, also partially forming the contour of a hole.\n\nThis option will be disabled if spiral vase mode is enabled.",
         "enum_values": [
-            "auto",
             "ccw",
             "cw"
         ],
         "enum_labels": [
-            "Auto",
             "Counter clockwise",
             "Clockwise"
         ],
         "mode": "advanced",
-        "default_value": "auto"
+        "default_value": "ccw"
     },
     "wall_distribution_count": {
         "type": "int",
