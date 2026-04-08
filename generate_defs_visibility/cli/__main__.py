@@ -32,6 +32,13 @@ SUPPORTED_SLICERS = {
             "master",
         )
     },
+    'ElegooSlicer': {
+        'toggle_print_fff_options': (
+            "https://raw.githubusercontent.com/ELEGOO-3D/ElegooSlicer/{}/src/slic3r/GUI/ConfigManipulation.cpp",
+            "ConfigManipulation::toggle_print_fff_options",
+            "main",
+        )
+    },
 }
 
 
