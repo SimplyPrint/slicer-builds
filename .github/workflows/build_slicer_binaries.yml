@@ -142,7 +142,7 @@ jobs:
           
           echo "latest_release_tag=$latest_release_tag" >> "$GITHUB_ENV"
           
-          if [[ "$latest_stored_tag" != "$latest_release_tag" ]] || [[ "${{inputs.force-rebuild}}" == "false" ]]; then
+          if [[ "$latest_stored_tag" != "$latest_release_tag" ]] || [[ "${{ inputs.force-rebuild }}" == "true" ]]; then
             pushd slicer-src
               git fetch origin refs/tags/$latest_release_tag
             popd
