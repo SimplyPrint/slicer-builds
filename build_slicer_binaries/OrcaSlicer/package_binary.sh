@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 pushd slicer-src/build
 
 mkdir -p slicer_out/resources
@@ -8,5 +10,7 @@ mkdir -p slicer_out/bin
 cp -r resources/* slicer_out/resources
 
 cp src/Release/orca-slicer slicer_out/bin
+
+cp src/Release/*.so* slicer_out/bin
 
 popd
