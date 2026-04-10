@@ -1,0 +1,57 @@
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+index caf6ebe45b..a33432fd32 100644
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -6420,29 +6420,50 @@ int CLI::run(int argc, char **argv)
+             }
+             else {
+                 BOOST_LOG_TRIVIAL(info) << "glfwInit Success."<< std::endl;
++                BOOST_LOG_TRIVIAL(info) << boost::format("CLI thumbnail GL env: WAYLAND_DISPLAY=%1%, DISPLAY=%2%, XDG_RUNTIME_DIR=%3%")
++                    % (std::getenv("WAYLAND_DISPLAY") ? std::getenv("WAYLAND_DISPLAY") : "")
++                    % (std::getenv("DISPLAY") ? std::getenv("DISPLAY") : "")
++                    % (std::getenv("XDG_RUNTIME_DIR") ? std::getenv("XDG_RUNTIME_DIR") : "");
+                 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, gl_major);
+                 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, gl_minor);
+                 glfwWindowHint(GLFW_RED_BITS, 8);
+                 glfwWindowHint(GLFW_GREEN_BITS, 8);
+                 glfwWindowHint(GLFW_BLUE_BITS, 8);
+                 glfwWindowHint(GLFW_ALPHA_BITS, 8);
+                 glfwWindowHint(GLFW_VISIBLE, false);
+                 //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+                 //glfwDisable(GLFW_AUTO_POLL_EVENTS);
+ #ifdef __WXMAC__
+                 glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+                 glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+ #else
+                 glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+ #endif
+ 
++                BOOST_LOG_TRIVIAL(info) << boost::format("Creating hidden GLFW window for CLI thumbnails with requested context %1%.%2%") % gl_major % gl_minor;
++
+                 GLFWwindow* window = glfwCreateWindow(640, 480, "base_window", NULL, NULL);
+                 if (window == NULL)
+                 {
+-                    BOOST_LOG_TRIVIAL(error) << "Failed to create GLFW window" << std::endl;
++                    const char* error_msg = nullptr;
++                    int code = glfwGetError(&error_msg);
++                    BOOST_LOG_TRIVIAL(error) << "Failed to create GLFW window. Error code: " << code << ", Error: " << (error_msg ? error_msg : "") << std::endl;
+                 }
+-                else
++                else {
++                    BOOST_LOG_TRIVIAL(info) << "Created GLFW window for CLI thumbnails at " << window << std::endl;
+                     glfwMakeContextCurrent(window);
++                    GLFWwindow* current_context = glfwGetCurrentContext();
++                    BOOST_LOG_TRIVIAL(info) << "Current GLFW context after make current: " << current_context << std::endl;
++                    if (current_context != NULL) {
++                        const char* gl_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
++                        const char* gl_vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
++                        const char* gl_renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
++                        BOOST_LOG_TRIVIAL(info) << boost::format("CLI thumbnail raw GL strings before glewInit: version=%1%, vendor=%2%, renderer=%3%")
++                            % (gl_version ? gl_version : "")
++                            % (gl_vendor ? gl_vendor : "")
++                            % (gl_renderer ? gl_renderer : "");
++                    }
++                }
+             }
+ 
+             //opengl manager related logic
