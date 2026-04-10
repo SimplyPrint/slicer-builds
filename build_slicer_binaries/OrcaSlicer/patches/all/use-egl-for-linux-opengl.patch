@@ -1,0 +1,26 @@
+diff --git a/deps/GLEW/GLEW.cmake b/deps/GLEW/GLEW.cmake
+index 82bfc0bb84..6632d18544 100644
+--- a/deps/GLEW/GLEW.cmake
++++ b/deps/GLEW/GLEW.cmake
+@@ -6,7 +6,7 @@ orcaslicer_add_cmake_project(
+   GLEW
+   SOURCE_DIR  ${CMAKE_CURRENT_LIST_DIR}/glew
+   CMAKE_ARGS
+-    -DGLEW_USE_EGL=OFF
++    -DGLEW_USE_EGL=ON
+ )
+ 
+ if (MSVC)
+diff --git a/deps/wxWidgets/wxWidgets.cmake b/deps/wxWidgets/wxWidgets.cmake
+index 4a1a4d9012..81560a96e2 100644
+--- a/deps/wxWidgets/wxWidgets.cmake
++++ b/deps/wxWidgets/wxWidgets.cmake
+@@ -38,7 +38,7 @@ orcaslicer_add_cmake_project(
+         -DwxUSE_DETECT_SM=OFF
+         -DwxUSE_PRIVATE_FONTS=ON
+         -DwxUSE_OPENGL=ON
+-        -DwxUSE_GLCANVAS_EGL=OFF
++        -DwxUSE_GLCANVAS_EGL=ON
+         -DwxUSE_WEBREQUEST=ON
+         -DwxUSE_WEBVIEW=ON
+         ${_wx_edge}
