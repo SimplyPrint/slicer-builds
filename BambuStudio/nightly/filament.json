@@ -10,6 +10,7 @@
             "default_filament_colour",
             "filament_diameter",
             "filament_adhesiveness_category",
+            "filament_metal_stickiness",
             "filament_flow_ratio#0",
             "enable_pressure_advance",
             "pressure_advance",
@@ -18,6 +19,7 @@
             "filament_velocity_adaptation_factor",
             "filament_cost",
             "temperature_vitrification",
+            "filament_printable",
             "filament_cooling_before_tower",
             "filament_tower_interface_pre_extrusion_dist",
             "filament_tower_interface_pre_extrusion_length",
@@ -136,17 +138,16 @@
         ]
     },
     "Cooling": {
-        "Cooling for specific layer": [
+        "Part cooling fan": [
             {
-                "label": "Special cooling settings",
-                "tooltip": "set addition fan speed before fist x layer",
+                "label": "Initial layer fan",
+                "tooltip": "Set the part cooling fan speed for the first few layers. Set to 0 to keep the fan off for better bed adhesion",
                 "options": [
                     "close_fan_the_first_x_layers",
-                    "first_x_layer_fan_speed"
+                    "first_x_layer_part_fan_speed"
                 ]
-            }
-        ],
-        "Part cooling fan": [
+            },
+            "full_fan_speed_layer",
             {
                 "label": "Min fan speed threshold",
                 "tooltip": "Part cooling fan speed will start to run at min speed when the estimated layer time is no longer than the layer time in setting. When layer time is shorter than threshold, fan speed is interpolated between the minimum and maximum fan speed according to layer printing time",
@@ -166,15 +167,33 @@
             "reduce_fan_stop_start_freq",
             "slow_down_for_layer_cooling",
             "no_slow_down_for_cooling_on_outwalls",
+            "cooling_slowdown_logic",
+            "cooling_perimeter_transition_distance",
             "slow_down_min_speed#0",
             "enable_overhang_bridge_fan",
             "overhang_fan_threshold",
             "overhang_threshold_participating_cooling",
             "overhang_fan_speed",
-            "pre_start_fan_time"
+            "pre_start_fan_time",
+            "ironing_fan_speed"
         ],
         "Auxiliary part cooling fan": [
-            "additional_cooling_fan_speed"
+            {
+                "label": "Initial layer fan",
+                "tooltip": "Set the auxiliary fan speed for the first few layers",
+                "options": [
+                    "close_additional_fan_first_x_layers",
+                    "first_x_layer_fan_speed"
+                ]
+            },
+            {
+                "label": "Linear ramp up",
+                "tooltip": "Auxiliary fan speed will linearly increase from the initial layer speed to the target speed over the specified number of layers",
+                "options": [
+                    "additional_fan_full_speed_layer",
+                    "additional_cooling_fan_speed"
+                ]
+            }
         ],
         "Exhaust fan": [
             "activate_air_filtration",

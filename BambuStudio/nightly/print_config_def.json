@@ -33,19 +33,21 @@
         "mode": "simple",
         "default_value": "0"
     },
+    "additional_fan_full_speed_layer": {
+        "type": "ints",
+        "label": "Full fan speed at layer",
+        "tooltip": "Auxiliary fan speed will be ramped up linearly from layer \"For the first\" to maximum at layer \"Full fan speed at layer\". \"Full fan speed at layer\" will be ignored if lower than \"For the first\", in which case the fan will be running at maximum allowed speed at layer \"For the first\" + 1.",
+        "min": "0",
+        "max": "1000",
+        "mode": "simple",
+        "default_value": "0"
+    },
     "apply_scarf_seam_on_circles": {
         "type": "bool",
         "label": "Scarf Seam On Compensation Circles",
         "tooltip": "Scarf seam will be applied on circles for better dimensional accuracy.",
         "mode": "advanced",
         "default_value": "1"
-    },
-    "apply_top_surface_compensation": {
-        "type": "bool",
-        "label": "Apply top surface compensation",
-        "tooltip": "Enable this option to extend the travel distance between top surface lines, improving the adhesion between the top surface infill and the walls.",
-        "mode": "develop",
-        "default_value": "0"
     },
     "auxiliary_fan": {
         "type": "bool",
@@ -329,6 +331,16 @@
         "min": "0",
         "mode": "simple",
         "default_value": "200"
+    },
+    "close_additional_fan_first_x_layers": {
+        "type": "ints",
+        "label": "For the first",
+        "tooltip": "Set special auxiliary cooling fan for the first certain layers.",
+        "sidetext": "layers",
+        "min": "0",
+        "max": "1000",
+        "mode": "simple",
+        "default_value": "1"
     },
     "close_fan_the_first_x_layers": {
         "type": "ints",
@@ -682,6 +694,13 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "enable_filament_dynamic_map": {
+        "type": "bool",
+        "label": "Enable filament dynamic map",
+        "tooltip": "Support filament map to different nozzle",
+        "mode": "simple",
+        "default_value": "0"
+    },
     "enable_height_slowdown": {
         "type": "bools",
         "label": "Slow down by height",
@@ -694,6 +713,13 @@
         "label": "",
         "tooltip": "",
         "mode": "develop",
+        "default_value": "0"
+    },
+    "enable_mixed_color_sublayer": {
+        "type": "bool",
+        "label": "Mixed color sublayer",
+        "tooltip": "Enable mixed color sublayer splitting. When enabled, layers containing mixed color filaments will be split into sub-layers to achieve color mixing effects.",
+        "mode": "simple",
         "default_value": "0"
     },
     "enable_overhang_bridge_fan": {
@@ -747,9 +773,9 @@
     },
     "enable_tower_interface_features": {
         "type": "bool",
-        "label": "",
-        "tooltip": "",
-        "mode": "simple",
+        "label": "Enable tower interface features",
+        "tooltip": "When enabled, use dedicated temperature, pre-extrusion and purge settings for prime tower interface layers (where different materials meet), to improve multi-material tool change quality.",
+        "mode": "develop",
         "default_value": "0"
     },
     "enable_wrapping_detection": {
@@ -1186,6 +1212,13 @@
         "mode": "advanced",
         "default_value": "\" \""
     },
+    "filament_extruder_compatibility": {
+        "type": "ints",
+        "label": "Filament-extruder compatibility",
+        "tooltip": "A single 32-bit int encoding the compatibility level of a filament across all extruders (up to 10). Every 3 bits represent one extruder (bits [3*i, 3*i+2] for extruder i). 0: printable, 1: error, 2: critical warning, 3: warning, 4-7: reserved",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "filament_extruder_variant": {
         "type": "strings",
         "label": "Filament's extruder variant",
@@ -1229,6 +1262,13 @@
         "mode": "simple",
         "nocli": "true",
         "default_value": ""
+    },
+    "filament_is_mixed": {
+        "type": "bools",
+        "label": "Is mixed filament",
+        "tooltip": "Whether this filament slot is a mixed filament composed of multiple physical filaments",
+        "mode": "develop",
+        "default_value": "0"
     },
     "filament_is_support": {
         "type": "bools",
@@ -1289,6 +1329,25 @@
         "mode": "advanced",
         "default_value": "2"
     },
+    "filament_metal_stickiness": {
+        "type": "enums",
+        "label": "Metal stickiness",
+        "tooltip": "Indicates how strongly the filament tends to stick to the metal nozzle and leave residue. \"None\" means untested or custom filament, behaves the same as Low. Low: e.g. PLA - retraction can be safely skipped in infill areas. Medium: moderate stickiness - use with caution. High: e.g. PETG - retraction should not be skipped to avoid oozing artifacts on outer walls.",
+        "enum_values": [
+            "None",
+            "Low",
+            "Medium",
+            "High"
+        ],
+        "enum_labels": [
+            "None",
+            "Low",
+            "Medium",
+            "High"
+        ],
+        "mode": "advanced",
+        "default_value": "None"
+    },
     "filament_minimal_purge_on_wipe_tower": {
         "type": "floats",
         "label": "Minimal purge on wipe tower",
@@ -1297,6 +1356,34 @@
         "min": "0",
         "mode": "develop",
         "default_value": "15"
+    },
+    "filament_mixed_components": {
+        "type": "strings",
+        "label": "Mixed filament components",
+        "tooltip": "Comma-separated 1-based indices of component filaments, e.g. \"1,3\"",
+        "mode": "develop",
+        "default_value": "\"\""
+    },
+    "filament_mixed_gradient": {
+        "type": "bools",
+        "label": "Mixed filament gradient",
+        "tooltip": "Enable Z-direction gradient mode for mixed filament sub-layers. When enabled, the sub-layer ratios vary linearly across layers.",
+        "mode": "develop",
+        "default_value": "0"
+    },
+    "filament_mixed_gradient_range": {
+        "type": "strings",
+        "label": "Mixed filament gradient range",
+        "tooltip": "Start and end ratios for the first component in gradient mode. Comma-separated pair, e.g. \"0.10,0.90\" means 10% to 90%.",
+        "mode": "develop",
+        "default_value": "\"\""
+    },
+    "filament_mixed_sublayer_ratios": {
+        "type": "strings",
+        "label": "Mixed filament sublayer ratios",
+        "tooltip": "Comma-separated ratio values summing to 1.0, e.g. \"0.7,0.3\"",
+        "mode": "develop",
+        "default_value": "\"\""
     },
     "filament_multi_colour": {
         "type": "strings",
@@ -1801,6 +1888,16 @@
         "mode": "simple",
         "default_value": "0"
     },
+    "first_x_layer_part_fan_speed": {
+        "type": "ints",
+        "label": "Fan speed",
+        "tooltip": "Part cooling fan speed for the first few layers. Set to 0 to disable the part cooling fan on the initial layers for better bed adhesion",
+        "sidetext": "%",
+        "min": "0",
+        "max": "100",
+        "mode": "simple",
+        "default_value": "0"
+    },
     "flush_into_infill": {
         "type": "bool",
         "label": "Flush into objects' infill",
@@ -1849,7 +1946,7 @@
         "tooltip": "",
         "min": "0",
         "max": "1000",
-        "mode": "develop",
+        "mode": "simple",
         "default_value": "0"
     },
     "fuzzy_skin": {
@@ -1873,6 +1970,69 @@
         "mode": "simple",
         "default_value": "none"
     },
+    "fuzzy_skin_first_layer": {
+        "type": "bool",
+        "label": "Apply fuzzy skin to first layer",
+        "tooltip": "Whether to apply fuzzy skin on the first layer.",
+        "mode": "simple",
+        "default_value": "0"
+    },
+    "fuzzy_skin_mode": {
+        "type": "enum",
+        "label": "Fuzzy skin generator mode",
+        "tooltip": "Displacement: Pattern is formed by shifting the nozzle sideways from the original path.\nExtrusion: Pattern is formed by varying the amount of extruded plastic (nozzle path stays straight).\nCombined: Displacement + Extrusion. Similar look to Displacement but fills gaps between perimeters.\nNote: Extrusion and Combined only work when fuzzy skin thickness is not greater than the printed line width.",
+        "enum_values": [
+            "displacement",
+            "extrusion",
+            "combined"
+        ],
+        "enum_labels": [
+            "Displacement",
+            "Extrusion",
+            "Combined"
+        ],
+        "mode": "simple",
+        "default_value": "displacement"
+    },
+    "fuzzy_skin_noise_type": {
+        "type": "enum",
+        "label": "Fuzzy skin noise type",
+        "tooltip": "Noise type to use for fuzzy skin generation:\nClassic: Classic uniform random noise.\nPerlin: Perlin noise, which gives a more consistent texture.\nBillow: Similar to perlin noise, but clumpier.\nRidged Multifractal: Ridged noise with sharp, jagged features. Creates marble-like textures.\nVoronoi: Divides the surface into voronoi cells, and displaces each one by a random amount. Creates a patchwork texture.",
+        "enum_values": [
+            "classic",
+            "perlin",
+            "billow",
+            "ridgedmulti",
+            "voronoi"
+        ],
+        "enum_labels": [
+            "Classic",
+            "Perlin",
+            "Billow",
+            "Ridged Multifractal",
+            "Voronoi"
+        ],
+        "mode": "simple",
+        "default_value": "classic"
+    },
+    "fuzzy_skin_octaves": {
+        "type": "int",
+        "label": "Fuzzy skin noise octaves",
+        "tooltip": "The number of octaves of coherent noise to use. Higher values increase the detail of the noise, but also increase computation time.",
+        "min": "1",
+        "max": "10",
+        "mode": "advanced",
+        "default_value": "4"
+    },
+    "fuzzy_skin_persistence": {
+        "type": "float",
+        "label": "Fuzzy skin noise persistence",
+        "tooltip": "The decay rate for higher octaves of the coherent noise. Lower values will result in smoother noise.",
+        "min": "0.01",
+        "max": "1",
+        "mode": "advanced",
+        "default_value": "0.5"
+    },
     "fuzzy_skin_point_distance": {
         "type": "float",
         "label": "Fuzzy skin point distance",
@@ -1882,6 +2042,16 @@
         "max": "5",
         "mode": "simple",
         "default_value": "0.8"
+    },
+    "fuzzy_skin_scale": {
+        "type": "float",
+        "label": "Fuzzy skin feature size",
+        "tooltip": "The base size of the coherent noise features, in mm. Higher values will result in larger features.",
+        "sidetext": "mm",
+        "min": "0.10000000000000001",
+        "max": "500",
+        "mode": "advanced",
+        "default_value": "1"
     },
     "fuzzy_skin_thickness": {
         "type": "float",
@@ -1937,6 +2107,13 @@
         "type": "bool",
         "label": "",
         "tooltip": "",
+        "mode": "simple",
+        "default_value": "0"
+    },
+    "has_filament_switcher": {
+        "type": "bool",
+        "label": "Has filament switcher",
+        "tooltip": "Whether a filament switcher is connected to the printer",
         "mode": "simple",
         "default_value": "0"
     },
@@ -2420,6 +2597,16 @@
         "max": "360",
         "mode": "develop",
         "default_value": "45"
+    },
+    "ironing_fan_speed": {
+        "type": "ints",
+        "label": "Ironing fan speed",
+        "tooltip": "This part cooling fan speed is applied when ironing. Setting this parameter to a lower than regular speed reduces possible nozzle clogging due to the low volumetric flow rate, making the interface smoother. Set to -1 to disable it.",
+        "sidetext": "%",
+        "min": "-1",
+        "max": "100",
+        "mode": "advanced",
+        "default_value": "-1"
     },
     "ironing_flow": {
         "type": "percent",
@@ -3116,6 +3303,16 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "monotonic_travel_into_wall": {
+        "type": "percent",
+        "label": "Monotonic line travel extend",
+        "tooltip": "Enable this option to extend the travel distance between lines, improving the adhesion between the monotonic line infill and the walls.(percent to line width)",
+        "sidetext": "%",
+        "min": "0",
+        "max": "200",
+        "mode": "develop",
+        "default_value": "0%"
+    },
     "no_slow_down_for_cooling_on_outwalls": {
         "type": "bools",
         "label": "Don't slow down outer walls",
@@ -3671,6 +3868,13 @@
         "nocli": "true",
         "default_value": ""
     },
+    "print_in_clockwise": {
+        "type": "bool",
+        "label": "Print loops in clockwise",
+        "tooltip": "Print in clockwise when enabled, or counterclockwise when not enabled, not work for spiral vase mode",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "print_sequence": {
         "type": "enum",
         "label": "Print sequence",
@@ -3928,7 +4132,7 @@
     "reduce_crossing_wall": {
         "type": "bool",
         "label": "Avoid crossing wall",
-        "tooltip": "Detour and avoid traveling across wall which may cause blob on surface",
+        "tooltip": "Detour and avoid traveling across wall which may cause blob on surface (when travel length greater than Travel distance threshold)",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -3939,12 +4143,22 @@
         "mode": "simple",
         "default_value": "0"
     },
-    "reduce_infill_retraction": {
-        "type": "bool",
+    "reduce_infill_retraction_mode": {
+        "type": "enum",
         "label": "Reduce infill retraction",
-        "tooltip": "Don't retract when the travel is in infill area absolutely. That means the oozing can't been seen. This can reduce times of retraction for complex model and save printing time, but make slicing and G-code generating slower",
+        "tooltip": "Controls whether retraction is skipped when traveling within the infill area. \"Auto\" enables this optimization for filaments with low metal stickiness (e.g. PLA) and disables it for medium\/high metal stickiness filaments (e.g. PETG) to avoid oozing artifacts. \"Enabled\" always skips retraction in infill areas regardless of filament type. \"Disabled\" always retracts normally.",
+        "enum_values": [
+            "Disabled",
+            "Auto",
+            "Enabled"
+        ],
+        "enum_labels": [
+            "Disabled",
+            "Auto",
+            "Enabled"
+        ],
         "mode": "advanced",
-        "default_value": "0"
+        "default_value": "Auto"
     },
     "required_nozzle_HRC": {
         "type": "ints",
