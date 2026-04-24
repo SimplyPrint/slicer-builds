@@ -392,6 +392,15 @@
         "mode": "advanced",
         "default_value": "125"
     },
+    "brim_flow_ratio": {
+        "type": "float",
+        "label": "Brim flow ratio",
+        "tooltip": "This factor affects the amount of material for brims.\n\nThe actual brim flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio.\n\nNote: The resulting value will not be affected by the first-layer flow ratio.",
+        "min": "0",
+        "max": "2",
+        "mode": "advanced",
+        "default_value": "1"
+    },
     "brim_object_gap": {
         "type": "float",
         "label": "Brim-object gap",
@@ -1196,6 +1205,16 @@
         "min": "0",
         "mode": "develop",
         "default_value": "0"
+    },
+    "filament_change_extrusion_role_gcode": {
+        "type": "strings",
+        "label": "Change extrusion role G-code (filament)",
+        "tooltip": "This G-code is inserted when the extrusion role is changed for the active filament.",
+        "full_width": "true",
+        "multiline": "true",
+        "height": "5",
+        "mode": "advanced",
+        "default_value": "\"\""
     },
     "filament_change_length": {
         "type": "floats",
@@ -4059,6 +4078,16 @@
         "full_width": "true",
         "multiline": "true",
         "height": "12",
+        "mode": "advanced",
+        "default_value": ""
+    },
+    "process_change_extrusion_role_gcode": {
+        "type": "string",
+        "label": "Change extrusion role G-code (process)",
+        "tooltip": "This G-code is inserted when the extrusion role is changed. It runs after the machine and filament extrusion role G-code.",
+        "full_width": "true",
+        "multiline": "true",
+        "height": "5",
         "mode": "advanced",
         "default_value": ""
     },
