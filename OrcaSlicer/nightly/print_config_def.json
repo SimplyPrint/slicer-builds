@@ -832,6 +832,16 @@
         "mode": "advanced",
         "default_value": "1"
     },
+    "elefant_foot_layers_density": {
+        "type": "percent",
+        "label": "Elefant foot layers density",
+        "tooltip": "Density of internal solid infill for elefant foot layers compensation. The initial value for the second layer is set. Subsequent layers become linearly denser by the height specified in elefant_foot_compensation_layers. ",
+        "sidetext": "%",
+        "min": "50",
+        "max": "100",
+        "mode": "",
+        "default_value": "100%"
+    },
     "emit_machine_limits_to_gcode": {
         "type": "bool",
         "label": "Emit limits to G-code",
@@ -1262,6 +1272,7 @@
         "type": "ints",
         "label": "Number of cooling moves",
         "tooltip": "Filament is cooled by being moved back and forth in the cooling tubes. Specify desired number of these moves.",
+        "min": "0",
         "max": "20",
         "mode": "advanced",
         "default_value": "4"
@@ -6062,6 +6073,26 @@
         "max": "1000",
         "mode": "simple",
         "default_value": "2"
+    },
+    "wall_maximum_deviation": {
+        "type": "float",
+        "label": "Maximum wall deviation",
+        "tooltip": "The maximum deviation allowed when reducing the resolution for the 'Maximum wall resolution' setting. If you increase this, the print will be less accurate, but the G-Code will be smaller. 'Maximum wall deviation' limits 'Maximum wall resolution', so if the two conflict, 'Maximum wall deviation' takes precedence.",
+        "sidetext": "mm",
+        "min": "0.00499999989",
+        "max": "0.0500000007",
+        "mode": "",
+        "default_value": "0.025"
+    },
+    "wall_maximum_resolution": {
+        "type": "float",
+        "label": "Maximum wall resolution",
+        "tooltip": "This value determines the smallest wall line segment length in mm. The smaller you set this value, the more accurate and precise the walls will be.",
+        "sidetext": "mm",
+        "min": "0.00499999989",
+        "max": "0.5",
+        "mode": "",
+        "default_value": "0.5"
     },
     "wall_sequence": {
         "type": "enum",
