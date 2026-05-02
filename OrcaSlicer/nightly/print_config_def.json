@@ -2736,6 +2736,16 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "ironing_expansion": {
+        "type": "float",
+        "label": "Ironing expansion",
+        "tooltip": "Expand or contract the ironing area.",
+        "sidetext": "mm",
+        "min": "-100",
+        "max": "100",
+        "mode": "",
+        "default_value": "0"
+    },
     "ironing_fan_speed": {
         "type": "ints",
         "label": "Ironing fan speed",
@@ -6405,6 +6415,40 @@
         "tooltip": "This value will be added (or subtracted) from all the Z coordinates in the output G-code. It is used to compensate for bad Z endstop position: for example, if your endstop zero actually leaves the nozzle 0.3mm far from the print bed, set this to -0.3 (or fix your endstop).",
         "sidetext": "mm",
         "mode": "advanced",
+        "default_value": "0"
+    },
+    "zaa_dont_alternate_fill_direction": {
+        "type": "bool",
+        "label": "Don't alternate fill direction",
+        "tooltip": "Disable alternating fill direction when using Z contouring",
+        "mode": "",
+        "default_value": "0"
+    },
+    "zaa_enabled": {
+        "type": "bool",
+        "label": "Z contouring enabled",
+        "tooltip": "Enable Z-layer contouring (aka Z-layer anti-aliasing)",
+        "mode": "",
+        "default_value": "0"
+    },
+    "zaa_min_z": {
+        "type": "float",
+        "label": "Minimum z height",
+        "tooltip": "Minimum z layer height. Also controls slicing plane",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "100",
+        "mode": "",
+        "default_value": "0.05"
+    },
+    "zaa_minimize_perimeter_height": {
+        "type": "float",
+        "label": "Minimize wall height angle",
+        "tooltip": "Reduce height of top surface perimeters to match height of model edge. Effects perimeters whose slope is less than this angle in degrees. Reasonable value is 35. Set 0 to disable.",
+        "sidetext": "°",
+        "min": "0",
+        "max": "90",
+        "mode": "",
         "default_value": "0"
     }
 }
