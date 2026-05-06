@@ -2,6 +2,41 @@ name: Generate visibility configuration files
 
 on:
   workflow_dispatch:
+    inputs:
+      slicer:
+        type: choice
+        options:
+          - all
+          - OrcaSlicer
+          - PrusaSlicer
+          - BambuStudio
+          - ElegooSlicer
+        default: all
+        description: Slicer to generate visibility for
+        required: true
+
+      build-type:
+        type: choice
+        options:
+          - all
+          - nightly
+          - latest_release
+        default: all
+        description: Build type to run
+        required: true
+
+      release-tag:
+        type: string
+        default: ''
+        description: Optional release tag override for testing one version
+        required: false
+
+      force-regenerate:
+        type: boolean
+        default: false
+        description: Regenerate latest_release even when visibility already exists
+        required: false
+
   workflow_run:
     types:
       - completed
@@ -11,15 +46,17 @@ on:
 permissions:
   contents: write
 
-env:
-  version_file: def_visibility_versions.json
-
 jobs:
   generate_defs_visibility:
     runs-on: ubuntu-latest
+    concurrency:
+      group: slicer-out-${{ github.ref_name }}
+      cancel-in-progress: false
+    env:
+      continue_generate: 'true'
     strategy:
       fail-fast: false
-      max-parallel: 1 # Can't commit to the same branch in parallel
+      max-parallel: 1
       matrix:
         slicer:
           - OrcaSlicer
@@ -40,99 +77,143 @@ jobs:
             repo: ELEGOO-3D/ElegooSlicer
 
     steps:
+      - name: Apply dispatch filters
+        run: |
+          selected_slicer="${{ inputs.slicer || 'all' }}"
+          selected_build_type="${{ inputs.build-type || 'all' }}"
+
+          if [[ "$selected_slicer" != "all" && "$selected_slicer" != "${{ matrix.slicer }}" ]]; then
+            echo "Skipping ${{ matrix.slicer }} because slicer filter is $selected_slicer."
+            echo "continue_generate=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+
+          if [[ "$selected_build_type" != "all" && "$selected_build_type" != "${{ matrix.build-type }}" ]]; then
+            echo "Skipping ${{ matrix.build-type }} because build-type filter is $selected_build_type."
+            echo "continue_generate=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+
       - name: Checkout repository
+        if: env.continue_generate == 'true'
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
 
       - name: Install the latest version of uv
+        if: env.continue_generate == 'true'
         uses: astral-sh/setup-uv@v6
         with:
           python-version: 3.13
 
       - name: Install generate_defs_visibility cli tool
+        if: env.continue_generate == 'true'
         run: |
-          uv tool install ./generate_defs_visibility
+          uv tool install ./tools/generate_defs_visibility
 
       - name: Generate visibility configuration files
+        if: env.continue_generate == 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.SLICER_BUILDS_OPENAI_API_KEY }}
         run: |
+          set -euo pipefail
+
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Fetch artifacts
-          git fetch origin slicer-config-artifacts
-          # Checkout to artifact branch
-          git switch slicer-config-artifacts
-          cd ${{ matrix.slicer }}
-      
-          # Ensure the version file is initialized
-          if ! [[ -e "${{ env.version_file }}" ]]; then
-            echo "{}" > ${{ env.version_file }}
+
+          cd "slicers/${{ matrix.slicer }}/out"
+
+          release_tag_override="${{ inputs.release-tag || '' }}"
+          if [[ -n "$release_tag_override" ]]; then
+            latest_release_tag="$release_tag_override"
+            latest_release_json=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/releases/tags/${latest_release_tag}" || echo '{}')
+          else
+            latest_release_json=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/releases/latest")
+            latest_release_tag=$(echo "$latest_release_json" | jq -r '.tag_name')
           fi
-          
-          # Get latest tags/hashes
-          latest_release_tag=$(curl "https://api.github.com/repos/${{ matrix.repo }}/releases/latest" | jq '.tag_name' | xargs echo)
-          latest_release_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq '.sha' | xargs echo)
-          latest_stored_tag=$(jq '.latest' ${{ env.version_file }} | xargs echo)
-          head_hash=$(curl "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq '.sha' | xargs echo)
-          
+          latest_release_hash=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq -r '.sha')
+          upstream_published_at=$(echo "$latest_release_json" | jq -r '.published_at // empty')
+          latest_stored_tag=$(jq -r '.latest // empty' _index.json 2>/dev/null || true)
+          release_visibility_present=$(jq -r --arg tag "$latest_release_tag" '(.versions[$tag].visibility? != null)' _index.json 2>/dev/null || echo false)
+          head_hash=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq -r '.sha')
+
           echo latest_release_tag=$latest_release_tag
           echo latest_release_hash=$latest_release_hash
           echo latest_stored_tag=$latest_stored_tag
+          echo release_visibility_present=$release_visibility_present
           echo head_hash=$head_hash
-          
-          if [[ "$latest_stored_tag" != "$latest_release_tag" ]]; then
-            if [[ $head_hash == $latest_release_hash ]]; then
+
+          if [[ "$release_visibility_present" != "true" ]] || [[ "${{ inputs.force-regenerate || false }}" == "true" ]]; then
+            if [[ "$head_hash" == "$latest_release_hash" ]]; then
               echo "Latest release found at HEAD"
               latest_release_at_head=true
             fi
-          else
-            # Latest release has not changed, do not continue to build
-            if [[ "${{ matrix.build-type }}" == "latest_release" ]]; then
-              echo "The latest release has already been built. Exiting..."
-              exit 0
-            fi
-          fi
-          
-          # If the commits are the same between latest and nightly, cancel the latest_release build. The nightly build will handle both cases
-          if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "$latest_release_at_head" == "true" ]]; then
-            echo "The latest release is at the HEAD of the repo. The nightly build will be used to generate the release files. Exiting..."
+          elif [[ "${{ matrix.build-type }}" == "latest_release" ]]; then
+            echo "The latest release has already been generated. Exiting..."
             exit 0
           fi
-          
+
+          if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "${latest_release_at_head:-false}" == "true" ]] && [[ "${{ inputs.build-type || 'all' }}" != "latest_release" ]]; then
+            echo "The latest release is at the HEAD of the repo. The nightly build will generate the release files. Exiting..."
+            exit 0
+          fi
+
           if [[ "${{ matrix.build-type }}" == "nightly" ]]; then
             ref=HEAD
             folder_name=nightly
+            upstream_ref="$head_hash"
           else
             ref=refs/tags/$latest_release_tag
             folder_name=$latest_release_tag
+            upstream_ref="$latest_release_hash"
           fi
-          
-          if ! [[ -d $folder_name ]]; then
-            echo "The folder for the specified version does not exist"
+
+          if ! [[ -d "$folder_name" ]]; then
+            echo "The folder for the specified version does not exist: $folder_name"
             exit 1
           fi
-          
-          pushd $folder_name
-            uvx generate-defs-visibility --slicer ${{ matrix.slicer }} --ref $ref
+
+          pushd "$folder_name"
+            uvx generate-defs-visibility --slicer ${{ matrix.slicer }} --ref "$ref" --cache-dir "../.cache/${folder_name}"
           popd
-        
-          # If handling a release, save it to its own folder
-          if [[ "${{ matrix.build-type }}" == "latest_release" ]] || [[ "$latest_release_at_head" == "true" ]]; then
-            # Update the version file
-            jq --arg tag "$latest_release_tag" '.latest = $tag | .available += [$tag]' ${{ env.version_file }} > ${{ env.version_file }}.tmp && mv ${{ env.version_file }}.tmp ${{ env.version_file }}
-          
-            if [[ "$latest_release_at_head" == "true" ]]; then
-              mkdir -p $latest_release_tag
-              cp -rf nightly/conditional_visibility.json $latest_release_tag || true
-            fi
+
+          created_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          workflow_run_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          ../../../tools/update_slicer_index.py \
+            --index _index.json \
+            --version "$folder_name" \
+            --kind visibility \
+            --created-at "$created_at" \
+            --upstream-ref "$upstream_ref" \
+            --upstream-published-at "$upstream_published_at" \
+            --source-repo "${{ matrix.repo }}" \
+            --workflow-run-url "$workflow_run_url" \
+            $([[ "$folder_name" != "nightly" ]] && echo --latest)
+
+          if [[ "${{ matrix.build-type }}" == "nightly" && "${latest_release_at_head:-false}" == "true" ]]; then
+            mkdir -p "$latest_release_tag"
+            cp -rf nightly/conditional_visibility.json "$latest_release_tag" || true
+            ../../../tools/update_slicer_index.py \
+              --index _index.json \
+              --version "$latest_release_tag" \
+              --latest \
+              --kind visibility \
+              --created-at "$created_at" \
+              --upstream-ref "$upstream_ref" \
+              --upstream-published-at "$upstream_published_at" \
+              --source-repo "${{ matrix.repo }}" \
+              --workflow-run-url "$workflow_run_url"
           fi
-          
-          git add .
-          
+
+          cd ../../..
+          git add "slicers/${{ matrix.slicer }}/out"
+
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Update visibility configuration files for ${{ matrix.slicer }}"
-            git push origin slicer-config-artifacts
+            slicer="${{ matrix.slicer }}"
+            git commit -m "chore(${slicer,,}): generate visibility for ${folder_name} @ ${upstream_ref:0:12}"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
           fi

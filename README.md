@@ -1,18 +1,16 @@
 # Slicer builds
 
-Custom builds of slicers for different purposes
+Custom SimplyPrint slicer builds and generated slicer configuration artifacts.
 
-## Dump slicer configs
+## Repository layout
 
-Each slicer has steps configured in `dump_slicer_steps` all steps (scripts) are run from the root of the repository with
-two folders available:
+- `tools/` contains shared helper tools, including `apply_versioned_patches.sh` and `generate_defs_visibility`.
+- `slicers/<Slicer>/steps/` contains build, run, dependency, and packaging scripts for each slicer.
+- `slicers/<Slicer>/patches/` contains dump patches plus optional versioned patches. Binary-only patches live under `patches/binary/`.
+- `slicers/<Slicer>/out/` contains generated artifacts:
+  - `.cache/` for workflow cache placeholders.
+  - `nightly/` for nightly dumped configs.
+  - `<version>/` for release dumped configs.
+  - `_index.json` as the single version/build/config index for that slicer.
 
-`slicer-src`
-
-`slicer-out`
-
-The `build.sh` and `run.sh` will use these folders respectively.
-
-## Conditional visibility
-
-RAG pipeline to construct "show-if" logic for printer defs based on slic3r `toggle_print_fff_options`.
+All slicer step scripts are run from the repository root with `slicer-src` and `slicer-out` available.
