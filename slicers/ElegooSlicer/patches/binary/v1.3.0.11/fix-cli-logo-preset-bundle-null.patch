@@ -1,0 +1,23 @@
+diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
+--- a/src/slic3r/GUI/PartPlate.cpp
++++ b/src/slic3r/GUI/PartPlate.cpp
+@@ -2502,14 +2502,16 @@ void PartPlate::generate_logo_polygon(ExPolygon &logo_polygon)
+ {
+ 	if (m_shape.size() == 4)
+ 	{
+         bool is_bbl_vendor = false;
++        const ConfigOptionPoints* bed_texture_area_opt = nullptr;
+ 
+ 		if (m_plater) {
+-            if (auto preset_bundle = wxGetApp().preset_bundle; preset_bundle)
++            if (auto preset_bundle = wxGetApp().preset_bundle; preset_bundle) {
+                 is_bbl_vendor = preset_bundle->is_bbl_vendor();
++                DynamicPrintConfig global_config = preset_bundle->printers.get_edited_preset().config;
++                bed_texture_area_opt = global_config.opt<ConfigOptionPoints>("bed_texture_area");
++            }
+ 		}
+-        DynamicPrintConfig        global_config        = wxGetApp().preset_bundle->printers.get_edited_preset().config;
+-        const ConfigOptionPoints* bed_texture_area_opt = global_config.opt<ConfigOptionPoints>("bed_texture_area");
+         if (bed_texture_area_opt){
+             Pointfs bed_texture_area = bed_texture_area_opt->values;
+             if (bed_texture_area.size()==4){
