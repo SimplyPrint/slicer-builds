@@ -6,7 +6,7 @@ set -euo pipefail
 # Dump mode applies, in order:
 #   slicers/<slicer>/patches/all/*.patch
 #   slicers/<slicer>/patches/<version>/*.patch
-#   slicers/<slicer>/patches/dump_configs.patch  (fallback when no versioned dump patch was applied)
+#   slicers/<slicer>/patches/dump_configs.patch  (fallback, skipped only if <version>/dump_configs.patch exists)
 #
 # Binary mode applies, in order:
 #   slicers/<slicer>/patches/binary/all/*.patch
@@ -44,7 +44,7 @@ case "$MODE" in
     dump)
         apply_from_dir "${PATCH_ROOT}/all"
         apply_from_dir "${PATCH_ROOT}/${VERSION}"
-        if [[ "$applied" -eq 0 ]]; then
+        if [[ ! -f "${PATCH_ROOT}/${VERSION}/dump_configs.patch" ]]; then
             apply_patch_file "${PATCH_ROOT}/dump_configs.patch"
         fi
         ;;
