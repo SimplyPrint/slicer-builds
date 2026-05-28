@@ -1,0 +1,53 @@
+diff --git a/src/libslic3r/PrintApply.cpp b/src/libslic3r/PrintApply.cpp
+index d2a44463ea..ac2d56780f 100644
+--- a/src/libslic3r/PrintApply.cpp
++++ b/src/libslic3r/PrintApply.cpp
+@@ -1163,7 +1163,8 @@ Print::ApplyStatus Print::apply(const Model &model, DynamicPrintConfig new_full_
+ 
+     m_ori_full_print_config = new_full_config;
+     new_full_config.update_values_to_printer_extruders_for_multiple_filaments(new_full_config, filament_options_with_variant,  "filament_self_index", "filament_extruder_variant");
+-    std::vector<int> filament_maps =  new_full_config.option<ConfigOptionInts>("filament_map")->values;
++    auto opt_filament_map = new_full_config.option<ConfigOptionInts>("filament_map");
++    std::vector<int> filament_maps = opt_filament_map ? opt_filament_map->values : std::vector<int>();
+ 
+     // Find modified keys of the various configs. Resolve overrides extruder retract values by filament profiles.
+     DynamicPrintConfig   filament_overrides;
+diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
+index d4711a0da9..daabe9e5ad 100644
+--- a/src/libslic3r/PrintConfig.cpp
++++ b/src/libslic3r/PrintConfig.cpp
+@@ -9007,6 +9007,10 @@ void DynamicPrintConfig::update_values_to_printer_extruders(DynamicPrintConfig&
+         //int extruder_count = opt_nozzle_diameters->size();
+         auto opt_extruder_type = dynamic_cast<const ConfigOptionEnumsGeneric*>(printer_config.option("extruder_type"));
+         auto opt_nozzle_volume_type = dynamic_cast<const ConfigOptionEnumsGeneric*>(printer_config.option("nozzle_volume_type"));
++        if (!opt_extruder_type || !opt_nozzle_volume_type) {
++            BOOST_LOG_TRIVIAL(warning) << __FUNCTION__ << boost::format(", Line %1%: extruder_type or nozzle_volume_type option not found, skipping")%__LINE__;
++            return;
++        }
+         std::vector<int> variant_index;
+ 
+         if (extruder_id > 0 && extruder_id <= static_cast<unsigned> (extruder_count)) {
+@@ -9169,13 +9173,22 @@ void DynamicPrintConfig::update_values_to_printer_extruders_for_multiple_filamen
+     if ((extruder_count > 1) || different_extruder)
+     {
+         BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", Line %1%:  extruder_count=%2%, different_extruder=%3%")%__LINE__ %extruder_count %different_extruder;
+-        std::vector<int> filament_maps =  printer_config.option<ConfigOptionInts>("filament_map")->values;
++        auto opt_filament_map = printer_config.option<ConfigOptionInts>("filament_map");
++        if (!opt_filament_map) {
++            BOOST_LOG_TRIVIAL(warning) << __FUNCTION__ << boost::format(", Line %1%: filament_map option not found, skipping")%__LINE__;
++            return;
++        }
++        std::vector<int> filament_maps = opt_filament_map->values;
+         size_t filament_count = filament_maps.size();
+         //apply process settings
+         //auto opt_nozzle_diameters = this->option<ConfigOptionFloats>("nozzle_diameter");
+         //int extruder_count = opt_nozzle_diameters->size();
+         auto opt_extruder_type = dynamic_cast<const ConfigOptionEnumsGeneric*>(printer_config.option("extruder_type"));
+         auto opt_nozzle_volume_type = dynamic_cast<const ConfigOptionEnumsGeneric*>(printer_config.option("nozzle_volume_type"));
++        if (!opt_extruder_type || !opt_nozzle_volume_type) {
++            BOOST_LOG_TRIVIAL(warning) << __FUNCTION__ << boost::format(", Line %1%: extruder_type or nozzle_volume_type option not found, skipping")%__LINE__;
++            return;
++        }
+         auto opt_ids = id_name.empty()? nullptr: dynamic_cast<const ConfigOptionInts*>(this->option(id_name));
+         std::vector<int> variant_index;
+ 
