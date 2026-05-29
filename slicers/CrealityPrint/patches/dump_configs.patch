@@ -304,7 +304,7 @@ index c2add39..130cccc 100644
      // ys_FIXME: Following should not be needed, the function will be called later
      // (update_mode->update_visibility->rebuild_page_tree). This does not work, during the
      // second call of rebuild_page_tree m_tabctrl->GetFirstVisibleItem(); returns zero
-@@ -597,6 +599,67 @@ void Tab::create_preset_tab()
+@@ -597,6 +599,94 @@ void Tab::create_preset_tab()
      m_tabctrl->SetBackgroundColor(wxColor(0, 255, 0));
  }
  
@@ -316,16 +316,27 @@ index c2add39..130cccc 100644
 +    auto& filament_type = typeid(TabFilament);
 +    auto& printer_type  = typeid(TabPrinter);
 +    auto& print_type = typeid(TabPrint);
-+    if (this_type != filament_type && this_type != printer_type && this_type != print_type)
++    auto& object_type = typeid(TabPrintObject);
++    auto& part_type = typeid(TabPrintPart);
++    auto& layer_type = typeid(TabPrintLayer);
++
++    const bool is_regular_tab = this_type == filament_type || this_type == printer_type || this_type == print_type;
++    const bool is_subset_tab = this_type == object_type || this_type == part_type || this_type == layer_type;
++    if (!is_regular_tab && !is_subset_tab)
 +        return;
 +
 +    ptree pt;
 +    ptree icon_data_pt;
++    ptree categories_pt;
 +    for (const auto& page : m_pages) {
-+        auto& page_pt = pt.put_child(page->title().ToStdString(), ptree());
++        auto& page_pt = is_regular_tab ? pt.put_child(page->title().ToStdString(), ptree()) : categories_pt.put_child(page->title().ToStdString(), ptree());
++        auto& settings_pt = is_subset_tab ? page_pt.put_child("Settings", ptree()) : page_pt;
 +        for (const auto& optgroup : page->m_optgroups) {
-+            const auto& title = optgroup->title.ToStdString();
-+            auto& optgroup_pt = page_pt.put_child(title, ptree());
++            ptree* optgroup_pt = nullptr;
++            if (!is_subset_tab) {
++                const auto& title = optgroup->title.ToStdString();
++                optgroup_pt = &page_pt.put_child(title, ptree());
++            }
 +
 +            // Get option group icon
 +            auto icon_filename = optgroup->icon.ToStdString();
@@ -334,7 +345,7 @@ index c2add39..130cccc 100644
 +                icon_filename += ".svg";
 +                auto icon_path = Slic3r::var(icon_filename);
 +                if (icon_path != icon_filename) {
-+                    auto& this_icon_pt = icon_data_pt.put_child(title, ptree());
++                    auto& this_icon_pt = icon_data_pt.put_child(page->title().ToStdString(), ptree());
 +                    this_icon_pt.put("icon_filename", icon_filename);
 +                    std::ifstream icon_fstream(icon_path);
 +                    if (!icon_fstream.is_open())
@@ -350,9 +361,9 @@ index c2add39..130cccc 100644
 +                for (auto& option : line.get_options())
 +                    option_ids.emplace_back(option.opt_id);
 +                if (option_ids.size() == 1)
-+                    optgroup_pt.add("", option_ids[0]);
++                    (is_subset_tab ? settings_pt : *optgroup_pt).add("", option_ids[0]);
 +                else if (option_ids.size() > 1) {
-+                    auto& line_pt = optgroup_pt.add_child("", ptree());
++                    auto& line_pt = (is_subset_tab ? settings_pt : *optgroup_pt).add_child("", ptree());
 +                    line_pt.put("label", line.label.ToStdString());
 +                    line_pt.put("tooltip", line.label_tooltip.ToStdString());
 +                    auto& options_pt = line_pt.put_child("options", ptree());
@@ -363,9 +374,25 @@ index c2add39..130cccc 100644
 +        }
 +    }
 +
-+    pt.put_child("icon_data", icon_data_pt);
++    boost::filesystem::path path;
++    if (is_subset_tab) {
++        auto& eligible_keys_pt = pt.put_child("eligible_keys", ptree());
++        for (const auto& key : m_config->keys())
++            eligible_keys_pt.add("", key);
++        pt.put_child("categoriesAndSettings", categories_pt);
++        pt.put_child("icon_data", icon_data_pt);
 +
-+    auto path = boost::dll::program_location().parent_path() / this->m_title.Lower().ToStdString().append(".json");
++        if (this_type == object_type)
++            path = boost::dll::program_location().parent_path() / "object_settings.json";
++        else if (this_type == part_type)
++            path = boost::dll::program_location().parent_path() / "part_settings.json";
++        else
++            path = boost::dll::program_location().parent_path() / "height_range_settings.json";
++    } else {
++        pt.put_child("icon_data", icon_data_pt);
++        path = boost::dll::program_location().parent_path() / this->m_title.Lower().ToStdString().append(".json");
++    }
++
 +    write_json(path.string(), pt);
 +}
 +

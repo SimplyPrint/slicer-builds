@@ -1,10 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
-pushd slicer-src/build/src
+run_dir="slicer-src/build/src"
+if [[ ! -x "$run_dir/CrealityPrint" && -x "$run_dir/Release/CrealityPrint" ]]; then
+  run_dir="$run_dir/Release"
+fi
+
+pushd "$run_dir"
 
 SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt xvfb-run ./CrealityPrint
 
 popd
 
-cp ./slicer-src/build/src/*.json ./slicer-out
+cp "$run_dir"/*.json ./slicer-out

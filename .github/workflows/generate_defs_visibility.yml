@@ -11,6 +11,7 @@ on:
           - PrusaSlicer
           - BambuStudio
           - ElegooSlicer
+          - CrealityPrint
         default: all
         description: Slicer to generate visibility for
         required: true
@@ -63,6 +64,7 @@ jobs:
           - PrusaSlicer
           - BambuStudio
           - ElegooSlicer
+          - CrealityPrint
         build-type:
           - nightly
           - latest_release
@@ -75,6 +77,8 @@ jobs:
             repo: BambuLab/BambuStudio
           - slicer: ElegooSlicer
             repo: ELEGOO-3D/ElegooSlicer
+          - slicer: CrealityPrint
+            repo: CrealityOfficial/CrealityPrint
 
     steps:
       - name: Apply dispatch filters

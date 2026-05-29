@@ -39,6 +39,13 @@ SUPPORTED_SLICERS = {
             "main",
         )
     },
+    'CrealityPrint': {
+        'toggle_print_fff_options': (
+            "https://raw.githubusercontent.com/CrealityOfficial/CrealityPrint/{}/src/slic3r/GUI/ConfigManipulation.cpp",
+            "ConfigManipulation::toggle_print_fff_options",
+            "master",
+        )
+    },
 }
 
 
