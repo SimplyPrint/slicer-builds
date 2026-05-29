@@ -317,7 +317,7 @@ index c2add39..130cccc 100644
      // ys_FIXME: Following should not be needed, the function will be called later
      // (update_mode->update_visibility->rebuild_page_tree). This does not work, during the
      // second call of rebuild_page_tree m_tabctrl->GetFirstVisibleItem(); returns zero
-@@ -597,6 +599,94 @@ void Tab::create_preset_tab()
+@@ -597,6 +599,99 @@ void Tab::create_preset_tab()
      m_tabctrl->SetBackgroundColor(wxColor(0, 255, 0));
  }
  
@@ -326,14 +326,14 @@ index c2add39..130cccc 100644
 +    using boost::property_tree::ptree;
 +
 +    auto& this_type = typeid(*this);
-+    auto& filament_type = typeid(TabFilament);
-+    auto& printer_type  = typeid(TabPrinter);
-+    auto& print_type = typeid(TabPrint);
++    const bool is_filament_tab = m_type == Preset::TYPE_FILAMENT;
++    const bool is_printer_tab = m_type == Preset::TYPE_PRINTER;
++    const bool is_print_tab = m_type == Preset::TYPE_PRINT;
 +    auto& object_type = typeid(TabPrintObject);
 +    auto& part_type = typeid(TabPrintPart);
 +    auto& layer_type = typeid(TabPrintLayer);
 +
-+    const bool is_regular_tab = this_type == filament_type || this_type == printer_type || this_type == print_type;
++    const bool is_regular_tab = is_filament_tab || is_printer_tab || is_print_tab;
 +    const bool is_subset_tab = this_type == object_type || this_type == part_type || this_type == layer_type;
 +    if (!is_regular_tab && !is_subset_tab)
 +        return;
@@ -403,7 +403,12 @@ index c2add39..130cccc 100644
 +            path = boost::dll::program_location().parent_path() / "height_range_settings.json";
 +    } else {
 +        pt.put_child("icon_data", icon_data_pt);
-+        path = boost::dll::program_location().parent_path() / this->m_title.Lower().ToStdString().append(".json");
++        if (is_print_tab)
++            path = boost::dll::program_location().parent_path() / "process.json";
++        else if (is_filament_tab)
++            path = boost::dll::program_location().parent_path() / "filament.json";
++        else
++            path = boost::dll::program_location().parent_path() / "machine.json";
 +    }
 +
 +    write_json(path.string(), pt);

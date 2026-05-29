@@ -50,6 +50,9 @@ def map_missing_variables(cv: ConditionalVisibility, config_def: dict):
 
     print(mapping_request)
 
+    if not mapping_request:
+        return
+
     print("Calling OpenAI API to map variables to enum values...")
 
     # Call OpenAI API to map variables to enum values
@@ -107,5 +110,17 @@ def map_enum_variables(enum_definitions, model="gpt-4o") -> dict:
         raise ValueError("No function call in response")
 
     arguments = json.loads(msg.function_call.arguments)
+    mapping = arguments.get("mapping", arguments)
 
-    return arguments
+    if not isinstance(mapping, dict):
+        raise ValueError("OpenAI enum mapping response must be an object")
+
+    non_string_values = {
+        key: value
+        for key, value in mapping.items()
+        if not isinstance(value, str)
+    }
+    if non_string_values:
+        raise ValueError(f"OpenAI enum mapping contains non-string values: {non_string_values}")
+
+    return mapping
