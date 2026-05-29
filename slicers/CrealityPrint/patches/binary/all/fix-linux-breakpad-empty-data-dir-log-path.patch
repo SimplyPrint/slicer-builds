@@ -1,8 +1,19 @@
 diff --git a/src/CrealityPrint.cpp b/src/CrealityPrint.cpp
-index e2124401..5c184fcd 100644
+index e2124401..1ee08007 100644
 --- a/src/CrealityPrint.cpp
 +++ b/src/CrealityPrint.cpp
-@@ -6706,57 +6706,100 @@ extern "C" {
+@@ -1134,6 +1134,10 @@ int CLI::run(int argc, char **argv)
+         return CLI_INVALID_PARAMS;
+     }
+     BOOST_LOG_TRIVIAL(info) << "finished setup params, argc="<< argc << std::endl;
++    BOOST_LOG_TRIVIAL(info) << "main diagnostics after setup: data_dir=" << Slic3r::data_dir()
++                            << ", resources_dir=" << Slic3r::resources_dir()
++                            << ", var_dir=" << Slic3r::var_dir()
++                            << ", localization_dir=" << Slic3r::localization_dir();
+         // Handle minidump crash report parameter on Linux (similar to Windows implementation)
+     
+     std::string temp_path = wxFileName::GetTempDir().utf8_str().data();
+@@ -6706,57 +6710,100 @@ extern "C" {
  }
  #else /* _MSC_VER */
  #if defined(__linux__) || defined(__LINUX__)
