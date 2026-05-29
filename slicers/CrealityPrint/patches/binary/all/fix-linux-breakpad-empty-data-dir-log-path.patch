@@ -1,0 +1,31 @@
+diff --git a/src/CrealityPrint.cpp b/src/CrealityPrint.cpp
+index 7528a6a..cfed32b 100644
+--- a/src/CrealityPrint.cpp
++++ b/src/CrealityPrint.cpp
+@@ -6715,15 +6715,21 @@ static bool dumpCallback(const google_breakpad::MinidumpDescriptor& descriptor,v
+ 		     //std::string data_dir = wxStandardPaths::Get().GetUserDataDir().ToUTF8().data();
+ 		     //A.0
+ 		     std::string version_dir = CREALITYPRINT_VERSION_MAJOR + std::string(".0");
+ 		     std::string version = std::string(PROJECT_VERSION_EXTRA);
+ 		     bool        is_alpha = boost::algorithm::icontains(version, "alpha");
+ 		     if (is_alpha) {
+ 			 version_dir = version_dir + std::string(" Alpha");
+ 		     }
+-		     std::string LogFilePath = data_dir + "/" + "log";
+-		     if (!LogFilePath.empty() && !boost::filesystem::exists(LogFilePath)) {
+-			 boost::filesystem::create_directories(LogFilePath);
++		     boost::filesystem::path logPath = data_dir.empty()
++			 ? boost::filesystem::temp_directory_path() / SLIC3R_PROCESS_NAME / "log"
++			 : boost::filesystem::path(data_dir) / "log";
++		     boost::system::error_code ec;
++		     if (!boost::filesystem::exists(logPath, ec)) {
++			 boost::filesystem::create_directories(logPath, ec);
++		     }
++		     if (ec) {
++			 printf("Failed to create dump log path: %s\n", logPath.string().c_str());
++			 return true;
+ 		     }
+-		     boost::filesystem::path logPath(LogFilePath);
+ 
+ 		     boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
+ 		     // 创建一个 time_facet 对象，用于自定义时间格式
