@@ -283,7 +283,7 @@ index d12ed92..55a66ee 100644
  	inline std::string translate_utf8(const char         *s, const char 	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
  	inline std::string translate_utf8(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
 diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
-index 0b6d698..f73d645 100644
+index 0b6d698..b5f9c2d 100644
 --- a/src/slic3r/GUI/MainFrame.cpp
 +++ b/src/slic3r/GUI/MainFrame.cpp
 @@ -1450,6 +1450,8 @@ void MainFrame::create_preset_tabs()
@@ -295,6 +295,13 @@ index 0b6d698..f73d645 100644
      m_param_panel->rebuild_panels();
      m_param_dialog->panel()->rebuild_panels();
      //m_tabpanel->AddPage(m_param_panel, "Parameters", "notebook_presets_active");
+@@ -1459,5 +1461,6 @@ void MainFrame::add_created_tab(Tab* panel,  const std::string& bmp_name /*= ""*
+ {
+     panel->create_preset_tab();
++    panel->dump_to_json();
+ 
+     if (panel->type() == Preset::TYPE_PLATE) {
+         wxGetApp().tabs_list.pop_back();
 diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
 index c2add39..130cccc 100644
 --- a/src/slic3r/GUI/Tab.cpp
