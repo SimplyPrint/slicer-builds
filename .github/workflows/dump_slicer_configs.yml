@@ -225,7 +225,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: slicer-src/deps/build
-          key: ${{ runner.os }}-${{ matrix.slicer }}-build-deps-${{ env.DEPS_CACHE_KEY }}-${{ hashFiles(format('slicers/{0}/steps/build-deps.sh', matrix.slicer)) }}
+          key: ${{ runner.os }}-${{ matrix.slicer }}-x86-64-build-deps-${{ env.DEPS_CACHE_KEY }}-${{ hashFiles(format('slicers/{0}/steps/build-deps.sh', matrix.slicer)) }}
 
       - name: Build dependencies
         if: env.continue_build == 'true' && (inputs.disable-caching || steps.cache-build-deps.outputs.cache-hit != 'true')
