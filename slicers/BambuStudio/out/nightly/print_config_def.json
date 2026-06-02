@@ -729,6 +729,13 @@
         "mode": "simple",
         "default_value": "0"
     },
+    "enable_order_independent_overlap_carving": {
+        "type": "bool",
+        "label": "Order-independent overlap carving",
+        "tooltip": "When enabled, overlapping model parts are carved by bounding-box size so smaller embedded parts are not removed by larger parts due to volume order.",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "enable_overhang_bridge_fan": {
         "type": "bools",
         "label": "Force cooling for overhang and bridge",
@@ -1252,6 +1259,16 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "filament_flush_temp_fast": {
+        "type": "ints",
+        "label": "Flush temperature",
+        "tooltip": "Flush temperature used in fast purge mode.",
+        "sidetext": "°C",
+        "min": "0",
+        "max": "1500",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "filament_flush_volumetric_speed": {
         "type": "floats",
         "label": "Flush volumetric speed",
@@ -1377,6 +1394,13 @@
         "tooltip": "Enable Z-direction gradient mode for mixed filament sub-layers. When enabled, the sub-layer ratios vary linearly across layers.",
         "mode": "develop",
         "default_value": "0"
+    },
+    "filament_mixed_gradient_curve": {
+        "type": "strings",
+        "label": "Mixed filament gradient curve",
+        "tooltip": "Optional Photoshop-style custom curve mapping Z progress to the first component ratio. Encoded as pipe-separated control points, either \"x,y\" (legacy) or \"x,y,m_in,m_out\" when a tangent override is needed (empty token or \"nan\" means use PCHIP default). x in [0,1]; y is clamped to the configured ratio range, e.g. \"0,0.15|0.5,0.50|1,0.85\". When empty, the linear gradient_range is used instead.",
+        "mode": "develop",
+        "default_value": "\"\""
     },
     "filament_mixed_gradient_per_part": {
         "type": "bools",
@@ -1947,6 +1971,13 @@
         "tooltip": "The actual flushing volumes is equal to the flush multiplier multiplied by the flushing volumes in the table.",
         "mode": "simple",
         "default_value": "1"
+    },
+    "flush_multiplier_fast": {
+        "type": "floats",
+        "label": "Flush multiplier (Fast mode)",
+        "tooltip": "The flush multiplier used in fast purge mode.",
+        "mode": "simple",
+        "default_value": "1.2"
     },
     "flush_volumes_matrix": {
         "type": "floats",
@@ -2993,6 +3024,16 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "machine_bed_mass_Y": {
+        "type": "float",
+        "label": "",
+        "full_label": "Bed mass of the Y axis",
+        "tooltip": "The machine bed mass load of Y axis",
+        "sidetext": "g",
+        "min": "0",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "machine_end_gcode": {
         "type": "string",
         "label": "End G-code",
@@ -3092,6 +3133,16 @@
         "mode": "simple",
         "default_value": "500,200"
     },
+    "machine_max_force_Y": {
+        "type": "float",
+        "label": "",
+        "full_label": "Maximum force of the Y axis",
+        "tooltip": "The allowed maximum output force of Y axis",
+        "sidetext": "N",
+        "min": "0",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "machine_max_jerk_e": {
         "type": "floats",
         "label": "",
@@ -3131,6 +3182,16 @@
         "min": "0",
         "mode": "simple",
         "default_value": "0.2,0.4"
+    },
+    "machine_max_printed_mass": {
+        "type": "float",
+        "label": "",
+        "full_label": "The allowed max printed mass",
+        "tooltip": "The allowed max printed mass on a plate",
+        "sidetext": "g",
+        "min": "0",
+        "mode": "develop",
+        "default_value": "0"
     },
     "machine_max_speed_e": {
         "type": "floats",
@@ -3832,11 +3893,13 @@
         "tooltip": "",
         "enum_values": [
             "Default",
-            "Saving"
+            "Saving",
+            "Fast"
         ],
         "enum_labels": [
             "Default",
-            "Saving"
+            "Saving",
+            "Fast"
         ],
         "mode": "simple",
         "default_value": "Default"
@@ -4526,6 +4589,13 @@
         "mode": "simple",
         "default_value": "1"
     },
+    "skirt_per_object": {
+        "type": "bool",
+        "label": "Skirt per object",
+        "tooltip": "Generate independent skirt around each object in sequential printing mode. When disabled, a single skirt is drawn around all objects.",
+        "mode": "develop",
+        "default_value": "1"
+    },
     "slice_closing_radius": {
         "type": "float",
         "label": "Slice gap closing radius",
@@ -5081,6 +5151,13 @@
         "tooltip": "Expand (+) or shrink (-) the horizontal span of normal support",
         "sidetext": "mm",
         "mode": "advanced",
+        "default_value": "0"
+    },
+    "support_fast_purge_mode": {
+        "type": "bool",
+        "label": "Support fast purge mode",
+        "tooltip": "Whether this printer supports fast purge mode with optimized temperature and multiplier.",
+        "mode": "develop",
         "default_value": "0"
     },
     "support_filament": {
