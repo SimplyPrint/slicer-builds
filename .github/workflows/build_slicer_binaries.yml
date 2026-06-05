@@ -123,6 +123,9 @@ jobs:
           - slicer: CrealityPrint
             repo: CrealityOfficial/CrealityPrint
             use_arm: false
+          - slicer: AnycubicSlicerNext
+            repo: ANYCUBIC-3D/AnycubicSlicerNext
+            use_arm: true
 
     runs-on: ${{ matrix.arch == 'arm64' && matrix.use_arm && (inputs.arch == 'all' || inputs.arch == 'arm64') && (inputs.runner-arm || 'ubuntu-24.04-arm') || (inputs.runner || 'ubuntu-24.04') }}
     env:
