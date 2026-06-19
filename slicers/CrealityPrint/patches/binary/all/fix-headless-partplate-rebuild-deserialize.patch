@@ -1,0 +1,124 @@
+diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
+index 3d4333d1..10db8f8c 100644
+--- a/src/slic3r/GUI/PartPlate.cpp
++++ b/src/slic3r/GUI/PartPlate.cpp
+@@ -5241,56 +5241,58 @@ int PartPlateList::rebuild_plates_after_deserialize(std::vector<bool>& previous_
+ 	int ret = 0;
+ 
+ 	// use current bed info to update plate size, fix undo problem when  change different printer
+-	const DynamicPrintConfig* config       = this->m_plater->config();
+-	float plate_height                    = config->opt_float("printable_height");
+-
+-	int plate_width = m_plate_width;
+-	int plate_depth = m_plate_depth;
+-
+-	// Prefer the printable area (build volume) extents for bed size. The bed "extended" bounding box
+-	// may include the visual bed model, which can be larger than the printable area and cause drift.
+-	const ConfigOptionPoints* printable_area = nullptr;
+-	if (config != nullptr)
+-		printable_area = config->opt<ConfigOptionPoints>("printable_area");
+-	if (printable_area == nullptr && wxGetApp().preset_bundle != nullptr)
+-		printable_area = wxGetApp().preset_bundle->full_config().opt<ConfigOptionPoints>("printable_area");
+-
+-	if (printable_area != nullptr && printable_area->size() > 0) {
+-		double min_x = std::numeric_limits<double>::infinity();
+-		double min_y = std::numeric_limits<double>::infinity();
+-		double max_x = -std::numeric_limits<double>::infinity();
+-		double max_y = -std::numeric_limits<double>::infinity();
+-
+-		for (size_t i = 0; i < printable_area->size(); ++i) {
+-			const auto pt = printable_area->get_at(i);
+-			min_x = std::min(min_x, static_cast<double>(pt.x()));
+-			min_y = std::min(min_y, static_cast<double>(pt.y()));
+-			max_x = std::max(max_x, static_cast<double>(pt.x()));
+-			max_y = std::max(max_y, static_cast<double>(pt.y()));
+-		}
+-
+-		plate_width = static_cast<int>(std::lround(max_x - min_x));
+-		plate_depth = static_cast<int>(std::lround(max_y - min_y));
+-	} else if (this->m_plater != nullptr && this->m_plater->bed().build_volume().valid()) {
+-		const BoundingBoxf3 bed_bbox = this->m_plater->bed().build_volume().bounding_volume();
+-		const Vec3d         bed_size = bed_bbox.size();
+-		plate_width = static_cast<int>(std::lround(bed_size.x()));
+-		plate_depth = static_cast<int>(std::lround(bed_size.y()));
+-	} else {
+-		BoundingBoxf3 bed_bbox = this->m_plater->get_bed_extended_bounding_box();
+-		Vec3d  max = bed_bbox.max;
+-		Vec3d  min = bed_bbox.min;
+-		plate_width = max.x() - min.x() - Bed3D::Axes::DefaultTipRadius;
+-		plate_depth = max.y() - min.y() - Bed3D::Axes::DefaultTipRadius;
+-	}
++	if (this->m_plater != nullptr) {
++		const DynamicPrintConfig* config = this->m_plater->config();
++		float plate_height = config->opt_float("printable_height");
++
++		int plate_width = m_plate_width;
++		int plate_depth = m_plate_depth;
++
++		// Prefer the printable area (build volume) extents for bed size. The bed "extended" bounding box
++		// may include the visual bed model, which can be larger than the printable area and cause drift.
++		const ConfigOptionPoints* printable_area = nullptr;
++		if (config != nullptr)
++			printable_area = config->opt<ConfigOptionPoints>("printable_area");
++		if (printable_area == nullptr && wxGetApp().preset_bundle != nullptr)
++			printable_area = wxGetApp().preset_bundle->full_config().opt<ConfigOptionPoints>("printable_area");
++
++		if (printable_area != nullptr && printable_area->size() > 0) {
++			double min_x = std::numeric_limits<double>::infinity();
++			double min_y = std::numeric_limits<double>::infinity();
++			double max_x = -std::numeric_limits<double>::infinity();
++			double max_y = -std::numeric_limits<double>::infinity();
++
++			for (size_t i = 0; i < printable_area->size(); ++i) {
++				const auto pt = printable_area->get_at(i);
++				min_x = std::min(min_x, static_cast<double>(pt.x()));
++				min_y = std::min(min_y, static_cast<double>(pt.y()));
++				max_x = std::max(max_x, static_cast<double>(pt.x()));
++				max_y = std::max(max_y, static_cast<double>(pt.y()));
++			}
++
++			plate_width = static_cast<int>(std::lround(max_x - min_x));
++			plate_depth = static_cast<int>(std::lround(max_y - min_y));
++		} else if (this->m_plater->bed().build_volume().valid()) {
++			const BoundingBoxf3 bed_bbox = this->m_plater->bed().build_volume().bounding_volume();
++			const Vec3d         bed_size = bed_bbox.size();
++			plate_width = static_cast<int>(std::lround(bed_size.x()));
++			plate_depth = static_cast<int>(std::lround(bed_size.y()));
++		} else {
++			BoundingBoxf3 bed_bbox = this->m_plater->get_bed_extended_bounding_box();
++			Vec3d  max = bed_bbox.max;
++			Vec3d  min = bed_bbox.min;
++			plate_width = max.x() - min.x() - Bed3D::Axes::DefaultTipRadius;
++			plate_depth = max.y() - min.y() - Bed3D::Axes::DefaultTipRadius;
++		}
+ 
+ 
+-	if ((m_plate_width != plate_width) || (m_plate_depth != plate_depth) || (m_plate_height != plate_height)) {
+-		m_plate_width = plate_width;
+-		m_plate_depth = plate_depth;
+-		m_plate_height = plate_height;
+-        m_height_to_lid = config->opt_float("extruder_clearance_height_to_lid");
+-        m_height_to_rod = config->opt_float("extruder_clearance_height_to_rod");
++		if ((m_plate_width != plate_width) || (m_plate_depth != plate_depth) || (m_plate_height != plate_height)) {
++			m_plate_width = plate_width;
++			m_plate_depth = plate_depth;
++			m_plate_height = plate_height;
++			m_height_to_lid = config->opt_float("extruder_clearance_height_to_lid");
++			m_height_to_rod = config->opt_float("extruder_clearance_height_to_rod");
++		}
+ 	}
+ 
+ 	BOOST_LOG_TRIVIAL(debug) << __FUNCTION__ << boost::format(": plates count %1%") % m_plate_list.size();
+@@ -5378,8 +5380,10 @@ int PartPlateList::rebuild_plates_after_deserialize(std::vector<bool>& previous_
+ 	}
+ 
+ 	//update the bed's position
+-	Vec2d pos = compute_shape_position(m_current_plate, m_plate_cols);
+-	m_plater->set_bed_position(pos);
++	if (m_plater) {
++		Vec2d pos = compute_shape_position(m_current_plate, m_plate_cols);
++		m_plater->set_bed_position(pos);
++	}
+ 
+ 	//not used
+ 	/*if (m_plate_width == 0)
