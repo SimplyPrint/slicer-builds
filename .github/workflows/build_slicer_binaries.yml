@@ -33,10 +33,7 @@ on:
           - PrusaSlicer
           - BambuStudio
           - ElegooSlicer
-          - QIDIStudio
-          - SuperSlicer
           - CrealityPrint
-          - AnycubicSlicerNext
         default: all
         description: Slicer to build
         required: true
@@ -90,10 +87,7 @@ jobs:
           - PrusaSlicer
           - BambuStudio
           - ElegooSlicer
-#          - QIDIStudio
-#          - SuperSlicer
           - CrealityPrint
-          - AnycubicSlicerNext
         build-type:
           - nightly
           - latest_release
@@ -116,18 +110,9 @@ jobs:
           - slicer: ElegooSlicer
             repo: ELEGOO-3D/ElegooSlicer
             use_arm: false
-#          - slicer: QIDIStudio
-#            repo: QIDITECH/QIDIStudio
-#            use_arm: true
-#          - slicer: SuperSlicer
-#            repo: supermerill/SuperSlicer
-#            use_arm: true
           - slicer: CrealityPrint
             repo: CrealityOfficial/CrealityPrint
             use_arm: false
-          - slicer: AnycubicSlicerNext
-            repo: ANYCUBIC-3D/AnycubicSlicerNext
-            use_arm: true
 
     runs-on: ${{ matrix.arch == 'arm64' && matrix.use_arm && (inputs.arch == 'all' || inputs.arch == 'arm64') && (inputs.runner-arm || 'ubuntu-24.04-arm') || (inputs.runner || 'ubuntu-24.04') }}
     env:

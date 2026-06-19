@@ -1,0 +1,71 @@
+diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
+index 3d4333d1..f68d1bad 100644
+--- a/src/slic3r/GUI/PartPlate.cpp
++++ b/src/slic3r/GUI/PartPlate.cpp
+@@ -2802,35 +2802,37 @@ bool PartPlate::set_shape(const Pointfs& shape, const Pointfs& exclude_areas, Ve
+ 		m_exclude_area = std::move(new_exclude_areas);
+ 		calc_bounding_boxes();
+ 
+-		ExPolygon logo_poly;
+-		generate_logo_polygon(logo_poly);
+-		m_logo_triangles.reset();
+-		if (!init_model_from_poly(m_logo_triangles, logo_poly, GROUND_Z + 0.02f))
+-			BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << ":Unable to create logo triangles\n";
+-
+-		ExPolygon poly;
+-		generate_print_polygon(poly);
+-        m_action_icon[e_at_unlock_triangle].reset();
+-        if (!init_model_from_poly(m_action_icon[e_at_unlock_triangle].model, poly, GROUND_Z))
+-            BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << ":Unable to create plate triangles\n";
+-        init_raycaster_from_model(m_action_icon[e_at_unlock_triangle]);
+-
+-		ExPolygon exclude_poly;
+-		generate_exclude_polygon(exclude_poly);
+-		calc_exclude_triangles(exclude_poly);
+-
+-		const BoundingBox& pp_bbox = poly.contour.bounding_box();
+-		calc_gridlines(poly, pp_bbox);
+-
+-		bool machine_is_belt = wxGetApp().preset_bundle->machine_is_belt();
+-
+-		for (int i=e_at_close;i<=e_at_set;++i)
+-            calc_vertex_for_icons(i - 1, m_action_icon[i], machine_is_belt);
+-        //calc_vertex_for_icons_background(m_right_top);
+-
+-		calc_vertex_for_number(false, m_plate_idx_icon);
+-
+-        generate_plate_name_texture();
++		if (m_plater != nullptr) { // render data, skip in CLI mode where m_plater is null
++			ExPolygon logo_poly;
++			generate_logo_polygon(logo_poly);
++			m_logo_triangles.reset();
++			if (!init_model_from_poly(m_logo_triangles, logo_poly, GROUND_Z + 0.02f))
++				BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << ":Unable to create logo triangles\n";
++
++			ExPolygon poly;
++			generate_print_polygon(poly);
++			m_action_icon[e_at_unlock_triangle].reset();
++			if (!init_model_from_poly(m_action_icon[e_at_unlock_triangle].model, poly, GROUND_Z))
++				BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << ":Unable to create plate triangles\n";
++			init_raycaster_from_model(m_action_icon[e_at_unlock_triangle]);
++
++			ExPolygon exclude_poly;
++			generate_exclude_polygon(exclude_poly);
++			calc_exclude_triangles(exclude_poly);
++
++			const BoundingBox& pp_bbox = poly.contour.bounding_box();
++			calc_gridlines(poly, pp_bbox);
++
++			bool machine_is_belt = wxGetApp().preset_bundle->machine_is_belt();
++
++			for (int i=e_at_close;i<=e_at_set;++i)
++				calc_vertex_for_icons(i - 1, m_action_icon[i], machine_is_belt);
++			//calc_vertex_for_icons_background(m_right_top);
++
++			calc_vertex_for_number(false, m_plate_idx_icon);
++
++			generate_plate_name_texture();
++		}
+ 	}
+ 
+ 	calc_height_limit();
