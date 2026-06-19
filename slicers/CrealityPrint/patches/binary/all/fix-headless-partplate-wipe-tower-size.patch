@@ -1,0 +1,103 @@
+diff --git a/src/CrealityPrint.cpp b/src/CrealityPrint.cpp
+index 2b3bb7e5..91a32c91 100644
+--- a/src/CrealityPrint.cpp
++++ b/src/CrealityPrint.cpp
+@@ -3163,6 +3163,13 @@ void CrealityPrint::process_project(Slic3r::Model& model, const std::string proje
+         }
+     };
+ 
++    auto get_printer_extruder_count = [](DynamicPrintConfig& print_config) {
++        if (const auto* nozzle_diameter = print_config.option<ConfigOptionFloats>("nozzle_diameter"))
++            return std::max<int>(1, nozzle_diameter->values.size());
++
++        return 1;
++    };
++
+-    auto check_plate_wipe_tower = [get_print_sequence, is_smooth_timelapse](Slic3r::GUI::PartPlate* plate, int plate_index, DynamicPrintConfig& print_config, plate_obj_size_info_t &plate_obj_size_info) {
++    auto check_plate_wipe_tower = [get_print_sequence, is_smooth_timelapse, get_printer_extruder_count](Slic3r::GUI::PartPlate* plate, int plate_index, DynamicPrintConfig& print_config, plate_obj_size_info_t &plate_obj_size_info) {
+         plate_obj_size_info.obj_bbox= plate->get_objects_bounding_box();
+         BOOST_LOG_TRIVIAL(info) << boost::format("plate %1%, object bbox: min {%2%, %3%, %4%} - max {%5%, %6%, %7%}")
+@@ -3210,7 +3217,8 @@ void CrealityPrint::process_project(Slic3r::Model& model, const std::string proje
+         ConfigOptionFloat* volume_option = print_config.option<ConfigOptionFloat>("prime_volume", true);
+         float wipe_volume = volume_option->value;
+ 
+-        Vec3d wipe_tower_size = plate->estimate_wipe_tower_size(print_config, plate_obj_size_info.wipe_width, wipe_volume, filaments_cnt);
++        int nozzle_nums = get_printer_extruder_count(print_config);
++        Vec3d wipe_tower_size = plate->estimate_wipe_tower_size(print_config, plate_obj_size_info.wipe_width, wipe_volume, nozzle_nums, filaments_cnt);
+         plate_obj_size_info.wipe_depth = wipe_tower_size(1);
+ 
+         Vec3d origin = plate->get_origin();
+@@ -4290,7 +4298,8 @@ void CrealityPrint::process_project(Slic3r::Model& model, const std::string proje
+ 
+                             //float depth = v * (filaments_cnt - 1) / (layer_height * w);
+ 
+-                            Vec3d wipe_tower_size = cur_plate->estimate_wipe_tower_size(m_print_config, w, v, filaments_cnt);
++                            int nozzle_nums = get_printer_extruder_count(m_print_config);
++                            Vec3d wipe_tower_size = cur_plate->estimate_wipe_tower_size(m_print_config, w, v, nozzle_nums, filaments_cnt);
+                             Vec3d plate_origin = cur_plate->get_origin();
+                             int plate_width, plate_depth, plate_height;
+                             partplate_list.get_plate_size(plate_width, plate_depth, plate_height);
+diff --git a/src/slic3r/GUI/GLCanvas3D.cpp b/src/slic3r/GUI/GLCanvas3D.cpp
+index db8ffea8..df9549a3 100644
+--- a/src/slic3r/GUI/GLCanvas3D.cpp
++++ b/src/slic3r/GUI/GLCanvas3D.cpp
+@@ -3072,7 +3072,8 @@ void GLCanvas3D::_render_objects(GLVolumeCollection::ERenderType type)
+                 const auto&               wipe_tower_data = print->wipe_tower_data(current_plate_filaments_count);
+                 float                     brim_width      = wipe_tower_data.brim_width;
+                 const DynamicPrintConfig& print_cfg       = wxGetApp().preset_bundle->prints.get_edited_preset().config;
+                 double                    wipe_vol        = dynamic_cast<const ConfigOptionFloat*>(m_config->option("prime_volume"))->value;
+-                Vec3d wipe_tower_size = ppl.get_plate(plate_id)->estimate_wipe_tower_size(print_cfg, w, wipe_tower_data.depth, wipe_vol);
++                int                       nozzle_nums     = wxGetApp().preset_bundle->get_printer_extruder_count();
++                Vec3d wipe_tower_size = ppl.get_plate(plate_id)->estimate_wipe_tower_size(print_cfg, w, wipe_vol, nozzle_nums, current_plate_filaments_count);
+ 
+                 BoundingBoxf3 plate_bbox = wxGetApp().plater()->get_partplate_list().get_plate(plate_id)->get_bounding_box();
+                 coordf_t      plate_bbox_x_max_local_coord = plate_bbox.max(0) - plate_origin(0);
+diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
+index 3d4333d1..cf40ce4e 100644
+--- a/src/slic3r/GUI/PartPlate.cpp
++++ b/src/slic3r/GUI/PartPlate.cpp
+@@ -1734,7 +1734,7 @@ std::vector<int> PartPlate::get_used_extruders_for_slice() const
+ 	return std::vector(used_extruders_set.begin(), used_extruders_set.end());
+ }
+ 
+-Vec3d PartPlate::estimate_wipe_tower_size(const DynamicPrintConfig & config, const double w, const double d, const double wipe_volume, int plate_extruder_size, bool use_global_objects) const
++Vec3d PartPlate::estimate_wipe_tower_size(const DynamicPrintConfig & config, const double w, const double wipe_volume, int extruder_count, int plate_extruder_size, bool use_global_objects) const
+ {
+ 	Vec3d wipe_tower_size;
+ 
+@@ -1778,9 +1778,9 @@ Vec3d PartPlate::estimate_wipe_tower_size(const DynamicPrintConfig & config, con
+     const ConfigOptionBool* use_rib_wall_opt  = config.option<ConfigOptionBool>("prime_tower_rib_wall");
+     bool                    use_rib_wall      = use_rib_wall_opt ? use_rib_wall_opt->value : true;
+ 
+-    double depth = plate_extruder_size == 1 ? 0 : d;
+-    int    nozzle_nums = wxGetApp().preset_bundle->get_printer_extruder_count();
+-    double volume      = wipe_volume * (nozzle_nums == 2 ? plate_extruder_size : (plate_extruder_size - 1));
++    double volume      = wipe_volume * (extruder_count == 2 ? plate_extruder_size : (plate_extruder_size - 1));
++    double depth       = plate_extruder_size == 1 ? 0 : volume / (layer_height * w);
++
+     if (use_rib_wall) {
+         depth = std::sqrt(volume / layer_height);
+         if (timelapse_enabled || plate_extruder_size > 1) {
+@@ -1836,7 +1836,8 @@ arrangement::ArrangePolygon PartPlate::estimate_wipe_tower_polygon(const Dynamic
+ 	//float a = dynamic_cast<const ConfigOptionFloat*>(config.option("wipe_tower_rotation_angle"))->value;
+ 	float v = dynamic_cast<const ConfigOptionFloat*>(config.option("prime_volume"))->value;
+     float tower_brim_width = dynamic_cast<const ConfigOptionFloat*>(config.option("prime_tower_brim_width"))->value;
+-    Vec3d wipe_tower_size = estimate_wipe_tower_size(config, w, m_depth, v, plate_extruder_size, use_global_objects);
++    int nozzle_nums = wxGetApp().preset_bundle->get_printer_extruder_count();
++    Vec3d wipe_tower_size = estimate_wipe_tower_size(config, w, v, nozzle_nums, plate_extruder_size, use_global_objects);
+ 	int plate_width=m_width, plate_depth=m_depth;
+ 	float depth = wipe_tower_size(1);
+ 	float margin = WIPE_TOWER_MARGIN + tower_brim_width, wp_brim_width = 0.f;
+diff --git a/src/slic3r/GUI/PartPlate.hpp b/src/slic3r/GUI/PartPlate.hpp
+index 05250ab1..67a7835d 100644
+--- a/src/slic3r/GUI/PartPlate.hpp
++++ b/src/slic3r/GUI/PartPlate.hpp
+@@ -327,7 +327,7 @@ public:
+     BoundingBoxf3 get_gcode_path_bounding_box();
+ 
+     Vec3d get_origin() { return m_origin; }
+-    Vec3d estimate_wipe_tower_size(const DynamicPrintConfig & config, const double w, const double d, const double wipe_volume, int plate_extruder_size = 0, bool use_global_objects = false) const;
++    Vec3d estimate_wipe_tower_size(const DynamicPrintConfig & config, const double w, const double wipe_volume, int extruder_count = 1, int plate_extruder_size = 0, bool use_global_objects = false) const;
+     arrangement::ArrangePolygon estimate_wipe_tower_polygon(const DynamicPrintConfig & config, int plate_index, int plate_extruder_size = 0, bool use_global_objects = false) const;
+     std::vector<int> get_extruders(bool conside_custom_gcode = false) const;
+     std::vector<int> get_extruders_under_cli(bool conside_custom_gcode, DynamicPrintConfig& full_config) const;
