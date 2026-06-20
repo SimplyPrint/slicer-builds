@@ -33,10 +33,11 @@ index 3d4333d1..c4eec947 100644
  		plate->set_shape(shape, exclude_areas, pos, height_to_lid, height_to_rod);
 +		BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": after plate set_shape " << i;
  	}
- 	if (wxGetApp().preset_bundle)
+ 	if (m_plater && wxGetApp().preset_bundle)
  		set_verder_type(wxGetApp().preset_bundle->get_current_vendor_type());
-@@ -5050,7 +5054,11 @@ bool PartPlateList::set_shapes(const Pointfs& shape, const Pointfs& exclude_area
+@@ -5050,7 +5054,12 @@ bool PartPlateList::set_shapes(const Pointfs& shape, const Pointfs& exclude_area
  
++	BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": before calc_bounding_boxes";
  	calc_bounding_boxes();
  
 +	BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": after calc_bounding_boxes";

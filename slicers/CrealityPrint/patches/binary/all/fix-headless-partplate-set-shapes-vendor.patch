@@ -7,7 +7,7 @@ index 3d4333d1..b67b4837 100644
  		plate->set_shape(shape, exclude_areas, pos, height_to_lid, height_to_rod);
  	}
 -	set_verder_type(wxGetApp().preset_bundle->get_current_vendor_type());
-+	if (wxGetApp().preset_bundle)
++	if (m_plater && wxGetApp().preset_bundle)
 +		set_verder_type(wxGetApp().preset_bundle->get_current_vendor_type());
 +
  	calc_bounding_boxes();
