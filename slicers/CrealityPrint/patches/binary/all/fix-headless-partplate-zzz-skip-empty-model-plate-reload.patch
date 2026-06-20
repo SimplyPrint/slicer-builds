@@ -2,15 +2,13 @@ diff --git a/src/CrealityPrint.cpp b/src/CrealityPrint.cpp
 index 2b3bb7e5..dd439382 100644
 --- a/src/CrealityPrint.cpp
 +++ b/src/CrealityPrint.cpp
-@@ -3315,22 +3315,30 @@ void CrealityPrint::process_project(Slic3r::Model& model, const std::string proje
+@@ -3315,22 +3315,28 @@ void CrealityPrint::process_project(Slic3r::Model& model, const std::string proje
              plate_list.reset_size(current_printable_width, current_printable_depth, current_printable_height, true, true);
          }
      };
 -    if (plate_data_src.size() > 0)
-+    const bool has_model_objects = std::any_of(m_models.begin(), m_models.end(), [](const Model& model) {
-+        return !model.objects.empty();
-+    });
-+    if (plate_data_src.size() > 0 && has_model_objects)
++    const bool has_cli_objects = !orients_requirement.empty();
++    if (plate_data_src.size() > 0 && has_cli_objects)
      {
 +        BOOST_LOG_TRIVIAL(info) << "before partplate_list.load_from_3mf_structure";
          partplate_list.load_from_3mf_structure(plate_data_src);
@@ -29,7 +27,7 @@ index 2b3bb7e5..dd439382 100644
          translate_models(partplate_list, m_print_config);
      }
 +    else if (plate_data_src.size() > 0) {
-+        BOOST_LOG_TRIVIAL(warning) << "skip partplate_list.load_from_3mf_structure because loaded model has no objects";
++        BOOST_LOG_TRIVIAL(warning) << "skip partplate_list.load_from_3mf_structure because loaded project has no CLI objects";
 +    }
  
      /*for (ModelObject *model_object : m_models[0].objects)
