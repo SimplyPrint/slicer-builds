@@ -1,0 +1,36 @@
+diff --git a/src/CrealityPrint.cpp b/src/CrealityPrint.cpp
+index 2b3bb7e5..dd439382 100644
+--- a/src/CrealityPrint.cpp
++++ b/src/CrealityPrint.cpp
+@@ -3315,22 +3315,30 @@ void CrealityPrint::process_project(Slic3r::Model& model, const std::string proje
+             plate_list.reset_size(current_printable_width, current_printable_depth, current_printable_height, true, true);
+         }
+     };
+-    if (plate_data_src.size() > 0)
++    const bool has_model_objects = std::any_of(m_models.begin(), m_models.end(), [](const Model& model) {
++        return !model.objects.empty();
++    });
++    if (plate_data_src.size() > 0 && has_model_objects)
+     {
++        BOOST_LOG_TRIVIAL(info) << "before partplate_list.load_from_3mf_structure";
+         partplate_list.load_from_3mf_structure(plate_data_src);
++        BOOST_LOG_TRIVIAL(info) << "after partplate_list.load_from_3mf_structure";
+ 
+         int plate_count = partplate_list.get_plate_count();
+         plate_obj_size_infos.resize(plate_count, plate_obj_size_info_t());
+         for (int index = 0; index < plate_count; index ++) {
+             Slic3r::GUI::PartPlate* cur_plate = (Slic3r::GUI::PartPlate *)partplate_list.get_plate(index);
+ 
+             check_plate_wipe_tower(cur_plate, index, m_print_config, plate_obj_size_infos[index]);
+             BOOST_LOG_TRIVIAL(info) << boost::format("plate %1%,  has_wipe_tower %2%, wipe_x %3%, wipe_y %4%, width %5%, depth %6%")
+                 %(index+1) %plate_obj_size_infos[index].has_wipe_tower %plate_obj_size_infos[index].wipe_x %plate_obj_size_infos[index].wipe_y %plate_obj_size_infos[index].wipe_width %plate_obj_size_infos[index].wipe_depth;
+         }
+ 
+         translate_models(partplate_list, m_print_config);
+     }
++    else if (plate_data_src.size() > 0) {
++        BOOST_LOG_TRIVIAL(warning) << "skip partplate_list.load_from_3mf_structure because loaded model has no objects";
++    }
+ 
+     /*for (ModelObject *model_object : m_models[0].objects)
+         for (ModelInstance *model_instance : model_object->instances)
