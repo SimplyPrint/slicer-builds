@@ -1,49 +1,13 @@
 diff --git a/src/CrealityPrint.cpp b/src/CrealityPrint.cpp
-index e2124401..1ee08007 100644
+index e2124401..3bf06b08 100644
 --- a/src/CrealityPrint.cpp
 +++ b/src/CrealityPrint.cpp
-@@ -1134,6 +1134,10 @@ int CLI::run(int argc, char **argv)
-         return CLI_INVALID_PARAMS;
-     }
-     BOOST_LOG_TRIVIAL(info) << "finished setup params, argc="<< argc << std::endl;
-+    BOOST_LOG_TRIVIAL(info) << "main diagnostics after setup: data_dir=" << Slic3r::data_dir()
-+                            << ", resources_dir=" << Slic3r::resources_dir()
-+                            << ", var_dir=" << Slic3r::var_dir()
-+                            << ", localization_dir=" << Slic3r::localization_dir();
-         // Handle minidump crash report parameter on Linux (similar to Windows implementation)
-     
-     std::string temp_path = wxFileName::GetTempDir().utf8_str().data();
-@@ -6706,57 +6710,100 @@ extern "C" {
+@@ -6706,93 +6706,106 @@ extern "C" {
  }
  #else /* _MSC_VER */
  #if defined(__linux__) || defined(__LINUX__)
-+static void log_linux_cli_diagnostics(int argc, char **argv)
++static int run_cli_safely(int argc, char **argv)
 +{
-+    boost::system::error_code ec;
-+    boost::filesystem::path cwd = boost::filesystem::current_path(ec);
-+
-+    BOOST_LOG_TRIVIAL(error) << "main diagnostics: cwd=" << (ec ? std::string("<error: ") + ec.message() + ">" : cwd.string())
-+                             << ", temp_dir=" << wxFileName::GetTempDir().ToStdString()
-+                             << ", data_dir=" << Slic3r::data_dir()
-+                             << ", resources_dir=" << Slic3r::resources_dir()
-+                             << ", argc=" << argc;
-+
-+    for (int i = 0; i < argc; ++i)
-+        BOOST_LOG_TRIVIAL(error) << "main argv[" << i << "]=" << (argv[i] ? argv[i] : "<null>");
-+
-+    boost::log::core::get()->flush();
-+}
-+
-+static int run_cli_with_diagnostics(int argc, char **argv)
-+{
-+    try {
-+        log_linux_cli_diagnostics(argc, argv);
-+    } catch (const std::exception &ex) {
-+        boost::nowide::cerr << "Failed to log startup diagnostics: " << ex.what() << std::endl;
-+    } catch (...) {
-+        boost::nowide::cerr << "Failed to log startup diagnostics" << std::endl;
-+    }
-+
 +    try {
 +        return CLI().run(argc, argv);
 +    } catch (const boost::filesystem::filesystem_error &ex) {
@@ -132,30 +96,47 @@ index e2124401..1ee08007 100644
 -			 }
 +			 BOOST_LOG_TRIVIAL(info) << "MiniDump saved to: " << logPath.string();
  		     }
- 		     
+-		     
++
  		     BOOST_LOG_TRIVIAL(info) << "MiniDump succeeded: " << descriptor.path();
-@@ -6778,21 +6821,21 @@ int main(int argc, char **argv)
+ 		 } else {
+ 		     BOOST_LOG_TRIVIAL(error) << "MiniDump failed: " << descriptor.path();
+ 		 }
+                 return succeeded;
+             }
+ #endif
+ #endif
+ int main(int argc, char **argv)
+ {
+-   BOOST_LOG_TRIVIAL(error) << "main start";
+ #ifdef __linux__
+-   BOOST_LOG_TRIVIAL(error) << "main __linux__";
+     setenv("WEBKIT_DISABLE_COMPOSITING_MODE", "1", 1);
+ #endif
+-    
++
      boost::filesystem::path   tempPath = boost::filesystem::path(wxFileName::GetTempDir().ToStdString());
      if (argc == 2 && boost::starts_with(std::string(argv[1]), "minidump://file=")) {
  	 // 处理崩溃报告参数，直接启动GUI应用程序
 -	 return CLI().run(argc, argv);
-+	 return run_cli_with_diagnostics(argc, argv);
++	 return run_cli_safely(argc, argv);
      }else
      {
-        BOOST_LOG_TRIVIAL(error) << "main check linux";
+-       BOOST_LOG_TRIVIAL(error) << "main check linux";
         #if defined(__linux__) || defined(__LINUX__)
               #ifdef USE_BREAKPAD
-                 BOOST_LOG_TRIVIAL(error) << "main google_breakpad init";
+-                BOOST_LOG_TRIVIAL(error) << "main google_breakpad init";
                  google_breakpad::MinidumpDescriptor descriptor("/tmp");
                  google_breakpad::ExceptionHandler eh(descriptor, NULL, dumpCallback, NULL, true, -1);
-                 BOOST_LOG_TRIVIAL(error) << "main google_breakpad init finished";
+-                BOOST_LOG_TRIVIAL(error) << "main google_breakpad init finished";
 -                return CLI().run(argc, argv);
-+                return run_cli_with_diagnostics(argc, argv);
++                return run_cli_safely(argc, argv);
              #endif
          #endif
      }
-     
+-    
 -    return CLI().run(argc, argv);
-+    return run_cli_with_diagnostics(argc, argv);
++
++    return run_cli_safely(argc, argv);
  }
  #endif /* _MSC_VER */

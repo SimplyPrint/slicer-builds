@@ -1,0 +1,330 @@
+diff --git a/src/CrealityPrint.cpp b/src/CrealityPrint.cpp
+index e2124401..9e831383 100644
+--- a/src/CrealityPrint.cpp
++++ b/src/CrealityPrint.cpp
+@@ -3162,7 +3162,14 @@ int CLI::run(int argc, char **argv)
+         }
+     };
+ 
+-    auto check_plate_wipe_tower = [get_print_sequence, is_smooth_timelapse](Slic3r::GUI::PartPlate* plate, int plate_index, DynamicPrintConfig& print_config, plate_obj_size_info_t &plate_obj_size_info) {
++    auto get_printer_extruder_count = [](DynamicPrintConfig& print_config) {
++        if (const auto* nozzle_diameter = print_config.option<ConfigOptionFloats>("nozzle_diameter"))
++            return std::max<int>(1, nozzle_diameter->values.size());
++
++        return 1;
++    };
++
++    auto check_plate_wipe_tower = [get_print_sequence, is_smooth_timelapse, get_printer_extruder_count](Slic3r::GUI::PartPlate* plate, int plate_index, DynamicPrintConfig& print_config, plate_obj_size_info_t &plate_obj_size_info) {
+         plate_obj_size_info.obj_bbox= plate->get_objects_bounding_box();
+         BOOST_LOG_TRIVIAL(info) << boost::format("plate %1%, object bbox: min {%2%, %3%, %4%} - max {%5%, %6%, %7%}")
+                     %(plate_index+1) %plate_obj_size_info.obj_bbox.min.x() % plate_obj_size_info.obj_bbox.min.y() % plate_obj_size_info.obj_bbox.min.z() %plate_obj_size_info.obj_bbox.max.x() % plate_obj_size_info.obj_bbox.max.y() % plate_obj_size_info.obj_bbox.max.z();
+@@ -3210,7 +3217,8 @@ int CLI::run(int argc, char **argv)
+         ConfigOptionFloat* volume_option = print_config.option<ConfigOptionFloat>("prime_volume", true);
+         float wipe_volume = volume_option->value;
+ 
+-        Vec3d wipe_tower_size = plate->estimate_wipe_tower_size(print_config, plate_obj_size_info.wipe_width, wipe_volume, filaments_cnt);
++        int nozzle_nums = get_printer_extruder_count(print_config);
++        Vec3d wipe_tower_size = plate->estimate_wipe_tower_size(print_config, plate_obj_size_info.wipe_width, wipe_volume, nozzle_nums, filaments_cnt);
+         plate_obj_size_info.wipe_depth = wipe_tower_size(1);
+ 
+         Vec3d origin = plate->get_origin();
+@@ -3312,7 +3320,8 @@ int CLI::run(int argc, char **argv)
+             plate_list.reset_size(current_printable_width, current_printable_depth, current_printable_height, true, true);
+         }
+     };
+-    if (plate_data_src.size() > 0)
++    const bool has_cli_objects = !orients_requirement.empty();
++    if (plate_data_src.size() > 0 && has_cli_objects)
+     {
+         partplate_list.load_from_3mf_structure(plate_data_src);
+ 
+@@ -4290,7 +4299,8 @@ int CLI::run(int argc, char **argv)
+ 
+                             //float depth = v * (filaments_cnt - 1) / (layer_height * w);
+ 
+-                            Vec3d wipe_tower_size = cur_plate->estimate_wipe_tower_size(m_print_config, w, v, filaments_cnt);
++                            int nozzle_nums = get_printer_extruder_count(m_print_config);
++                            Vec3d wipe_tower_size = cur_plate->estimate_wipe_tower_size(m_print_config, w, v, nozzle_nums, filaments_cnt);
+                             Vec3d plate_origin = cur_plate->get_origin();
+                             int plate_width, plate_depth, plate_height;
+                             partplate_list.get_plate_size(plate_width, plate_depth, plate_height);
+diff --git a/src/slic3r/GUI/GLCanvas3D.cpp b/src/slic3r/GUI/GLCanvas3D.cpp
+index 15088478..ba6bfeb8 100644
+--- a/src/slic3r/GUI/GLCanvas3D.cpp
++++ b/src/slic3r/GUI/GLCanvas3D.cpp
+@@ -3063,7 +3063,8 @@ void GLCanvas3D::reload_scene(bool refresh_immediately, bool force_full_scene_re
+                 float                     brim_width      = wipe_tower_data.brim_width;
+                 const DynamicPrintConfig& print_cfg       = wxGetApp().preset_bundle->prints.get_edited_preset().config;
+                 double                    wipe_vol        = dynamic_cast<const ConfigOptionFloat*>(m_config->option("prime_volume"))->value;
+-                Vec3d wipe_tower_size = ppl.get_plate(plate_id)->estimate_wipe_tower_size(print_cfg, w, wipe_tower_data.depth, wipe_vol);
++                int                       nozzle_nums     = wxGetApp().preset_bundle->get_printer_extruder_count();
++                Vec3d wipe_tower_size = ppl.get_plate(plate_id)->estimate_wipe_tower_size(print_cfg, w, wipe_vol, nozzle_nums, current_plate_filaments_count);
+ 
+                 BoundingBoxf3 plate_bbox = wxGetApp().plater()->get_partplate_list().get_plate(plate_id)->get_bounding_box();
+                 coordf_t      plate_bbox_x_max_local_coord = plate_bbox.max(0) - plate_origin(0);
+diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
+index 3d4333d1..a299dca0 100644
+--- a/src/slic3r/GUI/PartPlate.cpp
++++ b/src/slic3r/GUI/PartPlate.cpp
+@@ -1734,7 +1734,7 @@ std::vector<int> PartPlate::get_used_extruders()
+ 	return std::vector(used_extruders_set.begin(), used_extruders_set.end());
+ }
+ 
+-Vec3d PartPlate::estimate_wipe_tower_size(const DynamicPrintConfig & config, const double w, const double d, const double wipe_volume, int plate_extruder_size, bool use_global_objects) const
++Vec3d PartPlate::estimate_wipe_tower_size(const DynamicPrintConfig & config, const double w, const double wipe_volume, int extruder_count, int plate_extruder_size, bool use_global_objects) const
+ {
+ 	Vec3d wipe_tower_size;
+ 
+@@ -1777,9 +1777,9 @@ Vec3d PartPlate::estimate_wipe_tower_size(const DynamicPrintConfig & config, con
+     const ConfigOptionBool* use_rib_wall_opt  = config.option<ConfigOptionBool>("prime_tower_rib_wall");
+     bool                    use_rib_wall      = use_rib_wall_opt ? use_rib_wall_opt->value : true;
+ 
+-    double depth = plate_extruder_size == 1 ? 0 : d;
+-    int    nozzle_nums = wxGetApp().preset_bundle->get_printer_extruder_count();
+-    double volume      = wipe_volume * (nozzle_nums == 2 ? plate_extruder_size : (plate_extruder_size - 1));
++    double volume      = wipe_volume * (extruder_count == 2 ? plate_extruder_size : (plate_extruder_size - 1));
++    double depth       = plate_extruder_size == 1 ? 0 : volume / (layer_height * w);
++
+     if (use_rib_wall) {
+         depth = std::sqrt(volume / layer_height);
+         if (timelapse_enabled || plate_extruder_size > 1) {
+@@ -1836,7 +1836,8 @@ arrangement::ArrangePolygon PartPlate::estimate_wipe_tower_polygon(const Dynamic
+ 	//float a = dynamic_cast<const ConfigOptionFloat*>(config.option("wipe_tower_rotation_angle"))->value;
+ 	float v = dynamic_cast<const ConfigOptionFloat*>(config.option("prime_volume"))->value;
+     float tower_brim_width = dynamic_cast<const ConfigOptionFloat*>(config.option("prime_tower_brim_width"))->value;
+-    Vec3d wipe_tower_size = estimate_wipe_tower_size(config, w, m_depth, v, plate_extruder_size, use_global_objects);
++    int nozzle_nums = wxGetApp().preset_bundle->get_printer_extruder_count();
++    Vec3d wipe_tower_size = estimate_wipe_tower_size(config, w, v, nozzle_nums, plate_extruder_size, use_global_objects);
+ 	int plate_width=m_width, plate_depth=m_depth;
+ 	float depth = wipe_tower_size(1);
+ 	float margin = WIPE_TOWER_MARGIN + tower_brim_width, wp_brim_width = 0.f;
+@@ -1893,8 +1894,10 @@ void PartPlate::clear(bool clear_sliced_result)
+ 		m_ready_for_slice = true;
+ 		update_slice_result_valid_state(false);
+ 	}
+-	m_name_texture.reset();
+-	m_name_texture_dark.reset();
++	if (m_plater) {
++		m_name_texture.reset();
++		m_name_texture_dark.reset();
++	}
+ }
+ 
+ /* size and position related functions*/
+@@ -2804,38 +2807,41 @@ bool PartPlate::set_shape(const Pointfs& shape, const Pointfs& exclude_areas, Ve
+ 		m_exclude_area = std::move(new_exclude_areas);
+ 		calc_bounding_boxes();
+ 
+-		ExPolygon logo_poly;
+-		generate_logo_polygon(logo_poly);
+-		m_logo_triangles.reset();
+-		if (!init_model_from_poly(m_logo_triangles, logo_poly, GROUND_Z + 0.02f))
+-			BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << ":Unable to create logo triangles\n";
++		if (m_plater != nullptr) { // render data, skip in CLI mode where m_plater is null
++			ExPolygon logo_poly;
++			generate_logo_polygon(logo_poly);
++			m_logo_triangles.reset();
++			if (!init_model_from_poly(m_logo_triangles, logo_poly, GROUND_Z + 0.02f))
++				BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << ":Unable to create logo triangles\n";
+ 
+-		ExPolygon poly;
+-		generate_print_polygon(poly);
+-        m_action_icon[e_at_unlock_triangle].reset();
+-        if (!init_model_from_poly(m_action_icon[e_at_unlock_triangle].model, poly, GROUND_Z))
+-            BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << ":Unable to create plate triangles\n";
+-        init_raycaster_from_model(m_action_icon[e_at_unlock_triangle]);
++			ExPolygon poly;
++			generate_print_polygon(poly);
++			m_action_icon[e_at_unlock_triangle].reset();
++			if (!init_model_from_poly(m_action_icon[e_at_unlock_triangle].model, poly, GROUND_Z))
++				BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << ":Unable to create plate triangles\n";
++			init_raycaster_from_model(m_action_icon[e_at_unlock_triangle]);
+ 
+-		ExPolygon exclude_poly;
+-		generate_exclude_polygon(exclude_poly);
+-		calc_exclude_triangles(exclude_poly);
++			ExPolygon exclude_poly;
++			generate_exclude_polygon(exclude_poly);
++			calc_exclude_triangles(exclude_poly);
+ 
+-		const BoundingBox& pp_bbox = poly.contour.bounding_box();
+-		calc_gridlines(poly, pp_bbox);
++			const BoundingBox& pp_bbox = poly.contour.bounding_box();
++			calc_gridlines(poly, pp_bbox);
+ 
+-		bool machine_is_belt = wxGetApp().preset_bundle->machine_is_belt();
++			bool machine_is_belt = wxGetApp().preset_bundle->machine_is_belt();
+ 
+-		for (int i=e_at_close;i<=e_at_set;++i)
+-            calc_vertex_for_icons(i - 1, m_action_icon[i], machine_is_belt);
+-        //calc_vertex_for_icons_background(m_right_top);
++			for (int i=e_at_close;i<=e_at_set;++i)
++				calc_vertex_for_icons(i - 1, m_action_icon[i], machine_is_belt);
++			//calc_vertex_for_icons_background(m_right_top);
+ 
+-		calc_vertex_for_number(false, m_plate_idx_icon);
++			calc_vertex_for_number(false, m_plate_idx_icon);
+ 
+-        generate_plate_name_texture();
++			generate_plate_name_texture();
++		}
+ 	}
+ 
+-	calc_height_limit();
++	if (m_plater != nullptr)
++		calc_height_limit();
+ 
+ 	return true;
+ }
+@@ -3724,7 +3730,7 @@ int PartPlateList::create_plate(bool adjust_position)
+ 	int new_index;
+ 
+ 	// make sure belt only have one plater
+-	if (wxGetApp().preset_bundle->machine_is_belt())
++	if (wxGetApp().preset_bundle && wxGetApp().preset_bundle->machine_is_belt())
+ 		if (m_plate_list.size() >= 1)
+ 			return -1;
+ 
+@@ -5044,7 +5050,9 @@ bool PartPlateList::set_shapes(const Pointfs& shape, const Pointfs& exclude_area
+ 		pos = compute_shape_position(i, m_plate_cols);
+ 		plate->set_shape(shape, exclude_areas, pos, height_to_lid, height_to_rod);
+ 	}
+-	set_verder_type(wxGetApp().preset_bundle->get_current_vendor_type());
++	if (m_plater && wxGetApp().preset_bundle)
++		set_verder_type(wxGetApp().preset_bundle->get_current_vendor_type());
++
+ 	calc_bounding_boxes();
+ 
+ 	update_logo_texture_filename(texture_filename);
+@@ -5243,56 +5251,58 @@ int PartPlateList::rebuild_plates_after_deserialize(std::vector<bool>& previous_
+ 	int ret = 0;
+ 
+ 	// use current bed info to update plate size, fix undo problem when  change different printer
+-	const DynamicPrintConfig* config       = this->m_plater->config();
+-	float plate_height                    = config->opt_float("printable_height");
+-
+-	int plate_width = m_plate_width;
+-	int plate_depth = m_plate_depth;
+-
+-	// Prefer the printable area (build volume) extents for bed size. The bed "extended" bounding box
+-	// may include the visual bed model, which can be larger than the printable area and cause drift.
+-	const ConfigOptionPoints* printable_area = nullptr;
+-	if (config != nullptr)
+-		printable_area = config->opt<ConfigOptionPoints>("printable_area");
+-	if (printable_area == nullptr && wxGetApp().preset_bundle != nullptr)
+-		printable_area = wxGetApp().preset_bundle->full_config().opt<ConfigOptionPoints>("printable_area");
+-
+-	if (printable_area != nullptr && printable_area->size() > 0) {
+-		double min_x = std::numeric_limits<double>::infinity();
+-		double min_y = std::numeric_limits<double>::infinity();
+-		double max_x = -std::numeric_limits<double>::infinity();
+-		double max_y = -std::numeric_limits<double>::infinity();
+-
+-		for (size_t i = 0; i < printable_area->size(); ++i) {
+-			const auto pt = printable_area->get_at(i);
+-			min_x = std::min(min_x, static_cast<double>(pt.x()));
+-			min_y = std::min(min_y, static_cast<double>(pt.y()));
+-			max_x = std::max(max_x, static_cast<double>(pt.x()));
+-			max_y = std::max(max_y, static_cast<double>(pt.y()));
+-		}
++	if (this->m_plater != nullptr) {
++		const DynamicPrintConfig* config = this->m_plater->config();
++		float plate_height = config->opt_float("printable_height");
++
++		int plate_width = m_plate_width;
++		int plate_depth = m_plate_depth;
++
++		// Prefer the printable area (build volume) extents for bed size. The bed "extended" bounding box
++		// may include the visual bed model, which can be larger than the printable area and cause drift.
++		const ConfigOptionPoints* printable_area = nullptr;
++		if (config != nullptr)
++			printable_area = config->opt<ConfigOptionPoints>("printable_area");
++		if (printable_area == nullptr && wxGetApp().preset_bundle != nullptr)
++			printable_area = wxGetApp().preset_bundle->full_config().opt<ConfigOptionPoints>("printable_area");
++
++		if (printable_area != nullptr && printable_area->size() > 0) {
++			double min_x = std::numeric_limits<double>::infinity();
++			double min_y = std::numeric_limits<double>::infinity();
++			double max_x = -std::numeric_limits<double>::infinity();
++			double max_y = -std::numeric_limits<double>::infinity();
++
++			for (size_t i = 0; i < printable_area->size(); ++i) {
++				const auto pt = printable_area->get_at(i);
++				min_x = std::min(min_x, static_cast<double>(pt.x()));
++				min_y = std::min(min_y, static_cast<double>(pt.y()));
++				max_x = std::max(max_x, static_cast<double>(pt.x()));
++				max_y = std::max(max_y, static_cast<double>(pt.y()));
++			}
+ 
+-		plate_width = static_cast<int>(std::lround(max_x - min_x));
+-		plate_depth = static_cast<int>(std::lround(max_y - min_y));
+-	} else if (this->m_plater != nullptr && this->m_plater->bed().build_volume().valid()) {
+-		const BoundingBoxf3 bed_bbox = this->m_plater->bed().build_volume().bounding_volume();
+-		const Vec3d         bed_size = bed_bbox.size();
+-		plate_width = static_cast<int>(std::lround(bed_size.x()));
+-		plate_depth = static_cast<int>(std::lround(bed_size.y()));
+-	} else {
+-		BoundingBoxf3 bed_bbox = this->m_plater->get_bed_extended_bounding_box();
+-		Vec3d  max = bed_bbox.max;
+-		Vec3d  min = bed_bbox.min;
+-		plate_width = max.x() - min.x() - Bed3D::Axes::DefaultTipRadius;
+-		plate_depth = max.y() - min.y() - Bed3D::Axes::DefaultTipRadius;
+-	}
++			plate_width = static_cast<int>(std::lround(max_x - min_x));
++			plate_depth = static_cast<int>(std::lround(max_y - min_y));
++		} else if (this->m_plater->bed().build_volume().valid()) {
++			const BoundingBoxf3 bed_bbox = this->m_plater->bed().build_volume().bounding_volume();
++			const Vec3d         bed_size = bed_bbox.size();
++			plate_width = static_cast<int>(std::lround(bed_size.x()));
++			plate_depth = static_cast<int>(std::lround(bed_size.y()));
++		} else {
++			BoundingBoxf3 bed_bbox = this->m_plater->get_bed_extended_bounding_box();
++			Vec3d  max = bed_bbox.max;
++			Vec3d  min = bed_bbox.min;
++			plate_width = max.x() - min.x() - Bed3D::Axes::DefaultTipRadius;
++			plate_depth = max.y() - min.y() - Bed3D::Axes::DefaultTipRadius;
++		}
+ 
+ 
+-	if ((m_plate_width != plate_width) || (m_plate_depth != plate_depth) || (m_plate_height != plate_height)) {
+-		m_plate_width = plate_width;
+-		m_plate_depth = plate_depth;
+-		m_plate_height = plate_height;
+-        m_height_to_lid = config->opt_float("extruder_clearance_height_to_lid");
+-        m_height_to_rod = config->opt_float("extruder_clearance_height_to_rod");
++		if ((m_plate_width != plate_width) || (m_plate_depth != plate_depth) || (m_plate_height != plate_height)) {
++			m_plate_width = plate_width;
++			m_plate_depth = plate_depth;
++			m_plate_height = plate_height;
++			m_height_to_lid = config->opt_float("extruder_clearance_height_to_lid");
++			m_height_to_rod = config->opt_float("extruder_clearance_height_to_rod");
++		}
+ 	}
+ 
+ 	BOOST_LOG_TRIVIAL(debug) << __FUNCTION__ << boost::format(": plates count %1%") % m_plate_list.size();
+@@ -5383,8 +5393,10 @@ int PartPlateList::rebuild_plates_after_deserialize(std::vector<bool>& previous_
+ 	}
+ 
+ 	//update the bed's position
+-	Vec2d pos = compute_shape_position(m_current_plate, m_plate_cols);
+-	m_plater->set_bed_position(pos);
++	if (m_plater) {
++		Vec2d pos = compute_shape_position(m_current_plate, m_plate_cols);
++		m_plater->set_bed_position(pos);
++	}
+ 
+ 	//not used
+ 	/*if (m_plate_width == 0)
+diff --git a/src/slic3r/GUI/PartPlate.hpp b/src/slic3r/GUI/PartPlate.hpp
+index 8cb19b84..e43d2978 100644
+--- a/src/slic3r/GUI/PartPlate.hpp
++++ b/src/slic3r/GUI/PartPlate.hpp
+@@ -327,7 +327,7 @@ public:
+     BoundingBoxf3 get_gcode_path_bounding_box();
+ 
+     Vec3d get_origin() { return m_origin; }
+-    Vec3d estimate_wipe_tower_size(const DynamicPrintConfig & config, const double w, const double d, const double wipe_volume, int plate_extruder_size = 0, bool use_global_objects = false) const;
++    Vec3d estimate_wipe_tower_size(const DynamicPrintConfig & config, const double w, const double wipe_volume, int extruder_count = 1, int plate_extruder_size = 0, bool use_global_objects = false) const;
+     arrangement::ArrangePolygon estimate_wipe_tower_polygon(const DynamicPrintConfig & config, int plate_index, int plate_extruder_size = 0, bool use_global_objects = false) const;
+     std::vector<int> get_extruders(bool conside_custom_gcode = false) const;
+     std::vector<int> get_extruders_under_cli(bool conside_custom_gcode, DynamicPrintConfig& full_config) const;
