@@ -1,0 +1,49 @@
+diff --git a/src/CrealityPrint.cpp b/src/CrealityPrint.cpp
+index 2b3bb7e5..b73ae712 100644
+--- a/src/CrealityPrint.cpp
++++ b/src/CrealityPrint.cpp
+@@ -3147,7 +3147,9 @@ void CrealityPrint::process_project(Slic3r::Model& model, const std::string proje
+         else {
+             partplate_list.reset_size(old_printable_width, old_printable_depth, old_printable_height, false);
+         }
++        BOOST_LOG_TRIVIAL(info) << "before partplate_list.set_shapes";
+         partplate_list.set_shapes(current_printable_area, current_exclude_area, bed_texture, height_to_lid, height_to_rod);
++        BOOST_LOG_TRIVIAL(info) << "after partplate_list.set_shapes";
+         //plate_stride = partplate_list.plate_stride_x();
+     }
+ 
+diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
+index 3d4333d1..c4eec947 100644
+--- a/src/slic3r/GUI/PartPlate.cpp
++++ b/src/slic3r/GUI/PartPlate.cpp
+@@ -5032,6 +5032,8 @@ bool PartPlateList::set_shapes(const Pointfs& shape, const Pointfs& exclude_area
+ 	m_height_to_lid = height_to_lid;
+ 	m_height_to_rod = height_to_rod;
+ 
++	BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": start, plates " << m_plate_list.size() << ", shape points " << shape.size() << ", exclude points " << exclude_areas.size();
++
+ 	double stride_x = plate_stride_x();
+ 	double stride_y = plate_stride_y();
+ 
+@@ -5042,7 +5044,9 @@ bool PartPlateList::set_shapes(const Pointfs& shape, const Pointfs& exclude_area
+ 		Vec2d pos;
+ 
+ 		pos = compute_shape_position(i, m_plate_cols);
++		BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": before plate set_shape " << i;
+ 		plate->set_shape(shape, exclude_areas, pos, height_to_lid, height_to_rod);
++		BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": after plate set_shape " << i;
+ 	}
+ 	if (wxGetApp().preset_bundle)
+ 		set_verder_type(wxGetApp().preset_bundle->get_current_vendor_type());
+@@ -5050,7 +5054,11 @@ bool PartPlateList::set_shapes(const Pointfs& shape, const Pointfs& exclude_area
+ 
+ 	calc_bounding_boxes();
+ 
++	BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": after calc_bounding_boxes";
++
++	BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": before update_logo_texture_filename";
+ 	update_logo_texture_filename(texture_filename);
++	BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": after update_logo_texture_filename";
+ 
+ 	return true;
+ }
