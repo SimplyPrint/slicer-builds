@@ -9,5 +9,6 @@ sudo apt-get install -y \
     libglu1-mesa-dev \
     libgtk-3-dev \
     libdbus-1-dev \
+    libhidapi-dev \
     libwebkit2gtk-4.1-dev \
     texinfo
