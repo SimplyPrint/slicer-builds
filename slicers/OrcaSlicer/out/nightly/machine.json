@@ -2,6 +2,7 @@
     "Basic information": {
         "Printable space": [
             "printable_area",
+            "parallel_printheads_count",
             "bed_exclude_area",
             "printable_height",
             "support_multi_bed_types",
@@ -14,6 +15,7 @@
             "gcode_flavor",
             "pellet_modded_printer",
             "bbl_use_printhost",
+            "use_3mf",
             "scan_first_layer",
             "enable_power_loss_recovery",
             "disable_m73",
@@ -31,7 +33,8 @@
                     "fan_speedup_overhangs"
                 ]
             },
-            "fan_kickstart"
+            "fan_kickstart",
+            "part_cooling_fan_min_pwm"
         ],
         "Extruder Clearance": [
             "extruder_clearance_radius",
@@ -100,7 +103,8 @@
         "Wipe tower": [
             "wipe_tower_type",
             "purge_in_prime_tower",
-            "enable_filament_ramming"
+            "enable_filament_ramming",
+            "tool_change_on_wipe_tower"
         ],
         "Single extruder multi-material parameters": [
             "cooling_tube_retraction",
@@ -159,7 +163,7 @@
         "Advanced": [
             "emit_machine_limits_to_gcode"
         ],
-        "Resonance Avoidance": [
+        "Resonance Compensation": [
             "resonance_avoidance",
             {
                 "label": "Resonance Avoidance Speed",
@@ -167,6 +171,24 @@
                 "options": [
                     "min_resonance_avoidance_speed",
                     "max_resonance_avoidance_speed"
+                ]
+            },
+            "input_shaping_emit",
+            "input_shaping_type",
+            {
+                "label": "Frequency",
+                "tooltip": "The frequency of the anti-vibration signal will correspond to the natural frequency of the frame.",
+                "options": [
+                    "input_shaping_freq_x",
+                    "input_shaping_freq_y"
+                ]
+            },
+            {
+                "label": "Damping",
+                "tooltip": "Damping ratio for the input shaping filter.",
+                "options": [
+                    "input_shaping_damp_x",
+                    "input_shaping_damp_y"
                 ]
             }
         ],
