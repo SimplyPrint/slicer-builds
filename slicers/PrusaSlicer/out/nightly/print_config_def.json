@@ -788,6 +788,24 @@
         "mode": "simple",
         "default_value": "1.75"
     },
+    "filament_flush_speed": {
+        "type": "floats",
+        "label": "Flush speed",
+        "tooltip": "Extrusion speed used for flushing during a tool change. Used in custom toolchange G-code.",
+        "sidetext": "mm\/s",
+        "min": "0",
+        "mode": "expert",
+        "default_value": "0"
+    },
+    "filament_flush_volume": {
+        "type": "floats",
+        "label": "Flush volume",
+        "tooltip": "Volume of filament to flush during a tool change. Used in custom toolchange G-code.",
+        "sidetext": "mm³",
+        "min": "0",
+        "mode": "expert",
+        "default_value": "0"
+    },
     "filament_infill_max_crossing_speed": {
         "type": "floats",
         "label": "Max crossing infill speed",
@@ -3266,7 +3284,7 @@
     "thumbnails": {
         "type": "string",
         "label": "G-code thumbnails",
-        "tooltip": "Picture sizes to be stored into a .gcode \/ .bgcode and .sl1 \/ .sl1s files, in the following format: \"XxY\/EXT, XxY\/EXT, ...\"\nCurrently supported extensions are PNG, QOI and JPG.",
+        "tooltip": "Picture sizes to be stored into a .gcode \/ .bgcode and .sl1 \/ .sl1s \/ .slx files, in the following format: \"XxY\/EXT, XxY\/EXT, ...\"\nCurrently supported extensions are PNG, QOI and JPG.",
         "gui_type": "one_string",
         "mode": "expert",
         "default_value": ""
@@ -3297,6 +3315,21 @@
         "height": "5",
         "mode": "expert",
         "default_value": ""
+    },
+    "toolchange_ordering": {
+        "type": "enum",
+        "label": "Toolchange ordering",
+        "tooltip": "Determines the order of tool changes on each layer.\nOptimized - Starts with the last used extruder to minimize tool changes.\nCyclic - Uses extruders in a fixed sequential order (1, 2, 3, ...) on every layer.",
+        "enum_values": [
+            "optimized",
+            "cyclic"
+        ],
+        "enum_labels": [
+            "Optimized",
+            "Cyclic"
+        ],
+        "mode": "advanced",
+        "default_value": "Optimized"
     },
     "top_fill_pattern": {
         "type": "enum",
