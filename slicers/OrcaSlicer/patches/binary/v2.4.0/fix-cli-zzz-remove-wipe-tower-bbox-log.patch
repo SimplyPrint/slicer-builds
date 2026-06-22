@@ -1,0 +1,13 @@
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+index 208f7746..ddf5a196 100644
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -3891,8 +3891,6 @@ int CLI::run(int argc, char **argv)
+ 
+     auto check_plate_wipe_tower = [get_print_sequence, is_smooth_timelapse, new_extruder_count](Slic3r::GUI::PartPlate* plate, int plate_index, unsigned int plate_filaments_cnt, DynamicPrintConfig& print_config, plate_obj_size_info_t &plate_obj_size_info) {
+         plate_obj_size_info.obj_bbox= plate->get_objects_bounding_box();
+-        BOOST_LOG_TRIVIAL(info) << boost::format("plate %1%, object bbox: min {%2%, %3%, %4%} - max {%5%, %6%, %7%}")
+-                    %(plate_index+1) %plate_obj_size_info.obj_bbox.min.x() % plate_obj_size_info.obj_bbox.min.y() % plate_obj_size_info.obj_bbox.min.z() %plate_obj_size_info.obj_bbox.max.x() % plate_obj_size_info.obj_bbox.max.y() % plate_obj_size_info.obj_bbox.max.z();
+         plate_obj_size_info.has_wipe_tower = false;
+         return;
+ 
