@@ -1,0 +1,21 @@
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+index 72b6775e55..8a45292777 100644
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -6517,6 +6517,16 @@ int CLI::run(int argc, char **argv)
+ 
+             bool thumbnail_opengl_ready = false;
+             glfwSetErrorCallback(glfw_callback);
++#if defined(__linux__) || defined(__LINUX__)
++            // OrcaSlicer 2.4.0 builds GLFW 3.4 with both Wayland and X11.
++            // The cloud slicer runs headless with a fake Wayland display, where
++            // GLFW can segfault inside wl_proxy_get_version() before returning.
++            // Keep thumbnail rendering enabled by forcing the existing X display.
++            unsetenv("WAYLAND_DISPLAY");
++#if defined(GLFW_PLATFORM) && defined(GLFW_PLATFORM_X11)
++            glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
++#endif
++#endif
+             int ret = glfwInit();
+             if (ret == GLFW_FALSE) {
+                 const char* error_msg;
