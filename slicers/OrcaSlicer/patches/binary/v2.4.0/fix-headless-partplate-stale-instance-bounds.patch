@@ -1,8 +1,18 @@
 diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
-index e4980e16..bbdafd32 100644
+index e4980e16..f4672e70 100644
 --- a/src/slic3r/GUI/PartPlate.cpp
 +++ b/src/slic3r/GUI/PartPlate.cpp
-@@ -2982,10 +2982,13 @@ int PartPlate::printable_instance_size()
+@@ -1690,6 +1690,9 @@ std::vector<int> PartPlate::get_extruders_under_cli(bool conside_custom_gcode, D
+         if ((obj_id >= 0) && (obj_id < m_model->objects.size()))
+         {
+             ModelObject* object = m_model->objects[obj_id];
++            if (instance_id < 0 || instance_id >= (int)object->instances.size())
++                continue;
++
+             ModelInstance* instance = object->instances[instance_id];
+ 
+             if (!instance->printable)
+@@ -2982,10 +2985,13 @@ int PartPlate::printable_instance_size()
          int obj_id      = it->first;
          int instance_id = it->second;
  
@@ -18,7 +28,7 @@ index e4980e16..bbdafd32 100644
          ModelInstance *instance = object->instances[instance_id];
  
          if ((instance->printable) && (instance_outside_set.find(std::pair(obj_id, instance_id)) == instance_outside_set.end())) {
-@@ -3005,11 +3008,14 @@ bool PartPlate::has_printable_instances()
+@@ -3005,11 +3011,14 @@ bool PartPlate::has_printable_instances()
  		int obj_id = it->first;
  		int instance_id = it->second;
  
@@ -37,7 +47,7 @@ index e4980e16..bbdafd32 100644
  
  		if ((instance->printable)&&(instance_outside_set.find(std::pair(obj_id, instance_id)) == instance_outside_set.end()))
  		{
-@@ -3029,9 +3035,11 @@ bool PartPlate::is_all_instances_unprintable()
+@@ -3029,9 +3038,11 @@ bool PartPlate::is_all_instances_unprintable()
          int obj_id      = it->first;
          int instance_id = it->second;
  
