@@ -1,0 +1,24 @@
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+index a462dd1f..208f7746 100644
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -3893,17 +3893,8 @@ int CLI::run(int argc, char **argv)
+         plate_obj_size_info.obj_bbox= plate->get_objects_bounding_box();
+         BOOST_LOG_TRIVIAL(info) << boost::format("plate %1%, object bbox: min {%2%, %3%, %4%} - max {%5%, %6%, %7%}")
+                     %(plate_index+1) %plate_obj_size_info.obj_bbox.min.x() % plate_obj_size_info.obj_bbox.min.y() % plate_obj_size_info.obj_bbox.min.z() %plate_obj_size_info.obj_bbox.max.x() % plate_obj_size_info.obj_bbox.max.y() % plate_obj_size_info.obj_bbox.max.z();
+-        if (plate_filaments_cnt > 0 && plate_filaments_cnt <= 1 && !is_smooth_timelapse) {
+-            plate_obj_size_info.has_wipe_tower = false;
+-            BOOST_LOG_TRIVIAL(info) << boost::format("plate_filaments_cnt=%1%, set to no wipe tower")%plate_filaments_cnt;
+-            return;
+-        }
+-
+-        if (new_extruder_count <= 1 && !is_smooth_timelapse) {
+-            plate_obj_size_info.has_wipe_tower = false;
+-            BOOST_LOG_TRIVIAL(info) << boost::format("new_extruder_count=%1%, set to no wipe tower")%new_extruder_count;
+-            return;
+-        }
++        plate_obj_size_info.has_wipe_tower = false;
++        return;
+ 
+         if (!print_config.has("wipe_tower_x")) {
+             plate_obj_size_info.has_wipe_tower = false;
