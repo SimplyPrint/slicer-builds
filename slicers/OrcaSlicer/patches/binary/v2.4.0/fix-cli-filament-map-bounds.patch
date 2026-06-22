@@ -1,0 +1,23 @@
+diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
+index 2f15fe64d..fd51dfc8a 100644
+--- a/src/libslic3r/PrintConfig.cpp
++++ b/src/libslic3r/PrintConfig.cpp
+@@ -9817,8 +9817,16 @@ void DynamicPrintConfig::update_values_to_printer_extruders_for_multiple_filamen
+ 
+         for (int f_index = 0; f_index < filament_count; f_index++)
+         {
+-            ExtruderType extruder_type = (ExtruderType)(opt_extruder_type->get_at(filament_maps[f_index] - 1));
+-            NozzleVolumeType nozzle_volume_type = (NozzleVolumeType)(opt_nozzle_volume_type->get_at(filament_maps[f_index] - 1));
++            const int mapped_extruder_index = filament_maps[f_index] - 1;
++            if (mapped_extruder_index < 0 ||
++                mapped_extruder_index >= static_cast<int>(opt_extruder_type->size()) ||
++                mapped_extruder_index >= static_cast<int>(opt_nozzle_volume_type->size())) {
++                BOOST_LOG_TRIVIAL(warning) << __FUNCTION__ << boost::format(", Line %1%: mapped extruder index %2% out of range for filament index %3%, skipping")
++                    %__LINE__ %mapped_extruder_index %f_index;
++                continue;
++            }
++            ExtruderType extruder_type = (ExtruderType)(opt_extruder_type->get_at(mapped_extruder_index));
++            NozzleVolumeType nozzle_volume_type = (NozzleVolumeType)(opt_nozzle_volume_type->get_at(mapped_extruder_index));
+ 
+             //variant index
+             variant_index[f_index] = get_index_for_extruder(f_index+1, id_name, extruder_type, nozzle_volume_type, variant_name);
