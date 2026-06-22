@@ -1,0 +1,24 @@
+diff --git a/src/libslic3r/utils.cpp b/src/libslic3r/utils.cpp
+index 42dcc14878..0db28f8a51 100644
+--- a/src/libslic3r/utils.cpp
++++ b/src/libslic3r/utils.cpp
+@@ -131,7 +131,18 @@ void set_logging_level(unsigned int level)
+ 
+ void set_logging_file(const std::string &file)
+ {
+-	boost::log::add_file_log(file);
++	boost::log::add_common_attributes();
++	boost::log::add_file_log(
++		boost::log::keywords::file_name = file,
++		boost::log::keywords::format =
++		(
++			boost::log::expressions::stream
++			<< "[" << boost::log::expressions::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f") << "] "
++			<< "[" << boost::log::expressions::attr<boost::log::attributes::current_thread_id::value_type>("ThreadID") << "] "
++			<< "[" << boost::log::expressions::attr<boost::log::trivial::severity_level>("Severity") << "] "
++			<< boost::log::expressions::smessage
++		),
++		boost::log::keywords::auto_flush = true);
+ }
+ 
+ unsigned int level_string_to_boost(std::string level)
