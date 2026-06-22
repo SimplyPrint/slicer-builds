@@ -1,0 +1,33 @@
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+index ae0ed719..a462dd1f 100644
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -3889,10 +3889,16 @@ int CLI::run(int argc, char **argv)
+         }
+     };
+ 
+-    auto check_plate_wipe_tower = [get_print_sequence, is_smooth_timelapse, new_extruder_count](Slic3r::GUI::PartPlate* plate, int plate_index, DynamicPrintConfig& print_config, plate_obj_size_info_t &plate_obj_size_info) {
++    auto check_plate_wipe_tower = [get_print_sequence, is_smooth_timelapse, new_extruder_count](Slic3r::GUI::PartPlate* plate, int plate_index, unsigned int plate_filaments_cnt, DynamicPrintConfig& print_config, plate_obj_size_info_t &plate_obj_size_info) {
+         plate_obj_size_info.obj_bbox= plate->get_objects_bounding_box();
+         BOOST_LOG_TRIVIAL(info) << boost::format("plate %1%, object bbox: min {%2%, %3%, %4%} - max {%5%, %6%, %7%}")
+                     %(plate_index+1) %plate_obj_size_info.obj_bbox.min.x() % plate_obj_size_info.obj_bbox.min.y() % plate_obj_size_info.obj_bbox.min.z() %plate_obj_size_info.obj_bbox.max.x() % plate_obj_size_info.obj_bbox.max.y() % plate_obj_size_info.obj_bbox.max.z();
++        if (plate_filaments_cnt > 0 && plate_filaments_cnt <= 1 && !is_smooth_timelapse) {
++            plate_obj_size_info.has_wipe_tower = false;
++            BOOST_LOG_TRIVIAL(info) << boost::format("plate_filaments_cnt=%1%, set to no wipe tower")%plate_filaments_cnt;
++            return;
++        }
++
+         if (new_extruder_count <= 1 && !is_smooth_timelapse) {
+             plate_obj_size_info.has_wipe_tower = false;
+             BOOST_LOG_TRIVIAL(info) << boost::format("new_extruder_count=%1%, set to no wipe tower")%new_extruder_count;
+@@ -4060,8 +4066,9 @@ int CLI::run(int argc, char **argv)
+         plate_obj_size_infos.resize(plate_count, plate_obj_size_info_t());
+         for (int index = 0; index < plate_count; index ++) {
+             Slic3r::GUI::PartPlate* cur_plate = (Slic3r::GUI::PartPlate *)partplate_list.get_plate(index);
++            unsigned int plate_filaments_cnt = index < plate_data_src.size() ? plate_data_src[index]->slice_filaments_info.size() : 0;
+ 
+-            check_plate_wipe_tower(cur_plate, index, m_print_config, plate_obj_size_infos[index]);
++            check_plate_wipe_tower(cur_plate, index, plate_filaments_cnt, m_print_config, plate_obj_size_infos[index]);
+             BOOST_LOG_TRIVIAL(info) << boost::format("plate %1%,  has_wipe_tower %2%, wipe_x %3%, wipe_y %4%, width %5%, depth %6%")
+                 %(index+1) %plate_obj_size_infos[index].has_wipe_tower %plate_obj_size_infos[index].wipe_x %plate_obj_size_infos[index].wipe_y %plate_obj_size_infos[index].wipe_width %plate_obj_size_infos[index].wipe_depth;
+         }
