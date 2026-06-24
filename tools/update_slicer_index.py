@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import json
+import re
 from pathlib import Path
 
 
@@ -25,6 +26,26 @@ def parse_metadata(items: list[str]) -> dict:
         key, value = item.split("=", 1)
         metadata[key] = value
     return metadata
+
+
+def version_sort_key(version: str) -> tuple:
+    normalized = version.removeprefix("version_").removeprefix("v")
+    return tuple(
+        (0, int(part)) if part.isdigit() else (1, part)
+        for part in re.split(r"(\d+)", normalized)
+        if part
+    )
+
+
+def should_promote_latest(index: dict, version: str) -> bool:
+    current = index.get("latest")
+    if not isinstance(current, str) or not current:
+        return True
+
+    if current not in index.get("versions", {}):
+        return True
+
+    return version_sort_key(version) > version_sort_key(current)
 
 
 def main() -> None:
@@ -54,7 +75,7 @@ def main() -> None:
     versions = index.setdefault("versions", {})
     version = versions.setdefault(args.version, {})
 
-    if args.latest:
+    if args.latest and should_promote_latest(index, args.version):
         index["latest"] = args.version
 
     metadata = version.setdefault("metadata", {})
