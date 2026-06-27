@@ -489,6 +489,17 @@
         "mode": "develop",
         "default_value": "0"
     },
+    "chamber_minimal_temperature": {
+        "type": "ints",
+        "label": "Minimal",
+        "full_label": "Chamber minimal temperature",
+        "tooltip": "This is the chamber temperature at which printing should start, while the chamber continues heating toward the \"Target\" chamber temperature. For example, set the Target to 60 and the Minimal to 50 to begin printing once the chamber reaches 50°C, without waiting for the full 60°C.\n\nIt sets a G-code variable named chamber_minimal_temperature, which can be passed to your print start macro or a heat soak macro, like this: PRINT_START (other variables) CHAMBER_MIN_TEMP=[chamber_minimal_temperature].\n\nUnlike the \"Target\" chamber temperature, this option does not emit any M141\/M191 commands; it only exposes the value to your custom G-code. It should not exceed the \"Target\" chamber temperature.",
+        "sidetext": "℃",
+        "min": "0",
+        "max": "1500",
+        "mode": "simple",
+        "default_value": "0"
+    },
     "chamber_temperature": {
         "type": "ints",
         "label": "Chamber temperature",
