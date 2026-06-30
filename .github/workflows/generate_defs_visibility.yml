@@ -12,6 +12,7 @@ on:
           - BambuStudio
           - ElegooSlicer
           - CrealityPrint
+          - AnycubicSlicerNext
         default: all
         description: Slicer to generate visibility for
         required: true
@@ -55,6 +56,7 @@ jobs:
       cancel-in-progress: false
     env:
       continue_generate: 'true'
+      target_ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch || github.ref_name }}
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -65,6 +67,7 @@ jobs:
           - BambuStudio
           - ElegooSlicer
           - CrealityPrint
+          - AnycubicSlicerNext
         build-type:
           - nightly
           - latest_release
@@ -79,6 +82,10 @@ jobs:
             repo: ELEGOO-3D/ElegooSlicer
           - slicer: CrealityPrint
             repo: CrealityOfficial/CrealityPrint
+            release_tag: ''
+          - slicer: AnycubicSlicerNext
+            repo: ANYCUBIC-3D/AnycubicSlicerNext
+            release_tag: v2.3.0
 
     steps:
       - name: Apply dispatch filters
@@ -102,7 +109,7 @@ jobs:
         if: env.continue_generate == 'true'
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ env.target_ref }}
 
       - name: Install the latest version of uv
         if: env.continue_generate == 'true'
@@ -127,7 +134,7 @@ jobs:
 
           cd "slicers/${{ matrix.slicer }}/out"
 
-          release_tag_override="${{ inputs.release-tag || '' }}"
+          release_tag_override="${{ inputs.release-tag || matrix.release_tag || '' }}"
           if [[ -n "$release_tag_override" ]]; then
             latest_release_tag="$release_tag_override"
             latest_release_json=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/releases/tags/${latest_release_tag}" || echo '{}')
@@ -218,6 +225,6 @@ jobs:
           else
             slicer="${{ matrix.slicer }}"
             git commit -m "chore(${slicer,,}): generate visibility for ${folder_name} @ ${upstream_ref:0:12}"
-            git pull --rebase origin "${GITHUB_REF_NAME}"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
+            git pull --rebase origin "${target_ref}"
+            git push origin "HEAD:${target_ref}"
           fi

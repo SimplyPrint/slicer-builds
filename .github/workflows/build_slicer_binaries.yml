@@ -34,6 +34,7 @@ on:
           - BambuStudio
           - ElegooSlicer
           - CrealityPrint
+          - AnycubicSlicerNext
         default: all
         description: Slicer to build
         required: true
@@ -88,6 +89,7 @@ jobs:
           - BambuStudio
           - ElegooSlicer
           - CrealityPrint
+          - AnycubicSlicerNext
         build-type:
           - nightly
           - latest_release
@@ -112,6 +114,10 @@ jobs:
             use_arm: false
           - slicer: CrealityPrint
             repo: CrealityOfficial/CrealityPrint
+            use_arm: false
+          - slicer: AnycubicSlicerNext
+            repo: ANYCUBIC-3D/AnycubicSlicerNext
+            release_tag: v2.3.0
             use_arm: false
 
     runs-on: ${{ matrix.arch == 'arm64' && matrix.use_arm && (inputs.arch == 'all' || inputs.arch == 'arm64') && (inputs.runner-arm || 'ubuntu-24.04-arm') || (inputs.runner || 'ubuntu-24.04') }}
@@ -166,7 +172,7 @@ jobs:
 
           git clone https://github.com/${{ matrix.repo }} slicer-src --depth 1 --
 
-          release_tag_override="${{ inputs.release-tag || '' }}"
+          release_tag_override="${{ inputs.release-tag || matrix.release_tag || '' }}"
 
           i=5
           while (( i > 0 )); do

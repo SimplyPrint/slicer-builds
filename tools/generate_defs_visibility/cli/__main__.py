@@ -46,6 +46,13 @@ SUPPORTED_SLICERS = {
             "master",
         )
     },
+    'AnycubicSlicerNext': {
+        'toggle_print_fff_options': (
+            "https://raw.githubusercontent.com/ANYCUBIC-3D/AnycubicSlicerNext/{}/src/slic3r/GUI/ConfigManipulation.cpp",
+            "ConfigManipulation::toggle_print_fff_options",
+            "main",
+        )
+    },
 }
 
 

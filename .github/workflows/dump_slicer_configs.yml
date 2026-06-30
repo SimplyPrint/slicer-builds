@@ -24,6 +24,7 @@ on:
           - BambuStudio
           - ElegooSlicer
           - CrealityPrint
+          - AnycubicSlicerNext
         default: all
         description: Slicer to dump configs for
         required: true
@@ -68,6 +69,7 @@ jobs:
           - BambuStudio
           - ElegooSlicer
           - CrealityPrint
+          - AnycubicSlicerNext
         build-type:
           - nightly
           - latest_release
@@ -87,6 +89,9 @@ jobs:
           - slicer: CrealityPrint
             repo: CrealityOfficial/CrealityPrint
             release_tag: ''
+          - slicer: AnycubicSlicerNext
+            repo: ANYCUBIC-3D/AnycubicSlicerNext
+            release_tag: v2.3.0
 
     runs-on: ${{ inputs.runner || 'ubuntu-24.04' }}
     env:

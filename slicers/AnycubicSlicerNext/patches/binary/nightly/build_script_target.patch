@@ -1,0 +1,24 @@
+diff --git a/build_linux.sh b/build_linux.sh
+index 8a5c68f09..3b0b51aa3 100755
+--- a/build_linux.sh
++++ b/build_linux.sh
+@@ -242,15 +242,15 @@ if [[ -n "${BUILD_ACNEXT}" ]] ; then
+     echo "done"
+     echo "Building AnycubicSlicerNext ..."
+     if [[ -n "${BUILD_DEBUG}" ]] ; then
+-        cmake --build build --config Debug --target AnycubicSlicerNext
++        cmake --build build --config Debug --target OrcaSlicer
+     else
+-        cmake --build build --config Release --target AnycubicSlicerNext
++        cmake --build build --config Release --target OrcaSlicer
+     fi
+     echo "Building AnycubicSlicerNext_profile_validator .."
+     if [[ -n "${BUILD_DEBUG}" ]] ; then
+-        cmake --build build --config Debug --target AnycubicSlicerNext_profile_validator
++        cmake --build build --config Debug --target OrcaSlicer_profile_validator
+     else
+-        cmake --build build --config Release --target AnycubicSlicerNext_profile_validator
++        cmake --build build --config Release --target OrcaSlicer_profile_validator
+     fi
+     ./scripts/run_gettext.sh
+     echo "done"
