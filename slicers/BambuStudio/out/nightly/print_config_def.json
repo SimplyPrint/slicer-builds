@@ -38,7 +38,7 @@
         "label": "Full fan speed at layer",
         "tooltip": "Auxiliary fan speed will be ramped up linearly from layer \"For the first\" to maximum at layer \"Full fan speed at layer\". \"Full fan speed at layer\" will be ignored if lower than \"For the first\", in which case the fan will be running at maximum allowed speed at layer \"For the first\" + 1.",
         "min": "0",
-        "max": "1000",
+        "max": "100000",
         "mode": "simple",
         "default_value": "0"
     },
@@ -345,7 +345,7 @@
         "tooltip": "Set special auxiliary cooling fan for the first certain layers.",
         "sidetext": "layers",
         "min": "0",
-        "max": "1000",
+        "max": "100000",
         "mode": "simple",
         "default_value": "1"
     },
@@ -355,7 +355,7 @@
         "tooltip": "Set special cooling fan for the first certain layers.The part cooling fan of the first layer used to be closed to get better build plate adhesion and used for auto cooling function",
         "sidetext": "layers",
         "min": "0",
-        "max": "1000",
+        "max": "100000",
         "mode": "simple",
         "default_value": "1"
     },
@@ -589,13 +589,15 @@
             "Standard",
             "High Flow",
             "Hybrid",
-            "TPU High Flow"
+            "TPU High Flow",
+            "E3D High Flow"
         ],
         "enum_labels": [
             "Standard",
             "High Flow",
             "Hybrid",
-            "TPU High Flow"
+            "TPU High Flow",
+            "E3D High Flow"
         ],
         "mode": "develop",
         "default_value": "Standard"
@@ -959,12 +961,14 @@
         "enum_values": [
             "Standard",
             "High Flow",
-            "TPU High Flow"
+            "TPU High Flow",
+            "E3D High Flow"
         ],
         "enum_labels": [
             "Standard",
             "High Flow",
-            "TPU High Flow"
+            "TPU High Flow",
+            "E3D High Flow"
         ],
         "mode": "develop",
         "default_value": "Standard"
@@ -2022,7 +2026,7 @@
         "label": "Full fan speed at layer",
         "tooltip": "",
         "min": "0",
-        "max": "1000",
+        "max": "100000",
         "mode": "simple",
         "default_value": "0"
     },
@@ -3531,13 +3535,15 @@
             "Standard",
             "High Flow",
             "Hybrid",
-            "TPU High Flow"
+            "TPU High Flow",
+            "E3D High Flow"
         ],
         "enum_labels": [
             "Standard",
             "High Flow",
             "Hybrid",
-            "TPU High Flow"
+            "TPU High Flow",
+            "E3D High Flow"
         ],
         "mode": "simple",
         "default_value": "Standard"
@@ -4764,7 +4770,7 @@
         "tooltip": "Filament to print solid infill",
         "min": "0",
         "gui_type": "i_enum_open",
-        "mode": "develop",
+        "mode": "advanced",
         "default_value": "0"
     },
     "sparse_infill_acceleration": {
@@ -4809,7 +4815,7 @@
         "tooltip": "Filament to print internal sparse infill.",
         "min": "0",
         "gui_type": "i_enum_open",
-        "mode": "develop",
+        "mode": "advanced",
         "default_value": "0"
     },
     "sparse_infill_lattice_angle_1": {
@@ -5910,7 +5916,7 @@
         "tooltip": "Filament to print walls",
         "min": "0",
         "gui_type": "i_enum_open",
-        "mode": "develop",
+        "mode": "advanced",
         "default_value": "0"
     },
     "wall_generator": {
