@@ -14,3 +14,22 @@ Custom SimplyPrint slicer builds and generated slicer configuration artifacts.
   - `_index.json` as the single version/build/config index for that slicer.
 
 All slicer step scripts are run from the repository root with `slicer-src` and `slicer-out` available.
+
+## Licensing
+
+This repository — the build scripts, CI workflows, shared tools, and patches — is licensed under the [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0), with no additional terms.
+
+The patches under `slicers/<Slicer>/patches/` modify upstream slicer source code and are therefore also governed by the corresponding upstream license. A copy of each upstream project's license is kept at `slicers/<Slicer>/LICENSE`:
+
+| Slicer | Upstream repository | License |
+| --- | --- | --- |
+| AnycubicSlicerNext | [ANYCUBIC-3D/AnycubicSlicerNext](https://github.com/ANYCUBIC-3D/AnycubicSlicerNext) | [AGPL-3.0](slicers/AnycubicSlicerNext/LICENSE) |
+| BambuStudio | [bambulab/BambuStudio](https://github.com/bambulab/BambuStudio) | [AGPL-3.0](slicers/BambuStudio/LICENSE) |
+| CrealityPrint | [CrealityOfficial/CrealityPrint](https://github.com/CrealityOfficial/CrealityPrint) | [AGPL-3.0](slicers/CrealityPrint/LICENSE) |
+| ElegooSlicer | [ELEGOO-3D/ElegooSlicer](https://github.com/ELEGOO-3D/ElegooSlicer) | [AGPL-3.0](slicers/ElegooSlicer/LICENSE) |
+| OrcaSlicer | [OrcaSlicer/OrcaSlicer](https://github.com/OrcaSlicer/OrcaSlicer) | [AGPL-3.0](slicers/OrcaSlicer/LICENSE) |
+| PrusaSlicer | [prusa3d/PrusaSlicer](https://github.com/prusa3d/PrusaSlicer) | [AGPL-3.0](slicers/PrusaSlicer/LICENSE) |
+| QIDIStudio | [QIDITECH/QIDIStudio](https://github.com/QIDITECH/QIDIStudio) | [AGPL-3.0](slicers/QIDIStudio/LICENSE) |
+| SuperSlicer | [supermerill/SuperSlicer](https://github.com/supermerill/SuperSlicer) | [AGPL-3.0](slicers/SuperSlicer/LICENSE) |
+
+Binaries built from the patched sources are covered works of the corresponding upstream slicer and remain AGPL-3.0. Generated configuration artifacts under `slicers/<Slicer>/out/` inherit the status of the slicer data they are derived from.
