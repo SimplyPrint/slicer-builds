@@ -73,6 +73,9 @@ jobs:
         build-type:
           - nightly
           - latest_release
+        exclude:
+          - slicer: Cura
+            build-type: nightly
         include:
           - slicer: OrcaSlicer
             repo: OrcaSlicer/OrcaSlicer
@@ -90,17 +93,9 @@ jobs:
             repo: CrealityOfficial/CrealityPrint
             release_tag: ''
           - slicer: Cura
-            config_generator_only: true
-            index_metadata:
-              executable: bin/CuraEngine
-              resources_ref: 1fb8a7610460e03ec62da950d1c173a249b23b59
-              resources_repo: Ultimaker/Cura
-              settings_contract: cura-resolved-v1
-            index_upstream_ref_metadata_key: engine_ref
-            repo: Ultimaker/CuraEngine
+            repo: Ultimaker/Cura
             release_tag: 5.13.0
-            pinned_release_ref: 636f9608621fd1d6c1b75ad2a969de53beabfbc6
-            release_only: true
+            config_generator_only: true
 
     runs-on: ${{ inputs.runner || 'ubuntu-24.04' }}
     env:
@@ -126,21 +121,12 @@ jobs:
             exit 0
           fi
 
-          if [[ "${{ matrix.release_only }}" == "true" && "${{ matrix.build-type }}" != "latest_release" ]]; then
-            echo "Skipping ${{ matrix.slicer }} nightly because this integration pins a coordinated stable release."
-            echo "continue_build=false" >> "$GITHUB_ENV"
-            exit 0
-          fi
-
       - name: Checkout repository
         if: env.continue_build == 'true'
         uses: actions/checkout@v4
 
       - name: Setup
         if: env.continue_build == 'true'
-        env:
-          INDEX_METADATA_JSON: ${{ toJSON(matrix.index_metadata) }}
-          INDEX_UPSTREAM_REF_METADATA_KEY: ${{ matrix.index_upstream_ref_metadata_key || '' }}
         run: |
           set -euo pipefail
 
@@ -167,17 +153,6 @@ jobs:
           echo upstream_published_at=$upstream_published_at
           echo head_hash=$head_hash
 
-          if [[ "$latest_release_tag" == "null" || "$latest_release_hash" == "null" || "$head_hash" == "null" ]]; then
-            echo "Failed to get valid release data from the GitHub API." >&2
-            exit 1
-          fi
-
-          pinned_release_ref="${{ matrix.pinned_release_ref || '' }}"
-          if [[ -n "$pinned_release_ref" && "$latest_release_hash" != "$pinned_release_ref" ]]; then
-            echo "Tag $latest_release_tag resolved to $latest_release_hash, expected pinned ref $pinned_release_ref." >&2
-            exit 1
-          fi
-
           echo "latest_release_tag=$latest_release_tag" >> "$GITHUB_ENV"
           echo "latest_release_hash=$latest_release_hash" >> "$GITHUB_ENV"
           echo "upstream_published_at=$upstream_published_at" >> "$GITHUB_ENV"
@@ -197,7 +172,7 @@ jobs:
             exit 0
           fi
 
-          if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "${latest_release_at_head:-false}" == "true" ]] && [[ "${{ inputs.build-type || 'all' }}" != "latest_release" ]] && [[ "${{ matrix.release_only }}" != "true" ]]; then
+          if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "${latest_release_at_head:-false}" == "true" ]] && [[ "${{ inputs.build-type || 'all' }}" != "latest_release" ]]; then
             echo "The latest release is at the HEAD of the repo. The nightly build will generate release files. Exiting..."
             echo "continue_build=false" >> "$GITHUB_ENV"
             exit 0
@@ -211,18 +186,6 @@ jobs:
             build_ref_hash="$latest_release_hash"
             version_dir="$latest_release_tag"
           fi
-
-          index_metadata_json="${INDEX_METADATA_JSON:-}"
-          index_upstream_ref_metadata_key="${INDEX_UPSTREAM_REF_METADATA_KEY:-}"
-          if [[ -z "$index_metadata_json" || "$index_metadata_json" == "null" ]]; then
-            index_metadata_json='{}'
-          fi
-          jq -n \
-            --argjson metadata "$index_metadata_json" \
-            --arg ref_key "$index_upstream_ref_metadata_key" \
-            --arg ref "$build_ref_hash" \
-            '$metadata + (if $ref_key == "" then {} else {($ref_key): $ref} end)' \
-            > slicer-out/index-metadata.json
 
           echo "BUILD_CACHE_REF=${{ matrix.build-type }}-${build_ref_hash}" >> "$GITHUB_ENV"
 
@@ -330,15 +293,6 @@ jobs:
             source "$folder/config.sh"
             rm "$folder/config.sh"
 
-            metadata_args=()
-            while IFS= read -r item; do
-              metadata_args+=(--metadata "$item")
-            done < <(
-              jq -r 'to_entries[] | "\(.key)=\(.value | tostring)"' \
-                "$folder/index-metadata.json"
-            )
-            rm "$folder/index-metadata.json"
-
             target="slicers/$slicer/out/$version_dir"
             mkdir -p "$target"
             cp -rf "$folder"/* "$target" || true
@@ -352,7 +306,6 @@ jobs:
               --upstream-published-at "$upstream_published_at" \
               --source-repo "$repo" \
               --workflow-run-url "$workflow_run_url" \
-              "${metadata_args[@]}" \
               $([[ "$version_dir" != "nightly" ]] && echo --latest)
 
             if [[ "$build_type" == "nightly" && "$latest_release_at_head" == "true" ]]; then
@@ -368,8 +321,7 @@ jobs:
                 --upstream-ref "$upstream_ref" \
                 --upstream-published-at "$upstream_published_at" \
                 --source-repo "$repo" \
-                --workflow-run-url "$workflow_run_url" \
-                "${metadata_args[@]}"
+                --workflow-run-url "$workflow_run_url"
             fi
 
             git add "slicers/$slicer/out"

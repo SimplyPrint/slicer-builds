@@ -2,18 +2,15 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=common.sh
-source "${SCRIPT_DIR}/common.sh"
+if [[ ! -f slicer-src/build/Release/generators/conan_toolchain.cmake ]]; then
+  ./slicers/Cura/steps/build-deps.sh
+fi
 
-prepare_pinned_sources
-activate_conan
+deps="$PWD/slicer-src/deps/build"
+export CONAN_HOME="$deps/conan"
 
-mapfile -t options < <(conan_options)
-pushd "${CURA_ENGINE_SOURCE_DIR}"
-conan build . \
+"$deps/venv/bin/conan" build slicer-src \
   --settings build_type=Release \
-  "${options[@]}"
-popd
-
-test -x "${CURA_ENGINE_SOURCE_DIR}/build/Release/CuraEngine"
+  -o 'curaengine/*:enable_arcus=False' \
+  -o 'curaengine/*:enable_plugins=False' \
+  -o 'curaengine/*:enable_remote_plugins=False'

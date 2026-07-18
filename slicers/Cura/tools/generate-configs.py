@@ -328,9 +328,7 @@ def js_condition(expression: Any) -> str | None:
         ) from error
 
 
-def generate(
-    resources: Path, output: Path, version: str, engine_ref: str, resources_ref: str
-) -> None:
+def generate(resources: Path, output: Path) -> None:
     definition_sources: list[tuple[Path, dict[str, Any], bool, bool]] = []
     for path in sorted((resources / "definitions").glob("*.def.json")):
         document = load_json(path)
@@ -362,8 +360,6 @@ def generate(
         "process": defaultdict(lambda: defaultdict(list)),
     }
     conditions: dict[str, str] = {}
-    runtime_only_settings: set[str] = set()
-
     editable_setting_keys: set[str] = set()
     for _, root_settings, runtime_only_source, _ in definition_sources:
         if runtime_only_source:
@@ -405,7 +401,6 @@ def generate(
                 runtime_only = key not in editable_setting_keys
                 if runtime_only:
                     normalized["runtime_only"] = True
-                    runtime_only_settings.add(key)
                 definitions[key] = normalized
 
                 if not runtime_only:
@@ -436,36 +431,14 @@ def generate(
         # contract's variables/functions lists are only for external context.
         {"conditions": conditions, "functions": [], "variables": []},
     )
-    write_json(
-        output / "metadata.json",
-        {
-            "engine_ref": engine_ref,
-            "engine_repo": "Ultimaker/CuraEngine",
-            "resources_ref": resources_ref,
-            "resources_repo": "Ultimaker/Cura",
-            "runtime_only_settings_count": len(runtime_only_settings),
-            "settings_contract": "cura-resolved-v1",
-            "settings_count": len(definitions),
-            "source_definition_files": [
-                path.name for path, _, _, _ in definition_sources
-            ],
-            "visibility_condition_count": len(conditions),
-            "version": version,
-        },
-    )
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--resources", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--version", required=True)
-    parser.add_argument("--engine-ref", required=True)
-    parser.add_argument("--resources-ref", required=True)
     args = parser.parse_args()
-    generate(
-        args.resources, args.output, args.version, args.engine_ref, args.resources_ref
-    )
+    generate(args.resources, args.output)
 
 
 if __name__ == "__main__":

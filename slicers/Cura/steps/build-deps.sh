@@ -2,25 +2,12 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=common.sh
-source "${SCRIPT_DIR}/common.sh"
+deps="$PWD/slicer-src/deps/build"
+export CONAN_HOME="$deps/conan"
 
-prepare_pinned_sources
-activate_conan
-
-mapfile -t options < <(conan_options)
-mkdir -p "$(dirname "${CURA_CONAN_GRAPH_FILE}")"
-graph_tmp="$(mktemp "${CURA_CONAN_GRAPH_FILE}.tmp.XXXXXX")"
-trap 'rm -f "${graph_tmp}"' EXIT
-pushd "${CURA_ENGINE_SOURCE_DIR}"
-conan install . \
+"$deps/venv/bin/conan" install slicer-src \
   --settings build_type=Release \
   --build=missing \
-  --format=json \
-  --lockfile="${CURA_REPO_ROOT}/slicers/Cura/conan.lock" \
-  "${options[@]}" \
-  >"${graph_tmp}"
-popd
-python3 -m json.tool "${graph_tmp}" >/dev/null
-mv "${graph_tmp}" "${CURA_CONAN_GRAPH_FILE}"
+  -o 'curaengine/*:enable_arcus=False' \
+  -o 'curaengine/*:enable_plugins=False' \
+  -o 'curaengine/*:enable_remote_plugins=False'
