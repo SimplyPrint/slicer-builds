@@ -63,7 +63,8 @@ defaults to `/tmp/cura-bundle` and can be redirected with
 
 ```bash
 CURA_BUNDLE_EXPORT=/tmp/cura-bundle \
-  docker compose run --build --rm cura-bundle-export
+  docker compose up --build --abort-on-container-exit \
+    --exit-code-from cura-bundle-export cura-bundle-export
 ```
 
 The config workflow normalizes Cura's definition tree into the existing
