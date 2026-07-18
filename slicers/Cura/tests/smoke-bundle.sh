@@ -52,6 +52,19 @@ if grep -q 'not found' "${work_dir}/ldd.txt"; then
   exit 1
 fi
 
+# Validate every distributable shared object as well as the executable. Some
+# Conan libraries are loaded dynamically and therefore do not appear in the
+# engine's direct dependency graph exercised by ldd above.
+for library in "${BUNDLE}"/lib/*; do
+  [[ -e "${library}" ]] || continue
+  ldd "${library}" >"${work_dir}/ldd-library.txt"
+  if grep -q 'not found' "${work_dir}/ldd-library.txt"; then
+    echo "Missing dependency for bundled library ${library}:" >&2
+    cat "${work_dir}/ldd-library.txt" >&2
+    exit 1
+  fi
+done
+
 cp "${SCRIPT_DIR}/smoke.stl" "${work_dir}/smoke.stl"
 python3 "${REPO_ROOT}/slicers/Cura/tools/generate-smoke-settings.py" \
   "${DEFINITION}" \
