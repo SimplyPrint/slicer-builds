@@ -1,0 +1,59 @@
+name: Test Cura integration
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/build_slicer_binaries.yml
+      - .github/workflows/dump_slicer_configs.yml
+      - .github/workflows/test_cura.yml
+      - .dockerignore
+      - compose.yaml
+      - slicers/Cura/**
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/build_slicer_binaries.yml
+      - .github/workflows/dump_slicer_configs.yml
+      - .github/workflows/test_cura.yml
+      - .dockerignore
+      - compose.yaml
+      - slicers/Cura/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generated-settings:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test generic Conan notice collection
+        run: |
+          python3 slicers/Cura/tests/test-conan-licenses.py
+          python3 slicers/Cura/tests/test-conan-runtime-libs.py
+
+      - name: Fetch pinned Cura resources
+        run: |
+          set -euo pipefail
+          source slicers/Cura/version.env
+          git clone --filter=blob:none --no-checkout \
+            "https://github.com/${CURA_RESOURCES_REPO}.git" cura-resources
+          git -C cura-resources fetch --depth 1 origin "$CURA_RESOURCES_REF"
+          git -C cura-resources checkout --detach "$CURA_RESOURCES_REF"
+          test "$(git -C cura-resources rev-parse HEAD)" = "$CURA_RESOURCES_REF"
+
+      - name: Validate complete generated settings
+        run: slicers/Cura/tests/test-artifacts.sh cura-resources/resources
+
+  clean-runtime-smoke:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and slice with the extracted bundle
+        run: |
+          docker compose up --build --abort-on-container-exit \
+            --exit-code-from cura-build-smoke cura-build-smoke

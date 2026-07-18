@@ -1,0 +1,28 @@
+services:
+  cura-build-smoke:
+    build:
+      context: .
+      dockerfile: slicers/Cura/Dockerfile
+      target: smoke
+      platforms:
+        - linux/amd64
+    network_mode: bridge
+
+  cura-bundle-export:
+    build:
+      context: .
+      dockerfile: slicers/Cura/Dockerfile
+      target: smoke
+      platforms:
+        - linux/amd64
+    entrypoint:
+      - /bin/sh
+      - -euc
+    command:
+      - mkdir -p /export && cp -a /workspace/bundle/. /export/
+    volumes:
+      - type: bind
+        source: ${CURA_BUNDLE_EXPORT:-/tmp/cura-bundle}
+        target: /export
+        bind:
+          create_host_path: true

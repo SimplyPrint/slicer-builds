@@ -34,6 +34,7 @@ on:
           - BambuStudio
           - ElegooSlicer
           - CrealityPrint
+          - Cura
         default: all
         description: Slicer to build
         required: true
@@ -88,6 +89,7 @@ jobs:
           - BambuStudio
           - ElegooSlicer
           - CrealityPrint
+          - Cura
         build-type:
           - nightly
           - latest_release
@@ -112,6 +114,21 @@ jobs:
             use_arm: false
           - slicer: CrealityPrint
             repo: CrealityOfficial/CrealityPrint
+            use_arm: false
+          - slicer: Cura
+            repo: Ultimaker/CuraEngine
+            always_run_build_deps: true
+            deps_cache_path: .cura-conan-home/p
+            index_metadata:
+              executable: bin/CuraEngine
+              resources_ref: 1fb8a7610460e03ec62da950d1c173a249b23b59
+              resources_repo: Ultimaker/Cura
+              settings_contract: cura-resolved-v1
+            index_upstream_ref_metadata_key: engine_ref
+            release_tag: 5.13.0
+            pinned_release_ref: 636f9608621fd1d6c1b75ad2a969de53beabfbc6
+            release_only: true
+            runtime_smoke_script: slicers/Cura/tests/smoke-bundle.sh
             use_arm: false
 
     runs-on: ${{ matrix.arch == 'arm64' && matrix.use_arm && (inputs.arch == 'all' || inputs.arch == 'arm64') && (inputs.runner-arm || 'ubuntu-24.04-arm') || (inputs.runner || 'ubuntu-24.04') }}
@@ -155,18 +172,27 @@ jobs:
             exit 0
           fi
 
+          if [[ "${{ matrix.release_only }}" == "true" && "${{ matrix.build-type }}" != "latest_release" ]]; then
+            echo "Skipping ${{ matrix.slicer }} nightly because this integration pins a coordinated stable release."
+            echo "continue_build=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+
       - name: Checkout repository
         if: env.continue_build == 'true'
         uses: actions/checkout@v4
 
       - name: Setup
         if: env.continue_build == 'true'
+        env:
+          INDEX_METADATA_JSON: ${{ toJSON(matrix.index_metadata) }}
+          INDEX_UPSTREAM_REF_METADATA_KEY: ${{ matrix.index_upstream_ref_metadata_key || '' }}
         run: |
           set -euo pipefail
 
           git clone https://github.com/${{ matrix.repo }} slicer-src --depth 1 --
 
-          release_tag_override="${{ inputs.release-tag || '' }}"
+          release_tag_override="${{ inputs.release-tag || matrix.release_tag || '' }}"
 
           i=5
           while (( i > 0 )); do
@@ -204,6 +230,12 @@ jobs:
             exit 1
           fi
 
+          pinned_release_ref="${{ matrix.pinned_release_ref || '' }}"
+          if [[ -n "$pinned_release_ref" && "$latest_release_hash" != "$pinned_release_ref" ]]; then
+            echo "Tag $latest_release_tag resolved to $latest_release_hash, expected pinned ref $pinned_release_ref." >&2
+            exit 1
+          fi
+
           echo "latest_release_tag=$latest_release_tag" >> "$GITHUB_ENV"
           echo "latest_release_hash=$latest_release_hash" >> "$GITHUB_ENV"
           echo "upstream_published_at=$upstream_published_at" >> "$GITHUB_ENV"
@@ -222,7 +254,7 @@ jobs:
             exit 0
           fi
 
-          if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "${latest_release_at_head:-false}" == "true" ]] && [[ "${{ inputs.build-type || 'all' }}" != "latest_release" ]]; then
+          if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "${latest_release_at_head:-false}" == "true" ]] && [[ "${{ inputs.build-type || 'all' }}" != "latest_release" ]] && [[ "${{ matrix.release_only }}" != "true" ]]; then
             echo "The latest release is at the HEAD of the repo. The nightly build will generate the release files. Exiting..."
             echo "continue_build=false" >> "$GITHUB_ENV"
             exit 0
@@ -236,6 +268,18 @@ jobs:
             build_ref_hash="$latest_release_hash"
             version_dir="$latest_release_tag"
           fi
+
+          index_metadata_json="${INDEX_METADATA_JSON:-}"
+          index_upstream_ref_metadata_key="${INDEX_UPSTREAM_REF_METADATA_KEY:-}"
+          if [[ -z "$index_metadata_json" || "$index_metadata_json" == "null" ]]; then
+            index_metadata_json='{}'
+          fi
+          jq -n \
+            --argjson metadata "$index_metadata_json" \
+            --arg ref_key "$index_upstream_ref_metadata_key" \
+            --arg ref "$build_ref_hash" \
+            '$metadata + (if $ref_key == "" then {} else {($ref_key): $ref} end)' \
+            > slicer-out/index-metadata.json
 
           cat > slicer-out/config.sh <<EOF
           build_type=${{ matrix.build-type }}
@@ -276,18 +320,19 @@ jobs:
         if: env.continue_build == 'true'
         run: |
           cd slicer-src
-          echo "DEPS_CACHE_KEY=$(git log -1 --pretty="format:%H" -- deps)" >> $GITHUB_ENV
+          deps_cache_key=$(git log -1 --pretty="format:%H" -- deps)
+          echo "DEPS_CACHE_KEY=${deps_cache_key:-$(git rev-parse HEAD)}" >> "$GITHUB_ENV"
 
       - name: Cache built dependencies
         if: env.continue_build == 'true' && !inputs.disable-caching
         id: cache-build-deps
         uses: actions/cache@v4
         with:
-          path: slicer-src/deps/build
-          key: ${{ runner.os }}-${{ matrix.slicer }}-${{ env.ARCH }}-build-deps-${{ env.DEPS_CACHE_KEY }}-${{ hashFiles(format('slicers/{0}/steps/build-deps.sh', matrix.slicer)) }}
+          path: ${{ matrix.deps_cache_path || 'slicer-src/deps/build' }}
+          key: ${{ runner.os }}-${{ matrix.slicer }}-${{ env.ARCH }}-build-deps-${{ env.DEPS_CACHE_KEY }}-${{ hashFiles(format('slicers/{0}/steps/build-deps.sh', matrix.slicer), format('slicers/{0}/conan.lock', matrix.slicer), format('slicers/{0}/version.env', matrix.slicer)) }}
 
       - name: Build dependencies
-        if: env.continue_build == 'true' && (inputs.disable-caching || steps.cache-build-deps.outputs.cache-hit != 'true')
+        if: env.continue_build == 'true' && (matrix.always_run_build_deps || inputs.disable-caching || steps.cache-build-deps.outputs.cache-hit != 'true')
         run: |
           ./slicers/${{ matrix.slicer }}/steps/build-deps.sh
 
@@ -306,6 +351,17 @@ jobs:
             SLICER_CACHE_KEY="${SLICER_CACHE_KEY}-${PATCHES_HASH}"
           fi
 
+          INTEGRATION_FILES=$(find "../slicers/${{ matrix.slicer }}/steps" -type f | sort)
+          for optional_file in \
+            "../slicers/${{ matrix.slicer }}/version.env" \
+            "../slicers/${{ matrix.slicer }}/conan.lock"; do
+            if [[ -f "$optional_file" ]]; then
+              INTEGRATION_FILES+=$'\n'"$optional_file"
+            fi
+          done
+          INTEGRATION_HASH=$(echo "$INTEGRATION_FILES" | xargs cat | sha256sum | cut -d' ' -f1)
+          SLICER_CACHE_KEY="${SLICER_CACHE_KEY}-${INTEGRATION_HASH}"
+
           echo "SLICER_CACHE_KEY=${SLICER_CACHE_KEY}" >> $GITHUB_ENV
 
       - name: Cache built slicer
@@ -317,7 +373,7 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.slicer }}-${{ env.ARCH }}-build-slicer-${{ env.SLICER_CACHE_KEY }}
 
       - name: Build slicer
-        if: env.continue_build == 'true' && (inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
+        if: env.continue_build == 'true' && (inputs.force-rebuild || inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
         run: |
           ./slicers/${{ matrix.slicer }}/steps/build.sh
 
@@ -341,6 +397,23 @@ jobs:
           release_url=https://github.com/${{ github.repository }}/releases/download/${{ matrix.slicer }}_${{ env.latest_release_tag }}/${release_asset_name}
           nightly_url=https://github.com/${{ github.repository }}/releases/download/nightly/${nightly_asset_name}
           EOF
+
+      - name: Smoke bundle in a clean runtime
+        if: env.continue_build == 'true' && matrix.runtime_smoke_script
+        env:
+          RUNTIME_SMOKE_SCRIPT: ${{ matrix.runtime_smoke_script }}
+        run: |
+          docker run --rm \
+            --env RUNTIME_SMOKE_SCRIPT \
+            --volume "$PWD/slicer-src/build/slicer_out:/workspace/bundle:ro" \
+            --volume "$PWD:/workspace/repository:ro" \
+            ubuntu:24.04 \
+            bash -euc '
+              export DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC
+              apt-get update
+              apt-get install -y --no-install-recommends ca-certificates python3
+              "/workspace/repository/${RUNTIME_SMOKE_SCRIPT}" /workspace/bundle
+            '
 
       - name: Upload latest release
         if: env.continue_build == 'true' && (matrix.build-type == 'latest_release' || env.latest_release_at_head == 'true')
@@ -369,12 +442,16 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: binary-config-${{ matrix.slicer }}-${{ matrix.build-type }}-${{ env.ARCH }}
-          path: slicer-out/config.sh
+          path: |
+            slicer-out/config.sh
+            slicer-out/index-metadata.json
 
   update_index:
     needs: build_slicers
     runs-on: ubuntu-24.04
     if: success() || failure()
+    outputs:
+      nightly_indexed: ${{ steps.update-build-index.outputs.nightly_indexed }}
     concurrency:
       group: slicer-out-${{ github.ref_name }}
       cancel-in-progress: false
@@ -390,6 +467,7 @@ jobs:
           path: artifacts
 
       - name: Update build index
+        id: update-build-index
         run: |
           set -euo pipefail
 
@@ -400,6 +478,14 @@ jobs:
             [[ -d "$folder" ]] || continue
             echo "Begin processing $folder"
             source "$folder/config.sh"
+
+            metadata_args=()
+            while IFS= read -r item; do
+              metadata_args+=(--metadata "$item")
+            done < <(
+              jq -r 'to_entries[] | "\(.key)=\(.value | tostring)"' \
+                "$folder/index-metadata.json"
+            )
 
             if [[ "$build_type" == "nightly" ]]; then
               asset_name="$nightly_asset_name"
@@ -423,6 +509,7 @@ jobs:
               --upstream-published-at "$upstream_published_at" \
               --source-repo "$repo" \
               --workflow-run-url "$workflow_run_url" \
+              "${metadata_args[@]}" \
               $([[ "$version_dir" != "nightly" ]] && echo --latest)
 
             if [[ "$build_type" == "nightly" && "$latest_release_at_head" == "true" ]]; then
@@ -440,7 +527,12 @@ jobs:
                 --upstream-ref "$upstream_ref" \
                 --upstream-published-at "$upstream_published_at" \
                 --source-repo "$repo" \
-                --workflow-run-url "$workflow_run_url"
+                --workflow-run-url "$workflow_run_url" \
+                "${metadata_args[@]}"
+            fi
+
+            if [[ "$build_type" == "nightly" ]]; then
+              echo "nightly_indexed=true" >> "$GITHUB_OUTPUT"
             fi
 
             git add "slicers/$slicer/out/_index.json"
@@ -456,7 +548,7 @@ jobs:
 
   update_nightly_tag:
     needs: update_index
-    if: success() || failure()
+    if: always() && needs.update_index.result == 'success' && needs.update_index.outputs.nightly_indexed == 'true'
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
