@@ -7,10 +7,13 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 BUNDLE="$(realpath "${1:?Usage: smoke-bundle.sh <extracted-bundle>}")"
 ENGINE="${BUNDLE}/bin/CuraEngine"
 DEFINITION="${BUNDLE}/share/cura/resources/definitions/fdmprinter.def.json"
+SETTING_VISIBILITY="${BUNDLE}/share/cura/resources/setting_visibility"
 LICENSE_INVENTORY="${BUNDLE}/licenses/conan/inventory.json"
 
 test -x "${ENGINE}"
 test -f "${DEFINITION}"
+test -d "${SETTING_VISIBILITY}"
+find "${SETTING_VISIBILITY}" -maxdepth 1 -type f -name '*.cfg' -print -quit | grep -q .
 test -f "${BUNDLE}/licenses/CuraEngine-AGPL-3.0.txt"
 test -f "${BUNDLE}/licenses/Cura-LGPL-3.0.txt"
 test -f "${LICENSE_INVENTORY}"

@@ -23,10 +23,18 @@ mkdir -p \
 
 install -m 0755 "${binary}" "${bundle}/bin/CuraEngine"
 
-# Keep the profile graph paired with the engine. The runtime receives fully
-# resolved -r settings, but the definitions are useful for smoke tests and for
-# diagnosing profile-resolution problems from the exact released resources.
-for resource_dir in definitions extruders intent quality quality_changes variants; do
+# Keep the profile graph and settings UI metadata paired with the engine. The
+# runtime receives fully resolved -r settings, but the released resources must
+# also reproduce the exact generated settings contract for diagnostics and
+# downstream consumers.
+for resource_dir in \
+  definitions \
+  extruders \
+  intent \
+  quality \
+  quality_changes \
+  setting_visibility \
+  variants; do
   if [[ -d "${CURA_RESOURCES_SOURCE_DIR}/resources/${resource_dir}" ]]; then
     mkdir -p "${bundle}/share/cura/resources/${resource_dir}"
     cp -a \
@@ -95,4 +103,6 @@ with open(sys.argv[1], "w", encoding="utf-8") as output:
     output.write("\\n")
 PY
 
+"${CURA_REPO_ROOT}/slicers/Cura/tests/test-artifacts.sh" \
+  "${bundle}/share/cura/resources"
 "${CURA_REPO_ROOT}/slicers/Cura/tests/smoke-bundle.sh" "${bundle}"
