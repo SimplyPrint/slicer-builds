@@ -1,10 +1,10 @@
 diff --git a/src/slic3r/GUI/OpenGLManager.cpp b/src/slic3r/GUI/OpenGLManager.cpp
-index 4ec2539c89..a7b9e3bbd5 100644
+index 45879b9..93622c1 100644
 --- a/src/slic3r/GUI/OpenGLManager.cpp
 +++ b/src/slic3r/GUI/OpenGLManager.cpp
-@@ -359,8 +359,16 @@ bool OpenGLManager::init_gl(bool popup_error)
+@@ -241,9 +241,17 @@ bool OpenGLManager::init_gl(bool popup_error)
+ {
      if (!m_gl_initialized) {
-         glewExperimental = GL_TRUE;
          GLenum result = glewInit();
          if (result != GLEW_OK) {
 -            BOOST_LOG_TRIVIAL(error) << "Unable to init glew library";

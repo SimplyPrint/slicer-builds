@@ -1,0 +1,39 @@
+schema_version = 1
+name = "OrcaSlicer"
+repository = "https://github.com/OrcaSlicer/OrcaSlicer.git"
+default_ref = "v2.4.2"
+expected_commit = "8500fcdccaa10b5099ac20d252af3a7c560046f1"
+family = "orca"
+executable = "orca-slicer"
+architectures = ["x86-64", "arm64"]
+
+[[supported_refs]]
+ref = "v2.3.2"
+expected_commit = "c724a3f5f51c52336624b689e846c8fbc943a912"
+
+[[supported_refs]]
+ref = "v2.4.0"
+expected_commit = "6d9eb1792f50d11ea12d60526b6ace58666354fd"
+
+[capabilities]
+binary = true
+config_dump = true
+thumbnail = true
+
+[patches]
+shared = ["cli-thumbnail-orca-opengl-version"]
+
+[patches.binary_ref_aliases]
+"v2.4.1" = "v2.4.2"
+
+[ci.binary]
+enabled = true
+publish = true
+release = "latest"
+nightly = true
+
+[ci.config]
+enabled = true
+publish = true
+release = "latest"
+nightly = true

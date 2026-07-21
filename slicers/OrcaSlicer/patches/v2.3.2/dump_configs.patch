@@ -12,7 +12,7 @@ index 71f7d1e7e2..cbffb7646b 100644
  namespace Slic3r {
  
 diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
-index 82876eb2ac..d17a8e7227 100644
+index 50be57e0f8..9e4aabca87 100644
 --- a/src/libslic3r/PrintConfig.cpp
 +++ b/src/libslic3r/PrintConfig.cpp
 @@ -7,6 +7,9 @@
@@ -25,7 +25,7 @@ index 82876eb2ac..d17a8e7227 100644
  #include <set>
  #include <boost/algorithm/string/case_conv.hpp>
  #include <boost/algorithm/string/replace.hpp>
-@@ -666,6 +669,193 @@ PrintConfigDef::PrintConfigDef()
+@@ -629,6 +632,193 @@ PrintConfigDef::PrintConfigDef()
      assign_printer_technology_to_unknown(this->options, ptFFF);
      this->init_sla_params();
      assign_printer_technology_to_unknown(this->options, ptSLA);
@@ -220,10 +220,10 @@ index 82876eb2ac..d17a8e7227 100644
  
  void PrintConfigDef::init_common_params()
 diff --git a/src/libslic3r/PrintConfig.hpp b/src/libslic3r/PrintConfig.hpp
-index 45281d5ce1..72e641a17d 100644
+index 54c26c312a..d567f154aa 100644
 --- a/src/libslic3r/PrintConfig.hpp
 +++ b/src/libslic3r/PrintConfig.hpp
-@@ -563,6 +563,8 @@ class PrintConfigDef : public ConfigDef
+@@ -534,6 +534,8 @@ class PrintConfigDef : public ConfigDef
  public:
      PrintConfigDef();
  
@@ -233,7 +233,7 @@ index 45281d5ce1..72e641a17d 100644
      static void handle_legacy_composite(DynamicPrintConfig &config);
  
 diff --git a/src/slic3r/GUI/I18N.hpp b/src/slic3r/GUI/I18N.hpp
-index 4c71649408..64300656ed 100644
+index c80c9a1659..27b8ac2cd8 100644
 --- a/src/slic3r/GUI/I18N.hpp
 +++ b/src/slic3r/GUI/I18N.hpp
 @@ -40,23 +40,23 @@
@@ -271,10 +271,10 @@ index 4c71649408..64300656ed 100644
  	inline std::string translate_utf8(const char         *s, const char 	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
  	inline std::string translate_utf8(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
 diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
-index 66d7d87835..b75d9fffbf 100644
+index 7e7bdb04dc..4a481e6a86 100644
 --- a/src/slic3r/GUI/MainFrame.cpp
 +++ b/src/slic3r/GUI/MainFrame.cpp
-@@ -1571,6 +1571,8 @@ void MainFrame::create_preset_tabs()
+@@ -1549,6 +1549,8 @@ void MainFrame::create_preset_tabs()
      //add_created_tab(new TabSLAMaterial(m_param_panel));
      add_created_tab(new TabPrinter(m_param_dialog->panel()), "printer");
  
@@ -284,18 +284,19 @@ index 66d7d87835..b75d9fffbf 100644
      m_param_dialog->panel()->rebuild_panels();
      //m_tabpanel->AddPage(m_param_panel, "Parameters", "notebook_presets_active");
 diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
-index f7017cb74b..562f14dc89 100644
+index c94fd1c7a4..2a537fcb57 100644
 --- a/src/slic3r/GUI/Tab.cpp
 +++ b/src/slic3r/GUI/Tab.cpp
-@@ -62,6 +62,7 @@
+@@ -56,7 +56,7 @@
+ #ifdef WIN32
+ 	#include <commctrl.h>
  #endif // WIN32
- 
- #include <algorithm>
+-
 +#include "boost/dll/runtime_symbol_info.hpp"
- #include <cstdlib>
- #include <unordered_set>
+ #include <algorithm>
  
-@@ -556,15 +557,104 @@ void Tab::create_preset_tab()
+ namespace Slic3r {
+@@ -558,15 +558,104 @@ void Tab::create_preset_tab()
      // Initialize the DynamicPrintConfig by default keys/values.
      build();
  
@@ -401,10 +402,10 @@ index f7017cb74b..562f14dc89 100644
                              ScalableButton** btn,
                              const std::string& icon_name,
 diff --git a/src/slic3r/GUI/Tab.hpp b/src/slic3r/GUI/Tab.hpp
-index e654f6c43b..e1bfa5f166 100644
+index 96b35b26e1..db992de579 100644
 --- a/src/slic3r/GUI/Tab.hpp
 +++ b/src/slic3r/GUI/Tab.hpp
-@@ -325,6 +325,7 @@ public:
+@@ -321,6 +321,7 @@ public:
  	virtual bool supports_printer_technology(const PrinterTechnology tech) const = 0;
  
  	void		create_preset_tab();

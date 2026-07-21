@@ -2,20 +2,18 @@
 
 set -euo pipefail
 
-pushd slicer-src/build
+strip_args=()
+[[ "${SLICER_STRIP:-1}" == 0 ]] || strip_args+=(--strip)
 
-mkdir -p slicer_out/resources
-mkdir -p slicer_out/bin
-
-if [[ -d "package/bin" ]]; then
-  cp -r resources/* slicer_out/resources
-  cp package/bin/* slicer_out/bin
-elif [[ -x "src/elegoo-slicer" ]]; then
-  cp -r resources/* slicer_out/resources
-  cp src/elegoo-slicer slicer_out/bin
-else
-  echo "Could not find an ElegooSlicer binary in build/package/bin or build/src"
-  exit 1
-fi
-
-popd
+python3 tools/stage_bundle.py \
+  --executable slicer-src/build/src/elegoo-slicer \
+  --executable slicer-src/build/src/Release/elegoo-slicer \
+  --executable slicer-src/build/package/bin/elegoo-slicer \
+  --name elegoo-slicer \
+  --arch "${ARCH:?ARCH is required}" \
+  --output slicer-src/build/slicer_out \
+  --resources slicer-src/resources \
+  --library-root slicer-src/build/src \
+  --library-root slicer-src/deps/build \
+  "${strip_args[@]}" \
+  --json | tee slicer-src/build/slicer-bundle-report.json

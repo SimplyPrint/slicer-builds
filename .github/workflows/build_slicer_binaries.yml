@@ -26,17 +26,9 @@ on:
         required: true
 
       slicer:
-        type: choice
-        options:
-          - all
-          - OrcaSlicer
-          - PrusaSlicer
-          - BambuStudio
-          - ElegooSlicer
-          - CrealityPrint
-          - Cura
+        type: string
         default: all
-        description: Slicer to build
+        description: Slicer manifest name, or all
         required: true
 
       build-type:
@@ -78,52 +70,49 @@ on:
 permissions:
   contents: write
 
+# The nightly asset has one shared name. Keep upload and index publication from
+# separate workflow runs in one transaction so the indexed digest cannot race
+# a later run's replacement asset. Matrix jobs within a run remain parallel.
+concurrency:
+  group: slicer-binaries-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
+  prepare_matrix:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.generate.outputs.matrix }}
+      has_publish: ${{ steps.generate.outputs.has_publish }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate validated binary matrix
+        id: generate
+        env:
+          SELECTED_SLICER: ${{ inputs.slicer || 'all' }}
+          SELECTED_BUILD_TYPE: ${{ inputs.build-type || 'all' }}
+          SELECTED_ARCH: ${{ inputs.arch || 'x86-64' }}
+          RELEASE_TAG_OVERRIDE: ${{ inputs.release-tag || '' }}
+        run: |
+          set -euo pipefail
+          matrix=$(python3 .github/scripts/generate_ci_matrix.py \
+            --lane binary \
+            --slicer "$SELECTED_SLICER" \
+            --build-type "$SELECTED_BUILD_TYPE" \
+            --arch "$SELECTED_ARCH" \
+            --release-tag "$RELEASE_TAG_OVERRIDE")
+          has_publish=$(python3 -c 'import json, sys; print(str(any(row["publish"] for row in json.load(sys.stdin)["include"])).lower())' <<< "$matrix")
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "has_publish=$has_publish" >> "$GITHUB_OUTPUT"
+
   build_slicers:
+    needs: prepare_matrix
     strategy:
       fail-fast: false
-      matrix:
-        slicer:
-          - OrcaSlicer
-          - PrusaSlicer
-          - BambuStudio
-          - ElegooSlicer
-          - CrealityPrint
-          - Cura
-        build-type:
-          - nightly
-          - latest_release
-        arch:
-          - x86-64
-          - arm64
-        exclude:
-          - slicer: Cura
-            build-type: nightly
-        include:
-          - slicer: OrcaSlicer
-            repo: OrcaSlicer/OrcaSlicer
-            use_arm: true
-#          - slicer: PrusaSlicer
-#            repo: prusa3d/PrusaSlicer
-#            use_arm: true
-          - slicer: BambuStudio
-            repo: BambuLab/BambuStudio
-            use_arm: true
-          - slicer: PrusaSlicer
-            repo: prusa3d/PrusaSlicer
-            use_arm: false
-          - slicer: ElegooSlicer
-            repo: ELEGOO-3D/ElegooSlicer
-            use_arm: false
-          - slicer: CrealityPrint
-            repo: CrealityOfficial/CrealityPrint
-            use_arm: false
-          - slicer: Cura
-            repo: Ultimaker/CuraEngine
-            release_tag: 5.13.0
-            use_arm: false
+      matrix: ${{ fromJSON(needs.prepare_matrix.outputs.matrix) }}
 
-    runs-on: ${{ matrix.arch == 'arm64' && matrix.use_arm && (inputs.arch == 'all' || inputs.arch == 'arm64') && (inputs.runner-arm || 'ubuntu-24.04-arm') || (inputs.runner || 'ubuntu-24.04') }}
+    runs-on: ${{ matrix.arch == 'arm64' && (inputs.runner-arm || 'ubuntu-24.04-arm') || (inputs.runner || 'ubuntu-24.04') }}
     env:
       DEPS_CACHE_KEY: ''
       SLICER_CACHE_KEY: ''
@@ -134,92 +123,87 @@ jobs:
       PLATFORM: linux
       ARCH: ${{ matrix.arch }}
     steps:
-      - name: Apply dispatch filters
-        run: |
-          selected_slicer="${{ inputs.slicer || 'all' }}"
-          selected_build_type="${{ inputs.build-type || 'all' }}"
-          selected_arch="${{ inputs.arch || 'x86-64' }}"
-
-          if [[ "$selected_slicer" != "all" && "$selected_slicer" != "${{ matrix.slicer }}" ]]; then
-            echo "Skipping ${{ matrix.slicer }} because slicer filter is $selected_slicer."
-            echo "continue_build=false" >> "$GITHUB_ENV"
-            exit 0
-          fi
-
-          if [[ "$selected_build_type" != "all" && "$selected_build_type" != "${{ matrix.build-type }}" ]]; then
-            echo "Skipping ${{ matrix.build-type }} because build-type filter is $selected_build_type."
-            echo "continue_build=false" >> "$GITHUB_ENV"
-            exit 0
-          fi
-
-          if [[ "$selected_arch" != "all" && "$selected_arch" != "${{ matrix.arch }}" ]]; then
-            echo "Skipping ${{ matrix.arch }} because arch filter is $selected_arch."
-            echo "continue_build=false" >> "$GITHUB_ENV"
-            exit 0
-          fi
-
-          if [[ "${{ matrix.arch }}" == "arm64" && "${{ matrix.use_arm }}" != "true" ]]; then
-            echo "Skipping ${{ matrix.slicer }} arm64 because it is not enabled for ARM builds."
-            echo "continue_build=false" >> "$GITHUB_ENV"
-            exit 0
-          fi
-
       - name: Checkout repository
         if: env.continue_build == 'true'
         uses: actions/checkout@v4
 
       - name: Setup
         if: env.continue_build == 'true'
+        env:
+          RELEASE_MODE: ${{ matrix.release_mode }}
+          PUBLISH: ${{ matrix.publish && 'true' || 'false' }}
+          RELEASE_TAG_OVERRIDE: ${{ inputs.release-tag || matrix.release_tag || '' }}
+          EXPECTED_COMMIT: ${{ matrix.expected_commit }}
         run: |
           set -euo pipefail
 
           git clone https://github.com/${{ matrix.repo }} slicer-src --depth 1 --
 
-          release_tag_override="${{ inputs.release-tag || matrix.release_tag || '' }}"
+          release_mode="$RELEASE_MODE"
+          publish="$PUBLISH"
+          release_tag_override="$RELEASE_TAG_OVERRIDE"
+          if [[ "$release_mode" == "none" ]]; then
+            latest_release_tag=HEAD
+            latest_release_hash=''
+            latest_release_json='{}'
+            upstream_published_at=''
+            head_hash=$(git -C slicer-src rev-parse HEAD)
+            latest_stored_tag=''
+            release_build_present=false
+          else
+            i=5
+            while (( i > 0 )); do
+              if [[ -n "$release_tag_override" ]]; then
+                latest_release_tag="$release_tag_override"
+                latest_release_json=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/releases/tags/${latest_release_tag}" || echo '{}')
+              else
+                latest_release_json=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/releases/latest")
+                latest_release_tag=$(echo "$latest_release_json" | jq -r '.tag_name')
+              fi
 
-          i=5
-          while (( i > 0 )); do
-            if [[ -n "$release_tag_override" ]]; then
-              latest_release_tag="$release_tag_override"
-              latest_release_json=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/releases/tags/${latest_release_tag}" || echo '{}')
-            else
-              latest_release_json=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/releases/latest")
-              latest_release_tag=$(echo "$latest_release_json" | jq -r '.tag_name')
+              upstream_published_at=$(echo "$latest_release_json" | jq -r '.published_at // empty')
+              latest_release_hash=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq -r '.sha')
+              head_hash=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq -r '.sha')
+              latest_stored_tag=$(jq -r '.latest // empty' "slicers/${{ matrix.slicer }}/out/_index.json" 2>/dev/null || true)
+              if [[ "$publish" == "true" ]]; then
+                release_build_present=$(jq -r --arg tag "$latest_release_tag" --arg platform "${{ env.PLATFORM }}" --arg arch "${{ env.ARCH }}" 'any(.versions[$tag].builds[]?; .platform == $platform and .arch == $arch)' "slicers/${{ matrix.slicer }}/out/_index.json" 2>/dev/null || echo false)
+              else
+                release_build_present=false
+              fi
+
+              if [[ "$latest_release_tag" == "null" || "$latest_release_hash" == "null" || "$head_hash" == "null" ]]; then
+                echo "Failed to get data from Github API. Retrying in 5 seconds..."
+                ((--i))
+                sleep 5
+                continue
+              fi
+              break
+            done
+
+            if [[ $i == 0 ]]; then
+              exit 1
             fi
+          fi
 
-            upstream_published_at=$(echo "$latest_release_json" | jq -r '.published_at // empty')
-            latest_release_hash=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq -r '.sha')
-            head_hash=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq -r '.sha')
-            latest_stored_tag=$(jq -r '.latest // empty' "slicers/${{ matrix.slicer }}/out/_index.json" 2>/dev/null || true)
-            release_build_present=$(jq -r --arg tag "$latest_release_tag" --arg platform "${{ env.PLATFORM }}" --arg arch "${{ env.ARCH }}" 'any(.versions[$tag].builds[]?; .platform == $platform and .arch == $arch)' "slicers/${{ matrix.slicer }}/out/_index.json" 2>/dev/null || echo false)
-
-            echo latest_release_tag=$latest_release_tag
-            echo latest_release_hash=$latest_release_hash
-            echo latest_stored_tag=$latest_stored_tag
-            echo release_build_present=$release_build_present
-            echo upstream_published_at=$upstream_published_at
-            echo head_hash=$head_hash
-
-            if [[ "$latest_release_tag" == "null" || "$latest_release_hash" == "null" || "$head_hash" == "null" ]]; then
-              echo "Failed to get data from Github API. Retrying in 5 seconds..."
-              ((--i))
-              sleep 5
-              continue
-            fi
-            break
-          done
-
-          if [[ $i == 0 ]]; then
+          if [[ ! "$latest_release_tag" =~ ^[A-Za-z0-9][A-Za-z0-9._/@+-]*$ ]] || [[ "$latest_release_tag" == *..* ]] || [[ "$latest_release_tag" == */ ]]; then
+            echo "Unsafe upstream release tag: $latest_release_tag" >&2
             exit 1
           fi
+
+          echo latest_release_tag=$latest_release_tag
+          echo latest_release_hash=$latest_release_hash
+          echo latest_stored_tag=$latest_stored_tag
+          echo release_build_present=$release_build_present
+          echo upstream_published_at=$upstream_published_at
+          echo head_hash=$head_hash
 
           echo "latest_release_tag=$latest_release_tag" >> "$GITHUB_ENV"
           echo "latest_release_hash=$latest_release_hash" >> "$GITHUB_ENV"
           echo "upstream_published_at=$upstream_published_at" >> "$GITHUB_ENV"
           echo "head_hash=$head_hash" >> "$GITHUB_ENV"
 
-          if [[ "$release_build_present" != "true" ]] || [[ "${{ inputs.force-rebuild || false }}" == "true" ]]; then
-            git -C slicer-src fetch origin refs/tags/$latest_release_tag
+          if [[ "$release_mode" != "none" && ( "$release_build_present" != "true" || "${{ inputs.force-rebuild || false }}" == "true" ) ]]; then
+            git -C slicer-src fetch origin "refs/tags/$latest_release_tag"
             if [[ "$head_hash" == "$latest_release_hash" ]]; then
               echo "Latest release found at HEAD"
               latest_release_at_head=true
@@ -231,7 +215,7 @@ jobs:
             exit 0
           fi
 
-          if [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "${latest_release_at_head:-false}" == "true" ]] && [[ "${{ inputs.build-type || 'all' }}" != "latest_release" ]]; then
+          if [[ "$publish" == "true" ]] && [[ "${{ matrix.nightly_enabled }}" == "true" ]] && [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "${latest_release_at_head:-false}" == "true" ]] && [[ "${{ inputs.build-type || 'all' }}" != "latest_release" ]]; then
             echo "The latest release is at the HEAD of the repo. The nightly build will generate the release files. Exiting..."
             echo "continue_build=false" >> "$GITHUB_ENV"
             exit 0
@@ -245,6 +229,15 @@ jobs:
             build_ref_hash="$latest_release_hash"
             version_dir="$latest_release_tag"
           fi
+          if [[ ! "$build_ref_hash" =~ ^[0-9a-f]{40,64}$ ]]; then
+            echo "Invalid resolved upstream commit: $build_ref_hash" >&2
+            exit 1
+          fi
+          if [[ -n "$EXPECTED_COMMIT" && "$build_ref_hash" != "$EXPECTED_COMMIT" ]]; then
+            echo "Resolved $build_ref_hash for $version_dir, expected locked commit $EXPECTED_COMMIT" >&2
+            exit 1
+          fi
+          echo "BUILD_REF_HASH=$build_ref_hash" >> "$GITHUB_ENV"
 
           cat > slicer-out/config.sh <<EOF
           build_type=${{ matrix.build-type }}
@@ -263,13 +256,18 @@ jobs:
 
       - name: Finalize Setup
         if: env.continue_build == 'true'
-        env:
-          build_ref: ${{ matrix.build-type == 'latest_release' && 'FETCH_HEAD' || 'HEAD' }}
         run: |
+          set -euo pipefail
           sudo apt-get update
           sudo apt-get install -y xvfb zip
 
-          git -C slicer-src checkout ${{ env.build_ref }}
+          git -C slicer-src fetch --no-tags --depth 1 origin "$BUILD_REF_HASH"
+          git -C slicer-src checkout --detach "$BUILD_REF_HASH"
+          actual_ref=$(git -C slicer-src rev-parse HEAD)
+          if [[ "$actual_ref" != "$BUILD_REF_HASH" ]]; then
+            echo "Checked out $actual_ref, expected $BUILD_REF_HASH" >&2
+            exit 1
+          fi
 
       - name: Apply patches
         if: env.continue_build == 'true'
@@ -281,11 +279,22 @@ jobs:
         run: |
           ./slicers/${{ matrix.slicer }}/steps/install-deps.sh
 
-      - name: Get dependencies cache key
+      - name: Compute cache fingerprints
         if: env.continue_build == 'true'
+        env:
+          ARCH: ${{ env.ARCH }}
+          PATCH_VERSION: ${{ matrix.build-type == 'nightly' && 'nightly' || env.latest_release_tag }}
         run: |
-          cd slicer-src
-          echo "DEPS_CACHE_KEY=$(git log -1 --pretty="format:%H" -- deps)" >> $GITHUB_ENV
+          set -euo pipefail
+
+          deps_key=$(bash .github/scripts/cache-fingerprint.sh \
+            deps slicer-src "${{ matrix.slicer }}" "$PATCH_VERSION" binary)
+          export CACHE_DEPS_FINGERPRINT="$deps_key"
+          slicer_key=$(bash .github/scripts/cache-fingerprint.sh \
+            build slicer-src "${{ matrix.slicer }}" "$PATCH_VERSION" binary)
+
+          echo "DEPS_CACHE_KEY=$deps_key" >> "$GITHUB_ENV"
+          echo "SLICER_CACHE_KEY=$slicer_key" >> "$GITHUB_ENV"
 
       - name: Cache built dependencies
         if: env.continue_build == 'true' && !inputs.disable-caching
@@ -293,40 +302,26 @@ jobs:
         uses: actions/cache@v4
         with:
           path: slicer-src/deps/build
-          key: ${{ runner.os }}-${{ matrix.slicer }}-${{ env.ARCH }}-build-deps-${{ env.DEPS_CACHE_KEY }}-${{ hashFiles(format('slicers/{0}/steps/build-deps.sh', matrix.slicer)) }}
+          # The content fingerprint includes the upstream dependency inputs and
+          # our build recipe. Identical forks can therefore reuse one family
+          # cache without allowing unrelated dependency trees to alias.
+          key: deps-v3-${{ runner.os }}-${{ matrix.family }}-${{ env.ARCH }}-${{ env.DEPS_CACHE_KEY }}
 
       - name: Build dependencies
         if: env.continue_build == 'true' && (inputs.disable-caching || steps.cache-build-deps.outputs.cache-hit != 'true')
         run: |
           ./slicers/${{ matrix.slicer }}/steps/build-deps.sh
 
-      - name: Get slicer cache key
-        if: env.continue_build == 'true'
-        run: |
-          cd slicer-src
-          SLICER_CACHE_KEY=$(git log -1 --pretty="format:%H" -- src)
-
-          ALL_DIR="../slicers/${{ matrix.slicer }}/patches/binary/all"
-          VER_DIR="../slicers/${{ matrix.slicer }}/patches/binary/${{ matrix.build-type == 'nightly' && 'nightly' || env.latest_release_tag }}"
-          PATCH_FILES=$( { [[ -d "$ALL_DIR" ]] && find "$ALL_DIR" -name '*.patch' -type f; [[ -d "$VER_DIR" ]] && find "$VER_DIR" -name '*.patch' -type f; } | sort )
-
-          if [[ -n "$PATCH_FILES" ]]; then
-            PATCHES_HASH=$(echo "$PATCH_FILES" | xargs cat | sha256sum | cut -d' ' -f1)
-            SLICER_CACHE_KEY="${SLICER_CACHE_KEY}-${PATCHES_HASH}"
-          fi
-
-          echo "SLICER_CACHE_KEY=${SLICER_CACHE_KEY}" >> $GITHUB_ENV
-
       - name: Cache built slicer
-        if: env.continue_build == 'true' && !inputs.disable-caching
+        if: env.continue_build == 'true' && !inputs.force-rebuild && !inputs.disable-caching
         id: cache-build-slicer
         uses: actions/cache@v4
         with:
           path: slicer-src/build
-          key: ${{ runner.os }}-${{ matrix.slicer }}-${{ env.ARCH }}-build-slicer-${{ env.SLICER_CACHE_KEY }}
+          key: build-v2-${{ runner.os }}-${{ matrix.slicer }}-${{ env.ARCH }}-${{ env.SLICER_CACHE_KEY }}
 
       - name: Build slicer
-        if: env.continue_build == 'true' && (inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
+        if: env.continue_build == 'true' && (inputs.force-rebuild || inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
         run: |
           ./slicers/${{ matrix.slicer }}/steps/build.sh
 
@@ -335,12 +330,15 @@ jobs:
         run: |
           ./slicers/${{ matrix.slicer }}/steps/package-binary.sh
           cd slicer-src/build/slicer_out
-          zip -r ../binary.zip *
+          # Preserve SONAME symlinks instead of storing another full ELF for
+          # every alias, and include any intentional dotfiles in the bundle.
+          zip -yr ../binary.zip .
           cd ../../..
 
           release_asset_name="${{ matrix.slicer }}-${{ env.latest_release_tag }}-${{ env.PLATFORM }}-${{ env.ARCH }}.zip"
           nightly_asset_name="${{ matrix.slicer }}-${{ env.PLATFORM }}-${{ env.ARCH }}-nightly.zip"
           mv slicer-src/build/binary.zip "slicer-out/${release_asset_name}"
+          cp slicer-src/build/slicer-bundle-report.json slicer-out/
           sha256=$(sha256sum "slicer-out/${release_asset_name}" | cut -d' ' -f1)
 
           cat >> slicer-out/config.sh <<EOF
@@ -352,7 +350,7 @@ jobs:
           EOF
 
       - name: Upload latest release
-        if: env.continue_build == 'true' && (matrix.build-type == 'latest_release' || env.latest_release_at_head == 'true')
+        if: env.continue_build == 'true' && matrix.publish == true && (matrix.build-type == 'latest_release' || env.latest_release_at_head == 'true')
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ matrix.slicer }} ${{ env.latest_release_tag }}
@@ -363,7 +361,7 @@ jobs:
           make_latest: false
 
       - name: Upload nightly release
-        if: env.continue_build == 'true' && matrix.build-type == 'nightly'
+        if: env.continue_build == 'true' && matrix.publish == true && matrix.build-type == 'nightly'
         uses: WebFreak001/deploy-nightly@v3.2.0
         with:
           upload_url: https://uploads.github.com/repos/SimplyPrint/slicer-builds/releases/254161481/assets{?name,label}
@@ -374,16 +372,27 @@ jobs:
           max_releases: 1
 
       - name: Upload config file
-        if: env.continue_build == 'true'
+        if: env.continue_build == 'true' && matrix.publish == true
         uses: actions/upload-artifact@v4
         with:
           name: binary-config-${{ matrix.slicer }}-${{ matrix.build-type }}-${{ env.ARCH }}
-          path: slicer-out/config.sh
+          path: |
+            slicer-out/config.sh
+            slicer-out/slicer-bundle-report.json
+
+      - name: Upload unpublished binary preview
+        if: env.continue_build == 'true' && matrix.publish != true
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-binary-${{ matrix.slicer }}-${{ matrix.build-type }}-${{ env.ARCH }}
+          path: |
+            slicer-out/*.zip
+            slicer-out/slicer-bundle-report.json
 
   update_index:
-    needs: build_slicers
+    needs: [prepare_matrix, build_slicers]
     runs-on: ubuntu-24.04
-    if: success() || failure()
+    if: always() && needs.prepare_matrix.outputs.has_publish == 'true' && (needs.build_slicers.result == 'success' || needs.build_slicers.result == 'failure')
     outputs:
       nightly_indexed: ${{ steps.update-build-index.outputs.nightly_indexed }}
     concurrency:

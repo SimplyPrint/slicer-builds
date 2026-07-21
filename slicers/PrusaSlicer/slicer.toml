@@ -1,0 +1,34 @@
+schema_version = 1
+name = "PrusaSlicer"
+repository = "https://github.com/prusa3d/PrusaSlicer.git"
+default_ref = "version_2.9.6"
+expected_commit = "b028299c770b8380ee81c921a2867d522f288123"
+family = "prusa"
+executable = "prusa-slicer"
+architectures = ["x86-64"]
+
+[[supported_refs]]
+ref = "version_2.9.3"
+expected_commit = "f1776c0a6347bb84986d10eac8db1021f5bd8548"
+
+[[supported_refs]]
+ref = "version_2.9.5"
+expected_commit = "9a583bd438b195856f3bcf7ea99b69ba4003a961"
+
+[capabilities]
+binary = true
+config_dump = true
+thumbnail = false
+
+[ci.binary]
+enabled = true
+publish = true
+release = "latest"
+nightly = true
+
+[ci.config]
+enabled = true
+publish = true
+release = "tag:version_2.9.3"
+nightly = true
+gui = true
