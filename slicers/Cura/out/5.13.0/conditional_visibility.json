@@ -29,7 +29,7 @@
     "adaptive_layer_height_variation": "adaptive_layer_height_enabled",
     "adaptive_layer_height_variation_step": "adaptive_layer_height_enabled",
     "adhesion_extruder_nr": "((extruders_enabled_count > 1) && (adhesion_type != \"none\"))",
-    "alternate_carve_order": "(carve_multiple_volumes && (magic_mesh_surface_mode != \"surface\"))",
+    "alternate_carve_order": "(carve_multiple_volumes && extruderValues(\"magic_mesh_surface_mode\").every((p) => (p != \"surface\")))",
     "bottom_skin_expand_distance": "((top_layers > 0) || (bottom_layers > 0))",
     "bottom_skin_preshrink": "((top_layers > 0) || (bottom_layers > 0))",
     "bridge_enable_more_layers": "bridge_settings_enabled",
@@ -65,7 +65,7 @@
     "build_volume_temperature": "machine_heated_build_volume",
     "bv_temp_anomaly_limit": "ppr_enable",
     "bv_temp_warn_limit": "ppr_enable",
-    "carve_multiple_volumes": "(magic_mesh_surface_mode != \"surface\")",
+    "carve_multiple_volumes": "extruderValues(\"magic_mesh_surface_mode\").every((p) => (p != \"surface\"))",
     "center_object": "false",
     "coasting_min_volume": "coasting_enable",
     "coasting_speed": "coasting_enable",
@@ -95,7 +95,7 @@
     "extruder_prime_pos_x": "false",
     "extruder_prime_pos_y": "false",
     "flooring_angles": "((flooring_pattern != \"concentric\") && (flooring_layer_count > 0) && (bottom_layers > 0))",
-    "flooring_extruder_nr": "((extruders_enabled_count > 1) && (flooring_layer_count > 0) && (bottom_layers > 0))",
+    "flooring_extruder_nr": "((extruders_enabled_count > 1) && (Math.max(...extruderValues(\"flooring_layer_count\")) > 0) && (Math.max(...extruderValues(\"bottom_layers\")) > 0))",
     "flooring_layer_count": "(bottom_layers > 0)",
     "flooring_line_width": "((flooring_layer_count > 0) && (bottom_layers > 0))",
     "flooring_material_flow": "((flooring_layer_count > 0) && (bottom_layers > 0))",
@@ -346,7 +346,7 @@
     "retraction_speed": "(retraction_enable && (machine_gcode_flavor != \"UltiGCode\"))",
     "roofing_angles": "((roofing_pattern != \"concentric\") && (roofing_layer_count > 0) && (top_layers > 0))",
     "roofing_expansion": "((roofing_layer_count > 0) && (top_layers > 0))",
-    "roofing_extruder_nr": "((extruders_enabled_count > 1) && (roofing_layer_count > 0) && (top_layers > 0))",
+    "roofing_extruder_nr": "((extruders_enabled_count > 1) && (Math.max(...extruderValues(\"roofing_layer_count\")) > 0) && (Math.max(...extruderValues(\"top_layers\")) > 0))",
     "roofing_layer_count": "(top_layers > 0)",
     "roofing_line_width": "((roofing_layer_count > 0) && (top_layers > 0))",
     "roofing_material_flow": "((roofing_layer_count > 0) && (top_layers > 0))",
@@ -550,6 +550,19 @@
     "zig_zaggify_infill": "((infill_pattern == \"lines\") || (infill_pattern == \"grid\") || (infill_pattern == \"triangles\") || (infill_pattern == \"trihexagon\") || (infill_pattern == \"cubic\") || (infill_pattern == \"tetrahedral\") || (infill_pattern == \"quarter_cubic\") || (infill_pattern == \"cross\") || (infill_pattern == \"cross_3d\") || (infill_pattern == \"gyroid\") || (infill_pattern == \"honeycomb\") || (infill_pattern == \"octagon\"))",
     "zig_zaggify_support": "((support_enable || support_meshes_present) && ((support_pattern == \"lines\") || (support_pattern == \"grid\") || (support_pattern == \"triangles\") || (support_pattern == \"cross\") || (support_pattern == \"gyroid\") || (support_pattern == \"honeycomb\") || (support_pattern == \"octagon\")))"
   },
-  "functions": [],
+  "function_definitions": {
+    "extruderValues": {
+      "argument": "setting_key",
+      "fallback": "merged_value",
+      "kind": "setting_values_by_tool",
+      "missing": "omit",
+      "order": "tool_index",
+      "scope_template": "extruder.{tool_index}"
+    }
+  },
+  "functions": [
+    "extruderValues"
+  ],
+  "variable_defaults": {},
   "variables": []
 }

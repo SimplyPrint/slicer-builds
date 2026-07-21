@@ -25,8 +25,26 @@ TYPE_MAP = {
     "[int]": "ints",
 }
 
+WIRE_TYPE_MAP = {
+    "str": "string",
+    "bool": "boolean",
+    "int": "integer",
+    "float": "number",
+    "enum": "string",
+    "polygon": "array",
+    "polygons": "array",
+    "optional_extruder": "integer",
+    "extruder": "integer",
+    "[int]": "array",
+}
+
 MACHINE_CATEGORIES = {"machine_settings", "command_line_settings"}
 FILAMENT_CATEGORIES = {"material"}
+
+TRANSLATION_NAMESPACE = "cura"
+TRANSLATION_SOURCE_LOCALE = "en"
+TOOL_REFERENCE_SENTINEL_LABEL = "Not overridden"
+TOOL_REFERENCE_SENTINEL_I18N = "cura.editors.tool_reference.not_overridden"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -76,28 +94,165 @@ def normalize_default(value: Any, normalized_type: str) -> Any:
     return value
 
 
+def is_statically_disabled(value: Any) -> bool:
+    """Return whether Cura declares a definition as unconditionally disabled."""
+
+    if isinstance(value, bool):
+        return not value
+    if isinstance(value, (int, float)):
+        return value == 0
+    if not isinstance(value, str):
+        return False
+    try:
+        parsed = ast.parse(value.strip(), mode="eval").body
+    except SyntaxError:
+        return False
+    if not isinstance(parsed, ast.Constant):
+        return False
+    if isinstance(parsed.value, bool):
+        return not parsed.value
+    return isinstance(parsed.value, (int, float)) and parsed.value == 0
+
+
+def structured_string_editor(default_value: Any) -> dict[str, Any] | None:
+    """Describe JSON-shaped Cura strings without changing their wire encoding."""
+
+    if not isinstance(default_value, str):
+        return None
+    try:
+        parsed = json.loads(default_value)
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(parsed, list):
+        return None
+
+    if parsed and all(isinstance(row, list) for row in parsed):
+        column_counts = {len(row) for row in parsed}
+        values = [value for row in parsed for value in row]
+        if (
+            len(column_counts) == 1
+            and column_counts != {0}
+            and all(
+                isinstance(value, (int, float)) and not isinstance(value, bool)
+                for value in values
+            )
+        ):
+            return {
+                "kind": "matrix",
+                "codec": "json_string",
+                "rows": len(parsed),
+                "columns": next(iter(column_counts)),
+                "value_type": "number",
+            }
+
+    return {"kind": "structured", "codec": "json_string", "value_type": "array"}
+
+
+def editor_metadata(source_type: str, definition: dict[str, Any]) -> dict[str, Any]:
+    """Map Cura-native types to generic editor semantics."""
+
+    if source_type in {"optional_extruder", "extruder"}:
+        editor: dict[str, Any] = {
+            "kind": "tool_reference",
+            "index_base": 0,
+            "display_index_base": 1,
+            "selection": "optional"
+            if source_type == "optional_extruder"
+            else "required",
+        }
+        if source_type == "optional_extruder":
+            editor["sentinels"] = [
+                {
+                    "value": -1,
+                    "semantic": "inherit",
+                    "label": TOOL_REFERENCE_SENTINEL_LABEL,
+                    "i18n": TOOL_REFERENCE_SENTINEL_I18N,
+                }
+            ]
+        return editor
+
+    if source_type == "polygon":
+        return {"kind": "polygon", "dimensions": 2, "value_type": "number"}
+    if source_type == "polygons":
+        return {"kind": "polygon_list", "dimensions": 2, "value_type": "number"}
+    if source_type == "[int]":
+        return {"kind": "list", "value_type": "int"}
+    if source_type == "enum":
+        return {"kind": "select"}
+    if source_type == "bool":
+        return {"kind": "toggle"}
+    if source_type in {"int", "float"}:
+        return {"kind": "number", "value_type": source_type}
+    if source_type == "str":
+        structured = structured_string_editor(definition.get("default_value"))
+        if structured is not None:
+            return structured
+        return {
+            "kind": "text",
+            "multiline": "\n" in str(definition.get("default_value", "")),
+        }
+    return {"kind": "text"}
+
+
+def definition_i18n(key: str, definition: dict[str, Any]) -> dict[str, Any]:
+    metadata: dict[str, Any] = {
+        "label": f"{TRANSLATION_NAMESPACE}.definitions.{key}.label",
+        "tooltip": f"{TRANSLATION_NAMESPACE}.definitions.{key}.description",
+    }
+    options = definition.get("options")
+    if isinstance(options, dict):
+        metadata["enum_labels"] = {
+            str(value): f"{TRANSLATION_NAMESPACE}.definitions.{key}.options.{value}"
+            for value in options
+        }
+    return metadata
+
+
 def iter_settings(
     settings: dict[str, Any],
     *,
     category_key: str,
     category_label: str,
-    parents: tuple[str, ...] = (),
-) -> Iterator[tuple[str, dict[str, Any], str, str, tuple[str, ...]]]:
+    parents: tuple[tuple[str, str], ...] = (),
+    ui_enabled: bool = True,
+) -> Iterator[
+    tuple[
+        str,
+        dict[str, Any],
+        str,
+        str,
+        tuple[tuple[str, str], ...],
+        bool,
+    ]
+]:
     for key, definition in settings.items():
         setting_type = definition.get("type")
         label = str(definition.get("label") or key)
         children = definition.get("children")
+        setting_ui_enabled = ui_enabled and not is_statically_disabled(
+            definition.get("enabled")
+        )
 
         if setting_type != "category":
-            yield key, definition, category_key, category_label, parents
+            yield (
+                key,
+                definition,
+                category_key,
+                category_label,
+                parents,
+                setting_ui_enabled,
+            )
 
         if isinstance(children, dict):
-            next_parents = parents if setting_type == "category" else (*parents, label)
+            next_parents = (
+                parents if setting_type == "category" else (*parents, (key, label))
+            )
             yield from iter_settings(
                 children,
                 category_key=category_key,
                 category_label=category_label,
                 parents=next_parents,
+                ui_enabled=setting_ui_enabled,
             )
 
 
@@ -105,6 +260,7 @@ def normalize_definition(
     key: str,
     definition: dict[str, Any],
     setting_modes: dict[str, str],
+    visibility_tiers: dict[str, str],
 ) -> dict[str, Any] | None:
     source_type = definition.get("type")
     normalized_type = TYPE_MAP.get(source_type)
@@ -113,9 +269,15 @@ def normalize_definition(
 
     normalized: dict[str, Any] = {
         "type": normalized_type,
+        "wire_type": WIRE_TYPE_MAP[str(source_type)],
+        "wire_codec": "json",
+        "native_type": str(source_type),
+        "editor": editor_metadata(str(source_type), definition),
         "label": str(definition.get("label") or key),
         "tooltip": str(definition.get("description") or ""),
         "mode": setting_modes.get(key, "expert"),
+        "visibility_tier": visibility_tiers.get(key, "expert"),
+        "i18n": definition_i18n(key, definition),
     }
 
     unit = definition.get("unit")
@@ -164,12 +326,15 @@ def ui_target(category_key: str) -> str:
     return "process"
 
 
-def load_setting_modes(resources: Path) -> dict[str, str]:
-    """Map Cura's own visibility presets to SimplyPrint's UI levels."""
+def load_visibility_tiers(
+    resources: Path,
+) -> tuple[dict[str, str], dict[str, str], list[dict[str, Any]]]:
+    """Preserve Cura tiers while mapping them to SimplyPrint's editable modes."""
 
-    presets: list[tuple[int, str, list[str]]] = []
+    presets: list[tuple[int, str, str, list[str]]] = []
     for path in sorted((resources / "setting_visibility").glob("*.cfg")):
-        name = path.stem.lower()
+        tier_id = path.stem.lower()
+        label = path.stem
         weight = 999
         keys: list[str] = []
         for raw_line in path.read_text(encoding="utf-8").splitlines():
@@ -179,23 +344,36 @@ def load_setting_modes(resources: Path) -> dict[str, str]:
             if "=" in line:
                 field, value = (part.strip() for part in line.split("=", 1))
                 if field == "name":
-                    name = value.lower()
+                    label = value
                 elif field == "weight" and value.isdigit():
                     weight = int(value)
                 continue
             keys.append(line)
-        presets.append((weight, name, keys))
+        presets.append((weight, tier_id, label, keys))
 
     modes: dict[str, str] = {}
-    for _, name, keys in sorted(presets):
-        # SimplyPrint calls Cura's first editable tier "simple". Higher tiers
-        # use the same names; unknown/upstream tiers remain expert-visible.
+    setting_tiers: dict[str, str] = {}
+    tiers: list[dict[str, Any]] = []
+    for weight, tier_id, label, keys in sorted(presets):
+        # Cura's first native visibility tier backs the shared detailed Simple
+        # mode. Basic is a distinct, engine-independent control surface rather
+        # than an alias for Cura's native Basic tier.
         mode = {"basic": "simple", "simple": "simple", "advanced": "advanced"}.get(
-            name, "expert"
+            tier_id, "expert"
         )
         for key in keys:
             modes.setdefault(key, mode)
-    return modes
+            setting_tiers.setdefault(key, tier_id)
+        tiers.append(
+            {
+                "id": tier_id,
+                "label": label,
+                "order": weight,
+                "ui_mode": mode,
+                "setting_keys": keys,
+            }
+        )
+    return modes, setting_tiers, tiers
 
 
 class VisibilityExpressionError(ValueError):
@@ -279,9 +457,10 @@ def _emit_js(node: ast.AST, substitutions: dict[str, str] | None = None) -> str:
         ):
             extruder_setting = _setting_name_from_call(node.args[0], "extruderValues")
             if extruder_setting is not None:
-                # The current Cura contract is single-extruder, so the maximum
-                # of that one resolved value is the value itself.
-                return extruder_setting
+                return (
+                    "Math.max(...extruderValues("
+                    f"{json.dumps(extruder_setting, ensure_ascii=False)}))"
+                )
 
         if (
             isinstance(node.func, ast.Name)
@@ -303,9 +482,14 @@ def _emit_js(node: ast.AST, substitutions: dict[str, str] | None = None) -> str:
                     and not comprehension.ifs
                     and not comprehension.is_async
                 ):
-                    return _emit_js(
+                    item_name = comprehension.target.id
+                    predicate = _emit_js(
                         generator.elt,
-                        {**substitutions, comprehension.target.id: extruder_setting},
+                        {**substitutions, item_name: item_name},
+                    )
+                    return (
+                        f"extruderValues({json.dumps(extruder_setting, ensure_ascii=False)})"
+                        f".every(({item_name}) => {predicate})"
                     )
 
         raise VisibilityExpressionError("unsupported function call")
@@ -328,6 +512,175 @@ def js_condition(expression: Any) -> str | None:
         ) from error
 
 
+def _po_literal(value: str) -> str:
+    try:
+        parsed = ast.literal_eval(value)
+    except (SyntaxError, ValueError) as error:
+        raise ValueError(f"invalid PO string literal: {value!r}") from error
+    if not isinstance(parsed, str):
+        raise ValueError(f"PO literal is not a string: {value!r}")
+    return parsed
+
+
+def load_po(path: Path) -> list[dict[str, str | None]]:
+    """Parse the singular gettext entries needed by Cura's resource catalogs."""
+
+    entries: list[dict[str, str | None]] = []
+    entry: dict[str, str | None] = {"context": None, "id": "", "translation": ""}
+    active_field: str | None = None
+    fuzzy = False
+
+    def flush() -> None:
+        nonlocal entry, active_field, fuzzy
+        if entry["id"] and entry["translation"] and not fuzzy:
+            entries.append(entry)
+        entry = {"context": None, "id": "", "translation": ""}
+        active_field = None
+        fuzzy = False
+
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line:
+            flush()
+            continue
+        if line.startswith("#~"):
+            continue
+        if line.startswith("#,"):
+            fuzzy = fuzzy or any(flag.strip() == "fuzzy" for flag in line.split(","))
+            continue
+        if line.startswith("#"):
+            continue
+        if line.startswith("msgctxt "):
+            active_field = "context"
+            entry[active_field] = _po_literal(line[len("msgctxt ") :])
+            continue
+        if line.startswith("msgid_plural "):
+            active_field = None
+            continue
+        if line.startswith("msgid "):
+            active_field = "id"
+            entry[active_field] = _po_literal(line[len("msgid ") :])
+            continue
+        if line.startswith("msgstr "):
+            active_field = "translation"
+            entry[active_field] = _po_literal(line[len("msgstr ") :])
+            continue
+        if line.startswith("msgstr[0] "):
+            active_field = "translation"
+            entry[active_field] = _po_literal(line[len("msgstr[0] ") :])
+            continue
+        if line.startswith("msgstr["):
+            active_field = None
+            continue
+        if line.startswith('"') and active_field is not None:
+            entry[active_field] = str(entry[active_field] or "") + _po_literal(line)
+
+    flush()
+    return entries
+
+
+def translation_id(context: str) -> str | None:
+    if context.endswith(" label"):
+        key = context[: -len(" label")]
+        return f"{TRANSLATION_NAMESPACE}.definitions.{key}.label"
+    if context.endswith(" description"):
+        key = context[: -len(" description")]
+        return f"{TRANSLATION_NAMESPACE}.definitions.{key}.description"
+    if " option " in context:
+        key, option = context.split(" option ", 1)
+        return f"{TRANSLATION_NAMESPACE}.definitions.{key}.options.{option}"
+    return None
+
+
+def generate_translations(
+    resources: Path, output: Path, allowed_ids: set[str]
+) -> dict[str, str]:
+    locales: dict[str, str] = {}
+    i18n_path = resources / "i18n"
+    locale_paths = sorted(i18n_path.iterdir()) if i18n_path.is_dir() else []
+    for locale_path in locale_paths:
+        if not locale_path.is_dir():
+            continue
+
+        messages: dict[str, str] = {}
+        for filename in ("fdmprinter.def.json.po", "fdmextruder.def.json.po"):
+            catalog_path = locale_path / filename
+            if not catalog_path.is_file():
+                continue
+            for entry in load_po(catalog_path):
+                context = entry["context"]
+                if not isinstance(context, str):
+                    continue
+                key = translation_id(context)
+                translation = entry["translation"]
+                if key in allowed_ids and isinstance(translation, str):
+                    messages.setdefault(key, translation)
+
+        cura_catalog = locale_path / "cura.po"
+        if cura_catalog.is_file():
+            for entry in load_po(cura_catalog):
+                if (
+                    TOOL_REFERENCE_SENTINEL_I18N in allowed_ids
+                    and entry["id"] == TOOL_REFERENCE_SENTINEL_LABEL
+                    and isinstance(entry["translation"], str)
+                ):
+                    messages[TOOL_REFERENCE_SENTINEL_I18N] = entry["translation"]
+                    break
+
+        if not messages:
+            continue
+        filename = f"{locale_path.name}.json"
+        write_json(
+            output / "translations" / filename,
+            {
+                "schema_version": 1,
+                "locale": locale_path.name,
+                "source_locale": TRANSLATION_SOURCE_LOCALE,
+                "messages": messages,
+            },
+        )
+        locales[locale_path.name] = filename
+
+    write_json(
+        output / "translations" / "_index.json",
+        {
+            "schema_version": 1,
+            "source_locale": TRANSLATION_SOURCE_LOCALE,
+            "locales": locales,
+        },
+    )
+    return locales
+
+
+def icon_reference(name: Any) -> str | None:
+    if not isinstance(name, str) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]*", name):
+        return None
+    return f"cura:{name}"
+
+
+def load_icon_registry(resources: Path, icon_names: set[str]) -> dict[str, Any]:
+    registry: dict[str, Any] = {}
+    for name in sorted(icon_names):
+        candidates = [
+            resources / "themes" / "cura-light" / "icons" / "default" / f"{name}.svg",
+            *sorted((resources / "themes").glob(f"*/icons/default/{name}.svg")),
+        ]
+        path = next(
+            (candidate for candidate in candidates if candidate.is_file()), None
+        )
+        if path is None:
+            continue
+        reference = icon_reference(name)
+        if reference is None:
+            continue
+        registry[reference] = {
+            "media_type": "image/svg+xml",
+            "source_name": name,
+            "svg": path.read_text(encoding="utf-8"),
+        }
+    return registry
+
+
 def generate(resources: Path, output: Path) -> None:
     definition_sources: list[tuple[Path, dict[str, Any], bool, bool]] = []
     for path in sorted((resources / "definitions").glob("*.def.json")):
@@ -341,9 +694,7 @@ def generate(resources: Path, output: Path) -> None:
             # tree. Hidden supplemental roots (currently the extruder root)
             # contribute runtime inputs without exposing unsafe controls.
             machine_root = metadata.get("type") == "machine"
-            runtime_only = (
-                metadata.get("visible") is False and not machine_root
-            )
+            runtime_only = metadata.get("visible") is False and not machine_root
             definition_sources.append((path, settings, runtime_only, machine_root))
     if not definition_sources:
         raise SystemExit("Cura resources do not contain root setting definitions")
@@ -351,7 +702,7 @@ def generate(resources: Path, output: Path) -> None:
     # The machine root owns shared definitions when a setting also appears in
     # the extruder root. Extra root files contribute only genuinely new keys.
     definition_sources.sort(key=lambda source: (not source[3], source[0].name))
-    setting_modes = load_setting_modes(resources)
+    setting_modes, setting_tiers, visibility_tiers = load_visibility_tiers(resources)
 
     definitions: dict[str, Any] = {}
     panels: dict[str, dict[str, dict[str, list[str]]]] = {
@@ -359,6 +710,12 @@ def generate(resources: Path, output: Path) -> None:
         "filament": defaultdict(lambda: defaultdict(list)),
         "process": defaultdict(lambda: defaultdict(list)),
     }
+    panel_metadata: dict[str, dict[str, dict[str, Any]]] = {
+        "machine": {},
+        "filament": {},
+        "process": {},
+    }
+    icon_names: set[str] = set()
     conditions: dict[str, str] = {}
     editable_setting_keys: set[str] = set()
     for _, root_settings, runtime_only_source, _ in definition_sources:
@@ -372,11 +729,13 @@ def generate(resources: Path, output: Path) -> None:
             category_label = str(category.get("label") or category_key)
             editable_setting_keys.update(
                 key
-                for key, *_ in iter_settings(
+                for key, *_, ui_enabled in iter_settings(
                     category["children"],
                     category_key=category_key,
                     category_label=category_label,
+                    ui_enabled=not is_statically_disabled(category.get("enabled")),
                 )
+                if ui_enabled
             )
 
     for _, root_settings, _, _ in definition_sources:
@@ -386,14 +745,24 @@ def generate(resources: Path, output: Path) -> None:
             ):
                 continue
             category_label = str(category.get("label") or category_key)
-            for key, source, source_category, label, parents in iter_settings(
+            for (
+                key,
+                source,
+                source_category,
+                source_category_label,
+                parents,
+                _,
+            ) in iter_settings(
                 category["children"],
                 category_key=category_key,
                 category_label=category_label,
+                ui_enabled=not is_statically_disabled(category.get("enabled")),
             ):
                 if key in definitions:
                     continue
-                normalized = normalize_definition(key, source, setting_modes)
+                normalized = normalize_definition(
+                    key, source, setting_modes, setting_tiers
+                )
                 if normalized is None:
                     raise SystemExit(
                         f"unsupported Cura setting type for {key}: {source.get('type')}"
@@ -405,8 +774,50 @@ def generate(resources: Path, output: Path) -> None:
 
                 if not runtime_only:
                     target = ui_target(source_category)
-                    group = parents[0] if parents else "General"
-                    panels[target][label][group].append(key)
+                    group_id, group_label = (
+                        parents[0] if parents else ("general", "General")
+                    )
+                    panels[target][source_category_label][group_label].append(key)
+
+                    categories = panel_metadata[target]
+                    if source_category not in categories:
+                        icon_name = category.get("icon")
+                        icon = icon_reference(icon_name)
+                        if icon is not None:
+                            icon_names.add(str(icon_name))
+                        categories[source_category] = {
+                            "id": source_category,
+                            "label": source_category_label,
+                            "description": str(category.get("description") or ""),
+                            "i18n": {
+                                "label": (
+                                    f"{TRANSLATION_NAMESPACE}.definitions."
+                                    f"{source_category}.label"
+                                ),
+                                "description": (
+                                    f"{TRANSLATION_NAMESPACE}.definitions."
+                                    f"{source_category}.description"
+                                ),
+                            },
+                            "icon": icon,
+                            "groups": {},
+                        }
+                    groups = categories[source_category]["groups"]
+                    if group_id not in groups:
+                        group: dict[str, Any] = {
+                            "id": group_id,
+                            "label": group_label,
+                            "setting_keys": [],
+                        }
+                        if parents:
+                            group["i18n"] = {
+                                "label": (
+                                    f"{TRANSLATION_NAMESPACE}.definitions."
+                                    f"{group_id}.label"
+                                )
+                            }
+                        groups[group_id] = group
+                    groups[group_id]["setting_keys"].append(key)
 
                 condition = js_condition(source.get("enabled"))
                 if condition is not None:
@@ -425,11 +836,136 @@ def generate(resources: Path, output: Path) -> None:
             },
         )
 
+    uses_extruder_values = any(
+        "extruderValues(" in condition for condition in conditions.values()
+    )
     write_json(
         output / "conditional_visibility.json",
-        # Every Cura dependency resolves to a generated setting key. The
-        # contract's variables/functions lists are only for external context.
-        {"conditions": conditions, "functions": [], "variables": []},
+        {
+            "conditions": conditions,
+            "function_definitions": (
+                {
+                    "extruderValues": {
+                        "kind": "setting_values_by_tool",
+                        "argument": "setting_key",
+                        "scope_template": "extruder.{tool_index}",
+                        "order": "tool_index",
+                        "missing": "omit",
+                        "fallback": "merged_value",
+                    }
+                }
+                if uses_extruder_values
+                else {}
+            ),
+            "functions": ["extruderValues"] if uses_extruder_values else [],
+            "variable_defaults": {},
+            "variables": [],
+        },
+    )
+
+    editable_keys = {
+        key
+        for key, definition in definitions.items()
+        if not definition.get("runtime_only")
+    }
+    tier_order = {tier["id"]: tier["order"] for tier in visibility_tiers}
+    fallback_tier_order = max(tier_order.values(), default=999)
+    tier_metadata = []
+    for tier in visibility_tiers:
+        source_setting_keys = [
+            key for key in tier["setting_keys"] if key in editable_keys
+        ]
+        setting_keys = list(source_setting_keys)
+        included = set(setting_keys)
+        for key, definition in definitions.items():
+            if key not in editable_keys or key in included:
+                continue
+            setting_tier_order = tier_order.get(
+                definition["visibility_tier"], fallback_tier_order
+            )
+            if setting_tier_order <= tier["order"]:
+                setting_keys.append(key)
+                included.add(key)
+        tier_metadata.append(
+            {
+                **tier,
+                "source_setting_keys": source_setting_keys,
+                "setting_keys": setting_keys,
+            }
+        )
+
+    modes_by_id: dict[str, dict[str, Any]] = {
+        "basic": {
+            "id": "basic",
+            "label": "Basic",
+            "order": 0,
+            "source_tiers": [],
+            "surface": "basic_controls",
+        }
+    }
+    mode_labels = {
+        "basic": "Basic",
+        "simple": "Simple",
+        "advanced": "Advanced",
+        "expert": "Expert",
+    }
+    for tier in tier_metadata:
+        mode_id = tier["ui_mode"]
+        mode = modes_by_id.setdefault(
+            mode_id,
+            {
+                "id": mode_id,
+                "label": mode_labels.get(mode_id, str(mode_id).title()),
+                "order": tier["order"],
+                "source_tiers": [],
+            },
+        )
+        mode["order"] = min(mode["order"], tier["order"])
+        mode["source_tiers"].append(tier["id"])
+
+    serialized_panels: dict[str, list[dict[str, Any]]] = {}
+    for target, categories in panel_metadata.items():
+        serialized_panels[target] = []
+        for category in categories.values():
+            serialized_panels[target].append(
+                {
+                    **category,
+                    "groups": list(category["groups"].values()),
+                }
+            )
+
+    translation_ids = {TOOL_REFERENCE_SENTINEL_I18N}
+    for definition in definitions.values():
+        i18n = definition["i18n"]
+        translation_ids.add(i18n["label"])
+        translation_ids.add(i18n["tooltip"])
+        translation_ids.update(i18n.get("enum_labels", {}).values())
+    for categories in serialized_panels.values():
+        for category in categories:
+            translation_ids.update(category["i18n"].values())
+            for group in category["groups"]:
+                translation_ids.update(group.get("i18n", {}).values())
+
+    locales = generate_translations(resources, output, translation_ids)
+    write_json(
+        output / "ui_metadata.json",
+        {
+            "schema_version": 1,
+            "source": {
+                "family": "cura",
+                "definition_format": 2,
+                "source_locale": TRANSLATION_SOURCE_LOCALE,
+            },
+            "conditional_settings": {"false_behavior": "hide"},
+            "ui_modes": sorted(modes_by_id.values(), key=lambda mode: mode["order"]),
+            "visibility_tiers": tier_metadata,
+            "panels": serialized_panels,
+            "icons": load_icon_registry(resources, icon_names),
+            "translations": {
+                "index": "translations/_index.json",
+                "locales": sorted(locales),
+            },
+        },
     )
 
 

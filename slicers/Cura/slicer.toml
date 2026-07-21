@@ -1,0 +1,38 @@
+schema_version = 1
+name = "Cura"
+repository = "https://github.com/Ultimaker/CuraEngine.git"
+default_ref = "5.13.0"
+expected_commit = "636f9608621fd1d6c1b75ad2a969de53beabfbc6"
+family = "cura"
+executable = "CuraEngine"
+architectures = ["x86-64"]
+
+[capabilities]
+binary = true
+config_dump = true
+thumbnail = false
+
+[ci.binary]
+enabled = true
+publish = true
+release = "tag:5.13.0"
+nightly = false
+
+[ci.config]
+enabled = true
+publish = true
+repository = "https://github.com/Ultimaker/Cura.git"
+release = "tag:5.13.0"
+expected_commit = "1fb8a7610460e03ec62da950d1c173a249b23b59"
+nightly = false
+generator_only = true
+
+
+[build]
+# Conan packages are shared through CONAN_HOME, but this generated toolchain is
+# local to each managed checkout.
+dependency_marker = "build/Release/generators/conan_toolchain.cmake"
+dependency_inputs = ["steps/conan-env.sh"]
+conan_config_url = "https://github.com/Ultimaker/conan-config.git"
+# Last upstream config revision before the CuraEngine 5.13.0 release tag.
+conan_config_ref = "64a4bebfd76b4366c8156e68832252fd024ab704"
