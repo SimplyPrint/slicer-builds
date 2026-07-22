@@ -210,15 +210,8 @@ jobs:
       - name: Validate extracted JSON files
         if: env.continue_build == 'true'
         run: |
-          set -euo pipefail
-          for artifact in machine.json filament.json process.json print_config_def.json; do
-            path="slicer-out/$artifact"
-            if [[ ! -s "$path" ]]; then
-              echo "Missing or empty config artifact: $path" >&2
-              exit 1
-            fi
-            python3 -m json.tool "$path" >/dev/null
-          done
+          python3 ./tools/validate_config_artifacts.py \
+            "slicers/${{ matrix.slicer }}/slicer.toml" slicer-out
 
       - name: Upload extracted JSON files
         if: env.continue_build == 'true' && matrix.publish == true

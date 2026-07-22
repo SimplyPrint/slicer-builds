@@ -41,6 +41,7 @@ LANE_KEYS = {
         "repository",
         "generator_only",
         "gui",
+        "required_artifacts",
     },
 }
 
