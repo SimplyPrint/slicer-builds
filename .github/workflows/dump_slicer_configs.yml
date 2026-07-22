@@ -90,7 +90,7 @@ jobs:
     concurrency:
       # Serialize versions of one slicer/architecture so identical dependency
       # keys are populated once without dropping other slicers in the family.
-      group: slicer-deps-${{ github.ref }}-${{ matrix.slicer }}-${{ matrix.arch }}
+      group: slicer-deps-config-${{ github.ref }}-${{ matrix.slicer }}-${{ matrix.arch }}-${{ matrix.build-type }}
       cancel-in-progress: false
 
     runs-on: ${{ inputs.runner || 'ubicloud-standard-30-ubuntu-2404' }}
