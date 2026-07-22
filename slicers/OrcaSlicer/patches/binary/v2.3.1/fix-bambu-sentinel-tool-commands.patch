@@ -1,0 +1,16 @@
+diff --git a/src/libslic3r/GCode/GCodeProcessor.cpp b/src/libslic3r/GCode/GCodeProcessor.cpp
+index 240a05ca03..f835f43e5c 100644
+--- a/src/libslic3r/GCode/GCodeProcessor.cpp
++++ b/src/libslic3r/GCode/GCodeProcessor.cpp
+@@ -3971,9 +3971,9 @@ void GCodeProcessor::process_T(const std::string_view command)
+ 
+     if (command.length() > 1) {
+         if (new_extruder < 0 || new_extruder > 254) {
+-            //BBS: T255, T1000 and T1100 is used as special command for BBL machine and does not cost time. return directly
++            //BBS: special T commands for BBL machines do not cost time. return directly
+             if ((m_flavor == gcfMarlinLegacy || m_flavor == gcfMarlinFirmware) && (command == "Tx" || command == "Tc" || command == "T?" ||
+-                 new_extruder == 1000 || new_extruder == 1100 || new_extruder == 255))
++                 new_extruder == 1000 || new_extruder == 1100 || new_extruder == 255 || new_extruder == 65279 || new_extruder == 65535))
+                 return;
+ 
+             // T-1 is a valid gcode line for RepRap Firmwares (used to deselects all tools)

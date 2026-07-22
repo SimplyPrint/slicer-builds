@@ -2,18 +2,21 @@
 
 set -euo pipefail
 
-pushd slicer-src/build
+strip_args=()
+[[ "${SLICER_STRIP:-1}" == 0 ]] || strip_args+=(--strip)
 
-mkdir -p slicer_out/resources
-mkdir -p slicer_out/bin
+if [[ -z "${SLICER_RESOURCE_INCLUDES+x}" ]]; then
+  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/BBL/cli_config.json\nshaders/**'
+fi
 
-cp -r resources/* slicer_out/resources
-
-cp src/Release/orca-slicer slicer_out/bin
-
-ldd src/Release/orca-slicer \
-  | awk '/=> \// { print $3 }' \
-  | sort -u \
-  | xargs -r -I{} cp -L "{}" slicer_out/bin
-
-popd
+python3 tools/stage_bundle.py \
+  --executable slicer-src/build/src/Release/orca-slicer \
+  --executable slicer-src/build/src/orca-slicer \
+  --name orca-slicer \
+  --arch "${ARCH:?ARCH is required}" \
+  --output slicer-src/build/slicer_out \
+  --resources slicer-src/resources \
+  --library-root slicer-src/build/src \
+  --library-root slicer-src/deps/build \
+  "${strip_args[@]}" \
+  --json | tee slicer-src/build/slicer-bundle-report.json

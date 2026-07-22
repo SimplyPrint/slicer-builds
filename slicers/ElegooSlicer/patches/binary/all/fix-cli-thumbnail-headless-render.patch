@@ -1,0 +1,86 @@
+diff --git a/src/slic3r/GUI/3DScene.cpp b/src/slic3r/GUI/3DScene.cpp
+--- a/src/slic3r/GUI/3DScene.cpp
++++ b/src/slic3r/GUI/3DScene.cpp
+@@ -608,16 +608,16 @@ void GLVolume::simple_render(GLShaderProgram* shader, ModelObjectPtrs& model_obj
+                     }
+                 }
+             }
+             if (tverts_range == std::make_pair<size_t, size_t>(0, -1))
+-                m.render();
++                m.render(shader);
+             else
+-                m.render(this->tverts_range);
++                m.render(shader, this->tverts_range);
+         }
+     } else {
+         if (tverts_range == std::make_pair<size_t, size_t>(0, -1))
+-            model.render();
++            model.render(shader);
+         else
+-            model.render(this->tverts_range);
++            model.render(shader, this->tverts_range);
+     }
+     if (this->is_left_handed())
+         glFrontFace(GL_CCW);
+diff --git a/src/slic3r/GUI/Camera.cpp b/src/slic3r/GUI/Camera.cpp
+--- a/src/slic3r/GUI/Camera.cpp
++++ b/src/slic3r/GUI/Camera.cpp
+@@ -55,7 +55,9 @@ void Camera::select_next_type()
+ 
+ void Camera::auto_type(EType preferred_type)
+ {
+-    if (!wxGetApp().app_config->get_bool("auto_perspective")) return;
++    if (wxTheApp == nullptr || wxGetApp().app_config == nullptr ||
++        !wxGetApp().app_config->get_bool("auto_perspective"))
++        return;
+     if (preferred_type == EType::Perspective) {
+         if (!m_prevent_auto_type) {
+             set_type(preferred_type);
+diff --git a/src/slic3r/GUI/GLModel.cpp b/src/slic3r/GUI/GLModel.cpp
+--- a/src/slic3r/GUI/GLModel.cpp
++++ b/src/slic3r/GUI/GLModel.cpp
+@@ -592,6 +592,16 @@ void GLModel::render()
+ }
+ 
+ void GLModel::render(const std::pair<size_t, size_t>& range)
++{
++    render(wxTheApp != nullptr ? wxGetApp().get_current_shader() : nullptr, range);
++}
++
++void GLModel::render(GLShaderProgram* shader)
++{
++    render(shader, std::make_pair<size_t, size_t>(0, indices_count()));
++}
++
++void GLModel::render(GLShaderProgram* shader, const std::pair<size_t, size_t>& range)
+ {
+     if (m_render_disabled)
+         return;
+@@ -599,7 +609,6 @@ void GLModel::render(const std::pair<size_t, size_t>& range)
+     if (range.second == range.first)
+         return;
+ 
+-    GLShaderProgram* shader = wxGetApp().get_current_shader();
+     if (shader == nullptr)
+         return;
+ 
+diff --git a/src/slic3r/GUI/GLModel.hpp b/src/slic3r/GUI/GLModel.hpp
+--- a/src/slic3r/GUI/GLModel.hpp
++++ b/src/slic3r/GUI/GLModel.hpp
+@@ -15,6 +15,7 @@ class TriangleMesh;
+ class Polygon;
+ using Polygons = std::vector<Polygon, PointsAllocator<Polygon>>;
+ class BuildVolume;
++class GLShaderProgram;
+ 
+ namespace GUI {
+ 
+@@ -178,6 +179,8 @@ namespace GUI {
+         void reset();
+         void render();
+         void render(const std::pair<size_t, size_t>& range);
++        void render(GLShaderProgram* shader);
++        void render(GLShaderProgram* shader, const std::pair<size_t, size_t>& range);
+         void render_instanced(unsigned int instances_vbo, unsigned int instances_count);
+ 
+         bool is_initialized() const { return vertices_count() > 0 && indices_count() > 0; }

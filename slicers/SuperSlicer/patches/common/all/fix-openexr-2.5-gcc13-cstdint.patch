@@ -1,0 +1,19 @@
+diff --git a/deps/OpenEXR/OpenEXR.cmake b/deps/OpenEXR/OpenEXR.cmake
+index 4df8c15da2..03e2450d02 100644
+--- a/deps/OpenEXR/OpenEXR.cmake
++++ b/deps/OpenEXR/OpenEXR.cmake
+@@ -1 +1,6 @@
++set(_openexr_cxx_compat "")
++if (UNIX AND NOT APPLE)
++    set(_openexr_cxx_compat -DCMAKE_CXX_FLAGS:STRING=-includecstdint)
++endif()
++
+ # Check if we're building for arm on x86_64 and just for OpenEXR, build fat
+@@ -28,2 +33,3 @@ if (APPLE AND IS_CROSS_COMPILE)
+             -DOPENEXR_BUILD_UTILS:BOOL=OFF
++            ${_openexr_cxx_compat}
+             ${_cmake_openexr_arch}
+@@ -43,2 +49,3 @@ prusaslicer_add_cmake_project(OpenEXR
+         -DOPENEXR_BUILD_UTILS:BOOL=OFF
++        ${_openexr_cxx_compat}
+ )
