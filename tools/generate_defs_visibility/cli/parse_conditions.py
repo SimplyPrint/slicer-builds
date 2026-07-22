@@ -1,10 +1,12 @@
+import copy
 import functools
+import re
 from enum import StrEnum
 from pathlib import Path
 from types import NoneType
 from typing import Union, Annotated, cast, Any
 
-from pydantic import BaseModel, Discriminator, Tag
+from pydantic import BaseModel, Discriminator, Field, Tag
 from tree_sitter import Language, Parser, Node, Tree
 from tree_sitter_cpp import language
 
@@ -62,7 +64,10 @@ q_string_content = CPP_LANG.query(r"""(string_content) @string_content""")
 
 q_initial_assigment = CPP_LANG.query(r"""
 (init_declarator
-    declarator: (identifier) @ident
+    declarator: [
+      (identifier) @ident
+      (pointer_declarator declarator: (identifier) @ident)
+    ]
     value: (_) @value
 )
 """)
@@ -275,6 +280,7 @@ class ConditionalVisibility(BaseModel):
     variables: list[str]  # External variables that are used in the conditions
     functions: list[str]  # External functions that are used in the conditions
     conditions: dict[str, TExpr | str | None]  # Mapping of setting name to condition expression
+    function_definitions: dict[str, dict[str, Any]] = Field(default_factory=dict)
 
     # prepare for final output.
     def format_conditions(self):
@@ -362,11 +368,17 @@ class ParseConditionalVisibility:
     conditions: dict[str, TExpr | None]  # Mapping of setting name to condition expression
     internal_variables: dict[str, TExpr]  # Internal mapping and caching of variables
     external_variables: set[str]
-    external_functions: set[str]
+    function_definitions: dict[str, dict[str, Any]]
 
     _resolved_state: dict[str, bool] = {}
 
-    def __init__(self, defs: dict, path: str | Path | None = None, code: str | None = None):
+    def __init__(
+        self,
+        defs: dict,
+        path: str | Path | None = None,
+        code: str | None = None,
+        function_definitions: dict[str, dict[str, Any]] | None = None,
+    ):
         # Load C++ language for tree-sitter
         self.parser = Parser()
         self.parser.language = CPP_LANG
@@ -382,7 +394,27 @@ class ParseConditionalVisibility:
         self.conditions = {}
         self.internal_variables = {}
         self.external_variables = set()
-        self.external_functions = set()
+        self.function_definitions = copy.deepcopy(function_definitions or {})
+
+    def register_function(self, name: str, definition: dict[str, Any]) -> str:
+        previous = self.function_definitions.get(name)
+        if previous is not None:
+            for key, value in definition.items():
+                if previous.get(key) != value:
+                    raise ValueError(f"Conflicting definitions for visibility function {name!r}")
+        else:
+            self.function_definitions[name] = definition
+        return name
+
+    def expand_call_arguments(self, node: Node) -> list[TExpr]:
+        arguments = node.child_by_field_name('arguments')
+        if arguments is None:
+            return []
+        return [
+            expression
+            for child in arguments.named_children
+            if (expression := self.expand_condition(child)) is not None
+        ]
 
     def node_to_str(self, node: Node):
         return self.code[node.start_byte:node.end_byte]
@@ -406,8 +438,10 @@ class ParseConditionalVisibility:
                 return self.expand_variable(ident)
 
             case 'qualified_identifier':
-                # TODO: Translate enum values etc.
                 ident = self.node_to_str(node)
+                if ident == 'std::string::npos':
+                    return LitInteger(value=-1)
+                # TODO: Translate other enum values etc.
                 return Variable(name=ident)
 
             case 'call_expression':
@@ -415,18 +449,97 @@ class ParseConditionalVisibility:
                 matches = [match for match in matches if match[0] == 0]
 
                 if matches:
-                    setting_key = self.node_to_str(matches[0][1]['func.setting'][0])
-                    return self.expand_variable(setting_key)
+                    func_name = self.node_to_str(matches[0][1]['func.name'][0])
+                    # tree-sitter 0.24 does not apply this query's match predicate
+                    # consistently. Validate it here so calls such as string.find()
+                    # are not mistaken for config setting accessors.
+                    if func_name.startswith('opt_') or func_name == 'option':
+                        setting_key = self.node_to_str(matches[0][1]['func.setting'][0])
+                        return self.expand_variable(setting_key)
 
-                func_name = self.node_to_str(node.child_by_field_name('function'))
-                args = [[self.expand_condition(arg0) for arg0 in arg.children if
-                         arg0 is not None and arg0.type not in ('(', ')')] for arg in
-                        node.children if arg.type == 'argument_list']
-                args = [x for xs in args for x in xs if x is not None]
-                self.external_functions.add(func_name)
+                function = node.child_by_field_name('function')
+                func_name = self.node_to_str(function)
+                args = self.expand_call_arguments(node)
+
+                if function.type == 'field_expression':
+                    member = function.child_by_field_name('field')
+                    receiver = function.child_by_field_name('argument')
+                    member_name = self.node_to_str(member) if member is not None else ''
+
+                    if member_name == 'find' and receiver is not None:
+                        helper = self.register_function(
+                            'stringIndexOf',
+                            {'kind': 'string_index_of', 'fallback': -1},
+                        )
+                        receiver_expr = self.expand_condition(receiver)
+                        return Function(name=helper, args=[receiver_expr, *args])
+
+                    if member_name == 'has' and self.node_to_str(receiver) == 'config':
+                        helper = self.register_function(
+                            'hasSetting',
+                            {'kind': 'has_setting'},
+                        )
+                        return Function(name=helper, args=args)
+
+                    if member_name == 'size' and receiver is not None:
+                        helper = self.register_function(
+                            'collectionSize',
+                            {'kind': 'collection_size', 'fallback': 0},
+                        )
+                        return Function(
+                            name=helper,
+                            args=[self.expand_condition(receiver)],
+                        )
+
+                    if member_name == 'get_printer_type':
+                        return self.expand_variable('printer_model')
+
+                capability_match = re.fullmatch(
+                    r'DevPrinterConfigUtil::support_([A-Za-z_][A-Za-z0-9_]*)',
+                    func_name,
+                )
+                if capability_match:
+                    helper = self.register_function(
+                        'printerSupports',
+                        {
+                            'kind': 'printer_capability',
+                            'setting_prefix': 'support_',
+                            'fallback': False,
+                        },
+                    )
+                    if not args:
+                        args = [self.expand_variable('printer_model')]
+                    return Function(
+                        name=helper,
+                        args=[LitStr(value=capability_match.group(1)), *args],
+                    )
+
+                family_match = re.fullmatch(
+                    r'[A-Za-z_][A-Za-z0-9_]*::is_([A-Za-z_][A-Za-z0-9_]*)_printer_from_string',
+                    func_name,
+                )
+                if family_match:
+                    helper = self.register_function(
+                        'printerMatchesFamily',
+                        {'kind': 'printer_family', 'fallback': False},
+                    )
+                    return Function(
+                        name=helper,
+                        args=[LitStr(value=family_match.group(1)), *args],
+                    )
+
                 return Function(name=func_name, args=args)
 
             case 'field_expression':
+                member = node.child_by_field_name('field')
+                receiver = node.child_by_field_name('argument')
+                if (
+                    member is not None
+                    and receiver is not None
+                    and self.node_to_str(member) in ('value', 'values')
+                ):
+                    return self.expand_condition(receiver)
+
                 matches = q_opt_function_call.matches(node)
                 matches = [match for match in matches if match[0] == 0]
 
@@ -482,6 +595,12 @@ class ParseConditionalVisibility:
     def register_setting_with_condition(self, setting: Node, direct_condition: Node, parent_node: Node):
         assert setting.type == 'string_content', f"Expected string_content, got {setting.type}"
         setting_key = self.node_to_str(setting)
+
+        # Only slicer settings can be visibility targets. This also prevents
+        # malformed string captures in upstream C++ from becoming executable
+        # browser expressions.
+        if setting_key not in self.defs:
+            return
 
         previous_condition = self.conditions.get(setting_key)
 
@@ -576,11 +695,32 @@ class ParseConditionalVisibility:
         for k, v in self.conditions.items():
             self.conditions[k] = self.substitute_internal_variables(v)
 
+        used_functions: set[str] = set()
+        for condition in self.conditions.values():
+            self.collect_function_usages(condition, used_functions)
+
         return ConditionalVisibility(
-            variables=list(self.external_variables),
-            functions=list(self.external_functions),
-            conditions=self.conditions
+            variables=sorted(self.external_variables),
+            functions=sorted(used_functions),
+            conditions=self.conditions,
+            function_definitions={
+                name: definition
+                for name, definition in self.function_definitions.items()
+                if name in used_functions
+            },
         )
+
+    def collect_function_usages(self, condition: TExpr, out: set[str]):
+        match condition:
+            case Function(name=name, args=args):
+                out.add(name)
+                for arg in args:
+                    self.collect_function_usages(arg, out)
+            case BinaryOp(left=left, right=right):
+                self.collect_function_usages(left, out)
+                self.collect_function_usages(right, out)
+            case UnaryOp(expr=expr):
+                self.collect_function_usages(expr, out)
 
     def substitute_internal_variables(self, condition: TExpr) -> TExpr:
         match condition:
