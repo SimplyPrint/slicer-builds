@@ -99,10 +99,9 @@ jobs:
       max-parallel: 4
       matrix: ${{ fromJSON(needs.prepare_matrix.outputs.matrix) }}
     concurrency:
-      # A cache miss is immutable once uploaded. Serialize jobs that can share a
-      # dependency family so separate binary/config runs cannot build it cold at
-      # the same time and race to publish the same cache key.
-      group: slicer-deps-${{ github.ref }}-${{ matrix.family }}-${{ matrix.arch }}
+      # Serialize versions of one slicer/architecture so identical dependency
+      # keys are populated once without dropping other slicers in the family.
+      group: slicer-deps-${{ github.ref }}-${{ matrix.slicer }}-${{ matrix.arch }}
       cancel-in-progress: false
 
     runs-on: ${{ matrix.arch == 'arm64' && 'ubicloud-standard-30-arm-ubuntu-2404' || 'ubicloud-standard-30-ubuntu-2404' }}

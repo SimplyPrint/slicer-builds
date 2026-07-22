@@ -88,7 +88,9 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.prepare_matrix.outputs.matrix) }}
     concurrency:
-      group: slicer-deps-${{ github.ref }}-${{ matrix.family }}-${{ matrix.arch }}
+      # Serialize versions of one slicer/architecture so identical dependency
+      # keys are populated once without dropping other slicers in the family.
+      group: slicer-deps-${{ github.ref }}-${{ matrix.slicer }}-${{ matrix.arch }}
       cancel-in-progress: false
 
     runs-on: ${{ inputs.runner || 'ubicloud-standard-30-ubuntu-2404' }}
