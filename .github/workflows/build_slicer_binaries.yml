@@ -75,14 +75,19 @@ jobs:
           SELECTED_BUILD_TYPE: ${{ inputs.build-type || 'all' }}
           SELECTED_ARCH: ${{ inputs.arch || 'x86-64' }}
           RELEASE_TAG_OVERRIDE: ${{ inputs.release-tag || '' }}
+          FORCE_REBUILD: ${{ inputs.force-rebuild || false }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          force_args=()
+          [[ "$FORCE_REBUILD" != "true" ]] || force_args+=(--force-rebuild)
           matrix=$(python3 .github/scripts/generate_ci_matrix.py \
             --lane binary \
             --slicer "$SELECTED_SLICER" \
             --build-type "$SELECTED_BUILD_TYPE" \
             --arch "$SELECTED_ARCH" \
-            --release-tag "$RELEASE_TAG_OVERRIDE")
+            --release-tag "$RELEASE_TAG_OVERRIDE" \
+            "${force_args[@]}")
           has_publish=$(python3 -c 'import json, sys; print(str(any(row["publish"] for row in json.load(sys.stdin)["include"])).lower())' <<< "$matrix")
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
           echo "has_publish=$has_publish" >> "$GITHUB_OUTPUT"
@@ -98,9 +103,8 @@ jobs:
     env:
       DEPS_CACHE_KEY: ''
       SLICER_CACHE_KEY: ''
-      latest_release_tag: ''
-      latest_release_at_head: 'false'
-      continue_build: 'true'
+      latest_release_tag: ${{ matrix.release_tag || '' }}
+      continue_build: ${{ matrix.skip && 'false' || 'true' }}
       CONSUMER_REBUILD: ${{ matrix.consumer_rebuild && 'true' || 'false' }}
       FORCE_REBUILD: ${{ (inputs.force-rebuild || matrix.consumer_rebuild) && 'true' || 'false' }}
       IS_ARM: ${{ matrix.arch == 'arm64' && 'true' || 'false' }}
@@ -109,6 +113,7 @@ jobs:
       CFLAGS: -ffunction-sections -fdata-sections
       CXXFLAGS: -ffunction-sections -fdata-sections
       LDFLAGS: -Wl,--gc-sections
+      CURA_CONAN_CONFIG_REF: ${{ matrix.cura_conan_config_ref || '' }}
     steps:
       - name: Checkout repository
         if: env.continue_build == 'true'
@@ -116,134 +121,29 @@ jobs:
 
       - name: Setup
         if: env.continue_build == 'true'
-        env:
-          RELEASE_MODE: ${{ matrix.release_mode }}
-          PUBLISH: ${{ matrix.publish && 'true' || 'false' }}
-          RELEASE_TAG_OVERRIDE: ${{ inputs.release-tag || matrix.release_tag || '' }}
-          EXPECTED_COMMIT: ${{ matrix.expected_commit }}
         run: |
           set -euo pipefail
 
           git clone https://github.com/${{ matrix.repo }} slicer-src --depth 1 --
-
-          release_mode="$RELEASE_MODE"
-          publish="$PUBLISH"
-          release_tag_override="$RELEASE_TAG_OVERRIDE"
-          if [[ "$release_mode" == "none" ]]; then
-            latest_release_tag=HEAD
-            latest_release_hash=''
-            latest_release_json='{}'
-            upstream_published_at=''
-            head_hash=$(git -C slicer-src rev-parse HEAD)
-            latest_stored_tag=''
-            release_build_present=false
-          else
-            i=5
-            while (( i > 0 )); do
-              if [[ -n "$release_tag_override" ]]; then
-                latest_release_tag="$release_tag_override"
-                latest_release_json=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/releases/tags/${latest_release_tag}" || echo '{}')
-              else
-                latest_release_json=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/releases/latest")
-                latest_release_tag=$(echo "$latest_release_json" | jq -r '.tag_name')
-              fi
-
-              upstream_published_at=$(echo "$latest_release_json" | jq -r '.published_at // empty')
-              latest_release_hash=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq -r '.sha')
-              head_hash=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq -r '.sha')
-              latest_stored_tag=$(jq -r '.latest // empty' "slicers/${{ matrix.slicer }}/out/_index.json" 2>/dev/null || true)
-              if [[ "$publish" == "true" ]]; then
-                release_build_present=$(jq -r --arg tag "$latest_release_tag" --arg platform "${{ env.PLATFORM }}" --arg arch "${{ env.ARCH }}" 'any(.versions[$tag].builds[]?; .platform == $platform and .arch == $arch)' "slicers/${{ matrix.slicer }}/out/_index.json" 2>/dev/null || echo false)
-              else
-                release_build_present=false
-              fi
-
-              if [[ "$latest_release_tag" == "null" || "$latest_release_hash" == "null" || "$head_hash" == "null" ]]; then
-                echo "Failed to get data from Github API. Retrying in 5 seconds..."
-                ((--i))
-                sleep 5
-                continue
-              fi
-              break
-            done
-
-            if [[ $i == 0 ]]; then
-              exit 1
-            fi
-          fi
-
-          if [[ ! "$latest_release_tag" =~ ^[A-Za-z0-9][A-Za-z0-9._/@+-]*$ ]] || [[ "$latest_release_tag" == *..* ]] || [[ "$latest_release_tag" == */ ]]; then
-            echo "Unsafe upstream release tag: $latest_release_tag" >&2
-            exit 1
-          fi
-
-          echo latest_release_tag=$latest_release_tag
-          echo latest_release_hash=$latest_release_hash
-          echo latest_stored_tag=$latest_stored_tag
-          echo release_build_present=$release_build_present
-          echo upstream_published_at=$upstream_published_at
-          echo head_hash=$head_hash
-
-          echo "latest_release_tag=$latest_release_tag" >> "$GITHUB_ENV"
-          echo "latest_release_hash=$latest_release_hash" >> "$GITHUB_ENV"
-          echo "upstream_published_at=$upstream_published_at" >> "$GITHUB_ENV"
-          echo "head_hash=$head_hash" >> "$GITHUB_ENV"
-
-          if [[ "$release_mode" != "none" && ( "$release_build_present" != "true" || "$FORCE_REBUILD" == "true" ) ]]; then
-            git -C slicer-src fetch origin "refs/tags/$latest_release_tag"
-            if [[ "$head_hash" == "$latest_release_hash" ]]; then
-              echo "Latest release found at HEAD"
-              latest_release_at_head=true
-              echo "latest_release_at_head=true" >> "$GITHUB_ENV"
-            fi
-          elif [[ "${{ matrix.build-type }}" == "latest_release" ]]; then
-            echo "The latest release has already been built. Exiting..."
-            echo "continue_build=false" >> "$GITHUB_ENV"
-            exit 0
-          fi
-
-          if [[ "$publish" == "true" ]] && [[ "${{ matrix.nightly_enabled }}" == "true" ]] && [[ "${{ matrix.build-type }}" == "latest_release" ]] && [[ "${latest_release_at_head:-false}" == "true" ]] && [[ "${{ inputs.build-type || 'all' }}" != "latest_release" ]]; then
-            echo "The latest release is at the HEAD of the repo. The nightly build will generate the release files. Exiting..."
-            echo "continue_build=false" >> "$GITHUB_ENV"
-            exit 0
-          fi
-
           mkdir -p slicer-out
-          if [[ "${{ matrix.build-type }}" == "nightly" ]]; then
-            build_ref_hash="$head_hash"
-            version_dir="nightly"
-          else
-            build_ref_hash="$latest_release_hash"
-            version_dir="$latest_release_tag"
-          fi
-          mark_latest=false
-          if [[ "${{ matrix.build-type }}" == "latest_release" ]]; then
-            if [[ "$CONSUMER_REBUILD" == "true" ]]; then
-              [[ "$version_dir" != "$latest_stored_tag" ]] || mark_latest=true
-            else
-              mark_latest=true
-            fi
-          fi
+          build_ref_hash="${{ matrix.build_ref }}"
           if [[ ! "$build_ref_hash" =~ ^[0-9a-f]{40,64}$ ]]; then
             echo "Invalid resolved upstream commit: $build_ref_hash" >&2
             exit 1
           fi
-          if [[ -n "$EXPECTED_COMMIT" && "$build_ref_hash" != "$EXPECTED_COMMIT" ]]; then
-            echo "Resolved $build_ref_hash for $version_dir, expected locked commit $EXPECTED_COMMIT" >&2
-            exit 1
-          fi
           echo "BUILD_REF_HASH=$build_ref_hash" >> "$GITHUB_ENV"
+          echo "PATCH_VERSION=${{ matrix.patch_version }}" >> "$GITHUB_ENV"
 
           cat > slicer-out/config.sh <<EOF
           build_type=${{ matrix.build-type }}
-          mark_latest=$mark_latest
-          version_dir=$version_dir
-          tag=$latest_release_tag
+          mark_latest=${{ matrix.mark_latest && 'true' || 'false' }}
+          publish_nightly=${{ matrix.publish_nightly && 'true' || 'false' }}
+          publish_release=${{ matrix.publish_release && 'true' || 'false' }}
+          tag=${{ matrix.release_tag }}
           slicer=${{ matrix.slicer }}
           repo=${{ matrix.repo }}
-          latest_release_at_head=${latest_release_at_head:-false}
           upstream_ref=$build_ref_hash
-          upstream_published_at=$upstream_published_at
+          upstream_published_at=${{ matrix.release_published_at }}
           platform=${{ env.PLATFORM }}
           arch=${{ env.ARCH }}
           created_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
@@ -268,12 +168,8 @@ jobs:
       - name: Apply patches
         if: env.continue_build == 'true'
         run: |
-          patch_version="${{ matrix.build-type == 'nightly' && 'nightly' || env.latest_release_tag }}"
-          if [[ "${{ matrix.build-type }}" == "nightly" && "${latest_release_at_head}" == "true" ]]; then
-            patch_version="${latest_release_tag}"
-          fi
-          echo "PATCH_VERSION=$patch_version" >> "$GITHUB_ENV"
-          ./tools/apply_versioned_patches.sh "${{ matrix.slicer }}" "$patch_version" binary
+          ./tools/apply_versioned_patches.sh \
+            "${{ matrix.slicer }}" "$PATCH_VERSION" binary
 
       - name: Install dependencies
         if: env.continue_build == 'true'
@@ -350,7 +246,7 @@ jobs:
           EOF
 
       - name: Upload latest release
-        if: env.continue_build == 'true' && matrix.publish == true && (matrix.build-type == 'latest_release' || env.latest_release_at_head == 'true')
+        if: env.continue_build == 'true' && matrix.publish_release == true
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ matrix.slicer }} ${{ env.latest_release_tag }}
@@ -362,7 +258,7 @@ jobs:
           overwrite_files: true
 
       - name: Upload nightly release
-        if: env.continue_build == 'true' && matrix.publish == true && matrix.build-type == 'nightly'
+        if: env.continue_build == 'true' && matrix.publish_nightly == true
         uses: WebFreak001/deploy-nightly@v3.2.0
         with:
           upload_url: https://uploads.github.com/repos/SimplyPrint/slicer-builds/releases/254161481/assets{?name,label}
@@ -376,7 +272,7 @@ jobs:
         if: env.continue_build == 'true' && matrix.publish == true
         uses: actions/upload-artifact@v4
         with:
-          name: binary-config-${{ matrix.slicer }}-${{ matrix.consumer_rebuild && matrix.release_tag || matrix.build-type }}-${{ env.ARCH }}
+          name: binary-config-${{ matrix.slicer }}-${{ matrix.artifact_key }}-${{ env.ARCH }}
           path: |
             slicer-out/config.sh
             slicer-out/slicer-bundle-report.json
@@ -423,35 +319,30 @@ jobs:
             echo "Begin processing $folder"
             source "$folder/config.sh"
 
-            if [[ "$build_type" == "nightly" ]]; then
-              asset_name="$nightly_asset_name"
-              asset_url="$nightly_url"
-            else
-              asset_name="$release_asset_name"
-              asset_url="$release_url"
+            if [[ "$publish_nightly" == "true" ]]; then
+              ./tools/update_slicer_index.py \
+                --index "slicers/$slicer/out/_index.json" \
+                --version nightly \
+                --kind build \
+                --platform "$platform" \
+                --arch "$arch" \
+                --sha256 "$sha256" \
+                --url "$nightly_url" \
+                --asset-name "$nightly_asset_name" \
+                --created-at "$created_at" \
+                --upstream-ref "$upstream_ref" \
+                --upstream-published-at "$upstream_published_at" \
+                --source-repo "$repo" \
+                --workflow-run-url "$workflow_run_url"
+              echo "nightly_indexed=true" >> "$GITHUB_OUTPUT"
             fi
 
-            ./tools/update_slicer_index.py \
-              --index "slicers/$slicer/out/_index.json" \
-              --version "$version_dir" \
-              --kind build \
-              --platform "$platform" \
-              --arch "$arch" \
-              --sha256 "$sha256" \
-              --url "$asset_url" \
-              --asset-name "$asset_name" \
-              --created-at "$created_at" \
-              --upstream-ref "$upstream_ref" \
-              --upstream-published-at "$upstream_published_at" \
-              --source-repo "$repo" \
-              --workflow-run-url "$workflow_run_url" \
-              $([[ "$mark_latest" == "true" ]] && echo --latest)
-
-            if [[ "$build_type" == "nightly" && "$latest_release_at_head" == "true" ]]; then
+            if [[ "$publish_release" == "true" ]]; then
+              latest_args=()
+              [[ "$mark_latest" != "true" ]] || latest_args+=(--latest)
               ./tools/update_slicer_index.py \
                 --index "slicers/$slicer/out/_index.json" \
                 --version "$tag" \
-                --latest \
                 --kind build \
                 --platform "$platform" \
                 --arch "$arch" \
@@ -462,18 +353,15 @@ jobs:
                 --upstream-ref "$upstream_ref" \
                 --upstream-published-at "$upstream_published_at" \
                 --source-repo "$repo" \
-                --workflow-run-url "$workflow_run_url"
-            fi
-
-            if [[ "$build_type" == "nightly" ]]; then
-              echo "nightly_indexed=true" >> "$GITHUB_OUTPUT"
+                --workflow-run-url "$workflow_run_url" \
+                "${latest_args[@]}"
             fi
 
             git add "slicers/$slicer/out/_index.json"
             if git diff --cached --quiet; then
-              echo "No build index changes for $slicer $version_dir $arch."
+              echo "No build index changes for $slicer $arch."
             else
-              git commit -m "chore(${slicer,,}): index ${platform}/${arch} build of ${version_dir} @ ${upstream_ref:0:12}"
+              git commit -m "chore(${slicer,,}): index ${platform}/${arch} build @ ${upstream_ref:0:12}"
             fi
           done
 

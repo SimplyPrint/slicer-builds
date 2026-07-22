@@ -15,6 +15,7 @@ on:
       - ".github/workflows/verify_patches.yml"
       - "patches/**"
       - "slicerctl"
+      - "slicers/*/out/_index.json"
       - "slicers/*/patches/**"
       - "slicers/*/slicer.toml"
       - "tools/slicerctl.py"
@@ -23,6 +24,7 @@ on:
       - ".github/workflows/verify_patches.yml"
       - "patches/**"
       - "slicerctl"
+      - "slicers/*/out/_index.json"
       - "slicers/*/patches/**"
       - "slicers/*/slicer.toml"
       - "tools/slicerctl.py"
@@ -70,32 +72,11 @@ jobs:
         env:
           SLICER_NAME: ${{ matrix.slicer }}
         run: |
-          python3 - <<'PY'
-          import hashlib
-          import json
-          import os
-          from pathlib import Path
-          import tomllib
-
-          name = os.environ["SLICER_NAME"]
-          with (Path("slicers") / name / "slicer.toml").open("rb") as source:
-              manifest = tomllib.load(source)
-          refs = [
-              [manifest["default_ref"], manifest.get("expected_commit")],
-              *[
-                  [spec["ref"], spec.get("expected_commit")]
-                  for spec in manifest.get("supported_refs", [])
-              ],
-          ]
-          identity = json.dumps(
-              {"repository": manifest["repository"], "refs": refs},
-              sort_keys=True,
-              separators=(",", ":"),
-          ).encode()
-          digest = hashlib.sha256(identity).hexdigest()[:20]
-          with Path(os.environ["GITHUB_OUTPUT"]).open("a", encoding="utf-8") as output:
-              output.write(f"digest={digest}\n")
-          PY
+          set -euo pipefail
+          identity=$(./slicerctl list --json | jq -c --arg name "$SLICER_NAME" \
+            '.[] | select(.name == $name) | {repository, refs}')
+          digest=$(printf '%s' "$identity" | sha256sum | cut -c1-20)
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
 
       - name: Restore upstream mirror
         uses: actions/cache@v4

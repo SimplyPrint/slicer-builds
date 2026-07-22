@@ -5,9 +5,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
+import time
 import tomllib
+import urllib.error
+import urllib.parse
+import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -19,11 +24,19 @@ SUPPORTED_BUILD_TYPES = ("nightly", "latest_release")
 CONSUMER_RELEASE_LIMIT = 3
 LANE_CAPABILITY = {"binary": "binary", "config": "config_dump"}
 LANE_KEYS = {
-    "binary": {"enabled", "publish", "release", "nightly", "architectures"},
+    "binary": {
+        "enabled",
+        "publish",
+        "release",
+        "release_repository",
+        "nightly",
+        "architectures",
+    },
     "config": {
         "enabled",
         "publish",
         "release",
+        "release_repository",
         "nightly",
         "repository",
         "generator_only",
@@ -39,17 +52,14 @@ class MatrixError(ValueError):
 @dataclass(frozen=True)
 class ReleasePolicy:
     mode: str
-    tag: str = ""
 
 
 @dataclass(frozen=True)
 class LanePolicy:
     slicer: str
     family: str
-    repository: str
     repo_slug: str
-    manifest_repo_slug: str
-    ref_locks: tuple[tuple[str, str], ...]
+    release_repo_slug: str
     enabled: bool
     publish: bool
     release: ReleasePolicy
@@ -101,9 +111,7 @@ def _release_policy(value: Any, label: str) -> ReleasePolicy:
         return ReleasePolicy("latest")
     if release == "none":
         return ReleasePolicy("none")
-    if release.startswith("tag:") and release[4:].strip():
-        return ReleasePolicy("tag", _tag(release[4:].strip(), label))
-    raise MatrixError(f'{label} must be "latest", "none", or "tag:<exact-ref>"')
+    raise MatrixError(f'{label} must be "latest" or "none"')
 
 
 def _architectures(value: Any, label: str) -> tuple[str, ...]:
@@ -125,47 +133,6 @@ def _architectures(value: Any, label: str) -> tuple[str, ...]:
     return tuple(result)
 
 
-def _ref_locks(data: dict[str, Any], label: str) -> tuple[tuple[str, str], ...]:
-    """Return commit locks declared by the build manifest.
-
-    The CI matrix generator intentionally validates the small subset it
-    consumes instead of relying on a separate validation command having run
-    first. This keeps fixed-tag anti-retag checks fail-closed in CI.
-    """
-
-    locks: dict[str, str] = {}
-    default_ref = _require_string(data.get("default_ref"), f"{label}.default_ref")
-    expected_commit = data.get("expected_commit")
-    if expected_commit is not None:
-        if not isinstance(expected_commit, str) or not re.fullmatch(
-            r"[0-9a-f]{40,64}", expected_commit
-        ):
-            raise MatrixError(
-                f"{label}.expected_commit must be a lowercase full Git object ID"
-            )
-        locks[default_ref] = expected_commit
-
-    supported_refs = data.get("supported_refs", [])
-    if not isinstance(supported_refs, list):
-        raise MatrixError(f"{label}.supported_refs must be an array of tables")
-    for index, item in enumerate(supported_refs):
-        item_label = f"{label}.supported_refs[{index}]"
-        if not isinstance(item, dict):
-            raise MatrixError(f"{item_label} must be a table")
-        ref = _require_string(item.get("ref"), f"{item_label}.ref")
-        commit = _require_string(
-            item.get("expected_commit"), f"{item_label}.expected_commit"
-        )
-        if not re.fullmatch(r"[0-9a-f]{40,64}", commit):
-            raise MatrixError(
-                f"{item_label}.expected_commit must be a lowercase full Git object ID"
-            )
-        if ref in locks:
-            raise MatrixError(f"{item_label}.ref duplicates declared ref {ref!r}")
-        locks[ref] = commit
-    return tuple(sorted(locks.items()))
-
-
 def _clean_version(ref: str) -> str:
     if ref.startswith("version_"):
         return ref.removeprefix("version_")
@@ -179,21 +146,10 @@ def _version_parts(ref: str) -> tuple[int, ...]:
     return tuple(int(part) for part in clean.split("."))
 
 
-def _consumer_releases(root: Path, policy: LanePolicy) -> list[tuple[str, str]]:
-    """Return the newest consumer-visible releases and their pinned commits."""
-
+def _load_index(root: Path, policy: LanePolicy) -> dict[str, Any]:
     index_path = root / "slicers" / policy.slicer / "out" / "_index.json"
     if not index_path.is_file():
-        declared = [
-            (ref, commit, _version_parts(ref))
-            for ref, commit in policy.ref_locks
-            if ref != "HEAD"
-        ]
-        declared.sort(key=lambda item: item[2], reverse=True)
-        return [
-            (ref, commit)
-            for ref, commit, _parts in declared[:CONSUMER_RELEASE_LIMIT]
-        ]
+        return {"latest": None, "versions": {}}
 
     try:
         index = json.loads(index_path.read_text(encoding="utf-8"))
@@ -202,6 +158,14 @@ def _consumer_releases(root: Path, policy: LanePolicy) -> list[tuple[str, str]]:
     versions = index.get("versions") if isinstance(index, dict) else None
     if not isinstance(versions, dict):
         raise MatrixError(f"invalid consumer index: {index_path}")
+    return index
+
+
+def _consumer_releases(root: Path, policy: LanePolicy) -> list[dict[str, str]]:
+    """Return retained releases using the successful-build index as the lock."""
+
+    index = _load_index(root, policy)
+    versions = index["versions"]
 
     grouped: dict[str, tuple[str, tuple[int, ...]]] = {}
     for ref in versions:
@@ -215,16 +179,105 @@ def _consumer_releases(root: Path, policy: LanePolicy) -> list[tuple[str, str]]:
             grouped[group] = (ref, parts)
 
     selected = sorted(grouped.values(), key=lambda item: item[1], reverse=True)
-    locks = dict(policy.ref_locks)
-    result: list[tuple[str, str]] = []
-    for ref, _parts in selected[:CONSUMER_RELEASE_LIMIT]:
+    result: list[dict[str, str]] = []
+    for ref, _parts in selected:
         version = versions[ref]
         commit = version.get("upstream_ref") if isinstance(version, dict) else None
-        commit = commit or locks.get(ref)
         if not isinstance(commit, str) or re.fullmatch(r"[0-9a-f]{40,64}", commit) is None:
-            raise MatrixError(f"consumer release {policy.slicer}@{ref} has no commit lock")
-        result.append((ref, commit))
+            continue
+        published_at = version.get("upstream_published_at", "")
+        result.append(
+            {
+                "tag": ref,
+                "commit": commit,
+                "published_at": published_at if isinstance(published_at, str) else "",
+            }
+        )
+        if len(result) == CONSUMER_RELEASE_LIMIT:
+            break
     return result
+
+
+class GitHub:
+    """Small cached GitHub API client used while resolving the build matrix."""
+
+    def __init__(self) -> None:
+        self.cache: dict[str, Any] = {}
+        self.token = os.environ.get("GITHUB_TOKEN", "").strip()
+
+    def get(self, path: str, *, missing_ok: bool = False) -> Any:
+        if path in self.cache:
+            return self.cache[path]
+        request = urllib.request.Request(
+            f"https://api.github.com/{path}",
+            headers={
+                "Accept": "application/vnd.github+json",
+                "User-Agent": "slicer-builds-matrix",
+                "X-GitHub-Api-Version": "2022-11-28",
+                **({"Authorization": f"Bearer {self.token}"} if self.token else {}),
+            },
+        )
+        detail = ""
+        for attempt in range(3):
+            try:
+                with urllib.request.urlopen(request, timeout=30) as response:
+                    value = json.load(response)
+                break
+            except urllib.error.HTTPError as exc:
+                if missing_ok and exc.code == 404:
+                    return {}
+                detail = f"HTTP {exc.code}"
+                if exc.code != 429 and exc.code < 500:
+                    raise MatrixError(f"GitHub API failed for {path}: {detail}") from exc
+            except (OSError, json.JSONDecodeError) as exc:
+                detail = str(exc)
+            if attempt < 2:
+                time.sleep(2**attempt)
+        else:
+            raise MatrixError(f"GitHub API failed for {path}: {detail}")
+        self.cache[path] = value
+        return value
+
+    def release(self, repository: str, override: str = "") -> tuple[str, str]:
+        if override:
+            encoded = urllib.parse.quote(override, safe="")
+            value = self.get(
+                f"repos/{repository}/releases/tags/{encoded}", missing_ok=True
+            )
+            tag = override
+        else:
+            value = self.get(f"repos/{repository}/releases/latest")
+            if not isinstance(value, dict):
+                raise MatrixError(f"GitHub returned an invalid release for {repository}")
+            tag = value.get("tag_name")
+        if not isinstance(value, dict):
+            raise MatrixError(f"GitHub returned an invalid release for {repository}")
+        tag = _tag(
+            _require_string(tag, f"latest release of {repository}"),
+            f"latest release of {repository}",
+        )
+        published_at = value.get("published_at", "")
+        return tag, published_at if isinstance(published_at, str) else ""
+
+    def commit(self, repository: str, ref: str) -> str:
+        encoded = urllib.parse.quote(ref, safe="")
+        value = self.get(f"repos/{repository}/commits/{encoded}")
+        commit = value.get("sha") if isinstance(value, dict) else None
+        if not isinstance(commit, str) or re.fullmatch(r"[0-9a-f]{40,64}", commit) is None:
+            raise MatrixError(f"GitHub returned an invalid commit for {repository}@{ref}")
+        return commit
+
+    def commit_before(self, repository: str, ref: str, timestamp: str) -> str:
+        query = urllib.parse.urlencode(
+            {"sha": ref, "until": timestamp, "per_page": "1"}
+        )
+        value = self.get(f"repos/{repository}/commits?{query}")
+        commit = value[0].get("sha") if isinstance(value, list) and value else None
+        if not isinstance(commit, str) or re.fullmatch(r"[0-9a-f]{40,64}", commit) is None:
+            raise MatrixError(
+                f"GitHub returned no {repository}@{ref} commit before {timestamp}"
+            )
+        return commit
 
 
 def load_policies(root: Path, lane: str) -> list[LanePolicy]:
@@ -316,14 +369,19 @@ def load_policies(root: Path, lane: str) -> list[LanePolicy]:
         manifest_repository = _require_string(
             data.get("repository"), f"{manifest_label}.repository"
         )
-        manifest_repo_slug = _github_slug(
-            manifest_repository, f"{manifest_label}.repository"
-        )
+        _github_slug(manifest_repository, f"{manifest_label}.repository")
         repository = _require_string(
             lane_table.get("repository", data.get("repository")),
             f"{manifest_label}.ci.{lane}.repository",
         )
         repo_slug = _github_slug(repository, f"{manifest_label}.ci.{lane}.repository")
+        release_repository = _require_string(
+            lane_table.get("release_repository", repository),
+            f"{manifest_label}.ci.{lane}.release_repository",
+        )
+        release_repo_slug = _github_slug(
+            release_repository, f"{manifest_label}.ci.{lane}.release_repository"
+        )
 
         root_architectures = data.get("architectures")
         architectures = (
@@ -351,10 +409,8 @@ def load_policies(root: Path, lane: str) -> list[LanePolicy]:
             LanePolicy(
                 slicer=name,
                 family=family,
-                repository=repository,
                 repo_slug=repo_slug,
-                manifest_repo_slug=manifest_repo_slug,
-                ref_locks=_ref_locks(data, manifest_label),
+                release_repo_slug=release_repo_slug,
                 enabled=enabled,
                 publish=publish,
                 release=release,
@@ -374,6 +430,7 @@ def generate_matrix(
     selected_build_type: str = "all",
     selected_arch: str = "all",
     release_tag_override: str = "",
+    force_rebuild: bool = False,
 ) -> dict[str, list[dict[str, Any]]]:
     policies = load_policies(root, lane)
     by_name = {policy.slicer: policy for policy in policies}
@@ -404,6 +461,7 @@ def generate_matrix(
         if selected_policies[0].release.mode == "none":
             raise MatrixError(f"{selected_slicer} has no release policy to override")
 
+    github = GitHub()
     rows: list[dict[str, Any]] = []
     for policy in selected_policies:
         if not policy.enabled:
@@ -415,93 +473,182 @@ def generate_matrix(
                 item for item in architectures if item == selected_arch
             )
 
-        if selected_build_type == "consumer":
-            if not policy.publish or policy.release.mode == "none":
-                continue
-            releases = _consumer_releases(root, policy)
-            for architecture in architectures:
-                for ref, commit in releases:
-                    rows.append(
-                        {
-                            "arch": architecture,
-                            "build-type": "latest_release",
-                            "consumer_rebuild": True,
-                            "expected_commit": commit,
-                            "family": policy.family,
-                            "nightly_enabled": policy.nightly,
-                            "publish": True,
-                            "release_mode": "tag",
-                            "release_tag": ref,
-                            "repo": policy.repo_slug,
-                            "slicer": policy.slicer,
-                        }
-                    )
-                if policy.nightly:
-                    rows.append(
-                        {
-                            "arch": architecture,
-                            "build-type": "nightly",
-                            "consumer_rebuild": True,
-                            "expected_commit": "",
-                            "family": policy.family,
-                            "nightly_enabled": True,
-                            "publish": True,
-                            "release_mode": policy.release.mode,
-                            "release_tag": policy.release.tag,
-                            "repo": policy.repo_slug,
-                            "slicer": policy.slicer,
-                        }
-                    )
-            continue
-
-        build_types: list[str] = []
-        if policy.nightly:
-            build_types.append("nightly")
+        index = _load_index(root, policy)
+        latest_tag = ""
+        latest_commit = ""
+        latest_published_at = ""
         if policy.release.mode != "none":
-            build_types.append("latest_release")
-        if selected_build_type != "all":
-            build_types = [item for item in build_types if item == selected_build_type]
+            override = release_tag_override
+            latest_tag, latest_published_at = github.release(
+                policy.release_repo_slug, override
+            )
+            latest_commit = github.commit(
+                policy.repo_slug, f"refs/tags/{latest_tag}"
+            )
 
-        for build_type in build_types:
-            for architecture in architectures:
-                row: dict[str, Any] = {
-                    "build-type": build_type,
-                    "consumer_rebuild": False,
+        needs_nightly = policy.nightly and selected_build_type in (
+            "all",
+            "consumer",
+            "nightly",
+        )
+        head_commit = github.commit(policy.repo_slug, "HEAD") if needs_nightly else ""
+        release_at_head = bool(latest_commit and head_commit == latest_commit)
+
+        stable: dict[str, dict[str, str]] = {}
+        if selected_build_type == "consumer":
+            stable = {item["tag"]: item for item in _consumer_releases(root, policy)}
+            if latest_tag:
+                stable[latest_tag] = {
+                    "tag": latest_tag,
+                    "commit": latest_commit,
+                    "published_at": latest_published_at,
+                }
+            stable = dict(
+                sorted(
+                    stable.items(),
+                    key=lambda item: _version_parts(item[0]),
+                    reverse=True,
+                )[:CONSUMER_RELEASE_LIMIT]
+            )
+        elif selected_build_type in ("all", "latest_release") and latest_tag:
+            stable[latest_tag] = {
+                "tag": latest_tag,
+                "commit": latest_commit,
+                "published_at": latest_published_at,
+            }
+
+        for architecture in architectures:
+            candidates: list[dict[str, Any]] = []
+            for item in stable.values():
+                version = index["versions"].get(item["tag"], {})
+                same_source = isinstance(version, dict) and version.get(
+                    "upstream_ref"
+                ) == item["commit"]
+                if lane == "binary":
+                    present = same_source and any(
+                        isinstance(build, dict)
+                        and build.get("platform") == "linux"
+                        and build.get("arch") == architecture
+                        for build in version.get("builds", [])
+                    ) if isinstance(version, dict) else False
+                else:
+                    present = same_source and isinstance(version.get("config"), dict)
+                if present and not (force_rebuild or selected_build_type == "consumer"):
+                    continue
+                candidates.append(
+                    {
+                        "build-type": "latest_release",
+                        "build_ref": item["commit"],
+                        "patch_version": item["tag"],
+                        "publish_nightly": False,
+                        "publish_release": policy.publish,
+                        "release_tag": item["tag"],
+                        "release_published_at": item["published_at"],
+                        "mark_latest": item["tag"] == latest_tag,
+                    }
+                )
+
+            if needs_nightly:
+                latest_version = index["versions"].get(latest_tag, {})
+                same_latest_source = isinstance(
+                    latest_version, dict
+                ) and latest_version.get("upstream_ref") == latest_commit
+                if lane == "binary":
+                    latest_present = same_latest_source and any(
+                        isinstance(build, dict)
+                        and build.get("platform") == "linux"
+                        and build.get("arch") == architecture
+                        for build in latest_version.get("builds", [])
+                    ) if isinstance(latest_version, dict) else False
+                else:
+                    latest_present = same_latest_source and isinstance(
+                        latest_version.get("config"), dict
+                    )
+                candidates.append(
+                    {
+                        "build-type": "nightly",
+                        "build_ref": head_commit,
+                        # Match the old one-build/two-publish behavior: a release
+                        # at HEAD uses the release patch stack for both aliases.
+                        "patch_version": latest_tag if release_at_head else "nightly",
+                        "publish_nightly": policy.publish,
+                        "publish_release": (
+                            policy.publish
+                            and release_at_head
+                            and (force_rebuild or not latest_present)
+                        ),
+                        "release_tag": latest_tag,
+                        "release_published_at": latest_published_at,
+                        "mark_latest": release_at_head,
+                    }
+                )
+
+            # Collapse logical channels into physical builds. The release-at-HEAD
+            # rule above gives nightly and release the same patch context, so the
+            # deduplication key is both source- and recipe-safe.
+            physical: dict[tuple[str, str], dict[str, Any]] = {}
+            for candidate in candidates:
+                key = (candidate["build_ref"], candidate["patch_version"])
+                previous = physical.get(key)
+                if previous is None:
+                    physical[key] = candidate
+                    continue
+                previous["publish_nightly"] |= candidate["publish_nightly"]
+                previous["publish_release"] |= candidate["publish_release"]
+                previous["mark_latest"] |= candidate["mark_latest"]
+                if candidate["build-type"] == "nightly":
+                    previous["build-type"] = "nightly"
+
+            for candidate in physical.values():
+                cura_conan_config_ref = ""
+                if policy.slicer == "Cura" and candidate["release_published_at"]:
+                    cura_conan_config_ref = github.commit_before(
+                        "Ultimaker/conan-config",
+                        "master",
+                        candidate["release_published_at"],
+                    )
+                row = {
+                    **candidate,
+                    "arch": architecture,
+                    "artifact_key": (
+                        f"{candidate['release_tag']}-nightly"
+                        if candidate["publish_nightly"] and candidate["publish_release"]
+                        else "nightly"
+                        if candidate["publish_nightly"]
+                        else candidate["release_tag"]
+                    ),
+                    "consumer_rebuild": selected_build_type == "consumer",
+                    "cura_conan_config_ref": cura_conan_config_ref,
                     "family": policy.family,
                     "nightly_enabled": policy.nightly,
                     "publish": policy.publish,
-                    "release_mode": policy.release.mode,
-                    "release_tag": policy.release.tag,
                     "repo": policy.repo_slug,
+                    "release_repo": policy.release_repo_slug,
+                    "skip": False,
                     "slicer": policy.slicer,
                 }
-                selected_release_tag = release_tag_override or policy.release.tag
-                expected_commit = ""
-                if (
-                    build_type == "latest_release"
-                    and selected_release_tag
-                    and policy.repo_slug == policy.manifest_repo_slug
-                ):
-                    expected_commit = dict(policy.ref_locks).get(
-                        selected_release_tag, ""
-                    )
-                row["expected_commit"] = expected_commit
-                if lane == "binary":
-                    row["arch"] = architecture
-                else:
+                if lane == "config":
                     row["config_generator_only"] = policy.generator_only
                     row["gui"] = policy.gui
                 rows.append(row)
 
     if not rows:
-        requested = f"slicer={selected_slicer}, build-type={selected_build_type}"
-        if lane == "binary":
-            requested += f", arch={selected_arch}"
-        raise MatrixError(f"no enabled ci.{lane} combinations match {requested}")
+        # GitHub Actions rejects an empty matrix. One explicitly skipped row lets
+        # an up-to-date workflow finish successfully without renting a runner.
+        rows.append(
+            {
+                "arch": "x86-64",
+                "artifact_key": "skip",
+                "build-type": "latest_release",
+                "publish": False,
+                "skip": True,
+                "slicer": selected_slicer,
+            }
+        )
 
     rows.sort(
         key=lambda row: (
-            row["slicer"],
+            row.get("slicer", ""),
             SUPPORTED_BUILD_TYPES.index(row["build-type"]),
             SUPPORTED_ARCHITECTURES.index(row.get("arch", "x86-64")),
         )
@@ -517,6 +664,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--build-type", default="all")
     parser.add_argument("--arch", default="all")
     parser.add_argument("--release-tag", default="")
+    parser.add_argument("--force-rebuild", action="store_true")
     return parser.parse_args(argv)
 
 
@@ -530,6 +678,7 @@ def main(argv: list[str] | None = None) -> int:
             args.build_type,
             args.arch,
             args.release_tag.strip(),
+            args.force_rebuild,
         )
     except MatrixError as exc:
         print(f"error: {exc}", file=sys.stderr)

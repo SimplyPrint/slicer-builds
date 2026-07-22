@@ -3,8 +3,7 @@
 # Shared by the Cura build steps. Call cura_conan_env after a Conan executable
 # is available; it exports CURA_CONAN_BIN and initializes the UltiMaker config.
 _CURA_CONAN_CONFIG_URL_DEFAULT="https://github.com/Ultimaker/conan-config.git"
-# Last conan-config revision on master before CuraEngine's 5.13.0 release tag.
-_CURA_CONAN_CONFIG_REF_DEFAULT="64a4bebfd76b4366c8156e68832252fd024ab704"
+_CURA_CONAN_CONFIG_REF_DEFAULT="master"
 
 _cura_resolve_conan_config_ref() {
   local config_url="$1"
@@ -68,6 +67,14 @@ _cura_install_conan_config() {
   rm -rf -- "$temporary"
 }
 
+cura_resolve_conan_config() {
+  CURA_CONAN_CONFIG_URL="${CURA_CONAN_CONFIG_URL:-$_CURA_CONAN_CONFIG_URL_DEFAULT}"
+  CURA_CONAN_CONFIG_REF="$(_cura_resolve_conan_config_ref \
+    "$CURA_CONAN_CONFIG_URL" \
+    "${CURA_CONAN_CONFIG_REF:-$_CURA_CONAN_CONFIG_REF_DEFAULT}")"
+  export CURA_CONAN_CONFIG_URL CURA_CONAN_CONFIG_REF
+}
+
 cura_conan_env() {
   local config_identity config_ref config_stamp config_stamp_tmp config_url
   local deps default_conan installed_identity
@@ -88,13 +95,12 @@ cura_conan_env() {
     return 1
   fi
 
-  # Cura's recipes and Jinja profiles live in its public Conan config. Pin the
-  # release-compatible revision, and reinstall only when the source identity
-  # changes or the installed config is incomplete.
+  # Cura's recipes and Jinja profiles live in its public Conan config. Resolve
+  # the configured branch/tag to a commit before caching or installing it.
   if [[ "${CURA_CONAN_CONFIG_INSTALL:-1}" != 0 ]]; then
-    config_url="${CURA_CONAN_CONFIG_URL:-$_CURA_CONAN_CONFIG_URL_DEFAULT}"
-    config_ref="${CURA_CONAN_CONFIG_REF:-$_CURA_CONAN_CONFIG_REF_DEFAULT}"
-    config_ref="$(_cura_resolve_conan_config_ref "$config_url" "$config_ref")"
+    cura_resolve_conan_config
+    config_url="$CURA_CONAN_CONFIG_URL"
+    config_ref="$CURA_CONAN_CONFIG_REF"
     config_stamp="$CONAN_HOME/.slicer-builds-cura-conan-config"
     config_identity="$(
       printf '%s\0%s\0' "$config_url" "$config_ref" | sha256sum | cut -d' ' -f1

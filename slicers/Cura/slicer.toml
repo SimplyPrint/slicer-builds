@@ -1,8 +1,6 @@
 schema_version = 1
 name = "Cura"
 repository = "https://github.com/Ultimaker/CuraEngine.git"
-default_ref = "5.13.0"
-expected_commit = "636f9608621fd1d6c1b75ad2a969de53beabfbc6"
 family = "cura"
 executable = "CuraEngine"
 architectures = ["x86-64"]
@@ -15,14 +13,15 @@ thumbnail = false
 [ci.binary]
 enabled = true
 publish = true
-release = "tag:5.13.0"
+release = "latest"
+release_repository = "https://github.com/Ultimaker/Cura.git"
 nightly = false
 
 [ci.config]
 enabled = true
 publish = true
 repository = "https://github.com/Ultimaker/Cura.git"
-release = "tag:5.13.0"
+release = "latest"
 nightly = false
 generator_only = true
 
@@ -31,6 +30,3 @@ generator_only = true
 # local to each managed checkout.
 dependency_marker = "build/Release/generators/conan_toolchain.cmake"
 dependency_inputs = ["steps/conan-env.sh"]
-conan_config_url = "https://github.com/Ultimaker/conan-config.git"
-# Last upstream config revision before the CuraEngine 5.13.0 release tag.
-conan_config_ref = "64a4bebfd76b4366c8156e68832252fd024ab704"

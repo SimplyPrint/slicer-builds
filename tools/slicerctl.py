@@ -21,6 +21,7 @@ WORK_ROOT = ROOT / ".work"
 COMMIT_RE = re.compile(r"[0-9a-f]{40,64}")
 SAFE_NAME_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*")
 SAFE_REF_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._/@+-]*")
+RETAINED_RELEASE_LIMIT = 3
 
 
 @dataclass(frozen=True)
@@ -31,10 +32,6 @@ class Manifest:
     @property
     def name(self) -> str:
         return self.data["name"]
-
-    @property
-    def ref(self) -> str:
-        return self.data["default_ref"]
 
     @property
     def directory(self) -> Path:
@@ -57,24 +54,49 @@ def safe_ref(value: Any, label: str) -> str:
 
 
 def ref_specs(manifest: Manifest) -> list[dict[str, str | None]]:
-    specs: list[dict[str, str | None]] = [
-        {
-            "ref": manifest.ref,
-            "expected_commit": manifest.data.get("expected_commit"),
-        }
-    ]
-    supported = manifest.data.get("supported_refs", [])
-    if not isinstance(supported, list):
-        fail(f"{manifest.path}: supported_refs must be an array")
-    for item in supported:
-        if not isinstance(item, dict):
-            fail(f"{manifest.path}: supported_refs entries must be tables")
-        specs.append(
-            {
-                "ref": safe_ref(item.get("ref"), f"{manifest.path}: ref"),
-                "expected_commit": item.get("expected_commit"),
-            }
-        )
+    """Read retained release locks from the successful-artifact index."""
+
+    index_path = manifest.directory / "out" / "_index.json"
+    if not index_path.is_file():
+        return []
+    try:
+        index = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        fail(f"Cannot read {index_path}: {error}")
+    versions = index.get("versions") if isinstance(index, dict) else None
+    if not isinstance(versions, dict):
+        fail(f"{index_path}: versions must be an object")
+
+    def version_parts(ref: str) -> tuple[int, ...]:
+        clean = ref.removeprefix("version_").removeprefix("v")
+        if re.fullmatch(r"[0-9]+(?:\.[0-9]+){1,3}", clean) is None:
+            fail(f"{index_path}: unsupported release version {ref!r}")
+        return tuple(int(part) for part in clean.split("."))
+
+    grouped: dict[str, tuple[str, tuple[int, ...]]] = {}
+    for ref in versions:
+        if ref == "nightly":
+            continue
+        parts = version_parts(ref)
+        clean = ref.removeprefix("version_").removeprefix("v")
+        clean_parts = clean.split(".")
+        group = ".".join(clean_parts[:3]) if len(parts) >= 3 else clean
+        previous = grouped.get(group)
+        if previous is None or parts > previous[1]:
+            grouped[group] = (ref, parts)
+
+    selected = sorted(grouped.values(), key=lambda item: item[1], reverse=True)
+    specs: list[dict[str, str | None]] = []
+    for ref, _parts in selected:
+        version = versions[ref]
+        commit = version.get("upstream_ref") if isinstance(version, dict) else None
+        # Old generated entries may predate upstream SHA metadata. They remain
+        # downloadable but are not safe inputs for compatibility validation.
+        if not isinstance(commit, str) or COMMIT_RE.fullmatch(commit) is None:
+            continue
+        specs.append({"ref": safe_ref(ref, f"{index_path}: ref"), "expected_commit": commit})
+        if len(specs) == RETAINED_RELEASE_LIMIT:
+            break
     return specs
 
 
@@ -90,7 +112,6 @@ def validate_manifest(manifest: Manifest) -> None:
         "https://github.com/"
     ):
         fail(f"{manifest.path}: repository must be an HTTPS GitHub URL")
-    safe_ref(data.get("default_ref"), f"{manifest.path}: default_ref")
     if not isinstance(data.get("capabilities"), dict):
         fail(f"{manifest.path}: capabilities must be a table")
     if not isinstance(data.get("ci"), dict):
@@ -330,17 +351,20 @@ def verification_refs(manifest: Manifest, include_head: bool) -> list[dict[str, 
 
 
 def command_list(args: argparse.Namespace) -> None:
-    values = [
-        {
-            "name": manifest.name,
-            "family": manifest.data["family"],
-            "ref": manifest.ref,
-            "supported_refs": [spec["ref"] for spec in ref_specs(manifest)],
-            "architectures": manifest.data["architectures"],
-            "capabilities": manifest.data["capabilities"],
-        }
-        for manifest in manifests().values()
-    ]
+    values = []
+    for manifest in manifests().values():
+        specs = ref_specs(manifest)
+        values.append(
+            {
+                "name": manifest.name,
+                "family": manifest.data["family"],
+                "repository": manifest.data["repository"],
+                "ref": specs[0]["ref"] if specs else "HEAD",
+                "refs": specs,
+                "architectures": manifest.data["architectures"],
+                "capabilities": manifest.data["capabilities"],
+            }
+        )
     if args.json:
         print(json.dumps(values, indent=2, sort_keys=True))
     else:
