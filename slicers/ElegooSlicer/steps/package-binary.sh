@@ -5,6 +5,10 @@ set -euo pipefail
 strip_args=()
 [[ "${SLICER_STRIP:-1}" == 0 ]] || strip_args+=(--strip)
 
+if [[ -z "${SLICER_RESOURCE_INCLUDES+x}" ]]; then
+  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/BBL/cli_config.json\nshaders/**'
+fi
+
 python3 tools/stage_bundle.py \
   --executable slicer-src/build/src/elegoo-slicer \
   --executable slicer-src/build/src/Release/elegoo-slicer \

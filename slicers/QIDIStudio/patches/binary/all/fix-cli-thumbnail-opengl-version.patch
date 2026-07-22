@@ -1,8 +1,8 @@
 diff --git a/src/QIDIStudio.cpp b/src/QIDIStudio.cpp
-index a0b7a6d..7345929 100644
+index 1bffb3d6..4d0f3d74 100644
 --- a/src/QIDIStudio.cpp
 +++ b/src/QIDIStudio.cpp
-@@ -6371,9 +6371,9 @@ int CLI::run(int argc, char **argv)
+@@ -6065,9 +6065,9 @@ int CLI::run(int argc, char **argv)
              colors_out[color_idx] = { float(rgb_color[0]) / 255.f, float(rgb_color[1]) / 255.f, float(rgb_color[2]) / 255.f, float(rgb_color[3]) / 255.f };
          }
  
@@ -15,7 +15,7 @@ index a0b7a6d..7345929 100644
  
          glfwSetErrorCallback(glfw_callback);
          int ret = glfwInit();
-@@ -6384,8 +6384,8 @@ int CLI::run(int argc, char **argv)
+@@ -6078,8 +6078,8 @@ int CLI::run(int argc, char **argv)
          }
          else {
              BOOST_LOG_TRIVIAL(info) << "glfwInit Success."<< std::endl;
@@ -26,7 +26,18 @@ index a0b7a6d..7345929 100644
              glfwWindowHint(GLFW_RED_BITS, 8);
              glfwWindowHint(GLFW_GREEN_BITS, 8);
              glfwWindowHint(GLFW_BLUE_BITS, 8);
-@@ -7732,9 +7732,9 @@ int CLI::run(int argc, char **argv)
+@@ -6094,10 +6094,6 @@ int CLI::run(int argc, char **argv)
+             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+ #endif
+ 
+-#ifdef __linux__
+-            glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_OSMESA_CONTEXT_API);
+-#endif
+-
+             GLFWwindow* window = glfwCreateWindow(640, 480, "base_window", NULL, NULL);
+             if (window == NULL)
+             {
+@@ -7389,9 +7385,9 @@ int CLI::run(int argc, char **argv)
                  colors_out[color_idx] = { float(rgb_color[0]) / 255.f, float(rgb_color[1]) / 255.f, float(rgb_color[2]) / 255.f, float(rgb_color[3]) / 255.f };
              }
  
@@ -39,7 +50,7 @@ index a0b7a6d..7345929 100644
  
              glfwSetErrorCallback(glfw_callback);
              int ret = glfwInit();
-@@ -7745,8 +7745,8 @@ int CLI::run(int argc, char **argv)
+@@ -7401,8 +7397,8 @@ int CLI::run(int argc, char **argv)
              }
              else {
                  BOOST_LOG_TRIVIAL(info) << "glfwInit Success."<< std::endl;

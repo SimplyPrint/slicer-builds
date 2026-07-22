@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Manifest-driven slicer builds and configuration generation."""
+"""Manifest-driven Docker builds and production-shaped slicer smoke tests."""
 
 from __future__ import annotations
 
 import argparse
 from concurrent.futures import as_completed, ThreadPoolExecutor
 from contextlib import contextmanager
+from datetime import UTC, datetime
 import fcntl
 import hashlib
 import json
@@ -19,6 +20,9 @@ import sys
 import tempfile
 import time
 import tomllib
+import urllib.error
+import urllib.parse
+import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable, Iterator, Sequence
@@ -27,8 +31,28 @@ from typing import Any, Callable, Iterable, Iterator, Sequence
 ROOT = Path(__file__).resolve().parent.parent
 WORK_ROOT = ROOT / ".work"
 DEFAULT_BUILDER_IMAGE = "slicer-builds-builder:ubuntu24.04"
+DEFAULT_SMOKE_IMAGE = "ghcr.io/simplyprint/site-cloud-slicer:latest"
+DEFAULT_LOCAL_SMOKE_IMAGE = "slicer-builds-smoke:latest"
+DEFAULT_BAMBU_INPUT = ROOT / "tests/integration/fixtures/calicat-bambu-v1.3mf"
 SUPPORTED_ARCHITECTURES = {"x86-64", "arm64"}
 SUPPORTED_FAMILIES = {"bambu", "orca", "prusa", "cura"}
+SUPPORTED_CONTRACTS = {"bambu", "prusa", "cura"}
+BACKEND_ENGINE_CONTRACTS = {
+    "BambuStudio": "bambu",
+    "CrealityPrint": "bambu",
+    "Cura": "cura",
+    "ElegooSlicer": "bambu",
+    "OrcaSlicer": "bambu",
+    "PrusaSlicer": "prusa",
+    "SuperSlicer": "prusa",
+}
+SUPPORTED_BACKEND_ENGINES = set(BACKEND_ENGINE_CONTRACTS)
+SUPPORTED_PROFILE_SOURCES = {
+    "backend-example",
+    "bundle-resources",
+    "profiles-db",
+    "profiles-direct",
+}
 FORWARDED_BUILD_ENV = (
     "CC",
     "CXX",
@@ -81,8 +105,8 @@ SCOPED_BUILD_ENV_SLICERS = {
 }
 _IMAGE_IDENTITIES: dict[tuple[str, str], str] = {}
 # Bump these only when orchestration changes alter cache compatibility. Hashing
-# this whole controller would invalidate multi-hour dependency builds for help
-# or comment-only edits.
+# this whole controller would invalidate multi-hour dependency builds for help,
+# smoke-test, or comment-only edits.
 DEPENDENCY_CACHE_SCHEMA = "4"
 BUILD_TREE_CACHE_SCHEMA = "3"
 BUILD_CACHE_SCHEMA = "8"
@@ -106,11 +130,25 @@ class Manifest:
         return self.data["default_ref"]
 
 
+@dataclass(frozen=True)
+class ReleaseTarget:
+    """One immutable stable tag selected for a historical build."""
+
+    slicer: str
+    ref: str
+    version: str
+    version_parts: tuple[int, ...]
+    version_group: str
+    expected_commit: str
+
+
 def manifest_ref_specs(manifest: Manifest) -> list[dict[str, str | None]]:
+    test_backend_version = manifest.data.get("test", {}).get("backend_version")
     result: list[dict[str, str | None]] = [
         {
             "ref": manifest.ref,
             "expected_commit": manifest.data.get("expected_commit"),
+            "backend_version": test_backend_version,
         }
     ]
     result.extend(manifest.data.get("supported_refs", []))
@@ -148,6 +186,7 @@ def patch_verification_ref_specs(
             {
                 "ref": "HEAD",
                 "expected_commit": None,
+                "backend_version": manifest.data.get("test", {}).get("backend_version"),
             }
         )
     return specs
@@ -190,7 +229,10 @@ def validate_manifest(manifest: Manifest) -> None:
             "family",
             "executable",
             "architectures",
+            "backend_engine",
+            "backend_supported",
             "capabilities",
+            "test",
         ),
         str(manifest.path),
         errors,
@@ -204,7 +246,7 @@ def validate_manifest(manifest: Manifest) -> None:
         errors.append(
             f"name {data['name']!r} must match directory {manifest.directory.name!r}"
         )
-    for key in ("repository", "default_ref", "executable"):
+    for key in ("repository", "default_ref", "executable", "backend_engine"):
         if not isinstance(data[key], str) or not data[key].strip():
             errors.append(f"{key} must be a non-empty string")
     if not _is_safe_git_ref(data["default_ref"]):
@@ -217,7 +259,6 @@ def validate_manifest(manifest: Manifest) -> None:
         errors.append("expected_commit must be a lowercase full Git object ID")
     if data["default_ref"] != "HEAD" and expected_commit is None:
         errors.append("non-HEAD default_ref requires expected_commit")
-
     supported_refs = data.get("supported_refs", [])
     if not isinstance(supported_refs, list):
         errors.append("supported_refs must be an array of tables")
@@ -228,7 +269,7 @@ def validate_manifest(manifest: Manifest) -> None:
             if not isinstance(item, dict):
                 errors.append(f"{context} must be a table")
                 continue
-            unknown = set(item) - {"ref", "expected_commit"}
+            unknown = set(item) - {"ref", "expected_commit", "backend_version"}
             if unknown:
                 errors.append(
                     f"{context} has unknown keys: {', '.join(sorted(unknown))}"
@@ -248,11 +289,20 @@ def validate_manifest(manifest: Manifest) -> None:
                 errors.append(
                     f"{context}.expected_commit must be a lowercase full Git object ID"
                 )
-
+            item_backend_version = item.get("backend_version")
+            if item_backend_version is not None and (
+                not isinstance(item_backend_version, str)
+                or not re.fullmatch(
+                    r"[A-Za-z0-9][A-Za-z0-9_.+-]*", item_backend_version
+                )
+            ):
+                errors.append(f"{context}.backend_version must be a safe version")
     if Path(data["executable"]).name != data["executable"]:
         errors.append("executable must be a plain filename")
     if data["family"] not in SUPPORTED_FAMILIES:
         errors.append(f"unsupported family {data['family']!r}")
+    if data["backend_engine"] not in SUPPORTED_BACKEND_ENGINES:
+        errors.append(f"unsupported backend engine {data['backend_engine']!r}")
 
     architectures = data["architectures"]
     if (
@@ -265,6 +315,8 @@ def validate_manifest(manifest: Manifest) -> None:
             "architectures must be a unique, non-empty list containing only "
             + ", ".join(sorted(SUPPORTED_ARCHITECTURES))
         )
+    if not isinstance(data["backend_supported"], bool):
+        errors.append("backend_supported must be a boolean")
 
     capabilities = data["capabilities"]
     if not isinstance(capabilities, dict):
@@ -278,6 +330,69 @@ def validate_manifest(manifest: Manifest) -> None:
         )
         if any(not isinstance(value, bool) for value in capabilities.values()):
             errors.append("all capabilities must be booleans")
+
+    test = data["test"]
+    if not isinstance(test, dict):
+        errors.append("test must be a table")
+    else:
+        _require_keys(test, ("contract", "profile_source"), "test", errors)
+        contract = test.get("contract")
+        source = test.get("profile_source")
+        if contract not in SUPPORTED_CONTRACTS:
+            errors.append(f"unsupported test contract {contract!r}")
+        expected_contract = BACKEND_ENGINE_CONTRACTS.get(data["backend_engine"])
+        if expected_contract is not None and contract != expected_contract:
+            errors.append(
+                f"backend engine {data['backend_engine']} requires "
+                f"test contract {expected_contract!r}"
+            )
+        if (
+            isinstance(capabilities, dict)
+            and capabilities.get("thumbnail")
+            and contract != "bambu"
+        ):
+            errors.append(
+                "thumbnail capability requires the 3MF-producing bambu contract"
+            )
+        if source not in SUPPORTED_PROFILE_SOURCES:
+            errors.append(f"unsupported profile source {source!r}")
+        test_backend_version = test.get("backend_version")
+        if test_backend_version is not None and (
+            not isinstance(test_backend_version, str)
+            or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.+-]*", test_backend_version)
+        ):
+            errors.append("test.backend_version must be a safe non-empty version")
+        if source == "profiles-db":
+            _require_keys(
+                test,
+                ("profile_engine", "model_id", "machine_name", "machine_variant"),
+                "profiles-db test",
+                errors,
+            )
+            if not ({"process_name", "process_native_id"} & test.keys()):
+                errors.append(
+                    "profiles-db test needs process_name or process_native_id"
+                )
+            if not ({"filament_name", "filament_native_id"} & test.keys()):
+                errors.append(
+                    "profiles-db test needs filament_name or filament_native_id"
+                )
+            if not isinstance(test.get("model_id"), int) or test.get("model_id", 0) < 1:
+                errors.append("profiles-db model_id must be a positive integer")
+        elif source in {"profiles-direct", "bundle-resources"}:
+            profile_keys = ("machine_profile", "filament_profile", "process_profile")
+            _require_keys(test, profile_keys, f"{source} test", errors)
+            for key in profile_keys:
+                if key in test and not _is_safe_relative(test[key]):
+                    errors.append(f"{key} must be a safe relative path")
+            if source == "profiles-direct":
+                _require_keys(test, ("profile_engine",), source, errors)
+            else:
+                _require_keys(test, ("profile_root",), source, errors)
+                if "profile_root" in test and not _is_safe_relative(
+                    test["profile_root"]
+                ):
+                    errors.append("profile_root must be a safe relative path")
 
     build = data.get("build", {})
     if not isinstance(build, dict):
@@ -1165,6 +1280,329 @@ def resolve_remote_git_ref(repository: str, ref: str) -> str:
 
 
 _STABLE_RELEASE_VERSION_RE = re.compile(r"[0-9]+(?:\.[0-9]+){1,3}")
+
+
+def clean_release_version(ref: str) -> str:
+    """Apply the binary downloader's release-prefix normalization."""
+
+    if ref.startswith("version_"):
+        return ref.removeprefix("version_")
+    if ref.startswith("v"):
+        return ref.removeprefix("v")
+    return ref
+
+
+def release_version_parts(ref: str) -> tuple[int, ...] | None:
+    """Return numeric stable-version components, excluding prerelease tags."""
+
+    clean = clean_release_version(ref)
+    if _STABLE_RELEASE_VERSION_RE.fullmatch(clean) is None:
+        return None
+    return tuple(int(part) for part in clean.split("."))
+
+
+def _release_version_sort_key(parts: tuple[int, ...]) -> tuple[int, ...]:
+    # Accepted versions contain at most four components. Padding makes 2.4 and
+    # 2.4.0 compare as the same numeric release instead of relying on Python's
+    # shorter-tuple ordering.
+    return parts + (0,) * (4 - len(parts))
+
+
+def _release_group(ref: str, parts: tuple[int, ...]) -> tuple[tuple[int, ...], str]:
+    """Return the downloader-compatible first-three-component grouping."""
+
+    component_count = min(3, len(parts))
+    clean_components = clean_release_version(ref).split(".")
+    return parts[:component_count], ".".join(clean_components[:component_count])
+
+
+def select_release_tags(
+    tags: Sequence[str],
+    *,
+    maximum: int | None = 3,
+    minimum: str | None = None,
+) -> list[tuple[str, str, tuple[int, ...]]]:
+    """Select stable releases using the downloader's grouping and ordering.
+
+    Four-part build revisions sharing their first three numeric components are
+    collapsed to the highest build. Ordinary three-part versions remain
+    distinct. The requested maximum is then applied newest-first.
+    """
+
+    if maximum is not None and maximum < 1:
+        raise SystemExit("--max-versions must be a positive integer")
+    minimum_parts = release_version_parts(minimum) if minimum is not None else None
+    if minimum is not None and minimum_parts is None:
+        raise SystemExit(f"Invalid stable minimum version: {minimum!r}")
+    minimum_key = (
+        _release_version_sort_key(minimum_parts)
+        if minimum_parts is not None
+        else None
+    )
+
+    # Match the downloader exactly: the grouping key is the normalized text,
+    # not a numeric tuple. This intentionally keeps differently zero-padded
+    # spellings in separate groups and preserves the first equal candidate.
+    grouped: dict[str, tuple[str, str, tuple[int, ...]]] = {}
+    for ref in tags:
+        parts = release_version_parts(ref)
+        if parts is None:
+            continue
+        if minimum_key is not None and _release_version_sort_key(parts) < minimum_key:
+            continue
+        _numeric_group, display_group = _release_group(ref, parts)
+        candidate = (ref, display_group, parts)
+        previous = grouped.get(display_group)
+        if previous is None or parts > previous[2]:
+            grouped[display_group] = candidate
+
+    selected = sorted(
+        grouped.values(),
+        key=lambda item: item[2],
+        reverse=True,
+    )
+    return selected if maximum is None else selected[:maximum]
+
+
+def github_repository_slug(repository: str) -> str:
+    """Extract ``owner/repository`` from a GitHub HTTPS or SSH remote."""
+
+    if repository.startswith("git@github.com:"):
+        path = repository.removeprefix("git@github.com:")
+    else:
+        parsed = urllib.parse.urlparse(repository)
+        if parsed.hostname not in {"github.com", "www.github.com"}:
+            raise SystemExit(
+                f"Historical release discovery requires a GitHub repository: {repository}"
+            )
+        path = parsed.path.lstrip("/")
+    path = path.removesuffix(".git").strip("/")
+    if re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", path) is None:
+        raise SystemExit(f"Cannot derive a GitHub repository name from {repository}")
+    return path
+
+
+def github_stable_release_tags(manifest: Manifest) -> list[str]:
+    """Enumerate every published, non-prerelease GitHub release tag."""
+
+    slug = github_repository_slug(manifest.data["repository"])
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "simplyprint-slicer-builds",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    if token := os.environ.get("GITHUB_TOKEN"):
+        headers["Authorization"] = f"Bearer {token}"
+
+    tags: list[str] = []
+    page = 1
+    while True:
+        url = f"https://api.github.com/repos/{slug}/releases?per_page=100&page={page}"
+        request = urllib.request.Request(url, headers=headers)
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                payload = json.load(response)
+        except (
+            OSError,
+            ValueError,
+            urllib.error.HTTPError,
+            urllib.error.URLError,
+            TimeoutError,
+        ) as error:
+            detail = getattr(error, "reason", None) or str(error)
+            raise SystemExit(
+                f"Cannot enumerate GitHub releases for {manifest.name}: {detail}"
+            ) from error
+        if not isinstance(payload, list):
+            raise SystemExit(
+                f"GitHub returned an invalid releases response for {manifest.name}"
+            )
+        for release in payload:
+            if not isinstance(release, dict):
+                continue
+            if release.get("draft") or release.get("prerelease"):
+                continue
+            tag = release.get("tag_name")
+            if isinstance(tag, str) and release_version_parts(tag) is not None:
+                tags.append(tag)
+        if len(payload) < 100:
+            break
+        page += 1
+    return tags
+
+
+def resolve_release_tag_commits(
+    manifest: Manifest, refs: Sequence[str]
+) -> dict[str, str]:
+    """Resolve selected tags to peeled commits with one remote advertisement."""
+
+    if not refs:
+        return {}
+    requested = set(refs)
+    patterns = [
+        pattern
+        for ref in refs
+        for pattern in (f"refs/tags/{ref}", f"refs/tags/{ref}^{{}}")
+    ]
+    try:
+        process = subprocess.run(
+            ["git", "ls-remote", "--exit-code", manifest.data["repository"], *patterns],
+            check=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=60,
+        )
+    except (OSError, subprocess.TimeoutExpired) as error:
+        raise SystemExit(
+            f"Cannot resolve release tags for {manifest.name}: {error}"
+        ) from error
+    if process.returncode != 0:
+        detail = process.stderr.strip() or "no selected tags were advertised"
+        raise SystemExit(f"Cannot resolve release tags for {manifest.name}: {detail}")
+
+    direct: dict[str, str] = {}
+    peeled: dict[str, str] = {}
+    for line in process.stdout.splitlines():
+        fields = line.split("\t", 1)
+        if len(fields) != 2 or re.fullmatch(r"[0-9a-fA-F]{40,64}", fields[0]) is None:
+            raise SystemExit(
+                f"Cannot parse advertised release tags for {manifest.name}"
+            )
+        object_id, full_ref = fields
+        if not full_ref.startswith("refs/tags/"):
+            continue
+        tag = full_ref.removeprefix("refs/tags/")
+        destination = direct
+        if tag.endswith("^{}"):
+            tag = tag.removesuffix("^{}")
+            destination = peeled
+        if tag in requested:
+            destination[tag] = object_id.lower()
+
+    missing = sorted(requested - direct.keys())
+    if missing:
+        raise SystemExit(
+            f"Selected release tags disappeared for {manifest.name}: {', '.join(missing)}"
+        )
+    return {ref: peeled.get(ref, direct[ref]) for ref in refs}
+
+
+def git_stable_release_tags(manifest: Manifest) -> tuple[list[str], dict[str, str]]:
+    """Enumerate stable numeric tags and peeled objects from any Git remote."""
+
+    try:
+        process = subprocess.run(
+            ["git", "ls-remote", "--tags", manifest.data["repository"]],
+            check=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=60,
+        )
+    except (OSError, subprocess.TimeoutExpired) as error:
+        raise SystemExit(
+            f"Cannot enumerate Git tags for {manifest.name}: {error}"
+        ) from error
+    if process.returncode != 0:
+        detail = process.stderr.strip() or f"git ls-remote exited {process.returncode}"
+        raise SystemExit(f"Cannot enumerate Git tags for {manifest.name}: {detail}")
+
+    direct: dict[str, str] = {}
+    peeled: dict[str, str] = {}
+    for line in process.stdout.splitlines():
+        fields = line.split("\t", 1)
+        if len(fields) != 2 or re.fullmatch(r"[0-9a-fA-F]{40,64}", fields[0]) is None:
+            raise SystemExit(f"Cannot parse advertised Git tags for {manifest.name}")
+        object_id, full_ref = fields
+        if not full_ref.startswith("refs/tags/"):
+            continue
+        tag = full_ref.removeprefix("refs/tags/")
+        destination = direct
+        if tag.endswith("^{}"):
+            tag = tag.removesuffix("^{}")
+            destination = peeled
+        if release_version_parts(tag) is not None:
+            destination[tag] = object_id.lower()
+
+    tags = list(direct)
+    return tags, {tag: peeled.get(tag, direct[tag]) for tag in tags}
+
+
+def prefer_manifest_release_aliases(
+    manifest: Manifest, tags: Sequence[str], commits: Mapping[str, str]
+) -> list[str]:
+    """Prefer manifest-declared spellings when a remote advertises tag aliases."""
+
+    preferred: list[str] = []
+    for ref_spec in manifest_ref_specs(manifest):
+        ref = ref_spec.get("ref")
+        if isinstance(ref, str) and ref in commits and ref not in preferred:
+            preferred.append(ref)
+    return preferred + [tag for tag in tags if tag not in preferred]
+
+
+def historical_release_targets(
+    manifest: Manifest,
+    *,
+    maximum: int | None = 3,
+    minimum: str | None = None,
+    source: str = "index",
+) -> list[ReleaseTarget]:
+    known_commits: dict[str, str] = {}
+    if source == "index":
+        index_path = manifest.directory / "out" / "_index.json"
+        if not index_path.is_file():
+            return []
+        try:
+            index = load_json(index_path)
+        except (OSError, ValueError, TypeError) as error:
+            raise SystemExit(f"Cannot read release index for {manifest.name}") from error
+        versions = index.get("versions") if isinstance(index, dict) else None
+        if not isinstance(versions, dict):
+            raise SystemExit(f"Invalid release index for {manifest.name}: {index_path}")
+        tags = [ref for ref in versions if ref != "nightly"]
+        for ref, value in versions.items():
+            commit = value.get("upstream_ref") if isinstance(value, dict) else None
+            if isinstance(commit, str) and re.fullmatch(r"[0-9a-f]{40,64}", commit):
+                known_commits[ref] = commit
+    elif source == "github-releases":
+        tags = github_stable_release_tags(manifest)
+    elif source == "git-tags":
+        tags, known_commits = git_stable_release_tags(manifest)
+        tags = prefer_manifest_release_aliases(manifest, tags, known_commits)
+    else:
+        raise SystemExit(f"Unknown historical release source: {source}")
+
+    selected = select_release_tags(tags, maximum=maximum, minimum=minimum)
+    refs = [ref for ref, _group, _parts in selected]
+    for ref_spec in manifest_ref_specs(manifest):
+        ref = ref_spec.get("ref")
+        commit = ref_spec.get("expected_commit")
+        if ref in refs and isinstance(commit, str):
+            recorded_commit = known_commits.get(str(ref))
+            if recorded_commit is not None and recorded_commit != commit:
+                raise SystemExit(
+                    f"Release index and manifest disagree for {manifest.name} "
+                    f"{ref}: {recorded_commit} != {commit}"
+                )
+            known_commits[str(ref)] = commit
+    unresolved = [ref for ref in refs if ref not in known_commits]
+    if unresolved:
+        known_commits.update(resolve_release_tag_commits(manifest, unresolved))
+    return [
+        ReleaseTarget(
+            slicer=manifest.name,
+            ref=ref,
+            version=clean_release_version(ref),
+            version_parts=parts,
+            version_group=group,
+            expected_commit=known_commits[ref],
+        )
+        for ref, group, parts in selected
+    ]
+
+
 def effective_build_environment(manifest: Manifest | None = None) -> dict[str, str]:
     result = {
         key: os.environ.get(key, BUILD_ENV_DEFAULTS.get(key, ""))
@@ -1402,23 +1840,39 @@ def build_fingerprint(
 
 def builder_image(args: argparse.Namespace) -> None:
     cli = container_cli(args.container_cli)
-    image = args.image or DEFAULT_BUILDER_IMAGE
+    image = args.image or (
+        DEFAULT_LOCAL_SMOKE_IMAGE if args.target == "smoke" else DEFAULT_BUILDER_IMAGE
+    )
     command: list[str | Path] = [
         cli,
         "build",
         "--file",
         ROOT / "docker" / "Dockerfile",
         "--target",
-        "builder",
+        args.target,
         "--tag",
         image,
     ]
+    if args.target == "smoke":
+        command.extend(["--build-arg", f"CLOUD_SLICER_IMAGE={args.cloud_slicer_image}"])
     command.append(ROOT)
     run(command)
 
 
 def bundle_path(source: Path) -> Path:
     return source / "build" / "slicer_out"
+
+
+def ensure_container_mountpoint(path: Path) -> None:
+    """Create a directory that Docker must overlay below a read-only bind."""
+    if path.is_symlink() or (path.exists() and not path.is_dir()):
+        raise SystemExit(f"Container mountpoint is not a directory: {path}")
+    path.mkdir(parents=True, exist_ok=True)
+
+
+def managed_node_cache(family_cache: Path, build_tree_hash: str) -> Path:
+    """Keep source-selected Node tooling writable without sharing across variants."""
+    return family_cache / "node" / build_tree_hash
 
 
 def directory_tree_sha256(root: Path) -> str:
@@ -1939,11 +2393,13 @@ def _build_one_locked(
 
         jobs = args.jobs if args.jobs is not None else default_build_jobs()
         family_cache = WORK_ROOT / "cache" / manifest.data["family"]
+        node_cache = managed_node_cache(family_cache, build_tree_hash)
         home = WORK_ROOT / "home" / manifest.name
         for directory in (
             family_cache / "ccache",
             family_cache / "conan",
             family_cache / "downloads",
+            node_cache,
             family_cache / "sccache",
             home,
         ):
@@ -1954,6 +2410,14 @@ def _build_one_locked(
         deps_cache.mkdir(parents=True, exist_ok=True)
         (source / "deps").mkdir(exist_ok=True)
         (source / "deps" / "DL_CACHE").mkdir(exist_ok=True)
+        (source / "deps" / "build").mkdir(exist_ok=True)
+
+        # Docker cannot create a nested bind target below ROOT after ROOT has
+        # already been mounted read-only. A clean Git checkout intentionally
+        # has no slicer-src directory (it is ignored), so provision the empty
+        # overlay target before assembling the container command.
+        ensure_container_mountpoint(ROOT / "slicer-src")
+        ensure_container_mountpoint(ROOT / "node-cache")
 
         base_command: list[str | Path] = [
             cli,
@@ -1967,6 +2431,8 @@ def _build_one_locked(
             f"{ROOT}:/workspace/repo:ro",
             "--volume",
             f"{source}:/workspace/repo/slicer-src:rw",
+            "--volume",
+            f"{node_cache}:/workspace/repo/node-cache:rw",
             "--volume",
             f"{deps_cache}:/workspace/repo/slicer-src/deps/build:rw",
             "--volume",
@@ -2145,6 +2611,219 @@ def _build_one_locked(
         )
         print(json.dumps(payload, indent=2, sort_keys=True))
         return payload
+
+
+def latest_build_bundle(manifest: Manifest, ref: str, arch: str) -> Path:
+    result = build_result_path(manifest, ref, arch)
+    if not result.is_file():
+        raise SystemExit(
+            f"No build result for {manifest.name} {ref} {arch}; "
+            "pass --bundle or build it first"
+        )
+    value = load_json(result)
+    if not isinstance(value, dict):
+        raise SystemExit(f"Invalid build result: {result}")
+    return recorded_build_bundle(manifest, value, ref=ref, arch=arch)
+
+
+def git_repository_identity(path: Path) -> dict[str, Any] | None:
+    """Return stable source identity without including dirty file names."""
+    try:
+        commit = subprocess.run(
+            ["git", "-C", str(path), "rev-parse", "HEAD^{commit}"],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+        ).stdout.strip()
+        status = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(path),
+                "status",
+                "--porcelain",
+                "--untracked-files=normal",
+            ],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    if not re.fullmatch(r"[0-9a-f]{40,64}", commit):
+        return None
+    return {"commit": commit, "dirty": bool(status.strip())}
+
+
+def default_test_input(manifest: Manifest, backend_root: Path) -> Path:
+    configured = manifest.data["test"].get("input_fixture")
+    if configured is not None:
+        candidate = (ROOT / configured).resolve()
+        try:
+            candidate.relative_to(ROOT)
+        except ValueError:
+            raise SystemExit(f"Unsafe test input fixture: {configured!r}") from None
+        return candidate
+    if manifest.data["test"]["contract"] == "bambu":
+        return DEFAULT_BAMBU_INPUT
+    return backend_root / "tests/e2e/fixtures/calicat.stl"
+
+
+def backend_version(ref: str) -> str:
+    if ref == "HEAD":
+        return "nightly"
+    normalized = ref.removeprefix("version_").removeprefix("v")
+    if re.fullmatch(r"[0-9]+(?:\.[0-9]+){1,3}(?:[-+][A-Za-z0-9_.-]+)?", normalized):
+        return normalized
+    return "nightly"
+
+
+def test_one(args: argparse.Namespace) -> dict[str, Any]:
+    manifest = get_manifest(args.slicer)
+    ref = args.ref or manifest.ref
+    arch = args.arch
+    if arch not in manifest.data["architectures"]:
+        raise SystemExit(f"{manifest.name} does not declare support for {arch}")
+    if args.timeout < 1:
+        raise SystemExit("--timeout must be a positive integer")
+    build_result: dict[str, Any] | None = None
+    if args.bundle:
+        bundle = args.bundle.resolve()
+    else:
+        result_path = build_result_path(manifest, ref, arch)
+        if not result_path.is_file():
+            raise SystemExit(
+                f"No build result for {manifest.name} {ref} {arch}; "
+                "pass --bundle or build it first"
+            )
+        loaded_result = load_json(result_path)
+        if not isinstance(loaded_result, dict):
+            raise SystemExit(f"Invalid build result: {result_path}")
+        build_result = loaded_result
+        bundle = recorded_build_bundle(manifest, build_result, ref=ref, arch=arch)
+    backend_root = args.backend_root.resolve()
+    profiles_root = args.profiles_root.resolve()
+    input_path = (
+        args.input.resolve()
+        if args.input
+        else default_test_input(manifest, backend_root)
+    )
+    required_paths: list[Path] = [
+        bundle / "bin" / manifest.data["executable"],
+        backend_root,
+        input_path,
+    ]
+    profile_source = manifest.data["test"]["profile_source"]
+    needs_profiles_mount = profile_source in {"profiles-db", "profiles-direct"}
+    if needs_profiles_mount:
+        required_paths.append(profiles_root)
+    for required in required_paths:
+        if not required.exists():
+            raise SystemExit(f"Required smoke-test input does not exist: {required}")
+
+    work = WORK_ROOT / "tests" / manifest.name / storage_name(ref) / safe_name(arch)
+    with file_lock(f"smoke-test:{work}"):
+        if work.exists():
+            shutil.rmtree(work)
+        (work / "home").mkdir(parents=True)
+        spec = dict(manifest.data)
+        declared_ref = manifest_ref_spec(manifest, ref)
+        spec["backend_version"] = (
+            args.backend_version
+            or (declared_ref or {}).get("backend_version")
+            or manifest.data["test"].get("backend_version")
+            or backend_version(ref)
+        )
+        spec["runtime_image"] = args.image
+        if build_result is not None:
+            provenance_keys = (
+                "ref",
+                "upstream_commit",
+                "arch",
+                "builder_image_identity",
+                "fingerprint",
+                "dependency_fingerprint",
+                "build_tree_fingerprint",
+                "source_state",
+                "patches",
+                "bundle_tree_sha256",
+            )
+            spec["build_provenance"] = {
+                key: build_result[key] for key in provenance_keys if key in build_result
+            }
+        spec["backend_source_identity"] = git_repository_identity(backend_root)
+        if needs_profiles_mount:
+            spec["profile_source_identity"] = git_repository_identity(profiles_root)
+        cli = container_cli(args.container_cli)
+        spec["runtime_image_identity"] = container_image_identity(cli, args.image)
+        atomic_json(work / "spec.json", spec)
+
+        name_seed = f"{manifest.name}-{ref}-{os.getpid()}"
+        container_name = f"slicer-smoke-{bounded_storage_name(name_seed, 80).lower()}"
+        command: list[str | Path] = [
+            cli,
+            "run",
+            "--rm",
+            "--init",
+            "--name",
+            container_name,
+            *container_run_identity_options(cli),
+            "--env",
+            "HOME=/test/work/home",
+            "--volume",
+            f"{bundle}:/test/bundle:ro",
+            "--volume",
+            f"{backend_root}:/test/backend:ro",
+            "--volume",
+            f"{work}:/test/work:rw",
+            "--volume",
+            f"{ROOT / 'tests/integration/backend_smoke.py'}:/test/backend_smoke.py:ro",
+            "--volume",
+            f"{input_path}:/test/input/{input_path.name}:ro",
+        ]
+        if needs_profiles_mount:
+            command.extend(["--volume", f"{profiles_root}:/test/profiles:ro"])
+        command.extend(
+            [
+                args.image,
+                "python3",
+                "/test/backend_smoke.py",
+                "--spec",
+                "/test/work/spec.json",
+                "--backend-root",
+                "/test/backend",
+                "--profiles-root",
+                "/test/profiles" if needs_profiles_mount else "/test/unused-profiles",
+                "--bundle",
+                "/test/bundle",
+                "--input",
+                f"/test/input/{input_path.name}",
+                "--work",
+                "/test/work/output",
+            ]
+        )
+        try:
+            run(command, timeout_seconds=args.timeout)
+        except subprocess.TimeoutExpired as error:
+            subprocess.run(
+                [cli, "rm", "--force", container_name],
+                check=False,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            raise SystemExit(
+                f"Smoke test exceeded {args.timeout} seconds: {manifest.name} {ref}"
+            ) from error
+        report_path = work / "output" / "smoke-result.json"
+        if not report_path.is_file():
+            raise SystemExit(f"Smoke test did not write {report_path}")
+        report = load_json(report_path)
+        print(json.dumps(report, indent=2, sort_keys=True))
+        return report
+
+
 def command_list(args: argparse.Namespace) -> None:
     values = [
         {
@@ -2153,6 +2832,7 @@ def command_list(args: argparse.Namespace) -> None:
             "ref": manifest.ref,
             "supported_refs": [spec["ref"] for spec in manifest_ref_specs(manifest)],
             "architectures": manifest.data["architectures"],
+            "backend_supported": manifest.data["backend_supported"],
             "capabilities": manifest.data["capabilities"],
         }
         for manifest in manifests().values()
@@ -2502,13 +3182,21 @@ def run_many(
             if fail_fast and outcomes[name] is not None:
                 break
     else:
-        with ThreadPoolExecutor(max_workers=min(workers, len(names))) as executor:
-            futures = {executor.submit(invoke, name): name for name in names}
+        executor = ThreadPoolExecutor(max_workers=min(workers, len(names)))
+        futures = {executor.submit(invoke, name): name for name in names}
+        try:
             for future in as_completed(futures):
                 name = futures[future]
                 outcomes[name] = future.result()
                 if outcomes[name] is not None:
                     print(f"{name}: {outcomes[name]}", file=sys.stderr)
+        except BaseException:
+            for future in futures:
+                future.cancel()
+            executor.shutdown(wait=False, cancel_futures=True)
+            raise
+        else:
+            executor.shutdown()
 
     successful = [
         name for name in names if outcomes.get(name) is None and name in outcomes
@@ -2551,8 +3239,9 @@ def run_many_collect(
             if fail_fast:
                 break
     else:
-        with ThreadPoolExecutor(max_workers=min(workers, len(names))) as executor:
-            futures = {executor.submit(invoke, name): name for name in names}
+        executor = ThreadPoolExecutor(max_workers=min(workers, len(names)))
+        futures = {executor.submit(invoke, name): name for name in names}
+        try:
             for future in as_completed(futures):
                 name = futures[future]
                 value, error = future.result()
@@ -2561,10 +3250,352 @@ def run_many_collect(
                 else:
                     failures[name] = error
                     print(f"{name}: {error}", file=sys.stderr)
+        except BaseException:
+            for future in futures:
+                future.cancel()
+            executor.shutdown(wait=False, cancel_futures=True)
+            raise
+        else:
+            executor.shutdown()
 
     ordered_values = {name: values[name] for name in names if name in values}
     ordered_failures = {name: failures[name] for name in names if name in failures}
     return ordered_values, ordered_failures
+
+
+def parse_minimum_versions(
+    values: Sequence[str] | None, selected_names: Sequence[str]
+) -> dict[str, str]:
+    """Parse repeatable ``SLICER=VERSION`` thresholds, with one-slicer shorthand."""
+
+    minimums: dict[str, str] = {}
+    selected = set(selected_names)
+    for value in values or ():
+        name, separator, version = value.partition("=")
+        if separator != "=":
+            if len(selected_names) != 1:
+                raise SystemExit(
+                    "--minimum-version requires SLICER=VERSION when multiple "
+                    "slicers are selected"
+                )
+            name, version = selected_names[0], value
+        if name not in selected:
+            raise SystemExit(f"Minimum version names an unselected slicer: {name}")
+        if name in minimums:
+            raise SystemExit(f"Duplicate minimum version for {name}")
+        if release_version_parts(version) is None:
+            raise SystemExit(f"Invalid stable minimum version for {name}: {version!r}")
+        minimums[name] = clean_release_version(version)
+    return minimums
+
+
+def _release_target_payload(target: ReleaseTarget) -> dict[str, Any]:
+    return {
+        "slicer": target.slicer,
+        "ref": target.ref,
+        "version": target.version,
+        "version_group": target.version_group,
+        "upstream_commit": target.expected_commit,
+    }
+
+
+def compact_build_output(
+    target: ReleaseTarget, payload: dict[str, Any]
+) -> dict[str, Any]:
+    """Return the retained artifact and exact size fields for one build."""
+
+    executable_value = payload.get("executable")
+    if not isinstance(executable_value, str) or not executable_value:
+        raise SystemExit(f"Build result has no executable for {target.slicer}@{target.ref}")
+    executable = Path(executable_value)
+    if not executable.is_file():
+        raise SystemExit(f"Build executable is missing: {executable}")
+    bundle_value = payload.get("bundle")
+    if not isinstance(bundle_value, str) or not bundle_value:
+        raise SystemExit(f"Build result has no bundle for {target.slicer}@{target.ref}")
+    bundle = Path(bundle_value)
+    if not bundle.is_dir():
+        raise SystemExit(f"Build bundle is missing: {bundle}")
+
+    def tree_bytes(root: Path) -> int:
+        if not root.is_dir():
+            return 0
+        return sum(
+            path.stat().st_size
+            for path in root.rglob("*")
+            if path.is_file() and not path.is_symlink()
+        )
+
+    # Recompute at report time. This keeps legacy cached records useful and
+    # makes the table describe the actual retained bytes rather than trusting
+    # optional or stale aggregate metadata.
+    size_fields = {
+        "bundle_bin_bytes": tree_bytes(bundle / "bin"),
+        "bundle_resource_bytes": tree_bytes(bundle / "resources"),
+        "bundle_bytes": tree_bytes(bundle),
+    }
+
+    return {
+        **_release_target_payload(target),
+        "status": "reused" if payload.get("reused") else "built",
+        "executable": str(executable),
+        # Older immutable results predate this field; statting the retained
+        # executable upgrades reports without invalidating a costly build.
+        "executable_bytes": executable.stat().st_size,
+        **size_fields,
+        "bundle": str(bundle),
+        "bundle_tree_sha256": payload.get("bundle_tree_sha256"),
+        "result": payload.get("result"),
+        "immutable_result": payload.get("immutable_result"),
+        "fingerprint": payload.get("fingerprint"),
+        "phase_seconds": payload.get("phase_seconds", {}),
+    }
+
+
+def format_byte_count(value: Any) -> str:
+    if not isinstance(value, int) or value < 0:
+        return "—"
+    units = ("B", "KiB", "MiB", "GiB", "TiB")
+    amount = float(value)
+    unit = units[0]
+    for candidate in units:
+        unit = candidate
+        if amount < 1024 or candidate == units[-1]:
+            break
+        amount /= 1024
+    return f"{amount:.1f} {unit}" if unit != "B" else f"{value} B"
+
+
+def render_history_markdown(report: dict[str, Any]) -> str:
+    lines = [
+        "# Historical slicer build sizes",
+        "",
+        f"Generated: {report['generated_at']}",
+        "",
+        "| Slicer | Version | Status | Executable | bin/ closure | Resources | Bundle | Artifact |",
+        "| --- | --- | --- | ---: | ---: | ---: | ---: | --- |",
+    ]
+    for build in report["builds"]:
+        artifact = str(build.get("bundle") or "—").replace("|", "\\|")
+        lines.append(
+            "| "
+            + " | ".join(
+                (
+                    str(build["slicer"]),
+                    str(build["ref"]),
+                    str(build["status"]),
+                    format_byte_count(build.get("executable_bytes")),
+                    format_byte_count(build.get("bundle_bin_bytes")),
+                    format_byte_count(build.get("bundle_resource_bytes")),
+                    format_byte_count(build.get("bundle_bytes")),
+                    f"`{artifact}`" if artifact != "—" else artifact,
+                )
+            )
+            + " |"
+        )
+    skipped = report["summary"].get("skipped_slicers", {})
+    if skipped:
+        lines.extend(("", "## Skipped slicers", ""))
+        for name, reason in skipped.items():
+            lines.append(f"- **{name}**: {reason}")
+    build_issues = [
+        build for build in report["builds"] if build["status"] in {"failed", "not-run"}
+    ]
+    if build_issues:
+        lines.extend(("", "## Build issues", ""))
+        for build in build_issues:
+            lines.append(
+                f"- **{build['slicer']}@{build['ref']}**: "
+                f"{build.get('error', build['status'])}"
+            )
+    if report["discovery_failures"]:
+        lines.extend(("", "## Discovery failures", ""))
+        for name, error in report["discovery_failures"].items():
+            lines.append(f"- **{name}**: {error}")
+    return "\n".join(lines) + "\n"
+
+
+def atomic_text(path: Path, value: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", dir=path.parent, text=True
+    )
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as target:
+            target.write(value)
+            target.flush()
+            os.fsync(target.fileno())
+        temporary.replace(path)
+    except Exception:
+        temporary.unlink(missing_ok=True)
+        raise
+
+
+def command_backfill(args: argparse.Namespace) -> None:
+    """Discover, pin, build, and size-report a bounded stable release history."""
+
+    available = manifests()
+    names = selected_manifest_names(args.slicers, args.arch)
+    report_path = args.report or (
+        WORK_ROOT / "reports" / f"historical-builds-{safe_name(args.arch)}.json"
+    )
+    if not report_path.is_absolute():
+        report_path = ROOT / report_path
+    if report_path.suffix.lower() != ".json":
+        raise SystemExit("--report must name a .json file")
+    markdown_path = report_path.with_suffix(".md")
+    if report_path.exists() and not report_path.is_file():
+        raise SystemExit(f"--report is not a file path: {report_path}")
+    try:
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        descriptor, probe_name = tempfile.mkstemp(
+            prefix=".slicerctl-report-probe.", dir=report_path.parent
+        )
+        os.close(descriptor)
+        Path(probe_name).unlink()
+    except OSError as error:
+        raise SystemExit(
+            f"Cannot write historical build reports under {report_path.parent}: {error}"
+        ) from error
+    minimums = parse_minimum_versions(args.minimum_versions, names)
+    maximum = None if args.all_versions else args.max_versions
+    workers = args.workers
+
+    def discover(name: str) -> list[ReleaseTarget]:
+        return historical_release_targets(
+            available[name],
+            maximum=maximum,
+            minimum=minimums.get(name),
+            source=args.versions_from,
+        )
+
+    discovered, discovery_failures = run_many_collect(
+        names, workers, args.fail_fast, discover
+    )
+    targets = [target for name in names for target in discovered.get(name, [])]
+    skipped: dict[str, str] = {}
+    for name in names:
+        if name in discovery_failures:
+            continue
+        if name not in discovered:
+            skipped[name] = "not attempted after an earlier fail-fast failure"
+        elif not discovered[name]:
+            index_path = available[name].directory / "out" / "_index.json"
+            skipped[name] = (
+                f"no release index at {index_path}"
+                if args.versions_from == "index" and not index_path.is_file()
+                else "no stable releases matched the requested policy"
+            )
+    labels = [f"{target.slicer}@{target.ref}" for target in targets]
+    if len(labels) != len(set(labels)):
+        raise SystemExit("Historical release planning produced duplicate build labels")
+    by_label = dict(zip(labels, targets, strict=True))
+
+    build_values: dict[str, Any] = {}
+    build_failures: dict[str, str] = {}
+    if (
+        not args.plan_only
+        and labels
+        and not (args.fail_fast and discovery_failures)
+    ):
+        per_build_jobs = args.jobs
+        effective_workers = 1 if args.fail_fast else workers
+        if per_build_jobs is None and effective_workers > 1:
+            per_build_jobs = max(
+                1, default_build_jobs() // min(effective_workers, len(labels))
+            )
+
+        def build(label: str) -> dict[str, Any]:
+            target = by_label[label]
+            child = argparse.Namespace(**vars(args))
+            child.slicer = target.slicer
+            child.ref = target.ref
+            child.expected_commit = target.expected_commit
+            child.source = None
+            child.jobs = per_build_jobs
+            child.skip_package = False
+            return compact_build_output(target, build_one(child))
+
+        build_values, build_failures = run_many_collect(
+            labels, workers, args.fail_fast, build
+        )
+
+    builds: list[dict[str, Any]] = []
+    for target in targets:
+        label = f"{target.slicer}@{target.ref}"
+        if args.plan_only:
+            builds.append({**_release_target_payload(target), "status": "planned"})
+        elif label in build_values:
+            builds.append(build_values[label])
+        elif label in build_failures:
+            builds.append(
+                {
+                    **_release_target_payload(target),
+                    "status": "failed",
+                    "error": build_failures[label],
+                }
+            )
+        else:
+            builds.append(
+                {
+                    **_release_target_payload(target),
+                    "status": "not-run",
+                    "error": "not started after an earlier fail-fast failure",
+                }
+            )
+
+    successful_builds = sum(
+        build["status"] in {"built", "reused"} for build in builds
+    )
+    failed_builds = sum(build["status"] == "failed" for build in builds)
+    not_run_builds = sum(build["status"] == "not-run" for build in builds)
+    report: dict[str, Any] = {
+        "schema_version": 1,
+        "generated_at": datetime.now(UTC).isoformat(),
+        "architecture": args.arch,
+        "plan_only": args.plan_only,
+        "policy": {
+            "source": args.versions_from,
+            "group_components": 3,
+            "max_versions": maximum,
+            "minimum_versions": minimums,
+        },
+        "summary": {
+            "selected_slicers": len(names),
+            "selected_versions": len(targets),
+            "successful_builds": successful_builds,
+            "failed_builds": failed_builds,
+            "not_run_builds": not_run_builds,
+            "skipped_slicers": skipped,
+        },
+        "discovery_failures": discovery_failures,
+        "build_failures": build_failures,
+        "builds": builds,
+    }
+    atomic_json(report_path, report)
+    atomic_text(markdown_path, render_history_markdown(report))
+    print(
+        json.dumps(
+            {
+                "report": str(report_path),
+                "size_report": str(markdown_path),
+                **report["summary"],
+                "discovery_failures": discovery_failures,
+                "build_failures": build_failures,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+
+    if not targets and not discovery_failures:
+        raise SystemExit("No stable releases matched the requested history policy")
+    if discovery_failures or build_failures:
+        raise SystemExit(
+            f"Historical build completed with {len(discovery_failures)} discovery "
+            f"and {len(build_failures)} build failure(s)"
+        )
 
 
 def command_build_all(args: argparse.Namespace) -> None:
@@ -2596,6 +3627,31 @@ def command_build_all(args: argparse.Namespace) -> None:
         raise SystemExit(f"{len(failed)} slicer build(s) failed")
 
 
+def command_test_all(args: argparse.Namespace) -> None:
+    targets = selected_manifest_targets(args.slicers, args.arch, args.all_refs)
+    labels = [f"{name}@{ref}" if args.all_refs else name for name, ref in targets]
+    by_label = dict(zip(labels, targets, strict=True))
+
+    def test(label: str) -> None:
+        name, ref = by_label[label]
+        child = argparse.Namespace(**vars(args))
+        child.slicer = name
+        child.ref = ref
+        child.bundle = None
+        test_one(child)
+
+    successful, failed = run_many(
+        labels, getattr(args, "workers", 1), args.fail_fast, test
+    )
+    print(
+        json.dumps(
+            {"successful": successful, "failed": failed}, indent=2, sort_keys=True
+        )
+    )
+    if failed:
+        raise SystemExit(f"{len(failed)} slicer smoke test(s) failed")
+
+
 def add_common_build_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("slicer")
     parser.add_argument("--ref")
@@ -2616,6 +3672,25 @@ def add_common_build_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--force", action="store_true", help="ignore a matching build result"
     )
+
+
+def add_common_test_options(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--backend-root",
+        type=Path,
+        default=(ROOT / "../../simplyprint-web/cloud-slicer/backend").resolve(),
+    )
+    parser.add_argument(
+        "--profiles-root", type=Path, default=(ROOT / "../slicer-profiles-db").resolve()
+    )
+    parser.add_argument("--input", type=Path)
+    parser.add_argument(
+        "--backend-version",
+        help="adapter version override for a branch/commit build (default: nightly)",
+    )
+    parser.add_argument("--image", default=DEFAULT_SMOKE_IMAGE)
+    parser.add_argument("--container-cli")
+    parser.add_argument("--timeout", type=int, default=1800)
 
 
 def parser() -> argparse.ArgumentParser:
@@ -2682,7 +3757,11 @@ def parser() -> argparse.ArgumentParser:
     verify_patches_parser.set_defaults(handler=command_verify_patches)
 
     image_parser = commands.add_parser("image")
+    image_parser.add_argument(
+        "--target", choices=("builder", "smoke"), default="builder"
+    )
     image_parser.add_argument("--image")
+    image_parser.add_argument("--cloud-slicer-image", default=DEFAULT_SMOKE_IMAGE)
     image_parser.add_argument("--container-cli")
     image_parser.set_defaults(handler=builder_image)
 
@@ -2753,6 +3832,95 @@ def parser() -> argparse.ArgumentParser:
     )
     build_all_parser.set_defaults(handler=command_build_all)
 
+    backfill_parser = commands.add_parser(
+        "backfill",
+        aliases=("build-history",),
+        help="build a bounded history of stable upstream releases",
+    )
+    backfill_parser.add_argument("--slicer", dest="slicers", action="append")
+    backfill_parser.add_argument(
+        "--arch", choices=sorted(SUPPORTED_ARCHITECTURES), default=native_architecture()
+    )
+    backfill_parser.add_argument(
+        "--versions-from",
+        choices=("index", "git-tags", "github-releases"),
+        default="index",
+        help=(
+            "select from the downloader index (default), all stable Git tags, "
+            "or published stable GitHub releases"
+        ),
+    )
+    history_limit = backfill_parser.add_mutually_exclusive_group()
+    history_limit.add_argument(
+        "--max-versions",
+        type=int,
+        default=3,
+        help="newest downloader-compatible version groups to build (default: 3)",
+    )
+    history_limit.add_argument(
+        "--all-versions",
+        action="store_true",
+        help="build every matching version group, optionally down to a minimum",
+    )
+    backfill_parser.add_argument(
+        "--minimum-version",
+        dest="minimum_versions",
+        action="append",
+        metavar="SLICER=VERSION",
+        help=(
+            "inclusive per-slicer threshold (repeatable; VERSION alone is accepted "
+            "when one slicer is selected)"
+        ),
+    )
+    backfill_parser.add_argument(
+        "--plan-only",
+        action="store_true",
+        help="resolve and record exact tags/commits without compiling",
+    )
+    backfill_parser.add_argument(
+        "--report",
+        type=Path,
+        help="JSON report path (a Markdown size table is written beside it)",
+    )
+    backfill_parser.add_argument(
+        "--patches", choices=("none", "binary", "dump"), default="binary"
+    )
+    backfill_parser.add_argument("--container-cli")
+    backfill_parser.add_argument("--image", default=DEFAULT_BUILDER_IMAGE)
+    backfill_parser.add_argument("--jobs", type=int)
+    backfill_parser.add_argument("--skip-deps", action="store_true")
+    backfill_parser.add_argument("--force", action="store_true")
+    backfill_parser.add_argument("--fail-fast", action="store_true")
+    backfill_parser.add_argument(
+        "--workers",
+        type=int,
+        default=1,
+        help="discover/build this many slicers or versions concurrently",
+    )
+    backfill_parser.set_defaults(handler=command_backfill)
+
+    test_parser = commands.add_parser("test")
+    test_parser.add_argument("slicer")
+    test_parser.add_argument("--ref")
+    test_parser.add_argument(
+        "--arch", choices=sorted(SUPPORTED_ARCHITECTURES), default=native_architecture()
+    )
+    test_parser.add_argument("--bundle", type=Path)
+    add_common_test_options(test_parser)
+    test_parser.set_defaults(handler=test_one)
+
+    test_all_parser = commands.add_parser("test-all")
+    test_all_parser.add_argument("--slicer", dest="slicers", action="append")
+    test_all_parser.add_argument(
+        "--arch", choices=sorted(SUPPORTED_ARCHITECTURES), default=native_architecture()
+    )
+    test_all_parser.add_argument("--fail-fast", action="store_true")
+    test_all_parser.add_argument(
+        "--all-refs", action="store_true", help="test every supported ref"
+    )
+    test_all_parser.add_argument("--workers", type=int, default=1)
+    add_common_test_options(test_all_parser)
+    test_all_parser.set_defaults(handler=command_test_all)
     return root
 
 

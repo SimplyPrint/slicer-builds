@@ -6,14 +6,16 @@ expected_commit = "b028299c770b8380ee81c921a2867d522f288123"
 family = "prusa"
 executable = "prusa-slicer"
 architectures = ["x86-64"]
-
-[[supported_refs]]
-ref = "version_2.9.3"
-expected_commit = "f1776c0a6347bb84986d10eac8db1021f5bd8548"
+backend_engine = "PrusaSlicer"
+backend_supported = true
 
 [[supported_refs]]
 ref = "version_2.9.5"
 expected_commit = "9a583bd438b195856f3bcf7ea99b69ba4003a961"
+
+[[supported_refs]]
+ref = "version_2.9.4"
+expected_commit = "69c8e569410efe82259e706cd09a05ea82da9359"
 
 [capabilities]
 binary = true
@@ -29,6 +31,16 @@ nightly = true
 [ci.config]
 enabled = true
 publish = true
-release = "tag:version_2.9.3"
+release = "tag:version_2.9.5"
 nightly = true
 gui = true
+
+[test]
+contract = "prusa"
+profile_source = "profiles-db"
+profile_engine = "prusaslicer"
+model_id = 400
+machine_name = "Original Prusa MK4"
+machine_variant = "0.4"
+process_name = "0.20mm QUALITY @MK4 0.4"
+filament_name = "Prusament PLA @PG"

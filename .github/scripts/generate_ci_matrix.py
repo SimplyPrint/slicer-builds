@@ -16,6 +16,7 @@ from urllib.parse import urlparse
 
 SUPPORTED_ARCHITECTURES = ("x86-64", "arm64")
 SUPPORTED_BUILD_TYPES = ("nightly", "latest_release")
+CONSUMER_RELEASE_LIMIT = 3
 LANE_CAPABILITY = {"binary": "binary", "config": "config_dump"}
 LANE_KEYS = {
     "binary": {"enabled", "publish", "release", "nightly", "architectures"},
@@ -25,7 +26,6 @@ LANE_KEYS = {
         "release",
         "nightly",
         "repository",
-        "expected_commit",
         "generator_only",
         "gui",
     },
@@ -55,7 +55,6 @@ class LanePolicy:
     release: ReleasePolicy
     nightly: bool
     architectures: tuple[str, ...]
-    release_expected_commit: str = ""
     generator_only: bool = False
     gui: bool = False
 
@@ -167,6 +166,55 @@ def _ref_locks(data: dict[str, Any], label: str) -> tuple[tuple[str, str], ...]:
     return tuple(sorted(locks.items()))
 
 
+def _clean_version(ref: str) -> str:
+    if ref.startswith("version_"):
+        return ref.removeprefix("version_")
+    return ref.removeprefix("v") if ref.startswith("v") else ref
+
+
+def _version_parts(ref: str) -> tuple[int, ...]:
+    clean = _clean_version(ref)
+    if re.fullmatch(r"[0-9]+(?:\.[0-9]+){1,3}", clean) is None:
+        raise MatrixError(f"indexed release {ref!r} is not a stable numeric version")
+    return tuple(int(part) for part in clean.split("."))
+
+
+def _consumer_releases(root: Path, policy: LanePolicy) -> list[tuple[str, str]]:
+    """Return the newest consumer-visible releases and their pinned commits."""
+
+    index_path = root / "slicers" / policy.slicer / "out" / "_index.json"
+    try:
+        index = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise MatrixError(f"cannot read consumer index {index_path}: {exc}") from exc
+    versions = index.get("versions") if isinstance(index, dict) else None
+    if not isinstance(versions, dict):
+        raise MatrixError(f"invalid consumer index: {index_path}")
+
+    grouped: dict[str, tuple[str, tuple[int, ...]]] = {}
+    for ref in versions:
+        if ref == "nightly":
+            continue
+        parts = _version_parts(ref)
+        clean_parts = _clean_version(ref).split(".")
+        group = ".".join(clean_parts[:3]) if len(parts) >= 3 else _clean_version(ref)
+        previous = grouped.get(group)
+        if previous is None or parts > previous[1]:
+            grouped[group] = (ref, parts)
+
+    selected = sorted(grouped.values(), key=lambda item: item[1], reverse=True)
+    locks = dict(policy.ref_locks)
+    result: list[tuple[str, str]] = []
+    for ref, _parts in selected[:CONSUMER_RELEASE_LIMIT]:
+        version = versions[ref]
+        commit = version.get("upstream_ref") if isinstance(version, dict) else None
+        commit = commit or locks.get(ref)
+        if not isinstance(commit, str) or re.fullmatch(r"[0-9a-f]{40,64}", commit) is None:
+            raise MatrixError(f"consumer release {policy.slicer}@{ref} has no commit lock")
+        result.append((ref, commit))
+    return result
+
+
 def load_policies(root: Path, lane: str) -> list[LanePolicy]:
     if lane not in LANE_CAPABILITY:
         raise MatrixError(f"unknown lane: {lane}")
@@ -264,32 +312,6 @@ def load_policies(root: Path, lane: str) -> list[LanePolicy]:
             f"{manifest_label}.ci.{lane}.repository",
         )
         repo_slug = _github_slug(repository, f"{manifest_label}.ci.{lane}.repository")
-        release_expected_commit = lane_table.get("expected_commit", "")
-        if release_expected_commit:
-            if not isinstance(release_expected_commit, str) or not re.fullmatch(
-                r"[0-9a-f]{40,64}", release_expected_commit
-            ):
-                raise MatrixError(
-                    f"{manifest_label}.ci.{lane}.expected_commit must be a "
-                    "lowercase full Git object ID"
-                )
-            if release.mode != "tag":
-                raise MatrixError(
-                    f"{manifest_label}.ci.{lane}.expected_commit requires "
-                    "release = \"tag:<exact-ref>\""
-                )
-        ref_locks = _ref_locks(data, manifest_label)
-        root_expected_commit = dict(ref_locks).get(release.tag, "")
-        if (
-            release_expected_commit
-            and repo_slug == manifest_repo_slug
-            and root_expected_commit
-            and release_expected_commit != root_expected_commit
-        ):
-            raise MatrixError(
-                f"{manifest_label}.ci.{lane}.expected_commit conflicts with "
-                "the manifest ref lock"
-            )
 
         root_architectures = data.get("architectures")
         architectures = (
@@ -320,13 +342,12 @@ def load_policies(root: Path, lane: str) -> list[LanePolicy]:
                 repository=repository,
                 repo_slug=repo_slug,
                 manifest_repo_slug=manifest_repo_slug,
-                ref_locks=ref_locks,
+                ref_locks=_ref_locks(data, manifest_label),
                 enabled=enabled,
                 publish=publish,
                 release=release,
                 nightly=nightly,
                 architectures=architectures,
-                release_expected_commit=release_expected_commit,
                 generator_only=generator_only,
                 gui=gui,
             )
@@ -356,12 +377,16 @@ def generate_matrix(
     if selected_slicer != "all" and not selected_policies[0].enabled:
         raise MatrixError(f"{selected_slicer} has ci.{lane}.enabled=false")
 
-    if selected_build_type not in ("all", *SUPPORTED_BUILD_TYPES):
+    if selected_build_type not in ("all", "consumer", *SUPPORTED_BUILD_TYPES):
         raise MatrixError(f"unknown build type: {selected_build_type}")
+    if selected_build_type == "consumer" and lane != "binary":
+        raise MatrixError("consumer builds are only available for the binary lane")
     if lane == "binary" and selected_arch not in ("all", *SUPPORTED_ARCHITECTURES):
         raise MatrixError(f"unknown architecture: {selected_arch}")
     if release_tag_override:
         _tag(release_tag_override, "--release-tag")
+        if selected_build_type == "consumer":
+            raise MatrixError("--release-tag cannot be combined with consumer builds")
         if selected_slicer == "all":
             raise MatrixError("--release-tag requires selecting exactly one slicer")
         if selected_policies[0].release.mode == "none":
@@ -372,6 +397,51 @@ def generate_matrix(
         if not policy.enabled:
             continue
 
+        architectures = policy.architectures
+        if lane == "binary" and selected_arch != "all":
+            architectures = tuple(
+                item for item in architectures if item == selected_arch
+            )
+
+        if selected_build_type == "consumer":
+            if not policy.publish or policy.release.mode == "none":
+                continue
+            releases = _consumer_releases(root, policy)
+            for architecture in architectures:
+                for ref, commit in releases:
+                    rows.append(
+                        {
+                            "arch": architecture,
+                            "build-type": "latest_release",
+                            "consumer_rebuild": True,
+                            "expected_commit": commit,
+                            "family": policy.family,
+                            "nightly_enabled": policy.nightly,
+                            "publish": True,
+                            "release_mode": "tag",
+                            "release_tag": ref,
+                            "repo": policy.repo_slug,
+                            "slicer": policy.slicer,
+                        }
+                    )
+                if policy.nightly:
+                    rows.append(
+                        {
+                            "arch": architecture,
+                            "build-type": "nightly",
+                            "consumer_rebuild": True,
+                            "expected_commit": "",
+                            "family": policy.family,
+                            "nightly_enabled": True,
+                            "publish": True,
+                            "release_mode": policy.release.mode,
+                            "release_tag": policy.release.tag,
+                            "repo": policy.repo_slug,
+                            "slicer": policy.slicer,
+                        }
+                    )
+            continue
+
         build_types: list[str] = []
         if policy.nightly:
             build_types.append("nightly")
@@ -380,16 +450,11 @@ def generate_matrix(
         if selected_build_type != "all":
             build_types = [item for item in build_types if item == selected_build_type]
 
-        architectures = policy.architectures
-        if lane == "binary" and selected_arch != "all":
-            architectures = tuple(
-                item for item in architectures if item == selected_arch
-            )
-
         for build_type in build_types:
             for architecture in architectures:
                 row: dict[str, Any] = {
                     "build-type": build_type,
+                    "consumer_rebuild": False,
                     "family": policy.family,
                     "nightly_enabled": policy.nightly,
                     "publish": policy.publish,
@@ -408,12 +473,6 @@ def generate_matrix(
                     expected_commit = dict(policy.ref_locks).get(
                         selected_release_tag, ""
                     )
-                if (
-                    build_type == "latest_release"
-                    and selected_release_tag == policy.release.tag
-                    and policy.release_expected_commit
-                ):
-                    expected_commit = policy.release_expected_commit
                 row["expected_commit"] = expected_commit
                 if lane == "binary":
                     row["arch"] = architecture

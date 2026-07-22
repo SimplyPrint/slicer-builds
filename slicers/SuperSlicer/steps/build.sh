@@ -3,7 +3,7 @@ set -euo pipefail
 
 source_dir="slicer-src"
 build_dir="$source_dir/build"
-prefix="$source_dir/deps/build/destdir/usr/local"
+prefix="$PWD/$source_dir/deps/build/destdir/usr/local"
 generator="${CMAKE_GENERATOR:-Ninja}"
 jobs="${SLICER_JOBS:-$(nproc)}"
 cmake_args=(-S "$source_dir" -B "$build_dir")

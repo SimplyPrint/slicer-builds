@@ -23,3 +23,20 @@ index 93083d1caa..ff98e659d6 100644
 +    if (GUI::OpenGLManager::get_gl_info().is_version_greater_or_equal_to(3, 3)) {
          valid &= append_shader("gouraud_light_instanced", { prefix + "gouraud_light_instanced.vs", prefix + "gouraud_light_instanced.fs" });
      }
+diff --git a/src/slic3r/GUI/GLModel.cpp b/src/slic3r/GUI/GLModel.cpp
+index f7fab43817..0df2c767fc 100644
+--- a/src/slic3r/GUI/GLModel.cpp
++++ b/src/slic3r/GUI/GLModel.cpp
+@@ -457,8 +457,10 @@ void GLModel::init_from(const indexed_triangle_set& its)
+     data.reserve_indices(3 * its.indices.size());
+ 
+     // Read user preference: smooth normals enabled
+-    const bool realistic_mode = wxGetApp().app_config != nullptr && wxGetApp().app_config->get_bool(SETTING_OPENGL_REALISTIC_MODE);
+-    const bool smooth_normals_enabled = wxGetApp().app_config != nullptr && wxGetApp().app_config->get_bool(SETTING_OPENGL_PHONG_SMOOTH_NORMALS);
++    const bool realistic_mode = wxTheApp != nullptr && wxGetApp().app_config != nullptr &&
++                                wxGetApp().app_config->get_bool(SETTING_OPENGL_REALISTIC_MODE);
++    const bool smooth_normals_enabled = wxTheApp != nullptr && wxGetApp().app_config != nullptr &&
++                                        wxGetApp().app_config->get_bool(SETTING_OPENGL_PHONG_SMOOTH_NORMALS);
+ 
+     if (realistic_mode && smooth_normals_enabled) {
+         // Use per-corner smooth normals (via IGL)

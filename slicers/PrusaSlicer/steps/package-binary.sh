@@ -11,7 +11,6 @@ python3 tools/stage_bundle.py \
   --name prusa-slicer \
   --arch "${ARCH:?ARCH is required}" \
   --output slicer-src/build/slicer_out \
-  --resources slicer-src/build/resources \
   --library-root slicer-src/build/src \
   --library-root slicer-src/deps/build \
   "${strip_args[@]}" \

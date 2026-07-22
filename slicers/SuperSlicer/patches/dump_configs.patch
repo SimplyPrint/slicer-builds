@@ -2,19 +2,19 @@ diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
 index 63bea93..adae171 100644
 --- a/src/libslic3r/PrintConfig.cpp
 +++ b/src/libslic3r/PrintConfig.cpp
-@@ -39,6 +39,8 @@
+@@ -12,6 +12,8 @@
  #include <boost/log/trivial.hpp>
  #include <boost/thread.hpp>
  #include <boost/nowide/iostream.hpp>
 +#include <boost/dll/runtime_symbol_info.hpp>
 +#include <boost/property_tree/json_parser.hpp>
  
- #include <algorithm>
- #include <cfloat>
-@@ -419,6 +421,163 @@ PrintConfigDef::PrintConfigDef()
+ #include <float.h>
+ 
+@@ -335,6 +337,158 @@ PrintConfigDef::PrintConfigDef()
+     assign_printer_technology_to_unknown(this->options, ptSLA);
      this->init_milling_params();
      assign_printer_technology_to_unknown(this->options, ptMill);
-     this->finalize();
 +    dump_to_json(this->options);
 +}
 +
@@ -49,8 +49,6 @@ index 63bea93..adae171 100644
 +        { coBool, "bool" },
 +        { coBools, "bools" },
 +        { coEnum, "enum" },
-+        { coGraph, "graph" },
-+        { coGraphs, "graphs" },
 +    };
 +
 +    static std::map<ConfigOptionMode, std::string> mode_map = {
@@ -69,7 +67,6 @@ index 63bea93..adae171 100644
 +        { ConfigOptionDef::GUIType::select_open, "select_open" },
 +        { ConfigOptionDef::GUIType::slider, "slider" },
 +        { ConfigOptionDef::GUIType::legend, "legend" },
-+        { ConfigOptionDef::GUIType::select_close, "select_close" },
 +    };
 +
 +    auto get_default_value = [&](ConfigOptionDef& opt, ptree& tree) {
@@ -86,14 +83,14 @@ index 63bea93..adae171 100644
 +                idx = option->get_int();
 +            }
 +
-+            auto label = def.enum_def->enum_to_label(idx);
-+
-+            if (!label.has_value()) {
-+                BOOST_LOG_TRIVIAL(error) << "Invalid enum label " << idx;
-+                return {};
++            if (def.enum_keys_map != nullptr) {
++                const auto names = enum_names_from_keys_map(*def.enum_keys_map);
++                if (idx >= 0 && size_t(idx) < names.size())
++                    return names[idx];
 +            }
-+            
-+            return label.value();
++            if (idx >= 0 && size_t(idx) < def.enum_values.size())
++                return def.enum_values[idx];
++            return {};
 +        };
 +
 +        switch (opt.type) {
@@ -113,8 +110,6 @@ index 63bea93..adae171 100644
 +        case coBool:                SET_VALUE(opt.get_default_value<ConfigOptionBool>()); break;
 +        case coBools:               SET_VALUE(opt.get_default_value<ConfigOptionBools>()); break;
 +        case coEnum:                tree.put("default_value", get_enum_name(opt)); break;
-+        case coGraph:               SET_VALUE(opt.get_default_value<ConfigOptionGraph>()); break;
-+        case coGraphs:              SET_VALUE(opt.get_default_value<ConfigOptionGraphs>()); break;
 +        default: break;
 +        }
 +#undef SET_VALUE
@@ -134,12 +129,12 @@ index 63bea93..adae171 100644
 +        if (!opt.sidetext.empty())
 +            opt_pt.put("sidetext", opt.sidetext);
 +        if (opt.type == coEnum) {
-+            put_array(opt_pt, "enum_values", opt.enum_def->values());
-+            put_array(opt_pt, "enum_labels", opt.enum_def->labels());
++            put_array(opt_pt, "enum_values", opt.enum_values);
++            put_array(opt_pt, "enum_labels", opt.enum_labels);
 +        }
-+        if (opt.min != -FLT_MAX)
++        if (opt.min != INT_MIN)
 +            opt_pt.put("min", opt.min);
-+        if (opt.max != FLT_MAX)
++        if (opt.max != INT_MAX)
 +            opt_pt.put("max", opt.max);
 +        if (opt.full_width)
 +            opt_pt.put("full_width", opt.full_width);
@@ -179,16 +174,16 @@ diff --git a/src/libslic3r/PrintConfig.hpp b/src/libslic3r/PrintConfig.hpp
 index 2a1947a..7fd89c9 100644
 --- a/src/libslic3r/PrintConfig.hpp
 +++ b/src/libslic3r/PrintConfig.hpp
-@@ -357,7 +357,8 @@ class PrintConfigDef : public ConfigDef
+@@ -308,7 +308,8 @@ class PrintConfigDef : public ConfigDef
  {
  public:
      PrintConfigDef();
 -    
 +    static void dump_to_json(t_optiondef_map& options, bool write_file = false);
 +
-     static void handle_legacy_map(std::unordered_map<t_config_option_key, std::pair<t_config_option_key, std::string>> &dict, bool remove_unkown_keys = true);
-     static void handle_legacy_pair(t_config_option_key &opt_key, std::string &value, bool remove_unkown_keys = true);
-     static bool is_defined(const t_config_option_key& opt_key);
+     static void handle_legacy(t_config_option_key& opt_key, std::string& value, bool remove_unkown_keys = true);
+     static bool is_defined(t_config_option_key& opt_key);
+     static std::map<std::string, std::string> to_prusa(t_config_option_key& opt_key, std::string& value, const DynamicConfig& all_conf);
 diff --git a/src/slic3r/GUI/I18N.hpp b/src/slic3r/GUI/I18N.hpp
 index 2785a13..f6056b7 100644
 --- a/src/slic3r/GUI/I18N.hpp
@@ -256,16 +251,16 @@ index 70ef86d..611eb09 100644
  
  #include "wxExtensions.hpp"
  #include <wx/wupdlock.h>
-@@ -435,6 +437,8 @@ void Tab::create_preset_tab()
-         m_treectrl->SetImages(img_bundles);
-     }
+@@ -424,6 +426,8 @@ void Tab::create_preset_tab()
+     // Initialize the DynamicPrintConfig by default keys/values.
+     build();
  
 +    dump_to_json();
 +
      // ys_FIXME: Following should not be needed, the function will be called later
      // (update_mode->update_visibility->rebuild_page_tree). This does not work, during the
      // second call of rebuild_page_tree m_treectrl->GetFirstVisibleItem(); returns zero
-@@ -445,6 +449,55 @@ void Tab::create_preset_tab()
+@@ -433,6 +437,55 @@ void Tab::create_preset_tab()
    }
  }
  

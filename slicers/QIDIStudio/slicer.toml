@@ -1,10 +1,13 @@
 schema_version = 1
 name = "QIDIStudio"
 repository = "https://github.com/QIDITECH/QIDIStudio.git"
-default_ref = "HEAD"
+default_ref = "v2.05.01.52"
+expected_commit = "59caa5b27d3ce571ed46761edb624c3b1ab8a099"
 family = "bambu"
 executable = "qidi-studio"
 architectures = ["x86-64"]
+backend_engine = "OrcaSlicer"
+backend_supported = true
 
 [capabilities]
 binary = true
@@ -25,3 +28,14 @@ enabled = false
 publish = false
 release = "none"
 nightly = true
+
+[test]
+contract = "bambu"
+profile_source = "bundle-resources"
+profile_root = "profiles/Q Series"
+machine_profile = "machine/Qidi Q1 Pro 0.4 nozzle.json"
+filament_profile = "filament/QIDI PLA Rapido @Qidi Q1 Pro 0.4 nozzle.json"
+process_profile = "process/0.20mm Standard @Q1 Pro.json"
+# Orca 2.3.2 is the production Bambu-based adapter path that preserves vendor
+# machine names without adding the newer Orca --logfile argument.
+backend_version = "2.3.2"

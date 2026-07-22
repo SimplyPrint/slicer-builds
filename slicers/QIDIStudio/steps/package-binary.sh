@@ -5,6 +5,10 @@ set -euo pipefail
 strip_args=()
 [[ "${SLICER_STRIP:-1}" == 0 ]] || strip_args+=(--strip)
 
+if [[ -z "${SLICER_RESOURCE_INCLUDES+x}" ]]; then
+  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/Q Series/**\nshaders/**'
+fi
+
 python3 tools/stage_bundle.py \
   --executable slicer-src/build/src/qidi-studio \
   --executable slicer-src/build/src/Release/qidi-studio \

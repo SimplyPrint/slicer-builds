@@ -1,0 +1,20 @@
+diff --git a/src/slic3r/GUI/Plater.cpp b/src/slic3r/GUI/Plater.cpp
+--- a/src/slic3r/GUI/Plater.cpp
++++ b/src/slic3r/GUI/Plater.cpp
+@@ -1175,11 +1175,11 @@ static void remap_model_filament_assignments(const std::vector<unsigned int> &re
+ 
+ // Forward declarations for MixedFilament <-> Dialog mapping helpers (defined later in anon namespace).
+ namespace {
+-MixedFilamentResult build_result_from_mixed(const MixedFilament& mf);
+-void apply_result_to_mixed(const MixedFilamentResult& r, MixedFilament& mf);
+-void apply_result_append_to_manager(const MixedFilamentResult& r,
+-                                    MixedFilamentManager& mgr,
+-                                    const std::vector<std::string>& colors);
++static MixedFilamentResult build_result_from_mixed(const MixedFilament& mf);
++static void apply_result_to_mixed(const MixedFilamentResult& r, MixedFilament& mf);
++static void apply_result_append_to_manager(const MixedFilamentResult& r,
++                                           MixedFilamentManager& mgr,
++                                           const std::vector<std::string>& colors);
+ }
+ 
+ Sidebar::Sidebar(Plater* parent) : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(40 * wxGetApp().em_unit(), -1)), p(new priv(parent))

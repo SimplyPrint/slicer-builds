@@ -6,6 +6,8 @@ expected_commit = "636f9608621fd1d6c1b75ad2a969de53beabfbc6"
 family = "cura"
 executable = "CuraEngine"
 architectures = ["x86-64"]
+backend_engine = "Cura"
+backend_supported = true
 
 [capabilities]
 binary = true
@@ -23,10 +25,18 @@ enabled = true
 publish = true
 repository = "https://github.com/Ultimaker/Cura.git"
 release = "tag:5.13.0"
-expected_commit = "1fb8a7610460e03ec62da950d1c173a249b23b59"
 nightly = false
 generator_only = true
 
+[test]
+contract = "cura"
+profile_source = "profiles-db"
+profile_engine = "cura"
+model_id = 148
+machine_name = "ELEGOO NEPTUNE"
+machine_variant = "0.4"
+process_native_id = "quality:elegoo_base:elegoo/base/pla/nozzle_0_40/elegoo_pla_nozzle_0.40_layer_0.20"
+filament_native_id = "generic_pla_175"
 
 [build]
 # Conan packages are shared through CONAN_HOME, but this generated toolchain is

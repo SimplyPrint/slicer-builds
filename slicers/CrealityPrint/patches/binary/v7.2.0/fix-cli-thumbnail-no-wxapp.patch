@@ -36,3 +36,17 @@ index 229ab3e..3747a78 100644
          // used to render clone shells
          valid &= append_shader("clone_preview_instance", { prefix + "clone_preview_instance.vs", prefix + "clone_preview_instance.fs" });
      }
+diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
+index 3d4333d1..57887a63 100644
+--- a/src/slic3r/GUI/PartPlate.cpp
++++ b/src/slic3r/GUI/PartPlate.cpp
+@@ -4149,7 +4149,8 @@ int PartPlateList::select_plate(int index)
+ 		//wxQueueEvent(m_plater, new SimpleEvent(EVT_GLCANVAS_PLATE_SELECT));
+ 	}
+ 
+-    Slic3r::GUI::NotifyAIChatSceneChanged();
++    if (m_plater)
++        Slic3r::GUI::NotifyAIChatSceneChanged();
+ 	return 0;
+ }
+ 

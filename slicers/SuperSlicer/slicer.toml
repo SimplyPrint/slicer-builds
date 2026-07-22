@@ -6,6 +6,8 @@ expected_commit = "e2eef1da2d395d92ad0875c478bca67c0bb8ec9f"
 family = "prusa"
 executable = "superslicer"
 architectures = ["x86-64"]
+backend_engine = "SuperSlicer"
+backend_supported = true
 
 [capabilities]
 binary = true
@@ -13,10 +15,10 @@ config_dump = true
 thumbnail = false
 
 [ci.binary]
-enabled = false
-publish = false
+enabled = true
+publish = true
 release = "tag:2.5.59.13"
-nightly = true
+nightly = false
 
 [ci.config]
 enabled = false
@@ -24,3 +26,11 @@ publish = false
 release = "tag:2.5.59.13"
 nightly = true
 gui = true
+
+[test]
+contract = "prusa"
+profile_source = "profiles-direct"
+profile_engine = "superslicer"
+machine_profile = "PrusaResearch/machine/Original Prusa i3 MK3S & MK3S+.json"
+filament_profile = "PrusaResearch/filament/Generic PLA.json"
+process_profile = "PrusaResearch/print/0.20mm QUALITY @MK3.json"

@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG UBUNTU_IMAGE=ubuntu:24.04
+ARG CLOUD_SLICER_IMAGE=ghcr.io/simplyprint/site-cloud-slicer:latest
 FROM ${UBUNTU_IMAGE} AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -86,3 +87,9 @@ RUN python3 -m venv /opt/conan \
 
 ENV PATH=/opt/conan/bin:${PATH}
 WORKDIR /workspace/repo
+
+FROM ${CLOUD_SLICER_IMAGE} AS smoke
+
+USER root
+COPY tests/integration/backend_smoke.py /opt/slicer-builds/backend_smoke.py
+USER ubuntu

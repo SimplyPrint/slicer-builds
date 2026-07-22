@@ -22,7 +22,7 @@ All slicer step scripts are run from the repository root with `slicer-src` and `
 ## Local Docker workflow
 
 `slicerctl` is the supported local entry point. It discovers slicers from
-`slicers/*/slicer.toml`, so local build and config matrices do not need
+`slicers/*/slicer.toml`, so local build and smoke-test matrices do not need
 another hard-coded slicer list.
 
 Build the reusable Ubuntu 24.04 builder, then build one slicer or the complete
@@ -48,6 +48,10 @@ the same isolated checkout and cache layout. Commit a temporary development
 branch first: uncommitted files are intentionally not copied into managed
 checkouts.
 
+Non-version refs use the backend adapter's `nightly` behavior during smoke
+tests; pass `--backend-version <version>` when a release branch needs different
+version-gated argv behavior.
+
 Build results live below `.work/results/`, with managed checkouts separated by
 upstream commit, architecture, patch-content hash, builder identity, and
 toolchain settings. Re-running an identical build reuses the result. `--force`
@@ -67,10 +71,57 @@ clean rebuild; genuinely different new bytes for an otherwise valid immutable
 identity still fail as a reproducibility error.
 
 Manifests may also declare commit-locked `[[supported_refs]]`. `matrix
---all-refs` and `build-all --all-refs` expand the
+--all-refs`, `build-all --all-refs`, and `test-all --all-refs` expand the
 default plus every retained base, while a one-off arbitrary `--ref` remains
 available for branch development. This replaces manually copying patches
 between long-lived working trees.
+
+Historical binaries use a separate rolling plan, so the curated patch
+regression refs do not churn whenever upstream publishes a release:
+
+```bash
+# Show the exact native plan without compiling.
+./slicerctl backfill --plan-only
+
+# Build the newest three downloader-compatible versions of every slicer.
+./slicerctl backfill --workers 2
+
+# Build every indexed Orca release from 2.3.0 onward.
+./slicerctl backfill --slicer OrcaSlicer --all-versions \
+  --minimum-version 2.3.0
+
+# Discover every stable upstream tag (host-independent) instead of the index.
+./slicerctl backfill --versions-from git-tags --plan-only
+
+# Restrict discovery to published stable GitHub Release objects.
+./slicerctl backfill --versions-from github-releases --plan-only
+```
+
+The default inventory is each slicer's checked-in `out/_index.json`, matching
+the production downloader. Selection strips a leading `v` or `version_`,
+groups on the first three numeric components, keeps the highest fourth build
+component, sorts newest-first, and then applies `--max-versions 3`. Three-part
+versions therefore remain distinct: Orca selects `2.4.2`, `2.4.1`, and
+`2.4.0`; Bambu build-number variants such as `02.07.01.57` and
+`02.07.01.62` collapse to the latter. `--all-versions` removes the count cap,
+and repeatable `--minimum-version SLICER=VERSION` thresholds are inclusive.
+`--versions-from git-tags` works with any Git remote and ignores nonnumeric
+prerelease tags. Stable GitHub Release discovery additionally excludes draft
+and prerelease release objects. Both are available for onboarding a slicer
+before its index has accumulated history; the index remains the production
+downloader boundary.
+
+Every selected tag is paired with its peeled upstream commit before work is
+scheduled. Index commit metadata is used offline where present; missing legacy
+metadata is resolved from Git. The build refuses a moved tag rather than
+silently compiling a different revision. Successful outputs remain in their
+immutable `.work/results/` artifact directories. The command always writes
+exact JSON and a neighboring Markdown table under
+`.work/reports/historical-builds-<arch>.{json,md}` (or `--report PATH`),
+including the main executable, full `bin/` dependency closure, resources, and
+total staged-bundle byte counts. Reports are written before a partial-failure
+exit, so completed binaries and their sizes are not lost when another version
+needs a patch backport.
 
 When adjacent upstream versions accept the identical binary overlay, a
 manifest can map the new ref to one canonical patch directory with
@@ -96,6 +147,59 @@ are collected by default; use `--fail-fast` for a short local iteration or
 `--include-head`, which also checks current `HEAD` for manifests with an
 enabled nightly lane while retaining the literal `HEAD` nightly-patch
 selection.
+
+## Production-shaped slice tests
+
+The default smoke-test paths expect these sibling repositories:
+
+```text
+../slicer-profiles-db
+../../simplyprint-web/cloud-slicer/backend
+```
+
+Run one test or require every native build to pass:
+
+```bash
+./slicerctl test OrcaSlicer
+./slicerctl test-all
+./slicerctl test-all --workers 3
+./slicerctl test-all --all-refs --workers 3
+```
+
+The test runs the current cloud-slicer adapter in its production runtime image.
+It therefore exercises the real argv, generated settings, environment,
+working-directory behavior, Weston/Xwayland OpenGL path, 3MF post-processing,
+and G-code extraction. A zero process exit status is required even if the
+slicer happened to leave output artifacts behind. Reports record the profile
+source and revision, selectors, native-versus-compatibility coverage, exact
+profile hashes, build/patch/bundle provenance, wall and child CPU time, and
+peak child RSS. Failed artifact validation leaves a structured
+`smoke-failure.json` beside the outputs. Profiles are selected by stable names or native IDs from the real
+profile database. Creality uses recursively resolved profiles from its own
+bundle; Anycubic and QIDI use native profiles from their own bundles; and
+SuperSlicer uses the stored versioned profiles. Bundle-profile inheritance is
+resolved by filename first and then by the profile's JSON `name`, matching the
+two conventions used across vendor forks.
+
+The Bambu/Orca-derived contract uses the deterministic
+`tests/integration/fixtures/calicat-bambu-v1.3mf`, generated by the production
+frontend exporter with the same centered, bed-positioned geometry it uploads.
+It intentionally contains no PNG or thumbnail reference, so validation cannot
+reuse an input image. Current Prusa/SuperSlicer and Cura contracts retain the
+production STL input. For every Bambu/Orca-derived engine, success additionally requires a referenced
+PNG thumbnail that passes checksum and decompression checks and contains
+nonuniform, visible pixels. Messages such as `init opengl failed! skip thumbnail
+generating` therefore cannot silently pass the gate.
+
+AnycubicSlicerNext and QIDIStudio do not yet have native cloud-slicer adapters.
+Their manifests say `backend_supported = false`; `test-all` exercises their
+compatible Orca/Bambu CLI contract without presenting that as production API
+support. Both pin compatibility behavior to the pre-2.4 Orca argument set,
+which preserves vendor machine names and omits the newer `--logfile` option
+that Anycubic's current CLI does not expose. QIDI deliberately does not use the
+BambuStudio adapter here because that adapter normalizes non-Bambu machine
+names to `Bambu Lab`; the smoke gate instead requires the generated settings to
+retain QIDI's native profile identity.
 
 ## Fast, small CLI builds
 
@@ -169,6 +273,7 @@ tree:
 ```bash
 SLICER_RESOURCE_INCLUDES=$'flush/**\nfonts/**\ninfo/**\nprofiles/BBL/cli_config.json\nshaders/**' \
   ./slicerctl build OrcaSlicer --force
+./slicerctl test OrcaSlicer
 ```
 
 Unsafe, unmatched, or escaping patterns and symlinks fail before the previous
@@ -197,8 +302,8 @@ STL/3MF, thumbnail, multi-material, and text/embossed tests pass.
 
 To onboard a slicer, add its license, `steps/` scripts, and one `slicer.toml`.
 `./slicerctl list` validates required fields, supported architectures,
-capabilities and step scripts. The entry then appears automatically in
-`matrix` and `build-all`.
+capabilities, profile selectors, and step scripts. The entry then appears
+automatically in `matrix`, `build-all`, and `test-all`.
 
 Keep source changes small and upstream-shaped:
 
@@ -215,7 +320,7 @@ Keep source changes small and upstream-shaped:
    `HEAD` falls back to `nightly` when no explicit HEAD directory exists.
 6. Run `slicerctl verify-patches` to check all retained bases without compiling.
    Use `slicerctl prepare` when an inspectable patched checkout is useful, then
-   run the Docker build and inspect the staged bundle.
+   run the Docker build and real slice gate.
 7. Submit behavior fixes upstream and remove local patches once every supported
    base includes the fix.
 
@@ -225,7 +330,7 @@ copying source trees or manually carrying patched working directories.
 
 When retaining multiple upstream bases, add each one as a `[[supported_refs]]`
 entry with its full commit ID. Keep only ref-specific patches that the expanded
-`build-all --all-refs` matrix proves necessary.
+`build-all --all-refs` and `test-all --all-refs` matrix proves necessary.
 
 ## Licensing
 

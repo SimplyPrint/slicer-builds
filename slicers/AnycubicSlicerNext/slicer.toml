@@ -5,6 +5,8 @@ default_ref = "HEAD"
 family = "orca"
 executable = "orca-slicer"
 architectures = ["x86-64"]
+backend_engine = "OrcaSlicer"
+backend_supported = false
 
 [capabilities]
 binary = true
@@ -29,3 +31,14 @@ enabled = false
 publish = false
 release = "none"
 nightly = true
+
+[test]
+contract = "bambu"
+profile_source = "bundle-resources"
+profile_root = "profiles/Anycubic"
+machine_profile = "machine/Anycubic Kobra 3 0.4 nozzle.json"
+filament_profile = "filament/Anycubic PLA @Anycubic Kobra 3 0.4 nozzle.json"
+process_profile = "process/0.20mm Standard @Anycubic Kobra 3 0.4 nozzle.json"
+# The compatibility adapter adds --logfile for Orca 2.4+/nightly, but this
+# vendor fork's current CLI does not expose that option.
+backend_version = "2.3.2"

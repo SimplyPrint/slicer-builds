@@ -7,8 +7,16 @@ strip_args=()
 
 library_args=(--library-root slicer-src/build/Release)
 for conan_root in slicer-src/deps/build/conan "${CONAN_HOME:-}"; do
-  if [[ -n "$conan_root" && -d "$conan_root" ]]; then
-    library_args+=(--library-root "$conan_root")
+  if [[ -n "$conan_root" && -d "$conan_root/p" ]]; then
+    # Conan keeps installed package payloads in */p directories, alongside
+    # build trees that may contain different copies of the same SONAME. Expose
+    # only package payloads so staging cannot select an intermediate library.
+    while IFS= read -r -d '' package_root; do
+      library_args+=(--library-root "$package_root")
+    done < <(
+      find "$conan_root/p" -mindepth 2 -maxdepth 3 -type d -name p -print0 \
+        | sort -z
+    )
   fi
 done
 

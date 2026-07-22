@@ -19,6 +19,7 @@ from collections import defaultdict, deque
 from dataclasses import dataclass
 import fnmatch
 from functools import lru_cache
+import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
@@ -195,7 +196,13 @@ def _is_within(path: Path, roots: Sequence[Path]) -> bool:
 def _resolve_missing_search_dirs(
     roots: Sequence[Path], names: Sequence[str]
 ) -> list[Path]:
-    """Find one unambiguous candidate for each unresolved loader name."""
+    """Find one unambiguous candidate for each unresolved loader name.
+
+    Dependency builds commonly copy the same shared object into both their
+    build and install trees. Treat byte-identical copies as one artifact while
+    continuing to reject genuinely different libraries with the same loader
+    name.
+    """
     wanted = set(names)
     candidates: dict[str, set[Path]] = defaultdict(set)
     for root in roots:
@@ -211,12 +218,18 @@ def _resolve_missing_search_dirs(
             raise BundleError(
                 f"unresolved shared library has no eligible candidate: {name}"
             )
-        if len(matches) != 1:
-            rendered = ", ".join(str(path) for path in sorted(matches, key=str))
-            raise BundleError(
-                f"ambiguous shared-library candidates for {name}: {rendered}"
-            )
-        directory = next(iter(matches)).parent
+        ordered_matches = sorted(matches, key=str)
+        if len(ordered_matches) != 1:
+            digests = {
+                hashlib.sha256(path.read_bytes()).digest()
+                for path in ordered_matches
+            }
+            if len(digests) != 1:
+                rendered = ", ".join(str(path) for path in ordered_matches)
+                raise BundleError(
+                    f"ambiguous shared-library candidates for {name}: {rendered}"
+                )
+        directory = ordered_matches[0].parent
         if directory not in search_dirs:
             search_dirs.append(directory)
     return search_dirs
@@ -425,14 +438,28 @@ def _dependency_closure(
         if binary in inspected:
             continue
         inspected.add(binary)
-        try:
-            dependencies = _ldd(binary, [])
-        except MissingDependencies as error:
-            # Only scan for loader names that were actually unresolved. Broadly
-            # prepending every build directory can silently select a debug or
-            # stale library with the same SONAME.
-            search_dirs = _resolve_missing_search_dirs(library_roots, error.names)
-            dependencies = _ldd(binary, search_dirs)
+        search_dirs: list[Path] = []
+        while True:
+            try:
+                dependencies = _hermetic_dependencies(binary, list(search_dirs))
+                break
+            except MissingDependencies as error:
+                # The loader commonly reports only its first missing SONAME.
+                # Adding that directory may reveal another dependency on the
+                # next pass, so resolve incrementally until the closure loads.
+                # Only scan for names that were actually unresolved: broadly
+                # prepending every build directory can silently select a debug
+                # or stale library with the same SONAME.
+                discovered = _resolve_missing_search_dirs(
+                    library_roots, error.names
+                )
+                added = [path for path in discovered if path not in search_dirs]
+                if not added:
+                    raise BundleError(
+                        "resolved shared-library search directories did not "
+                        f"satisfy {binary}: {', '.join(error.names)}"
+                    ) from error
+                search_dirs.extend(added)
         for dependency in dependencies:
             if not _is_within(dependency.path, library_roots):
                 continue

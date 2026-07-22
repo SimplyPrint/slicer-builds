@@ -5,26 +5,6 @@ on:
     - cron: "0 22 * * *"
   workflow_dispatch:
     inputs:
-      runner:
-        type: choice
-        options:
-          - ubuntu-24.04
-          - ubicloud-standard-16-ubuntu-2404
-          - ubicloud-standard-30-ubuntu-2404
-        default: ubuntu-24.04
-        description: The runner for this action
-        required: true
-
-      runner-arm:
-        type: choice
-        options:
-          - ubuntu-24.04-arm
-          - ubicloud-standard-16-arm-ubuntu-2404
-          - ubicloud-standard-30-arm-ubuntu-2404
-        default: ubuntu-24.04-arm
-        description: The ARM runner for this action
-        required: true
-
       slicer:
         type: string
         default: all
@@ -34,11 +14,12 @@ on:
       build-type:
         type: choice
         options:
+          - consumer
           - all
           - nightly
           - latest_release
-        default: all
-        description: Build type to run
+        default: consumer
+        description: Consumer rebuild, or a regular latest/nightly build
         required: true
 
       release-tag:
@@ -110,15 +91,18 @@ jobs:
     needs: prepare_matrix
     strategy:
       fail-fast: false
+      max-parallel: 4
       matrix: ${{ fromJSON(needs.prepare_matrix.outputs.matrix) }}
 
-    runs-on: ${{ matrix.arch == 'arm64' && (inputs.runner-arm || 'ubuntu-24.04-arm') || (inputs.runner || 'ubuntu-24.04') }}
+    runs-on: ${{ matrix.arch == 'arm64' && 'ubicloud-standard-30-arm-ubuntu-2404' || 'ubicloud-standard-30-ubuntu-2404' }}
     env:
       DEPS_CACHE_KEY: ''
       SLICER_CACHE_KEY: ''
       latest_release_tag: ''
       latest_release_at_head: 'false'
       continue_build: 'true'
+      CONSUMER_REBUILD: ${{ matrix.consumer_rebuild && 'true' || 'false' }}
+      FORCE_REBUILD: ${{ (inputs.force-rebuild || matrix.consumer_rebuild) && 'true' || 'false' }}
       IS_ARM: ${{ matrix.arch == 'arm64' && 'true' || 'false' }}
       PLATFORM: linux
       ARCH: ${{ matrix.arch }}
@@ -202,7 +186,7 @@ jobs:
           echo "upstream_published_at=$upstream_published_at" >> "$GITHUB_ENV"
           echo "head_hash=$head_hash" >> "$GITHUB_ENV"
 
-          if [[ "$release_mode" != "none" && ( "$release_build_present" != "true" || "${{ inputs.force-rebuild || false }}" == "true" ) ]]; then
+          if [[ "$release_mode" != "none" && ( "$release_build_present" != "true" || "$FORCE_REBUILD" == "true" ) ]]; then
             git -C slicer-src fetch origin "refs/tags/$latest_release_tag"
             if [[ "$head_hash" == "$latest_release_hash" ]]; then
               echo "Latest release found at HEAD"
@@ -229,6 +213,14 @@ jobs:
             build_ref_hash="$latest_release_hash"
             version_dir="$latest_release_tag"
           fi
+          mark_latest=false
+          if [[ "${{ matrix.build-type }}" == "latest_release" ]]; then
+            if [[ "$CONSUMER_REBUILD" == "true" ]]; then
+              [[ "$version_dir" != "$latest_stored_tag" ]] || mark_latest=true
+            else
+              mark_latest=true
+            fi
+          fi
           if [[ ! "$build_ref_hash" =~ ^[0-9a-f]{40,64}$ ]]; then
             echo "Invalid resolved upstream commit: $build_ref_hash" >&2
             exit 1
@@ -241,6 +233,7 @@ jobs:
 
           cat > slicer-out/config.sh <<EOF
           build_type=${{ matrix.build-type }}
+          mark_latest=$mark_latest
           version_dir=$version_dir
           tag=$latest_release_tag
           slicer=${{ matrix.slicer }}
@@ -313,7 +306,7 @@ jobs:
           ./slicers/${{ matrix.slicer }}/steps/build-deps.sh
 
       - name: Cache built slicer
-        if: env.continue_build == 'true' && !inputs.force-rebuild && !inputs.disable-caching
+        if: env.continue_build == 'true' && env.FORCE_REBUILD != 'true' && !inputs.disable-caching
         id: cache-build-slicer
         uses: actions/cache@v4
         with:
@@ -321,7 +314,7 @@ jobs:
           key: build-v2-${{ runner.os }}-${{ matrix.slicer }}-${{ env.ARCH }}-${{ env.SLICER_CACHE_KEY }}
 
       - name: Build slicer
-        if: env.continue_build == 'true' && (inputs.force-rebuild || inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
+        if: env.continue_build == 'true' && (env.FORCE_REBUILD == 'true' || inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
         run: |
           ./slicers/${{ matrix.slicer }}/steps/build.sh
 
@@ -359,6 +352,7 @@ jobs:
           target_commitish: ${{ github.ref_name }}
           body: "Link to workflow run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           make_latest: false
+          overwrite_files: true
 
       - name: Upload nightly release
         if: env.continue_build == 'true' && matrix.publish == true && matrix.build-type == 'nightly'
@@ -375,7 +369,7 @@ jobs:
         if: env.continue_build == 'true' && matrix.publish == true
         uses: actions/upload-artifact@v4
         with:
-          name: binary-config-${{ matrix.slicer }}-${{ matrix.build-type }}-${{ env.ARCH }}
+          name: binary-config-${{ matrix.slicer }}-${{ matrix.consumer_rebuild && matrix.release_tag || matrix.build-type }}-${{ env.ARCH }}
           path: |
             slicer-out/config.sh
             slicer-out/slicer-bundle-report.json
@@ -444,7 +438,7 @@ jobs:
               --upstream-published-at "$upstream_published_at" \
               --source-repo "$repo" \
               --workflow-run-url "$workflow_run_url" \
-              $([[ "$version_dir" != "nightly" ]] && echo --latest)
+              $([[ "$mark_latest" == "true" ]] && echo --latest)
 
             if [[ "$build_type" == "nightly" && "$latest_release_at_head" == "true" ]]; then
               ./tools/update_slicer_index.py \

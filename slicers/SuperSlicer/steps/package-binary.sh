@@ -23,7 +23,6 @@ python3 tools/stage_bundle.py \
   --name superslicer \
   --arch "${ARCH:?ARCH is required}" \
   --output slicer-src/build/slicer_out \
-  --resources slicer-src/build/resources \
   "${library_args[@]}" \
   "${strip_args[@]}" \
   --json | tee slicer-src/build/slicer-bundle-report.json

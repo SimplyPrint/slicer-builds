@@ -1,0 +1,52 @@
+schema_version = 1
+name = "SnapmakerOrca"
+repository = "https://github.com/Snapmaker/OrcaSlicer.git"
+default_ref = "v2.3.5"
+expected_commit = "761718a5eaf6f52b818af236653f3807d091a613"
+family = "orca"
+executable = "snapmaker-orca"
+architectures = ["x86-64"]
+backend_engine = "OrcaSlicer"
+backend_supported = true
+
+[[supported_refs]]
+ref = "v2.3.4"
+expected_commit = "9fd12ffb2b1b80c9fb4c14564754d2ec1573a626"
+
+[[supported_refs]]
+ref = "v2.3.3"
+expected_commit = "9921461fc99745ac22ef331c7720383aabc04987"
+
+[capabilities]
+binary = true
+config_dump = false
+thumbnail = true
+
+[patches]
+shared = [
+    "cli-thumbnail-glew-glx",
+    "cli-thumbnail-orca-legacy",
+]
+
+[ci.binary]
+enabled = false
+publish = false
+release = "none"
+nightly = false
+
+[ci.config]
+enabled = false
+publish = false
+release = "none"
+nightly = false
+
+[test]
+contract = "bambu"
+profile_source = "bundle-resources"
+profile_root = "profiles/Snapmaker"
+machine_profile = "machine/Snapmaker A250 (0.4 nozzle).json"
+filament_profile = "filament/Generic PLA.json"
+process_profile = "process/0.20 Standard @Snapmaker (0.4 nozzle).json"
+# The production compatibility adapter must preserve the fork's CLI surface:
+# these releases predate the Orca --logfile option.
+backend_version = "2.3.2"

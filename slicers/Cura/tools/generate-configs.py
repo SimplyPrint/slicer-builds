@@ -894,20 +894,6 @@ def generate(resources: Path, output: Path) -> None:
         output / "conditional_visibility.json",
         {
             "conditions": conditions,
-            "function_definitions": (
-                {
-                    "extruderValues": {
-                        "kind": "setting_values_by_tool",
-                        "argument": "setting_key",
-                        "scope_template": "extruder.{tool_index}",
-                        "order": "tool_index",
-                        "missing": "omit",
-                        "fallback": "merged_value",
-                    }
-                }
-                if uses_extruder_values
-                else {}
-            ),
             "functions": ["extruderValues"] if uses_extruder_values else [],
             "variable_defaults": variable_defaults,
             "variables": sorted(visibility_variables),

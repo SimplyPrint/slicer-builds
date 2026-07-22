@@ -19,7 +19,7 @@ case "${SLICER_GUI:-0}" in
     ;;
   *)
     # These packages are only used by the GUI, tests, sandboxes, or STEP import.
-    package_excludes="CURL|Catch2|GLEW|NanoSVG|OCCT|OpenCSG|OpenSSL|wxWidgets"
+    package_excludes="CURL|Catch2|GLEW|OCCT|OpenCSG|OpenSSL|wxWidgets"
     ;;
 esac
 
