@@ -15,7 +15,6 @@ on:
       - ".github/workflows/verify_patches.yml"
       - "patches/**"
       - "slicerctl"
-      - "slicers/*/out/_index.json"
       - "slicers/*/patches/**"
       - "slicers/*/slicer.toml"
       - "tools/slicerctl.py"
@@ -24,7 +23,6 @@ on:
       - ".github/workflows/verify_patches.yml"
       - "patches/**"
       - "slicerctl"
-      - "slicers/*/out/_index.json"
       - "slicers/*/patches/**"
       - "slicers/*/slicer.toml"
       - "tools/slicerctl.py"
@@ -66,25 +64,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Compute mirror cache identity
-        id: mirror-key
-        env:
-          SLICER_NAME: ${{ matrix.slicer }}
-        run: |
-          set -euo pipefail
-          identity=$(./slicerctl list --json | jq -c --arg name "$SLICER_NAME" \
-            '.[] | select(.name == $name) | {repository, refs}')
-          digest=$(printf '%s' "$identity" | sha256sum | cut -c1-20)
-          echo "digest=$digest" >> "$GITHUB_OUTPUT"
-
-      - name: Restore upstream mirror
-        uses: actions/cache@v4
-        with:
-          path: .work/git/${{ matrix.slicer }}.git
-          key: patch-mirror-v1-${{ runner.os }}-${{ matrix.slicer }}-${{ steps.mirror-key.outputs.digest }}
-          restore-keys: |
-            patch-mirror-v1-${{ runner.os }}-${{ matrix.slicer }}-
 
       - name: Verify retained and nightly patch stacks
         run: ./slicerctl verify-patches --slicer "${{ matrix.slicer }}" --include-head --json

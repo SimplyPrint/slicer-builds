@@ -21,6 +21,9 @@ WORK_ROOT = ROOT / ".work"
 COMMIT_RE = re.compile(r"[0-9a-f]{40,64}")
 SAFE_NAME_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*")
 SAFE_REF_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._/@+-]*")
+GITHUB_REPOSITORY_RE = re.compile(
+    r"[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*"
+)
 RETAINED_RELEASE_LIMIT = 3
 
 
@@ -94,7 +97,18 @@ def ref_specs(manifest: Manifest) -> list[dict[str, str | None]]:
         # downloadable but are not safe inputs for compatibility validation.
         if not isinstance(commit, str) or COMMIT_RE.fullmatch(commit) is None:
             continue
-        specs.append({"ref": safe_ref(ref, f"{index_path}: ref"), "expected_commit": commit})
+        source_repo = version.get("source_repo")
+        if not isinstance(source_repo, str) or GITHUB_REPOSITORY_RE.fullmatch(
+            source_repo
+        ) is None:
+            fail(f"{index_path}: invalid source_repo for {ref!r}")
+        specs.append(
+            {
+                "ref": safe_ref(ref, f"{index_path}: ref"),
+                "expected_commit": commit,
+                "repository": f"https://github.com/{source_repo}.git",
+            }
+        )
         if len(specs) == RETAINED_RELEASE_LIMIT:
             break
     return specs
@@ -236,28 +250,50 @@ def run(
     return completed.stdout.strip() if capture else ""
 
 
-def prepare_mirror(manifest: Manifest, seed: Path | None) -> tuple[Path, str]:
+def prepare_mirror(
+    manifest: Manifest, repository: str, seed: Path | None
+) -> tuple[Path, str]:
     mirror = WORK_ROOT / "git" / f"{manifest.name}.git"
     mirror.parent.mkdir(parents=True, exist_ok=True)
-    transport = str(seed.resolve()) if seed else manifest.data["repository"]
+    transport = str(seed.resolve()) if seed else repository
 
     if not mirror.exists():
-        run(["git", "clone", "--mirror", transport, mirror])
+        run(["git", "init", "--bare", mirror])
     elif not mirror.is_dir():
         fail(f"Git mirror path is not a directory: {mirror}")
-    else:
-        run(["git", "fetch", "--prune", "--force", "--tags", transport], cwd=mirror)
-    run(
-        ["git", "remote", "set-url", "origin", manifest.data["repository"]],
+
+    remote = subprocess.run(
+        ["git", "remote", "get-url", "origin"],
         cwd=mirror,
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
     )
+    if remote.returncode == 0:
+        run(
+            ["git", "remote", "set-url", "origin", repository],
+            cwd=mirror,
+        )
+    else:
+        run(
+            ["git", "remote", "add", "origin", repository],
+            cwd=mirror,
+        )
     return mirror, transport
 
 
 def resolve_ref(mirror: Path, transport: str, ref: str) -> tuple[str | None, str]:
-    if ref == "HEAD":
+    if COMMIT_RE.fullmatch(ref):
+        commit = ref
+    else:
+        patterns = (
+            ["HEAD"]
+            if ref == "HEAD"
+            else [f"refs/tags/{ref}", f"refs/tags/{ref}^{{}}", f"refs/heads/{ref}"]
+        )
         completed = subprocess.run(
-            ["git", "ls-remote", transport, "HEAD"],
+            ["git", "ls-remote", transport, *patterns],
             check=False,
             text=True,
             stdout=subprocess.PIPE,
@@ -267,28 +303,28 @@ def resolve_ref(mirror: Path, transport: str, ref: str) -> tuple[str | None, str
             return None, git_error(completed)
         fields = completed.stdout.split()
         if not fields or COMMIT_RE.fullmatch(fields[0]) is None:
-            return None, "transport returned an invalid HEAD commit"
-        commit = fields[0]
-        subprocess.run(
-            ["git", "fetch", "--quiet", transport, commit],
-            cwd=mirror,
-            check=False,
+            return None, f"transport did not resolve {ref!r} to a commit"
+        # Prefer an annotated tag's peeled commit when both tag records exist.
+        records = list(zip(fields[0::2], fields[1::2], strict=True))
+        peeled = next((sha for sha, name in records if name.endswith("^{}")), None)
+        tag = next(
+            (sha for sha, name in records if name == f"refs/tags/{ref}"), None
         )
-        return commit, ""
+        head = next(
+            (sha for sha, name in records if name == f"refs/heads/{ref}"), None
+        )
+        commit = peeled or tag or head or records[0][0]
 
-    completed = subprocess.run(
-        ["git", "rev-parse", "--verify", f"{ref}^{{commit}}"],
+    fetched = subprocess.run(
+        ["git", "fetch", "--quiet", "--depth=1", "--no-tags", transport, commit],
         cwd=mirror,
         check=False,
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-    if completed.returncode != 0:
-        return None, git_error(completed)
-    commit = completed.stdout.strip()
-    if COMMIT_RE.fullmatch(commit) is None:
-        return None, f"Git returned an invalid commit for {ref!r}"
+    if fetched.returncode != 0:
+        return None, git_error(fetched)
     return commit, ""
 
 
@@ -341,12 +377,16 @@ def verification_refs(manifest: Manifest, include_head: bool) -> list[dict[str, 
         isinstance(lane, dict)
         and lane.get("enabled", False)
         and lane.get("nightly", False)
-        and lane.get("repository", manifest.data["repository"])
-        == manifest.data["repository"]
         for lane in (ci.get("binary", {}), ci.get("config", {}))
     )
     if include_head and nightly and all(spec["ref"] != "HEAD" for spec in specs):
-        specs.append({"ref": "HEAD", "expected_commit": None})
+        specs.append(
+            {
+                "ref": "HEAD",
+                "expected_commit": None,
+                "repository": manifest.data["repository"],
+            }
+        )
     return specs
 
 
@@ -413,14 +453,20 @@ def command_verify(args: argparse.Namespace) -> None:
         matched_modes.update(modes)
         for spec in specs:
             for mode in modes:
-                plans.append(
-                    (
-                        manifest,
-                        spec,
-                        mode,
-                        patch_files(manifest, str(spec["ref"]), mode),
-                    )
-                )
+                selected = patch_files(manifest, str(spec["ref"]), mode)
+                if not selected:
+                    continue
+                mode_spec = spec
+                if spec["ref"] == "HEAD":
+                    lane_name = "binary" if mode == "binary" else "config"
+                    lane = manifest.data["ci"].get(lane_name, {})
+                    mode_spec = {
+                        **spec,
+                        "repository": lane.get(
+                            "repository", manifest.data["repository"]
+                        ),
+                    }
+                plans.append((manifest, mode_spec, mode, selected))
 
     missing_refs = sorted(requested_refs - matched_refs)
     if missing_refs:
@@ -430,17 +476,21 @@ def command_verify(args: argparse.Namespace) -> None:
         fail(f"Patch modes are not enabled: {', '.join(missing_modes)}")
 
     results: list[dict[str, Any]] = []
-    mirrors: dict[str, tuple[Path, str] | BaseException] = {}
+    mirrors: dict[tuple[str, str], tuple[Path, str] | BaseException] = {}
     for manifest, spec, mode, selected in plans:
-        if manifest.name not in mirrors:
+        repository = str(spec.get("repository", manifest.data["repository"]))
+        mirror_key = (manifest.name, repository)
+        if mirror_key not in mirrors:
             try:
-                mirrors[manifest.name] = prepare_mirror(manifest, args.source)
+                mirrors[mirror_key] = prepare_mirror(
+                    manifest, repository, args.source
+                )
             except (OSError, subprocess.CalledProcessError, SystemExit) as error:
-                mirrors[manifest.name] = error
+                mirrors[mirror_key] = error
 
         failure: dict[str, str] | None = None
         commit: str | None = None
-        mirror_result = mirrors[manifest.name]
+        mirror_result = mirrors[mirror_key]
         if isinstance(mirror_result, BaseException):
             failure = {"stage": "prepare-mirror", "error": str(mirror_result)}
         else:
