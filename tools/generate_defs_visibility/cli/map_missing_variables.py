@@ -1,8 +1,46 @@
 import json
+import re
 
 import openai
 
 from .parse_conditions import ConditionalVisibility, BinaryOp, Variable, LitStr
+
+
+ENUM_VALUE_ALIASES = {
+    'btautobrim': 'auto_brim',
+    'btear': 'brim_ears',
+    'btbrimears': 'brim_ears',
+    'btnobrim': 'no_brim',
+    'gcfklipper': 'klipper',
+    'gcfmarlinfirmware': 'marlin',
+    'iprectilinear': 'line',
+    'ipstars': 'tri-hexagon',
+    'noironing': 'no ironing',
+    'rear': 'back',
+    'treeorganic': 'organic',
+}
+
+
+def normalize_enum_token(value: str) -> str:
+    return re.sub(r'[^a-z0-9]', '', value.lower())
+
+
+def deterministic_enum_value(variable: str, enum_values: list[str]) -> str | None:
+    member = variable.rsplit('::', 1)[-1]
+    tokens = [member]
+    for prefix in ('bt', 'ds', 'gcf', 'gft', 'ip', 'sms', 'sp', 'wtw'):
+        if member.lower().startswith(prefix) and len(member) > len(prefix):
+            tokens.append(member[len(prefix):])
+
+    normalized_values = {normalize_enum_token(value): value for value in enum_values}
+    for token in tokens:
+        alias = ENUM_VALUE_ALIASES.get(normalize_enum_token(token))
+        if alias in enum_values:
+            return alias
+        matched = normalized_values.get(normalize_enum_token(token))
+        if matched is not None:
+            return matched
+    return None
 
 
 def map_missing_variables(cv: ConditionalVisibility, config_def: dict):
@@ -48,20 +86,30 @@ def map_missing_variables(cv: ConditionalVisibility, config_def: dict):
         if k in config_keys_variable_relations
     ]
 
-    print(mapping_request)
-
     if not mapping_request:
         return
 
-    print("Calling OpenAI API to map variables to enum values...")
+    mappings = {}
+    unresolved_request = []
+    for request in mapping_request:
+        unresolved = []
+        for variable in request['variables']:
+            value = deterministic_enum_value(variable, request['enum_values'])
+            if value is None:
+                unresolved.append(variable)
+            else:
+                mappings[variable] = value
+        if unresolved:
+            unresolved_request.append({**request, 'variables': unresolved})
 
-    # Call OpenAI API to map variables to enum values
-    try:
-        mappings = map_enum_variables(mapping_request)
-        print("Mappings received from OpenAI API:", mappings)
-    except Exception as e:
-        print(f"Error calling OpenAI API: {e}")
-        exit(1)
+    if unresolved_request:
+        print("Unresolved enum mappings:", json.dumps(unresolved_request))
+        print("Calling OpenAI API to map unresolved enum values...")
+        try:
+            mappings.update(map_enum_variables(unresolved_request))
+        except Exception as e:
+            print(f"Error calling OpenAI API: {e}")
+            exit(1)
 
     for var, enum_value in mappings.items():
         cv.subst_var(var, LitStr(value=enum_value))

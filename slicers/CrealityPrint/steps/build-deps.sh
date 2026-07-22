@@ -4,9 +4,9 @@ set -euo pipefail
 pushd slicer-src
 
 if [[ -f "build_linux.sh" ]]; then
-  ./build_linux.sh -dr
+  bash ./build_linux.sh -dr
 else
-  ./BuildLinux.sh -dr
+  bash ./BuildLinux.sh -dr
 fi
 
 popd

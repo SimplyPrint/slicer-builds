@@ -1,0 +1,170 @@
+diff --git a/src/slic3r/GUI/3DScene.cpp b/src/slic3r/GUI/3DScene.cpp
+index f2281ade..3d3b56ce 100644
+--- a/src/slic3r/GUI/3DScene.cpp
++++ b/src/slic3r/GUI/3DScene.cpp
+@@ -632,12 +632,7 @@ void GLVolume::simple_render(GLShaderProgram* shader, ModelObjectPtrs& model_obj
+         glFrontFace(GL_CW);
+     glsafe(::glCullFace(GL_BACK));
+ 
+-	auto                      camera        = GUI::wxGetApp().plater()->get_camera();
+-    auto                      zoom          = camera.get_zoom();
+-    Transform3d               vier_mat      = camera.get_view_matrix();
+-    Matrix4d                  vier_proj_mat = camera.get_projection_matrix().matrix() * vier_mat.matrix();
+-    const std::array<int, 4>& viewport      = camera.get_viewport();
+-	
++    GUI::Plater* plater = wxTheApp != nullptr ? GUI::wxGetApp().plater() : nullptr;
+ 
+     bool color_volume = false;
+     ModelObject* model_object = nullptr;
+@@ -711,18 +706,26 @@ void GLVolume::simple_render(GLShaderProgram* shader, ModelObjectPtrs& model_obj
+                 }
+             }
+             if (tverts_range == std::make_pair<size_t, size_t>(0, -1))
+-                m.render();
++                m.render(shader);
+             else
+-                m.render(this->tverts_range);
++                m.render(shader, this->tverts_range);
+         }
+     } else {
+ 
+-		m_lod_update_index++;
+-        if (abs(zoom - LAST_CAMERA_ZOOM_VALUE) > ZOOM_THRESHOLD || m_lod_update_index >= LOD_UPDATE_FREQUENCY) {
+-            m_lod_update_index     = 0;
+-            LAST_CAMERA_ZOOM_VALUE = zoom;
+-            m_cur_lod_level        = calc_volume_box_in_screen_bigger_than_threshold(transformed_bounding_box(), vier_proj_mat, viewport[2],
+-                                                                                     viewport[3]);
++        if (plater != nullptr) {
++            const GUI::Camera& camera = plater->get_camera();
++            const auto zoom = camera.get_zoom();
++            const Transform3d& view_mat = camera.get_view_matrix();
++            const Matrix4d view_proj_mat = camera.get_projection_matrix().matrix() * view_mat.matrix();
++            const std::array<int, 4>& viewport = camera.get_viewport();
++
++            m_lod_update_index++;
++            if (abs(zoom - LAST_CAMERA_ZOOM_VALUE) > ZOOM_THRESHOLD || m_lod_update_index >= LOD_UPDATE_FREQUENCY) {
++                m_lod_update_index     = 0;
++                LAST_CAMERA_ZOOM_VALUE = zoom;
++                m_cur_lod_level = calc_volume_box_in_screen_bigger_than_threshold(transformed_bounding_box(), view_proj_mat,
++                                                                                  viewport[2], viewport[3]);
++            }
+         }
+ 
+         if (tverts_range == std::make_pair<size_t, size_t>(0, -1))
+@@ -736,7 +739,7 @@ void GLVolume::simple_render(GLShaderProgram* shader, ModelObjectPtrs& model_obj
+ 				{
+                     model_small->set_color(model.get_color());
+ 				}
+-				model_small->render();
++				model_small->render(shader);
+             } else if (m_cur_lod_level == LOD_LEVEL::MIDDLE && model_middle && model_middle->is_initialized()) {
+ #if 0
+ 				if (!picking && GUI::wxGetApp().app_config->get_bool("lod_debug")) {
+@@ -746,24 +749,25 @@ void GLVolume::simple_render(GLShaderProgram* shader, ModelObjectPtrs& model_obj
+ 				{
+ 					model_middle->set_color(model.get_color());
+                 }
+-                model_middle->render();
++                model_middle->render(shader);
+             } else {
+-                model.render();
++                model.render(shader);
+             }
+             
+-            if (GUI::wxGetApp().plater()->is_show_wireframe() && GUI::wxGetApp().plater()->get_current_canvas3D()->get_canvas_type() == GUI::GLCanvas3D::ECanvasType::CanvasView3D && !picking)
++            if (plater != nullptr && plater->is_show_wireframe() &&
++                plater->get_current_canvas3D()->get_canvas_type() == GUI::GLCanvas3D::ECanvasType::CanvasView3D && !picking)
+             {
+                 const ColorRGBA color = model.get_color();
+                 model.set_color(ColorRGBA::DARK_GRAY());
+                 glsafe(::glLineWidth(1.0f));
+                 glsafe(::glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
+-                model.render();
++                model.render(shader);
+                 glsafe(::glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+                 model.set_color(color);
+             }
+         }
+         else
+-            model.render(this->tverts_range);
++            model.render(shader, this->tverts_range);
+     }
+     if (this->is_left_handed())
+         glFrontFace(GL_CCW);
+diff --git a/src/slic3r/GUI/GLCanvas3D.cpp b/src/slic3r/GUI/GLCanvas3D.cpp
+index e002a9e6..d1c64c41 100644
+--- a/src/slic3r/GUI/GLCanvas3D.cpp
++++ b/src/slic3r/GUI/GLCanvas3D.cpp
+@@ -8171,13 +8171,18 @@ void GLCanvas3D::render_thumbnail_internal(ThumbnailData&            thumbnail_d
+         shader->set_uniform("ban_light", ban_light);
+ 
+         // Creality: add layer color
+-        Model& model = wxGetApp().plater()->model();
+-        auto   info  = model.plates_custom_gcodes[thumbnail_params.plate_id];
+-        if (!info.gcodes.empty()) {
++        const Model* model = model_objects.empty() ? nullptr : model_objects.front()->get_model();
++        const CustomGCode::Info* info = nullptr;
++        if (model != nullptr) {
++            const auto it = model->plates_custom_gcodes.find(thumbnail_params.plate_id);
++            if (it != model->plates_custom_gcodes.end())
++                info = &it->second;
++        }
++        if (info != nullptr && !info->gcodes.empty() && wxTheApp != nullptr) {
+             const Slic3r::DynamicPrintConfig* config = &wxGetApp().preset_bundle->project_config;
+             if (config->has("filament_colour")) {
+                 std::vector<std::string> filament_colors = (config->option<ConfigOptionStrings>("filament_colour"))->values;
+-                GLVolumeCollection::apply_custom_gcode(shader, info, filament_colors);
++                GLVolumeCollection::apply_custom_gcode(shader, *info, filament_colors);
+             }
+         } else {
+             shader->set_uniform("layersCount", 0);
+diff --git a/src/slic3r/GUI/GLModel.cpp b/src/slic3r/GUI/GLModel.cpp
+index 9e96afaa..96ca86b8 100644
+--- a/src/slic3r/GUI/GLModel.cpp
++++ b/src/slic3r/GUI/GLModel.cpp
+@@ -622,6 +622,16 @@ void GLModel::render()
+ }
+ 
+ void GLModel::render(const std::pair<size_t, size_t>& range)
++{
++    render(wxTheApp != nullptr ? wxGetApp().get_current_shader() : nullptr, range);
++}
++
++void GLModel::render(GLShaderProgram* shader)
++{
++    render(shader, std::make_pair<size_t, size_t>(0, indices_count()));
++}
++
++void GLModel::render(GLShaderProgram* shader, const std::pair<size_t, size_t>& range)
+ {
+     if (m_render_disabled)
+         return;
+@@ -629,7 +639,6 @@ void GLModel::render(const std::pair<size_t, size_t>& range)
+     if (range.second == range.first)
+         return;
+ 
+-    GLShaderProgram* shader = wxGetApp().get_current_shader();
+     if (shader == nullptr)
+         return;
+ 
+diff --git a/src/slic3r/GUI/GLModel.hpp b/src/slic3r/GUI/GLModel.hpp
+index 4b040a49..19532379 100644
+--- a/src/slic3r/GUI/GLModel.hpp
++++ b/src/slic3r/GUI/GLModel.hpp
+@@ -13,6 +13,7 @@ namespace Slic3r {
+ 
+ class TriangleMesh;
+ class Polygon;
++class GLShaderProgram;
+ using Polygons = std::vector<Polygon>;
+ class BuildVolume;
+ 
+@@ -219,6 +220,8 @@ namespace GUI {
+         void reset();
+         void render();
+         void render(const std::pair<size_t, size_t>& range);
++        void render(GLShaderProgram* shader);
++        void render(GLShaderProgram* shader, const std::pair<size_t, size_t>& range);
+         void render_instanced(unsigned int instances_vbo, unsigned int instances_count);
+ 
+         bool send_instance_data_to_gpu(const std::vector<Vec3f>& instances_offsets);

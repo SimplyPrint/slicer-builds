@@ -48,6 +48,53 @@ SUPPORTED_SLICERS = {
     },
 }
 
+# These capabilities are upstream printer-resource metadata, not slicer settings.
+# Keep the family policy in the producer so the browser only executes declared,
+# portable helpers and unknown/future models retain the conservative false fallback.
+NATIVE_FUNCTION_DEFINITIONS = {
+    'BambuStudio': {
+        'printerSupports': {
+            'kind': 'printer_capability',
+            'setting_prefix': 'support_',
+            'fallback': False,
+            'capabilities': {
+                'wrapping_detection': [
+                    'N7', 'O1C', 'O1C2', 'O1D', 'O1E', 'O1S',
+                    'Bambu Lab P2S', 'Bambu Lab H2C', 'Bambu Lab H2D',
+                    'Bambu Lab H2D Pro', 'Bambu Lab H2S',
+                ],
+            },
+        },
+    },
+    'OrcaSlicer': {
+        'printerSupports': {
+            'kind': 'printer_capability',
+            'setting_prefix': 'support_',
+            'fallback': False,
+            'capabilities': {
+                'wrapping_detection': [
+                    'N7', 'O1C', 'O1C2', 'O1D', 'O1E',
+                    'Bambu Lab P2S', 'Bambu Lab H2C', 'Bambu Lab H2D',
+                    'Bambu Lab H2D Pro',
+                ],
+            },
+        },
+    },
+    'CrealityPrint': {
+        'printerMatchesFamily': {
+            'kind': 'printer_family',
+            'fallback': False,
+            'families': {
+                'k2_series': {
+                    'match': 'prefix',
+                    'normalize': 'trim_lowercase',
+                    'values': ['creality k2'],
+                },
+            },
+        },
+    },
+}
+
 
 def extract_function(code: str, function_name: str) -> str | None:
     pattern = re.compile(
@@ -136,7 +183,11 @@ def main():
     code = fetch_and_extract(code_url.format(args.ref or default_ref), func_name)
 
     # Process input.
-    p = ParseConditionalVisibility(config_def, code=code)
+    p = ParseConditionalVisibility(
+        config_def,
+        code=code,
+        function_definitions=NATIVE_FUNCTION_DEFINITIONS.get(args.slicer),
+    )
     cv = p.process()
 
     cache_file = cache_dir / f"{args.slicer}_intermediate_cv.json"
@@ -147,10 +198,10 @@ def main():
 
         if not diff:
             print(f"Cache file {cache_file} is up to date.")
-            return
-
-    with cache_file.open('w') as f:
-        f.write(cv.model_dump_json())
+        else:
+            cache_file.write_text(cv.model_dump_json())
+    else:
+        cache_file.write_text(cv.model_dump_json())
 
     # Fill out enum values using OpenAI API.
     # and substitute the variables in the code.

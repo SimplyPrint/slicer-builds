@@ -1,0 +1,129 @@
+diff --git a/deps/CMakeLists.txt b/deps/CMakeLists.txt
+index 2ba4340..54d11db 100644
+--- a/deps/CMakeLists.txt
++++ b/deps/CMakeLists.txt
+@@ -365,7 +365,8 @@ include(paho-mqtt/paho-mqtt.cmake)
+ include(OCCT/OCCT.cmake)
+ include(OpenCV/OpenCV.cmake)
+ include(aliyun-oss-cpp-sdk/aliyun-oss-cpp-sdk.cmake)
+-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
++option(ENABLE_WEBRTC_VIDEO "Build WebRTC video support" OFF)
++if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND ENABLE_WEBRTC_VIDEO)
+   include(metartc/metartc.cmake)
+ endif()
+ 
+@@ -430,7 +431,7 @@ else()
+         )
+ endif()
+     
+-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
++if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND ENABLE_WEBRTC_VIDEO)
+ 	list(APPEND _dep_list "dep_metartc")
+ endif()
+ 
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 60701ac..42ad12f 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -18,10 +18,6 @@ add_subdirectory(hints)
+ add_subdirectory(mcut)
+ add_subdirectory(qoi)
+-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+-    set(ENABLE_WEBRTC_VIDEO ON)
+-else()
+-    set(ENABLE_WEBRTC_VIDEO OFF)
+-endif()
++option(ENABLE_WEBRTC_VIDEO "Build WebRTC video support" OFF)
+ add_subdirectory(video)
+ # Adding libnest2d project for bin packing...
+ add_subdirectory(libnest2d)
+diff --git a/src/video/CMakeLists.txt b/src/video/CMakeLists.txt
+index 3b92a5c..e30492b 100644
+--- a/src/video/CMakeLists.txt
++++ b/src/video/CMakeLists.txt
+@@ -27,6 +27,10 @@ if(FFMPEG_VERSION)
+         ${CMAKE_PREFIX_PATH}/include/
+     )
+     add_library(webrtc_video STATIC ${VIDEO_SOURCES})
++    target_compile_definitions(webrtc_video
++        PUBLIC
++            ENABLE_WEBRTC_VIDEO=$<BOOL:${ENABLE_WEBRTC_VIDEO}>
++    )
+     target_include_directories(webrtc_video
+         PUBLIC
+             ${VIDEO_INCLUDE_DIRS}
+diff --git a/src/slic3r/GUI/HttpServer.cpp b/src/slic3r/GUI/HttpServer.cpp
+index a64dafc..24bb29f 100644
+--- a/src/slic3r/GUI/HttpServer.cpp
++++ b/src/slic3r/GUI/HttpServer.cpp
+@@ -5,7 +5,7 @@
+ #include "slic3r/Utils/Http.hpp"
+ #include "slic3r/Utils/NetworkAgent.hpp"
+ #include <boost/regex.hpp>
+-#if defined(__linux__) || defined(__LINUX__)
++#if (defined(__linux__) || defined(__LINUX__)) && ENABLE_WEBRTC_VIDEO
+ #include "video/WebRTCDecoder.h"
+ #include <boost/asio/steady_timer.hpp>
+ #endif
+@@ -178,7 +178,7 @@ void session::read_next_line()
+                         else
+                         {
+                             video_url = (boost::format("http://%1%:8000/call/webrtc_local") % ip).str();
+-                              #if defined(__linux__) || defined(__LINUX__)
++                              #if (defined(__linux__) || defined(__LINUX__)) && ENABLE_WEBRTC_VIDEO
+                                 WebRTCDecoder::GetInstance()->startPlay(video_url); 
+                               #endif
+                         }
+@@ -241,7 +241,7 @@ void session::sendFrame(const boost::system::error_code &ec,boost::asio::ip::tcp
+             RTSPDecoder::GetInstance()->getFrameData(copy_frame);
+             #endif
+         }else{
+-            #if defined(__linux__) || defined(__LINUX__)
++            #if (defined(__linux__) || defined(__LINUX__)) && ENABLE_WEBRTC_VIDEO
+             copy_frame = WebRTCDecoder::GetInstance()->getFrameData();
+             #endif
+         }
+diff --git a/src/slic3r/GUI/print_manage/App/PrinterMgrView.cpp b/src/slic3r/GUI/print_manage/App/PrinterMgrView.cpp
+index 5386ac3..3bed9cf 100644
+--- a/src/slic3r/GUI/print_manage/App/PrinterMgrView.cpp
++++ b/src/slic3r/GUI/print_manage/App/PrinterMgrView.cpp
+@@ -43,7 +43,7 @@
+ #include <boost/uuid/uuid.hpp>
+ #include <boost/uuid/uuid_generators.hpp>
+ #include <boost/uuid/uuid_io.hpp>
+-#if defined(__linux__) || defined(__LINUX__)
++#if (defined(__linux__) || defined(__LINUX__)) && ENABLE_WEBRTC_VIDEO
+ #include "video/WebRTCDecoder.h"
+ #endif
+ #include <slic3r/GUI/print_manage/AppUtils.hpp>
+@@ -1440,7 +1440,7 @@ void PrinterMgrView::OnScriptMessage(wxWebViewEvent& evt)
+             }
+             else
+             {
+-                #if defined(__linux__) || defined(__LINUX__)
++                #if (defined(__linux__) || defined(__LINUX__)) && ENABLE_WEBRTC_VIDEO
+                     WebRTCDecoder::GetInstance()->startPlay(video_url); 
+                 #endif
+             }
+diff --git a/src/slic3r/GUI/print_manage/App/SendToPrinter.cpp b/src/slic3r/GUI/print_manage/App/SendToPrinter.cpp
+index c77f499..c988d68 100644
+--- a/src/slic3r/GUI/print_manage/App/SendToPrinter.cpp
++++ b/src/slic3r/GUI/print_manage/App/SendToPrinter.cpp
+@@ -42,7 +42,7 @@
+ #include <boost/uuid/uuid.hpp>
+ #include <boost/uuid/uuid_generators.hpp>
+ #include <boost/uuid/uuid_io.hpp>
+-#if defined(__linux__) || defined(__LINUX__)
++#if (defined(__linux__) || defined(__LINUX__)) && ENABLE_WEBRTC_VIDEO
+ #include "video/WebRTCDecoder.h"
+ #endif
+ #include "buildinfo.h"
+@@ -432,7 +432,7 @@ void CxSentToPrinterDialog::OnScriptMessage(wxWebViewEvent& evt)
+             }
+             else
+             {
+-                #if defined(__linux__) || defined(__LINUX__)
++                #if (defined(__linux__) || defined(__LINUX__)) && ENABLE_WEBRTC_VIDEO
+                     WebRTCDecoder::GetInstance()->stopPlay();
+                 #endif
+             }
