@@ -45,6 +45,7 @@ TRANSLATION_NAMESPACE = "cura"
 TRANSLATION_SOURCE_LOCALE = "en"
 TOOL_REFERENCE_SENTINEL_LABEL = "Not overridden"
 TOOL_REFERENCE_SENTINEL_I18N = "cura.editors.tool_reference.not_overridden"
+PROFILE_METADATA_TRANSPORT = "envelope.v1"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -512,6 +513,41 @@ def js_condition(expression: Any) -> str | None:
         ) from error
 
 
+def condition_variables(expression: Any) -> set[str]:
+    """Return the free setting identifiers required by a visibility expression.
+
+    Cura expressions are translated from a deliberately small Python AST
+    subset.  Deriving dependencies from that same AST keeps the runtime
+    contract independent of JavaScript formatting and avoids treating helper
+    names, comprehension locals, or string arguments as setting variables.
+    """
+
+    if not isinstance(expression, str) or not expression.strip():
+        return set()
+
+    root = ast.parse(expression, mode="eval")
+    helper_names = {"all", "extruderValues", "max", "resolveOrValue"}
+    locals_ = {
+        node.target.id
+        for node in ast.walk(root)
+        if isinstance(node, ast.comprehension) and isinstance(node.target, ast.Name)
+    }
+    variables = {
+        node.id
+        for node in ast.walk(root)
+        if isinstance(node, ast.Name)
+        and isinstance(node.ctx, ast.Load)
+        and node.id not in helper_names
+        and node.id not in locals_
+    }
+    variables.update(
+        setting
+        for node in ast.walk(root)
+        if (setting := _setting_name_from_call(node, "resolveOrValue")) is not None
+    )
+    return variables
+
+
 def _po_literal(value: str) -> str:
     try:
         parsed = ast.literal_eval(value)
@@ -717,6 +753,7 @@ def generate(resources: Path, output: Path) -> None:
     }
     icon_names: set[str] = set()
     conditions: dict[str, str] = {}
+    visibility_variables: set[str] = set()
     editable_setting_keys: set[str] = set()
     for _, root_settings, runtime_only_source, _ in definition_sources:
         if runtime_only_source:
@@ -822,6 +859,9 @@ def generate(resources: Path, output: Path) -> None:
                 condition = js_condition(source.get("enabled"))
                 if condition is not None:
                     conditions[key] = condition
+                    visibility_variables.update(
+                        condition_variables(source.get("enabled"))
+                    )
 
     if not definitions:
         raise SystemExit("no Cura settings were normalized")
@@ -839,6 +879,17 @@ def generate(resources: Path, output: Path) -> None:
     uses_extruder_values = any(
         "extruderValues(" in condition for condition in conditions.values()
     )
+    unknown_visibility_variables = visibility_variables.difference(definitions)
+    if unknown_visibility_variables:
+        raise SystemExit(
+            "Cura visibility expressions reference undefined settings: "
+            + ", ".join(sorted(unknown_visibility_variables))
+        )
+    variable_defaults = {
+        key: definitions[key]["default_value"]
+        for key in sorted(visibility_variables)
+        if "default_value" in definitions[key]
+    }
     write_json(
         output / "conditional_visibility.json",
         {
@@ -858,8 +909,8 @@ def generate(resources: Path, output: Path) -> None:
                 else {}
             ),
             "functions": ["extruderValues"] if uses_extruder_values else [],
-            "variable_defaults": {},
-            "variables": [],
+            "variable_defaults": variable_defaults,
+            "variables": sorted(visibility_variables),
         },
     )
 
@@ -955,6 +1006,9 @@ def generate(resources: Path, output: Path) -> None:
                 "family": "cura",
                 "definition_format": 2,
                 "source_locale": TRANSLATION_SOURCE_LOCALE,
+            },
+            "capabilities": {
+                "profile_metadata_transport": PROFILE_METADATA_TRANSPORT,
             },
             "conditional_settings": {"false_behavior": "hide"},
             "ui_modes": sorted(modes_by_id.values(), key=lambda mode: mode["order"]),
