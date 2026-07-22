@@ -238,9 +238,6 @@ jobs:
     needs: [prepare_matrix, build_slicers]
     runs-on: ubuntu-24.04
     if: needs.prepare_matrix.outputs.has_publish == 'true' && needs.build_slicers.result == 'success'
-    concurrency:
-      group: slicer-out-${{ github.ref_name }}
-      cancel-in-progress: false
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -306,5 +303,4 @@ jobs:
             fi
           done
 
-          git pull --rebase origin "${GITHUB_REF_NAME}"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          bash ./tools/push_with_rebase_retry.sh "${GITHUB_REF_NAME}"

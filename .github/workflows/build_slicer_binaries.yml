@@ -300,9 +300,6 @@ jobs:
     if: needs.prepare_matrix.outputs.has_publish == 'true' && needs.build_slicers.result == 'success'
     outputs:
       nightly_indexed: ${{ steps.update-build-index.outputs.nightly_indexed }}
-    concurrency:
-      group: slicer-out-${{ github.ref_name }}
-      cancel-in-progress: false
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -373,8 +370,7 @@ jobs:
             fi
           done
 
-          git pull --rebase origin "${GITHUB_REF_NAME}"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          bash ./tools/push_with_rebase_retry.sh "${GITHUB_REF_NAME}"
 
   update_nightly_tag:
     needs: update_index

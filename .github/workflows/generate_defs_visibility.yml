@@ -50,9 +50,6 @@ permissions:
 jobs:
   generate_defs_visibility:
     runs-on: ubuntu-latest
-    concurrency:
-      group: slicer-out-${{ github.ref_name }}
-      cancel-in-progress: false
     env:
       continue_generate: 'true'
     strategy:
@@ -218,6 +215,5 @@ jobs:
           else
             slicer="${{ matrix.slicer }}"
             git commit -m "chore(${slicer,,}): generate visibility for ${folder_name} @ ${upstream_ref:0:12}"
-            git pull --rebase origin "${GITHUB_REF_NAME}"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
+            bash ../../../tools/push_with_rebase_retry.sh "${GITHUB_REF_NAME}"
           fi
