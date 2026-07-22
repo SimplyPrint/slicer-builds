@@ -20,3 +20,9 @@ python3 tools/stage_bundle.py \
   --library-root slicer-src/deps/build \
   "${strip_args[@]}" \
   --json | tee slicer-src/build/slicer-bundle-report.json
+
+if [[ -n "${SLICER_RELEASE_TAG:-}" ]]; then
+  bash tools/verify_orca_version.sh \
+    slicer-src/build/slicer_out/bin/orca-slicer \
+    "$SLICER_RELEASE_TAG"
+fi

@@ -178,6 +178,7 @@ append_toolchain_inputs() {
   append_literal context.os "${ImageOS:-unknown}"
   append_literal context.image_version "${ImageVersion:-unknown}"
   append_literal context.slicer_gui "${SLICER_GUI:-0}"
+  append_literal context.slicer_release_tag "${SLICER_RELEASE_TAG:-}"
   append_literal context.cmake_generator "${CMAKE_GENERATOR:-default}"
   append_literal context.cc "${CC:-default}"
   append_literal context.cxx "${CXX:-default}"

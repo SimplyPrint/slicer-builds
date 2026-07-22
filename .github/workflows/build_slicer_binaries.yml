@@ -103,6 +103,7 @@ jobs:
     env:
       DEPS_CACHE_KEY: ''
       SLICER_CACHE_KEY: ''
+      SLICER_RELEASE_TAG: ${{ (matrix.build-type == 'latest_release' || matrix.publish_release) && matrix.release_tag || '' }}
       latest_release_tag: ${{ matrix.release_tag || '' }}
       continue_build: ${{ matrix.skip && 'false' || 'true' }}
       CONSUMER_REBUILD: ${{ matrix.consumer_rebuild && 'true' || 'false' }}
