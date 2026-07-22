@@ -177,7 +177,18 @@ append_toolchain_inputs() {
   append_literal context.arch "${ARCH:-${RUNNER_ARCH:-$(uname -m)}}"
   append_literal context.os "${ImageOS:-unknown}"
   append_literal context.image_version "${ImageVersion:-unknown}"
-  append_literal context.slicer_gui "${SLICER_GUI:-0}"
+  # SLICER_GUI only changes caches for slicers whose relevant build scripts
+  # consume it (currently PrusaSlicer/SuperSlicer). Avoid fragmenting every
+  # other slicer's dependency cache between binary and config builds.
+  if [[ "$scope" == deps ]]; then
+    if grep -Fq 'SLICER_GUI' "$slicer_dir/steps/install-deps.sh" 2>/dev/null ||
+      grep -Fq 'SLICER_GUI' "$slicer_dir/steps/build-deps.sh" 2>/dev/null ||
+      grep -Fq 'SLICER_GUI' "$slicer_dir/steps/conan-env.sh" 2>/dev/null; then
+      append_literal context.slicer_gui "${SLICER_GUI:-0}"
+    fi
+  elif grep -Fq 'SLICER_GUI' "$slicer_dir/steps/build.sh" 2>/dev/null; then
+    append_literal context.slicer_gui "${SLICER_GUI:-0}"
+  fi
   append_literal context.cmake_generator "${CMAKE_GENERATOR:-default}"
   append_literal context.cc "${CC:-default}"
   append_literal context.cxx "${CXX:-default}"
