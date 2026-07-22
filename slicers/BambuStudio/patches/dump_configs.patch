@@ -422,7 +422,7 @@ index 6dbc23f06..40237a207 100644
  #include "wxExtensions.hpp"
  #include "PresetComboBoxes.hpp"
  #include <wx/wupdlock.h>
-@@ -626,15 +627,104 @@ void Tab::create_preset_tab()
+@@ -626,15 +627,105 @@ void Tab::create_preset_tab()
      // Initialize the DynamicPrintConfig by default keys/values.
      build();
  
@@ -462,9 +462,10 @@ index 6dbc23f06..40237a207 100644
 +        auto& settings_pt = is_subset_tab ? page_pt.put_child("Settings", ptree()) : page_pt;
 +        for (const auto& optgroup : page->m_optgroups) {
 +            ptree* optgroup_pt = nullptr;
++            std::string icon_key = page->title().ToStdString();
 +            if (!is_subset_tab) {
-+                const auto& title = optgroup->title.ToStdString();
-+                optgroup_pt = &page_pt.put_child(title, ptree());
++                icon_key = optgroup->title.ToStdString();
++                optgroup_pt = &page_pt.put_child(icon_key, ptree());
 +            }
 +
 +            auto icon_filename = optgroup->icon.ToStdString();
@@ -473,7 +474,7 @@ index 6dbc23f06..40237a207 100644
 +                icon_filename += ".svg";
 +                auto icon_path = Slic3r::var(icon_filename);
 +                if (icon_path != icon_filename) {
-+                    auto& this_icon_pt = icon_data_pt.put_child(page->title().ToStdString(), ptree());
++                    auto& this_icon_pt = icon_data_pt.put_child(icon_key, ptree());
 +                    this_icon_pt.put("icon_filename", icon_filename);
 +                    std::ifstream icon_fstream(icon_path);
 +                    if (!icon_fstream.is_open())
