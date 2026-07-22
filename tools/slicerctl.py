@@ -315,17 +315,29 @@ def resolve_ref(mirror: Path, transport: str, ref: str) -> tuple[str | None, str
         )
         commit = peeled or tag or head or records[0][0]
 
-    fetched = subprocess.run(
-        ["git", "fetch", "--quiet", "--depth=1", "--no-tags", transport, commit],
-        cwd=mirror,
-        check=False,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    if fetched.returncode != 0:
-        return None, git_error(fetched)
-    return commit, ""
+    for _attempt in range(3):
+        fetched = subprocess.run(
+            [
+                "git",
+                "fetch",
+                "--quiet",
+                "--depth=1",
+                "--no-tags",
+                "--no-auto-maintenance",
+                transport,
+                commit,
+            ],
+            cwd=mirror,
+            check=False,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        if fetched.returncode == 0:
+            return commit, ""
+        if "shallow file has changed since we read it" not in git_error(fetched):
+            break
+    return None, git_error(fetched)
 
 
 def git_error(completed: subprocess.CompletedProcess[str]) -> str:
