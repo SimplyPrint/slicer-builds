@@ -98,6 +98,12 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix: ${{ fromJSON(needs.prepare_matrix.outputs.matrix) }}
+    concurrency:
+      # A cache miss is immutable once uploaded. Serialize jobs that can share a
+      # dependency family so separate binary/config runs cannot build it cold at
+      # the same time and race to publish the same cache key.
+      group: slicer-deps-${{ github.ref }}-${{ matrix.family }}-${{ matrix.arch }}
+      cancel-in-progress: false
 
     runs-on: ${{ matrix.arch == 'arm64' && 'ubicloud-standard-30-arm-ubuntu-2404' || 'ubicloud-standard-30-ubuntu-2404' }}
     env:
@@ -109,6 +115,7 @@ jobs:
       CONSUMER_REBUILD: ${{ matrix.consumer_rebuild && 'true' || 'false' }}
       FORCE_REBUILD: ${{ (inputs.force-rebuild || matrix.consumer_rebuild) && 'true' || 'false' }}
       IS_ARM: ${{ matrix.arch == 'arm64' && 'true' || 'false' }}
+      SLICER_GUI: '0'
       PLATFORM: linux
       ARCH: ${{ matrix.arch }}
       CFLAGS: -ffunction-sections -fdata-sections
@@ -290,7 +297,7 @@ jobs:
   update_index:
     needs: [prepare_matrix, build_slicers]
     runs-on: ubuntu-24.04
-    if: always() && needs.prepare_matrix.outputs.has_publish == 'true' && (needs.build_slicers.result == 'success' || needs.build_slicers.result == 'failure')
+    if: needs.prepare_matrix.outputs.has_publish == 'true' && needs.build_slicers.result == 'success'
     outputs:
       nightly_indexed: ${{ steps.update-build-index.outputs.nightly_indexed }}
     concurrency:

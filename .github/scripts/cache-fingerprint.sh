@@ -178,7 +178,6 @@ append_toolchain_inputs() {
   append_literal context.os "${ImageOS:-unknown}"
   append_literal context.image_version "${ImageVersion:-unknown}"
   append_literal context.slicer_gui "${SLICER_GUI:-0}"
-  append_literal context.slicer_release_tag "${SLICER_RELEASE_TAG:-}"
   append_literal context.cmake_generator "${CMAKE_GENERATOR:-default}"
   append_literal context.cc "${CC:-default}"
   append_literal context.cxx "${CXX:-default}"
@@ -187,6 +186,8 @@ append_toolchain_inputs() {
   append_literal context.ldflags "${LDFLAGS:-}"
   append_literal context.slicer_pch "${SLICER_PCH:-default}"
   if [[ "$scope" == build ]]; then
+    # Release tags affect embedded slicer metadata, not third-party dependencies.
+    append_literal context.slicer_release_tag "${SLICER_RELEASE_TAG:-}"
     case "$slicer" in
       AnycubicSlicerNext | OrcaSlicer)
         append_literal context.orca_extra_build_args "${ORCA_EXTRA_BUILD_ARGS:-}"

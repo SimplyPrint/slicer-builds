@@ -3,7 +3,6 @@ set -euo pipefail
 
 bash ./tools/stamp_version_date.sh slicer-src
 source_dir="$(cd -- slicer-src && pwd -P)"
-prefix="$source_dir/deps/build/destdir/usr/local"
 pch=ON
 if [[ "${SLICER_PCH:-ON}" == "OFF" ]]; then
   pch=OFF
@@ -29,7 +28,6 @@ bash ./tools/build_cmake_target.sh \
   --auto-compiler-cache \
   -- \
   "-DSLIC3R_PCH=$pch" \
-  "-DCMAKE_PREFIX_PATH=$prefix" \
   -DSLIC3R_STATIC=1 \
   "${extra_args[@]}" \
   -DORCA_TOOLS=OFF

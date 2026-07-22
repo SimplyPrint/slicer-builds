@@ -8,10 +8,10 @@ on:
       runner:
         type: choice
         options:
-          - ubuntu-24.04
-          - ubicloud-standard-16-ubuntu-2404
           - ubicloud-standard-30-ubuntu-2404
-        default: ubuntu-24.04
+          - ubicloud-standard-16-ubuntu-2404
+          - ubuntu-24.04
+        default: ubicloud-standard-30-ubuntu-2404
         description: The runner for this action
         required: true
 
@@ -87,12 +87,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.prepare_matrix.outputs.matrix) }}
+    concurrency:
+      group: slicer-deps-${{ github.ref }}-${{ matrix.family }}-${{ matrix.arch }}
+      cancel-in-progress: false
 
-    runs-on: ${{ inputs.runner || 'ubuntu-24.04' }}
+    runs-on: ${{ inputs.runner || 'ubicloud-standard-30-ubuntu-2404' }}
     env:
       DEPS_CACHE_KEY: ''
       SLICER_CACHE_KEY: ''
+      ARCH: x86-64
+      SLICER_GUI: ${{ matrix.gui && '1' || '0' }}
+      SLICER_RELEASE_TAG: ${{ (matrix.build-type == 'latest_release' || matrix.publish_release) && matrix.release_tag || '' }}
       continue_build: ${{ matrix.skip && 'false' || 'true' }}
+      CFLAGS: -ffunction-sections -fdata-sections
+      CXXFLAGS: -ffunction-sections -fdata-sections
+      LDFLAGS: -Wl,--gc-sections
     steps:
       - name: Checkout repository
         if: env.continue_build == 'true'
@@ -146,16 +155,11 @@ jobs:
 
       - name: Install dependencies
         if: env.continue_build == 'true' && matrix.config_generator_only != true
-        env:
-          SLICER_GUI: ${{ matrix.gui && '1' || '0' }}
         run: |
           ./slicers/${{ matrix.slicer }}/steps/install-deps.sh
 
       - name: Compute cache fingerprints
         if: env.continue_build == 'true' && matrix.config_generator_only != true
-        env:
-          ARCH: x86-64
-          SLICER_GUI: ${{ matrix.gui && '1' || '0' }}
         run: |
           set -euo pipefail
 
@@ -182,8 +186,6 @@ jobs:
         if: env.continue_build == 'true' && matrix.config_generator_only != true && (inputs.disable-caching || steps.cache-build-deps.outputs.cache-hit != 'true')
         # Prusa/Super dump patches populate settings from GUI tabs. Their binary
         # builds remain headless by default and do not compile these dependencies.
-        env:
-          SLICER_GUI: ${{ matrix.gui && '1' || '0' }}
         run: |
           ./slicers/${{ matrix.slicer }}/steps/build-deps.sh
 
@@ -197,8 +199,6 @@ jobs:
 
       - name: Build slicer
         if: env.continue_build == 'true' && matrix.config_generator_only != true && (inputs.force-latest-release-rebuild || inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
-        env:
-          SLICER_GUI: ${{ matrix.gui && '1' || '0' }}
         run: |
           ./slicers/${{ matrix.slicer }}/steps/build.sh
 
@@ -206,6 +206,19 @@ jobs:
         if: env.continue_build == 'true'
         run: |
           ./slicers/${{ matrix.slicer }}/steps/run.sh
+
+      - name: Validate extracted JSON files
+        if: env.continue_build == 'true'
+        run: |
+          set -euo pipefail
+          for artifact in machine.json filament.json process.json print_config_def.json; do
+            path="slicer-out/$artifact"
+            if [[ ! -s "$path" ]]; then
+              echo "Missing or empty config artifact: $path" >&2
+              exit 1
+            fi
+            python3 -m json.tool "$path" >/dev/null
+          done
 
       - name: Upload extracted JSON files
         if: env.continue_build == 'true' && matrix.publish == true
@@ -224,7 +237,7 @@ jobs:
   commit_artifacts:
     needs: [prepare_matrix, build_slicers]
     runs-on: ubuntu-24.04
-    if: always() && needs.prepare_matrix.outputs.has_publish == 'true' && (needs.build_slicers.result == 'success' || needs.build_slicers.result == 'failure')
+    if: needs.prepare_matrix.outputs.has_publish == 'true' && needs.build_slicers.result == 'success'
     concurrency:
       group: slicer-out-${{ github.ref_name }}
       cancel-in-progress: false
