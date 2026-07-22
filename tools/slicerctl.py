@@ -2964,7 +2964,7 @@ def command_verify_patches(args: argparse.Namespace) -> None:
         raise SystemExit(
             "Refs are not declared by the selected slicers: " + ", ".join(missing_refs)
         )
-    missing_modes = sorted(set(requested_modes) - matched_modes)
+    missing_modes = sorted(set(args.modes or ()) - matched_modes)
     if missing_modes:
         raise SystemExit(
             "Patch modes are not enabled by the selected slicers: "

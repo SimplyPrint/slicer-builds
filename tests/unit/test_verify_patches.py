@@ -249,6 +249,39 @@ class VerifyPatchesCommandTests(unittest.TestCase):
             self.assertEqual(payload["summary"]["planned_stacks"], 4)
             self.assertTrue(payload["ok"])
 
+    def test_defaults_skip_modes_disabled_by_selected_slicer(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = self.fixture_manifest(root)
+            manifest.data["capabilities"]["config_dump"] = False
+            args = self.module.parser().parse_args(
+                ["verify-patches", "--slicer", "Fixture", "--json"]
+            )
+
+            with (
+                mock.patch.object(self.module, "ROOT", root),
+                mock.patch.object(
+                    self.module, "manifests", return_value={"Fixture": manifest}
+                ),
+                mock.patch.object(
+                    self.module,
+                    "prepare_patch_verification_mirror",
+                    return_value=Path("/mirror"),
+                ),
+                mock.patch.object(
+                    self.module,
+                    "resolve_patch_verification_ref",
+                    return_value=("a" * 40, ""),
+                ),
+                mock.patch.object(self.module, "verify_patch_stack", return_value=None),
+            ):
+                payload = self.run_json(args)
+
+            self.assertEqual(
+                [result["mode"] for result in payload["results"]], ["binary"]
+            )
+            self.assertTrue(payload["ok"])
+
     def test_include_head_uses_nightly_stack_and_resolves_head_once(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
