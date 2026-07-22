@@ -4,6 +4,10 @@ set -euo pipefail
 
 pushd slicer-src
 
-./BuildLinux.sh -dr
+build_args=(-dr)
+if [[ -n "${CMAKE_BUILD_PARALLEL_LEVEL:-}" ]]; then
+  build_args+=(-f)
+fi
+./BuildLinux.sh "${build_args[@]}"
 
 popd

@@ -1,0 +1,17 @@
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+index 03c1232dc2..5fc9f0990f 100644
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -6618,2 +6618,12 @@ int CLI::run(int argc, char **argv)
+             glfwSetErrorCallback(glfw_callback);
++#if (defined(__linux__) || defined(__LINUX__)) && defined(GLFW_PLATFORM) && defined(GLFW_PLATFORM_X11)
++            // GLFW 3.4 may select Wayland when both Weston and Xwayland are
++            // available. Prefer X11 for the CLI renderer so GLFW's context
++            // platform and OpenGLManager's desktop GL loader stay in sync.
++            const char* display = ::getenv("DISPLAY");
++            if (display != nullptr && *display != '\0') {
++                ::unsetenv("WAYLAND_DISPLAY");
++                glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
++            }
++#endif
+             int ret = glfwInit();

@@ -1,0 +1,47 @@
+diff --git a/src/slic3r/GUI/simple/PrintSettingsPanel.hpp b/src/slic3r/GUI/simple/PrintSettingsPanel.hpp
+index 3fe201f..2d4378b 100644
+--- a/src/slic3r/GUI/simple/PrintSettingsPanel.hpp
++++ b/src/slic3r/GUI/simple/PrintSettingsPanel.hpp
+@@ -3,4 +3,5 @@
+ 
+ #include "imgui/imgui.h" // ImGui core
+ #include <string>
++#include <type_traits>
+ 
+@@ -100,25 +101,22 @@ private:
++    template<typename T>
++    using ConfigOptionClass = std::conditional_t<
++        std::is_same_v<T, int>, ConfigOptionInt,
++        std::conditional_t<
++            std::is_same_v<T, float>, ConfigOptionFloat,
++            std::conditional_t<std::is_same_v<T, unsigned>, ConfigOptionPercent, void>>>;
++
+     template<typename T> void safe_get(const DynamicPrintConfig& cfg, const char* key, T& out)
+     {
+-        if (auto* opt = cfg.option<typename ConfigOptionType<T>::type>(key))
++        static_assert(!std::is_same_v<ConfigOptionClass<T>, void>);
++        if (auto* opt = cfg.option<ConfigOptionClass<T>>(key))
+             out = opt->value;
+     }
+     template<typename T> void safe_set(DynamicPrintConfig& cfg, const char* key, const T& val)
+     {
+-        if (auto* opt = cfg.option<typename ConfigOptionType<T>::type>(key))
++        static_assert(!std::is_same_v<ConfigOptionClass<T>, void>);
++        if (auto* opt = cfg.option<ConfigOptionClass<T>>(key))
+             opt->value = val;
+     }
+-    template<typename T> struct ConfigOptionType;
+-
+-    template<> struct ConfigOptionType<int>
+-    {
+-        using type = ConfigOptionInt;
+-    };
+-    template<> struct ConfigOptionType<float>
+-    {
+-        using type = ConfigOptionFloat;
+-    };
+-
+-    template<> struct ConfigOptionType<unsigned> { using type = ConfigOptionPercent; };
+ 
+     void load_from_config(PrintSettings& s, const DynamicPrintConfig& config)
+     {

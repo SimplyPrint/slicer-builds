@@ -225,15 +225,13 @@ diff --git a/src/libslic3r/PrintConfig.hpp b/src/libslic3r/PrintConfig.hpp
 index 601a774aa..2958b66b5 100644
 --- a/src/libslic3r/PrintConfig.hpp
 +++ b/src/libslic3r/PrintConfig.hpp
-@@ -468,6 +468,8 @@ class PrintConfigDef : public ConfigDef
+@@ -528,4 +528,6 @@ class PrintConfigDef : public ConfigDef
  public:
      PrintConfigDef();
  
 +    void dump_to_json();
 +
      static void handle_legacy(t_config_option_key &opt_key, std::string &value);
- 
-     // Array options growing with the number of extruders
 diff --git a/src/slic3r/GUI/I18N.hpp b/src/slic3r/GUI/I18N.hpp
 index c80c9a165..27b8ac2cd 100644
 --- a/src/slic3r/GUI/I18N.hpp
@@ -298,7 +296,7 @@ index 476d1c500..5206eaa14 100644
  using boost::optional;
  namespace fs = boost::filesystem;
  
-@@ -6709,7 +6711,9 @@ void PartPlateList::BedTextureInfo::reset()
+@@ -7181,7 +7183,9 @@ void PartPlateList::BedTextureInfo::reset()
          parts[i].reset();
  }
  
@@ -307,8 +305,8 @@ index 476d1c500..5206eaa14 100644
 +
 +void PartPlateList::init_bed_type_info(bool is_single_extruder)
  {
-     BedTextureInfo::TexturePart st_part1(10, 52, 8.393f, 192, "bbl_bed_st_left.svg");
-     BedTextureInfo::TexturePart st_part2(74, -10, 148, 12, "bbl_bed_st_bottom.svg");
+     BedTextureInfo::TexturePart st_part1(10, 52, 8.393f, 192, "qdt_bed_st_left.svg");
+     BedTextureInfo::TexturePart st_part2(74, -10, 148, 12, "qdt_bed_st_bottom.svg");
 @@ -6758,7 +6762,8 @@ void PartPlateList::init_bed_type_info()
              }
          }
@@ -318,7 +316,7 @@ index 476d1c500..5206eaa14 100644
 +		is_single_extruder = wxGetApp().preset_bundle->get_printer_extruder_count() == 1;
      bool use_double_extruder_texture = !is_single_extruder || use_double_extruder_default_texture == "true";
      if (use_double_extruder_texture) {
-         pte_part1 = BedTextureInfo::TexturePart(57, 300, 236.12f, 10.f, "bbl_bed_pte_middle.svg");
+         pte_part1 = BedTextureInfo::TexturePart(57, 300, 236.12f, 10.f, "qdt_bed_pte_middle.svg");
 @@ -6857,6 +6862,9 @@ void PartPlateList::init_bed_type_info()
  	bed_texture_info[btPTE].parts.push_back(pte_part1);
  	bed_texture_info[btPTE].parts.push_back(pte_part2);

@@ -2,23 +2,21 @@
 
 set -euo pipefail
 
-pushd slicer-src/build
+strip_args=()
+[[ "${SLICER_STRIP:-1}" == 0 ]] || strip_args+=(--strip)
 
-mkdir -p slicer_out/resources
-mkdir -p slicer_out/bin
-
-cp -r resources/* slicer_out/resources
-
-binary_path="src/CrealityPrint"
-if [[ ! -x "$binary_path" && -x "src/Release/CrealityPrint" ]]; then
-  binary_path="src/Release/CrealityPrint"
+if [[ -z "${SLICER_RESOURCE_INCLUDES+x}" ]]; then
+  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/BBL/cli_config.json\nshaders/**'
 fi
 
-cp "$binary_path" slicer_out/bin
-
-ldd "$binary_path" \
-  | awk '/=> \// { print $3 }' \
-  | sort -u \
-  | xargs -r -I{} cp -L "{}" slicer_out/bin
-
-popd
+python3 tools/stage_bundle.py \
+  --executable slicer-src/build/src/CrealityPrint \
+  --executable slicer-src/build/src/Release/CrealityPrint \
+  --name CrealityPrint \
+  --arch "${ARCH:?ARCH is required}" \
+  --output slicer-src/build/slicer_out \
+  --resources slicer-src/resources \
+  --library-root slicer-src/build/src \
+  --library-root slicer-src/deps/build \
+  "${strip_args[@]}" \
+  --json | tee slicer-src/build/slicer-bundle-report.json

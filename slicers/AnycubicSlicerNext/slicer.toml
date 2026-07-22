@@ -1,0 +1,31 @@
+schema_version = 1
+name = "AnycubicSlicerNext"
+repository = "https://github.com/ANYCUBIC-3D/AnycubicSlicerNext.git"
+default_ref = "HEAD"
+family = "orca"
+executable = "orca-slicer"
+architectures = ["x86-64"]
+
+[capabilities]
+binary = true
+config_dump = true
+thumbnail = true
+
+[patches]
+shared = [
+    "cli-thumbnail-glew-glx",
+    "cli-thumbnail-orca-legacy",
+    "cli-thumbnail-orca-opengl-version",
+]
+
+[ci.binary]
+enabled = false
+publish = false
+release = "none"
+nightly = true
+
+[ci.config]
+enabled = false
+publish = false
+release = "none"
+nightly = true

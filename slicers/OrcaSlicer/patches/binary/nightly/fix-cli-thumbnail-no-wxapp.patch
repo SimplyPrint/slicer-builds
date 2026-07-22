@@ -1,0 +1,25 @@
+diff --git a/src/slic3r/GUI/GLShadersManager.cpp b/src/slic3r/GUI/GLShadersManager.cpp
+index 93083d1caa..ff98e659d6 100644
+--- a/src/slic3r/GUI/GLShadersManager.cpp
++++ b/src/slic3r/GUI/GLShadersManager.cpp
+@@ -3,5 +3,6 @@
+ #include "GLShadersManager.hpp"
+ #include "3DScene.hpp"
+ #include "GUI_App.hpp"
++#include "OpenGLManager.hpp"
+ 
+ #include <cassert>
+@@ -38,7 +38,7 @@ std::pair<bool, std::string> GLShadersManager::init()
+     // used to render wireframed triangles
+     valid &= append_shader("wireframe", { prefix + "wireframe.vs", prefix + "wireframe.fs" });
+ #else
+-    const std::string prefix = GUI::wxGetApp().is_gl_version_greater_or_equal_to(3, 1) ? "140/" : "110/";
++    const std::string prefix = GUI::OpenGLManager::get_gl_info().is_version_greater_or_equal_to(3, 1) ? "140/" : "110/";
+ #endif // SLIC3R_OPENGL_ES
+     // imgui shader
+     valid &= append_shader("imgui", { prefix + "imgui.vs", prefix + "imgui.fs" });
+@@ -77,3 +77,3 @@ std::pair<bool, std::string> GLShadersManager::init()
+-    if (GUI::wxGetApp().is_gl_version_greater_or_equal_to(3, 3)) {
++    if (GUI::OpenGLManager::get_gl_info().is_version_greater_or_equal_to(3, 3)) {
+         valid &= append_shader("gouraud_light_instanced", { prefix + "gouraud_light_instanced.vs", prefix + "gouraud_light_instanced.fs" });
+     }

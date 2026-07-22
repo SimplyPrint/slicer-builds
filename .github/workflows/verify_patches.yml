@@ -1,0 +1,109 @@
+name: Verify Patch Compatibility
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+    inputs:
+      slicer:
+        description: Slicer manifest name, or all
+        required: true
+        default: all
+        type: string
+  pull_request:
+    paths:
+      - ".github/workflows/verify_patches.yml"
+      - "patches/**"
+      - "slicerctl"
+      - "slicers/*/patches/**"
+      - "slicers/*/slicer.toml"
+      - "tools/slicerctl.py"
+  push:
+    paths:
+      - ".github/workflows/verify_patches.yml"
+      - "patches/**"
+      - "slicerctl"
+      - "slicers/*/patches/**"
+      - "slicers/*/slicer.toml"
+      - "tools/slicerctl.py"
+
+permissions:
+  contents: read
+
+jobs:
+  prepare-matrix:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.generate.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate manifest matrix
+        id: generate
+        env:
+          SELECTED_SLICER: ${{ inputs.slicer || 'all' }}
+        run: |
+          set -euo pipefail
+          inventory=$(./slicerctl list --json)
+          if [[ "$SELECTED_SLICER" != "all" ]] && ! jq -e --arg name "$SELECTED_SLICER" 'any(.name == $name)' <<< "$inventory" >/dev/null; then
+            echo "Unknown slicer: $SELECTED_SLICER" >&2
+            exit 2
+          fi
+          matrix=$(jq -c --arg name "$SELECTED_SLICER" '{include: [.[] | select($name == "all" or .name == $name) | {slicer: .name}]}' <<< "$inventory")
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  verify:
+    needs: prepare-matrix
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix: ${{ fromJSON(needs.prepare-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compute mirror cache identity
+        id: mirror-key
+        env:
+          SLICER_NAME: ${{ matrix.slicer }}
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import tomllib
+
+          name = os.environ["SLICER_NAME"]
+          with (Path("slicers") / name / "slicer.toml").open("rb") as source:
+              manifest = tomllib.load(source)
+          refs = [
+              [manifest["default_ref"], manifest.get("expected_commit")],
+              *[
+                  [spec["ref"], spec.get("expected_commit")]
+                  for spec in manifest.get("supported_refs", [])
+              ],
+          ]
+          identity = json.dumps(
+              {"repository": manifest["repository"], "refs": refs},
+              sort_keys=True,
+              separators=(",", ":"),
+          ).encode()
+          digest = hashlib.sha256(identity).hexdigest()[:20]
+          with Path(os.environ["GITHUB_OUTPUT"]).open("a", encoding="utf-8") as output:
+              output.write(f"digest={digest}\n")
+          PY
+
+      - name: Restore upstream mirror
+        uses: actions/cache@v4
+        with:
+          path: .work/git/${{ matrix.slicer }}.git
+          key: patch-mirror-v1-${{ runner.os }}-${{ matrix.slicer }}-${{ steps.mirror-key.outputs.digest }}
+          restore-keys: |
+            patch-mirror-v1-${{ runner.os }}-${{ matrix.slicer }}-
+
+      - name: Verify retained and nightly patch stacks
+        run: ./slicerctl verify-patches --slicer "${{ matrix.slicer }}" --include-head --json

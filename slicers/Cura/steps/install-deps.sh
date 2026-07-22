@@ -10,9 +10,11 @@ sudo apt-get install -y \
   python3-venv
 
 deps="$PWD/slicer-src/deps/build"
-python3 -m venv "$deps/venv"
-"$deps/venv/bin/pip" install --disable-pip-version-check "conan==2.15.1"
+if [[ -z "${CONAN:-}" && ! -x "$deps/venv/bin/conan" ]]; then
+  python3 -m venv "$deps/venv"
+  "$deps/venv/bin/pip" install --disable-pip-version-check "conan==2.15.1"
+fi
 
-export CONAN_HOME="$deps/conan"
-"$deps/venv/bin/conan" config install https://github.com/Ultimaker/conan-config.git
-"$deps/venv/bin/conan" profile detect --force
+# shellcheck source=conan-env.sh
+source slicers/Cura/steps/conan-env.sh
+cura_conan_env
