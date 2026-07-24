@@ -10,10 +10,14 @@ const sourceDir = path.resolve(required(args, 'source'));
 const outputDir = path.resolve(required(args, 'output'));
 const sourceRoot = path.join(sourceDir, 'src');
 const nodeSourceRoot = path.join(outputDir, 'source');
+const browserSourceRoot = path.join(outputDir, 'browser-source');
 const libDir = path.join(outputDir, 'lib', 'kirimoto');
 const wasmDir = path.join(outputDir, 'lib', 'wasm');
+const browserDir = path.join(outputDir, 'browser');
 const binDir = path.join(outputDir, 'bin');
-const upstreamPackage = JSON.parse(await fs.readFile(path.join(sourceDir, 'package.json'), 'utf8'));
+const upstreamPackage = JSON.parse(
+  await fs.readFile(path.join(sourceDir, 'package.json'), 'utf8'),
+);
 const sourceRequire = createRequire(path.join(sourceDir, 'package.json'));
 const { build } = sourceRequire('esbuild');
 
@@ -23,12 +27,25 @@ if (!upstreamPackage.version || !upstreamPackage.engines?.node) {
 
 await fs.rm(outputDir, { recursive: true, force: true });
 await fs.mkdir(nodeSourceRoot, { recursive: true });
-await fs.cp(sourceRoot, nodeSourceRoot, { recursive: true, dereference: true });
+await fs.mkdir(browserSourceRoot, { recursive: true });
+await Promise.all([
+  fs.cp(sourceRoot, nodeSourceRoot, { recursive: true, dereference: true }),
+  fs.cp(sourceRoot, browserSourceRoot, { recursive: true, dereference: true }),
+]);
 
-await patchFile('kiri/run/engine.js', [
-  ["import { api } from '../app/api.js';", "import { api } from './node-api.js';"],
-  ["import { load } from '../../load/file.js';", "import { STL } from '../../load/stl.js';"],
-  ["import { newWidget } from '../app/widget.js';", "import { newWidget } from '../core/widget.js';"],
+await patchFile(nodeSourceRoot, 'kiri/run/engine.js', [
+  [
+    "import { api } from '../app/api.js';",
+    "import { api } from './node-api.js';",
+  ],
+  [
+    "import { load } from '../../load/file.js';",
+    "import { STL } from '../../load/stl.js';",
+  ],
+  [
+    "import { newWidget } from '../app/widget.js';",
+    "import { newWidget } from '../core/widget.js';",
+  ],
   [
     '            client.restart();\n            client.pool.start();',
     '            client.restart();\n            // Node builds use a single isolated worker.',
@@ -36,12 +53,18 @@ await patchFile('kiri/run/engine.js', [
   ['new load.STL()', 'new STL()', 2],
 ]);
 
-await patchFile('kiri/app/workers.js', [
-  ["import { api } from './api.js';", "import { api } from '../run/node-api.js';"],
-  ["import { Widget } from './widget.js';", "import { Widget } from '../core/widget.js';"],
+await patchFile(nodeSourceRoot, 'kiri/app/workers.js', [
+  [
+    "import { api } from './api.js';",
+    "import { api } from '../run/node-api.js';",
+  ],
+  [
+    "import { Widget } from './widget.js';",
+    "import { Widget } from '../core/widget.js';",
+  ],
 ]);
 
-await patchFile('kiri/core/widget.js', [
+await patchFile(nodeSourceRoot, 'kiri/core/widget.js', [
   ["import { tool as mesh_tool } from '../../mesh/tool.js';\n", ''],
   [
     "            console.time('mesh normalize')\n" +
@@ -51,28 +74,176 @@ await patchFile('kiri/core/widget.js', [
   ],
 ]);
 
-await patchFile('kiri/run/worker.js', [
-  ["import { CAM } from '../mode/cam/work/init-work.js';\n", ''],
-  ["import { DRAG } from '../mode/drag/init-work.js';\n", ''],
-  ["import { LASER } from '../mode/laser/init-work.js';\n", ''],
-  ["import { SLA } from '../mode/sla/work/init-work.js';\n", ''],
-  ["import { WEDM } from '../mode/wedm/init-work.js';\n", ''],
-  ["import { WJET } from '../mode/wjet/init-work.js';\n", ''],
+await patchFile(nodeSourceRoot, 'kiri/run/worker.js', fdmOnlyWorkerPatches());
+
+await patchFile(browserSourceRoot, 'kiri/run/engine.js', [
   [
-    'let drivers = {\n' +
-      '        DRAG,\n' +
-      '        CAM,\n' +
-      '        FDM,\n' +
-      '        LASER,\n' +
-      '        SLA,\n' +
-      '        WEDM,\n' +
-      '        WJET\n' +
-      '    },',
-    'let drivers = { FDM },',
+    "import { api } from '../app/api.js';",
+    "import { api } from './provider-api.js';",
+  ],
+  [
+    "import { load } from '../../load/file.js';",
+    "import { STL } from '../../load/stl.js';",
+  ],
+  [
+    "import { newWidget } from '../app/widget.js';",
+    "import { newWidget } from '../core/widget.js';",
+  ],
+  ['new load.STL()', 'new STL()', 2],
+  [
+    '    slice() {\n',
+    '    terminate() {\n' +
+      '        if (this.terminated) return;\n' +
+      '        this.terminated = true;\n' +
+      '        client.pool.stop();\n' +
+      '        client.terminate();\n' +
+      '    }\n\n' +
+      '    slice() {\n',
   ],
 ]);
 
-await fs.writeFile(path.join(nodeSourceRoot, 'package.json'), '{"type":"module"}\n');
+await patchFile(browserSourceRoot, 'kiri/app/workers.js', [
+  [
+    "import { api } from './api.js';",
+    "import { api } from '../run/provider-api.js';",
+  ],
+  [
+    "import { Widget } from './widget.js';",
+    "import { Widget } from '../core/widget.js';",
+  ],
+  [
+    '    isBusy() {\n',
+    '    terminate() {\n' +
+      '        if (worker) worker.terminate();\n' +
+      '        worker = null;\n' +
+      '        minions = false;\n' +
+      '        for (const record of Object.values(running)) {\n' +
+      "            record.fn?.({ error: 'cancelled operation' });\n" +
+      '        }\n' +
+      '        syncd = {};\n' +
+      '        running = {};\n' +
+      '    },\n\n' +
+      '    isBusy() {\n',
+  ],
+]);
+
+await patchFile(browserSourceRoot, 'kiri/core/widget.js', [
+  ["import { tool as mesh_tool } from '../../mesh/tool.js';\n", ''],
+  [
+    "            console.time('mesh normalize')\n" +
+      '            data = new mesh_tool({ precision: 0.001 }).normalizeVertices(data).toFloat32();\n' +
+      "            console.timeEnd('mesh normalize');",
+    "            throw new Error('mesh normalization is unavailable in the browser slicer runtime');",
+  ],
+]);
+
+await patchFile(
+  browserSourceRoot,
+  'kiri/run/worker.js',
+  fdmOnlyWorkerPatches(),
+);
+
+const providerApi = `export const api = {
+  platform: { clear() {} },
+  settings: { export({ engine }) { return engine; } },
+  widgets: { all() { return []; } },
+};
+`;
+
+await fs.writeFile(
+  path.join(browserSourceRoot, 'kiri', 'run', 'provider-api.js'),
+  providerApi,
+);
+
+function fdmOnlyWorkerPatches() {
+  return [
+    ["import { JSZip } from '../../ext/jszip-esm.js';\n", ''],
+    ['import { load } from "../../load/png.js";\n', ''],
+    ["import { RasterPath } from '../../gpu/raster.js';\n", ''],
+    ["import { toMesh as gerberToMesh } from '../../load/gbr.js';\n", ''],
+    ["import { CAM } from '../mode/cam/work/init-work.js';\n", ''],
+    ["import { DRAG } from '../mode/drag/init-work.js';\n", ''],
+    ["import { LASER } from '../mode/laser/init-work.js';\n", ''],
+    ["import { SLA } from '../mode/sla/work/init-work.js';\n", ''],
+    ["import { WEDM } from '../mode/wedm/init-work.js';\n", ''],
+    ["import { WJET } from '../mode/wjet/init-work.js';\n", ''],
+    [
+      'let drivers = {\n' +
+        '        DRAG,\n' +
+        '        CAM,\n' +
+        '        FDM,\n' +
+        '        LASER,\n' +
+        '        SLA,\n' +
+        '        WEDM,\n' +
+        '        WJET\n' +
+        '    },',
+      'let drivers = { FDM },',
+    ],
+    [
+      '/**\n' +
+        ' * @returns {RasterPath} instantiated class\n' +
+        ' */\n' +
+        'self.get_raster_gpu = async function({ mode, resolution, rotationStep }) {\n' +
+        '    let gpu = new RasterPath({\n' +
+        '        mode,\n' +
+        '        resolution,\n' +
+        '        rotationStep,\n' +
+        '        workerName: "/lib/gpu/raster-worker.js",\n' +
+        '        quiet: true,\n' +
+        '        debug: false,\n' +
+        '    });\n' +
+        '    await gpu.init();\n' +
+        '    return gpu;\n' +
+        '};\n\n',
+      '',
+    ],
+    [
+      '    image2mesh(info, send) {\n' +
+        '        let { device } = info.settings;\n' +
+        '        load.PNG.parse(info.png, {\n' +
+        '            outWidth: device.bedDepth,\n' +
+        '            outHeight: device.bedWidth,\n' +
+        '            inv_image: info.inv_image,\n' +
+        '            inv_alpha: info.inv_alpha,\n' +
+        '            border: info.border,\n' +
+        '            blur: info.blur,\n' +
+        '            base: info.base,\n' +
+        '            progress(progress) { send.data({ progress }) },\n' +
+        '            done(vertices) { send.done({ vertices }, [ vertices.buffer ])}\n' +
+        '        });\n' +
+        '    },\n\n' +
+        '    gerber2mesh(data, send) {\n' +
+        '        const vertices = gerberToMesh(data, { progress(pct) {\n' +
+        '            send.data({ progress: pct/100 });\n' +
+        '        } } );\n' +
+        '        send.data({ vertices }, [ vertices.buffer ]);\n' +
+        '    },\n\n' +
+        '    zip(data, send) {\n' +
+        '        let { files } = data;\n' +
+        '        let zip = new JSZip();\n' +
+        '        for (let file of files) {\n' +
+        '            zip.file(file.name, file.data);\n' +
+        '        }\n' +
+        '        zip.generateAsync({\n' +
+        '            type: "uint8array",\n' +
+        '            compression: "DEFLATE",\n' +
+        '            compressionOptions: { level: 6 },\n' +
+        '            streamFiles: true\n' +
+        '        }, progress => {\n' +
+        '            send.data(progress);\n' +
+        '        }).then(output => {\n' +
+        '            send.done(output);\n' +
+        '        });\n' +
+        '    },\n\n',
+      '',
+    ],
+  ];
+}
+
+await fs.writeFile(
+  path.join(nodeSourceRoot, 'package.json'),
+  '{"type":"module"}\n',
+);
 await fs.writeFile(
   path.join(nodeSourceRoot, 'kiri', 'run', 'node-api.js'),
   `export const api = {
@@ -85,6 +256,7 @@ await fs.writeFile(
 
 await fs.mkdir(libDir, { recursive: true });
 await fs.mkdir(wasmDir, { recursive: true });
+await fs.mkdir(browserDir, { recursive: true });
 await fs.mkdir(binDir, { recursive: true });
 await fs.copyFile(
   path.join(sourceRoot, 'wasm', 'manifold.wasm'),
@@ -111,27 +283,67 @@ const external = [
 ];
 
 await Promise.all([
-  bundle(path.join(nodeSourceRoot, 'kiri', 'run', 'engine.js'), path.join(libDir, 'engine.mjs'), external),
-  bundle(path.join(nodeSourceRoot, 'kiri', 'run', 'worker.js'), path.join(libDir, 'worker-core.mjs'), external),
+  bundle(
+    path.join(nodeSourceRoot, 'kiri', 'run', 'engine.js'),
+    path.join(libDir, 'engine.mjs'),
+    external,
+  ),
+  bundle(
+    path.join(nodeSourceRoot, 'kiri', 'run', 'worker.js'),
+    path.join(libDir, 'worker-core.mjs'),
+    external,
+  ),
 ]);
 
+const [browserEngine, browserWorker, browserPool] = await Promise.all([
+  bundleBrowser(
+    path.join(browserSourceRoot, 'kiri', 'run', 'engine.js'),
+    external,
+  ),
+  bundleBrowser(
+    path.join(browserSourceRoot, 'kiri', 'run', 'worker.js'),
+    external,
+  ),
+  bundleBrowser(
+    path.join(browserSourceRoot, 'kiri', 'run', 'minion.js'),
+    external,
+  ),
+]);
+await fs.writeFile(
+  path.join(browserDir, 'kirimoto-runtime.mjs'),
+  `${browserEngine}
+export const workerSource = ${JSON.stringify(browserWorker)};
+export const poolSource = ${JSON.stringify(browserPool)};
+export const version = ${JSON.stringify(upstreamPackage.version)};
+`,
+);
+
 await fs.writeFile(path.join(libDir, 'worker.mjs'), workerRuntime());
-await fs.writeFile(path.join(libDir, 'cli.mjs'), cliRuntime(upstreamPackage.version));
+await fs.writeFile(
+  path.join(libDir, 'cli.mjs'),
+  cliRuntime(upstreamPackage.version),
+);
 await fs.writeFile(path.join(binDir, 'kirimoto'), launcher());
 await fs.chmod(path.join(binDir, 'kirimoto'), 0o755);
 await fs.writeFile(
   path.join(outputDir, 'package.json'),
-  `${JSON.stringify({
-    name: '@simplyprint/kirimoto-node',
-    version: upstreamPackage.version,
-    description: 'Headless Kiri:Moto FDM slicer for SimplyPrint',
-    license: upstreamPackage.license ?? 'MIT',
-    engines: { node: '>=22.0.0' },
-    type: 'module',
-  }, null, 2)}\n`,
+  `${JSON.stringify(
+    {
+      name: '@simplyprint/kirimoto-node',
+      version: upstreamPackage.version,
+      description: 'Headless Kiri:Moto FDM slicer for SimplyPrint',
+      license: upstreamPackage.license ?? 'MIT',
+      engines: { node: '>=22.0.0' },
+      type: 'module',
+    },
+    null,
+    2,
+  )}\n`,
 );
 
-process.stdout.write(`Built Kiri:Moto ${upstreamPackage.version} Node package at ${outputDir}\n`);
+process.stdout.write(
+  `Built Kiri:Moto ${upstreamPackage.version} Node package at ${outputDir}\n`,
+);
 
 function parseArgs(values) {
   const parsed = {};
@@ -150,13 +362,15 @@ function required(value, key) {
   return value[key];
 }
 
-async function patchFile(relative, replacements) {
-  const file = path.join(nodeSourceRoot, relative);
+async function patchFile(root, relative, replacements) {
+  const file = path.join(root, relative);
   let source = await fs.readFile(file, 'utf8');
   for (const [needle, replacement, expected = 1] of replacements) {
     const actual = source.split(needle).length - 1;
     if (actual !== expected) {
-      throw new Error(`${relative}: expected ${expected} occurrence(s) of ${JSON.stringify(needle)}, found ${actual}`);
+      throw new Error(
+        `${relative}: expected ${expected} occurrence(s) of ${JSON.stringify(needle)}, found ${actual}`,
+      );
     }
     source = source.split(needle).join(replacement);
   }
@@ -182,6 +396,30 @@ async function bundle(entryPoint, outfile, dependencies) {
       'unsupported-dynamic-import': 'silent',
     },
   });
+}
+
+async function bundleBrowser(entryPoint, dependencies) {
+  const result = await build({
+    entryPoints: [entryPoint],
+    bundle: true,
+    platform: 'browser',
+    format: 'esm',
+    target: 'es2022',
+    external: dependencies,
+    write: false,
+    minify: true,
+    legalComments: 'none',
+    logOverride: {
+      'commonjs-variable-in-esm': 'silent',
+      'direct-eval': 'silent',
+      'duplicate-object-key': 'silent',
+      'unsupported-dynamic-import': 'silent',
+    },
+  });
+  const output = result.outputFiles?.[0];
+  if (!output)
+    throw new Error(`browser bundle produced no output for ${entryPoint}`);
+  return output.text;
 }
 
 function workerRuntime() {

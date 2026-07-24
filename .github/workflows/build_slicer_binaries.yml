@@ -252,6 +252,14 @@ jobs:
           nightly_url=https://github.com/${{ github.repository }}/releases/download/nightly/${nightly_asset_name}
           EOF
 
+      - name: Prepare Kiri:Moto browser runtime
+        if: env.continue_build == 'true' && matrix.slicer == 'KiriMoto' && env.ARCH == 'x86-64'
+        run: |
+          cp slicer-src/build/slicer_out/browser/kirimoto-runtime.mjs \
+            "slicer-out/KiriMoto-${{ env.latest_release_tag }}-browser.mjs"
+          cp slicer-src/build/slicer_out/browser/kirimoto-runtime.mjs \
+            slicer-out/KiriMoto-browser-nightly.mjs
+
       - name: Upload latest release
         if: env.continue_build == 'true' && matrix.publish_release == true
         uses: softprops/action-gh-release@v2
@@ -261,6 +269,15 @@ jobs:
           tag_name: ${{ matrix.slicer }}_${{ env.latest_release_tag }}
           target_commitish: ${{ github.ref_name }}
           body: "Link to workflow run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          make_latest: false
+          overwrite_files: true
+
+      - name: Upload latest Kiri:Moto browser runtime
+        if: env.continue_build == 'true' && matrix.slicer == 'KiriMoto' && env.ARCH == 'x86-64' && matrix.publish_release == true
+        uses: softprops/action-gh-release@v2
+        with:
+          files: slicer-out/KiriMoto-${{ env.latest_release_tag }}-browser.mjs
+          tag_name: ${{ matrix.slicer }}_${{ env.latest_release_tag }}
           make_latest: false
           overwrite_files: true
 
@@ -274,6 +291,15 @@ jobs:
           asset_name: ${{ matrix.slicer }}-${{ env.PLATFORM }}-${{ env.ARCH }}-nightly.zip
           asset_content_type: application/zip
           max_releases: 1
+
+      - name: Upload nightly Kiri:Moto browser runtime
+        if: env.continue_build == 'true' && matrix.slicer == 'KiriMoto' && env.ARCH == 'x86-64' && matrix.publish_nightly == true
+        uses: softprops/action-gh-release@v2
+        with:
+          files: slicer-out/KiriMoto-browser-nightly.mjs
+          tag_name: nightly
+          make_latest: false
+          overwrite_files: true
 
       - name: Upload config file
         if: env.continue_build == 'true' && matrix.publish == true

@@ -7,10 +7,11 @@ build_dir="${KIRIMOTO_BUILD_DIR:-$source_dir/build/kirimoto-node}"
 output_dir="${KIRIMOTO_PACKAGE_DIR:-$source_dir/build/slicer_out}"
 
 rm -rf "$output_dir"
-mkdir -p "$output_dir/bin" "$output_dir/lib/kirimoto" "$output_dir/lib/wasm"
+mkdir -p "$output_dir/bin" "$output_dir/lib/kirimoto" "$output_dir/lib/wasm" "$output_dir/browser"
 cp "$build_dir/bin/kirimoto" "$output_dir/bin/kirimoto"
 cp "$build_dir/lib/kirimoto/"*.mjs "$output_dir/lib/kirimoto/"
 cp "$build_dir/lib/wasm/manifold.wasm" "$output_dir/lib/wasm/manifold.wasm"
+cp "$build_dir/browser/kirimoto-runtime.mjs" "$output_dir/browser/kirimoto-runtime.mjs"
 cp "$build_dir/package.json" "$output_dir/package.json"
 cp "$source_dir/license.md" "$output_dir/LICENSE"
 chmod 0755 "$output_dir/bin/kirimoto"
@@ -32,6 +33,7 @@ for (const relative of [
   'lib/kirimoto/worker-core.mjs',
   'lib/kirimoto/worker.mjs',
   'lib/wasm/manifold.wasm',
+  'browser/kirimoto-runtime.mjs',
   'package.json',
   'LICENSE',
 ]) {
