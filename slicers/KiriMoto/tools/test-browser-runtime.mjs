@@ -8,16 +8,20 @@ import path from 'node:path';
 import process from 'node:process';
 
 const args = parseArgs(process.argv.slice(2));
-const runtimePath = path.resolve(required(args, 'runtime'));
+const runtimePath = args.runtime ? path.resolve(args.runtime) : null;
+const runtimeUrl = args['runtime-url'] || '/runtime.mjs';
 const modelPath = path.resolve(required(args, 'model'));
 const chromium = args.chromium || process.env.CHROMIUM || 'chromium';
 
-for (const file of [runtimePath, modelPath]) {
+if (!runtimePath && !args['runtime-url']) {
+  throw new Error('--runtime or --runtime-url is required');
+}
+for (const file of [runtimePath, modelPath].filter(Boolean)) {
   if (!fs.statSync(file).isFile()) throw new Error(`not a file: ${file}`);
 }
 
 const server = http.createServer((request, response) => {
-  if (request.url === '/runtime.mjs') {
+  if (request.url === '/runtime.mjs' && runtimePath) {
     serveFile(response, runtimePath, 'text/javascript');
     return;
   }
@@ -30,7 +34,7 @@ const server = http.createServer((request, response) => {
     'content-type': 'text/html; charset=utf-8',
     'cache-control': 'no-store',
   });
-  response.end(testPage());
+  response.end(testPage(runtimeUrl));
 });
 
 await new Promise((resolve, reject) => {
@@ -186,12 +190,12 @@ function serveFile(response, file, contentType) {
   fs.createReadStream(file).pipe(response);
 }
 
-function testPage() {
+function testPage(runtime) {
   return `<!doctype html>
 <html>
   <body data-status="running">running</body>
   <script type="module">
-    import { Engine, poolSource, version, workerSource } from '/runtime.mjs';
+    import { Engine, poolSource, version, workerSource } from ${JSON.stringify(runtime)};
 
     const workerUrl = URL.createObjectURL(new Blob([workerSource], { type: 'text/javascript' }));
     const poolUrl = URL.createObjectURL(new Blob([poolSource], { type: 'text/javascript' }));

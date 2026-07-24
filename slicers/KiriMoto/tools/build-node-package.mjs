@@ -75,6 +75,11 @@ await patchFile(nodeSourceRoot, 'kiri/core/widget.js', [
 ]);
 
 await patchFile(nodeSourceRoot, 'kiri/run/worker.js', fdmOnlyWorkerPatches());
+await removeObjectMethods(nodeSourceRoot, 'kiri/run/worker.js', [
+  'image2mesh',
+  'gerber2mesh',
+  'zip',
+]);
 
 await patchFile(browserSourceRoot, 'kiri/run/engine.js', [
   [
@@ -142,6 +147,11 @@ await patchFile(
   'kiri/run/worker.js',
   fdmOnlyWorkerPatches(),
 );
+await removeObjectMethods(browserSourceRoot, 'kiri/run/worker.js', [
+  'image2mesh',
+  'gerber2mesh',
+  'zip',
+]);
 
 const providerApi = `export const api = {
   platform: { clear() {} },
@@ -160,7 +170,11 @@ function fdmOnlyWorkerPatches() {
     ["import { JSZip } from '../../ext/jszip-esm.js';\n", ''],
     ['import { load } from "../../load/png.js";\n', ''],
     ["import { RasterPath } from '../../gpu/raster.js';\n", ''],
-    ["import { toMesh as gerberToMesh } from '../../load/gbr.js';\n", ''],
+    [
+      "import { toMesh as gerberToMesh } from '../../load/gbr.js';\n",
+      '',
+      [0, 1],
+    ],
     ["import { CAM } from '../mode/cam/work/init-work.js';\n", ''],
     ["import { DRAG } from '../mode/drag/init-work.js';\n", ''],
     ["import { LASER } from '../mode/laser/init-work.js';\n", ''],
@@ -195,46 +209,6 @@ function fdmOnlyWorkerPatches() {
         '    await gpu.init();\n' +
         '    return gpu;\n' +
         '};\n\n',
-      '',
-    ],
-    [
-      '    image2mesh(info, send) {\n' +
-        '        let { device } = info.settings;\n' +
-        '        load.PNG.parse(info.png, {\n' +
-        '            outWidth: device.bedDepth,\n' +
-        '            outHeight: device.bedWidth,\n' +
-        '            inv_image: info.inv_image,\n' +
-        '            inv_alpha: info.inv_alpha,\n' +
-        '            border: info.border,\n' +
-        '            blur: info.blur,\n' +
-        '            base: info.base,\n' +
-        '            progress(progress) { send.data({ progress }) },\n' +
-        '            done(vertices) { send.done({ vertices }, [ vertices.buffer ])}\n' +
-        '        });\n' +
-        '    },\n\n' +
-        '    gerber2mesh(data, send) {\n' +
-        '        const vertices = gerberToMesh(data, { progress(pct) {\n' +
-        '            send.data({ progress: pct/100 });\n' +
-        '        } } );\n' +
-        '        send.data({ vertices }, [ vertices.buffer ]);\n' +
-        '    },\n\n' +
-        '    zip(data, send) {\n' +
-        '        let { files } = data;\n' +
-        '        let zip = new JSZip();\n' +
-        '        for (let file of files) {\n' +
-        '            zip.file(file.name, file.data);\n' +
-        '        }\n' +
-        '        zip.generateAsync({\n' +
-        '            type: "uint8array",\n' +
-        '            compression: "DEFLATE",\n' +
-        '            compressionOptions: { level: 6 },\n' +
-        '            streamFiles: true\n' +
-        '        }, progress => {\n' +
-        '            send.data(progress);\n' +
-        '        }).then(output => {\n' +
-        '            send.done(output);\n' +
-        '        });\n' +
-        '    },\n\n',
       '',
     ],
   ];
@@ -367,12 +341,31 @@ async function patchFile(root, relative, replacements) {
   let source = await fs.readFile(file, 'utf8');
   for (const [needle, replacement, expected = 1] of replacements) {
     const actual = source.split(needle).length - 1;
-    if (actual !== expected) {
+    const valid = Array.isArray(expected)
+      ? expected.includes(actual)
+      : actual === expected;
+    if (!valid) {
       throw new Error(
-        `${relative}: expected ${expected} occurrence(s) of ${JSON.stringify(needle)}, found ${actual}`,
+        `${relative}: expected ${JSON.stringify(expected)} occurrence(s) of ${JSON.stringify(needle)}, found ${actual}`,
       );
     }
     source = source.split(needle).join(replacement);
+  }
+  await fs.writeFile(file, source);
+}
+
+async function removeObjectMethods(root, relative, methodNames) {
+  const file = path.join(root, relative);
+  let source = await fs.readFile(file, 'utf8');
+  for (const methodName of methodNames) {
+    const pattern = new RegExp(`\\n    ${methodName}\\([^]*?\\n    },\\n`, 'g');
+    const matches = source.match(pattern) ?? [];
+    if (matches.length !== 1) {
+      throw new Error(
+        `${relative}: expected one ${methodName} worker method, found ${matches.length}`,
+      );
+    }
+    source = source.replace(pattern, '\n');
   }
   await fs.writeFile(file, source);
 }
