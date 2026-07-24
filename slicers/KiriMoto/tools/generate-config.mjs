@@ -23,6 +23,44 @@ const FILAMENT_KEYS = new Set([
   'outputSparseMult',
   'outputTemp',
 ]);
+const CATEGORY_ICONS = {
+  Base: {
+    id: 'kiri-base',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 1.8 6.2 3.4v7.6L9 16.2l-6.2-3.4V5.2L9 1.8Z"/><path d="m2.8 5.2 6.2 3.5 6.2-3.5M9 8.7v7.5"/></svg>',
+  },
+  Expert: {
+    id: 'kiri-expert',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 1.8 2.1 4.3 4.8.7-3.5 3.4.8 4.8L9 12.7 4.8 15l.8-4.8-3.5-3.4 4.8-.7L9 1.8Z"/></svg>',
+  },
+  Heating: {
+    id: 'kiri-heating',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10.3V4a2 2 0 0 1 4 0v6.3a3.6 3.6 0 1 1-4 0Z"/><path d="M9 5.2v7.1M14.2 3.3c1 1 .9 2.1 0 3.1"/></svg>',
+  },
+  Layers: {
+    id: 'kiri-layers',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 2 6.5 3.3L9 8.6 2.5 5.3 9 2Z"/><path d="m2.5 8.8 6.5 3.3 6.5-3.3M2.5 12.3 9 15.6l6.5-3.3"/></svg>',
+  },
+  Output: {
+    id: 'kiri-output',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6.3 4.4-3.7 4 3.7 4M11.7 4.4l3.7 4-3.7 4M10.2 2.7 7.8 14.3"/></svg>',
+  },
+  Shells: {
+    id: 'kiri-shells',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2.2" y="2.2" width="13.6" height="13.6" rx="1"/><rect x="5.1" y="5.1" width="7.8" height="7.8" rx=".7"/></svg>',
+  },
+  'Solid Fill': {
+    id: 'kiri-solid-fill',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 1.8 6.2 3.4v7.6L9 16.2l-6.2-3.4V5.2L9 1.8Z" fill="currentColor" fill-opacity=".18"/><path d="m2.8 5.2 6.2 3.5 6.2-3.5M9 8.7v7.5"/></svg>',
+  },
+  'Sparse Fill': {
+    id: 'kiri-sparse-fill',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2.2" y="2.2" width="13.6" height="13.6" rx="1"/><path d="m2.6 6.2 4-4M2.4 11.2l9-9M3.1 15.7 15.7 3.1M8 15.8l7.8-7.8M12.9 15.8l2.9-2.9"/></svg>',
+  },
+  Support: {
+    id: 'kiri-support',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.3 3.1h13.4M4.2 3.1v3.3l2.2 2.2v6.3M13.8 3.1v3.3l-2.2 2.2v6.3M3.5 14.9h11M9 3.1v11.8"/></svg>',
+  },
+};
 
 // GridSpace installs this helper from its browser bootstrap before loading
 // defaults.js. The generator loads that authoritative module directly.
@@ -81,6 +119,23 @@ const metadata = {
   },
   conditional_settings: {
     false_behavior: 'hide',
+  },
+  icons: Object.fromEntries(
+    Object.values(CATEGORY_ICONS).map(({ id, svg }) => [
+      id,
+      {
+        source_name: `${id}.svg`,
+        svg,
+      },
+    ]),
+  ),
+  panels: {
+    process: Object.keys(processPanel).map((label) => ({
+      id: label.toLowerCase().replaceAll(/[^a-z0-9]+/g, '-').replaceAll(/^-|-$/g, ''),
+      label,
+      icon: CATEGORY_ICONS[label]?.id,
+      groups: [{ id: 'general', label: 'General' }],
+    })),
   },
   generator: {
     defaults: 'src/kiri/app/conf/defaults.js',
@@ -254,7 +309,7 @@ function makeDefinition(key, defaultValue, declaration, role) {
   const definition = {
     type,
     default_value: structuredClone(defaultValue),
-    label: declaration?.label || humanize(key),
+    label: upperFirst(declaration?.label || humanize(key)),
     tooltip: declaration?.tooltip || '',
     mode: modeFor(declaration?.group),
     native_type: nativeType(type, defaultValue),
@@ -471,6 +526,11 @@ function normalizeLanguageValue(value) {
 
 function humanize(value) {
   return titleCase(value.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/[_-]+/g, ' '));
+}
+
+function upperFirst(value) {
+  const text = String(value);
+  return text ? text[0].toLocaleUpperCase('en-US') + text.slice(1) : text;
 }
 
 function titleCase(value) {
