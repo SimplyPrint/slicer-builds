@@ -28,6 +28,7 @@ The patches under `slicers/<Slicer>/patches/` modify upstream slicer source code
 | CrealityPrint | [CrealityOfficial/CrealityPrint](https://github.com/CrealityOfficial/CrealityPrint) | [AGPL-3.0](slicers/CrealityPrint/LICENSE) |
 | Cura | [Ultimaker/CuraEngine](https://github.com/Ultimaker/CuraEngine) + [Ultimaker/Cura](https://github.com/Ultimaker/Cura) | [AGPL-3.0](slicers/Cura/LICENSE.CuraEngine) + [LGPL-3.0](slicers/Cura/LICENSE.Cura) |
 | ElegooSlicer | [ELEGOO-3D/ElegooSlicer](https://github.com/ELEGOO-3D/ElegooSlicer) | [AGPL-3.0](slicers/ElegooSlicer/LICENSE) |
+| KiriMoto | [GridSpace/grid-apps](https://github.com/GridSpace/grid-apps) | [MIT](slicers/KiriMoto/LICENSE) |
 | OrcaSlicer | [OrcaSlicer/OrcaSlicer](https://github.com/OrcaSlicer/OrcaSlicer) | [AGPL-3.0](slicers/OrcaSlicer/LICENSE) |
 | PrusaSlicer | [prusa3d/PrusaSlicer](https://github.com/prusa3d/PrusaSlicer) | [AGPL-3.0](slicers/PrusaSlicer/LICENSE) |
 | QIDIStudio | [QIDITECH/QIDIStudio](https://github.com/QIDITECH/QIDIStudio) | [AGPL-3.0](slicers/QIDIStudio/LICENSE) |

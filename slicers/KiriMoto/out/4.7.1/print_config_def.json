@@ -1,0 +1,2233 @@
+{
+  "antiBacklash": {
+    "type": "float",
+    "default_value": 0,
+    "label": "anti-backlash",
+    "tooltip": "for better flat surface finish use micro-movements to cancel backlash in solid layer output in millimeters 0 to disable if your firmware has M425 put that in the gcode header and leave this as 0",
+    "mode": "expert",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 3
+  },
+  "bedBelt": {
+    "type": "bool",
+    "default_value": false,
+    "label": "belt bed",
+    "tooltip": "continuous printing bed",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "bedDepth": {
+    "type": "float",
+    "default_value": 175,
+    "label": "Y (depth)",
+    "tooltip": "workspace units",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine",
+    "sidetext": "mm"
+  },
+  "bedHeight": {
+    "type": "float",
+    "default_value": 2.5,
+    "label": "Bed Height",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "machine",
+    "sidetext": "mm"
+  },
+  "bedRound": {
+    "type": "bool",
+    "default_value": false,
+    "label": "circular bed",
+    "tooltip": "device bed is circular",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "bedWidth": {
+    "type": "float",
+    "default_value": 300,
+    "label": "X (width)",
+    "tooltip": "workspace units",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine",
+    "sidetext": "mm"
+  },
+  "deviceName": {
+    "type": "string",
+    "default_value": "",
+    "label": "Device Name",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "str",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "text",
+      "multiline": false
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "machine"
+  },
+  "deviceZMax": {
+    "type": "int",
+    "default_value": 0,
+    "label": "Z axis speed limit",
+    "tooltip": "maximum Z axis speed in millimeters / second 0 to disable",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "extFilament": {
+    "type": "float",
+    "default_value": 1.75,
+    "label": "filament",
+    "tooltip": "diameter in millimeters",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine",
+    "sidetext": "mm"
+  },
+  "extNozzle": {
+    "type": "float",
+    "default_value": 0.4,
+    "label": "nozzle",
+    "tooltip": "diameter in millimeters",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine",
+    "sidetext": "mm"
+  },
+  "extOffsetX": {
+    "type": "float",
+    "default_value": 0,
+    "label": "offset x",
+    "tooltip": "nozzle offset x",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine",
+    "sidetext": "mm"
+  },
+  "extOffsetY": {
+    "type": "float",
+    "default_value": 0,
+    "label": "offset y",
+    "tooltip": "nozzle offset y",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine",
+    "sidetext": "mm"
+  },
+  "extras": {
+    "type": "string",
+    "default_value": {},
+    "label": "Extras",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "object",
+    "wire_type": "object",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "json"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "machine"
+  },
+  "extruders": {
+    "type": "strings",
+    "default_value": [
+      {
+        "extFilament": 1.75,
+        "extNozzle": 0.4,
+        "extOffsetX": 0,
+        "extOffsetY": 0
+      }
+    ],
+    "label": "Extruders",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "array",
+    "wire_type": "array",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "list",
+      "item_type": "string"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "machine"
+  },
+  "fdmArcEnabled": {
+    "type": "bool",
+    "default_value": false,
+    "label": "arc output",
+    "tooltip": "EXPERIMENTAL: enable path to arc conversion",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "fdmArcResolution": {
+    "type": "float",
+    "default_value": 1,
+    "label": "arc resolution",
+    "tooltip": "change in line direction aceptible in an arc consider values around 5 High values may cause unexpected behavior",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 180
+  },
+  "fdmArcTolerance": {
+    "type": "float",
+    "default_value": 0.005,
+    "label": "arc tolerance",
+    "tooltip": "convert cicrular paths to arcs; center point drift tolerance when matching arc points consider values around 0.15 in mm, or 0.006 inches; High values may cause unexpected behavior 0 to disable",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 100
+  },
+  "filamentSource": {
+    "type": "string",
+    "default_value": "direct",
+    "label": "Filament Source",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "str",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "text",
+      "multiline": false
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "machine"
+  },
+  "firstLayerBedTemp": {
+    "type": "int",
+    "default_value": 0,
+    "label": "bed temp",
+    "tooltip": "degrees in celsius output setting used when this is zero",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "sidetext": "°C"
+  },
+  "firstLayerBeltBump": {
+    "type": "float",
+    "default_value": 0,
+    "label": "anchor bump",
+    "tooltip": "add a bump to the start of an anchor to help it peel off at the end of the belt in millimeters",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 10,
+    "sidetext": "mm"
+  },
+  "firstLayerBeltFact": {
+    "type": "float",
+    "default_value": 1,
+    "label": "flow factor",
+    "tooltip": "extrusion multiplier 0.0 - 2.0",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 2
+  },
+  "firstLayerBeltLead": {
+    "type": "float",
+    "default_value": 3,
+    "label": "part anchor",
+    "tooltip": "belt part anchor at start of print in millimeters",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm"
+  },
+  "firstLayerBrim": {
+    "type": "int",
+    "default_value": 0,
+    "label": "brim sides",
+    "tooltip": "add brim to part perimeter size is width in millimeters 0 to disable",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "firstLayerBrimGap": {
+    "type": "float",
+    "default_value": 0,
+    "label": "brim gap",
+    "tooltip": "spacing between brim and part in millimeters",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm"
+  },
+  "firstLayerBrimIn": {
+    "type": "int",
+    "default_value": 0,
+    "label": "brim interior",
+    "tooltip": "add brim to part interior when interior voids exist size is width in millimeters 0 to disable",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "firstLayerBrimTrig": {
+    "type": "int",
+    "default_value": 0,
+    "label": "brim trigger",
+    "tooltip": "add brims only when segment facing belt is shorter than this value in millimeters 0 = Infinity",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "firstLayerFanSpeed": {
+    "type": "int",
+    "default_value": 0,
+    "label": "fan on speed",
+    "tooltip": "0 - 255",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "min": 0,
+    "max": 255,
+    "sidetext": "mm/s"
+  },
+  "firstLayerFillRate": {
+    "type": "float",
+    "default_value": 35,
+    "label": "fill speed",
+    "tooltip": "fill printing max speed in millimeters / second",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm/s"
+  },
+  "firstLayerFlatten": {
+    "type": "float",
+    "default_value": 0,
+    "label": "flatten",
+    "tooltip": "flatten to the belt any point height less than this value in millimeters",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "firstLayerNozzleTemp": {
+    "type": "int",
+    "default_value": 0,
+    "label": "nozzle temp",
+    "tooltip": "degrees in celsius output setting used when this is zero",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "sidetext": "°C"
+  },
+  "firstLayerRate": {
+    "type": "float",
+    "default_value": 30,
+    "label": "shell speed",
+    "tooltip": "shell printing max speed in millimeters / second",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm/s"
+  },
+  "firstLayerYOffset": {
+    "type": "float",
+    "default_value": 0,
+    "label": "belt offset",
+    "tooltip": "height offset from belt of lowest extrusion in millimeters",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "firstSliceHeight": {
+    "type": "float",
+    "default_value": 0.25,
+    "label": "layer height",
+    "tooltip": "height of each slice in millimeters should be >= slice height",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm"
+  },
+  "fwRetract": {
+    "type": "bool",
+    "default_value": false,
+    "label": "firmware retract",
+    "tooltip": "device fimware supports G10/G11",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "gcodeChange": {
+    "type": "strings",
+    "default_value": [
+      "T{tool}"
+    ],
+    "label": "Gcode Change",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "array",
+    "wire_type": "array",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "list",
+      "item_type": "string"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "gcodeFan": {
+    "type": "bools",
+    "default_value": [],
+    "label": "Gcode Fan",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "array",
+    "wire_type": "array",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "list",
+      "item_type": "bool"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "gcodeFeature": {
+    "type": "bools",
+    "default_value": [],
+    "label": "Gcode Feature",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "array",
+    "wire_type": "array",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "list",
+      "item_type": "bool"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "gcodeFExt": {
+    "type": "string",
+    "default_value": "",
+    "label": "file extension",
+    "tooltip": "file name extension",
+    "mode": "advanced",
+    "native_type": "str",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "text",
+      "multiline": false
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "gcodeLayer": {
+    "type": "bools",
+    "default_value": [],
+    "label": "Gcode Layer",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "array",
+    "wire_type": "array",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "list",
+      "item_type": "bool"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "gcodePost": {
+    "type": "bools",
+    "default_value": [],
+    "label": "Gcode Post",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "array",
+    "wire_type": "array",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "list",
+      "item_type": "bool"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "gcodePre": {
+    "type": "bools",
+    "default_value": [],
+    "label": "Gcode Pre",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "array",
+    "wire_type": "array",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "list",
+      "item_type": "bool"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "gcodeProc": {
+    "type": "string",
+    "default_value": "",
+    "label": "Gcode Proc",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "str",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "text",
+      "multiline": false
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "gcodeTime": {
+    "type": "float",
+    "default_value": 1,
+    "label": "output time factor",
+    "tooltip": "modifier to print time estimates in the gcode export dialog. raise or lower value based on your predicted vs observed print times",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "gcodeTrack": {
+    "type": "bools",
+    "default_value": [],
+    "label": "Gcode Track",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "array",
+    "wire_type": "array",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "list",
+      "item_type": "bool"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "imageURL": {
+    "type": "string",
+    "default_value": "",
+    "label": "Image URL",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "str",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "text",
+      "multiline": false
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "machine"
+  },
+  "internal": {
+    "type": "int",
+    "default_value": 0,
+    "label": "Internal",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "machine"
+  },
+  "maxHeight": {
+    "type": "float",
+    "default_value": 150,
+    "label": "Z (height)",
+    "tooltip": "workspace units",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine",
+    "sidetext": "mm"
+  },
+  "mode": {
+    "type": "string",
+    "default_value": "",
+    "label": "Mode",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "str",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "text",
+      "multiline": false
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "machine"
+  },
+  "new": {
+    "type": "bool",
+    "default_value": true,
+    "label": "New",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "machine"
+  },
+  "originCenter": {
+    "type": "bool",
+    "default_value": false,
+    "label": "origin center",
+    "tooltip": "bed origin center",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "machine"
+  },
+  "outputAlternating": {
+    "type": "bool",
+    "default_value": false,
+    "label": "alternating",
+    "tooltip": "alternate shell winding order clockwise / counter-clockwise may reduce warping in thin areas and help with belt edge adhesion",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "outputAvoidGaps": {
+    "type": "bool",
+    "default_value": true,
+    "label": "avoid gaps",
+    "tooltip": "route around gaps rather than perform a retract when possible",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "outputBedTemp": {
+    "type": "int",
+    "default_value": 60,
+    "label": "bed temp",
+    "tooltip": "degrees in celsius",
+    "mode": "simple",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "sidetext": "°C"
+  },
+  "outputBeltFirst": {
+    "type": "bool",
+    "default_value": false,
+    "label": "belt first",
+    "tooltip": "always print shells touching the belt before any other shells. this is no longer a recommended setting based on extensive testing.",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "outputBrimCount": {
+    "type": "int",
+    "default_value": 2,
+    "label": "skirt count",
+    "tooltip": "number of first-layer offset brims to generate",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "outputBrimOffset": {
+    "type": "float",
+    "default_value": 2,
+    "label": "skirt offset",
+    "tooltip": "skirt offset from part in millimeters when rafts are used this is the raft offset",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "outputCoastDist": {
+    "type": "float",
+    "default_value": 0,
+    "label": "shell coast",
+    "tooltip": "non-printing end of perimeter shells in millimeters",
+    "mode": "expert",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 10
+  },
+  "outputDraftShield": {
+    "type": "bool",
+    "default_value": false,
+    "label": "draft shield",
+    "tooltip": "extend skirt to height of part which acts as a shield against drafts and traps hot air",
+    "mode": "simple",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "outputFanLayer": {
+    "type": "int",
+    "default_value": 1,
+    "label": "fan on layer",
+    "tooltip": "layer # to turn on fan layers start at 0",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "min": 0,
+    "max": 255
+  },
+  "outputFanSpeed": {
+    "type": "int",
+    "default_value": 255,
+    "label": "fan on speed",
+    "tooltip": "0 - 255",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "min": 0,
+    "max": 255,
+    "sidetext": "mm/s"
+  },
+  "outputFeedrate": {
+    "type": "int",
+    "default_value": 50,
+    "label": "print speed",
+    "tooltip": "max printing speed set to 0 to use default millimeters / second",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm/s"
+  },
+  "outputFillMult": {
+    "type": "float",
+    "default_value": 1.25,
+    "label": "solid factor",
+    "tooltip": "extrusion multiplier 0.0 - 2.0",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "min": 0,
+    "max": 2
+  },
+  "outputFinishrate": {
+    "type": "int",
+    "default_value": 50,
+    "label": "finish speed",
+    "tooltip": "outermost shell speed bridge/flat solid layers set to 0 to use default millimeters / second",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm/s"
+  },
+  "outputInvertX": {
+    "type": "bool",
+    "default_value": false,
+    "label": "Output Invert X",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "process"
+  },
+  "outputInvertY": {
+    "type": "bool",
+    "default_value": false,
+    "label": "Output Invert Y",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "process"
+  },
+  "outputLayerRetract": {
+    "type": "bool",
+    "default_value": false,
+    "label": "force retract",
+    "tooltip": "force filament retraction between layers",
+    "mode": "simple",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "outputLoops": {
+    "type": "int",
+    "default_value": 0,
+    "label": "loop count",
+    "tooltip": "number of times to repeat the selected range or the entire print if no range",
+    "mode": "expert",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": -1,
+    "max": 1000
+  },
+  "outputMaxFlowrate": {
+    "type": "float",
+    "default_value": 15,
+    "label": "max flowrate",
+    "tooltip": "maximum volumetric flowrate supported by this print head and filament in millimeters^3 / second",
+    "mode": "expert",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "min": 1,
+    "max": 200,
+    "sidetext": "mm/s"
+  },
+  "outputMinLayerTime": {
+    "type": "int",
+    "default_value": 10,
+    "label": "min layer time",
+    "tooltip": "minimum allowable layer print time in seconds. printing will be slowed if the layer would outerwise complete in fewer seconds. 0 = disabled",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "min": 0,
+    "max": 200
+  },
+  "outputMinSpeed": {
+    "type": "float",
+    "default_value": 5,
+    "label": "min speed",
+    "tooltip": "minimum speed for short segments",
+    "mode": "expert",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "min": 1,
+    "max": 200,
+    "sidetext": "mm/s"
+  },
+  "outputPurgeTower": {
+    "type": "int",
+    "default_value": 0,
+    "label": "purge tower",
+    "tooltip": "purge tower area in mm^2 for multi extruder setups 0 = disabled",
+    "mode": "expert",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 1000
+  },
+  "outputRaft": {
+    "type": "bool",
+    "default_value": false,
+    "label": "raft enable",
+    "tooltip": "create a raft under the model for better adhesion uses skirt offset and disables skirt output",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "outputRaftSpacing": {
+    "type": "float",
+    "default_value": 0.2,
+    "label": "raft gap",
+    "tooltip": "additional layer spacing between 1st layer and raft in millimeters",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 3,
+    "sidetext": "mm"
+  },
+  "outputRetractDist": {
+    "type": "float",
+    "default_value": 1.5,
+    "label": "retract distance",
+    "tooltip": "amount to retract filament for long moves. in millimeters",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "outputRetractDwell": {
+    "type": "int",
+    "default_value": 20,
+    "label": "engage dwell",
+    "tooltip": "time between re-engaging filament and movement in milliseconds",
+    "mode": "expert",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "outputRetractSpeed": {
+    "type": "int",
+    "default_value": 40,
+    "label": "retract rate",
+    "tooltip": "speed of filament retraction in mm/s",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm/s"
+  },
+  "outputRetractWipe": {
+    "type": "float",
+    "default_value": 0,
+    "label": "retract wipe",
+    "tooltip": "non-printing move after retraction in millimeters",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 10
+  },
+  "outputScarfLength": {
+    "type": "float",
+    "default_value": 0,
+    "label": "scarf length",
+    "tooltip": "ease up length for scarf joint. disables arc detection 0 = disabled",
+    "mode": "expert",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 1000
+  },
+  "outputSeekrate": {
+    "type": "int",
+    "default_value": 80,
+    "label": "move speed",
+    "tooltip": "non-print move speed millimeters / second 0 = enable G0 moves",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm/s"
+  },
+  "outputShellMult": {
+    "type": "float",
+    "default_value": 1.25,
+    "label": "shell factor",
+    "tooltip": "extrusion multiplier 0.0 - 2.0",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "min": 0,
+    "max": 2
+  },
+  "outputShortPoly": {
+    "type": "float",
+    "default_value": 0,
+    "label": "short path",
+    "tooltip": "polygons shorter than this will have their print speed scaled down to min speed in millimeters",
+    "mode": "expert",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 10000
+  },
+  "outputSparseMult": {
+    "type": "float",
+    "default_value": 1.25,
+    "label": "infill factor",
+    "tooltip": "extrusion multiplier 0.0 - 2.0",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "min": 0,
+    "max": 2
+  },
+  "outputTemp": {
+    "type": "int",
+    "default_value": 200,
+    "label": "nozzle temp",
+    "tooltip": "degrees in celsius",
+    "mode": "simple",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "filament",
+    "sidetext": "°C"
+  },
+  "processName": {
+    "type": "string",
+    "default_value": "default",
+    "label": "Process Name",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "str",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "text",
+      "multiline": false
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "process"
+  },
+  "profiles": {
+    "type": "bools",
+    "default_value": [],
+    "label": "Profiles",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "array",
+    "wire_type": "array",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "list",
+      "item_type": "bool"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "machine"
+  },
+  "ranges": {
+    "type": "bools",
+    "default_value": [],
+    "label": "Ranges",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "array",
+    "wire_type": "array",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "list",
+      "item_type": "bool"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "process"
+  },
+  "sliceAdaptive": {
+    "type": "bool",
+    "default_value": false,
+    "label": "adaptive height",
+    "tooltip": "use adaptive layer heights with 'layer height' as max and 'layer min' as the min",
+    "mode": "simple",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "sliceAngle": {
+    "type": "float",
+    "default_value": 45,
+    "label": "slice angle",
+    "tooltip": "slice angle bias in degrees",
+    "mode": "expert",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "°"
+  },
+  "sliceBottomLayers": {
+    "type": "int",
+    "default_value": 3,
+    "label": "base layers",
+    "tooltip": "number of solid layers at bottom of the print or under bridge spans",
+    "mode": "simple",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "sliceCompInner": {
+    "type": "float",
+    "default_value": 0,
+    "label": "shell inner offset",
+    "tooltip": "inner hole perimeter offset in millimeters",
+    "mode": "expert",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": -10,
+    "max": 10
+  },
+  "sliceCompOuter": {
+    "type": "float",
+    "default_value": 0,
+    "label": "shell outer offset",
+    "tooltip": "outer wall perimeter offset in millimeters",
+    "mode": "expert",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": -10,
+    "max": 10
+  },
+  "sliceDetectThin": {
+    "type": "enum",
+    "default_value": "basic",
+    "label": "thin walls",
+    "tooltip": "detect and fill gaps between shell walls",
+    "mode": "advanced",
+    "native_type": "enum",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "select"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "enum_values": [
+      "off",
+      "basic",
+      "adaptive",
+      "legacy 1",
+      "legacy 2"
+    ],
+    "enum_labels": [
+      "off",
+      "basic",
+      "adaptive",
+      "legacy 1",
+      "legacy 2"
+    ]
+  },
+  "sliceFillAngle": {
+    "type": "float",
+    "default_value": 45,
+    "label": "start angle",
+    "tooltip": "starting angle in degrees 90 degrees added to  each following layer applies only to solid layers",
+    "mode": "simple",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "°"
+  },
+  "sliceFillGrow": {
+    "type": "float",
+    "default_value": 0,
+    "label": "expand",
+    "tooltip": "expand projected solids can help with solid areas over sparse infill areas units in millimeters",
+    "mode": "simple",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm"
+  },
+  "sliceFillOverlap": {
+    "type": "float",
+    "default_value": 0.35,
+    "label": "fill overlap",
+    "tooltip": "overlap between shells and solid or sparse infill. can improve bonding to shells as fraction of line width 0.0 - 1.0",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 1
+  },
+  "sliceFillRepeat": {
+    "type": "int",
+    "default_value": 1,
+    "label": "fill repeat",
+    "tooltip": "number of times to repeat unchanged fill layers",
+    "mode": "simple",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 1,
+    "max": 10
+  },
+  "sliceFillSparse": {
+    "type": "float",
+    "default_value": 0.25,
+    "label": "fill amount",
+    "tooltip": "fill density values 0.0 - 1.0",
+    "mode": "simple",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 1
+  },
+  "sliceFillType": {
+    "type": "enum",
+    "default_value": "hex",
+    "label": "fill type",
+    "tooltip": "",
+    "mode": "simple",
+    "native_type": "enum",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "select"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "enum_values": [
+      "none",
+      "hex",
+      "grid",
+      "linear",
+      "triangle",
+      "gyroid",
+      "vase"
+    ],
+    "enum_labels": [
+      "none",
+      "hex",
+      "grid",
+      "linear",
+      "triangle",
+      "gyroid",
+      "vase"
+    ]
+  },
+  "sliceFillWidth": {
+    "type": "int",
+    "default_value": 1,
+    "label": "Slice Fill Width",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "process",
+    "sidetext": "mm"
+  },
+  "sliceHeight": {
+    "type": "float",
+    "default_value": 0.25,
+    "label": "layer height",
+    "tooltip": "height of each slice layer in millimeters",
+    "mode": "simple",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm"
+  },
+  "sliceLayerStart": {
+    "type": "enum",
+    "default_value": "last",
+    "label": "start point",
+    "tooltip": "layer starting point last = where last layer ended center = part center origin = device origin random = yolo",
+    "mode": "simple",
+    "native_type": "enum",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "select"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "enum_values": [
+      "last",
+      "center",
+      "origin",
+      "random",
+      "spiral"
+    ],
+    "enum_labels": [
+      "last",
+      "center",
+      "origin",
+      "random",
+      "spiral"
+    ]
+  },
+  "sliceLayerStartX": {
+    "type": "int",
+    "default_value": 0,
+    "label": "Slice Layer Start X",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "process"
+  },
+  "sliceLayerStartY": {
+    "type": "int",
+    "default_value": 0,
+    "label": "Slice Layer Start Y",
+    "tooltip": "",
+    "mode": "advanced",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": true,
+    "profile_role": "process"
+  },
+  "sliceLineWidth": {
+    "type": "float",
+    "default_value": 0,
+    "label": "line width",
+    "tooltip": "extrusion width in millimeters 0 = nozzle diameter",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 5,
+    "sidetext": "mm"
+  },
+  "sliceMinHeight": {
+    "type": "float",
+    "default_value": 0,
+    "label": "layer minimum",
+    "tooltip": "adaptive min layer height in millimeters must be non-zero",
+    "mode": "simple",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 3,
+    "sidetext": "mm"
+  },
+  "sliceShellOrder": {
+    "type": "enum",
+    "default_value": "in-out",
+    "label": "shell order",
+    "tooltip": "output shell order inside to outside or outside to inside affects surface quality",
+    "mode": "advanced",
+    "native_type": "enum",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "select"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process",
+    "enum_values": [
+      "in-out",
+      "out-in",
+      "alternate"
+    ],
+    "enum_labels": [
+      "in-out",
+      "out-in",
+      "alternate"
+    ]
+  },
+  "sliceShells": {
+    "type": "float",
+    "default_value": 3,
+    "label": "shell count",
+    "tooltip": "number of perimeter walls to generate",
+    "mode": "advanced",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "sliceSolidify": {
+    "type": "bool",
+    "default_value": false,
+    "label": "solidify",
+    "tooltip": "remove inner voids treat the model as a solid",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "sliceSolidMinArea": {
+    "type": "float",
+    "default_value": 1,
+    "label": "min area",
+    "tooltip": "minimum area (mm^2) bridges and flats less than this are culled",
+    "mode": "simple",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm"
+  },
+  "sliceSolidMinThick": {
+    "type": "float",
+    "default_value": 0.4,
+    "label": "min thick",
+    "tooltip": "minimum area thickness which is a ratio of area to perimeter for layer differences which are used to find bridges and flat areas values from 0.0 - 0.5 work best",
+    "mode": "simple",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm"
+  },
+  "sliceSupportAngle": {
+    "type": "float",
+    "default_value": 50,
+    "label": "angle",
+    "tooltip": "max overhang angle before supporting pillar is generated normal values 45-60 belt values 0-10",
+    "mode": "simple",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 90,
+    "sidetext": "°"
+  },
+  "sliceSupportDensity": {
+    "type": "float",
+    "default_value": 0.1,
+    "label": "density",
+    "tooltip": "fraction 0.0 - 1.0 recommended 0.15 0 to disable",
+    "mode": "simple",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 1
+  },
+  "sliceSupportExtra": {
+    "type": "float",
+    "default_value": 0,
+    "label": "expand",
+    "tooltip": "expand support area beyond part boundary in millimeters",
+    "mode": "simple",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 10
+  },
+  "sliceSupportGap": {
+    "type": "bool",
+    "default_value": true,
+    "label": "layer gap",
+    "tooltip": "add a layer gap between support and part",
+    "mode": "simple",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm"
+  },
+  "sliceSupportNozzle": {
+    "type": "int",
+    "default_value": 0,
+    "label": "tool",
+    "tooltip": "in multi-extruder systems the toolhead to use for support material",
+    "mode": "simple",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "tool_reference",
+      "index_base": 0,
+      "display_index_base": 1,
+      "selection": "required"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "sidetext": "mm"
+  },
+  "sliceSupportOffset": {
+    "type": "float",
+    "default_value": 1,
+    "label": "part offset",
+    "tooltip": "offset from part in millimeters",
+    "mode": "simple",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 200
+  },
+  "sliceSupportOutline": {
+    "type": "bool",
+    "default_value": true,
+    "label": "enclosed",
+    "tooltip": "enclose support pattern inside a perimeter shell",
+    "mode": "simple",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "sliceSupportTree": {
+    "type": "bool",
+    "default_value": false,
+    "label": "tree type",
+    "tooltip": "use tree type support structure",
+    "mode": "simple",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "sliceSupportType": {
+    "type": "enum",
+    "default_value": "disabled",
+    "label": "type",
+    "tooltip": "automatic = detect manual = paint on",
+    "mode": "simple",
+    "native_type": "enum",
+    "wire_type": "string",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "select"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process",
+    "enum_values": [
+      "disabled",
+      "automatic",
+      "manual"
+    ],
+    "enum_labels": [
+      "disabled",
+      "automatic",
+      "manual"
+    ]
+  },
+  "sliceTopLayers": {
+    "type": "int",
+    "default_value": 3,
+    "label": "top layers",
+    "tooltip": "number of solid layers at the top of the print or on flat areas facing up",
+    "mode": "simple",
+    "native_type": "int",
+    "wire_type": "integer",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "int"
+    },
+    "visibility_tier": "simple",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "sliceZInterleave": {
+    "type": "bool",
+    "default_value": false,
+    "label": "interleave z",
+    "tooltip": "interleave Z heights with odd number shells",
+    "mode": "advanced",
+    "native_type": "bool",
+    "wire_type": "boolean",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "toggle"
+    },
+    "visibility_tier": "advanced",
+    "runtime_only": false,
+    "profile_role": "process"
+  },
+  "zHopDistance": {
+    "type": "float",
+    "default_value": 0.2,
+    "label": "z hop distance",
+    "tooltip": "amount to raise z on retraction moves in millimeters 0 to disable",
+    "mode": "expert",
+    "native_type": "float",
+    "wire_type": "number",
+    "wire_codec": "json",
+    "editor": {
+      "kind": "number",
+      "value_type": "float"
+    },
+    "visibility_tier": "expert",
+    "runtime_only": false,
+    "profile_role": "process",
+    "min": 0,
+    "max": 3,
+    "sidetext": "mm"
+  }
+}

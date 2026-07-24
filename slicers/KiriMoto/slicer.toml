@@ -1,0 +1,32 @@
+schema_version = 1
+name = "KiriMoto"
+repository = "https://github.com/GridSpace/grid-apps.git"
+family = "kirimoto"
+executable = "kirimoto"
+architectures = ["x86-64", "arm64"]
+
+[capabilities]
+binary = true
+config_dump = true
+thumbnail = false
+
+[ci.binary]
+enabled = true
+publish = true
+release = "latest"
+nightly = true
+
+[ci.config]
+enabled = true
+publish = true
+release = "latest"
+nightly = true
+generator_only = true
+required_artifacts = [
+    "machine.json",
+    "filament.json",
+    "process.json",
+    "print_config_def.json",
+    "conditional_visibility.json",
+    "ui_metadata.json",
+]
