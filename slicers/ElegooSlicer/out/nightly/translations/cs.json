@@ -1,0 +1,2034 @@
+{
+  "schema_version": 1,
+  "locale": "cs",
+  "source_locale": "en",
+  "messages": {},
+  "settings": {
+    "accel_to_decel_enable": {
+      "label": "Povolit accel_to_decel",
+      "tooltip": "Klipper max_accel_to_decel bude upraven automaticky"
+    },
+    "accel_to_decel_factor": {
+      "label": "accel_to_decel",
+      "tooltip": "Klipper max_accel_to_decel bude upraven na toto %% o zrychlení"
+    },
+    "activate_air_filtration": {
+      "label": "Aktivovat filtrování vzduchu",
+      "tooltip": "Aktivovat pro lepší filtrování vzduchu. G-kód příkaz: M106 P3 S(0-255)"
+    },
+    "activate_chamber_temp_control": {
+      "label": "Aktivovat řízení teploty"
+    },
+    "additional_cooling_fan_speed": {
+      "label": "Rychlost ventilátoru",
+      "tooltip": "Rychlost ventilátoru pro doplňkové chlazení částí. Ventilátor pro doplňkové chlazení bude běžet touto rychlostí během tisku, s výjimkou prvních několika vrstev, které jsou definovány vrstvami bez chlazení.\nPro použití této funkce povolte ventilátor pro doplňkové chlazení v nastavení tiskárny. G-kódový příkaz: M106 P2 S(0-255)"
+    },
+    "auxiliary_fan": {
+      "label": "Přídavný ventilátor chlazení",
+      "tooltip": "Povolte tuto možnost, pokud stroj disponuje pomocným ventilátorem pro chlazení dílů. G-kódový příkaz: M106 P2 S(0-255)."
+    },
+    "bbl_calib_mark_logo": {
+      "label": "Zobrazit automatické kalibrační značky"
+    },
+    "bed_custom_model": {
+      "label": "Vlastní model podložky"
+    },
+    "bed_custom_texture": {
+      "label": "Vlastní textura podložky"
+    },
+    "bed_exclude_area": {
+      "label": "Podložka mimo prostor"
+    },
+    "before_layer_change_gcode": {
+      "label": "G-kód Před změnou vrstvy",
+      "tooltip": "Tento G-kód se vkládá při každé změně vrstvy před zvednutím z"
+    },
+    "best_object_pos": {
+      "label": "Nejlepší pozice objektu",
+      "tooltip": "Nejlepší automatická uspořádávací pozice v rozsahu [0,1] vzhledem k tvaru podložky."
+    },
+    "bottom_shell_layers": {
+      "label": "Spodní vrstvy skořepiny",
+      "full_label": "Spodní vrstvy skořepiny",
+      "tooltip": "Toto je počet pevných vrstev spodní skořepiny, včetně spodní povrchové vrstvy. Když je tloušťka vypočítaná touto hodnotou tenčí než tloušťka spodní skořepiny, spodní vrstvy skořepiny se zvětší"
+    },
+    "bottom_shell_thickness": {
+      "label": "Tloušťka spodní skořepiny",
+      "full_label": "Tloušťka spodní skořepiny",
+      "tooltip": "Počet spodních pevných vrstev se při krájení zvýší, pokud je tloušťka vypočítaná podle spodních vrstev skořepiny tenčí než tato hodnota. Tím se lze vyhnout příliš tenké skořepině, když je výška vrstvy malá. 0 znamená, že toto nastavení je zakázáno a tloušťka spodní skořepiny je absolutně určován spodními vrstvami pláště"
+    },
+    "bottom_solid_infill_flow_ratio": {
+      "label": "Poměr průtoku spodní vrstvy"
+    },
+    "bottom_surface_pattern": {
+      "label": "Vzor spodního povrchu",
+      "tooltip": "Čárový vzor výplně spodní plochy, nikoli výplně mostů",
+      "enum_labels": [
+        "Monotónní",
+        "Monotónní linka",
+        "Přímočarý",
+        "Zarovnaný přímočarý",
+        "Koncentrický",
+        "Hilbertova křivka",
+        "Archimédské akordy",
+        "Oktagramová spirála"
+      ]
+    },
+    "bridge_acceleration": {
+      "label": "Most",
+      "tooltip": "Zrychlení mostů. Pokud je hodnota vyjádřena v procentech (např. 50%), bude vypočítána na základě zrychlení vnější stěny."
+    },
+    "bridge_angle": {
+      "tooltip": "Přepsání úhlu přemostění. Pokud je ponecháno na nule, úhel přemostění bude vypočítán automaticky. Jinak bude poskytnutý úhel použit pro vnější mosty. Pro nulový úhel použijte 180°."
+    },
+    "bridge_flow": {
+      "label": "Průtok mostu"
+    },
+    "bridge_no_support": {
+      "label": "Nevytvářet podpěry pod mosty",
+      "tooltip": "Nepodpírejte celou oblast mostu, díky čemuž je podpěra velmi velká. Most obvykle může tisknout přímo bez podpěry, pokud není příliš dlouhý"
+    },
+    "bridge_speed": {
+      "label": "Vnější"
+    },
+    "brim_ears": {
+      "label": "Uši límce",
+      "tooltip": "Pouze kreslit límec (brim) přes ostré hrany modelu."
+    },
+    "brim_ears_detection_length": {
+      "label": "Poloměr detekce uší límce",
+      "tooltip": "Geometrie bude zredukována před detekcí ostrých úhlů. Tento parametr udává minimální délku odchylky pro redukci.\n0 pro deaktivaci"
+    },
+    "brim_ears_max_angle": {
+      "label": "Maximální úhel uší límce",
+      "tooltip": "Maximální úhel, při kterém se můžou objevit uši límce.\nPokud je nastaveno na 0, nebude vytvořen žádný límec.\nPokud je nastaveno na ~180, límec bude vytvořen na všem kromě rovných úseků."
+    },
+    "brim_object_gap": {
+      "label": "Mezera mezi Límcem a Objektem",
+      "tooltip": "Mezera mezi nejvnitřnějším límcem a předmětem může usnadnit odstranění límce"
+    },
+    "brim_type": {
+      "label": "Typ límce",
+      "tooltip": "Toto ovládá generování límce na vnější a/nebo vnitřní straně modelů. Možnost Auto znamená, že šířka límce je automaticky analyzována a vypočítána.",
+      "enum_labels": [
+        "Automaticky",
+        "Uši myši",
+        "Painted",
+        "Pouze vnější",
+        "Pouze vnitřní Límec",
+        "Vnější a vnitřní límec",
+        "Bez límce"
+      ]
+    },
+    "brim_width": {
+      "label": "Šířka límce",
+      "tooltip": "Vzdálenost od modelu k nejvzdálenějšímu okraji límce"
+    },
+    "chamber_temperature": {
+      "label": "Teplota v komoře",
+      "full_label": "Teplota v komoře"
+    },
+    "change_extrusion_role_gcode": {
+      "label": "Změnit G-kód pro úlohu extruze",
+      "tooltip": "Tento G-kód je vložen při změně role extruze"
+    },
+    "change_filament_gcode": {
+      "label": "G-kód Změny filamentu",
+      "tooltip": "Tento gkód se vloží při výměně filamentu, včetně příkazu T ke spuštění výměny nástroje"
+    },
+    "close_fan_the_first_x_layers": {
+      "label": "První bez chlazení",
+      "tooltip": "Zavřete všechny chladicí ventilátory pro první určité vrstvy. Chladicí ventilátor první vrstvy býval uzavřen, aby se dosáhlo lepší přilnavosti stavební desky"
+    },
+    "compatible_printers_condition": {
+      "tooltip": "Logický výraz může používat konfigurační hodnoty aktivního profilu tiskárny. Pokud je tento logický výraz pravdivý, potom je tento profil považován za kompatibilní s aktivním profilem tiskárny."
+    },
+    "compatible_prints_condition": {
+      "tooltip": "Logický výraz může používat konfigurační hodnoty aktivního profilu tiskárny. Pokud je tento logický výraz pravdivý, potom je tento profil považován za kompatibilní s aktivním profilem tiskárny."
+    },
+    "complete_print_exhaust_fan_speed": {
+      "label": "Rychlost ventilátoru",
+      "tooltip": "Rychlost odsávacího ventilátoru po dokončení tisku"
+    },
+    "cool_plate_temp": {
+      "label": "Ostatní vrstvy",
+      "full_label": "Teplota podložky",
+      "tooltip": "Toto je teplota podložky pro vrstvy kromě první. Hodnota 0 znamená, že filament nepodporuje tisk na Cool Podložku"
+    },
+    "cool_plate_temp_initial_layer": {
+      "label": "První vrstva",
+      "full_label": "Teplota podložky první vrstvy",
+      "tooltip": "Toto je teplota podložky první vrstvy. Hodnota 0 znamená filament nepodporuje tisk na Cool Podložku"
+    },
+    "cooling_tube_length": {
+      "label": "Délka chladící trubičky",
+      "tooltip": "Délka kovové trubičky určené pro ochlazení a zformování filamentu po vytažení z extruderu."
+    },
+    "cooling_tube_retraction": {
+      "label": "Pozice chladící trubičky",
+      "tooltip": "Vzdálenost ze středu chladící trubičky ke špičce extruderu."
+    },
+    "counterbore_hole_bridging": {
+      "enum_labels": [
+        "Žádné",
+        "Partially bridged",
+        "Sacrificial layer"
+      ]
+    },
+    "curr_bed_type": {
+      "label": "Typ podložky",
+      "tooltip": "Typy podložek podporované tiskárnou",
+      "enum_labels": [
+        "Smooth Cool Plate",
+        "Engineering Podložka",
+        "Smooth High Temp Plate",
+        "Textured PEI Podložka",
+        "Textured Cool Plate",
+        "Cool Plate (SuperTack)"
+      ]
+    },
+    "default_acceleration": {
+      "label": "Normální tisk",
+      "tooltip": "Výchozí zrychlení normálního tisku i pohybu kromě počáteční vrstvy"
+    },
+    "default_filament_colour": {
+      "label": "Výchozí barva"
+    },
+    "default_filament_profile": {
+      "label": "Výchozí profil filamentu",
+      "tooltip": "Výchozí profil filamentu při přepnutí na tento profil stroje"
+    },
+    "default_jerk": {
+      "label": "Výchozí"
+    },
+    "default_print_profile": {
+      "label": "Výchozí profil procesu",
+      "tooltip": "Výchozí profil procesu při přepnutí na tento profil stroje"
+    },
+    "deretraction_speed": {
+      "label": "Rychlost Deretrakce",
+      "full_label": "Rychlost Deretrakce"
+    },
+    "detect_narrow_internal_solid_infill": {
+      "label": "Detekovat úzkou vnitřní plnou výplň",
+      "tooltip": "Tato možnost automaticky rozpozná úzkou vnitřní plnou výplňovou oblast. Je-li povolena, bude pro oblast použit soustředný vzor, aby se urychlil tisk. V opačném případě se ve výchozím nastavení použije přímočarý vzor."
+    },
+    "detect_overhang_wall": {
+      "label": "Detekovat převisy stěn",
+      "tooltip": "Zjistěte procento převisů vzhledem k šířce extruze a použijte jinou rychlost tisku. Pro 100%% převisy se použije rychlost mostu."
+    },
+    "detect_thin_wall": {
+      "label": "Detekce tenkých stěn",
+      "tooltip": "Detekujte tenkou stěnu, která nemůže obsahovat dvě šířky extruze. A k tisku použijte jednu linku. Možná se to nevytiskne moc dobře, protože to není uzavřená smyčka"
+    },
+    "dont_filter_internal_bridges": {
+      "enum_labels": [
+        "Filtr",
+        "Limited filtering",
+        "No filtering"
+      ]
+    },
+    "draft_shield": {
+      "label": "Ochranný štít",
+      "enum_labels": [
+        "Zakázáno",
+        "Povoleno"
+      ]
+    },
+    "during_print_exhaust_fan_speed": {
+      "label": "Rychlost ventilátoru",
+      "tooltip": "Rychlost odsávacího ventilátoru během tisku. Tato rychlost přepíše rychlost v g-kódu pro filament"
+    },
+    "elefant_foot_compensation": {
+      "label": "Kompenzace rozplácnutí první vrstvy",
+      "tooltip": "Snižte první vrstvu na podložce, abyste kompenzovali efekt sloní nohy"
+    },
+    "elefant_foot_compensation_layers": {
+      "label": "Vrstvy kompenzace sloní nohy",
+      "tooltip": "Počet vrstev, na kterých bude aktivní kompenzace sloní nohy. První vrstva bude zmenšena o hodnotu kompenzace sloní nohy, následující vrstvy budou lineárně zmenšeny méně, až do vrstvy, která je označena touto hodnotou."
+    },
+    "enable_arc_fitting": {
+      "label": "Přizpůsobení oblouku"
+    },
+    "enable_extra_bridge_layer": {
+      "enum_labels": [
+        "Zakázáno",
+        "External bridge only",
+        "Internal bridge only",
+        "Apply to all"
+      ]
+    },
+    "enable_filament_ramming": {
+      "label": "Povolit rapidní extruzi filamentu",
+      "tooltip": "Povolit rapidní extruzi filamentu"
+    },
+    "enable_overhang_speed": {
+      "label": "Zpomalení u převisů",
+      "tooltip": "Povolte tuto volbu pro zpomalení tisku pro různé stupně převisů"
+    },
+    "enable_pressure_advance": {
+      "label": "Povolit předstih tlaku",
+      "tooltip": "Povolte předstih tlaku, po povolení bude výsledek automatické kalibrace přepsán."
+    },
+    "enable_prime_tower": {
+      "label": "Zapnout",
+      "tooltip": "Věž pro čištění se může použít k čištění zbytků na trysce a stabilizaci tlaku v trysce, aby se předešlo vzniku vad při tisku objektů."
+    },
+    "enable_support": {
+      "label": "Povolit podpěry",
+      "tooltip": "Povolit generování podpěr."
+    },
+    "eng_plate_temp": {
+      "label": "Ostatní vrstvy",
+      "full_label": "Teplota podložky",
+      "tooltip": "Toto je teplota Podložky pro vrstvy kromě první. Hodnota 0 znamená, že Filament nepodporuje tisk na Engineering Podložku"
+    },
+    "eng_plate_temp_initial_layer": {
+      "label": "První vrstva",
+      "full_label": "Teplota podložky první vrstvy",
+      "tooltip": "Toto je teplota podložky první vrstvy. Hodnota 0 znamená filament nepodporuje tisk na Engineering Podložku"
+    },
+    "ensure_vertical_shell_thickness": {
+      "label": "Zajistit tloušťku svislých stěn",
+      "enum_labels": [
+        "Žádné",
+        "Critical Only",
+        "Moderate",
+        "Všechny"
+      ]
+    },
+    "exclude_object": {
+      "label": "Vynechat objekty",
+      "tooltip": "Povolit tuto možnost pro přidání příkazu VYNECHAT OBJEKT do g-kódu"
+    },
+    "extra_loading_move": {
+      "label": "Extra délka při zavádění",
+      "tooltip": "Když je hodnota nastavena na nulu, vzdálenost o kterou se filament posune během zavádění, je stejná, jako zpětný posun během vysouvání filamentu. Je-li hodnota kladná, je filament posunut více,. Je-li hodnota záporná, posun při zavádění je kratší než při vysouvání."
+    },
+    "extra_perimeters_on_overhangs": {
+      "label": "Dodatečné perimetry u převisů",
+      "tooltip": "Vytvořte další perimetry přes strmé převisy a oblasti, kde mosty nelze ukotvit."
+    },
+    "extruder": {
+      "label": "Extruder"
+    },
+    "extruder_clearance_height_to_lid": {
+      "label": "Výška po víko",
+      "tooltip": "Vzdálenost hrotu trysky k víčku. Používá se pro zamezení kolizi při tisku vedlejších objektů."
+    },
+    "extruder_clearance_height_to_rod": {
+      "label": "Výška k Ose X",
+      "tooltip": "Vzdálenost hrotu trysky k Ose X (X Gantry). Používá se pro zamezení kolize v tisk podle objektu."
+    },
+    "extruder_clearance_radius": {
+      "label": "Rádius",
+      "tooltip": "Poloměr vůle kolem extruderu. Používá se pro zamezení kolizi při tisku vedlejších objektů."
+    },
+    "extruder_colour": {
+      "label": "Barva extruderu",
+      "tooltip": "Používá se pouze jako vizuální nápověda v uživatelském rozhraní"
+    },
+    "extruder_offset": {
+      "label": "Odsazení extruderu"
+    },
+    "fan_cooling_layer_time": {
+      "label": "Čas vrstvy",
+      "tooltip": "Ventilátor chlazení části bude povolen pro vrstvy, jejichž odhadovaná doba je kratší než tato hodnota. Rychlost ventilátoru je interpolována mezi minimální a maximální rychlost ventilátoru podle doby tisku vrstvy"
+    },
+    "fan_kickstart": {
+      "label": "Čas spuštění ventilátoru",
+      "tooltip": "Před snížením na cílovou rychlost vyšlete po tuto dobu příkaz maximální rychlosti ventilátoru, aby se nastartoval chladicí ventilátor.\nTo je užitečné pro ventilátory, kde nízké PWM/výkon nemusí stačit k tomu, aby se ventilátor začal točit od zastavení nebo aby se ventilátor rozběhl rychleji.\nPro deaktivaci nastavte na 0."
+    },
+    "fan_max_speed": {
+      "label": "Rychlost ventilátoru",
+      "tooltip": "Rychlost ventilátoru chlazení součásti může být zvýšena, když je povoleno automatické chlazení. Toto je omezení maximální rychlosti ventilátoru chlazení součásti"
+    },
+    "fan_min_speed": {
+      "label": "Rychlost ventilátoru",
+      "tooltip": "Minimální rychlost ventilátoru chlazení dílů"
+    },
+    "fan_speedup_overhangs": {
+      "label": "Pouze převisy",
+      "tooltip": "Bude brát v úvahu zpoždění pro ochlazování převisů."
+    },
+    "fan_speedup_time": {
+      "tooltip": "Spustit ventilátor po tuto dobu v sekundách před cílovým časem spuštění (můžete použít desetinná čísla). Předpokládá se nekonečné zrychlení pro odhad této doby a budou brány v úvahu pouze pohyby G1 a G0 (křivkové tvary nejsou podporovány).\nNepřesouvá příkazy ventilátoru z vlastních G-kódů (působí jako druh 'bariéry').\nNepřesouvá příkazy ventilátoru do startovacího G-kódu, pokud je aktivována volba 'pouze vlastní startovací G-kódy'.\nPro deaktivaci použijte hodnotu 0."
+    },
+    "filament_colour": {
+      "label": "Barva",
+      "tooltip": "Používá se pouze jako vizuální nápověda v uživatelském rozhraní"
+    },
+    "filament_cooling_final_speed": {
+      "label": "Rychlost posledního pohybu chlazení",
+      "tooltip": "Chladící pohyby se postupně zrychlují až k této rychlosti."
+    },
+    "filament_cooling_initial_speed": {
+      "label": "Rychlost prvního pohybu chlazení",
+      "tooltip": "Chladicí pohyby se postupně zrychlují a začínají touto rychlostí."
+    },
+    "filament_cooling_moves": {
+      "label": "Počet chladících pohybů",
+      "tooltip": "Filament je chlazen pohyby tam a zpět v chladicí trubičce. Zadejte požadovaný počet těchto pohybů."
+    },
+    "filament_cost": {
+      "label": "Cena",
+      "tooltip": "Cena Filamentu. Pouze pro statistiku"
+    },
+    "filament_density": {
+      "label": "Hustota",
+      "tooltip": "Hustota Filamentu. Pouze pro statistiku"
+    },
+    "filament_deretraction_speed": {
+      "label": "Rychlost Deretrakce",
+      "full_label": "Rychlost Deretrakce"
+    },
+    "filament_diameter": {
+      "label": "Průměr",
+      "tooltip": "Průměr filamentu se používá k výpočtu extruze v gkódu, takže je důležitý a měl by být přesný"
+    },
+    "filament_end_gcode": {
+      "label": "Konec G-kódu",
+      "tooltip": "Konec G-kód po dokončení tisku tohoto filamentu"
+    },
+    "filament_flow_ratio": {
+      "label": "Poměr průtoku",
+      "tooltip": "Materiál může mít objemovou změnu po přepnutí mezi roztaveným a krystalickým stavem. Toto nastavení proporcionálně změní veškerý vytlačovací tok tohoto filamentu v gkódu. Doporučený rozsah hodnot je mezi 0,95 a 1,05. Možná můžete tuto hodnotu vyladit, abyste získali pěkně rovný povrch, když dochází k mírnému přetečení nebo podtečení"
+    },
+    "filament_is_support": {
+      "label": "Podpěry",
+      "tooltip": "Materiál podpěr se běžně používá k tisku podpěr a kontaktní vrstvy podpěr"
+    },
+    "filament_loading_speed": {
+      "label": "Rychlost zavádění",
+      "tooltip": "Rychlost použitá pro zavádění filamentu na čistící věž."
+    },
+    "filament_loading_speed_start": {
+      "label": "Počáteční rychlost zavádění",
+      "tooltip": "Rychlost použitá na samém počátku zaváděcí fáze."
+    },
+    "filament_max_volumetric_speed": {
+      "label": "Maximální objemová rychlost",
+      "tooltip": "Toto nastavení znamená, kolik objemu filamentu lze roztavit a extrudováno za sekundu. Rychlost tisku je omezena maximální objemovou rychlostí, v případ příliš vysoké a nepřiměřené rychlosti nastavení. Nemůže být nula"
+    },
+    "filament_minimal_purge_on_wipe_tower": {
+      "label": "Minimální vytlačený objem na čistící věži",
+      "tooltip": "Po výměně nástroje nemusí být známa přesná poloha nově zavedeného filamentu uvnitř trysky a tlak filamentu pravděpodobně ještě není stabilní. Před vyčištěním tiskové hlavy do výplně nebo do objektu bude ElegooSlicer toto množství materiálu vždy vytlačovat do čistící věže, aby se spolehlivě vytvořily následné výplně nebo objekty."
+    },
+    "filament_multitool_ramming": {
+      "label": "Povolení rapidní extruze tiskárny s více nástroji",
+      "tooltip": "Provedení rapidní extruze při použití tiskárny s více nástroji (tj. když není v nastavení tiskárny zaškrtnuto políčko Single Extruder Multimaterial). Pokud je tato možnost zaškrtnuta, je na čistící věži těsně před výměnou nástroje rychle vytlačeno malé množství filamentu. Tato volba se uplatní pouze tehdy, když je povolena čistící věž."
+    },
+    "filament_multitool_ramming_flow": {
+      "label": "Průtok při rapidní extruzi pro více nástrojů",
+      "tooltip": "Průtok pro rapidní extruzi před výměnou nástroje."
+    },
+    "filament_multitool_ramming_volume": {
+      "label": "Objem rapidní extruze pro tiskárnu s více nástroji",
+      "tooltip": "Objem, který se má před výměnou nástroje extrudovat."
+    },
+    "filament_notes": {
+      "label": "Poznámky k filamentu",
+      "tooltip": "Zde můžete vložit poznámky týkající se filamentu."
+    },
+    "filament_ramming_parameters": {
+      "label": "Parametry rapidní extruze",
+      "tooltip": "Tento řetězec je upravován dialogem RammingDialog a obsahuje specifické parametry pro rapidní extruzi."
+    },
+    "filament_retract_before_wipe": {
+      "label": "Délka retrakce před očištěním",
+      "tooltip": "Délka rychlé retrakce před očištěním, vzhledem k délce retrakce"
+    },
+    "filament_retract_lift_above": {
+      "label": "Zvednout Z pouze nad",
+      "tooltip": "Zadání kladné hodnoty se zdvih Z uskuteční pouze nad zadanou absolutní hodnotou Z."
+    },
+    "filament_retract_lift_below": {
+      "label": "Zvednout Z pouze pod",
+      "tooltip": "Zadání kladné hodnoty se zdvih Z uskuteční pouze pod zadanou absolutní hodnotou Z."
+    },
+    "filament_retract_lift_enforce": {
+      "label": "Na površích",
+      "tooltip": "Povolit chování Z-Hop. Tato volba je ovlivněna výše uvedenými nastaveními (Pouze zvednout Z nad/pod).",
+      "enum_labels": [
+        "Všechny povrchy",
+        "Pouze Horní",
+        "Pouze Spodní",
+        "Horní a Spodní"
+      ]
+    },
+    "filament_retract_restart_extra": {
+      "label": "Extra vzdálenost při návratu",
+      "tooltip": "Když je retrakce kompenzována po rychloposunu, extruder vytlačuje toto další množství filamentu. Toto nastavení je zřídkakdy potřeba."
+    },
+    "filament_retract_when_changing_layer": {
+      "label": "Retrakce při změně vrstvy",
+      "tooltip": "Vynutit retrakci při změně vrstvy"
+    },
+    "filament_retraction_length": {
+      "label": "Vzdálenost",
+      "full_label": "Vzdálenost retrakce"
+    },
+    "filament_retraction_minimum_travel": {
+      "label": "Hranice cestovní vzdálenosti",
+      "tooltip": "Spusťte retrakci pouze tehdy, když je dráha jízdy delší než tato hraniční hodnota"
+    },
+    "filament_retraction_speed": {
+      "label": "Rychlost Retrakce",
+      "full_label": "Rychlost Retrakce"
+    },
+    "filament_shrink": {
+      "tooltip": "Zadejte procento smrštění, které filament získá po ochlazení (94% i pokud naměříte 94mm místo 100mm). Část bude pro kompenzaci zmenšena v xy. Bere se v úvahu pouze filamentu použit pro obvod.\nUjistěte se aby byl mezi objekty dostatek prostoru, protože tato kompenzace se provádí po kontrolách."
+    },
+    "filament_soluble": {
+      "label": "Rozpustný materiál",
+      "tooltip": "Rozpustný materiál se běžně používá k tisku podpěr a kontaktní vrstvy podpěr"
+    },
+    "filament_stamping_distance": {
+      "label": "Vzdálenost vtlačení měřená od středu chladicí trubičky",
+      "tooltip": "Pokud je nastavena nenulová hodnota, filament se mezi jednotlivými pohyby chlazení posouvá směrem k trysce (\"vtlačování\"). Tato volba určuje, jak dlouho by měl tento pohyb trvat, než je znovu dojde k retrakci filamentu."
+    },
+    "filament_stamping_loading_speed": {
+      "label": "Rychlost vtlačení",
+      "tooltip": "Rychlost používaná pro vtlačení"
+    },
+    "filament_start_gcode": {
+      "label": "Začátek G-kódu",
+      "tooltip": "Start G-kód při zahájení tisku tohoto filamentu"
+    },
+    "filament_toolchange_delay": {
+      "label": "Zpoždění po vyjmutí",
+      "tooltip": "Doba čekání po vysunutí filamentu. Může pomoci ke spolehlivé změně extruderu s flexibilními materiály, které potřebují více času ke smrštění na původní rozměry."
+    },
+    "filament_type": {
+      "label": "Typ",
+      "tooltip": "Typ materiálu filamentu"
+    },
+    "filament_unloading_speed": {
+      "label": "Rychlost vysunutí",
+      "tooltip": "Rychlost vysouvání filamentu při výměně na čistící věži (úvodní část vysunutí okamžitě po rapidní extruzi není ovlivněna)."
+    },
+    "filament_unloading_speed_start": {
+      "label": "Počáteční rychlost vysouvání filamentu",
+      "tooltip": "Rychlost použitá při vysouvání špičky filamentu bezprostředně po rapidní extruzi."
+    },
+    "filament_vendor": {
+      "label": "Výrobce",
+      "tooltip": "Výrobce filamentu. Pouze pro zobrazení"
+    },
+    "filament_wipe": {
+      "label": "Očistit při retrakci",
+      "tooltip": "Při retrakci přesuňte trysku podél poslední dráhy extruze, abyste vyčistili uniklý materiál na trysce. To může minimalizovat skvrny při tisku nového dílu po cestě"
+    },
+    "filament_wipe_distance": {
+      "label": "Vzdálenost čištění"
+    },
+    "filament_z_hop": {
+      "tooltip": "Kdykoli je retrakce provedena, tryska se trochu zvedne, aby se vytvořila mezera mezi tryskou a tiskem. Zabraňuje tomu, aby tryska zasáhla tisk při pohybu. Použití spirálové linky ke zvednutí z může zabránit stringování"
+    },
+    "filament_z_hop_types": {
+      "label": "Typ Z-hop",
+      "enum_labels": [
+        "Automaticky",
+        "Normální",
+        "Sklon",
+        "Spirála"
+      ]
+    },
+    "filename_format": {
+      "label": "Formát názvu souboru",
+      "tooltip": "Uživatel může sám definovat název souboru projektu při exportu"
+    },
+    "filter_out_gap_fill": {
+      "label": "Odfiltrujte drobné mezery"
+    },
+    "first_layer_print_sequence": {
+      "label": "Sekvence tisku první vrstvy"
+    },
+    "first_layer_sequence_choice": {
+      "label": "Sekvence filamentu první vrstvy",
+      "enum_labels": [
+        "Automaticky",
+        "Přizpůsobit"
+      ]
+    },
+    "flush_into_infill": {
+      "label": "Čištění do výplně objektů",
+      "tooltip": "Čištění po výměně filamentu bude provedeno uvnitř výplní objektů. To může snížit množství odpadu a zkrátit dobu tisku. Pokud jsou stěny potištěny průhledným filamentem, výplň smíšených barev bude vidět venku. Neprojeví se to pokud není povolena čistící věž."
+    },
+    "flush_into_objects": {
+      "label": "Čištění do tohoto objektu",
+      "tooltip": "Tento objekt bude použit k očištění trysky po výměně filamentu, aby se ušetřil filament a zkrátila se doba tisku. V důsledku toho budou barvy objektů smíšené. Neprojeví se to, pokud není aktivována čistící věž."
+    },
+    "flush_into_support": {
+      "label": "Čištění do podpěr objektů",
+      "tooltip": "Čištění po výměně filamentu bude provedeno uvnitř podpěry objektů. To může snížit množství odpadu a zkrátit dobu tisku. Neprojeví se, pokud není aktivována čistící věž."
+    },
+    "flush_multiplier": {
+      "label": "Čistit multiplikátor",
+      "tooltip": "Skutečný objem čištění se rovná multiplikátoru čištění vynásobenému objemy čištění v tabulce."
+    },
+    "flush_volumes_matrix": {
+      "label": "Objemy čištění"
+    },
+    "flush_volumes_vector": {
+      "label": "Objemy čištění - zaváděné/vyjmuté objemy"
+    },
+    "full_fan_speed_layer": {
+      "label": "Maximální otáčky ventilátoru ve vrstvě",
+      "tooltip": "Otáčky ventilátoru se lineárně zvýší z nuly ve vrstvě \"close_fan_first_layers\" na maximum ve vrstvě \"full_fan_speed_layer\". Hodnota \"full_fan_speed_layer\" bude ignorována, pokud je nižší než \"close_fan_first_layers\", v takovém případě se bude ventilátor točit na maximální povolenou hodnotu ve vrstvě \"close_fan_first_layers\" + 1."
+    },
+    "fuzzy_skin": {
+      "label": "Členitý povrch",
+      "tooltip": "Náhodné chvění při tisku na stěnu, takže povrch má hrubý vzhled. Toto nastavení řídí neostrou polohu",
+      "enum_labels": [
+        "Žádné",
+        "Obrys",
+        "Obrys a otvor",
+        "Všechny stěny"
+      ]
+    },
+    "fuzzy_skin_mode": {
+      "enum_labels": [
+        "Displacement",
+        "Extrusion",
+        "Kombinovaný "
+      ]
+    },
+    "fuzzy_skin_noise_type": {
+      "enum_labels": [
+        "Klasický",
+        "Perlin",
+        "Billow",
+        "Ridged Multifractal",
+        "Voronoi"
+      ]
+    },
+    "fuzzy_skin_point_distance": {
+      "label": "Vzdálenosti bodů členitého povrchu",
+      "tooltip": "Průměrná vzdálenost mezi náhodnými body zavedenými na každém segmentu linky"
+    },
+    "fuzzy_skin_thickness": {
+      "label": "Tloušťka členitého povrchu",
+      "tooltip": "Šířka, ve které se má chvět. Je nepřípustné, aby byla pod šířkou extruze vnější stěny"
+    },
+    "gap_fill_target": {
+      "enum_labels": [
+        "Všude",
+        "Top and bottom surfaces",
+        "Nikde"
+      ]
+    },
+    "gap_infill_speed": {
+      "label": "Výplň mezery",
+      "tooltip": "Rychlost vyplňování mezery. Mezera má obvykle nepravidelnou šířku extruze a měla by být vytištěna pomaleji"
+    },
+    "gcode_add_line_number": {
+      "label": "Přidat číslo řádku",
+      "tooltip": "Povolte toto, chcete-li přidat číslo řádku (Nx) na začátek každého řádku G-kódu"
+    },
+    "gcode_comments": {
+      "label": "Komentáře do G-kódu",
+      "tooltip": "Aktivací získáte komentovaný soubor G-kódu, přičemž každý řádek je doplněn popisným textem. Pokud tisknete z SD karty, dodatečné informace v souboru můžou zpomalit firmware."
+    },
+    "gcode_flavor": {
+      "label": "Druh G-kódu",
+      "tooltip": "S jakým typem gkódu je tiskárna kompatibilní",
+      "enum_labels": [
+        "Marlin(legacy)",
+        "Klipper",
+        "RepRapFirmware",
+        "Marlin 2"
+      ]
+    },
+    "gcode_label_objects": {
+      "label": "Označování objektů",
+      "tooltip": "Zapněte tuto možnost, chcete-li do G-kódu přidávat komentáře, které budou určovat, příslušnost tiskových pohybů k jednotlivým objektům. To je užitečné pro Octoprint plugin CancelObject. Nastavení NENÍ kompatibilní se Single Extruder Multi Material konfigurací a s čištěním trysky do objektu / výplně."
+    },
+    "high_current_on_filament_swap": {
+      "label": "Zvýšený proud do extruderového motoru při výměně filamentu",
+      "tooltip": "Může být užitečné zvýšit proud motoru extruderu během sekvence výměny filamentu, aby se umožnily vysoké rychlosti zavádění filamentu a aby se překonal odpor při zavádění filamentu s ošklivě tvarovanou špičkou."
+    },
+    "hole_to_polyhole": {
+      "label": "Převést otvor na polyotvor (Mnohoúhelníkový-Otvor)",
+      "tooltip": "Hledá téměř kruhové otvory, které zasahují do více než jedé vrstvy a převede geometrii na polyotvory (Mnohoúhelníkový Otvor). Pro výpočet polyotvoru použijte velikost trysky a (největší) průměr.\nViz http://hydraraptor.blogspot.com/2011/02/polyholes.html"
+    },
+    "hole_to_polyhole_threshold": {
+      "label": "Míra detekce polyotvoru",
+      "tooltip": "Maximální odchylka bodu od odhadovaného poloměru kruhu.\nProtože válce jsou často exportovány jako trojúhelníky různé velikosti, body se nemusí nacházet na obvodu kruhu. Toto nastavení vám umožňuje určitou pružnost pro rozšíření detekce.\nV mm nebo v % o poloměru."
+    },
+    "hole_to_polyhole_twisted": {
+      "label": "Otočit polyotvor",
+      "tooltip": "Otočit polyotvor každou vrstvu."
+    },
+    "host_type": {
+      "label": "Typ tiskového serveru",
+      "tooltip": "ElegooSlicer může nahrát soubory G-kódu do tiskového serveru. Toto pole musí obsahovat druh tiskového serveru.",
+      "enum_labels": [
+        "ElegooLink",
+        "OctoPrint",
+        "PrusaLink",
+        "PrusaConnect",
+        "Duet",
+        "FlashAir",
+        "AstroBox",
+        "Repetier",
+        "MKS",
+        "ESP3D",
+        "CrealityPrint",
+        "Obico",
+        "Flashforge",
+        "SimplyPrint"
+      ]
+    },
+    "hot_plate_temp": {
+      "label": "Ostatní vrstvy",
+      "full_label": "Teplota podložky",
+      "tooltip": "Toto je teplota Podložky pro vrstvy kromě první. Hodnota 0 znamená, že filament nepodporuje tisk na High Temp Podložku"
+    },
+    "hot_plate_temp_initial_layer": {
+      "label": "První vrstva",
+      "full_label": "Teplota podložky první vrstvy",
+      "tooltip": "Toto je teplota podložky první vrstvy. Hodnota 0 znamená filament nepodporuje tisk na High Temp Podložku"
+    },
+    "idle_temperature": {
+      "label": "Teplota při nečinnosti"
+    },
+    "independent_support_layer_height": {
+      "label": "Výška nezávislé podpůrné vrstvy"
+    },
+    "infill_anchor": {
+      "label": "Délka kotvy vnitřní výplně"
+    },
+    "infill_anchor_max": {
+      "label": "Maximální délka výplňové kotvy"
+    },
+    "infill_combination": {
+      "label": "Kombinace výplně",
+      "tooltip": "Automaticky zkombinujte vnitřní výplň několika vrstev pro tisk dohromady, abyste zkrátili čas. Stěna se stále tiskne s původní výškou vrstvy."
+    },
+    "infill_direction": {
+      "tooltip": "Úhel pro vzor vnitřní výplně, který řídí začátek nebo hlavní směr linky"
+    },
+    "infill_jerk": {
+      "label": "Výplň",
+      "tooltip": "Jerk-Ryv pro výplně"
+    },
+    "infill_wall_overlap": {
+      "label": "Výplň/Přesah stěny"
+    },
+    "inherits": {
+      "label": "Zdědí profil"
+    },
+    "initial_layer_acceleration": {
+      "label": "První vrstva",
+      "tooltip": "Zrychlení počáteční vrstvy. Použití nižší hodnoty může zlepšit lepidlo na vytvoření desky"
+    },
+    "initial_layer_infill_speed": {
+      "label": "Výplň první vrstvy",
+      "tooltip": "Rychlost plné výplně v první vrstvě"
+    },
+    "initial_layer_jerk": {
+      "label": "První vrstva",
+      "tooltip": "Jerk-Ryv pro první vrstvu"
+    },
+    "initial_layer_line_width": {
+      "label": "První vrstva",
+      "tooltip": "Šířka extruze pro první vrstvu. Pokud je vyjádřena jako %, vypočítá se vzhledem k průměru trysky."
+    },
+    "initial_layer_min_bead_width": {
+      "label": "Minimální šířka stěny první vrstvy",
+      "tooltip": "Minimální šířka stěny, která by měla být použita pro první vrstvu, se doporučuje nastavit na stejnou velikost jako tryska. Toto nastavení by mělo zvýšit přilnavost."
+    },
+    "initial_layer_print_height": {
+      "label": "Výška první vrstvy",
+      "tooltip": "Výška první vrstvy. Mírně tlustá první vrstva může zlepšit přilnavost k podložce"
+    },
+    "initial_layer_speed": {
+      "label": "První vrstva",
+      "tooltip": "Rychlost první vrstvy kromě plné výplně"
+    },
+    "initial_layer_travel_speed": {
+      "label": "Rychlost pohybu první vrstvy",
+      "tooltip": "Cestovní rychlost počáteční vrstvy"
+    },
+    "inner_wall_acceleration": {
+      "label": "Vnitřní stěna",
+      "tooltip": "Zrychlení vnitřních stěn"
+    },
+    "inner_wall_jerk": {
+      "label": "Vnitřní stěna",
+      "tooltip": "Jerk-Ryv na vnitřní stěny"
+    },
+    "inner_wall_line_width": {
+      "label": "Vnitřní stěna",
+      "tooltip": "Šířka extruze vnitřní stěny. Pokud je vyjádřena jako %, vypočítá se vzhledem k průměru trysky."
+    },
+    "inner_wall_speed": {
+      "label": "Vnitřní stěna",
+      "tooltip": "Rychlost vnitřní stěny"
+    },
+    "interface_shells": {
+      "label": "Mezilehlé stěny",
+      "tooltip": "Vynucení vytváření pevných skořepin mezi sousedními materiály/objemy. Užitečné pro tisk s více extrudery s průsvitnými materiály nebo ručně rozpustným podpůrným materiálem"
+    },
+    "interlocking_beam": {
+      "label": "Použít propojení materiálu paprsky",
+      "tooltip": "Propojení materiálu paprsky (Interlocking) vytváří propojovací paprsky v místech kontaktu různých filamentů, čímž zlepšuje jejich přilnavost, zejména při tisku z různých materiálů."
+    },
+    "interlocking_beam_layer_count": {
+      "label": "Počet vrstev propojovacího paprsku",
+      "tooltip": "Definuje výšku paprsků propojení materiálu, udávanou v počtu vrstev (Interlocking struktury). Méně vrstev zvyšuje pevnost, ale může způsobit více vad."
+    },
+    "interlocking_beam_width": {
+      "label": "Šířka propojovacího paprsku",
+      "tooltip": "Šířka propojovacího paprsku (Interlocking Struktury)"
+    },
+    "interlocking_boundary_avoidance": {
+      "label": "Odstup od hranice propojení",
+      "tooltip": "Vzdálenost od vnějšího okraje modelu, kde se nebudou vytvářet propojovací struktury (interlocking), udávaná v buňkách."
+    },
+    "interlocking_depth": {
+      "label": "Hloubka propojovacích paprsků",
+      "tooltip": "Vzdálenost od hranice mezi filamenty, ve které se generuje propojovací struktura, měřená v buňkách. Příliš málo buněk zhorší přilnavost."
+    },
+    "interlocking_orientation": {
+      "label": "Směr propojovací struktury"
+    },
+    "internal_bridge_speed": {
+      "label": "Vnitřní"
+    },
+    "internal_solid_infill_acceleration": {
+      "label": "Vnitřní plná výplň",
+      "tooltip": "Zrychlení vnitřní pevné výplně. Pokud je hodnota vyjádřena v procentech (např. 100 %), bude vypočítána na základě výchozího zrychlení."
+    },
+    "internal_solid_infill_line_width": {
+      "label": "Vnitřní plná výplň",
+      "tooltip": "Šířka extruze pro vnitřní výplň. Pokud je vyjádřena jako %, bude vypočtena vzhledem k průměru trysky."
+    },
+    "internal_solid_infill_pattern": {
+      "label": "Vzor vnitřní plné výplně",
+      "tooltip": "Čárový vzor vnitřní plné výplně. Pokud je povolena detekce úzké vnitřní plné výplně, bude pro malou plochu použit koncentrický vzor.",
+      "enum_labels": [
+        "Monotónní",
+        "Monotónní linka",
+        "Přímočarý",
+        "Zarovnaný přímočarý",
+        "Koncentrický",
+        "Hilbertova křivka",
+        "Archimédské akordy",
+        "Oktagramová spirála"
+      ]
+    },
+    "internal_solid_infill_speed": {
+      "label": "Vnitřní plná výplň",
+      "tooltip": "Rychlost vnitřní plné výplně, nikoli horní a spodní plochy"
+    },
+    "ironing_angle": {
+      "label": "Úhel žehlení",
+      "tooltip": "Úhel, pod kterým se provádí žehlení. Záporné číslo tuto funkci zakáže a použije výchozí metodu."
+    },
+    "ironing_flow": {
+      "label": "Průtok žehlení",
+      "tooltip": "Množství materiálu, které se má vytlačit během žehlení. V poměru k průtoku normální výšky vrstvy. Příliš vysoká hodnota vede k nadměrné extruzi na povrchu"
+    },
+    "ironing_pattern": {
+      "label": "Vzor Žehlení",
+      "tooltip": "Vzor, který bude použit při žehlení",
+      "enum_labels": [
+        "Přímočarý",
+        "Koncentrický"
+      ]
+    },
+    "ironing_spacing": {
+      "label": "Řádkování žehlení",
+      "tooltip": "Vzdálenost mezi žehlicími linkami"
+    },
+    "ironing_speed": {
+      "label": "Rychlost žehlení",
+      "tooltip": "Rychlost tisku žehlících linek"
+    },
+    "ironing_type": {
+      "label": "Způsob žehlení",
+      "tooltip": "Žehlení využívá malý průtok k tisku na stejnou výšku povrchu, aby byl rovný povrch hladší. Toto nastavení určuje, která vrstva se bude žehlit",
+      "enum_labels": [
+        "Nežehlit",
+        "Horní plochy",
+        "Nejvyšší plochy",
+        "Všechny pevné vrstvy"
+      ]
+    },
+    "layer_change_gcode": {
+      "label": "G-kód Změna vrstvy",
+      "tooltip": "Tato část gkódu je vložena při každé změně vrstvy po zvednutí z"
+    },
+    "layer_height": {
+      "label": "Výška vrstvy",
+      "tooltip": "Toto je výška každé vrstvy. Menší výšky vrstvy dávají větší přesnost, ale delší doba tisku"
+    },
+    "line_width": {
+      "label": "Výchozí",
+      "tooltip": "Výchozí šířka extruze, pokud jsou ostatní šířky extruze nastaveny na 0. Pokud je vyjádřeno jako %, bude vypočteno na základě průměru trysky."
+    },
+    "machine_end_gcode": {
+      "label": "Konec G-kódu",
+      "tooltip": "Konec G-kód po dokončení celého tisku"
+    },
+    "machine_load_filament_time": {
+      "label": "Doba zavádění filamentu"
+    },
+    "machine_max_acceleration_e": {
+      "full_label": "Maximální zrychlení E",
+      "tooltip": "Maximální zrychlení osy E"
+    },
+    "machine_max_acceleration_extruding": {
+      "full_label": "Maximální zrychlení pro extruzi",
+      "tooltip": "Maximální zrychlení pro extruzi (M204 P)"
+    },
+    "machine_max_acceleration_retracting": {
+      "full_label": "Maximální zrychlení pro retrakci",
+      "tooltip": "Maximální zrychlení pro retrakci (M204 R)"
+    },
+    "machine_max_acceleration_travel": {
+      "full_label": "Maximální zrychlení pro cestování",
+      "tooltip": "Maximální zrychlení pro cestování (M204 T), platí pouze pro Marlin 2"
+    },
+    "machine_max_acceleration_x": {
+      "full_label": "Maximální zrychlení X",
+      "tooltip": "Maximální zrychlení osy X"
+    },
+    "machine_max_acceleration_y": {
+      "full_label": "Maximální zrychlení Y",
+      "tooltip": "Maximální zrychlení osy Y"
+    },
+    "machine_max_acceleration_z": {
+      "full_label": "Maximální zrychlení Z",
+      "tooltip": "Maximální zrychlení osy Z"
+    },
+    "machine_max_jerk_e": {
+      "full_label": "Maximální Jerk-Ryv E",
+      "tooltip": "Maximální Jerk-Ryv osy E"
+    },
+    "machine_max_jerk_x": {
+      "full_label": "Maximální Jerk-Ryv X",
+      "tooltip": "Maximální Jerk-Ryv osy X"
+    },
+    "machine_max_jerk_y": {
+      "full_label": "Maximální Jerk-Ryv Y",
+      "tooltip": "Maximální Jerk-Ryv osy Y"
+    },
+    "machine_max_jerk_z": {
+      "full_label": "Maximální Jerk-Ryv Z",
+      "tooltip": "Maximální Jerk-Ryv osy Z"
+    },
+    "machine_max_speed_e": {
+      "full_label": "Maximální rychlost E"
+    },
+    "machine_max_speed_x": {
+      "full_label": "Maximální rychlost X"
+    },
+    "machine_max_speed_y": {
+      "full_label": "Maximální rychlost Y"
+    },
+    "machine_max_speed_z": {
+      "full_label": "Maximální rychlost Z"
+    },
+    "machine_min_extruding_rate": {
+      "full_label": "Minimální rychlost pro extruzi",
+      "tooltip": "Minimální rychlost pro extruzi (M205 S)"
+    },
+    "machine_min_travel_rate": {
+      "full_label": "Minimální cestovní rychlost",
+      "tooltip": "Minimální cestovní rychlost (M205 T)"
+    },
+    "machine_pause_gcode": {
+      "label": "G-kód Pauzy",
+      "tooltip": "Tento G-kód bude použit jako kód pro pozastavený tisk. Uživatel může vložit pauzu G-kód do prohlížeče gkódu"
+    },
+    "machine_start_gcode": {
+      "label": "Začátek G-kódu",
+      "tooltip": "Start G-kód při spuštění celého tisku"
+    },
+    "machine_unload_filament_time": {
+      "label": "Doba vysouvání filamentu"
+    },
+    "make_overhang_printable": {
+      "label": "Umožnit tisk převisů",
+      "tooltip": "Upravit geometrii pro tisk převisů bez podpůrného materiálu."
+    },
+    "make_overhang_printable_angle": {
+      "label": "Umožnit tisk převisů maximálního úhlu",
+      "tooltip": "Maximální úhel převisů, který bude povolen pro umožnění tisku strmějších převisů. 90° nezmění model vůbec a umožní jakýkoli převis, zatímco 0 nahradí všechny převisy kuželovým materiálem."
+    },
+    "make_overhang_printable_hole_size": {
+      "label": "Oblast otvoru pro tisk převisu bez podpěr",
+      "tooltip": "Maximální plocha otvoru v základně modelu před tím, než bude vyplněna kuželovým materiálem. Hodnota 0 vyplní všechny díry v základně modelu."
+    },
+    "manual_filament_change": {
+      "label": "Manuální výměna filamentu",
+      "tooltip": "Povolte tuto volbu k zneplatnění vlastního Změnit filament G-kódu pouze na začátku tisku. Příkaz pro změnu nástroje (např. T0) bude přeskočen po celou délku tisku. Toto je užitečné pro manuální tisk s více materiály, kde používáme M600/PAUZA k vyvolání akce manuální změny filamentu."
+    },
+    "max_bridge_length": {
+      "label": "Maximální délka mostu",
+      "tooltip": "Maximální délka mostů, které nepotřebují podpěru. Pokud chcete všechny, nastavte ji na 0 mosty, které mají být podporovány, a pokud nechcete, nastavte ji na velmi vysokou hodnotu všechny mosty, které mají být podepřeny."
+    },
+    "max_layer_height": {
+      "label": "Max"
+    },
+    "max_resonance_avoidance_speed": {
+      "label": "Max"
+    },
+    "max_travel_detour_distance": {
+      "label": "Vyhněte se přejíždění stěn - Maximální délka objížďky",
+      "tooltip": "Maximální vzdálenost objížďky pro vyhnutí se přejezdu  přes stěny. Neobjíždějte, pokud vzdálenost objížďky je větší než tato hodnota. Lze zadat délku objížďky buď jako absolutní hodnotu, nebo jako procento (například 50 %) přímého cestovní cesta. Nula k deaktivaci"
+    },
+    "max_volumetric_extrusion_rate_slope": {
+      "label": "Vyhlazení rychlosti extruze",
+      "tooltip": "Tato hodnota vyhlazuje náhlé změny extruzní rychlosti, které nastávají, když tiskárna přechází z extruze s vysokým průtokem (vysoká rychlost/větší šířka) na extruzi s nižším průtokem (nižší rychlost/menší šířka) a naopak.\n\nDefinuje maximální rychlost, kterou může objemový průtok extrudovaného materiálu v mm³/s měnit v čase. Vyšší hodnoty znamenají, že jsou povoleny větší změny extruzní rychlosti, což vede k rychlejším přechodům rychlosti.\n\nHodnota 0 funkci zakáže.\n\nPro tiskárny s přímým pohonem a vysokou rychlostí a průtokem (např. Bambu lab nebo Voron) tato hodnota obvykle není potřebná. Nicméně v některých případech, kde se rychlosti funkcí výrazně liší, může poskytnout marginální přínos. Například při agresivních zpomaleních způsobených přesahy. V těchto případech se doporučuje vysoká hodnota kolem 300-350 mm³/s², protože to umožňuje dostatečné vyhlazení pro pomoc při dosažení plynulejšího přechodu tlaku při extruzi.\n\nPro pomalejší tiskárny bez tlakového předstihu by měla být hodnota nastavena mnohem nižší. Pro přímé pohony je hodnota 10-15 mm³/s² dobrým výchozím bodem, a pro styl Bowden 5-10 mm³/s².\n\nTato funkce je známa jako Pressure Equalizer v programu Prusa Slicer.\n\nPoznámka: Tato hodnota zakazuje obloukové přizpůsobení."
+    },
+    "max_volumetric_extrusion_rate_slope_segment_length": {
+      "label": "Délka úseku pro vyhlazení"
+    },
+    "min_bead_width": {
+      "label": "Minimální šířka stěny",
+      "tooltip": "Šířka stěny, která nahradí tenké prvky (podle Minimální velikosti prvku) modelu. Pokud je minimální šířka stěny tenčí než tloušťka prvku, zeď bude stejně tlustá jako prvek samotný. Vyjadřuje se jako procento nad průměr trysky"
+    },
+    "min_feature_size": {
+      "label": "Minimální velikost prvku"
+    },
+    "min_layer_height": {
+      "label": "Min"
+    },
+    "min_resonance_avoidance_speed": {
+      "label": "Min"
+    },
+    "min_width_top_surface": {
+      "label": "Hranice jedné stěny",
+      "tooltip": "Pokud má být tisknuta horní plocha a je částečně zakrytá jinou vrstvou, nebude brána v úvahu jako horní vrstva, pokud je její šířka nižší než tato hodnota. Toto může být užitečné, aby se zabránilo spuštění funkce 'jeden perimetr nahoře' na ploše, která by měla být pokryta pouze perimetry. Tato hodnota může být udávána v mm nebo jako % o šířky extruze perimetru.\nVarování: Pokud je tato funkce povolena, mohou vzniknout artefakty, pokud máte na následující vrstvě nějaké tenké prvky, například písmena. Tuto volbu nastavte na 0, abyste se tyto artefakty odstranili."
+    },
+    "minimum_sparse_infill_area": {
+      "label": "Minimální hranice vnitřní výplně",
+      "tooltip": "Řídká oblast výplně, která je menší než hraniční hodnota, je nahrazena vnitřní plnou výplní"
+    },
+    "mmu_segmented_region_interlocking_depth": {
+      "label": "Hloubka propojení segmentované oblasti",
+      "tooltip": "Hloubka propojení segmentované oblasti. Bude ignorována, pokud je \"mmu_segmented_region_max_width\" nulová nebo pokud je \"mmu_segmented_region_interlocking_depth\" větší než \"mmu_segmented_region_max_width\". Nula tuto funkci deaktivuje."
+    },
+    "mmu_segmented_region_max_width": {
+      "label": "Maximální šířka segmentované oblasti",
+      "tooltip": "Maximální šířka segmentované oblasti. Nula tuto funkci vypne."
+    },
+    "notes": {
+      "label": "Poznámky k nastavení",
+      "tooltip": "Zde můžete zadat své osobní poznámky. Tento text bude přidán do komentáře záhlaví G-kódu."
+    },
+    "nozzle_diameter": {
+      "label": "Průměr trysky",
+      "tooltip": "Průměr trysky"
+    },
+    "nozzle_hrc": {
+      "label": "Tryska HRC",
+      "tooltip": "Tvrdost trysky. Nula znamená žádnou kontrolu tvrdosti trysky během slicování."
+    },
+    "nozzle_temperature": {
+      "label": "Ostatní vrstvy",
+      "full_label": "Teplota trysky",
+      "tooltip": "Teplota trysky pro vrstvy po počáteční"
+    },
+    "nozzle_temperature_initial_layer": {
+      "label": "První vrstva",
+      "full_label": "Teplota trysky první vrstvy",
+      "tooltip": "Teplota trysky pro tisk první vrstvy při použití tohoto filamentu"
+    },
+    "nozzle_temperature_range_high": {
+      "label": "Max"
+    },
+    "nozzle_temperature_range_low": {
+      "label": "Min"
+    },
+    "nozzle_type": {
+      "label": "Typ trysky",
+      "tooltip": "Kovový materiál trysky. To určuje odolnost trysky proti otěru a jaký druh filamentu lze tisknout",
+      "enum_labels": [
+        "Nedefinováno",
+        "Kalená ocel",
+        "Nerezová ocel",
+        "Mosaz"
+      ]
+    },
+    "nozzle_volume": {
+      "label": "Objem trysky",
+      "tooltip": "Objem trysky mezi frézou a koncem trysky"
+    },
+    "only_one_wall_first_layer": {
+      "label": "Pouze jedna stěna v první vrstvě",
+      "tooltip": "Používejte pouze jednu stěnu na první vrstvě, abyste získali více prostoru pro spodní výplňový vzor"
+    },
+    "only_one_wall_top": {
+      "label": "Pouze jedna stěna na horních plochách",
+      "tooltip": "Používejte pouze jednu stěnu na rovném horním povrchu, abyste získali více prostoru pro horní vzor výplně"
+    },
+    "ooze_prevention": {
+      "label": "Zapnout",
+      "tooltip": "Tato volba sníží teplotu neaktivních extruderů, aby u nich nedocházelo k ukapávání filamentu."
+    },
+    "other_layers_sequence_choice": {
+      "enum_labels": [
+        "Automaticky",
+        "Přizpůsobit"
+      ]
+    },
+    "outer_wall_acceleration": {
+      "label": "Vnější stěna",
+      "tooltip": "Zrychlení vnější stěny. Použití nižší hodnoty může zlepšit kvalitu"
+    },
+    "outer_wall_jerk": {
+      "label": "Vnější stěna",
+      "tooltip": "Jerk-Ryv na vnější stěny"
+    },
+    "outer_wall_line_width": {
+      "label": "Vnější stěna",
+      "tooltip": "Šířka extruze vnější stěny. Pokud je vyjádřena jako %, vypočítá se vzhledem k průměru trysky."
+    },
+    "outer_wall_speed": {
+      "label": "Vnější stěna",
+      "tooltip": "Rychlost vnější stěny, která je nejkrajnější a viditelná. Pro lepší kvalitu bývala nižší než rychlost vnitřní stěny."
+    },
+    "overhang_fan_threshold": {
+      "enum_labels": [
+        "0%",
+        "10%",
+        "25%",
+        "50%",
+        "75%",
+        "95%"
+      ]
+    },
+    "overhang_reverse": {
+      "full_label": "Obrácení převisu"
+    },
+    "overhang_reverse_threshold": {
+      "label": "Hranice obrácení",
+      "full_label": "Hranice obrácení převisu"
+    },
+    "parking_pos_retraction": {
+      "label": "Parkovací pozice filamentu",
+      "tooltip": "Vzdálenost špičky extruderu od místa, kde je zaparkován filament při vytažení. Měla by se shodovat s hodnotou ve firmware tiskárny."
+    },
+    "post_process": {
+      "label": "Post-processing Scripts",
+      "tooltip": "Pokud chcete výstupní G-kód zpracovat pomocí vlastních skriptů, stačí zde uvést jejich absolutní cesty. Více skriptů oddělte středníkem. Skriptu bude předána absolutní cesta k souboru G-kódu jako první argument a mohou přístup k nastavení konfigurace ElegooSlicer čtením proměnných prostředí."
+    },
+    "precise_outer_wall": {
+      "label": "Přesná stěna"
+    },
+    "preset_names": {
+      "label": "Názvy přednastavení tiskáren",
+      "tooltip": "Názvy přednastavení souvisejících s fyzickou tiskárnou"
+    },
+    "pressure_advance": {
+      "label": "Předstih tlaku",
+      "tooltip": "Předstih tlaku (Klipper) AKA Lineární faktor předstihu (Marlin)"
+    },
+    "prime_tower_brim_width": {
+      "label": "Šířka límce"
+    },
+    "prime_tower_width": {
+      "label": "Šířka",
+      "tooltip": "Šířka pro čistící věž"
+    },
+    "prime_volume": {
+      "label": "Základní objem",
+      "tooltip": "Objem materiálu k naplnění extruderu na věži."
+    },
+    "print_flow_ratio": {
+      "label": "Poměr průtoku"
+    },
+    "print_host": {
+      "label": "Název serveru, IP nebo URL",
+      "tooltip": "ElegooSlicer může nahrávat G-kódy do tiskového serveru. Toto pole by mělo obsahovat název hostitele, IP adresu nebo URL  tiskového serveru. K  tiskovému serveru za HAProxy se zapnutým ověřením basic auth lze přistupovat zadáním uživatelského jména a hesla do adresy URL v následujícím formátu: https://username: password@your-octopi-address/"
+    },
+    "print_host_webui": {
+      "label": "Uživatelské rozhraní zařízení",
+      "tooltip": "Uveďte URL uživatelského rozhraní vašeho zařízení, pokud není stejné jako print_host"
+    },
+    "print_order": {
+      "enum_labels": [
+        "Výchozí",
+        "As object list"
+      ]
+    },
+    "print_sequence": {
+      "label": "Tisková sekvence",
+      "tooltip": "Tisková sekvence, vrstva po vrstvě nebo objekt po objektu",
+      "enum_labels": [
+        "Podle vrstvy",
+        "Podle objektu"
+      ]
+    },
+    "printable_area": {
+      "label": "Oblast pro tisk"
+    },
+    "printable_height": {
+      "label": "Výška pro tisk",
+      "tooltip": "Maximální tisknutelná výška, která je omezena mechanismem tiskárny"
+    },
+    "printer_model": {
+      "label": "Typ tiskárny"
+    },
+    "printer_notes": {
+      "label": "Poznámky o tiskárně",
+      "tooltip": "Zde můžete uvést poznámky týkající se tiskárny."
+    },
+    "printer_structure": {
+      "label": "Struktura tiskárny",
+      "tooltip": "Fyzické uspořádání a komponenty tiskového zařízení",
+      "enum_labels": [
+        "Nedefinováno",
+        "CoreXY",
+        "I3",
+        "Hbot",
+        "Delta"
+      ]
+    },
+    "printer_technology": {
+      "label": "Technologie tisku"
+    },
+    "printer_variant": {
+      "label": "Varianta tiskárny"
+    },
+    "printhost_apikey": {
+      "label": "API klíč / Heslo",
+      "tooltip": "ElegooSlicer může nahrát soubory do tiskového serveru. Toto pole by mělo obsahovat klíč API požadovaný pro ověření."
+    },
+    "printhost_authorization_type": {
+      "label": "Typ oprávnění",
+      "enum_labels": [
+        "API klíč",
+        "HTTP digest"
+      ]
+    },
+    "printhost_cafile": {
+      "label": "Soubor HTTPS CA",
+      "tooltip": "Pro HTTPS připojení  OctoPrintu lze zadat vlastní CA certifikát ve formátu crt/pem. Pokud zůstane pole prázdné, použije se výchozí úložiště certifikátů OS CA."
+    },
+    "printhost_password": {
+      "label": "Heslo"
+    },
+    "printhost_port": {
+      "label": "Tiskárna",
+      "tooltip": "Název tiskárny"
+    },
+    "printhost_ssl_ignore_revoke": {
+      "label": "Ignorování kontrol revokace HTTPS certifikátu",
+      "tooltip": "Ignorování kontrol revokace HTTPS certifikátu v případě chybějících nebo offline distribučních bodů. Tuto možnost lze povolit pro certifikáty podepsané vlastním podpisem v případě, že se připojení nezdaří."
+    },
+    "printhost_user": {
+      "label": "Uživatel"
+    },
+    "purge_in_prime_tower": {
+      "label": "Očistit do čistící věže",
+      "tooltip": "Očistěte zbývající filament do čistící věže"
+    },
+    "raft_contact_distance": {
+      "label": "Mezera mezi objektem a raftem v ose Z",
+      "tooltip": "Mezera Z mezi objektem a raftem. Ignorováno pro rozpustné rozhraní"
+    },
+    "raft_expansion": {
+      "label": "Rozšíření raftu",
+      "tooltip": "Rozšířit všechny vrstvy raftu v rovině XY"
+    },
+    "raft_first_layer_density": {
+      "label": "Počáteční hustota vrstvy",
+      "tooltip": "Hustota prvního vrstvy raftu nebo podpůrné vrstvy"
+    },
+    "raft_first_layer_expansion": {
+      "label": "Rozšíření první vrstvy",
+      "tooltip": "Rozšiřte první raft nebo podpůrnou vrstvu pro zlepšení přilnavosti k podložce"
+    },
+    "raft_layers": {
+      "label": "Vrstev raftu",
+      "tooltip": "Objekt bude zvednut o tento počet podpůrných vrstev. Tuto funkci použijte, abyste se vyhnuli obtékání při tisku ABS"
+    },
+    "reduce_crossing_wall": {
+      "label": "Vyhněte se přejíždění stěn",
+      "tooltip": "Objeďte a vyhněte se přejíždění přes stěny, což může způsobit skvrny na povrchu"
+    },
+    "reduce_fan_stop_start_freq": {
+      "label": "Ventilátor vždy zapnutý",
+      "tooltip": "Pokud povolíte toto nastavení, ventilátor chlazení součástí se nikdy nezastaví a poběží alespoň na minimální rychlost, aby se snížila frekvence spouštění a zastavování"
+    },
+    "reduce_infill_retraction": {
+      "label": "Omezení retrakcí ve výplni",
+      "tooltip": "Omezte retrakce, když je pohyb v oblasti výplně absolutně. To znamená, že vytékání není vidět. To může zkrátit dobu retrakcí u složitého modelu a ušetřit čas tisku, ale zpomalit krájení a generování G-kódu"
+    },
+    "required_nozzle_HRC": {
+      "label": "Požadovaná tryska HRC",
+      "tooltip": "Minimální HRC trysky potřebné k tisku filamentu. Nula znamená žádnou kontrolu HRC trysky."
+    },
+    "resolution": {
+      "label": "Rozlišení",
+      "tooltip": "Cesta G-kódu se generuje po zjednodušení obrysu modelu, aby se předešlo příliš velkému počtu bodů a Linek gkódu v souboru gkód. Menší hodnota znamená vyšší rozlišení a více času na slicování"
+    },
+    "retract_before_wipe": {
+      "label": "Délka retrakce před očištěním",
+      "tooltip": "Délka rychlé retrakce před očištěním, vzhledem k délce retrakce"
+    },
+    "retract_length_toolchange": {
+      "label": "Vzdálenost"
+    },
+    "retract_lift_above": {
+      "label": "Zvednout Z pouze nad",
+      "tooltip": "Zadání kladné hodnoty se zdvih Z uskuteční pouze nad zadanou absolutní hodnotou Z."
+    },
+    "retract_lift_below": {
+      "label": "Zvednout Z pouze pod",
+      "tooltip": "Zadání kladné hodnoty se zdvih Z uskuteční pouze pod zadanou absolutní hodnotou Z."
+    },
+    "retract_lift_enforce": {
+      "label": "Na površích",
+      "tooltip": "Povolit chování Z-Hop. Tato volba je ovlivněna výše uvedenými nastaveními (Pouze zvednout Z nad/pod).",
+      "enum_labels": [
+        "Všechny povrchy",
+        "Pouze Horní",
+        "Pouze Spodní",
+        "Horní a Spodní"
+      ]
+    },
+    "retract_restart_extra": {
+      "label": "Extra vzdálenost při návratu",
+      "tooltip": "Když je retrakce kompenzována po rychloposunu, extruder vytlačuje toto další množství filamentu. Toto nastavení je zřídkakdy potřeba."
+    },
+    "retract_restart_extra_toolchange": {
+      "label": "Extra vzdálenost při návratu",
+      "tooltip": "Když je retrakce kompenzována po změně nástroje, extruder vytlačuje toto další množství filamentu."
+    },
+    "retract_when_changing_layer": {
+      "label": "Retrakce při změně vrstvy",
+      "tooltip": "Vynutit retrakci při změně vrstvy"
+    },
+    "retraction_length": {
+      "label": "Vzdálenost",
+      "full_label": "Vzdálenost retrakce"
+    },
+    "retraction_minimum_travel": {
+      "label": "Hranice cestovní vzdálenosti",
+      "tooltip": "Spusťte retrakci pouze tehdy, když je dráha jízdy delší než tato hraniční hodnota"
+    },
+    "retraction_speed": {
+      "label": "Rychlost Retrakce",
+      "full_label": "Rychlost Retrakce"
+    },
+    "role_based_wipe_speed": {
+      "label": "Rychlost čištění podle role",
+      "tooltip": "Rychlost čištění je určena rychlostí aktuální role extruze, např. pokud je činnost čištění provedena bezprostředně po extruzi vnější stěny, rychlost extruze vnější stěny bude využita pro činnost čištění."
+    },
+    "scan_first_layer": {
+      "label": "Skenovat první vrstvu",
+      "tooltip": "Povolením této možnosti umožníte Kameře na tiskárně kontrolovat kvalitu první vrstvy"
+    },
+    "seam_gap": {
+      "label": "Mezera švu",
+      "tooltip": "Aby se snížila viditelnost spoje při uzavřené extruzi, je smyčka přerušena a zkrácena o stanovenou hodnotu.\nTato hodnota může být zadána v milimetrech nebo jako procento aktuálního průměru trysky. Výchozí hodnota pro tento parametr je 10%."
+    },
+    "seam_position": {
+      "label": "Pozice švu",
+      "tooltip": "Počáteční pozice pro tisk každé části vnější stěny",
+      "enum_labels": [
+        "Nejbližší",
+        "Zarovnaný",
+        "Aligned back",
+        "Zezadu",
+        "Náhodný"
+      ]
+    },
+    "seam_slope_start_height": {
+      "label": "Počáteční výška Scarf-spoje"
+    },
+    "seam_slope_type": {
+      "enum_labels": [
+        "Žádné",
+        "Obrys",
+        "Obrys a otvor"
+      ]
+    },
+    "silent_mode": {
+      "label": "Podporuje tichý režim",
+      "tooltip": "Zda stroj podporuje tichý režim, ve kterém stroj používá k tisku nižší zrychlení"
+    },
+    "single_extruder_multi_material": {
+      "label": "MultiMaterial tisk s jedním extruderem",
+      "tooltip": "Použít jednu trysku pro tisk s více filamenty"
+    },
+    "single_extruder_multi_material_priming": {
+      "label": "Příprava všech tiskových extruderů",
+      "tooltip": "Pokud je tato možnost povolena, všechny tiskové extrudery na začátku tisku vytlačí na předním okraji podložky malé množství materiálu."
+    },
+    "skirt_distance": {
+      "label": "Vzdálenost obrysu",
+      "tooltip": "Vzdálenost od Obrysu k Límci nebo předmětu"
+    },
+    "skirt_height": {
+      "label": "Výška obrysu",
+      "tooltip": "Kolik vrstev Obrysu. Obvykle pouze jedna vrstva"
+    },
+    "skirt_loops": {
+      "label": "Obrysové smyčky",
+      "full_label": "Obrysové smyčky",
+      "tooltip": "Počet smyček pro obrys. Nula znamená deaktivaci obrysu"
+    },
+    "skirt_speed": {
+      "label": "Rychlost obrysu",
+      "full_label": "Rychlost obrysu",
+      "tooltip": "Rychlost obrysu, v mm/s. Nula znamená použít výchozí rychlost vrstvy extruze."
+    },
+    "skirt_type": {
+      "label": "Typ obrysu",
+      "full_label": "Typ obrysu",
+      "tooltip": "Kombinovaný - jeden obrys pro všechny objekty, Individuální - každý objekt má vlastní obrys.",
+      "enum_labels": [
+        "Kombinovaný ",
+        "Individuální "
+      ]
+    },
+    "slice_closing_radius": {
+      "label": "Poloměr uzavření mezery v tiskové vrstvě",
+      "tooltip": "Praskliny menší než 2x poloměr uzavření mezery se vyplní během slicování trojúhelníkových sítí. Operace uzavírání mezery může snížit konečné rozlišení tisku, proto je vhodné udržovat rozumně nízkou hodnotu."
+    },
+    "slicing_mode": {
+      "label": "Režim Slicování",
+      "tooltip": "Pro modely letadel 3DLabPrint použijte \"Paritní vyplňování\". Použijte \"Uzavírání děr\" pro uzavření všech otvorů v modelu.",
+      "enum_labels": [
+        "Obvyklý",
+        "Paritní vyplňování",
+        "Uzavírání děr"
+      ]
+    },
+    "slow_down_for_layer_cooling": {
+      "label": "Zpomalte tisk pro lepší chlazení vrstvy",
+      "tooltip": "Povolením této možnosti zpomalíte rychlost tisku, aby se zkrátila doba poslední vrstvy ne kratší než časová hranice vrstvy v \"Hranice max rychlosti ventilátoru\", takže vrstva může být chlazena po delší dobu. To může zlepšit kvalitu chlazení jehly a malých detailů"
+    },
+    "slow_down_layer_time": {
+      "label": "Čas vrstvy",
+      "tooltip": "Rychlost tisku v exportovaném kódu gkód se zpomalí, když je odhadovaná doba vrstvy kratší než tato hodnota, aby se dosáhlo lepšího chlazení pro tyto vrstvy"
+    },
+    "slow_down_layers": {
+      "label": "Počet pomalých vrstev",
+      "tooltip": "První několik vrstev se tiskne pomaleji než obvykle. Rychlost se postupně zvyšuje lineárně během určeného počtu vrstev."
+    },
+    "slow_down_min_speed": {
+      "label": "Minimální rychlost tisku"
+    },
+    "slowdown_for_curled_perimeters": {
+      "label": "Zpomalení pro zakroucené obvody"
+    },
+    "small_perimeter_speed": {
+      "label": "Malé perimetry",
+      "tooltip": "Toto samostatné nastavení ovlivní rychlost obvodů s poloměrem <= small_perimeter_threshold (obvykle otvory). Je-li vyjádřeno v procentech (například: 80 %), bude vypočítáno podle výše uvedeného nastavení rychlosti vnější stěny. Nastavte na nulu pro auto."
+    },
+    "small_perimeter_threshold": {
+      "label": "Hranice malého perimetru",
+      "tooltip": "Toto nastavuje hraniční hodnotu pro malou délku obvodu. Výchozí hranice je 0 mm"
+    },
+    "solid_infill_filament": {
+      "label": "Plná výplň"
+    },
+    "sparse_infill_acceleration": {
+      "label": "Vnitřní výplň",
+      "tooltip": "Zrychlení vnitřní výplně. Pokud je hodnota vyjádřena v procentech (např. 100 %), bude vypočítána na základě výchozího zrychlení."
+    },
+    "sparse_infill_density": {
+      "label": "Hustota vnitřní výplně"
+    },
+    "sparse_infill_filament": {
+      "label": "Výplň",
+      "tooltip": "Filament pro tisk vnitřní výplně."
+    },
+    "sparse_infill_line_width": {
+      "label": "Vnitřní výplň",
+      "tooltip": "Šířka extruze pro vnitřní výplně. Pokud je vyjádřena jako %, vypočítá se vzhledem k průměru trysky."
+    },
+    "sparse_infill_pattern": {
+      "label": "Vzor vnitřní výplně",
+      "tooltip": "Vzor linek pro vnitřní výplň",
+      "enum_labels": [
+        "Přímočarý",
+        "Zarovnaný přímočarý",
+        "Zig Zag",
+        "Cross Zag",
+        "Locked Zag",
+        "Čára",
+        "Mřížka",
+        "Trojúhelníky",
+        "Tri-šestiúhelník",
+        "Kubický",
+        "Kubický adaptivní",
+        "Quarter Cubic",
+        "Kubický podepíraný",
+        "Blesky",
+        "Plástev",
+        "3D Plástev",
+        "Lateral Honeycomb",
+        "Lateral Lattice",
+        "Cross Hatch",
+        "TPMS-D",
+        "TPMS-FK",
+        "Gyroid",
+        "Koncentrický",
+        "Hilbertova křivka",
+        "Archimédské akordy",
+        "Oktagramová spirála"
+      ]
+    },
+    "sparse_infill_speed": {
+      "label": "Vnitřní výplň",
+      "tooltip": "Rychlost vnitřní výplně"
+    },
+    "spiral_mode": {
+      "label": "Spirálová váza"
+    },
+    "staggered_inner_seams": {
+      "label": "Odstupňované vnitřní švy",
+      "tooltip": "Tato možnost způsobí, že vnitřní švy budou posunuty dozadu na základě jejich hloubky, vytvářející střídavý (zigzag) vzor."
+    },
+    "standby_temperature_delta": {
+      "label": "Kolísání teploty"
+    },
+    "start_end_points": {
+      "label": "Začátek konec body",
+      "tooltip": "Počáteční a koncový bod, který je od oblasti řezačky po popelnici."
+    },
+    "supertack_plate_temp": {
+      "label": "Ostatní vrstvy",
+      "full_label": "Teplota podložky"
+    },
+    "supertack_plate_temp_initial_layer": {
+      "label": "První vrstva",
+      "full_label": "Teplota podložky první vrstvy"
+    },
+    "support_air_filtration": {
+      "label": "Podpora filtrace vzduchu",
+      "tooltip": "Povolte tuto možnost, pokud tiskárna podporuje filtraci vzduchu\nG-kódový příkaz: M106 P3 S(0-255)"
+    },
+    "support_angle": {
+      "label": "Úhel vzoru",
+      "tooltip": "Použijte toto nastavení k otočení vzoru podpěr ve vodorovné rovině."
+    },
+    "support_base_pattern": {
+      "label": "Základní vzor",
+      "tooltip": "Čárový vzor podpěry",
+      "enum_labels": [
+        "Výchozí",
+        "Přímočarý",
+        "Přímočará mřížka",
+        "Plástev",
+        "Blesky",
+        "Dutá"
+      ]
+    },
+    "support_base_pattern_spacing": {
+      "label": "Rozestup základního vzoru",
+      "tooltip": "Mezery mezi podpůrnými linkami"
+    },
+    "support_bottom_interface_spacing": {
+      "label": "Spodní rozestup",
+      "tooltip": "Rozestup linek spodního. Nula znamená plné rozhraní"
+    },
+    "support_bottom_z_distance": {
+      "label": "Vzdálenost dolní Z",
+      "tooltip": "Z Mezera mezi spodní kontaktní vrstvou podpěr a objektem"
+    },
+    "support_chamber_temp_control": {
+      "label": "Podpora řízení teploty komory",
+      "tooltip": "Tato možnost je povolena, pokud stroj podporuje ovládání teploty komory\nG-kódový příkaz: M141 S(0-255)"
+    },
+    "support_critical_regions_only": {
+      "label": "Podpěry pouze pro kritické oblasti",
+      "tooltip": "Vytvářejte podpěry pouze pro kritické oblasti včetně ostrého ocasu, konzoly atd."
+    },
+    "support_expansion": {
+      "label": "Rozšíření normální podpěry",
+      "tooltip": "Rozšířit (+) nebo zmenšit (-) vodorovné rozpětí normální podpěry"
+    },
+    "support_filament": {
+      "label": "Podpěry/raft základna",
+      "tooltip": "Filament pro tiskové podpěry základen a raftu. \"Výchozí\" znamená, že pro  podpěry není použit žádný konkrétní filament a je použit aktuální filament"
+    },
+    "support_interface_bottom_layers": {
+      "label": "Spodní kontaktní vrstvy"
+    },
+    "support_interface_filament": {
+      "label": "Podpěry/raft kontaktní vrstva",
+      "tooltip": "Filament k tisku kontaktních vrstev podpěr. \"Výchozí\" znamená, že pro kontaktní vrstvy podpěr není použit žádný konkrétní filament a je použit aktuální filament"
+    },
+    "support_interface_loop_pattern": {
+      "label": "Použijte vzor smyčky",
+      "tooltip": "Zakrýt smyčkami horní kontaktní vrstvu podpěr. Ve výchozím nastavení zakázáno."
+    },
+    "support_interface_pattern": {
+      "label": "Vzor kontaktní vrstvy",
+      "tooltip": "Vzor čáry pro kontaktní vrstvy podpěr. Výchozí vzor pro rozhraní nerozpustné podpěry je přímočarý, zatímco výchozí vzor pro rozhraní rozpustné podpěry je koncentrický",
+      "enum_labels": [
+        "Výchozí",
+        "Přímočarý",
+        "Koncentrický",
+        "Přímočarý Prokládaný",
+        "Mřížka"
+      ]
+    },
+    "support_interface_spacing": {
+      "label": "Horní rozestup"
+    },
+    "support_interface_speed": {
+      "label": "Kontaktní vrstva podpěr",
+      "tooltip": "Rychlost pro kontaktní vrstvy podpěr"
+    },
+    "support_interface_top_layers": {
+      "label": "Vrchní kontaktní vrstvy",
+      "tooltip": "Počet nejvyšších vrstev"
+    },
+    "support_ironing_pattern": {
+      "tooltip": "Vzor, který bude použit při žehlení",
+      "enum_labels": [
+        "Přímočarý",
+        "Koncentrický"
+      ]
+    },
+    "support_ironing_spacing": {
+      "tooltip": "Vzdálenost mezi žehlicími linkami"
+    },
+    "support_line_width": {
+      "label": "Podpěry",
+      "tooltip": "Šířka extruze pro podpěry. Pokud je vyjádřena jako %, bude vypočtena vzhledem k průměru trysky."
+    },
+    "support_material_interface_fan_speed": {
+      "label": "Rychlost ventilátoru kontaktních vrstev podpěr"
+    },
+    "support_object_xy_distance": {
+      "label": "Podpěry/Objekt xy vzdálenost",
+      "tooltip": "XY vzdálenost mezi objektem a podpěrami"
+    },
+    "support_on_build_plate_only": {
+      "label": "Pouze na podložce",
+      "tooltip": "Nevytvářejte podpěry na povrchu modelu, pouze na podložce"
+    },
+    "support_remove_small_overhang": {
+      "label": "Odstranit malé převisy",
+      "tooltip": "Odstranit malé převisy, které pravděpodobně nepotřebují podpěry."
+    },
+    "support_speed": {
+      "label": "Podpěry",
+      "tooltip": "Rychlost podpěr"
+    },
+    "support_style": {
+      "label": "Styl",
+      "tooltip": "Styl a tvar podpěr. Pro běžnou podpěru, projekce podpěry do pravidelné mřížky vytvoří stabilnější podpěry (výchozí), zatímco pevné věže pro podpěru ušetří materiál a sníží poškození objektu.\nPro stromovou podpěru, tenký a organický styl bude agresivněji slučovat větve a ušetří mnoho materiálu (výchozí organický), zatímco hybridní styl vytvoří podobnou strukturu jako běžná podpěra pod velkými plochými převisy.",
+      "enum_labels": [
+        "Default (Grid/Organic)",
+        "Mřížka",
+        "Přiléhavý",
+        "Organické",
+        "Strom Tenký",
+        "Strom Silný",
+        "Strom Hybrid"
+      ]
+    },
+    "support_threshold_angle": {
+      "label": "Hraniční úhel",
+      "tooltip": "Podpěry budou generovány pro převisy, jejichž úhel sklonu je pod hraniční hodnotou."
+    },
+    "support_top_z_distance": {
+      "label": "Vzdálenost horní Z",
+      "tooltip": "Z Mezera mezi horním kontaktní vrstvou podpěr a objektem"
+    },
+    "support_type": {
+      "label": "Typ",
+      "enum_labels": [
+        "Normální (auto)",
+        "Strom (auto)",
+        "Normální (manuální)",
+        "Strom (manuální)"
+      ]
+    },
+    "temperature_vitrification": {
+      "label": "Teplota měknutí",
+      "tooltip": "Materiál při této teplotě měkne, takže když je teplota podložky rovna nebo vyšší než tato hodnota, vřele doporučujeme otevřít přední dvířka a/nebo odebrat horní sklo, abyste předešli ucpávkám."
+    },
+    "template_custom_gcode": {
+      "label": "Vlastní G-kód",
+      "tooltip": "Tento G-kód bude použit jako vlastní kód"
+    },
+    "textured_cool_plate_temp": {
+      "label": "Ostatní vrstvy",
+      "full_label": "Teplota podložky"
+    },
+    "textured_cool_plate_temp_initial_layer": {
+      "label": "První vrstva",
+      "full_label": "Teplota podložky první vrstvy"
+    },
+    "textured_plate_temp": {
+      "label": "Ostatní vrstvy",
+      "full_label": "Teplota podložky",
+      "tooltip": "Toto je teplota Podložky pro vrstvy kromě první. Hodnota 0 znamená, že filament nepodporuje tisk na Textured PEI Podložku"
+    },
+    "textured_plate_temp_initial_layer": {
+      "label": "První vrstva",
+      "full_label": "Teplota podložky první vrstvy",
+      "tooltip": "Toto je teplota podložky první vrstvy. Hodnota 0 znamená filament nepodporuje tisk na Textured PEI Podložku"
+    },
+    "thick_bridges": {
+      "tooltip": "Pokud je povoleno, jsou mosty spolehlivější, mohou překlenout delší vzdálenosti, ale mohou vypadat hůře.\nPokud je zakázáno, mosty vypadají lépe, ale jsou spolehlivé jen pro kratší přemostění."
+    },
+    "thumbnails": {
+      "label": "Náhledy G-kódu",
+      "tooltip": "Velikosti obrázků budou uloženy do souborů .gcode / .sl1 / .sl1s, v následujícím formátu: \"XxY, XxY, ...\""
+    },
+    "thumbnails_format": {
+      "label": "Formát náhledových obrázků G-kódu",
+      "tooltip": "Formát náhledových obrázků G-kódu: Pro nejlepší kvalitu PNG, pro nejmenší velikost JPG, pro firmware s malou pamětí QOI",
+      "enum_labels": [
+        "PNG",
+        "JPG",
+        "QOI",
+        "BTT TT",
+        "ColPic"
+      ]
+    },
+    "time_cost": {
+      "label": "Náklady na čas",
+      "tooltip": "Náklady tiskárny za hodinu"
+    },
+    "time_lapse_gcode": {
+      "label": "Časosběrný G-kód"
+    },
+    "timelapse_type": {
+      "label": "Časosběr",
+      "tooltip": "Pokud je vybrán plynulý nebo tradiční režim, pro každý tisk se vygeneruje časosběrné video. Po vytištění každé vrstvy je pořízen snímek komorovou kamerou. Všechny tyto snímky jsou po dokončení tisku složeny do časosběrného videa. Pokud je vybrán hladký režim, nástrojová hlava se po vytištění každé vrstvy přesune do přebytečného skluzu a poté pořídí snímek. Kvůli tomu, že se během procesu tavení filamentu může unikat z trysky, pro hladký režim je vyžadována čistící věž pro otření trysky.",
+      "enum_labels": [
+        "Tradiční",
+        "Vyhladit"
+      ]
+    },
+    "top_shell_layers": {
+      "label": "Vrchní vrstvy skořepiny",
+      "full_label": "Vrchních plných vrstev",
+      "tooltip": "Toto je počet pevných vrstev vrchní skořepiny, včetně vrchní povrchové vrstvy. Když je tloušťka vypočtená touto hodnotou tenčí než tloušťka vrchní skořepiny, vrchní vrstvy skořepiny se zvětší"
+    },
+    "top_shell_thickness": {
+      "label": "Tloušťka horní skořepiny",
+      "full_label": "Tloušťka horní skořepiny",
+      "tooltip": "Počet vrchních pevných vrstev se při krájení zvýší, pokud je tloušťka vypočítaná horními vrstvami skořepiny tenčí než tato hodnota. Tím se lze vyhnout příliš tenké skořepině, když je výška vrstvy malá. 0 znamená, že toto nastavení je zakázáno a tloušťka vrchní skořepiny je absolutně určován vrchními vrstvami pláště"
+    },
+    "top_solid_infill_flow_ratio": {
+      "label": "Poměr průtoku horní vrstvy"
+    },
+    "top_surface_acceleration": {
+      "label": "Horní plocha",
+      "tooltip": "Zrychlení výplně horního povrchu. Použití nižší hodnoty může zlepšit kvalitu povrchu"
+    },
+    "top_surface_jerk": {
+      "label": "Horní plocha",
+      "tooltip": "Jerk-Ryv pro horní plochy"
+    },
+    "top_surface_line_width": {
+      "label": "Horní plocha",
+      "tooltip": "Šířka extruze pro horní plochy. Pokud je vyjádřena jako %, bude vypočtena vzhledem k průměru trysky."
+    },
+    "top_surface_pattern": {
+      "label": "Vzor horního povrchu",
+      "tooltip": "Čárový vzor výplně horní plochy",
+      "enum_labels": [
+        "Monotónní",
+        "Monotónní linka",
+        "Přímočarý",
+        "Zarovnaný přímočarý",
+        "Koncentrický",
+        "Hilbertova křivka",
+        "Archimédské akordy",
+        "Oktagramová spirála"
+      ]
+    },
+    "top_surface_speed": {
+      "label": "Horní plocha",
+      "tooltip": "Rychlost výplně horních ploch, která je plná"
+    },
+    "travel_acceleration": {
+      "label": "Rychloposun",
+      "tooltip": "Zrychlení cestovních pohybů"
+    },
+    "travel_jerk": {
+      "label": "Rychloposun",
+      "tooltip": "Jerk-Ryv pro cestování"
+    },
+    "travel_speed": {
+      "label": "Rychloposun",
+      "tooltip": "Rychlost pohybu, která je rychlejší a bez extruze"
+    },
+    "tree_support_adaptive_layer_height": {
+      "label": "Adaptivní výška vrstvy"
+    },
+    "tree_support_angle_slow": {
+      "label": "Preferovaný úhel větve",
+      "tooltip": "Upřednostňovaný úhel větví, pokud se větve musí vyhnout modelu. Použijte menší úhel, aby byly svislejší a stabilnější. Použijte vyšší úhel, aby se větve dříve spojovaly."
+    },
+    "tree_support_auto_brim": {
+      "label": "Automatická šířka límce",
+      "tooltip": "Povolení této možnosti znamená, že šířka límce pro podpěry stromu budou automaticky vypočítány"
+    },
+    "tree_support_branch_angle": {
+      "label": "Úhel větve podpěr stromu",
+      "tooltip": "Toto nastavení určuje maximální úhel převisů, který mohou větve podpěry stromu dělat. Pokud se úhel zvětší, větve mohou být vytištěny více vodorovně, což jim umožní dosáhnout dále."
+    },
+    "tree_support_branch_angle_organic": {
+      "label": "Úhel větve podpěr stromu",
+      "tooltip": "Toto nastavení určuje maximální úhel převisů, který mohou větve podpěry stromu dělat. Pokud se úhel zvětší, větve mohou být vytištěny více vodorovně, což jim umožní dosáhnout dále."
+    },
+    "tree_support_branch_diameter": {
+      "label": "Průměr větve podpěr stromů",
+      "tooltip": "Toto nastavení určuje počáteční průměr uzlů podpěr."
+    },
+    "tree_support_branch_diameter_angle": {
+      "label": "Úhel definující průměr větve",
+      "tooltip": "Úhel, který udává průměr větví, jak se postupně zesilují směrem dolů. Úhel 0 způsobí, že větve budou mít po celé délce stejnou tloušťku. Trochu větší úhel může zvýšit stabilitu organických podpěr."
+    },
+    "tree_support_branch_diameter_organic": {
+      "label": "Průměr větve podpěr stromů",
+      "tooltip": "Toto nastavení určuje počáteční průměr uzlů podpěr."
+    },
+    "tree_support_branch_distance": {
+      "label": "Vzdálenost větví podpěr stromů",
+      "tooltip": "Toto nastavení určuje vzdálenost mezi sousedními uzly podpěr stromů."
+    },
+    "tree_support_branch_distance_organic": {
+      "label": "Vzdálenost větví podpěr stromů",
+      "tooltip": "Toto nastavení určuje vzdálenost mezi sousedními uzly podpěr stromů."
+    },
+    "tree_support_brim_width": {
+      "label": "Šířka Límce podpěr stromů",
+      "tooltip": "Vzdálenost od větve stromu k nejvzdálenější linii Límce"
+    },
+    "tree_support_tip_diameter": {
+      "label": "Průměr hrotu",
+      "tooltip": "Průměr vrcholu špičky větví organických podpěr."
+    },
+    "tree_support_top_rate": {
+      "label": "Hustota větví",
+      "tooltip": "Upravuje hustotu podpěrných špiček větví. Vyšší hodnota vede k lepším převisům, ale podpěry se hůře odstraňují. Proto se doporučuje povolit vrchní kontaktní vrstvy podpěr namísto vysoké hodnoty hustoty větví."
+    },
+    "tree_support_with_infill": {
+      "label": "Podpěry stromu s výplní",
+      "tooltip": "Toto nastavení určuje, zda se má přidat výplň do velkých dutin podpěr stromů"
+    },
+    "upward_compatible_machine": {
+      "label": "nahoru kompatibilní stroj"
+    },
+    "use_firmware_retraction": {
+      "label": "Použít retrakce z firmwaru",
+      "tooltip": "Toto experimentální nastavení používá příkazy G10 a G11, aby si firmware poradil s retrakcí. Toto je podporováno pouze v posledních verzích firmwaru Marlin."
+    },
+    "use_relative_e_distances": {
+      "label": "Použít relativní E vzdálenosti"
+    },
+    "wall_direction": {
+      "enum_labels": [
+        "Automaticky",
+        "Counter clockwise",
+        "Clockwise"
+      ]
+    },
+    "wall_distribution_count": {
+      "label": "Počet ovlivněných stěn",
+      "tooltip": "Počet stěn, počítáno od středu, přes které je třeba rozložit variaci. Nižší hodnoty znamenají, že vnější stěny se nemění na šířku"
+    },
+    "wall_filament": {
+      "label": "Stěny"
+    },
+    "wall_generator": {
+      "label": "Generátor stěny",
+      "tooltip": "Klasický generátor stěn produkuje stěny s konstantní extruzní šířkou a pro velmi tenké oblasti se používá gap-fill. Arachne engine produkuje stěny s proměnnou extruzní šířkou.",
+      "enum_labels": [
+        "Klasický",
+        "Arachne"
+      ]
+    },
+    "wall_loops": {
+      "label": "Počet perimetrů/stěn",
+      "tooltip": "Počet perimetrů/stěn každé vrstvy"
+    },
+    "wall_sequence": {
+      "enum_labels": [
+        "Inner/Outer",
+        "Outer/Inner",
+        "Inner/Outer/Inner"
+      ]
+    },
+    "wall_transition_angle": {
+      "label": "Hraniční úhel přechodu stěny",
+      "tooltip": "Kdy vytvořit přechody mezi sudým a lichým počtem stěn. Klínový tvar s úhlem větším, než je toto nastavení, nebude mít přechody a do středu se nevytisknou žádné stěny, které vyplní zbývající prostor. Zmenšením tohoto nastavení se sníží počet a délka těchto středových stěn, ale může zanechat mezery nebo přečnívat"
+    },
+    "wall_transition_filter_deviation": {
+      "label": "Filtr přechodového rozpětí stěny",
+      "tooltip": "Zabránit přechodu mezi jednou dodatečnou stěnou a jednou méně. Tato mez rozšiřuje rozsah šířek extruze na [Minimální šířka stěny - mezera, 2 * Minimální šířka stěny + mezera]. Zvýšení této mezery snižuje počet přechodů, což zase snižuje počet začátků/konec extruze a čas cestování. Nicméně velké rozdíly ve šířce extruze mohou vést k nedostatečné nebo přílišné extruzi. Je vyjádřena jako procento nad průměrem trysky"
+    },
+    "wall_transition_length": {
+      "label": "Délka přechodu stěny",
+      "tooltip": "Při přechodu mezi různými počty stěn, jak se díl ztenčuje, je vyhrazeno určité množství prostoru pro rozdělení nebo spojení segmentů stěny. Vyjadřuje se jako procento průměru trysky"
+    },
+    "wipe": {
+      "label": "Očistit při retrakci",
+      "tooltip": "Při retrakci přesuňte trysku podél poslední dráhy extruze, abyste vyčistili uniklý materiál na trysce. To může minimalizovat skvrny při tisku nového dílu po cestě"
+    },
+    "wipe_distance": {
+      "label": "Vzdálenost čištění"
+    },
+    "wipe_on_loops": {
+      "label": "Čistit na smyčce",
+      "tooltip": "Aby byla minimalizována viditelnost švu při extruzi s uzavřenou smyčkou, je proveden malý pohyb dovnitř předtím, než vytlačovací stroj opustí smyčku."
+    },
+    "wipe_speed": {
+      "label": "Rychlost čištění",
+      "tooltip": "Rychlost čištění je určena nastavením rychlosti specifikovaným v této konfiguraci. Pokud je hodnota vyjádřena v procentech (např. 80%), bude vypočítána na základě výše nastavené rychlosti jízdy. Výchozí hodnota pro tento parametr je 80%"
+    },
+    "wipe_tower_bridging": {
+      "label": "Maximální vzdálenost přemostění",
+      "tooltip": "Maximální vzdálenost mezi podpěrami u částí s řídkou výplní."
+    },
+    "wipe_tower_cone_angle": {
+      "label": "Úhel vrcholu stabilizačního kužele",
+      "tooltip": "Úhel na vrcholu kužele, který se používá ke stabilizaci čistící věže. Větší úhel znamená širší základnu."
+    },
+    "wipe_tower_extra_flow": {
+      "label": "Navýšení průtoku pro čištění",
+      "tooltip": "Dodatečný průtok používaný pro tisk čistících linek na čistící věži. Díky tomu jsou čistící linky silnější nebo užší, než by normálně byly. Vzdálenost mezi nimi se upravuje automaticky."
+    },
+    "wipe_tower_extra_spacing": {
+      "label": "Rozteč čistících linek v čistící věži",
+      "tooltip": "Rozteč čistících linek v čistící věži."
+    },
+    "wipe_tower_filament": {
+      "label": "Čistící věž",
+      "tooltip": "Extruder, který se použije při tisku obvodu čistící věže. Nastavte na 0, abyste použili ten, který je k dispozici (přednostně s nerozpustným filamentem)."
+    },
+    "wipe_tower_no_sparse_layers": {
+      "tooltip": "Pokud je tato možnost povolena, nebude čistící věž vytištěna ve vrstvách bez změny barvy. U vrstev s výměnou sjede extruder směrem dolů a vytiskne vrstvu čistící věže. Uživatel je odpovědný za to, že nedojde ke kolizi tiskové hlavy s tiskem."
+    },
+    "wipe_tower_rotation_angle": {
+      "label": "Úhel natočení čistící věže",
+      "tooltip": "Úhel natočení čistící věže s ohledem na osu X."
+    },
+    "wipe_tower_wall_type": {
+      "enum_labels": [
+        "Rectangle",
+        "Kužel",
+        "Rib"
+      ]
+    },
+    "wiping_volumes_extruders": {
+      "label": "Objemy čištění - zaváděné/vyjmuté objemy",
+      "tooltip": "Tento vektor ukládá potřebné objemy pro změnu z/na každý extruder používaný na čistící věži. Tyto hodnoty jsou použity pro zjednodušení vytvoření celkových objemů čištění níže."
+    },
+    "xy_contour_compensation": {
+      "label": "X-Y Kompenzace obrysu"
+    },
+    "xy_hole_compensation": {
+      "label": "X-Y Kompenzace otvoru"
+    },
+    "z_hop": {
+      "tooltip": "Kdykoli je retrakce provedena, tryska se trochu zvedne, aby se vytvořila mezera mezi tryskou a tiskem. Zabraňuje tomu, aby tryska zasáhla tisk při pohybu. Použití spirálové linky ke zvednutí z může zabránit stringování"
+    },
+    "z_hop_types": {
+      "label": "Typ Z-hop",
+      "enum_labels": [
+        "Automaticky",
+        "Normální",
+        "Sklon",
+        "Spirála"
+      ]
+    },
+    "z_offset": {
+      "label": "Odsazení Z",
+      "tooltip": "Tato hodnota bude přidána (nebo odečtena) ze všech souřadnic Z ve výstupním G-kódu. Používá se ke kompenzování špatné pozice endstopu Z. Například pokud endstop 0 skutečně ponechá trysku 0,3 mm daleko od tiskové podložky, nastavte hodnotu -0,3 (nebo dolaďte svůj koncový doraz)."
+    }
+  },
+  "ui": {
+    "Acceleration": "Zrychlení",
+    "Acceleration limitation": "Omezení zrychlení",
+    "Accessory": "Příslušenství",
+    "Advanced": "Pokročilé",
+    "Auxiliary part cooling fan": "Přídavný ventilátor chlazení",
+    "Basic information": "Základní informace",
+    "Bed temperature": "Teplota podložky",
+    "Before layer change G-code": "G-kód Před změnou vrstvy",
+    "Brim": "Límec",
+    "Change extrusion role G-code": "Změnit G-kód pro úlohu extruze",
+    "Change filament G-code": "G-kód Změny filamentu",
+    "Compatible process profiles": "Kompatibilní profily procesů",
+    "Cooling": "Chlazení",
+    "Cooling Fan": "Ventilátor chlazení",
+    "Cooling for specific layer": "Chlazení pro konkrétní vrstvu",
+    "Dependencies": "Závislosti",
+    "Exhaust fan": "Odsávací ventilátor",
+    "Extruder Clearance": "Vzdálenost extruderu",
+    "Filament": "Filament",
+    "Filament end G-code": "Filament Konec G-kód",
+    "Filament start G-code": "Filament Začátek G-kók",
+    "Flush options": "Možnosti Čištění",
+    "Fuzzy Skin": "Členitý povrch",
+    "G-code output": "Výstup G-kódu",
+    "Infill": "Výplň",
+    "Initial layer speed": "Rychlost první vrstvy",
+    "Ironing": "Žehlení",
+    "Jerk limitation": "Omezení Jerk-Ryv",
+    "Jerk(XY)": "Jerk-Ryv(XY)",
+    "Layer change G-code": "G-kód Změna vrstvy",
+    "Layer height": "Výška vrstvy",
+    "Layer height limits": "Výškové limity vrstvy",
+    "Line width": "Šířka Extruze",
+    "Machine G-code": "G-kód stroje",
+    "Machine end G-code": "Stroj end G-kód",
+    "Machine start G-code": "Stroj start G-kód",
+    "Motion ability": "Schopnost pohybu",
+    "Multimaterial": "Multimateriál",
+    "Notes": "Poznámky",
+    "Ooze prevention": "Prevence odkapávání",
+    "Other layers speed": "Rychlost ostatních vrstev",
+    "Others": "Ostatní",
+    "Overhang speed": "Rychlost převisů",
+    "Part cooling fan": "Ventilátor chlazení části",
+    "Pause G-code": "G-kód Pauzy",
+    "Position": "Pozice",
+    "Post-processing Scripts": "Post-processing Scripts",
+    "Precision": "Přesnost",
+    "Prime tower": "Čistící věž",
+    "Print chamber temperature": "Teplota v tiskové komoře",
+    "Print temperature": "Teplota tisku",
+    "Printable space": "Prostor pro tisk",
+    "Quality": "Kvalita",
+    "Raft": "Raft",
+    "Retraction": "Retrakce",
+    "Retraction when switching material": "Retrakce při změně materiálu",
+    "Seam": "Šev",
+    "Setting Overrides": "Přepsání nastavení",
+    "Single extruder multi-material parameters": "Parametry jednoho multimateriálového extruderu",
+    "Single extruder multi-material setup": "Nastavení multimateriálu s jedním extruderem",
+    "Size": "Rozměr",
+    "Skirt": "Obrys",
+    "Special mode": "Speciální režim",
+    "Speed": "Rychlost",
+    "Speed limitation": "Omezení rychlosti",
+    "Strength": "Pevnost",
+    "Support": "Podpěry",
+    "Support filament": "Filament na podpěry",
+    "Template Custom G-code": "Šablona s vlastním G-kódem",
+    "Timelapse G-code": "Časosběrný G-kód",
+    "Tool change parameters with multi extruder MM printers": "Parametry při výměně (Multi Material s více extrudery)",
+    "Tool change parameters with single extruder MM printers": "Parametry při výměně (Multi Material s jedním extruderem)",
+    "Top/bottom shells": "Horní/spodní skořepiny",
+    "Travel speed": "Cestovní rychlost",
+    "Tree supports": "Stromové podpěry",
+    "Volumetric speed limitation": "Omezení objemové rychlosti",
+    "Wall generator": "Generátor stěny",
+    "Walls": "Stěny",
+    "Wipe tower": "Čistící věž",
+    "Wipe tower parameters": "Parametry čistící věže"
+  }
+}

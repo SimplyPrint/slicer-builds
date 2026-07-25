@@ -1,0 +1,2742 @@
+{
+  "schema_version": 1,
+  "locale": "ca",
+  "source_locale": "en",
+  "messages": {},
+  "settings": {
+    "accel_to_decel_enable": {
+      "label": "Habilita accel_to_decel",
+      "tooltip": "El max_accel_to_decel de Klipper s'ajustarà automàticament"
+    },
+    "accel_to_decel_factor": {
+      "label": "accel_to_decel",
+      "tooltip": "El max_accel_to_decel de Klipper s'ajustarà a aquest %% d'acceleració"
+    },
+    "acceleration_limit_mess": {
+      "label": "Velocitat límit de pes i acceleració",
+      "tooltip": "Velocitat límit de pes i acceleració"
+    },
+    "acceleration_limit_mess_enable": {
+      "label": "Velocitat límit de pes i acceleració",
+      "tooltip": "Velocitat límit de pes i acceleració"
+    },
+    "activate_air_filtration": {
+      "label": "Activar la filtració d'aire",
+      "tooltip": "Activar-lo per a una millor filtració de l'aire. Comanda de Codi-G: M106 P3 S( 0-255 )"
+    },
+    "activate_chamber_layer": {
+      "label": "Activa la capa de la cambra",
+      "full_label": "Activa la capa de la cambra",
+      "tooltip": "El nombre de capes per obrir la temperatura de la cavitat"
+    },
+    "activate_chamber_temp_control": {
+      "label": "Activar el control de temperatura",
+      "tooltip": "Activeu aquesta opció per al control de temperatura de la cambra. S'afegirà una comanda M191 abans de \"machine_start_gcode\"\nComandes de Codi-G: M141 / M191 S ( 0-255 )"
+    },
+    "adaptive_bed_mesh_margin": {
+      "label": "Marge de malla",
+      "tooltip": "Aquesta opció determina la distància addicional per la qual s'ha d'ampliar l'àrea de malla de llit adaptativa en les direccions XY."
+    },
+    "additional_cooling_fan_speed": {
+      "label": "Fan speed",
+      "tooltip": "Velocitat del ventilador auxiliar de refrigeració de peces. El ventilador auxiliar funcionarà a aquesta velocitat durant la impressió, excepte les primeres capes que es defineixen sense capes de refrigeració.\nActiveu auxiliary_fan a la configuració de la impressora per utilitzar aquesta funció. Comanda de Codi-G: M106 P2 S ( 0-255 )"
+    },
+    "ai_infill": {
+      "label": "AI infill",
+      "tooltip": "Activa l'infill d'AI basat en el rellenç poc original."
+    },
+    "align_infill_direction_to_model": {
+      "label": "Alinea la direcció d' ompliment al model",
+      "tooltip": "Alinea les direccions d'ompliment i ompliment de superfície per seguir l'orientació del model a la placa de construcció. Quanestà habilitada, les direccions d'ompliment giren amb el model per mantenir característiques de resistència òptimes."
+    },
+    "alternate_extra_wall": {
+      "label": "Perímetre addicional alternant",
+      "tooltip": "Aquest ajustament afegeix un perímetre addicional a totes les altres capes. D'aquesta manera, el farciment s'encaixa verticalment entre les parets, donant lloc a impressions més fortes. \n\nQuan aquesta opció està habilitada, cal desactivar l'opció 'Assegurar el gruix de la carcassa vertical'. \n\nNo es recomana l'ús de farciment de Llampec juntament amb aquesta opció, ja que hi ha un farciment limitat per ancorar els perímetres addicionals."
+    },
+    "arc_tolerance": {
+      "label": "Tolerança a l'arc",
+      "tooltip": "Tolerança a l'arc"
+    },
+    "auxiliary_fan": {
+      "label": "Ventilador auxiliar de refrigeració de peces",
+      "tooltip": "Activeu aquesta opció si la màquina té ventilador auxiliar de refrigeració de peces. Comanda de Codi-G: M106 P2 S ( 0-255 )."
+    },
+    "bbl_calib_mark_logo": {
+      "label": "Mostra les marques de calibratge automàtic"
+    },
+    "bbl_use_printhost": {
+      "label": "Utilitzeu l'amfitrió d'impressió de 3a part",
+      "tooltip": "Permetre controlar la impressora de CrealityPrint a través d'amfitrions d'impressió de 3 ª part"
+    },
+    "bed_custom_model": {
+      "label": "Model personalitzat de la placa"
+    },
+    "bed_custom_texture": {
+      "label": "Textura personalitzada de la placa"
+    },
+    "bed_exclude_area": {
+      "label": "Zona d'exclusió de la placa",
+      "tooltip": "Àrea no imprimible en el plànol XY. Per exemple, les impressores de la sèrie X1 utilitzen la cantonada frontal esquerra per tallar el filament durant el canvi de filament. L'àrea s'expressa com a polígon per punts en el format següent: \"XxY, XxY, ...\""
+    },
+    "bed_mesh_max": {
+      "label": "Malla de llit màxim",
+      "tooltip": "Aquesta opció estableix el punt màxim per a la zona de malla de llit permesa. A causa del desplaçament XY de la sonda, la majoria de les impressores no poden sondejar tot el llit. Per assegurar-se que el punt de sonda no surti de la zona del llit, s'han d'establir adequadament els punts mínims i màxims de la malla del llit. CrealityPrint garanteix que els valors de adaptive_bed_mesh_min/adaptive_bed_mesh_max no superin aquests punts mínim/màxim. Normalment, aquesta informació es pot obtenir del fabricant de la impressora. La configuració predeterminada és (99999, 99999), cosa que significa que no hi ha límits, el qual permet sondejar tot el llit."
+    },
+    "bed_mesh_min": {
+      "label": "Malla de llit mínim",
+      "tooltip": "Aquesta opció estableix el punt mínim per a la zona de malla de llit permesa. A causa del desplaçament XY de la sonda, la majoria de les impressores no poden sondejar tot el llit. Per assegurar-se que el punt de sonda no surti de la zona del llit, s'han d'establir adequadament els punts mínims i màxims de la malla del llit. CrealityPrint garanteix que els valors de adaptive_bed_mesh_min/adaptive_bed_mesh_max no superin aquests punts mínim/màxim. Normalment, aquesta informació es pot obtenir del fabricant de la impressora. La configuració predeterminada és (-99999, -99999), cosa que significa que no hi ha límits, el qual permet sondejar tot el llit."
+    },
+    "bed_mesh_probe_distance": {
+      "label": "Distància entre els punts de sondeig",
+      "tooltip": "Aquesta opció estableix la distància preferida entre els punts de sondeig (mida de la quadrícula ) per a les direccions X i Y, amb el valor per defecte de 50 mm tant per a X com per a Y."
+    },
+    "before_layer_change_gcode": {
+      "label": "Codi-G per abans d'un canvi de capa",
+      "tooltip": "Aquest Codi-G s'insereix en cada canvi de capa abans d'aixecar z"
+    },
+    "belt_Z_offset": {
+      "label": "màquina cinturó Z offset",
+      "tooltip": "El desplaçament de l'eix Z de la màquina de cinturó."
+    },
+    "best_object_pos": {
+      "label": "Millor posició de l'objecte",
+      "tooltip": "Millor auto posicionament dels objectes a l'interval [0,1] respecte a la forma del llit."
+    },
+    "bottom_shell_layers": {
+      "label": "Capes de la carcassa inferior",
+      "full_label": "Capes de la carcassa inferior",
+      "tooltip": "Aquest és el nombre de capes sòlides de la carcassa inferior, inclosa la capa superficial inferior. Quan el gruix calculat per aquest valor sigui més prim que el gruix de la carcassa inferior, s'augmentaran les capes inferiors de la carcassa"
+    },
+    "bottom_shell_thickness": {
+      "label": "Gruix mínim de la carcassa inferior",
+      "full_label": "Gruix mínim de la carcassa inferior",
+      "tooltip": "El nombre de capes sòlides inferiors s'incrementa en laminar si el gruix calculat per les capes inferiors de la carcassa és més prim que aquest valor. Això pot evitar tenir una carcassa massa fina quan l'alçada de la capa és petita. 0 significa que aquest ajustament està desactivat i que el gruix de la carcassa inferior està absolutament determinat per les capes inferiors de la carcassa"
+    },
+    "bottom_solid_infill_flow_ratio": {
+      "label": "Ratio de flux superficial inferior",
+      "tooltip": "Aquest factor afecta la quantitat de filament per al farciment sòlid inferior"
+    },
+    "bottom_surface_pattern": {
+      "label": "Patró de superfície inferior",
+      "tooltip": "Patró de línia del farciment de la superfície inferior, no del farciment de pont",
+      "enum_labels": [
+        "Concèntric",
+        "Rectilini",
+        "Monotònic",
+        "Línia mononotònica",
+        "Alineat Rectilini",
+        "Corba de Hilbert",
+        "Acords d'Arquimedes",
+        "Octograma en Espiral"
+      ]
+    },
+    "bridge_acceleration": {
+      "label": "Pont",
+      "tooltip": "Acceleració de ponts. Si el valor s'expressa en percentatge ( per exemple, 50% ), es calcularà a partir de l'acceleració del perímetre exterior."
+    },
+    "bridge_angle": {
+      "label": "Angle del farciment del pont",
+      "tooltip": "Sobreescriptura de l'angle de pont. Si es deixa a zero, l'angle de pont es calcularà automàticament. En cas contrari, l'angle proporcionat s'utilitzarà per als ponts externs. Utilitzeu 180° per a l'angle zero."
+    },
+    "bridge_density": {
+      "label": "Densitat del pont",
+      "tooltip": "Densitat dels ponts exteriors. 100% significa pont sòlid. Per defecte és del 100%."
+    },
+    "bridge_flow": {
+      "label": "Ratio de flux del pont",
+      "tooltip": "Disminuïu lleugerament aquest valor ( per exemple 0,9 ) per reduir la quantitat de filament per al pont, per millorar l'enfonsament"
+    },
+    "bridge_no_support": {
+      "label": "No suportar ponts",
+      "tooltip": "No posar suports a tot el pont, reduint la quantitat de suports necessaris. Els ponts normalment es poden imprimir directament sense suports si no són molt llargs"
+    },
+    "bridge_speed": {
+      "label": "Extern",
+      "tooltip": "Velocitat per a ponts i perímetres completament en voladís"
+    },
+    "brim_ears": {
+      "label": "Orelles de la Vora d'Adherència",
+      "tooltip": "Només dibuixar la Vora d'Adherència sobre les vores afilades del model."
+    },
+    "brim_ears_detection_length": {
+      "label": "Radi de detecció de l'orella",
+      "tooltip": "La geometria serà reduïda abans de detectar angles aguts. Aquest paràmetre especifica la longitud mínima de la desviació per a la reducció.\n0 per desactivar"
+    },
+    "brim_ears_max_angle": {
+      "label": "Angle màxim de l'orella",
+      "tooltip": "Angle màxim per deixar aparèixer una orella. \nSi s'estableix en 0, no es crearà cap Vora d'Adherència. \nSi s'estableix a ~ 180, es crearà Vora d'Adherència arreu menys en seccions rectes."
+    },
+    "brim_object_gap": {
+      "label": "Espai entre la Vora d'Adherència i l'objecte",
+      "tooltip": "Un espai entre la línia de la Vora d'Adherència més interna i l'objecte pot fer que la Vora d'Adherència s'elimini més fàcilment"
+    },
+    "brim_type": {
+      "label": "Tipus de Vora d'Adherència",
+      "tooltip": "Això controla la generació de la Vora d'Adherència a la cara exterior i/o interior dels models. Auto significa que l'amplada de la Vora d'Adherència s'analitza i es calcula automàticament.",
+      "enum_labels": [
+        "Automàtic",
+        "Orella de ratolí",
+        "Pintat",
+        "Només la Vora d'Adherència exterior",
+        "Només la Vora d'Adherència interior",
+        "Vora d'Adherència interior i exterior",
+        "Sense Vora d'Adherència"
+      ]
+    },
+    "brim_width": {
+      "label": "Ample de la Vora d'Adherència",
+      "tooltip": "Distància del model a la línia de la Vora d'Adherència més exterior"
+    },
+    "chamber_temperature": {
+      "label": "Temperatura de la cambra",
+      "full_label": "Temperatura de la cambra",
+      "tooltip": "Una temperatura de cambra més alta pot ajudar a suprimir o reduir la deformació( warping ) i potencialment conduir a una major resistència d'unió entre capes per a filaments d'alta temperatura com ABS, ASA, PC, PA, etc. Al mateix temps, la filtració d'aire d'ABS i ASA empitjorarà. Mentre que per a PLA, PETG, TPU, PVA i altres filaments de baixa temperatura, la temperatura real de la cambra no hauria de ser alta per evitar obstruccions, pel que 0, que significa apagar, és molt recomanable"
+    },
+    "change_extrusion_role_gcode": {
+      "label": "Codi-G de canvi del rol d'extrusió",
+      "tooltip": "Aquest Codi-G s'insereix quan es canvia el rol d'extrusió"
+    },
+    "change_filament_gcode": {
+      "label": "Codi-G de canvi de filament",
+      "tooltip": "Aquest Codi-G s'insereix quan canvia el filament, inclosa la comanda T per activar el canvi d'eina"
+    },
+    "close_fan_the_first_x_layers": {
+      "label": "Sense refrigeració per a les primeres",
+      "tooltip": "Apagar tots el ventiladors de refrigeració per a les primeres capes. El ventilador de refrigeració de la primera capa ha d'estar apagat per obtenir una millor adhesió a la placa d'impressió"
+    },
+    "color_bed_exclude_area": {
+      "label": "El llit de color exclueix l'àrea",
+      "tooltip": "El llit de color exclueix l'àrea"
+    },
+    "compatible_printers": {
+      "label": "Màquina compatible"
+    },
+    "compatible_printers_condition": {
+      "label": "Condició de màquina compatible"
+    },
+    "compatible_prints": {
+      "label": "Perfils de processos compatibles"
+    },
+    "compatible_prints_condition": {
+      "label": "Condició de perfils de procés compatibles"
+    },
+    "complete_print_exhaust_fan_speed": {
+      "label": "Fan speed",
+      "tooltip": "Velocitat del ventilador d'extracció després de completar la impressió"
+    },
+    "cool_cds_fan_start_at_height": {
+      "label": "Altura d'obertura del ventilador auxiliar",
+      "tooltip": "Altura d'obertura del ventilador auxiliar"
+    },
+    "cool_plate_temp": {
+      "label": "Altres capes",
+      "tooltip": "Temperatura del llit de les capes excepte la inicial. El valor 0 significa que el filament no admet imprimir a una Base Freda"
+    },
+    "cool_plate_temp_initial_layer": {
+      "label": "Capa inicial",
+      "tooltip": "Temperatura del llit en la capa inicial. El valor 0 significa que el filament no admet imprimir a la Base Freda"
+    },
+    "cool_special_cds_fan_speed": {
+      "label": "Amb àrea especial la velocitat adicional del ventilador de refrigeració",
+      "tooltip": "Amb àrea especial la velocitat adicional del ventilador de refrigeració"
+    },
+    "cooling_perimeter_transition_distance": {
+      "label": "Distància de transició del perímetre",
+      "tooltip": "Distància en milímetres abans dels perímetres no ralentitzats on es restaura la velocitat d'impressió original no ralentitzada. Això redueixels problemes de qualitat d'impressió quan es passa de la característica molt lenta a la impressió perimetral ràpida."
+    },
+    "cooling_slowdown_logic": {
+      "label": "Lògica de desaceleració de refrigeració",
+      "tooltip": "Determina com la impressora retarda la impressió de capes quan no s'aconsegueix el temps mínim de capes.  \"Superfícieconsistent\" primer intenta preservar les velocitats d'impressió dels dos primers perímetres alentint totes les altres característiques. Només si aixòno és suficient, també ralentitza aquests dos primers perímetres. El \"refredament uniforme\" ralentitza totes les característiques d'impressió, inclosos elsdos primers perímetres.",
+      "enum_labels": [
+        "Refrigeració uniforme",
+        "Superfície consistent",
+        "No ralentis les parets exteriors",
+        "Zones de refrigeració intel·ligents (Beta)"
+      ]
+    },
+    "cooling_tube_length": {
+      "label": "Longitud del tub de refredament",
+      "tooltip": "Longitud del tub de refredament per limitar l'espai per a moviments de refredament dins del mateix."
+    },
+    "cooling_tube_retraction": {
+      "label": "Posició del tub de refrigeració",
+      "tooltip": "Distància des del centre del tub de refredament a la punta de l'extrusor."
+    },
+    "counterbore_hole_bridging": {
+      "label": "Pont pels forats esbocats( contraforats )",
+      "tooltip": "Aquesta opció crea ponts per a forats de contraforat, permetent imprimir-los sense suport. Els modes disponibles son els següents:\n1. Cap: No es crea cap pont.\n2. Pont parcial: Només una part de la zona no suportada serà pontejada.\n3. Capa de sacrifici: Es crea una capa de pont de sacrifici completa.",
+      "enum_labels": [
+        "Cap",
+        "Pont parcial",
+        "Capa de sacrifici"
+      ]
+    },
+    "creality_flush_time": {
+      "label": "Temps per flaure",
+      "tooltip": "Temps per flaure"
+    },
+    "curr_bed_type": {
+      "label": "Tipus de llit",
+      "tooltip": "Tipus de llit suportats per la impressora",
+      "enum_labels": [
+        "Base Freda",
+        "Base d'Enginyeria",
+        "Base PEI Llisa / Base d'Alta Temperatura",
+        "Base PEI amb Textura",
+        "Placa personalitzada",
+        "Epoxy Resin Plate"
+      ]
+    },
+    "customized_plate_temp": {
+      "label": "Altres capes",
+      "tooltip": "Temperatura del llit per capes excepte la inicial. Valor 0 vol dir que el filament no suporta imprimir ala plata personalitzada"
+    },
+    "customized_plate_temp_initial_layer": {
+      "label": "Capa inicial",
+      "tooltip": "La temperatura del llit de la capa inicial. Valor 0 vol dir que el filament no suporta imprimir ala plata personalitzada"
+    },
+    "default_acceleration": {
+      "label": "Impressió normal",
+      "tooltip": "L'acceleració predeterminada tant de la impressió normal com dels viatges excepte a la capa inicial"
+    },
+    "default_filament_colour": {
+      "label": "Color predeterminat",
+      "tooltip": "Color del filament predeterminat"
+    },
+    "default_filament_profile": {
+      "label": "Perfil de filament predeterminat",
+      "tooltip": "Perfil de filament predeterminat quan canvieu a aquest perfil de màquina"
+    },
+    "default_filament_type": {
+      "label": "Tip predefinit",
+      "tooltip": "Tip de filament predefinit"
+    },
+    "default_jerk": {
+      "label": "Per defecte",
+      "tooltip": "Per defecte"
+    },
+    "default_print_profile": {
+      "label": "Perfil de procés predeterminat",
+      "tooltip": "Perfil de procés predeterminat quan canvieu a aquest perfil de màquina"
+    },
+    "deretraction_speed": {
+      "label": "Velocitat de detracció",
+      "full_label": "Velocitat de detracció",
+      "tooltip": "Velocitat de recàrrega del filament a l'extrusora. Zero significa la mateixa velocitat amb la retracció"
+    },
+    "detect_narrow_internal_solid_infill": {
+      "label": "Detectar de farciment sòlid intern estret",
+      "tooltip": "Aquesta opció detectarà automàticament una àrea de farciment sòlid intern estret. Si està habilitat, s'utilitzarà un patró concèntric a l'àrea per accelerar la impressió. En cas contrari, el patró rectilini s'utilitzará per defecte."
+    },
+    "detect_overhang_wall": {
+      "label": "Detectar voladís de perímetre",
+      "tooltip": "Detectar el percentatge de voladís en relació amb l'amplada de la línia i utilitzar una velocitat diferent per imprimir. Per al voladís del 100%%, s'utilitza la velocitat de pont."
+    },
+    "detect_thin_wall": {
+      "label": "Detectar perímetres prims",
+      "tooltip": "Detecta un perímetre prim que no pugui contenir dues línies d'amplada. I utilitzar una sola línia per imprimir. Potser no s'imprimeix gaire bé, perquè no és de bucle tancat"
+    },
+    "disable_m73": {
+      "label": "Desactivar el temps d'impressió restant",
+      "tooltip": "Desactivar la generació del M73: establir el temps d'impressió restant al gcode final"
+    },
+    "dont_filter_internal_bridges": {
+      "label": "No filtrar els petits ponts interns ( beta )",
+      "tooltip": "Aquesta opció pot ajudar a reduir la formació de forats a les superfícies superiors en models molt inclinats o corbats.\n\nPer defecte, es filtren petits ponts interns i el farciment sòlid intern s'imprimeix directament sobre el farciment poc dens. Això funciona bé en la majoria dels casos, accelerant la impressió sense comprometre massa la qualitat superior de la superfície. \n\nNo obstant això, en models molt inclinats o corbats, especialment on s'utilitza una densitat de farciment massa baixa i escassa, això pot resultar en l'enrotllament del farciment sòlid no suportat, causant formació de forats\n\nSi activeu aquesta opció, s'imprimirà la capa de pont intern sobre un farciment sòlid intern lleugerament sense suport. Les opcions següents controlen la quantitat de filtratge, és a dir, la quantitat de ponts interns creats.\n\nDesactivat: desactiva aquesta opció. Aquest és el comportament predeterminat i funciona bé en la majoria dels casos.\n\nFiltratge limitat: crea ponts interns en superfícies molt inclinades, alhora que evita crear ponts interns innecessaris. Això funciona bé per als models més difícils.\n\nSense filtratge: crea ponts interns sobre tots els voladissos interns potencials. Aquesta opció és útil per a models de superfície superior molt inclinats. No obstant això, en la majoria dels casos crea massa ponts innecessaris.",
+      "enum_labels": [
+        "Deshabilitat",
+        "Filtratge limitat",
+        "Sense filtres"
+      ]
+    },
+    "dont_slow_down_outer_wall": {
+      "label": "No ralentis les parets exteriors",
+      "tooltip": "Si s'activa, aquesta configuració assegurarà que els perímetres externs no es ralentin per satisfer el temps mínim de lacapa. Això és especialment útil en els escenaris abans:\n\n 1. Per evitar canvis en el brill quan imprimi filamentsbrillants \n2. Per evitar canvis en la velocitat de la paret externa que poden crear petits artefactes de laparet que apareixen com banda z \n3. Per evitar imprimir a velocitats que provoquen VFAs (fins artefactes) a lesparets externes\n\n"
+    },
+    "draft_shield": {
+      "label": "Escut contra corrents d'aire",
+      "tooltip": "Un escut contra corrents d'aire és útil per protegir una impressió ABS o ASA de la deformació i el despreniment del llit d'impressió a causa del corrent d'aire. Normalment només es necessita amb impressores de marc obert, és a dir, sense tancament. \n\nOpcions:\nHabilitat = la faldilla és tan alta com l'objecte imprès més alt.\nLimitat = la faldilla és tan alta com especifica l'alçada de la faldilla.\n\nNota: Amb l'escut contra corrents d'aire actiu, la faldilla s'imprimirà a distància de faldilla de l'objecte. Per tant, si les vores d'adherència estan actives pot creuar-se amb elles. Per evitar-ho, augmenteu el valor de distància de la faldilla.\n",
+      "enum_labels": [
+        "Deshabilitat",
+        "Limitat",
+        "Habilitat"
+      ]
+    },
+    "during_print_exhaust_fan_speed": {
+      "label": "Fan speed",
+      "tooltip": "Velocitat del ventilador d'extracció durant la impressió. Aquesta velocitat sobreescriurà la velocitat del Codi-G personalitzat del filament"
+    },
+    "elefant_foot_compensation": {
+      "label": "Compensació de Peu d'Elefant",
+      "tooltip": "Redueix la capa inicial a la placa d'impressió per compensar l'efecte de Peu d'Elefant"
+    },
+    "elefant_foot_compensation_layers": {
+      "label": "Capes de compensació de Peu d'Elefant",
+      "tooltip": "El nombre de capes sobre les quals estarà activa la compensació de Peu d'Elefant. La primera capa es reduirà pel valor de compensació de Peu d'Elefant, després les següents capes es reduiran linealment menys, fins a la capa indicada per aquest valor."
+    },
+    "embedding_wall_into_infill": {
+      "label": "Incorporar la paret en l'infill",
+      "tooltip": "Incorporar la paret en parts on els bucles de la paret estan absents assegura que la paret es connectasense problemes amb el ompliment."
+    },
+    "emit_machine_limits_to_gcode": {
+      "label": "Emissió de límits al Codi-G",
+      "tooltip": "Si està habilitat, els límits de la màquina s'emetran al fitxer de Codi-G.\nAquesta opció s'ignorarà si el tipus de Codi-G està definit com a Klipper."
+    },
+    "enable_arc_fitting": {
+      "label": "Ajustament en Arc( Arc fitting )",
+      "tooltip": "Habiliteu-lo per obtenir un fitxer de codi-G que tingui moviments G2 i G3. La tolerància d'ajust és la mateixa que la resolució. \n\n"
+    },
+    "enable_filament_ramming": {
+      "label": "Habilitar Moldejat de punta( Ramming ) de filament",
+      "tooltip": "Habilitar Moldejat de punta( Ramming ) de filament"
+    },
+    "enable_overhang_bridge_fan": {
+      "label": "Força la refrigeració per voladís i pont",
+      "tooltip": "Activeu aquesta opció per optimitzar la velocitat del ventilador de refrigeració de peces per a Voladís i Pont i obtenir una millor refrigeració"
+    },
+    "enable_overhang_speed": {
+      "label": "Alentir la velocitat als voladissos",
+      "tooltip": "Activeu aquesta opció per alentir la impressió per a diferents graus de voladís"
+    },
+    "enable_pressure_advance": {
+      "label": "Activar l'Avanç de Pressió Lineal",
+      "tooltip": "Habilitar l'Avanç de Pressió Lineal, el resultat del calibratge automàtic se sobreescriurà un cop activat."
+    },
+    "enable_prime_tower": {
+      "label": "Activar",
+      "tooltip": "La Torre de Purga es pot utilitzar per netejar els residus al broquet i estabilitzar la pressió de la cambra dins del broquet, per tal d'evitar defectes d'aparença en imprimir objectes."
+    },
+    "enable_special_area_additional_cooling_fan": {
+      "label": "Habilitar ventilador de refrigeració addicional per a àrees especials",
+      "tooltip": "Habilitar ventilador de refrigeració addicional per a àrees especials"
+    },
+    "enable_support": {
+      "label": "Habilitar suports",
+      "tooltip": "Habilitar la generació de suports."
+    },
+    "eng_plate_temp": {
+      "label": "Altres capes",
+      "tooltip": "Temperatura del llit de les capes excepte la inicial. El valor 0 significa que el filament no admet imprimir a la Base d'Enginyeria"
+    },
+    "eng_plate_temp_initial_layer": {
+      "label": "Capa inicial",
+      "tooltip": "Temperatura del llit en la capa inicial. El valor 0 significa que el filament no admet imprimir a la Base d'Enginyeria"
+    },
+    "ensure_vertical_shell_thickness": {
+      "label": "Assegurar el gruix de la carcassa vertical",
+      "tooltip": "Afegir un farciment sòlid a prop de superfícies inclinades per garantir el gruix vertical de la carcassa (capes sòlides superior + inferior)\nCap: No s'afegirà cap farciment sòlid enlloc. Precaució: utilitzeu aquesta opció amb cura si el vostre model té superfícies inclinades\nNomés crític: Evitar afegir farciment sòlid per a parets\nModerada: Afegir farciment sòlid només per a superfícies molt inclinades\nTot: Afegir farciment sòlid per a totes les superfícies inclinades aptes\nEl valor per defecte és Tot.",
+      "enum_labels": [
+        "Cap",
+        "Només Crític",
+        "Moderat",
+        "Tots"
+      ]
+    },
+    "epoxy_resin_plate_temp": {
+      "label": "Altres capes",
+      "tooltip": "Temperatura del llit per capes excepte la inicial. Valor 0 significa que el filament no suporta imprimir en laplaca de resina epoxi"
+    },
+    "epoxy_resin_plate_temp_initial_layer": {
+      "label": "Capa inicial",
+      "tooltip": "La temperatura del llit de la capa inicial. Valor 0 significa que el filament no suporta imprimir en laplaca de resina epoxi"
+    },
+    "exclude_object": {
+      "label": "Excloure objectes",
+      "tooltip": "Activeu aquesta opció per afegir l'ordre EXCLUDE OBJECT al Codi-G"
+    },
+    "external_infill_margin": {
+      "label": "Encerrament sòlid d'àncora per X mm",
+      "tooltip": "Aquest paràmetre creix les capes superiors/inferiors/sòlides pels mm especificats per ancorar-les a l'escassa omplimentació i donar suport als perímetresde dalt. Poseu 0 per desactivar-lo. Pot ser un %% de l'amplada dels perímetres."
+    },
+    "extra_loading_move": {
+      "label": "Distància de càrrega addicional",
+      "tooltip": "Quan s'estableix a zero, la distància que el filament es mou des de la posició d'aturada durant la càrrega és exactament la mateixa que s'ha fet servir durant la descàrrega. Quan és positiu, es carrega més lluny, si és negatiu, el moviment de càrrega és més curt que el de baixada."
+    },
+    "extra_perimeters_on_overhangs": {
+      "label": "Perímetres addicionals en voladissos ( Experimental )",
+      "tooltip": "Crear camins perimetrals addicionals sobre voladissos pronunciats i zones on no es poden ancorar ponts. "
+    },
+    "extruder": {
+      "label": "Extrusor"
+    },
+    "extruder_clearance_height_to_lid": {
+      "label": "Alçada a la tapa",
+      "tooltip": "Distància de la punta del broquet a la tapa. S'utilitza per evitar col·lisions en impressions per objecte."
+    },
+    "extruder_clearance_height_to_rod": {
+      "label": "Alçada a la tija",
+      "tooltip": "Distància de la punta del broquet a la part baixa de la tija. S'utilitza per evitar col·lisions en impressions per objecte."
+    },
+    "extruder_clearance_radius": {
+      "label": "Radi",
+      "tooltip": "Radi d'espai lliure al voltant de l'extrusora. S'utilitza per evitar col·lisions en impressió per objecte."
+    },
+    "extruder_colour": {
+      "label": "Color de l'extrusor",
+      "tooltip": "Només s'utilitza com a ajuda visual a la Interfície d'Usuari"
+    },
+    "extruder_offset": {
+      "label": "Separació de l'extrusor"
+    },
+    "fan_cooling_layer_time": {
+      "label": "Temps de capa",
+      "tooltip": "S'habilitarà el ventilador de refrigeració de peces per a capes el temps estimat de les quals sigui inferior a aquest valor. La velocitat del ventilador s'interpola entre les velocitats mínima i màxima del ventilador segons el temps d'impressió per capes"
+    },
+    "fan_kickstart": {
+      "label": "Temps d'arrencada del ventilador",
+      "tooltip": "Emet una ordre de velocitat màxima del ventilador durant aquesta quantitat de segons abans de reduir-la a la velocitat objectiu per engegar el ventilador de refrigeració.\nAixò és útil per a ventiladors en que una baixa potència PWM pot ser insuficient per començar a fer girar el ventilador des d'una parada o per aconseguir que el ventilador s'acceleri més ràpidament.\nPoseu-lo a 0 per desactivar-lo."
+    },
+    "fan_max_speed": {
+      "label": "Fan speed",
+      "tooltip": "La velocitat del ventilador de refrigeració de peça es pot augmentar quan s'habilita la refrigeració automàtica. Aquesta és la limitació de velocitat màxima del ventilador de refrigeració de peça"
+    },
+    "fan_min_speed": {
+      "label": "Fan speed",
+      "tooltip": "Velocitat mínima per al ventilador de refrigeració de peces"
+    },
+    "fan_speedup_overhangs": {
+      "label": "Només voladissos",
+      "tooltip": "Només es tindrà en compte el retard per al refredament dels voladissos."
+    },
+    "fan_speedup_time": {
+      "tooltip": "Engegar el ventilador aquest nombre de segons abans de l'hora d'inici programat ( podeu utilitzar segons fraccionats ). Assumeix una acceleració infinita per a aquesta estimació temporal, i només tindrà en compte els moviments G1 i G0 ( Ajustament en Arc( arc fitting ) no és compatible ).\nNo mourà comandes de ventilador des de Codis-G personalitzats ( actuen com una mena de \"barrera\" ).\nNo mourà comandes de ventilador des de Codis-G d'inici si s'activa el 'només Codi-G d'inici personalitzat'.\nUtilitzeu 0 per desactivar."
+    },
+    "filament_adhesiveness_category": {
+      "label": "Categoria d'adhesivitat",
+      "tooltip": "Filament_adhesivitat_categoria"
+    },
+    "filament_colour": {
+      "label": "Color",
+      "tooltip": "Només s'utilitza com a ajuda visual a la Interfície d'Usuari"
+    },
+    "filament_cooling_final_speed": {
+      "label": "Velocitat de l'últim moviment de refredament",
+      "tooltip": "Els moviments de refredament s'acceleren gradualment cap a aquesta velocitat."
+    },
+    "filament_cooling_initial_speed": {
+      "label": "Velocitat del primer moviment de refredament",
+      "tooltip": "Els moviments de refredament s'acceleren gradualment començant a aquesta velocitat."
+    },
+    "filament_cooling_moves": {
+      "label": "Nombre de moviments de refredament",
+      "tooltip": "El filament es refreda en ser mogut cap endavant i cap enrere als tubs de refredament. Especifica el nombre que vulgueu d'aquests moviments."
+    },
+    "filament_cost": {
+      "label": "Preu",
+      "tooltip": "Preu del filament. Només per a estadístiques"
+    },
+    "filament_density": {
+      "label": "Densitat",
+      "tooltip": "Densitat del filament. Només per a estadístiques"
+    },
+    "filament_deretraction_speed": {
+      "label": "Velocitat de detracció",
+      "full_label": "Velocitat de detracció",
+      "tooltip": "Velocitat de recàrrega del filament a l'extrusora. Zero significa la mateixa velocitat amb la retracció"
+    },
+    "filament_diameter": {
+      "label": "Diàmetre",
+      "tooltip": "El diàmetre del filament s'utilitza per calcular l'extrusió en Codi-G, per la qual cosa és important i ha de ser precís"
+    },
+    "filament_end_gcode": {
+      "label": "Codi-G Final",
+      "tooltip": "Codi-G Final en acabar la impressió d'aquest filament"
+    },
+    "filament_flow_ratio": {
+      "label": "Relació de flux",
+      "tooltip": "El filament pot tenir un canvi volumètric després de canviar entre estat fos i estat cristal·lí. Aquest ajustament canvia proporcionalment tot el flux d'extrusió d'aquest filament en Codi-G. L'interval de valors recomanat està entre 0,95 i 1,05. Potser podeu ajustar aquest valor per obtenir una superfície ben plana quan hi ha un lleuger excés o dèficit de flux"
+    },
+    "filament_is_support": {
+      "label": "Filament de suport",
+      "tooltip": "El filament de suport s'utilitza habitualment per imprimir interfície de suport i suport"
+    },
+    "filament_load_time": {
+      "label": "Temps de càrrega del filament",
+      "tooltip": "Temps perquè el firmware de la impressora ( o la Unitat Multi Filament 2.0 ) carregui un filament durant un canvi d'eina ( en executar el Codi-T ). Aquest temps s'afegeix al temps d'impressió total mitjançant l'estimador de temps del Codi-G."
+    },
+    "filament_loading_speed": {
+      "label": "Velocitat de càrrega",
+      "tooltip": "Velocitat emprada per carregar el filament a la Torre de Purga."
+    },
+    "filament_loading_speed_start": {
+      "label": "Velocitat de càrrega a l'inici",
+      "tooltip": "Velocitat utilitzada a l'inici de la fase de càrrega."
+    },
+    "filament_long_retractions_when_cut": {
+      "label": "Retracció llarga en tallar(experimental)",
+      "tooltip": "Característica experimental. Retreure i tallar el filament a més distància durant els canvis per minimitzar la purga. Tot i que això redueix significativament el flux, també pot augmentar el risc d'obstruccions del broquet o altres problemes d'impressió."
+    },
+    "filament_max_volumetric_speed": {
+      "label": "Velocitat volumètrica màxima",
+      "tooltip": "Aquest ajustament representa la quantitat de volum de filament que es pot fondre i extruir per segon. La velocitat d'impressió està limitada per la velocitat volumètrica màxima, en cas de configuració de velocitat massa alta i poc raonable. No pot ser zero"
+    },
+    "filament_minimal_purge_on_wipe_tower": {
+      "label": "Purga mínima a la Torre de Purga",
+      "tooltip": "Després d'un canvi d'eina, és possible que no es conegui la posició exacta del filament recentment carregat dins del broquet i que la pressió del filament encara no sigui estable. Abans de purgar el capçal d'impressió en un farciment o un objecte de sacrifici, CrealityPrint sempre imprimirà aquesta quantitat de filament a la Torre de Purga per produir successives extrusions d'objectes de farciment o sacrifici de manera fiable."
+    },
+    "filament_multitool_ramming": {
+      "label": "Habilita el Moldejat de Punta( Ramming ) per a configuracions multieina",
+      "tooltip": "Realitzar el Moldejat de Punta( Ramming ) quan s'utilitzi una impressora multieina ( és a dir, quan el \"Multifilament d'un sol extrusor\" a la configuració de la impressora no està marcat ). Quan està marcat, s'extrusionarà ràpidament una petita quantitat de filament a la Torre de Purga just abans del canvi d'eina. Aquesta opció només s'utilitza quan la Torre de Purga està habilitada."
+    },
+    "filament_multitool_ramming_flow": {
+      "label": "Flux de Moldejat de Punta( Ramming ) multieina",
+      "tooltip": "Flux utilitzat pel Moldejat de Punta( Ramming ) de filament abans del canvi d'eina."
+    },
+    "filament_multitool_ramming_volume": {
+      "label": "Volum de Moldejat de Punta( Ramming ) multieina",
+      "tooltip": "El volum de Moldejat de Punta( Ramming ) abans del canvi d'eina."
+    },
+    "filament_notes": {
+      "label": "Notes de filament",
+      "tooltip": "Podeu posar les vostres notes sobre el filament aquí."
+    },
+    "filament_ramming_parameters": {
+      "label": "Paràmetres de Moldejat de Punta( Ramming )",
+      "tooltip": "RammingDialog processa aquesta cadena i conté paràmetres específics de Moldejat de Punta( Ramming )"
+    },
+    "filament_retract_before_wipe": {
+      "label": "Quantitat de retracció abans de netejar",
+      "tooltip": "La longitud de retracció ràpida abans de la neteja, en relació amb la longitud de retracció"
+    },
+    "filament_retract_lift_above": {
+      "label": "Només aixecar Z per sobre",
+      "tooltip": "Si establiu un valor positiu, Z només tindrà lloc per sobre de la Z absoluta especificada."
+    },
+    "filament_retract_lift_below": {
+      "label": "Només aixecar Z per sota",
+      "tooltip": "Si establiu un valor positiu, Z només tindrà lloc per sota de la Z absoluta especificada."
+    },
+    "filament_retract_lift_enforce": {
+      "label": "A les superfícies",
+      "tooltip": "Forçar el comportament de salt en Z. Aquest ajustament es veu afectada per la configuració anterior ( Només aixecar Z per sobre/per sota ).",
+      "enum_labels": [
+        "Totes les superfícies",
+        "Només a dalt",
+        "Només a baix",
+        "A dalt i a baix"
+      ]
+    },
+    "filament_retract_restart_extra": {
+      "label": "Longitud addicional en reiniciar",
+      "tooltip": "Quan la retracció es compensa després d'un desplaçament, l'extrusor introduirà una quantitat addicional de filament. Aquest ajustament rarament es necessita."
+    },
+    "filament_retract_when_changing_layer": {
+      "label": "Retracció quan canvia de capa",
+      "tooltip": "Forçar una retracció quan canvia de capa"
+    },
+    "filament_retraction_distances_when_cut": {
+      "label": "Distància de retracció quan es talla",
+      "tooltip": "Característica experimental. Longitud de retracció abans de tallar durant el canvi de filament"
+    },
+    "filament_retraction_length": {
+      "label": "Longitut",
+      "full_label": "Longitud de Retracció",
+      "tooltip": "Una certa quantitat de filament en l'extrusora es tira cap enrere per evitar l'Ooze( goteig ) durant el llarg desplaçament. Definiu zero per desactivar la retracció"
+    },
+    "filament_retraction_minimum_travel": {
+      "label": "Llindar de distància de desplaçament",
+      "tooltip": "Només s'activa la retracció quan la distància de desplaçament és superior a aquest llindar"
+    },
+    "filament_retraction_speed": {
+      "label": "Velocitat de retracció",
+      "full_label": "Velocitat de retracció",
+      "tooltip": "Velocitat de les retraccions"
+    },
+    "filament_shrink": {
+      "label": "Reducció (XY)",
+      "tooltip": "Introduïu el percentatge de contracció que obtindrà el filament després del refredament ( 94% i si mesureu 94mm en lloc de 100mm ). La peça s'escalarà en xy per compensar. Només es té en compte el filament utilitzat per al perímetre.\nAssegureu-vos de deixar prou espai entre objectes, ja que aquesta compensació es fa després de les comprovacions."
+    },
+    "filament_shrinkage_compensation_z": {
+      "label": "Reducció (Z)",
+      "tooltip": "Introduu el percentatge de reducció que el filament obtindrà després de refrigerar (94% si mesureu 94mm en lloc de100mm). La part s'escalarà en Z per compensar."
+    },
+    "filament_soluble": {
+      "label": "Filament soluble",
+      "tooltip": "El filament soluble s'utilitza habitualment per imprimir interfície de suport i suport"
+    },
+    "filament_stamping_distance": {
+      "label": "Distància de estampatge mesurada des del centre del tub de refrigeració",
+      "tooltip": "Si s'estableix a un valor diferent de zero, el filament es mou cap a la boquilla entre els movimentsde refrigeració individuals (\"estampatge\"). Aquesta opció configura quant de temps hauria de durar aquest moviment abans que el filamentes retracte de nou."
+    },
+    "filament_stamping_loading_speed": {
+      "label": "Velocitat de carga",
+      "tooltip": "La velocitat utilitzada per a marcar."
+    },
+    "filament_start_gcode": {
+      "label": "Codi-G inicial",
+      "tooltip": "Codi-G inicial quan comença la impressió d'aquest filament"
+    },
+    "filament_toolchange_delay": {
+      "label": "Retard després de la descàrrega",
+      "tooltip": "Temps d'espera després que el filament s'ha descarregat. Pot ajudar a aconseguir canvis d'eina fiables amb filaments flexibles que poden necessitar més temps per encongir-se a la seva mida original."
+    },
+    "filament_type": {
+      "label": "Tipus",
+      "tooltip": "El tipus de filament del filament"
+    },
+    "filament_unload_time": {
+      "label": "Temps de descàrrega del filament",
+      "tooltip": "Temps perquè el firmware de la impressora ( o la Unitat Multi Filament 2.0 ) descarregui un filament durant un canvi d'eina ( en executar el Codi-T ). Aquest temps s'afegeix al temps d'impressió total mitjançant l'estimador de temps del Codi-G."
+    },
+    "filament_unloading_speed": {
+      "label": "Velocitat de descàrrega",
+      "tooltip": "Velocitat emprada per descarregar el filament a la Torre de Purga ( no afecta la fase inicial de la descàrrega, només després del Moldejat de Punta( Ramming )."
+    },
+    "filament_unloading_speed_start": {
+      "label": "Velocitat de descàrrega a l'inici",
+      "tooltip": "Velocitat utilitzada per descarregar la punta del filament immediatament després del Moldejat de Punta( Ramming )."
+    },
+    "filament_vendor": {
+      "label": "Fabricant",
+      "tooltip": "Fabricant del filament. Només per a mostrar"
+    },
+    "filament_wipe": {
+      "label": "Netejar durant retracció",
+      "tooltip": "Moure el broquet al llarg de l'última trajectòria d'extrusió en les retraccions per netejar el filament que vessi del broquet. Això pot minimitzar grumolls quan s'imprimeix una peça nova després del desplaçament"
+    },
+    "filament_wipe_distance": {
+      "label": "Distància de Neteja",
+      "tooltip": "Descriu quant de temps es mourà el broquet al llarg de l'última trajectòria en les retraccions. \n\nDepenent de quant de temps trigui l'operació de neteja, de la rapidesa i de quant de temps siguin els paràmetres de retracció de l'extrusora/filament, pot ser necessari un moviment de retracció per retirar el filament restant. \n\nEstablint un valor a la quantitat de retracció abans de l'ajustament de neteja següent, es realitzarà una retracció de l'excés abans de la neteja, en cas contrari es realitzarà després."
+    },
+    "filament_z_hop": {
+      "label": "Salt en Z quan hi ha retracció",
+      "tooltip": "Cade vegada que es fa una retracció, s'aixeca una mica el broquet per crear espai lliure entre el broquet i la impressió. Evita que el broquet colpegi la impressió en els desplaçaments. L'ús de la línia espiral per aixecar z pot evitar l'aparició de fils"
+    },
+    "filament_z_hop_types": {
+      "label": "Tipus de salt en Z",
+      "tooltip": "Tipus de salt en Z",
+      "enum_labels": [
+        "Automàtic",
+        "Normal",
+        "Pendent",
+        "Espiral"
+      ]
+    },
+    "filename_format": {
+      "label": "Format del nom del fitxer",
+      "tooltip": "L'usuari pot definir el nom del fitxer del projecte quan exporta"
+    },
+    "fill_multiline": {
+      "label": "Omplir Multilínia",
+      "tooltip": "Utilitzant múltiples línies per al patró d'ompliment, si és suportat per un patró d'ompliment."
+    },
+    "filter_out_gap_fill": {
+      "label": "Filtrar els buits minúsculs",
+      "tooltip": "Filtrar els buits més petits que el llindar especificat"
+    },
+    "first_layer_print_sequence": {
+      "label": "Seqüència d'impressió de primera capa"
+    },
+    "first_layer_sequence_choice": {
+      "label": "Seqüència d'impressió de la primera capa",
+      "enum_labels": [
+        "Automàtic",
+        "Personalitzar"
+      ]
+    },
+    "flush_box_first_clean_length": {
+      "label": "Longitud de lavage (primer segment)",
+      "tooltip": "La primera longitud del segment utilitzada per dividir flush_length en flush_length_1..N per canviar el codi G del filament."
+    },
+    "flush_box_need_clean_length": {
+      "label": "Longitud de lavage (segment estàndard)",
+      "tooltip": "Longitud de segment estàndard utilitzada per dividir flush_length en flush_length_1..N per canviar el codi G del filament."
+    },
+    "flush_box_need_clean_length_max": {
+      "label": "Longitud de lavage (segment màxim)",
+      "tooltip": "Longitud màxima del segment utilitzada per dividir flush_length en flush_length_1..N per canviar el codi G del filament."
+    },
+    "flush_into_infill": {
+      "label": "Purgar al farciment dels objectes",
+      "tooltip": "La purga després del canvi de filament es farà dins dels farciments dels objectes. Això pot reduir la quantitat de residus i disminuir el temps d'impressió. Si els perímetres estan impresos amb filament transparent, el farciment de color mixt es veurà a l'exterior. No tindrà cap efecte, tret que s'habiliti la Torre de Purga."
+    },
+    "flush_into_objects": {
+      "label": "Purgar a l'objecte",
+      "tooltip": "Aquest objecte s'utilitzarà per purgar el broquet després d'un canvi de filament per estalviar filament i disminuir el temps d'impressió. Com a resultat, es barrejaran els colors dels objectes. No tindrà cap efecte, tret que s'habiliti la Torre de Purga."
+    },
+    "flush_into_support": {
+      "label": "Purgar al suport dels objectes",
+      "tooltip": "La purga després del canvi de filament es farà dins del suport dels objectes. Això pot reduir la quantitat de residus i disminuir el temps d'impressió. No tindrà cap efecte, tret que s'habiliti la Torre de Purga."
+    },
+    "flush_multiplier": {
+      "label": "Multiplicador de neteja",
+      "tooltip": "El volum de neteja real és igual al valor del multiplicador de neteja multiplicat pels volums de neteja especificats a la taula."
+    },
+    "flush_volumes_changed": {
+      "label": "Canviats els volums de flush",
+      "tooltip": "Canviats els volums de flush"
+    },
+    "flush_volumes_matrix": {
+      "label": "Volums de purga"
+    },
+    "flush_volumes_vector": {
+      "label": "Volums de purga - volums de càrrega/descàrrega"
+    },
+    "full_fan_speed_layer": {
+      "label": "Velocitat màxima del ventilador a la capa",
+      "tooltip": "La velocitat del ventilador augmentarà linealment de zero a la capa \"close_fan_the_first_x_layers\" al màxim a la capa \"full_fan_speed_layer\". S'ignorarà \"full_fan_speed_layer\" si és inferior a \"close_fan_the_first_x_layers\", en aquest cas el ventilador funcionarà a la velocitat màxima permesa a la capa \"close_fan_the_first_x_layers\" + 1."
+    },
+    "fuzzy_skin": {
+      "label": "Pell difusa",
+      "tooltip": "Tremolor( Jitter ) Aleatori mentre imprimeix el perímetre, de manera que la superfície tingui un aspecte rugós. Aquest ajustament controla la posició difusa",
+      "enum_labels": [
+        "Cap",
+        "Contorn",
+        "Contorn i forat",
+        "Tots els perímetres"
+      ]
+    },
+    "fuzzy_skin_first_layer": {
+      "label": "Aplicar Pell Difusa a la primera capa",
+      "tooltip": "Si s'ha d'aplicar Pell Difusa a la primera capa"
+    },
+    "fuzzy_skin_mode": {
+      "label": "Mode generador de pell borrosa",
+      "tooltip": "Mode de generació de pell borrosa. Només funciona amb Arachne!  \nDesplaçament: mode clàssic quan el patró es formadesplaçant la boquilla lateralment del camí original. \nExtrusió: El mode quan el patró format per la quantitat deplàstic extrudit. Aquest és l'algoritme ràpid i recte sense agitació innecessària de boquilla que dóna un patró suau. Peròés més útil per formar parets soltes en tot el conjunt. \nCombinat: Mode conjunt [Desplaçament] + [Extrusió]. L'aparençade les parets és similar al mode [desplaçament], però no deixa poros entre els perímetres.\nAtenció! Els modes [Extrusió]i [Combinat] només funcionen amb el paràmetre fuzzy_skin_thickness no més que el gruix del bucle impres. Al mateix temps,l'amplada de l'extrusió per a una capa en \nparticular tampoc ha de ser inferior a un determinat nivell. Normalmentés igual al 15-25%% d'una alçada de capa. Per tant, el gruix màxim de pell borrosa amb una ampladade perímetre de 0,4 mm i una alçada de capa de 0,2 mm serà de 0,4-(0,2 * 0,25) =± 0,35 mm! Si introdueix un paràmetre més alt que aquest, s'mostrarà l'error Flow::spacing ((), i el model noes tallarà. Podeu triar aquest número fins que es repeteixi aquest error.",
+      "enum_labels": [
+        "Desplaçament",
+        "Extrusió",
+        "Combinats"
+      ]
+    },
+    "fuzzy_skin_noise_type": {
+      "label": "Tipus de soroll de pell borrosa",
+      "tooltip": "Tipus de soroll a utilitzar per a la generació de pell borrosa:nClàssic: Soroll aleatori uniforme clàssic. Perlin: Soroll Perlin,que dóna una textura més consistent.  nBillow: Similar al soroll de perlin, però més grop.  nRidged Multifractal:Soroll ridged amb característiques afilades. Crea textures de marbre. Voronoi: Divideix la superfície en cèl·lules voronoi, i desplaça cadascunad'elles per una quantitat aleatòria. Crea una textura de patchwork.",
+      "enum_labels": [
+        "Clàssic",
+        "Perlín",
+        "Biló",
+        "multifractal",
+        "Voronoi"
+      ]
+    },
+    "fuzzy_skin_octaves": {
+      "label": "Octaves de soroll de pell borrosa",
+      "tooltip": "El nombre d'octaves de soroll coherent a utilitzar. Els valors més alts augmenten el detall del soroll, però tambéaugmenten el temps de càlcul."
+    },
+    "fuzzy_skin_persistence": {
+      "label": "Persistència del soroll de la pell borrosa",
+      "tooltip": "La taxa de decadència per a octaves més altes del soroll coherent. Els valors més baixos resultaran en unsoroll més suau."
+    },
+    "fuzzy_skin_point_distance": {
+      "label": "Distància del punt de la Pell Difusa",
+      "tooltip": "La distància mitjana entre els punts aleatoris introduïts en cada segment de línia"
+    },
+    "fuzzy_skin_scale": {
+      "label": "Mida de la característica de la pell borrosa",
+      "tooltip": "La mida de base de les característiques de soroll coherent, en mm. Valors més alts donaran lloc a característiquesmés grans."
+    },
+    "fuzzy_skin_thickness": {
+      "label": "Gruix de la Pell Difusa",
+      "tooltip": "L'amplada dins de la qual Tremolar( Jitter ). Es recomana que estigui per sota de l'amplada de la línia del perímetre exterior"
+    },
+    "gap_fill_target": {
+      "label": "Aplicar farciment de buits",
+      "tooltip": "Habilita farciment de buits per a les superfícies seleccionades. El mínim del forat que s'omplirà es pot controlar des de l'opció filtrar forats petits a continuació.\n\nOpcions:\n1. A tot arreu: aplica farciment de buits a superfícies sòlides superiors, inferiors i internes\n2. Superfícies superiors i inferiors: aplica farciment de buit només a superfícies superiors i inferiors\n3. Enlloc: desactiva el farciment de buits\n",
+      "enum_labels": [
+        "A tot arreu",
+        "Superfícies superior i inferior",
+        "Enlloc"
+      ]
+    },
+    "gap_infill_speed": {
+      "label": "Ompliment de buits",
+      "tooltip": "Velocitat de farciment de buits. El buit sol tenir una amplada de línia irregular i s'ha d'imprimir més lentament"
+    },
+    "gcode_add_line_number": {
+      "label": "Afegir número de línia",
+      "tooltip": "Habiliteu això per afegir el número de línia ( Nx ) al començament de cada línia de Codi-G"
+    },
+    "gcode_comments": {
+      "label": "Codi-G detallat",
+      "tooltip": "Habiliteu-lo per obtenir un fitxer de Codi-G comentat, amb cada línia explicada per un text descriptiu. Si imprimiu des d'una targeta SD, el pes addicional del fitxer podria alentir el vostre firmware."
+    },
+    "gcode_flavor": {
+      "label": "Tipus de Codi-G",
+      "tooltip": "Amb quin tipus de Codi-G és compatible la impressora",
+      "enum_labels": [
+        "Marlin(legacy)",
+        "Klipper",
+        "RepRapFirmware",
+        "Marlin 2"
+      ]
+    },
+    "gcode_label_objects": {
+      "label": "Etiquetar objectes",
+      "tooltip": "Habilita això per afegir els comentaris al Codi-G, etiquetant moviments d'impressió amb l'objecte al què pertanyen, cosa que és útil per al plugin Octoprint CancelObject. Aquesta configuració NO és compatible amb la configuració d'Extrusor Únic Multi Filament i Netejar en Objecte / Netejar en Farciment."
+    },
+    "high_current_on_filament_swap": {
+      "label": "Alt corrent d'extrusió durant el canvi de filament",
+      "tooltip": "Pot ser beneficiós augmentar el corrent del motor de l'extrusor durant la seqüència d'intercanvi de filaments per permetre velocitats d'alimentació de Moldejat de Punta( Ramming ) ràpides i superar la resistència quan es carrega un filament amb una punta amb forma lletja."
+    },
+    "hole_to_polyhole": {
+      "label": "Converteix forats en poliforats",
+      "tooltip": "Cerca forats gairebé circulars que abastin més d'una capa i converteix la geometria en poliforats. Utilitza la mida del broquet i el diàmetre ( més gran ) per calcular el poliforat.\nVeure http://hydraraptor.blogspot.com/2011/02/polyholes.html"
+    },
+    "hole_to_polyhole_threshold": {
+      "label": "Marge de detecció de poliforats",
+      "tooltip": "Desviació màxima d'un punt respecte al radi estimat del cercle.\nCom que els cilindres sovint s'exporten com a triangles de mida variable, els punts poden no estar a la circumferència del cercle. Aquest ajustament us permet un cert marge de maniobra per ampliar la detecció.\nEn mm o en % o del radi."
+    },
+    "hole_to_polyhole_twisted": {
+      "label": "Gir del poliforat",
+      "tooltip": "Rotar el poliforat a cada capa."
+    },
+    "host_type": {
+      "label": "Tipus d'amfitrió( host )",
+      "tooltip": "Creality Print pot carregar fitxers de Codi-G a un amfitrió( host ) d'impressora. Aquest camp ha de contenir el tipus d'amfitrió( host ).",
+      "enum_labels": [
+        "PrusaLink",
+        "PrusaConnect",
+        "Octo/Klipper",
+        "Duet",
+        "FlashAir",
+        "AstroBox",
+        "Repetier",
+        "MKS",
+        "ESP3D",
+        "Obico",
+        "Flashforge",
+        "SimplyPrint",
+        "CrealityPrint"
+      ]
+    },
+    "hot_plate_temp": {
+      "label": "Altres capes",
+      "tooltip": "Temperatura del llit de les capes excepte la inicial. El valor 0 significa que el filament no admet imprimir a la Base d'Alta Temperatura"
+    },
+    "hot_plate_temp_initial_layer": {
+      "label": "Capa inicial",
+      "tooltip": "Temperatura del llit en la capa inicial. El valor 0 significa que el filament no admet imprimir a la Base d'Alta Temperatura"
+    },
+    "idle_temperature": {
+      "label": "Temperatura inactiva",
+      "tooltip": "Temperatura del brotxa quan l'eina actualment no està utilitzada en configuracions de múltiples eines. Això només s'utilitza quan la'prevenció d'Ooze' està activa a les Configuracions d'Impressió. Afita a 0 per desactivar."
+    },
+    "ignore_inner_color": {
+      "label": "Ignorar el color interior"
+    },
+    "independent_support_layer_height": {
+      "label": "Alçada de la capa de suport independent",
+      "tooltip": "La capa de suport utilitza una alçada de capa independent de la capa d'objecte. Això permet que la distància Z s'ajusti individualment i estalvia temps d'impressió. Aquesta opció no serà vàlida quan la Torre de Purga estigui habilitada."
+    },
+    "infill_anchor": {
+      "label": "Longitud d'ancoratge de farciment poc dens",
+      "tooltip": "Connectar una línia de farciment a un perímetre intern amb un segment curt d'un perímetre addicional. Si s'expressa en percentatge ( per exemple: 15% ) es calcula sobre l'amplada d'extrusió de farciment. Creality Print intenta connectar dues línies de farciment properes a un segment perimetral curt. Si no es troba aquest segment perimetral més curt que infill_anchor_max, la línia de farciment es connecta a un segment perimetral a un sol costat i la longitud del segment perimetral pres es limita a aquest paràmetre, però no més de anchor_length_max. \nEstabliu aquest paràmetre a zero per desactivar els perímetres d'ancoratge connectats a una sola línia de farciment."
+    },
+    "infill_anchor_max": {
+      "label": "Màxima longitud de l'ancoratge de farciment",
+      "tooltip": "Connectar una línia de farciment a un perímetre intern amb un segment curt d'un perímetre addicional. Si s'expressa en percentatge ( per exemple: 15% ) es calcula sobre l'amplada d'extrusió de farciment. Creality Print intenta connectar dues línies de farciment properes a un segment perimetral curt. Si no es troba aquest segment perimetral més curt que aquest paràmetre, la línia de farciment es connecta a un segment perimetral a un sol costat i la longitud del segment perimetral pres es limita a infill_anchor, però no més llarga que aquest paràmetre. \nSi s'estableix a 0, s'utilitzarà l'algorisme antic per a la connexió de farciment, hauria de crear el mateix resultat que amb 1000 i 0."
+    },
+    "infill_combination": {
+      "label": "Combinació de farciment",
+      "tooltip": "Combinar automàticament el farciment poc dens de diverses capes per imprimir juntes i reduir el temps. El perímetre serà impresa amb l'alçada de la capa original."
+    },
+    "infill_combination_max_layer_height": {
+      "label": "Combinació d'ompliment - Altura màxima de capa",
+      "tooltip": "Alçada màxima de capa per a l'ompliment escass combinat.  nnEstableix-lo a 0 o 100% per utilitzar el diàmetrede la boquilla (per a la màxima reducció del temps d'impressió) o un valor de ~ 80% per maximitzarla resistència d'ompliment escassa.  nnEl nombre de capes sobre les quals es combina l'ompliment es deriva dividint aquestvalor amb l'alçada de la capa i arrodondant cap avall al decimal més proper. Utilitzar valors absoluts de mm(per exemple, 0,32 mm per a una boquilla de 0,4 mm) o valors de % de mm (per exemple,80%). Aquest valor no ha de ser més gran que el diàmetre de la boquilla."
+    },
+    "infill_direction": {
+      "label": "Direcció de farciment poc dens",
+      "tooltip": "Angle per a un patró de farciment poc dens, que controla l'inici o la direcció principal de la línia"
+    },
+    "infill_jerk": {
+      "label": "Farciment",
+      "tooltip": "Sacsejada( Jerk ) per farciment"
+    },
+    "infill_lock_depth": {
+      "label": "Profunditat de bloqueig d'ompliment",
+      "tooltip": "El paràmetre estableix la profunditat de superposició entre l'interior i la pell."
+    },
+    "infill_overhang_angle": {
+      "label": "Angle de sobreposada d'ompliment",
+      "tooltip": "L'angle de les línies angulades d'ompliment. 60° resultarà en un panal de mel pur."
+    },
+    "infill_rotate_step": {
+      "label": "Pass de rotació d'ompliment",
+      "tooltip": "Aquest paràmetre afegeix una lleugera rotació a cada capa d'ompliment per crear una textura creuada."
+    },
+    "infill_shift_step": {
+      "label": "Pass de canvi d'ompliment",
+      "tooltip": "Aquest paràmetre afegeix un lleuger desplaçament a cada capa d'ompliment per crear una textura creuada."
+    },
+    "infill_wall_overlap": {
+      "label": "Superposició de farciment/perímetre",
+      "tooltip": "L'àrea de farciment s'amplia lleugerament per superposar-se amb la paret per a una millor unió. El valor percentual és relatiu a l'amplada de línia de farciment poc dens. Establiu aquest valor a ~ 10-15% per minimitzar la potencial sobreextrusió i acumulació de filament que resulti en superfícies superiors rugoses."
+    },
+    "initial_layer_acceleration": {
+      "label": "Capa inicial",
+      "tooltip": "Acceleració de la capa inicial. L'ús d'un valor inferior pot millorar l'adherència de la placa d'impressió"
+    },
+    "initial_layer_infill_speed": {
+      "label": "Farciment de la capa inicial",
+      "tooltip": "Velocitat de farciment sòlid de la capa inicial"
+    },
+    "initial_layer_jerk": {
+      "label": "Capa inicial",
+      "tooltip": "Sacsejada( Jerk ) per a la capa inicial"
+    },
+    "initial_layer_line_width": {
+      "label": "Capa inicial",
+      "tooltip": "Amplada de línia de la capa inicial. Si s'expressa en %, es calcularà sobre el diàmetre del broquet."
+    },
+    "initial_layer_min_bead_width": {
+      "label": "Amplada mínima del perímetre de la primera capa",
+      "tooltip": "Es recomana que l'amplada mínima del perímetre que s'ha d'utilitzar per a la primera capa sigui de la mateixa mida que el broquet. S'espera que aquest ajustament millori l'adhesió."
+    },
+    "initial_layer_print_height": {
+      "label": "Alçada de la capa inicial",
+      "tooltip": "Alçada de la capa inicial. Fer que l'alçada inicial de la capa sigui lleugerament més gruixuda pot millorar l'adherència de la placa d'impressió"
+    },
+    "initial_layer_speed": {
+      "label": "Capa inicial",
+      "tooltip": "Velocitat de la capa inicial excepte la part de farciment sòlid"
+    },
+    "initial_layer_travel_speed": {
+      "label": "Velocitat de desplaçament de la capa inicial",
+      "tooltip": "Velocitat de desplaçament de la capa inicial"
+    },
+    "inner_wall_acceleration": {
+      "label": "Perímetre interior",
+      "tooltip": "Acceleració en perímetres interiors"
+    },
+    "inner_wall_jerk": {
+      "label": "Perímetre interior",
+      "tooltip": "Sacsejada( Jerk ) de perímetres interiors"
+    },
+    "inner_wall_line_width": {
+      "label": "Perímetre interior",
+      "tooltip": "Amplada de línia del perímetre interior. Si s'expressa en %, es calcularà sobre el diàmetre del broquet."
+    },
+    "inner_wall_speed": {
+      "label": "Perímetre interior",
+      "tooltip": "Velocitat del perímetre interior"
+    },
+    "interface_shells": {
+      "label": "Carcasses d'interfície",
+      "tooltip": "Forçar la generació de carcasses sòlides entre filaments/volums adjacents. Això és útil per a impressions de múltiples extrusores amb filaments translúcids o filament de suport soluble manual"
+    },
+    "interlocking_beam": {
+      "label": "Utilitza l'interconnexió del raig",
+      "tooltip": "Genera l'estructura del raig interbloquejant en llocs on toquen diferents filaments. Això millora l'adhesió entre filaments, especialment models impresosen filaments diferents."
+    },
+    "interlocking_beam_layer_count": {
+      "label": "Capes de raig interconectants",
+      "tooltip": "L'alçada de les viges de l'estructura de bloqueig, mesurada en nombre de capes. Menys capes són més fortes, peròmés propenses a defectes."
+    },
+    "interlocking_beam_width": {
+      "label": "Amplada de la viga de bloqueig",
+      "tooltip": "L'anchura dels raigs d'estructura interconnectant."
+    },
+    "interlocking_boundary_avoidance": {
+      "label": "Interlocking boundary avoidance",
+      "tooltip": "La distància des de l'exterior d'un model on no es generaran estructures entreblocades, mesurada en cèl·lules."
+    },
+    "interlocking_depth": {
+      "label": "Profunditat d'interconnexió",
+      "tooltip": "La distància de la frontera entre filaments per generar estructura interbloquejant, mesurada en cèl·lules. Moltes cèl·lules provocaran una malaltiad'adhesió."
+    },
+    "interlocking_orientation": {
+      "label": "Direcció de bloquejar",
+      "tooltip": "Orientació dels raigs interlock."
+    },
+    "internal_bridge_flow": {
+      "label": "Ratio de flux del pont intern",
+      "tooltip": "Aquest valor regeix el gruix de la capa de pont intern. Aquesta és la primera capa sobre el farciment poc dens. Disminuïu lleugerament aquest valor ( per exemple 0,9 ) per millorar la qualitat de la superfície sobre el farciment poc dens."
+    },
+    "internal_bridge_speed": {
+      "label": "Intern",
+      "tooltip": "Velocitat del pont intern. Si el valor s'expressa en percentatge, es calcularà a partir de la bridge_speed. El valor predeterminat és del 150%."
+    },
+    "internal_solid_infill_acceleration": {
+      "label": "Farciment sòlid intern",
+      "tooltip": "Acceleració del farciment sòlid intern. Si el valor s'expressa en percentatge ( per exemple, 100% ), es calcularà a partir de l'acceleració predeterminada."
+    },
+    "internal_solid_infill_line_width": {
+      "label": "Farciment sòlid intern",
+      "tooltip": "Amplada de línia de farciment sòlid intern. Si s'expressa en %, es calcularà sobre el diàmetre del broquet."
+    },
+    "internal_solid_infill_pattern": {
+      "label": "Patró de farciment sòlid intern",
+      "tooltip": "Patró lineal de farciment sòlid intern. Si s'habilita la detecció de farciment sòlid intern estret, s'utilitzarà el patró concèntric per a l'àrea petita.",
+      "enum_labels": [
+        "Concèntric",
+        "Rectilini",
+        "Monotònic",
+        "Línia mononotònica",
+        "Alineat Rectilini",
+        "Corba de Hilbert",
+        "Acords d'Arquimedes",
+        "Octograma en Espiral"
+      ]
+    },
+    "internal_solid_infill_speed": {
+      "label": "Farciment sòlid intern",
+      "tooltip": "Velocitat de farciment sòlid intern, no de la superfície superior i inferior"
+    },
+    "ironing_angle": {
+      "label": "Angle de planxat",
+      "tooltip": "El planxat angular es fa a. Un nombre negatiu desactiva aquesta funció i utilitza el mètode predeterminat."
+    },
+    "ironing_flow": {
+      "label": "Flux de planxa",
+      "tooltip": "La quantitat de filament a extruir durant el planxat. Relatiu al flux de l'alçada normal de la capa. Un valor massa alt provoca una sobreextrusió a la superfície"
+    },
+    "ironing_pattern": {
+      "label": "Patró de planxat",
+      "tooltip": "El patró que s'utilitzarà a l'hora de planxar",
+      "enum_labels": [
+        "Concèntric",
+        "Rectilini"
+      ]
+    },
+    "ironing_spacing": {
+      "label": "Interlineat entre línies de planxa",
+      "tooltip": "La distància entre les línies de planxa"
+    },
+    "ironing_speed": {
+      "label": "Velocitat de planxat",
+      "tooltip": "Velocitat d'impressió de les línies de planxat"
+    },
+    "ironing_support_layer": {
+      "label": "Interface Ironing",
+      "tooltip": "Interface Ironing"
+    },
+    "ironing_type": {
+      "label": "Tipus de planxat",
+      "tooltip": "El planxat consisteix a utilitzar un flux petit per imprimir a la mateixa alçada de superfície de nou per fer la superfície plana més llisa. Aquest ajustament controla quina capa s'està planxant",
+      "enum_labels": [
+        "Sense planxat",
+        "Totes les superfícies superiors",
+        "Només la última superfície superior",
+        "Tota la capa sòlida"
+      ]
+    },
+    "is_infill_first": {
+      "label": "Imprimir primer el farciment",
+      "tooltip": "Ordre de perímetre/farciment. Quan es desmarca la casella, primer s'imprimeixen els perímetres, cosa que funciona millor en la majoria dels casos.\n\nImprimir el farciment primer pot ajudar amb voladissos extrems, ja que els perímetres tenen el farciment veí per adherir-s'hi. Tanmateix, el farciment empenyerà lleugerament les parets impreses on s'uneix, cosa que provocarà un pitjor acabat superficial extern. També pot fer que el farciment ressalti a través de les superfícies externes de la peça."
+    },
+    "lateral_lattice_angle_1": {
+      "label": "Angle de xarxa lateral 1",
+      "tooltip": "L'angle del primer conjunt d'elements de xarxa lateral en la direcció Z. El zero és vertical."
+    },
+    "lateral_lattice_angle_2": {
+      "label": "Angle de xarxa lateral 2",
+      "tooltip": "L'angle del segon conjunt d'elements de xarxa lateral en la direcció Z. El zero és vertical."
+    },
+    "layer_change_gcode": {
+      "label": "Codi-G per després d'un canvi de capa",
+      "tooltip": "Aquesta part de Codi-G s'insereix en cada canvi de capa després de l'aixecament z"
+    },
+    "layer_height": {
+      "label": "Alçada de capa",
+      "tooltip": "Alçada de laminat per a cada capa. Una alçada de capa més petita significa més precisió i més temps d'impressió"
+    },
+    "line_width": {
+      "label": "Per defecte",
+      "tooltip": "Amplada de línia predeterminada si altres amplades de línia estan definides com a 0. Si s'expressa en %, es calcularà sobre el diàmetre del broquet."
+    },
+    "locked_skeleton_infill_pattern": {
+      "label": "Patró d'ompliment de l'esquelet",
+      "tooltip": "Patró de línia per a l'esquelet",
+      "enum_labels": [
+        "Concèntric",
+        "Rectilini",
+        "Graella",
+        "Lineal",
+        "Cúbic",
+        "Triangles",
+        "Tri-hexàgon",
+        "Giroide",
+        "Panal d'abella",
+        "Alineat Rectilini",
+        "Panal d'abella 3D",
+        "Corba de Hilbert",
+        "Acords d'Arquimedes",
+        "Octograma en Espiral",
+        "CrossHatch",
+        "TpmsD",
+        "ZigZag2",
+        "Creu-Zag"
+      ]
+    },
+    "locked_skin_infill_pattern": {
+      "label": "Patró d'ompliment de la pell",
+      "tooltip": "Patró de línia per a la pell",
+      "enum_labels": [
+        "Concèntric",
+        "Rectilini",
+        "Graella",
+        "Lineal",
+        "Cúbic",
+        "Triangles",
+        "Tri-hexàgon",
+        "Giroide",
+        "Panal d'abella",
+        "Alineat Rectilini",
+        "Panal d'abella 3D",
+        "Corba de Hilbert",
+        "Acords d'Arquimedes",
+        "Octograma en Espiral",
+        "CrossHatch",
+        "TpmsD",
+        "ZigZag2",
+        "Creu-Zag"
+      ]
+    },
+    "long_retractions_when_cut": {
+      "label": "Retracció llarga en tallar(experimental)",
+      "tooltip": "Característica experimental. Retreure i tallar el filament a més distància durant els canvis per minimitzar la purga. Tot i que això redueix significativament el flux, també pot augmentar el risc d'obstruccions del broquet o altres problemes d'impressió."
+    },
+    "machine_LED_light_exist": {
+      "label": "Hi ha llum LED de màquina",
+      "tooltip": "Hi ha llum LED de màquina"
+    },
+    "machine_end_gcode": {
+      "label": "Codi-G Final",
+      "tooltip": "Codi-G Final en acabar tota la impressió"
+    },
+    "machine_is_belt": {
+      "label": "màquina cinturó",
+      "tooltip": "Si l'estructura de la màquina és cinturó."
+    },
+    "machine_load_filament_time": {
+      "label": "Temps de càrrega del filament",
+      "tooltip": "Temps per carregar nou filament quan canvia de filament. Només per a estadístiques"
+    },
+    "machine_max_acceleration_e": {
+      "full_label": "Màxima acceleració E",
+      "tooltip": "Màxima acceleració a l'eix E"
+    },
+    "machine_max_acceleration_extruding": {
+      "full_label": "Màxima acceleració d'extrusió",
+      "tooltip": "Màxima acceleració d'extrusió ( M204 P )"
+    },
+    "machine_max_acceleration_retracting": {
+      "full_label": "Màxima acceleració de retracció",
+      "tooltip": "Màxima acceleració de retracció ( M204 R )"
+    },
+    "machine_max_acceleration_travel": {
+      "full_label": "Màxima acceleració de desplaçament",
+      "tooltip": "Màxima acceleració de desplaçament ( M204 T ), només s'aplica a Marlin 2"
+    },
+    "machine_max_acceleration_x": {
+      "full_label": "Màxima acceleració X",
+      "tooltip": "Màxima acceleració a l'eix X"
+    },
+    "machine_max_acceleration_y": {
+      "full_label": "Màxima acceleració Y",
+      "tooltip": "Màxima acceleració a l'eix Y"
+    },
+    "machine_max_acceleration_z": {
+      "full_label": "Màxima acceleració Z",
+      "tooltip": "Màxima acceleració a l'eix Z"
+    },
+    "machine_max_jerk_e": {
+      "full_label": "Màxim sacsejada( Jerk ) E",
+      "tooltip": "Màxim sacsejada( Jerk ) a l'eix E"
+    },
+    "machine_max_jerk_x": {
+      "full_label": "Màxim sacsejada( Jerk ) X",
+      "tooltip": "Màxim sacsejada( Jerk ) a l'eix X"
+    },
+    "machine_max_jerk_y": {
+      "full_label": "Màxim sacsejada( Jerk ) Y",
+      "tooltip": "Màxim sacsejada( Jerk ) a l'eix Y"
+    },
+    "machine_max_jerk_z": {
+      "full_label": "Màxim sacsejada( Jerk ) Z",
+      "tooltip": "Màxim sacsejada( Jerk ) a l'eix Z"
+    },
+    "machine_max_speed_e": {
+      "full_label": "Velocitat màxima E"
+    },
+    "machine_max_speed_x": {
+      "full_label": "Velocitat màxima X"
+    },
+    "machine_max_speed_y": {
+      "full_label": "Velocitat màxima Y"
+    },
+    "machine_max_speed_z": {
+      "full_label": "Velocitat màxima Z"
+    },
+    "machine_min_extruding_rate": {
+      "full_label": "Velocitat mínima d'extrusió",
+      "tooltip": "Velocitat mínima d'extrusió ( M205 S )"
+    },
+    "machine_min_travel_rate": {
+      "full_label": "Velocitat mínima de desplaçament",
+      "tooltip": "Velocitat mínima de desplaçament ( M205 T )"
+    },
+    "machine_pause_gcode": {
+      "label": "Codi-G de pausa",
+      "tooltip": "Aquest Codi-G s'utilitzarà com a codi per a la pausa d'impressió. L'usuari pot inserir el Codi-G de pausa al visualitzador de Codi-G"
+    },
+    "machine_platform_motion_enable": {
+      "label": "Activar el moviment de la plataforma de màquines",
+      "tooltip": "Activar el moviment de la plataforma de màquines"
+    },
+    "machine_ptc_exist": {
+      "label": "escalfador PTC cambra",
+      "tooltip": "existeix calentador ptc cambra"
+    },
+    "machine_start_gcode": {
+      "label": "Codi-G inicial",
+      "tooltip": "Codi-G inicial quan comença tota la impressió"
+    },
+    "machine_tool_change_time": {
+      "label": "Temps de canvi d'eines",
+      "tooltip": "Temps per canviar les eines. Normalment és aplicable a canviadors d'eines o màquines multi-eines. Per a màquines multifilaments d'extrusoraúnica, és típicament 0. Només per a estadístiques"
+    },
+    "machine_unload_filament_time": {
+      "label": "Temps de descàrrega del filament",
+      "tooltip": "Temps per descarregar filament vell en canviar de filament. Només per a estadístiques"
+    },
+    "make_overhang_printable": {
+      "label": "Fer voladissos imprimibles( sense suports )",
+      "tooltip": "Modifica la geometria per imprimir voladissos sense filament de suport."
+    },
+    "make_overhang_printable_angle": {
+      "label": "Fer voladissos imprimibles - Angle màxim( Sense suports )",
+      "tooltip": "Angle màxim dels voladissos per fer imprimibles voladissos més pronunciats.90 ° no canviarà el model en absolut i permetrà qualsevol voladís, mentre que 0 substituirà tots els voladissos per filament cònic."
+    },
+    "make_overhang_printable_hole_size": {
+      "label": "Fer voladissos imprimibles - Zona de forats( Sense suports )",
+      "tooltip": "Àrea màxima d'un forat a la base del model abans que s'ompli amb filament cònic. Un valor de 0 omplirà tots els forats de la base del model."
+    },
+    "manual_filament_change": {
+      "label": "Canvi manual de filament",
+      "tooltip": "Activeu aquesta opció per ometre el Codi-G Personalitzat de Canvi de Filament només al començament de la impressió. La comanda de canvi d'eina ( per exemple, T0 ) s'ometrà durant tota la impressió. Això és útil per a la impressió manual multifilament, on utilitzem M600/PAUSE per activar l'acció de canvi manual de filament."
+    },
+    "material_flow_dependent_temperature": {
+      "label": "Temperatura automàtica",
+      "tooltip": "Canvia automàticament la temperatura de cada capa amb la velocitat mitjana de flux d'aquesta capa."
+    },
+    "material_flow_temp_graph": {
+      "label": "Gràfic de temperatura de flux",
+      "tooltip": "Gràfic de temperatura de flux"
+    },
+    "max_bridge_length": {
+      "label": "Longitud màxima del pont",
+      "tooltip": "Longitud màxima del pont que no necessita suport. Establiu-lo a 0 si voleu que s'admetin tots els ponts i establiu-lo a un valor molt gran si no voleu que s'admeti cap pont."
+    },
+    "max_layer_height": {
+      "label": "Màx",
+      "tooltip": "La major alçada de capa imprimible per a l'extrusor. S'utilitza per limitar l'alçada màxima de la capa quan s'habilita l'Alçada de Capa Adaptativa"
+    },
+    "max_travel_detour_distance": {
+      "label": "Evitar creuar el perímetre - Longitud màxima del desviament",
+      "tooltip": "Distància màxima de desviament per evitar creuar perímetres. No desviar si la distància del desviament és major que aquest valor. La longitud del desviament es pot especificar com a valor absolut o com a percentatge ( per exemple, el 50% ) d'una trajectòria de desplaçament directa. Zero per desactivar"
+    },
+    "max_volumetric_extrusion_rate_slope": {
+      "label": "Suavitzat de la velocitat d'extrusió",
+      "tooltip": "Aquest paràmetre suavitza els canvis sobtats de velocitat d'extrusió que es produeixen quan la impressora passa d'imprimir una extrusió d'alt flux ( alta velocitat/amplada més gran ) a una extrusió de menor flux ( menor velocitat/amplada més petita ) i viceversa.\n\nDefineix la velocitat màxima a la qual el flux volumètric extruït en mm3/seg pot canviar amb el temps. Els valors més alts signifiquen que es permeten canvis de velocitat d'extrusió més alts, cosa que resulta en transicions de velocitat més ràpides.\n\nUn valor 0 desactiva la característica. \n\nPer a una impressora d'extrusió directa d'alta velocitat i alt flux ( com CrealityPrint o Voron ) aquest valor normalment no és necessari. No obstant això, pot proporcionar algun benefici marginal en certs casos en què les velocitats de les característiques varien molt. Per exemple, quan hi ha desacceleracions agressives a causa dels voladissos. En aquests casos es recomana un valor elevat d'uns 300-350mm3/s2, ja que això permet un suavitzat suficient per ajudar a avançar la pressió a aconseguir una transició de flux més suau.\n\nPer a impressores més lentes sense Avanç de Pressió, el valor s'ha d'establir molt més baix. Un valor de 10-15mm3/s2 és un bon punt de partida per als extrusors d'extrusió directa i 5-10mm3/s2 per al tipus Bowden. \n\nAquesta característica es coneix com a Equalitzador de Pressió a Prusa slicer.\n\nNota: aquest paràmetre desactiva l'Ajustament en Arc( arc fitting )."
+    },
+    "max_volumetric_extrusion_rate_slope_segment_length": {
+      "label": "Longitud del segment de suavitzat",
+      "tooltip": "Un valor més baix dóna lloc a transicions de velocitat d'extrusió més suaus. Tanmateix, això resulta en un fitxer gcode significativament més gran i més instruccions per processar per a la impressora. \n\nEl valor predeterminat a 3 funciona bé en la majoria dels casos. Si la impressora s'entrebanca, augmenteu aquest valor per reduir el nombre d'ajustos realitzats\n\nValors permesos: 1-5"
+    },
+    "min_bead_width": {
+      "label": "Amplada mínima del perímetre",
+      "tooltip": "Amplada del perímetre que substituirà als elements prims ( segons la mida mínima de l'element ) del model. Si l'amplada mínima del perímetre és més fina que el gruix de l'element el perímetre esdevindrà tan gruixut com el propi element. S'expressa en percentatge sobre el diàmetre del broquet"
+    },
+    "min_feature_size": {
+      "label": "Mida mínima de l'element",
+      "tooltip": "Gruix mínim dels elements fins. Els elements del model que siguin més prims que aquest valor no s'imprimiran, mentre que les entitats més gruixudes que la mida mínima s'ampliaran a l'amplada mínima del perímetre. S'expressa en percentatge sobre el diàmetre del broquet"
+    },
+    "min_layer_height": {
+      "label": "Mín",
+      "tooltip": "L'alçada de capa imprimible més baixa per a l'extrusor. S'utilitza per limitar l'alçada mínima de la capa quan s'activa l'Alçada de Capa Adaptativa"
+    },
+    "min_length_factor": {
+      "label": "Longitud mínima del perímetre",
+      "tooltip": "Ajusteu aquest valor per evitar que s'imprimeixin perímetres curts sense tancar, cosa que podria augmentar el temps d'impressió. Els valors més alts eliminen més perímetres i més llargs.\n\nNOTA: Les superfícies inferior i superior no es veuran afectades per aquest valor per evitar buits visuals a la part exterior del model. Ajusteu \"Llindar d'un sol perímetre\" a la configuració avançada següent per ajustar la sensibilitat del que es considera una superfície superior. L'ajustament del \"Llindar d'un sol perímetre\" només és visible si aquesta opció de configuració s'estableix per sobre del valor predeterminat de 0,5 o si les superfícies superiors d'un sol perímetre estan habilitades."
+    },
+    "min_skirt_length": {
+      "label": "Longitud mínima d'extrusió de la faldilla",
+      "full_label": "Longitud mínima d'extrusió de la faldilla",
+      "tooltip": "Longitud mínima d'extrusió del filament en mm en imprimir la faldilla. Zero significa que aquesta funció està desactivada.\n\nL'ús d'un valor diferent de zero és útil si la impressora està configurada per imprimir sense una línia principal."
+    },
+    "min_width_top_surface": {
+      "label": "Llindar d'un sol perímetre",
+      "tooltip": "Si s'ha d'imprimir una superfície superior i està parcialment coberta per una altra capa, no es considerarà una capa superior si la seva amplada és inferior a aquest valor. Això pot ser útil per no deixar que el \"perímetre a la part superior\" s'activi quan les superfícies estan pensades per ser cobertes només per perímetres. Aquest valor es pot especificar en mm o com a % de l'amplada d'extrusió perimetral.\nAdvertència: Si està activat, es poden produir artefactes si teniu alguna característica fina a la capa següent, com ara lletres. Establiu aquest paràmetre a 0 per eliminar aquests artefactes."
+    },
+    "minimum_sparse_infill_area": {
+      "label": "Llindar mínim de farciment poc dens",
+      "tooltip": "L'àrea de farciment poc dens que sigui més petita que el valor del llindar serà substituït per un farciment sòlid intern"
+    },
+    "minimum_support_area": {
+      "label": "Petita àrea de sobreposada",
+      "tooltip": "Dimensió mínima de l'àrea per als polígons de suport. No es generaran polígons que tinguin una àrea menor queaquest valor."
+    },
+    "mmu_segmented_region_interlocking_depth": {
+      "label": "Profunditat d'entrellaçament d'una regió segmentada",
+      "tooltip": "Profunditat interconnectadora d'una regió segmentada. S'ignorarà si \"mmu_segmented_region_max_width\" és zero o si \"mmu_segmented_region_interlocking_depth\"és més gran que \"mmu_segmented_region_max_width\". Zero desactivaaquesta característica."
+    },
+    "mmu_segmented_region_max_width": {
+      "label": "Amplada màxima d'una regió segmentada",
+      "tooltip": "Amplada màxima d'una regió segmentada. El zero desactiva aquesta funció."
+    },
+    "msao_recovery_enable": {
+      "label": "Recuperació de la escassetat de materials després de la sobreposada (Beta)",
+      "tooltip": "Aquest paràmetre entra en conflicte amb el max_volumetric_extrusion_rate_slope i no es pot habilitar al mateix temps. Quan la talladoradetecta que un segment d'extrusió contínua de baixa velocitat ha acabat i el camí torna immediatament a la impressiónormal d'alta velocitat, canvis sobtans en la velocitat i l'acceleració poden causar que la pressió d'extrusió es retardi. Aixòpot portar a una subextrusió temporal en les parets exteriors, resultant en línies fines, blanquejament o artefactes d'aspecte buit.Després d'activar aquesta opció, la talladora insereix un control addicional de velocitat durant la fase de recuperació de maneraque la impressora no salti directament de \"lent\" a \"ràpid\", sinó que en canvi torna més suau al movimentnormal. Els escenaris d'ús típics inclouen parets exteriors amb salients, bisells, petites seccions transversals o el segment de recuperaciódesprés del pont. En comparació amb el paràmetre de nivell de velocitat d'extrusió, aquest paràmetre té un impacte menoren el resultat de la roda."
+    },
+    "msao_safe_accel": {
+      "label": "Acceleració segura després de la sobreposada (Beta)",
+      "tooltip": "Quan la talladora detecta el final d'una regió d'extrusió contínua de baixa velocitat com un sobreposat, no restaurarà immediatamentl'acceleració normal d'impressió. En canvi, primer utilitza un valor d'acceleració més baix i conservador per a un curt \"segmentde recuperació segura\", permetent que la pressió d'extrusió, el flux de material fons i la sortida de boquilla torningradualment a un estat estable."
+    },
+    "msao_safe_velocity": {
+      "label": "Velocitat segura després de sobreposada (Beta)",
+      "tooltip": "Quan la talladora detecta el final d'una regió d'extrusió contínua de baixa velocitat com un sobreposat, no restaurarà immediatamentla velocitat d'impressió normal. En canvi, primer utilitza una velocitat de creuer més baixa i conservadora per a uncurt \"segment de recuperació segura\", permetent a l'impressora passar per la transició més suavement abans de tornar gradualment ala velocitat d'impressió normal."
+    },
+    "multicolor_method": {
+      "label": "mètode multicolor",
+      "tooltip": "mètode multicolor"
+    },
+    "notes": {
+      "label": "Notes de configuració",
+      "tooltip": "Podeu posar les vostres notes personals aquí. Aquest text s'afegirà al Codi-G com a comentaris."
+    },
+    "nozzle_diameter": {
+      "label": "Diàmetre del broquet( nozzle )",
+      "tooltip": "Diàmetre del broquet"
+    },
+    "nozzle_height": {
+      "label": "Alçada del broquet",
+      "tooltip": "L'alçada de la punta del broquet."
+    },
+    "nozzle_hrc": {
+      "label": "HRC del Broquet",
+      "tooltip": "La duresa del broquet. Zero significa que no es comprova la duresa del broquet durant el laminat."
+    },
+    "nozzle_temperature": {
+      "label": "Altres capes",
+      "full_label": "Temperatura del broquet( nozzle )",
+      "tooltip": "Temperatura del broquet per les capes després de l'inicial"
+    },
+    "nozzle_temperature_initial_layer": {
+      "label": "Capa inicial",
+      "full_label": "Temperatura del broquet a la capa inicial",
+      "tooltip": "Temperatura del broquet per imprimir la capa inicial quan s'utilitza aquest filament"
+    },
+    "nozzle_temperature_range_high": {
+      "label": "Màx"
+    },
+    "nozzle_temperature_range_low": {
+      "label": "Mín"
+    },
+    "nozzle_type": {
+      "label": "Tipus de broquet",
+      "tooltip": "El filament metàl·lic del broquet. Això determina la resistència abrasiva del broquet i quin tipus de filament es pot imprimir",
+      "enum_labels": [
+        "Indefinit",
+        "Acer endurit",
+        "Acer inoxidable",
+        "Llautó"
+      ]
+    },
+    "nozzle_volume": {
+      "label": "Volum del broquet",
+      "tooltip": "Volum del broquet entre la talladora i l'extrem del broquet"
+    },
+    "only_one_wall_first_layer": {
+      "label": "Només un perímetre a la primera capa",
+      "tooltip": "Utilitzeu només una perímetre a la primera capa per donar més espai al patró de farciment inferior"
+    },
+    "only_one_wall_top": {
+      "label": "Només un perímetre a les superfícies superiors",
+      "tooltip": "Utilitzeu només un perímetre a la superfície superior plana per donar més espai al patró de farciment superior"
+    },
+    "ooze_prevention": {
+      "label": "Activar",
+      "tooltip": "Aquesta opció reduirà la temperatura dels extrudors inactius per evitar l'oozing."
+    },
+    "other_layers_print_sequence": {
+      "label": "Seqüència d'impressió d'altres capes"
+    },
+    "other_layers_print_sequence_nums": {
+      "label": "El nombre d'altres capes de la seqüència d'impressió"
+    },
+    "other_layers_sequence_choice": {
+      "label": "Seqüència de filaments d'altres capes",
+      "enum_labels": [
+        "Automàtic",
+        "Personalitzar"
+      ]
+    },
+    "outer_wall_acceleration": {
+      "label": "Perímetre exterior",
+      "tooltip": "Acceleració del perímetre exterior. L'ús d'un valor inferior pot millorar la qualitat"
+    },
+    "outer_wall_jerk": {
+      "label": "Perímetre exterior",
+      "tooltip": "Sacsejada( Jerk ) de perímetres exteriors"
+    },
+    "outer_wall_line_width": {
+      "label": "Perímetre exterior",
+      "tooltip": "Amplada de línia del perímetre exterior. Si s'expressa en %, es calcularà sobre el diàmetre del broquet."
+    },
+    "outer_wall_speed": {
+      "label": "Perímetre exterior",
+      "tooltip": "Velocitat del perímetre més exterior i visible. S'utilitza per ser més lent que la velocitat del perímetre interior a efecte d'obtenir una millor qualitat."
+    },
+    "overhang_fan_speed": {
+      "label": "Velocitat del ventilador per voladís",
+      "tooltip": "Forçar el ventilador de refrigeració de la peça a tenir aquesta velocitat quan imprimeix un pont o un perímetre voladís que tingui un gran grau de voladís. Forçar la refrigeració per voladís i pont pot millorar la qualitat de les peces"
+    },
+    "overhang_fan_threshold": {
+      "label": "Llindar de voladís de refrigeració",
+      "tooltip": "Força el ventilador de refrigeració a una velocitat específica quan el grau de voladís de la peça impresa excedeix aquest valor. Expressat com a percentatge, indica l'amplada de la línia sense suport de la capa inferior. 0%% significa forçar la refrigeració de tot el perímetre exterior sense importar el grau de voladís",
+      "enum_labels": [
+        "0%",
+        "10%",
+        "25%",
+        "50%",
+        "75%",
+        "95%"
+      ]
+    },
+    "overhang_optimization": {
+      "label": "Optimització de sobreposada (Beta)",
+      "tooltip": "Alçada adaptable i amplada de línia per a cada capa."
+    },
+    "overhang_reverse": {
+      "label": "Invertir en capes senars",
+      "full_label": "Inversió del voladís",
+      "tooltip": "Extruir perímetres que tenen una part sobre un voladís en sentit invers en capes senars. Aquest patró alternatiu pot millorar dràsticament els voladissos pronunciats.\n\nAquest ajustament també pot ajudar a reduir la deformació( warping ) de peces a causa de la reducció de les tensions a les parets de la peça."
+    },
+    "overhang_reverse_internal_only": {
+      "label": "Invertir només els perímetres interns",
+      "full_label": "Invertir només els perímetres interns",
+      "tooltip": "Aplicar la lògica dels perímetres inversos només sobre perímetres interns. \n\nAquest ajustament redueix considerablement les tensions de les peces, ja que ara es distribueixen en direccions alternes. Això hauria de reduir la deformació( warping ) de peces alhora que manté la qualitat de la paret externa. Aquesta característica pot ser molt útil per a filament propens al warping, com ABS / ASA, i també per a filaments elàstics, com TPU i Silk PLA. També pot ajudar a reduir la deformació( warping ) de les regions flotants sobre els suports.\n\nPerquè aquest ajustament sigui més efectiu, es recomana establir el llindar invers a 0 de manera que totes els perímetres interns s'imprimeixin en direccions alternes en capes senars, independentment del seu grau de voladís."
+    },
+    "overhang_reverse_threshold": {
+      "label": "Llindar invers",
+      "full_label": "Llindar d'inversió en voladís",
+      "tooltip": "Nombre de mm que ha de tenir el voladís perquè la inversió es consideri útil. Pot ser un % o de l'amplada perimetral.\nEl valor 0 permet la inversió en totes les capes senars independentment."
+    },
+    "overhang_speed_classic": {
+      "label": "Mode clàssic",
+      "tooltip": "Activeu aquesta opció per utilitzar el mode clàssic"
+    },
+    "overhang_totally_speed": {
+      "label": "100%",
+      "full_label": "100%"
+    },
+    "parking_pos_retraction": {
+      "label": "Posició d'aturada de filament",
+      "tooltip": "Distància de la punta de l'extrusor des de la posició on el filament està aturat quan es descarrega. Això hauria de coincidir amb el valor al firmware de la impressora."
+    },
+    "pellet_flow_coefficient": {
+      "label": "Coeficient de flux de películes",
+      "tooltip": "El coeficient de flux de pellets es deriva empíricament i permet calcular el volum de les impressores de pellets.\n\nA l'interior es converteix en filament_diàmetre. Tots els altres càlculs de volum segueixen iguals. \n\\diàmetre_d'enfilament = sqrt( (4 *coeficient de flux de granules) / PI)"
+    },
+    "pellet_modded_printer": {
+      "label": "Pellet Modded impressora",
+      "tooltip": "Activa aquesta opció si la impressora utilitza granules en comptes de filaments"
+    },
+    "post_process": {
+      "label": "Scripts de postprocessament",
+      "tooltip": "Si voleu processar el Codi-G de sortida a través de scripts personalitzats, simplement enumereu les vostres rutes absolutes aquí. Separeu diversos scripts amb punt i coma. Als scripts se'ls passarà la ruta absoluta al fitxer Codi-G com a primer argument, i poden accedir als paràmetres de configuració d'CrealityPrint llegint variables d'entorn."
+    },
+    "precise_outer_wall": {
+      "label": "Perímetre precís",
+      "tooltip": "Millora la precisió de la carcassa ajustant l'espaiat del perímetre més exterior. Això també millora la consistència de la capa.\nNota: Aquest paràmetre només tindrà efecte si la seqüència de paret està configurada a Interior-Exterior"
+    },
+    "precise_z_height": {
+      "label": "Alçada Z precisa",
+      "tooltip": "Habiliteu-lo per obtenir una alçada z precisa de l'objecte després de laminar-lo. Obtindrà l'alçada precisa de l'objecte ajustant finament les altures de capa de les últimes capes. Tingueu en compte que es tracta d'un paràmetre experimental."
+    },
+    "preferred_orientation": {
+      "label": "Orientació preferida",
+      "tooltip": "Orientar automàticament els stls a l'eix Z després de la importació inicial"
+    },
+    "preheat_steps": {
+      "label": "Passos de preescalfament",
+      "tooltip": "Insireu múltiples comandos de pré-calor(per exemple M104.1). Només útil per a Prusa XL. Per altres impressores, si us plau,fixeu-la a 1."
+    },
+    "preheat_time": {
+      "label": "Temps de preescalfament",
+      "tooltip": "Per reduir el temps d'espera després del canvi d'eines, la Crealitat pot preescalfar la següent eina mentre l'eina actualencara està en funcionament. Aquesta configuració especifica el temps en segons per a preescalfar la següent eina. La crealitatintroduirà un comand M104 per preescalfar l'eina."
+    },
+    "preset_names": {
+      "label": "Noms de perfils de la impressora",
+      "tooltip": "Noms dels perfils relacionats amb la impressora física"
+    },
+    "pressure_advance": {
+      "label": "Avanç de Pressió Lineal( Pressure advance )",
+      "tooltip": "Avanç de Pressió Lineal( Klipper ) AKA Factor d'Avanç Lineal( Marlin )"
+    },
+    "prime_tower_brim_width": {
+      "label": "Ample de la Vora d'Adherència",
+      "tooltip": "Amplada de la vora de la torre primera, número negatiu significa amplada calculada automàticament basada en l'alçada de latorre primera."
+    },
+    "prime_tower_enable_framework": {
+      "label": "Costelles internes",
+      "tooltip": "Permet les costelles internes per augmentar l'estabilitat de la torre principal."
+    },
+    "prime_tower_enhance_type": {
+      "label": "La torre principal millora el tipus",
+      "tooltip": "La torre principal millora el tipus",
+      "enum_labels": [
+        "còn",
+        "chamfer"
+      ]
+    },
+    "prime_tower_position_type": {
+      "label": "Posició de la torre",
+      "tooltip": "La posició de la Torre Primera a la plataforma.",
+      "enum_labels": [
+        "Left Upper",
+        "Middle Upper",
+        "Right Upper",
+        "Left Center",
+        "Middle Center",
+        "Right Center",
+        "Left Below",
+        "Middle Below",
+        "Right Below"
+      ]
+    },
+    "prime_tower_rib_wall": {
+      "label": "Torre principal quadrada",
+      "tooltip": "Quan aquesta opció està marcada, la torre principal estarà el més propera possible a una plaça, el que significaque la seva amplada serà fixa."
+    },
+    "prime_tower_skip_points": {
+      "label": "Passar punts",
+      "tooltip": "La paret de la torre principal saltarà els punts de partida del camí d'esborrar"
+    },
+    "prime_tower_width": {
+      "label": "Amplada",
+      "tooltip": "Amplada de la Torre de Purga"
+    },
+    "prime_volume": {
+      "label": "Volum de purga",
+      "tooltip": "El volum de filament que l'extrusora ha de descarregar a la Torre de Purga."
+    },
+    "print_flow_ratio": {
+      "label": "Relació de flux",
+      "tooltip": "El filament pot tenir un canvi volumètric després de canviar entre estat fos i estat cristal·lí. Aquest ajustament canvia proporcionalment tot el flux d'extrusió d'aquest filament en Codi-G. L'interval de valors recomanat està entre 0,95 i 1,05. Potser podeu ajustar aquest valor per obtenir una superfície ben plana quan hi ha un lleuger excés o dèficit de flux"
+    },
+    "print_host": {
+      "label": "Nom d'equip, IP o URL",
+      "tooltip": "CrealityPrint pot pujar fitxers G-Code a una impressora. Aquest camp hauria de contenir el nom de Host, l'adreça IP o l'URL de la instància de la impressora. Es pot accedir a la impressora darrere d'un proxy amb l'autenticació bàsica activada per un nom d'usuari i contrasenya a la URL en el format següent: https://nomusuari:contrasenya@adreça-octopi/"
+    },
+    "print_host_webui": {
+      "label": "Interfície d'Usuari del dispositiu",
+      "tooltip": "Especifiqueu l'URL de la interfície d'usuari del dispositiu si no és el mateix que print_host"
+    },
+    "print_order": {
+      "label": "Ordre intracapa",
+      "tooltip": "Ordre d'impressió dins d'una sola capa",
+      "enum_labels": [
+        "Per defecte",
+        "Com a llista d'objectes"
+      ]
+    },
+    "print_sequence": {
+      "label": "Seqüència d'impressió",
+      "tooltip": "Seqüència d'impressió, capa per capa o objecte per objecte",
+      "enum_labels": [
+        "Capa",
+        "Objecte"
+      ]
+    },
+    "printable_area": {
+      "label": "Àrea imprimible"
+    },
+    "printable_height": {
+      "label": "Alçada imprimible",
+      "tooltip": "L'alçada màxima imprimible està limitada pel mecanisme d'impressora"
+    },
+    "printer_notes": {
+      "label": "Notes de la impressora",
+      "tooltip": "Podeu posar les vostres notes sobre la impressora aquí."
+    },
+    "printer_structure": {
+      "label": "Estructura de la impressora",
+      "tooltip": "La disposició física i els components d'un dispositiu d'impressió",
+      "enum_labels": [
+        "Indefinit",
+        "CoreXY",
+        "I3",
+        "Hbot",
+        "Delta"
+      ]
+    },
+    "printhost_apikey": {
+      "label": "Clau API / Contrasenya",
+      "tooltip": "Creality Print pot pujar fitxers de Codi-G a una impressora. Aquest camp ha de contenir la clau API o la contrasenya necessària per a l'autenticació."
+    },
+    "printhost_authorization_type": {
+      "label": "Tipus d'autorització",
+      "enum_labels": [
+        "Codi API",
+        "HTTP-Digest"
+      ]
+    },
+    "printhost_cafile": {
+      "label": "Arxiu HTTPS CA",
+      "tooltip": "Un fitxer de certificat CA personalitzat pot ser especificat per a connexions HTTPS d'OctoPrint, en format crt/pem. Si es deixa en blanc, el repositori de certificats CA del SO serà usat."
+    },
+    "printhost_password": {
+      "label": "Contrasenya"
+    },
+    "printhost_port": {
+      "label": "Impressora",
+      "tooltip": "Nom de la impressora"
+    },
+    "printhost_ssl_ignore_revoke": {
+      "label": "Ignorar les comprovacions de revocació de certificats HTTPS",
+      "tooltip": "Ignorar les comprovacions de revocació de certificats HTTPS en cas que faltin punts de distribució o estiguin desconnectats. Hom pot voler habilitar aquesta opció per als certificats autosignats si la connexió falla."
+    },
+    "printhost_user": {
+      "label": "Usuari"
+    },
+    "printing_by_object_gcode": {
+      "label": "Codi-G entre Objectes",
+      "tooltip": "Inserir Codi-G entre objectes. Aquest paràmetre només s'aplicarà quan imprimiu els models objecte per objecte"
+    },
+    "purge_in_prime_tower": {
+      "label": "Purgar a la Torre de Purga",
+      "tooltip": "Purga el filament restant a la Torre de Purga"
+    },
+    "raft_contact_distance": {
+      "label": "Distància Z de contacte de la Vora d'Adherència",
+      "tooltip": "Distància Z entre l'objecte i la Vora d'Adherència. S'ignorarà per a interfície soluble"
+    },
+    "raft_expansion": {
+      "label": "Expansió de la Vora d'Adherència",
+      "tooltip": "Expandir totes les capes de Vora d'Adherència en el pla XY"
+    },
+    "raft_first_layer_density": {
+      "label": "Densitat de la primera capa",
+      "tooltip": "Densitat de la primera Vora d'Adherència o capa de suport"
+    },
+    "raft_first_layer_expansion": {
+      "label": "Expansió de la primera capa",
+      "tooltip": "Expandir la primera Vora d'Adherència o capa de suport per millorar l'adherència de la placa d'impressió"
+    },
+    "raft_layers": {
+      "label": "Capes de Vora d'Adherència",
+      "tooltip": "L'objecte serà elevat per aquest nombre de capes de suport. Utilitzar aquesta funció per evitar deformacions( warping ) quan imprimiu ABS"
+    },
+    "reduce_crossing_wall": {
+      "label": "Evitar creuar perímetre",
+      "tooltip": "Desviar i evitar travessar el perímetre ja que podria produir grumolls a la superfície"
+    },
+    "reduce_fan_stop_start_freq": {
+      "label": "Mantenir el ventilador sempre encès",
+      "tooltip": "Si activeu aquest ajustament, el ventilador de refrigeració de peces no s'aturarà mai i funcionarà almenys a una velocitat mínima per reduir la freqüència d'arrencada i aturada"
+    },
+    "reduce_infill_retraction": {
+      "label": "Reduir la retracció de farciment",
+      "tooltip": "No retrau quan el desplaçament està totalment a la zona de farciment. Això vol dir que l'oozing( goteig ) queda amagat. Això pot reduir els temps de retracció per a models complexos i estalviar temps d'impressió, però fer que el laminat i la generació de Codi-G siguin més lents"
+    },
+    "required_nozzle_HRC": {
+      "label": "HRC( duresa ) de Broquet obligatori",
+      "tooltip": "HRC( duresa ) mínim de broquet necessari per imprimir el filament. Zero significa que no hi ha comprovació de l'HRC del broquet."
+    },
+    "resolution": {
+      "label": "Resolució",
+      "tooltip": "La trajectòria del Codi-G es genera després de simplificar el contorn del model per evitar massa punts i línies de Codi-G al fitxer gcode. Un valor més petit significa una major resolució i més temps de laminació"
+    },
+    "retract_before_wipe": {
+      "label": "Quantitat de retracció abans de netejar",
+      "tooltip": "La longitud de retracció ràpida abans de la neteja, en relació amb la longitud de retracció"
+    },
+    "retract_length_toolchange": {
+      "label": "Longitut"
+    },
+    "retract_lift_above": {
+      "label": "Només aixecar Z per sobre",
+      "tooltip": "Si establiu un valor positiu, Z només tindrà lloc per sobre de la Z absoluta especificada."
+    },
+    "retract_lift_below": {
+      "label": "Només aixecar Z per sota",
+      "tooltip": "Si establiu un valor positiu, Z només tindrà lloc per sota de la Z absoluta especificada."
+    },
+    "retract_lift_enforce": {
+      "label": "A les superfícies",
+      "tooltip": "Forçar el comportament de salt en Z. Aquest ajustament es veu afectada per la configuració anterior ( Només aixecar Z per sobre/per sota ).",
+      "enum_labels": [
+        "Totes les superfícies",
+        "Només a dalt",
+        "Només a baix",
+        "A dalt i a baix"
+      ]
+    },
+    "retract_restart_extra": {
+      "label": "Longitud addicional en reiniciar",
+      "tooltip": "Quan la retracció es compensa després d'un desplaçament, l'extrusor introduirà una quantitat addicional de filament. Aquest ajustament rarament es necessita."
+    },
+    "retract_restart_extra_toolchange": {
+      "label": "Longitud addicional en reiniciar",
+      "tooltip": "Quan la retracció es compensa després d'un canvi d'eina, l'extrusor introduirà una quantitat addicional de filament."
+    },
+    "retract_when_changing_layer": {
+      "label": "Retracció quan canvia de capa",
+      "tooltip": "Forçar una retracció quan canvia de capa"
+    },
+    "retraction_distances_when_cut": {
+      "label": "Distància de retracció quan es talla",
+      "tooltip": "Característica experimental. Longitud de retracció abans de tallar durant el canvi de filament"
+    },
+    "retraction_length": {
+      "label": "Longitut",
+      "full_label": "Longitud de Retracció",
+      "tooltip": "Una certa quantitat de filament en l'extrusora es tira cap enrere per evitar l'Ooze( goteig ) durant el llarg desplaçament. Definiu zero per desactivar la retracció"
+    },
+    "retraction_minimum_travel": {
+      "label": "Llindar de distància de desplaçament",
+      "tooltip": "Només s'activa la retracció quan la distància de desplaçament és superior a aquest llindar"
+    },
+    "retraction_speed": {
+      "label": "Velocitat de retracció",
+      "full_label": "Velocitat de retracció",
+      "tooltip": "Velocitat de les retraccions"
+    },
+    "role_based_wipe_speed": {
+      "label": "Velocitat de neteja basada en l'acció",
+      "tooltip": "La velocitat de neteja està determinada per la velocitat de l'acció d'extrusió actual, per exemple. Si s'executa una acció de neteja immediatament després d'una extrusió de perímetre exterior, s'utilitzarà la velocitat d'extrusió del perímetre exterior per a l'acció de neteja."
+    },
+    "rotate_solid_infill_direction": {
+      "label": "Rotar la direcció de farciment sòlid",
+      "tooltip": "Rotar la direcció de farciment sòlid 90° per a cada capa."
+    },
+    "scan_first_layer": {
+      "label": "Escanejar la primera capa",
+      "tooltip": "Habiliteu-ho per permetre que la càmera de la impressora comprovi la qualitat de la primera capa"
+    },
+    "scarf_angle_threshold": {
+      "label": "Llindar d'angle condicional",
+      "tooltip": "Aquesta opció estableix l'angle llindar per aplicar una Unió en Bisell condicional.\nSi l'angle màxim dins del bucle perimetral supera aquest valor (que indica l'absència de cantonades afilades), s'utilitzarà una Unió en Bisell. El valor per defecte és de 155°."
+    },
+    "scarf_joint_flow_ratio": {
+      "label": "Relació de flux de l'Unió en Bisell",
+      "tooltip": "Aquest factor afecta la quantitat de filament per a les Unions en Bisell."
+    },
+    "scarf_joint_speed": {
+      "label": "Velocitat d'Unió en Bisell",
+      "tooltip": "Aquesta opció estableix la velocitat d'impressió de les Unions en Bisell. Es recomana imprimir Unions en Bisell a velocitat lenta (menys de 100 mm / s).  També és recomanable habilitar el \"suavitzat de la velocitat d'extrusió\" si la velocitat establerta varia significativament de la velocitat dels perímetres exteriors o interiors. Si la velocitat especificada aquí és superior a la velocitat dels perímetres exteriors o interiors, la impressora predeterminarà la més lenta de les dues velocitats. Quan s'especifica com a percentatge (per exemple, 80%), la velocitat es calcula en funció de la velocitat del perímetre exterior o interior respectiva. El valor per defecte s'estableix al 100%."
+    },
+    "scarf_overhang_threshold": {
+      "label": "Llindar d'angle condicional",
+      "tooltip": "Aquesta opció determina el llindar de voladís per a l'aplicació de costures d'Unió en Bisell. Si la porció no suportada del perímetre és inferior a aquest llindar, s'aplicaran costures de juntes d'Unió en Bisell. El llindar per defecte s'estableix en 40% de l'amplada del perímetre extern. A causa de consideracions de rendiment, s'estima el grau de voladís."
+    },
+    "seam_gap": {
+      "label": "Espai entre costures",
+      "tooltip": "Per reduir la visibilitat de la costura en una extrusió de bucle tancat, el bucle s'interromp i s'escurça en una quantitat especificada.\nAquesta quantitat es pot especificar en mil·límetres o en percentatge del diàmetre actual de l'extrusora. El valor predeterminat d'aquest paràmetre és del 10%."
+    },
+    "seam_position": {
+      "label": "Posició de la costura",
+      "tooltip": "La posició inicial per imprimir cada capa del perímetre exterior",
+      "enum_labels": [
+        "Més proper",
+        "Alineat",
+        "Alinyat enrere",
+        "Darrera",
+        "Aleatori",
+        "Assembleu zgap"
+      ]
+    },
+    "seam_slope_conditional": {
+      "label": "Unió en Bisell condicional",
+      "tooltip": "Aplicar Unions en Bisell només per suavitzar perímetres on les costures tradicionals no ocultin eficaçment les costures a les cantonades afilades."
+    },
+    "seam_slope_entire_loop": {
+      "label": "Unió en Bisell al voltant de tota la paret",
+      "tooltip": "L'Unió en Bisell s'estén a tota la longitud de la paret."
+    },
+    "seam_slope_inner_walls": {
+      "label": "Unió en Bisell per a parets interiors",
+      "tooltip": "Utilitzar també l'Unió en Bisell per a les parets interiors."
+    },
+    "seam_slope_min_length": {
+      "label": "Longitud de l'Unió en Bisell",
+      "tooltip": "Longitud de l'Unió en Bisell. Establir aquest paràmetre a zero desactiva efectivament l'Unió en Bisell."
+    },
+    "seam_slope_start_height": {
+      "label": "Alçada d'inici de l'Unió en Bisell",
+      "tooltip": "Alçada d'inici de l'Unió en Bisell.\nAquesta quantitat es pot especificar en mil·límetres o en percentatge de l'alçada actual de la capa. El valor per defecte d'aquest paràmetre és 0."
+    },
+    "seam_slope_steps": {
+      "label": "Passos de l'Unió en Bisell",
+      "tooltip": "Nombre mínim de segments de cada Unió en Bisell."
+    },
+    "seam_slope_type": {
+      "label": "Unió en Bisell de costura( beta )",
+      "tooltip": "Utilitzeu Unió en Bisell per minimitzar la visibilitat de la costura i augmentar la resistència de les costures.",
+      "enum_labels": [
+        "Cap",
+        "Contorn",
+        "Contorn i forat"
+      ]
+    },
+    "silent_mode": {
+      "label": "Admet el mode silenciós",
+      "tooltip": "Si la màquina admet el mode silenciós en el qual la màquina utilitza una acceleració més baixa per imprimir"
+    },
+    "single_extruder_multi_material": {
+      "label": "Extrusor únic multifilament",
+      "tooltip": "Utilitza un sol broquet per imprimir multifilament"
+    },
+    "single_extruder_multi_material_priming": {
+      "label": "Purgar tots els extrusors d'impressió",
+      "tooltip": "Si està habilitat, tots els extrusors d'impressió seran purgats a la vora frontal del llit d'impressió al començament de la impressió."
+    },
+    "skeleton_infill_density": {
+      "label": "Densitat d'ompliment de l'esquelet",
+      "tooltip": "La resta del contorn del model després d'eliminar una certa profunditat de la superfície s'anomena esquelet. Aquest paràmetre s'utilitzaper ajustar la densitat d'aquesta secció. Quan dues regions tenen les mateixes configuracions d'ompliment escassos però densitats d'esquelet diferents,les seves àrees d'esquelet desenvoluparan seccions superposades."
+    },
+    "skeleton_infill_line_width": {
+      "label": "Amplada de la línia de l'esquelet",
+      "tooltip": "Ajustar l' amplada de línia dels camins de l' esquelet seleccionats."
+    },
+    "skin_infill_density": {
+      "label": "Densitat d'ompliment de la pell",
+      "tooltip": "La porció de la superfície exterior del model dins d'un cert rang de profunditat s'anomena la pell. Aquest paràmetres'utilitza per ajustar la densitat d'aquesta secció. Quan dues regions tenen la mateixa configuració d'ompliment esparsa però densitats depell diferents, aquesta àrea no es dividirà en dues regions separades."
+    },
+    "skin_infill_depth": {
+      "label": "Profunditat de la pell",
+      "tooltip": "El paràmetre estableix la profunditat de la pell."
+    },
+    "skin_infill_line_width": {
+      "label": "Amplada de la línia de la pell",
+      "tooltip": "Ajustar l'amplada de línia dels camins de la pell seleccionats."
+    },
+    "skirt_distance": {
+      "label": "Distància de la faldilla",
+      "tooltip": "Distància de la faldilla a la Vora d'Adherència o a l'objecte"
+    },
+    "skirt_height": {
+      "label": "Alçada de la faldilla",
+      "tooltip": "Quantes capes de faldilla. Normalment només una capa"
+    },
+    "skirt_loops": {
+      "label": "Voltes de la faldilla",
+      "full_label": "Voltes de la faldilla",
+      "tooltip": "Nombre de voltes per a la faldilla. Zero significa faldilla desactivada"
+    },
+    "skirt_speed": {
+      "label": "Velocitat de la faldilla",
+      "full_label": "Velocitat de la faldilla",
+      "tooltip": "Velocitat de la faldilla, en mm/s. Zero significa utilitzar la velocitat predeterminada d'extrusió de capa."
+    },
+    "skirt_type": {
+      "label": "Tip d'habilitat",
+      "full_label": "Tip d'habilitat",
+      "tooltip": "Combinat - faldilla única per a tots els objectes, Per objecte - faldilla d'objecte individual.",
+      "enum_labels": [
+        "Combinats",
+        "Per objecte"
+      ]
+    },
+    "slice_closing_radius": {
+      "label": "Radi de tancament dels buits en laminar",
+      "tooltip": "Les esquerdes de menys de dues vegades el radi de tancament de buits s'omplen durant el laminat de la malla triangular. L'operació de tancament de buits pot reduir la resolució de la impressió, per tant, és aconsellable mantenir aquest valor raonablement baix."
+    },
+    "slicing_mode": {
+      "label": "Mode de laminat",
+      "tooltip": "Utilitzeu \"Parell-imparell\" per als models d'avió 3DLabPrint. Utilitzeu \"Tancar forats\" per tancar tots els forats del model.",
+      "enum_labels": [
+        "Normal",
+        "Parell-imparell",
+        "Tancar els forats"
+      ]
+    },
+    "slow_down_for_layer_cooling": {
+      "label": "Reduir la velocitat d'impressió per millorar la refrigeració de les capes",
+      "tooltip": "Activeu aquesta opció per reduir la velocitat d'impressió perquè el temps de la capa final no sigui inferior al llindar de temps de capa a \"Llindar màxim de velocitat del ventilador\", de manera que la capa es pugui refredar durant més temps. Això pot millorar la qualitat de refrigeració de punxes i petits detalls"
+    },
+    "slow_down_layer_time": {
+      "label": "Temps de capa",
+      "tooltip": "La velocitat d'impressió en el Codi-G exportat s'alentirà, quan el temps estimat de capa sigui més curt que aquest valor, per obtenir un millor refredament d'aquestes capes"
+    },
+    "slow_down_layers": {
+      "label": "Nombre de capes lentes",
+      "tooltip": "Les primeres capes s'imprimeixen més lentament del normal. La velocitat augmenta gradualment de manera lineal sobre el nombre especificat de capes."
+    },
+    "slow_down_min_speed": {
+      "label": "Velocitat d'impressió mínima",
+      "tooltip": "La velocitat mínima d'impressió a la qual la impressora disminuirà per intentar mantenir el temps mínim de capa anterior, quan \"alentir per a un millor refredament de la capa\" està habilitat."
+    },
+    "slowdown_for_curled_perimeters": {
+      "label": "Alentir la velocitat per a perímetres corbats",
+      "tooltip": "Activeu aquesta opció per alentir la impressió en zones on potencialment poden existir perímetres corbats"
+    },
+    "small_area_infill_flow_compensation": {
+      "label": "Compensació de flux d'àrea petita( beta )",
+      "tooltip": "Activar la compensació de flux per a petites àrees de farciment"
+    },
+    "small_area_infill_flow_compensation_model": {
+      "label": "Model de Compensació de Flux",
+      "tooltip": "Model de Compensació de Flux, utilitzat per ajustar el flux per a petites àrees de farciment. El model s'expressa com un parell de valors separats per comes per a la longitud d'extrusió i els factors de correcció de flux, un per línia, en el següent format: \"1.234,5.678\""
+    },
+    "small_perimeter_speed": {
+      "label": "Petits perímetres",
+      "tooltip": "Aquest ajustament independent afectarà la velocitat dels perímetres amb radi <= small_perimeter_threshold ( normalment orificis ). Si s'expressa com a percentatge ( per exemple: 80% ) es calcula sobre l'ajustament de velocitat del perímetre exterior anterior. Poseu-lo a zero per automàtic."
+    },
+    "small_perimeter_threshold": {
+      "label": "Llindar de perímetres petits",
+      "tooltip": "Això estableix el llindar per a la longitud perimetral petita. El llindar predeterminat és de 0mm"
+    },
+    "smart_cooling_zones": {
+      "label": "Zones de refrigeració intel·ligents (Beta)",
+      "tooltip": "Si està habilitat, aquesta configuració assegurarà que les grans àrees sense sobresalients no es ralentissin per complir amb eltemps mínim de capa. Fa que la selecció de zones ralentizades sigui més intel·ligentnn\n"
+    },
+    "smooth_coefficient": {
+      "label": "Coeficient suau",
+      "tooltip": "Com més petit sigui el nombre, més llarga serà la ruta de transició de velocitat. 0 significa no aplicar."
+    },
+    "smooth_speed_discontinuity_area": {
+      "label": "Àrea de discontinuïtat de velocitat lisa (Beta)",
+      "tooltip": "Afegeix la transició de velocitat entre l'àrea de discontinuïtat."
+    },
+    "solid_infill_direction": {
+      "label": "Direcció de farciment sòlid",
+      "tooltip": "Angle per al patró de farciment sòlid, que controla l'inici o la direcció principal de la línia"
+    },
+    "solid_infill_filament": {
+      "label": "Solid infill",
+      "tooltip": "Filament per imprimir infill sòlide"
+    },
+    "sparse_infill_acceleration": {
+      "label": "Farciment poc dens",
+      "tooltip": "Acceleració del farciment poc dens. Si el valor s'expressa en percentatge ( per exemple, 100% ), es calcularà a partir de l'acceleració predeterminada."
+    },
+    "sparse_infill_density": {
+      "label": "Densitat de farciment poc dens",
+      "tooltip": "Densitat de farciment poc dens, converteix el 100% tu el teu farciment poc dens en farciment sòlid i s'utilitzarà el patró de farciment sòlid intern"
+    },
+    "sparse_infill_filament": {
+      "label": "Farciment",
+      "tooltip": "Filament per imprimir farciment poc dens intern."
+    },
+    "sparse_infill_line_width": {
+      "label": "Farciment poc dens",
+      "tooltip": "Amplada de línia de farciment poc dens intern. Si s'expressa en %, es calcularà sobre el diàmetre del broquet."
+    },
+    "sparse_infill_pattern": {
+      "label": "Patró farciment poc dens",
+      "tooltip": "Patró de línia per al farciment poc dens",
+      "enum_labels": [
+        "Concèntric",
+        "Rectilini",
+        "Graella",
+        "Lineal",
+        "Cúbic",
+        "Triangles",
+        "Tri-hexàgon",
+        "Giroide",
+        "Panal d'abella",
+        "Cúbic adaptatiu",
+        "Alineat Rectilini",
+        "Panal d'abella 3D",
+        "Corba de Hilbert",
+        "Acords d'Arquimedes",
+        "Octograma en Espiral",
+        "Suport Cúbic",
+        "Llampec",
+        "CrossHatch",
+        "Creu",
+        "Croix 3d",
+        "Quarter Cubic",
+        "Tetraedral",
+        "TpmsD",
+        "TPMS-G gradual",
+        "TPMS-D gradual",
+        "TPMS-FK gradual",
+        "TPMS-FK",
+        "ZigZag2",
+        "Creu-Zag",
+        "Blocat-Zag",
+        "Fon de mel lateral",
+        "xarxa lateral"
+      ]
+    },
+    "sparse_infill_speed": {
+      "label": "Farciment poc dens",
+      "tooltip": "Velocitat de farciment poc dens intern"
+    },
+    "speed_limit_to_height": {
+      "label": "Velocitat límit d'altura i acceleració",
+      "tooltip": "Velocitat límit d'altura i acceleració"
+    },
+    "speed_limit_to_height_enable": {
+      "label": "Velocitat límit d'altura i acceleració",
+      "tooltip": "Velocitat límit d'altura i acceleració"
+    },
+    "spiral_mode": {
+      "label": "Gerro en Espiral",
+      "tooltip": "L'espiralització suavitza els moviments z del contorn exterior. I converteix un model sòlid en una sola impressió de perímetre amb capes inferiors sòlides. El model generat final no té costura"
+    },
+    "spiral_mode_max_xy_smoothing": {
+      "label": "Suavitzat màxim XY",
+      "tooltip": "Distància màxima per moure punts en XY per intentar aconseguir una espiral suau. Si s'expressa en %, es calcularà sobre el diàmetre del broquet"
+    },
+    "spiral_mode_smooth": {
+      "label": "Suavitzar l'Espiral",
+      "tooltip": "Suavitzar l'Espiral suavitza també els moviments X i Y, de manera que no s'aprecia cap costura, ni tan sols a les direccions XY en parets que no són verticals"
+    },
+    "staggered_inner_seams": {
+      "label": "Costures interiors esglaonades",
+      "tooltip": "Aquesta opció fa que les costures interiors es desplacin cap enrere en funció de la seva profunditat, formant un patró en ziga-zaga."
+    },
+    "standby_temperature_delta": {
+      "label": "Variació de temperatura",
+      "tooltip": "La diferència de temperatura que s'aplicarà quan un extrusor no està activ. El valor no s'utilitza quan \"idle_temperature\" enconfiguracions de filament està definit en valor no zero."
+    },
+    "start_end_points": {
+      "label": "Punts d'inici i final",
+      "tooltip": "Els punts d'inici i final, que és des de la zona de tall fins a la galleda d'escombraries."
+    },
+    "support_air_filtration": {
+      "label": "Admet filtració d'aire",
+      "tooltip": "Habiliteu-lo si la impressora admet la filtració d'aire\nComanda de Codi-G: M106 P3 S ( 0-255 )"
+    },
+    "support_angle": {
+      "label": "Angle del patró",
+      "tooltip": "Utilitzeu aquest paràmetre per rotar el patró de suport sobre el pla horitzontal."
+    },
+    "support_base_pattern": {
+      "label": "Patrón de base(Normal)",
+      "tooltip": "Configuració del patró principal de suport normal",
+      "enum_labels": [
+        "Per defecte",
+        "Rectilini",
+        "Quadrícula rectilínia",
+        "Panal d'abella",
+        "Buit"
+      ]
+    },
+    "support_base_pattern_spacing": {
+      "label": "Espaiat del patró base",
+      "tooltip": "Espaiat entre línies de suport"
+    },
+    "support_base_pattern_tree": {
+      "label": "Patrón de base(arbre)",
+      "tooltip": "Configuració del patró principal de suport d'arbre; L'estil de suport d'arbre orgànic només suporta el patró d'ompliment \"buit\".",
+      "enum_labels": [
+        "Per defecte",
+        "Rectilini",
+        "Quadrícula rectilínia",
+        "Panal d'abella",
+        "Buit"
+      ]
+    },
+    "support_bottom_interface_spacing": {
+      "label": "Espai entre línies de la interfície inferior",
+      "tooltip": "Espaiat de les línies inferiors de la interfície. Zero significa interfície sòlida"
+    },
+    "support_bottom_z_distance": {
+      "label": "Distància Z inferior",
+      "tooltip": "La distància z entre la interfície de suport inferior i l'objecte"
+    },
+    "support_chamber_temp_control": {
+      "label": "Admet Control de temperatura de la cambra",
+      "tooltip": "Aquesta opció està habilitada si la màquina admet el control de la temperatura de la cambra\nComanda de Codi-G: M141 S ( 0-255 )"
+    },
+    "support_critical_regions_only": {
+      "label": "Suports només a regions crítiques",
+      "tooltip": "Només crear suports a regions crítiques, incloent cua afilada, voladís, etc."
+    },
+    "support_expansion": {
+      "label": "Expansió de Suport Normal",
+      "tooltip": "Augmentar ( + ) o disminuir ( - ) l'expansió horitzontal dels suports normals"
+    },
+    "support_filament": {
+      "label": "Base del Suport/Vora d'Adherència",
+      "tooltip": "Filament per imprimir base del suport i Vora d'Adherència. \"Per defecte\" significa que no s'utilitza cap filament específic per al suport i s'usarà el filament actual"
+    },
+    "support_interface_bottom_layers": {
+      "label": "Capes de la interfície inferior",
+      "tooltip": "Nombre de capes de la interfície inferior"
+    },
+    "support_interface_filament": {
+      "label": "Interfície de Suport/Vora d'Adherència",
+      "tooltip": "Filament per imprimir interfície de suport. \"Per defecte\" vol dir que no hi ha filament específic per a la interfície de suport i s'utilitza el filament actual"
+    },
+    "support_interface_loop_pattern": {
+      "label": "La interfície usa patró de bucle",
+      "tooltip": "Cobrir la capa de contacte superior dels suports amb bucles. Desactivat per defecte."
+    },
+    "support_interface_min_area": {
+      "label": "Àrea de contacte de suport mínim",
+      "tooltip": "Valors més baixos generen més superfícies de contacte de suport."
+    },
+    "support_interface_not_for_body": {
+      "label": "Evitar el filament de la interfície per a la base",
+      "tooltip": "Evitar utilitzar filament d'interfície de suport per imprimir la base de suport si és possible."
+    },
+    "support_interface_pattern": {
+      "label": "Patró de la interfície",
+      "tooltip": "Patró de línia de la interfície de suport. El patró predeterminat per a la interfície de suport no soluble és Rectilini, mentre que el patró predeterminat per a la interfície de suport soluble és Concèntric",
+      "enum_labels": [
+        "Per defecte",
+        "Rectilini",
+        "Concèntric",
+        "Entrellaçat Rectilini",
+        "Graella",
+        "Línia mononotònica"
+      ]
+    },
+    "support_interface_spacing": {
+      "label": "Espai entre línies de la interfície superior",
+      "tooltip": "Espaiat de les línies de la interfície. Zero significa interfície sòlida"
+    },
+    "support_interface_speed": {
+      "label": "Interfície de suport",
+      "tooltip": "Velocitat de la interfície de suport"
+    },
+    "support_interface_top_layers": {
+      "label": "Capes de la interfície superior",
+      "tooltip": "Nombre de capes d'interfície superior"
+    },
+    "support_ironing": {
+      "label": "Interfície de suport de planxat",
+      "tooltip": "El planchar està utilitzant un petit flux per imprimir a la mateixa altura de la interfície de suport denou per fer-lo més suau. Aquesta configuració controla si s'està planxant la interfície de suport. Quan està habilitada, lainterfície de suport també s'extruderà com a sòlid."
+    },
+    "support_ironing_flow": {
+      "label": "Suport flux de planxat",
+      "tooltip": "La quantitat de material a extrudir durant el planxat. Relatiu al flux de l'alçada normal de la capa d'interfíciede suport. Un valor massa alt provoca una sobreextrusió a la superfície."
+    },
+    "support_ironing_pattern": {
+      "label": "Suport patró de planxat",
+      "tooltip": "El patró que s'utilitzarà a l'hora de planxar.",
+      "enum_labels": [
+        "Concèntric",
+        "Rectilini"
+      ]
+    },
+    "support_ironing_spacing": {
+      "label": "Espaciament de línia de planxat de suport",
+      "tooltip": "La distància entre les línies de planxat."
+    },
+    "support_line_width": {
+      "label": "Suport",
+      "tooltip": "Amplada de línia de suport. Si s'expressa en %, es calcularà sobre el diàmetre del broquet."
+    },
+    "support_material_interface_fan_speed": {
+      "label": "Velocitat del ventilador a la interfície de suport",
+      "tooltip": "Aquesta velocitat del ventilador s'aplica durant totes les interfícies de suport, per poder debilitar la seva unió amb una alta velocitat del ventilador.\nDefiniu en -1 per desactivar aquesta sobreescriptura.\nNomés es pot anul·lar per disable_fan_first_layers."
+    },
+    "support_multi_bed_types": {
+      "label": "Admetre diversos tipus de llits",
+      "tooltip": "Activa aquesta opció si vols utilitzar diversos tipus de llit"
+    },
+    "support_object_first_layer_gap": {
+      "label": "Vac de suport/objecte de primera capa",
+      "tooltip": "La separació XY entre un objecte i el seu suport a la primera capa."
+    },
+    "support_object_xy_distance": {
+      "label": "Distància suport/objecte a xy",
+      "tooltip": "Separació XY entre un objecte i el seu suport"
+    },
+    "support_on_build_plate_only": {
+      "label": "Només a la placa d'impressió",
+      "tooltip": "No crear suport a la superfície del model, només a la placa d'impressió"
+    },
+    "support_remove_small_overhang": {
+      "label": "Eliminar els voladissos petits",
+      "tooltip": "Eliminar els voladissos petits que possiblement no necessiten suports."
+    },
+    "support_speed": {
+      "label": "Suport",
+      "tooltip": "Velocitat del suport"
+    },
+    "support_style": {
+      "label": "Estil",
+      "tooltip": "Estil i forma del suport. Per a un suport normal, projectar els suports en una quadrícula normal crearà suports més estables ( per defecte ), mentre que les torres de suport ajustades estalviaran filament i reduiran les cicatrius dels objectes.\nPer al suport en arbre, els estils prim i orgànic fusionaran les branques de manera més agressiva i estalviarà molt filament ( orgànic per defecte ), mentre que l'estil híbrid crearà una estructura similar al suport normal sota grans voladissos plans.",
+      "enum_labels": [
+        "Per defecte",
+        "Graella",
+        "Ajustat",
+        "Arbre Prim",
+        "Arbre Fort",
+        "Arbre Híbrid",
+        "Orgànic"
+      ]
+    },
+    "support_threshold_angle": {
+      "label": "Pendent màxim",
+      "tooltip": "Es generarà un suport per a voladissos l'angle de pendent dels quals estigui per sota del llindar."
+    },
+    "support_top_z_distance": {
+      "label": "Distància Z superior",
+      "tooltip": "La distància z entre la interfície de suport superior i l'objecte"
+    },
+    "support_type": {
+      "label": "Tipus",
+      "tooltip": "normal( auto ) i arbre( auto ) s'utilitzen per generar suports automàticament. Si se selecciona normal( manual ) o arbre( manual ), només es generen suports forçats",
+      "enum_labels": [
+        "normal( auto )",
+        "arbre( auto )",
+        "normal( manual )",
+        "arbre( manual )"
+      ]
+    },
+    "support_xy_overrides_z": {
+      "label": "Prioritat de distància de suport",
+      "tooltip": "Quan es selecciona 'X/Y sobrepasa Z', la distància horitzontal entre el model i l'estructura de suport permanerà constant, peròresultarà en una distància Z més gran. Quan es selecciona 'Z sobrepasa X/Y', la distància entre el suport iel model a l'àrea de sobrepasa permaneix constant, mentre el suport a la direcció XY proporciona una millor estabilitata l'sobrepasa.",
+      "enum_labels": [
+        "X/Y supera Z",
+        "Z supera X/Y"
+      ]
+    },
+    "symmetric_infill_y_axis": {
+      "label": "Eix d' ompliment simètric y",
+      "tooltip": "Si el model té dues parts que són simètriques sobre l'eix y, i voleu que aquestes parts tinguin texturessimètriques, si us plau, feu clic en aquesta opció en una de les parts."
+    },
+    "temperature_vitrification": {
+      "label": "Temperatura d'estovament",
+      "tooltip": "El filament s'estova a aquesta temperatura, per la qual cosa quan la temperatura del llit és igual o superior a ella, és molt recomanable obrir la porta principal i/o treure el vidre superior per evitar obstruccions."
+    },
+    "template_custom_gcode": {
+      "label": "Codi-G personalitzat",
+      "tooltip": "Aquest Codi-G s'utilitzarà com a codi personalitzat"
+    },
+    "textured_plate_temp": {
+      "label": "Altres capes",
+      "tooltip": "Temperatura del llit de les capes excepte la inicial. El valor 0 significa que el filament no admet imprimir a la Base PEI amb Textura"
+    },
+    "textured_plate_temp_initial_layer": {
+      "label": "Capa inicial",
+      "tooltip": "Temperatura del llit en la capa inicial. El valor 0 significa que el filament no admet imprimir a la Base PEI amb Textura"
+    },
+    "thick_bridges": {
+      "label": "Ponts gruixuts",
+      "tooltip": "Si esta activat, els ponts seran més fiables, poden abastar distàncies més llargues però poden tenir pitjor aspecte. Si es desactiva, els ponts es veuran millor però només seran fiables per a distàncies de pont més curtes."
+    },
+    "thick_internal_bridges": {
+      "label": "Ponts interiors gruixuts",
+      "tooltip": "Si està habilitat, s'utilitzaran ponts interns gruixuts. Normalment es recomana tenir activada aquesta funció. Tanmateix, penseu a desactivar-lo si utilitzeu broquets grans."
+    },
+    "thumbnails": {
+      "label": "Mida Miniatures al Codi-G",
+      "tooltip": "Mides de la imatge que s'emmagatzemarà en fitxers .gcode i .sl1 / .sl1s, en el format següent: \"XxY, XxY, ...\""
+    },
+    "thumbnails_format": {
+      "label": "Format de les miniatures del Codi-G",
+      "tooltip": "Format de les miniatures del Codi-G: PNG per a la millor qualitat, JPG per a un menor tamany( pes ), QOI per a firmware de baixa memòria",
+      "enum_labels": [
+        "PNG",
+        "JPG",
+        "QOI",
+        "BTT TT",
+        "ColPic",
+        "CR PNG"
+      ]
+    },
+    "time_cost": {
+      "label": "Cost per Temps",
+      "tooltip": "El cost de la impressora per hora"
+    },
+    "time_lapse_gcode": {
+      "label": "Codi-G time lapse"
+    },
+    "timelapse_type": {
+      "label": "Timelapse",
+      "tooltip": "Si se selecciona el mode suau o tradicional, es generarà un vídeo timelapse per a cada impressió. Després d'imprimir cada capa, es fa una instantània amb la càmera de la cambra. Totes aquestes instantànies s'uneixen en un vídeo timelapse quan es completa la impressió. Si se selecciona el mode suau, el capçal d'impressió es mourà a la rampa d'excés després d'imprimir cada capa i, a continuació, farà una instantània. Com que el filament fos pot sortir del broquet durant el procés de fer una instantània, cal una Torre de Purga per al mode suau per netejar el broquet.",
+      "enum_labels": [
+        "Tradicional",
+        "Suau",
+        "Tancar"
+      ]
+    },
+    "top_bottom_infill_wall_overlap": {
+      "label": "Farciment superposat a paret superior/inferior\"",
+      "tooltip": "L'àrea superior de farciment sòlid s'amplia lleugerament per superposar-se amb la paret per a una millor unió i minimitzar l'aparició de forats on el farciment superior es troba amb les parets. Un valor de 25-30% és un bon punt de partida, minimitzant l'aparició de forats. El valor percentual és relatiu a l'amplada de línia del farciment poc dens"
+    },
+    "top_shell_layers": {
+      "label": "Capes sòlides de la carcassa superior",
+      "full_label": "Capes sòlides superiors",
+      "tooltip": "Aquest és el nombre de capes sòlides de la carcassa superior, inclosa la capa superficial superior. Quan el gruix calculat per aquest valor sigui més prim que el gruix de la carcassa superior, s'incrementaran les capes superiors de la carcassa"
+    },
+    "top_shell_thickness": {
+      "label": "Gruix mínim de la carcassa superior",
+      "full_label": "Gruix mínim de la carcassa superior",
+      "tooltip": "El nombre de capes sòlides superiors s'incrementa en laminar si el gruix calculat per les capes superiors de la carcassa és més prim que aquest valor. Això pot evitar tenir una carcassa massa fina quan l'alçada de la capa és petita. 0 vol dir que aquest ajustament està desactivat i que el gruix de la carcassa superior està absolutament determinat per les capes de la carcassa superior"
+    },
+    "top_solid_infill_flow_ratio": {
+      "label": "Ratio de flux superficial superior",
+      "tooltip": "Aquest factor afecta la quantitat de filament per al farciment sòlid superior. Podeu disminuir-lo lleugerament per tenir un acabat superficial suau"
+    },
+    "top_surface_acceleration": {
+      "label": "Farciment sòlid superior",
+      "tooltip": "Acceleració del farciment superficial superior. L'ús d'un valor inferior pot millorar la qualitat de la superfície superior"
+    },
+    "top_surface_jerk": {
+      "label": "Farciment sòlid superior",
+      "tooltip": "Sacsejada( Jerk ) per a la superfície superior"
+    },
+    "top_surface_line_width": {
+      "label": "Farciment sòlid superior",
+      "tooltip": "Amplada de línia per a les superfícies superiors. Si s'expressa en %, es calcularà sobre el diàmetre del broquet."
+    },
+    "top_surface_pattern": {
+      "label": "Patró de superfície superior",
+      "tooltip": "Patró de línia del farciment de la superfície superior",
+      "enum_labels": [
+        "Concèntric",
+        "Rectilini",
+        "Monotònic",
+        "Línia mononotònica",
+        "Alineat Rectilini",
+        "Corba de Hilbert",
+        "Acords d'Arquimedes",
+        "Octograma en Espiral"
+      ]
+    },
+    "top_surface_speed": {
+      "label": "Farciment sòlid superior",
+      "tooltip": "Velocitat del farciment de la superfície superior que és sòlida"
+    },
+    "tpms_end_infill_density": {
+      "label": "Densitat d'ompliment escassa final",
+      "tooltip": "Densitat d'ompliment escassa del final en el rang (1-99)"
+    },
+    "tpms_gradual_direction": {
+      "label": "Direcció gradual",
+      "tooltip": "Direcció gradual",
+      "enum_labels": [
+        "Eix x",
+        "Eix y",
+        "Eix z"
+      ]
+    },
+    "tpms_start_infill_density": {
+      "label": "Densitat d'ompliment escassa d'inici",
+      "tooltip": "Densitat d'ompliment escassa d'inici en el rang (1-99)"
+    },
+    "travel_acceleration": {
+      "label": "Recorregut",
+      "tooltip": "Acceleració en desplaçaments"
+    },
+    "travel_jerk": {
+      "label": "Recorregut",
+      "tooltip": "Sacsejada( Jerk ) per deplaçament"
+    },
+    "travel_short_distance_acceleration": {
+      "label": "Acceleració de viatges a curta distància",
+      "tooltip": "Acceleració utilitzada per a moviments curts. La distància de viatge curta es determina per la configuració retract_before_travel."
+    },
+    "travel_short_distance_threshold": {
+      "label": "Limit de viatge a curta distància",
+      "tooltip": "Limit de distància de viatge curt per a travel_short_distance_acceleration."
+    },
+    "travel_slope": {
+      "label": "Angle de viatge",
+      "tooltip": "Angle de viatge pel tipus de salt Slope i Spiral Z. Posar-lo a 90° resulta en l'ascensor normal"
+    },
+    "travel_speed": {
+      "label": "Recorregut",
+      "tooltip": "Velocitat de desplaçament més ràpida i sense extrusió"
+    },
+    "tree_hybrid_cross_height": {
+      "label": "Limitació de l'altura del suport crucial",
+      "tooltip": "En forats de superfície baixa i plana del model, els suports creuats són més fàcils d'eliminar; Quan s'estableix a0, aquesta característica està desactivada."
+    },
+    "tree_support_adaptive_layer_height": {
+      "label": "Alçada de Capa Adaptativa",
+      "tooltip": "Si activeu aquesta opció, l'alçada de la capa de suport en arbre, excepte la primera, es calcularà automàticament "
+    },
+    "tree_support_angle_slow": {
+      "label": "Angle de branca preferit",
+      "tooltip": "L'angle preferit de les branques, quan no han d'evitar el model. Utilitzeu un angle inferior per fer-los més verticals i més estables. Utilitzeu un angle més alt perquè les branques es fusionin més ràpidament."
+    },
+    "tree_support_auto_brim": {
+      "label": "Amplada de la Vora d'Adherència automàtica",
+      "tooltip": "Si activeu aquesta opció, es calcularà automàticament l'amplada de la Vora d'Adherència per al suport en arbre"
+    },
+    "tree_support_branch_angle": {
+      "label": "Angle de branca de suport en arbre",
+      "tooltip": "Aquest ajustament determina l'angle màxim de voladís que les branques del suport en arbre permeten fer. Si s'augmenta l'angle, les branques es poden imprimir més horitzontalment, cosa que permet que arribin més lluny."
+    },
+    "tree_support_branch_angle_organic": {
+      "label": "Angle de branca de suport en arbre",
+      "tooltip": "Aquest ajustament determina l'angle màxim de voladís que les branques del suport en arbre permeten fer. Si s'augmenta l'angle, les branques es poden imprimir més horitzontalment, cosa que permet que arribin més lluny."
+    },
+    "tree_support_branch_diameter": {
+      "label": "Diàmetre de la branca del suport en arbre",
+      "tooltip": "Aquest ajustament determina el diàmetre inicial dels nodes de suport."
+    },
+    "tree_support_branch_diameter_angle": {
+      "label": "Angle de diàmetre de la branca",
+      "tooltip": "L'angle del diàmetre de les branques a mesura que es fan més gruixudes cap a la part inferior. Un angle de 0 farà que les branques tinguin un gruix uniforme sobre la seva longitud. Una mica d'angle pot augmentar l'estabilitat del suport orgànic."
+    },
+    "tree_support_branch_diameter_double_wall": {
+      "label": "Diàmetre de branca amb parets dobles",
+      "tooltip": "Les branques amb una àrea més gran que l'àrea d'un cercle d'aquest diàmetre s'imprimiran amb parets dobles per a millorar l'estabilitat. Establiu aquest valor a zero per a cap paret doble."
+    },
+    "tree_support_branch_diameter_organic": {
+      "label": "Diàmetre de la branca del suport en arbre",
+      "tooltip": "Aquest ajustament determina el diàmetre inicial dels nodes de suport."
+    },
+    "tree_support_branch_distance": {
+      "label": "Distància de la branca de suport en arbre",
+      "tooltip": "Aquest ajustament determina la distància entre els nodes veïns de suport en arbre."
+    },
+    "tree_support_branch_distance_organic": {
+      "label": "Distància de la branca de suport en arbre",
+      "tooltip": "Aquest ajustament determina la distància entre els nodes veïns de suport en arbre."
+    },
+    "tree_support_brim_width": {
+      "label": "Amplada de la Vora d'Adherència del suport en arbre",
+      "tooltip": "Distància de la branca de l'arbre a la línia de la Vora d'Adherència més externa"
+    },
+    "tree_support_tip_diameter": {
+      "label": "Diàmetre de la punta",
+      "tooltip": "Diàmetre de la punta de la branca per a suports orgànics."
+    },
+    "tree_support_top_rate": {
+      "label": "Densitat de branques",
+      "tooltip": "Ajusta la densitat de l'estructura de suport utilitzada per generar les puntes de les branques. Un valor més alt dóna com a resultat millors voladissos, però els suports són més difícils d'eliminar, per la qual cosa es recomana habilitar interfícies de suport superior en lloc d'un alt valor de densitat de branques si es necessiten interfícies denses."
+    },
+    "tree_support_wall_count": {
+      "label": "Suportar bucles de paret(Normal)",
+      "tooltip": "Configuració del nombre de capes de paret externa per al suport normal; 0 significa un nombre intel·ligent de capes"
+    },
+    "tree_support_wall_count_tree": {
+      "label": "Suportar bucles de paret(Arbre)",
+      "tooltip": "Configuració del nombre de capes de paret externa per al suport d'arbres; 0 significa un nombre intel·ligent de capes."
+    },
+    "tree_support_with_infill": {
+      "label": "Suport en arbre amb farciment",
+      "tooltip": "Aquest paràmetre especifica si s'ha d'afegir farciment dins de grans buits de suport en arbre"
+    },
+    "upward_compatible_machine": {
+      "label": "màquina compatible ascendent"
+    },
+    "use_firmware_retraction": {
+      "label": "Utilitza la retracció del firmware",
+      "tooltip": "Aquest ajustament experimental utilitza comandes G10 i G11 perquè el firmware gestioni la retracció. Això només té suport en les versions més recents de Marlin."
+    },
+    "use_relative_e_distances": {
+      "label": "Utilitzar distàncies E relatives",
+      "tooltip": "Es recomana l'extrusió relativa quan s'utilitza l'opció \"label_objects\". Alguns extrusors funcionen millor amb aquesta opció sense marcar( mode d'extrusió absoluta ). La Torre de Purga només és compatible amb el mode relatiu. Es recomana a la majoria d'impressores. Per defecte està marcat"
+    },
+    "wall_direction": {
+      "label": "Direcció del bucle de perímetre",
+      "tooltip": "La direcció en què s'extrudeixen els bucles de perímetre quan es mira cap avall des de la part superior.\n\nPer defecte, totes les parets s'extrudeixen en sentit contrari a les agulles del rellotge, tret que \"Parets invertides en capes imparells\" estigui habilitat. Triar una opció que no sigui Auto forçarà la direcció de la paret malgrat s'habiliti \"Parets invertides en capes imparells\".\n\nAquesta opció es desactivarà si el mode gerro en espiral està habilitat.",
+      "enum_labels": [
+        "Automàtic",
+        "En sentit contrari a les agulles del rellotge",
+        "En el sentit de les agulles del rellotge"
+      ]
+    },
+    "wall_distribution_count": {
+      "label": "Recompte de distribució de perímetres",
+      "tooltip": "El nombre de perímetres, comptats des del centre, sobre els quals cal estendre la variació. Els valors més baixos signifiquen que els perímetres exteriors no canvien d'amplada"
+    },
+    "wall_filament": {
+      "label": "Parets"
+    },
+    "wall_generator": {
+      "label": "Generador de perímetre",
+      "tooltip": "El generador de perímetres Clàssic produeix perímetres amb amplada d'extrusió constant i per a zones molt primes s'usa el farciment de buits. El motor Aràcne produeix perímetres amb amplada d'extrusió variable",
+      "enum_labels": [
+        "Clàssic",
+        "Aràcne"
+      ]
+    },
+    "wall_loops": {
+      "label": "Bucles de perímetre",
+      "tooltip": "Nombre de perímetres de cada capa"
+    },
+    "wall_sequence": {
+      "label": "Ordre d'impressió de perímetres",
+      "tooltip": "Seqüència d'impressió de les parets internes (internes) i externes (exteriors).  nnUtilitza interior/exterior per a millors sobresalts. Això ésperquè les parets sobreposades poden adherir-se a un perímetre veí mentre imprimeixen. No obstant això, aquesta opció resulta enuna qualitat superficial lleugerament reduïda ja que el perímetre extern es deforma per ser aplastat al perímetre intern. Utilitzainterior/exterior/interior per al millor acabat de superfície externa i precisió dimensional, ja que la paret externa s'imprimeix sense perturbacionsdes d'un perímetre interior. No obstant això, el rendiment de sobreposada es reduirà ja que no hi ha perímetreintern per imprimir la paret externa. Aquesta opció requereix un mínim de 3 parets per ser eficaç ja queimprimeix les parets internes des del tercer perímetre en endavant primer, després el perímetre extern i, finalment, el primerperímetre intern. Aquesta opció es recomana contra l'opció Exterior / Interior en la majoria dels casos. Utilitzar Exterior /Interior per a la mateixa qualitat de paret externa i beneficis d'exactitud dimensional de l'opció Interior / Exterior /Interior. No obstant això, les costures z apareixeran menys consistents a mesura que comenci la primera extrusió d'una novacapa en una superfície visible.  nnUtilitza Adaptive Outer/Inner per combinar els punts forts de les seqüències d'impressió Outer/Inneri Inner/Outer. En la majoria de les situacions, aquest mode imprimirà primer la paret exterior. No obstant això, quanes troben sobresalients que superen el 75%% o durant el pont, la impressora imprimirà primer la paret interna pergarantir una millor qualitat de la superfície en les zones sobresalients. Tingueu en compte que els artefactes de capapoden aparèixer en regions on l'ordre d'impressió de la paret canvia.  n n n n n n nn n n n n n n n n n n",
+      "enum_labels": [
+        "Interior/Exterior",
+        "Exterior/Interior",
+        "Interior/Exterior/Interior",
+        "Adaptable Exterior / Interior (experimental)"
+      ]
+    },
+    "wall_transition_angle": {
+      "label": "Angle llindar de transició de perímetre",
+      "tooltip": "Quan crear transicions entre nombres parells i senars de perímetres. Una forma en falca amb un angle més gran que aquest ajustament no tindrà transicions i no s'imprimiran perímetres al centre per omplir l'espai restant. La reducció d'aquest ajustament redueix el nombre i la longitud d'aquests perímetres centrals, però pot deixar buits o sobreextruir"
+    },
+    "wall_transition_filter_deviation": {
+      "label": "Marge de filtre de transició de perímetre",
+      "tooltip": "Evita la transició d'anada i tornada entre un perímetre addicional i un de menys. Aquest marge amplia el rang d'amplades d'extrusió que segueixen a [Amplada Mínima de Perímetre - marge, 2 * Amplada Mínima de Perímetre + marge]. L'augment d'aquest marge redueix el nombre de transicions, cosa que redueix el nombre d'arrencades/aturades d'extrusió i el temps de desplaçament. No obstant això, una gran variació de l'amplada d'extrusió pot provocar problemes de subextrusió o sobreextrusió. S'expressa en percentatge sobre el diàmetre del broquet"
+    },
+    "wall_transition_length": {
+      "label": "Longitud de transició de perímetre",
+      "tooltip": "Quan es fa la transició entre diferents números de perímetres a mesura que la peça es fa més prima, s'assigna una certa quantitat d'espai per separar o unir els segments de perímetre. S'expressa en percentatge sobre el diàmetre del broquet"
+    },
+    "wipe": {
+      "label": "Netejar durant retracció",
+      "tooltip": "Moure el broquet al llarg de l'última trajectòria d'extrusió en les retraccions per netejar el filament que vessi del broquet. Això pot minimitzar grumolls quan s'imprimeix una peça nova després del desplaçament"
+    },
+    "wipe_before_external_loop": {
+      "label": "Netejar abans del bucle extern",
+      "tooltip": "Per minimitzar la visibilitat de la possible sobreextrusió a l'inici d'un perímetre extern en imprimir amb ordre d'impressió de perímetre Exterior/Interior o Interior/Exterior/Interior, la deretracció es realitza lleugerament a l'interior des de l'inici del perímetre exterior. D'aquesta manera, qualsevol potencial sobreextrusió queda amagada de la superfície exterior. \n\nAixò és útil quan s'imprimeix amb ordre d'impressió de perfil Exterior/Interior o Interior/Exterior/Interior, ja que en aquests modes és més probable que un perímetre extern s'imprimeixi immediatament després d'un moviment de detracció."
+    },
+    "wipe_distance": {
+      "label": "Distància de Neteja",
+      "tooltip": "Descriu quant de temps es mourà el broquet al llarg de l'última trajectòria en les retraccions. \n\nDepenent de quant de temps trigui l'operació de neteja, de la rapidesa i de quant de temps siguin els paràmetres de retracció de l'extrusora/filament, pot ser necessari un moviment de retracció per retirar el filament restant. \n\nEstablint un valor a la quantitat de retracció abans de l'ajustament de neteja següent, es realitzarà una retracció de l'excés abans de la neteja, en cas contrari es realitzarà després."
+    },
+    "wipe_on_loops": {
+      "label": "Neteja en bucles",
+      "tooltip": "Per minimitzar la visibilitat de la costura en una extrusió de bucle tancat, s'executa un petit moviment cap a l'interior abans que l'extrusora surti del bucle."
+    },
+    "wipe_speed": {
+      "label": "Velocitat de neteja",
+      "tooltip": "La velocitat de neteja està determinada per l'ajustament de velocitat especificada en aquesta configuració. Si el valor s'expressa en percentatge ( per exemple, 80% ), es calcularà en funció de la configuració de velocitat de desplaçament anterior. El valor predeterminat d'aquest paràmetre és del 80%"
+    },
+    "wipe_tower_bridging": {
+      "label": "Distància màxima dels ponts",
+      "tooltip": "Distància màxima entre suports a les seccions amb farciment poc dens."
+    },
+    "wipe_tower_cone_angle": {
+      "label": "Angle de vèrtex del con d'estabilització",
+      "tooltip": "Angle del vèrtex del con que s'utilitza per estabilitzar la Torre de Purga. Un angle més gran significa una base més ampla."
+    },
+    "wipe_tower_extra_flow": {
+      "label": "Flux addicional per a la purga",
+      "tooltip": "Flux extra utilitzat per a les línies de depuració de la torre de netejar. Això fa que les líniesde depuració siguin més grosseses o estretes que normalment. L'espaç es ajusta automàticament."
+    },
+    "wipe_tower_extra_spacing": {
+      "label": "Espaiat de les línies de la Torre de Purga",
+      "tooltip": "Espaiat de les línies de purga de la Torre de Purga."
+    },
+    "wipe_tower_filament": {
+      "label": "Torre de Purga",
+      "tooltip": "L'extrusora a usar per imprimir el perímetre de la Torre de Purga. Establiu 0 per utilitzar el que estigui disponible ( no soluble, preferentment )."
+    },
+    "wipe_tower_max_purge_speed": {
+      "label": "Velocitat màxima d'impressió de la torre de purga",
+      "tooltip": "La velocitat màxima d'impressió en purgar a la torre de purga i imprimir a la torre de purga capes poc denses. En la purga, si la velocitat de farciment poc dens o la velocitat calculada de la màxima velocitat volumètrica del filament és menor, s'utilitzarà la més baixa.\n\nEn imprimir les capes poc denses, si la velocitat perimetral interna o la velocitat calculada de la màxima velocitat volumètrica del filament és menor, s'utilitzarà la més baixa.\n\nL'augment d'aquesta velocitat pot afectar l'estabilitat de la torre, així com augmentar la força amb què el broquet xoca amb els grumolls que s'hagin pogut formar a la torre de purga.\n\nAbans d'augmentar aquest paràmetre més enllà del valor per defecte de 90 mm/segon, assegureu-vos que la impressora pugui fer un pont de manera fiable a les velocitats augmentades i que el degoteig quan es produeixi el canvi d'eina estigui ben controlat.\n\nPer als perímetres externs de la torre de purga, s'utilitza la velocitat perimetral interna independentment d'aquesta configuració."
+    },
+    "wipe_tower_no_sparse_layers": {
+      "label": "Sense capes poc denses( beta )",
+      "tooltip": "Si està habilitat, la Torre de Purga no s'imprimeix en capes sense canvis d'eina. En capes amb canvi d'eina, l'extrusor es desplaçarà cap avall per imprimir la Torre de Purga. L'usuari és responsable de garantir que no hi hagi col·lisió amb la impressió."
+    },
+    "wipe_tower_rotation_angle": {
+      "label": "Angle de rotació de la torre principal",
+      "tooltip": "Angle de rotació de la torre principal respecte a l'eix x."
+    },
+    "wiping_volumes_extruders": {
+      "label": "Volums de purga - volums de càrrega/descàrrega",
+      "tooltip": "Aquest vector desa els volums necessaris per canviar des de/fins a cada eina utilitzada a la Torre de Purga. Aquests valors es fan servir per simplificar la creació dels volums totals de purga a continuació."
+    },
+    "xy_contour_compensation": {
+      "label": "Compensació del contorn X-Y",
+      "tooltip": "El contorn( exterior ) de l'objecte creixerà o es reduirà en el pla XY segons valor configurat. Un valor positiu fa que el contorn sigui més gran. Un valor negatiu fa que el contorn sigui més petit. Aquesta funció s'utilitza per ajustar lleugerament la mida quan l'objecte té problemes d'ensamblatge( encaix )"
+    },
+    "xy_hole_compensation": {
+      "label": "Compensació de forat( contorn intern ) X-Y",
+      "tooltip": "Els forats( contorns interns ) de l'objecte creixeran o es reduiran en el pla XY segons el valor configurat. Un valor positiu fa que els forats siguin més grans. Un valor negatiu fa que els forats siguin més petits. Aquesta funció s'utilitza per ajustar lleugerament la mida quan l'objecte té problemes d'ensamblatge( encaix )"
+    },
+    "z_direction_outwall_speed_continuous": {
+      "label": "Velocitat de paret de suavització al llarg de Z (experimental)",
+      "tooltip": "Alimentació de la velocitat de la paret exterior en direcció z per obtenir una millor qualitat de la superfície.El temps d'impressió augmentarà. No funciona en mode vaso espiral."
+    },
+    "z_hop": {
+      "label": "Salt en Z quan hi ha retracció",
+      "tooltip": "Cade vegada que es fa una retracció, s'aixeca una mica el broquet per crear espai lliure entre el broquet i la impressió. Evita que el broquet colpegi la impressió en els desplaçaments. L'ús de la línia espiral per aixecar z pot evitar l'aparició de fils"
+    },
+    "z_hop_types": {
+      "label": "Tipus de salt en Z",
+      "tooltip": "Tipus de salt en Z",
+      "enum_labels": [
+        "Automàtic",
+        "Normal",
+        "Pendent",
+        "Espiral"
+      ]
+    },
+    "z_offset": {
+      "label": "Separació Z",
+      "tooltip": "Aquest valor serà sumat ( o restat ) de totes les coordenades Z al Codi-G de sortida. S'usa per compensar una mala posició del final de carrera Z: per exemple, si el teu final de carrera deixa el broquet a 0.3mm de la placa d'impressió, ajusta'l a -0.3 ( o repara el final de carrera )."
+    }
+  },
+  "ui": {
+    "Acceleration": "Acceleració",
+    "Acceleration limitation": "Limitació d'acceleració",
+    "Accessory": "Accessori",
+    "Adaptive bed mesh": "Malla de placa adaptativa",
+    "Advanced": "Avançat",
+    "Back Fan": "Admet filtració d'aire",
+    "Basic information": "Informació bàsica",
+    "Bed temperature": "Temperatura del llit",
+    "Before layer change G-code": "Codi-G per abans d'un canvi de capa",
+    "Bridging": "Ponts",
+    "Brim": "Vora d'Adherència",
+    "Change extrusion role G-code": "Codi-G de canvi del rol d'extrusió",
+    "Change filament G-code": "Codi-G de canvi de filament",
+    "Cooling": "Refregiració",
+    "Cooling Fan": "Ventilador de refrigeració",
+    "Cooling for specific layer": "Refrigeració per a capes específiques",
+    "Extruder Clearance": "Espai lliure de l'extrusor",
+    "Filament": "Filament",
+    "Filament end G-code": "Codi-G Final del Filament",
+    "Filament for Features": "Filament per Característiques",
+    "Filament start G-code": "Codi-G Inicial del Filament",
+    "Flush options": "Opcions de purga",
+    "G-code output": "Codi-G de Sortida",
+    "Infill": "Farciment",
+    "Initial layer speed": "Velocitat de la capa inicial",
+    "Ironing": "Planxat",
+    "Jerk limitation": "Limitació de la sacsejada( Jerk )",
+    "Jerk(XY)": "Sacsejada( XY )-Jerk( XY )",
+    "Layer change G-code": "Codi-G per després d'un canvi de capa",
+    "Layer height": "Alçada de capa",
+    "Layer height limits": "Límits d'alçada de capa",
+    "Lift Z Enforcement": "Forçar elevació Z",
+    "Line width": "Amplada de línia",
+    "Machine end G-code": "Codi-G final de màquina",
+    "Machine gcode": "Codi-G de màquina",
+    "Machine start G-code": "Codi-G d'arrencada de la màquina",
+    "Model fan": "Ventilador de refrigeració de peces",
+    "Motion ability": "Motion ability",
+    "Multimaterial": "Multifilament",
+    "Notes": "Notes",
+    "Ooze prevention": "Prevenció de l'Ooze",
+    "Other layers speed": "Velocitat d'altres capes",
+    "Others": "Altres",
+    "Overhang speed": "Velocitat de voladís",
+    "Overhangs": "Voladissos",
+    "Pause G-code": "Codi-G de pausa",
+    "Position": "Posició",
+    "Post-processing Scripts": "Scripts de postprocessament",
+    "Precision": "Precisió",
+    "Prime tower": "Torre de Purga",
+    "Print chamber temperature": "Temperatura de la cambra d'impressió",
+    "Print temperature": "Temperatura d'impressió",
+    "Printable space": "Espai imprimible",
+    "Printing by object G-code": "Codi-G d'impressió per objecte",
+    "Quality": "Qualitat",
+    "Raft": "Vora d'Adherència",
+    "Retraction": "Retracció",
+    "Retraction when switching material": "Retracció en canviar de filament",
+    "Seam": "Costura",
+    "Setting Overrides": "Setting Overrides",
+    "Side Fan": "Ventilador auxiliar de refrigeració de peces",
+    "Single extruder multimaterial parameters": "Paràmetres d'extrusor únic multifilament",
+    "Single extruder multimaterial setup": "Configuració d'extrusor únic multifilament",
+    "Size": "Mida",
+    "Skirt": "Faldilla",
+    "Special mode": "Ajustos espcials",
+    "Speed": "Velocitat",
+    "Speed limitation": "Limitació de velocitat",
+    "Strength": "Força",
+    "Support": "Suport",
+    "Support filament": "Filament de suport",
+    "Support ironing": "Suport de planxat",
+    "Template Custom G-code": "Codi-G de canvi de plantilla",
+    "Time lapse G-code": "Codi-G time lapse",
+    "Toolchange parameters with multi extruder MM printers": "Paràmetres del canvi d'eina per a impressores multi-extrusor MM",
+    "Toolchange parameters with single extruder MM printers": "Paràmetres del canvi d'eina per a impressores d'un únic extrusor MM",
+    "Top/bottom shells": "Carcasses superior/inferior",
+    "Travel speed": "Velocitat de desplaçament",
+    "Tree supports": "Suports d'arbre",
+    "Volumetric speed limitation": "Limitació de la velocitat volumètrica",
+    "Wall generator": "Generador de perímetre",
+    "Walls": "Parets",
+    "Walls and surfaces": "Parets i superfícies",
+    "Wipe tower": "Torre de Purga",
+    "Wipe tower parameters": "Paràmetres de la Torre de Purga"
+  }
+}

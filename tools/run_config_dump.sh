@@ -5,6 +5,7 @@ usage() {
   cat >&2 <<'EOF'
 Usage: run_config_dump.sh --source DIR --output DIR --executable RELATIVE_PATH
                           [--executable RELATIVE_PATH ...]
+                          [--translation-domain DOMAIN]
 
 Run the first available direct-build executable under Xvfb and collect the
 JSON files emitted beside it by the config-dump patch.
@@ -15,6 +16,7 @@ EOF
 source_dir=""
 output_dir=""
 executable_candidates=()
+translation_domain=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -31,6 +33,11 @@ while [[ $# -gt 0 ]]; do
     --executable)
       [[ $# -ge 2 ]] || usage
       executable_candidates+=("$2")
+      shift 2
+      ;;
+    --translation-domain)
+      [[ $# -ge 2 ]] || usage
+      translation_domain="$2"
       shift 2
       ;;
     *) usage ;;
@@ -91,3 +98,10 @@ for previous_json in "$output_dir"/*.json; do
   rm -f -- "$previous_json"
 done
 cp -- "${json_files[@]}" "$output_dir/"
+
+if [[ -n "$translation_domain" ]]; then
+  python3 ./tools/generate_gettext_translations.py \
+    --source "$source_dir" \
+    --output "$output_dir" \
+    --domain "$translation_domain"
+fi

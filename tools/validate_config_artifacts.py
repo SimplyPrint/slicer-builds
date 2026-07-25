@@ -70,6 +70,12 @@ def validate_translation_index(index_path: Path, output_path: Path) -> None:
         catalog = load_json(catalog_path)
         if not isinstance(catalog, dict) or catalog.get("locale") != locale:
             fail(f"Translation catalog {catalog_path} does not match locale {locale!r}")
+        if not isinstance(catalog.get("messages"), dict):
+            fail(f"Translation catalog {catalog_path} must contain a messages object")
+        if "settings" in catalog and not isinstance(catalog["settings"], dict):
+            fail(f"Translation catalog {catalog_path} has an invalid settings object")
+        if "ui" in catalog and not isinstance(catalog["ui"], dict):
+            fail(f"Translation catalog {catalog_path} has an invalid ui object")
         if not catalog_path.is_relative_to(output_path):
             fail(f"Translation catalog escapes output directory: {catalog_path}")
 

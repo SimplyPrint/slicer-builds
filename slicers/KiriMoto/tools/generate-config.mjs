@@ -112,6 +112,11 @@ for (const [key, declaration] of declarations) {
   if (condition) conditions[key] = condition;
 }
 
+const translationArtifacts = await buildTranslationArtifacts(
+  definitions,
+  declarations,
+  processPanel,
+);
 const metadata = {
   capabilities: {
     profile_metadata_transport: 'envelope.v1',
@@ -144,6 +149,10 @@ const metadata = {
     selections: 'src/kiri/app/consts.js',
     translations: 'src/kiri/app/lang-en.js',
   },
+  translations: {
+    index: 'translations/_index.json',
+    locales: Object.keys(translationArtifacts.catalogs),
+  },
 };
 
 validateArtifacts({ definitions, machine, filament, process: processPanel });
@@ -155,6 +164,10 @@ await Promise.all([
   writeJson('print_config_def.json', sortObject(definitions)),
   writeJson('conditional_visibility.json', { conditions: sortObject(conditions) }),
   writeJson('ui_metadata.json', metadata),
+  writeJson('translations/_index.json', translationArtifacts.index),
+  ...Object.entries(translationArtifacts.catalogs).map(([locale, catalog]) =>
+    writeJson(`translations/${locale}.json`, catalog),
+  ),
 ]);
 
 process.stdout.write(
@@ -205,14 +218,16 @@ async function importSource(relative) {
 function parseMenu(source) {
   const declarations = new Map();
   let group = 'General';
+  let groupLanguageKey = null;
 
   for (const line of source.split(/\r?\n/)) {
     const groupMatch = line.match(/\bnewGroup\((LANG\.[A-Za-z0-9_]+|["'][^"']+["'])/);
     if (groupMatch) {
       group = labelFromToken(groupMatch[1]) || 'General';
+      groupLanguageKey = languageKeyFromToken(groupMatch[1]);
       continue;
     }
-    const declaration = parseDeclaration(line, group);
+    const declaration = parseDeclaration(line, group, groupLanguageKey);
     if (declaration) declarations.set(declaration.key, declaration);
   }
 
@@ -260,7 +275,7 @@ function parseMachineMenu(source) {
   return { declarations };
 }
 
-function parseDeclaration(line, group) {
+function parseDeclaration(line, group, groupLanguageKey = null) {
   const match = line.match(
     /^\s*([A-Za-z][A-Za-z0-9_]*):\s*new(Input|Boolean|Select)\((.+)$/,
   );
@@ -282,6 +297,9 @@ function parseDeclaration(line, group) {
     label: labelFromToken(labelToken) || humanize(key),
     tooltip: labelFromToken(titleToken),
     group: titleCase(group),
+    labelLanguageKey: languageKeyFromToken(labelToken),
+    tooltipLanguageKey: languageKeyFromToken(titleToken),
+    groupLanguageKey,
     visibility,
     selectList,
     min: bounds ? Number(bounds[1]) : null,
@@ -519,9 +537,134 @@ function labelFromToken(token) {
   return '';
 }
 
+function languageKeyFromToken(token) {
+  return token?.startsWith('LANG.') ? token.slice(5) : null;
+}
+
 function normalizeLanguageValue(value) {
   if (Array.isArray(value)) return value.join(' ');
   return typeof value === 'string' ? value : '';
+}
+
+async function buildTranslationArtifacts(definitions, declarations, processPanel) {
+  const languageDirectory = path.resolve(sourceRoot, '..', 'web', 'kiri', 'lang');
+  const entries = await fs.readdir(languageDirectory, { withFileTypes: true });
+  const catalogs = {};
+
+  for (const entry of entries.sort((left, right) => naturalCompare(left.name, right.name))) {
+    if (!entry.isFile() || !entry.name.endsWith('.js') || entry.name === 'en.js') continue;
+    const upstreamLocale = entry.name.slice(0, -3);
+    const locale = canonicalLocale(upstreamLocale);
+    if (catalogs[locale]) {
+      throw new Error(`Multiple Kiri:Moto language files map to canonical locale ${locale}`);
+    }
+
+    globalThis.self.lang = {};
+    const url = pathToFileURL(path.join(languageDirectory, entry.name));
+    url.searchParams.set('simplyprint-translation-generator', entry.name);
+    await import(url.href);
+    const translatedLanguage =
+      globalThis.self.lang[upstreamLocale] ??
+      globalThis.self.lang[upstreamLocale.split('-')[0]] ??
+      Object.values(globalThis.self.lang).find(isPlainObject);
+    if (!isPlainObject(translatedLanguage)) continue;
+
+    const settings = {};
+    const ui = {};
+    for (const [key, definition] of Object.entries(definitions)) {
+      const declaration = declarations.get(key);
+      if (!declaration || !isPlainObject(definition)) continue;
+      const translated = {};
+      if (declaration.labelLanguageKey) {
+        const value = normalizeLanguageValue(
+          translatedLanguage[declaration.labelLanguageKey],
+        );
+        if (value) {
+          translated.label = upperFirst(value);
+        }
+      }
+      if (declaration.tooltipLanguageKey) {
+        const value = normalizeLanguageValue(
+          translatedLanguage[declaration.tooltipLanguageKey],
+        );
+        if (value) {
+          translated.tooltip = value;
+        }
+      }
+      if (Object.keys(translated).length > 0) settings[key] = translated;
+
+      if (declaration.groupLanguageKey) {
+        const value = normalizeLanguageValue(
+          translatedLanguage[declaration.groupLanguageKey],
+        );
+        if (value) ui[declaration.group] = upperFirst(value);
+      }
+    }
+
+    for (const label of Object.keys(processPanel)) {
+      if (!ui[label]) {
+        const languageEntry = [...declarations.values()].find(
+          (declaration) =>
+            declaration.group === label && declaration.groupLanguageKey,
+        );
+        const value = languageEntry
+          ? normalizeLanguageValue(
+              translatedLanguage[languageEntry.groupLanguageKey],
+            )
+          : '';
+        if (value) ui[label] = upperFirst(value);
+      }
+    }
+
+    if (Object.keys(settings).length === 0 && Object.keys(ui).length === 0) continue;
+    catalogs[locale] = {
+      schema_version: 1,
+      locale,
+      source_locale: 'en',
+      messages: {},
+      settings: sortObject(settings),
+      ui: sortObject(ui),
+    };
+  }
+
+  globalThis.self.lang = { en: language, 'en-us': language };
+  return {
+    catalogs: sortObject(catalogs),
+    index: {
+      schema_version: 1,
+      source_locale: 'en',
+      locales: Object.fromEntries(
+        Object.keys(catalogs)
+          .sort(naturalCompare)
+          .map((locale) => [locale, `${locale}.json`]),
+      ),
+    },
+  };
+}
+
+function canonicalLocale(value) {
+  const defaultRegions = {
+    da: 'DK',
+    de: 'DE',
+    en: 'US',
+    es: 'ES',
+    fr: 'FR',
+    pl: 'PL',
+    pt: 'PT',
+  };
+  const parts = String(value).trim().split(/[-_]+/).filter(Boolean);
+  const languageCode = parts.shift()?.toLowerCase();
+  if (!languageCode) throw new Error('Kiri:Moto locale must not be empty');
+  if (parts.length === 0) return languageCode === 'zh' ? 'zh_CN' : languageCode;
+  const normalized = parts.map((part) =>
+    part.length === 4
+      ? part[0].toUpperCase() + part.slice(1).toLowerCase()
+      : part.toUpperCase(),
+  );
+  if (normalized.length === 1 && defaultRegions[languageCode] === normalized[0]) {
+    return languageCode;
+  }
+  return [languageCode, ...normalized].join('_');
 }
 
 function humanize(value) {
@@ -616,5 +759,7 @@ function validateArtifacts(artifacts) {
 }
 
 async function writeJson(filename, value) {
-  await fs.writeFile(path.join(outputDir, filename), `${JSON.stringify(value, null, 2)}\n`);
+  const destination = path.join(outputDir, filename);
+  await fs.mkdir(path.dirname(destination), { recursive: true });
+  await fs.writeFile(destination, `${JSON.stringify(value, null, 2)}\n`);
 }

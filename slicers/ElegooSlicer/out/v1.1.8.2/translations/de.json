@@ -1,0 +1,2313 @@
+{
+  "schema_version": 1,
+  "locale": "de",
+  "source_locale": "en",
+  "messages": {},
+  "settings": {
+    "accel_to_decel_enable": {
+      "label": "Beschleunigung zu Verzögerung einschalten",
+      "tooltip": "Die maximale Beschleunigung und Verzögerung von Klipper wird automatisch angepasst"
+    },
+    "accel_to_decel_factor": {
+      "label": "Beschleunigung zu Verzögerung",
+      "tooltip": "Klipper's max_accel_to_decel wird auf diesen %% der Beschleunigung verändert"
+    },
+    "activate_air_filtration": {
+      "label": "Aktiviere Luftfilterung",
+      "tooltip": "aktivieren für eine bessere Luftfilterung. G-Code Befehl: M106 P3 S(0-255)"
+    },
+    "activate_chamber_temp_control": {
+      "label": "aktiviere Temperaturkontrolle",
+      "tooltip": "Diese Option aktiviert die automatische Druckraumtemperaturkontrolle. Diese Option aktiviert das Aussenden eines M191-Befehls vor dem \"machine_start_gcode\", der die Druckraumtemperatur einstellt und wartet, bis sie erreicht ist. Darüber hinaus wird am Ende des Drucks ein M141-Befehl ausgegeben, um den Druckraumheizer auszuschalten, falls vorhanden. \n\nDiese Option basiert auf der Firmware, die die M191- und M141-Befehle entweder über Makros oder nativ unterstützt und wird normalerweise verwendet, wenn ein aktiver Druckraumheizer installiert ist."
+    },
+    "adaptive_bed_mesh_margin": {
+      "label": "Abtastbereich",
+      "tooltip": "Diese Option bestimmt den zusätzlichen Abstand, um den der adaptive Bett-Mesh-Bereich in den XY-Richtungen erweitert werden soll."
+    },
+    "adaptive_pressure_advance": {
+      "label": "Adaptive Pressure Advance aktivieren (Beta)",
+      "tooltip": "Mit zunehmender Druckgeschwindigkeit (und damit zunehmendem Volumenstrom durch die Düse) und zunehmenden Beschleunigungen wurde beobachtet, dass der effektive PA-Wert in der Regel abnimmt. Dies bedeutet, dass ein einzelner PA-Wert nicht immer zu 100% optimal für alle Funktionen ist und in der Regel ein Kompromisswert verwendet wird, der keine zu starke Ausbeulung bei Funktionen mit niedrigerer Fließgeschwindigkeit und Beschleunigungen verursacht, während er auch keine Lücken bei schnelleren Funktionen verursacht.\n\nDieses Feature zielt darauf ab, diese Einschränkung zu beheben, indem die Reaktion des Extrusionssystems Ihres Druckers in Abhängigkeit von der Volumenfließgeschwindigkeit und Beschleunigung, mit der gedruckt wird, modelliert wird. Intern wird ein angepasstes Modell generiert, das den benötigten Druckvorschub für eine beliebige gegebene Volumenfließgeschwindig-keit und Beschleunigung extrapolieren kann, der dann je nach den aktuellen Druckbedingungen an den Drucker ausgegeben wird.\n\nWenn diese Option aktiviert ist, wird der obige Druckvorschubwert überschrie-ben. Es wird jedoch dringend empfohlen, einen vernünftigen Standardwert oben zu verwenden, um als Fallback und für den Werkzeugwechsel zu dienen.\n\n"
+    },
+    "adaptive_pressure_advance_bridges": {
+      "label": "Pressure Advance für Brücken",
+      "tooltip": "Pressure Advance-Wert für Brücken. Auf 0 setzen, um zu deaktivieren.\n\nEin niedrigerer PA-Wert beim Drucken von Brücken hilft, das Auftreten einer leichten Unterextrusion unmittelbar nach Brücken zu reduzieren. Dies wird durch den Druckabfall in der Düse beim Drucken in der Luft verursacht, und ein niedrigerer PA hilft, dem entgegenzuwirken."
+    },
+    "adaptive_pressure_advance_model": {
+      "label": "Adaptive Pressure Advance Messung (experimentell)",
+      "tooltip": "Fügen Sie Sätze von Druckvorschub (PA)-Werten, den Volumenfließgeschwindig-keiten und Beschleunigungen, bei denen sie gemessen wurden, durch ein Komma getrennt hinzu. Ein Satz von Werten pro Zeile. Zum Beispiel\n0,04,3,96,3000\n0,033,3,96,10000\n0,029,7,91,3000\n0,026,7,91,10000\n\nWie einstellen?\n1. PA Test für mindestens 3 Geschwindigkeiten pro Beschleunigung durchführen. Es wird empfohlen, dass der Test mindestens für die Geschwindig-keit der äußeren Umfänge, die Geschwindigkeit der inneren Umfänge und die schnellste Funktionendruckgeschwindigkeit in Ihrem Profil (normalerweise ist es das dünne oder massive Infill) durchgeführt wird. Führen Sie sie dann für die gleichen Geschwindigkeiten für die langsamsten und schnellsten Druckbeschleunigungen durch und nicht schneller als die empfohlene maximale Beschleunigung, wie sie vom Klipper-Eingabe-Shaper angegeben wird.\n2. Notieren Sie den optimalen PA-Wert für jede Volumenfließgeschwindigkeit und Beschleunigung. Sie können die Fließzahl auswählen, indem Sie Fluss ausdem Farbschema-Dropdown auswählen und den horizontalen Schieberegler über den PA-Musterlinien bewegen. Die Zahl sollte am unteren Rand der Seite sichtbar sein. Der ideale PA-Wert sollte abnehmen, je höher die Volumenfließgeschwin-digkeit ist. Wenn dies nicht der Fall ist, bestätigen Sie, dass Ihr Extruder korrekt funktioniert. Je langsamer und mit weniger Beschleunigung Sie drucken, desto größer ist der Bereich der akzeptablen PA-Werte. Wenn kein Unterschied sichtbar ist, verwenden Sie den PA-Wert aus dem schnelleren Test.3. Geben Sie die Triplets von PA-Werten, Fluss und Beschleunigungen im Textfeld hier ein und speichern Sie Ihr Filamentprofil\n\n"
+    },
+    "adaptive_pressure_advance_overhangs": {
+      "label": "Adaptives PA für Überhänge aktivieren (experimentell)",
+      "tooltip": "Adaptives PA für Überhänge aktivieren, sowie wenn der Fluss innerhalb der gleichen Funktion geändert wird. Dies ist eine experimentelle Option, da bei einer ungenauen Einstellung des PA-Profils Gleichmäßigkeitsprobleme auf den externen Oberflächen vor und nach Überhängen verursacht werden.\n"
+    },
+    "additional_cooling_fan_speed": {
+      "label": "Lüftergeschwindigkeit",
+      "tooltip": "Geschwindigkeit des Hilfsventilators für die Bauteilkühlung. Der Hilfsventi-lator läuft mit dieser Geschwindigkeit während des Druckens, außer in den ersten Schichten, die durch die Option \"Keine Kühlung\" definiert sind.\nBitte aktivieren Sie den Hilfsventilator in den Druckereinstellungen, um diese Funktion zu verwenden. G-Code-Befehl: M106 P2 S(0-255)"
+    },
+    "alternate_extra_wall": {
+      "label": "Abwechselnde zusätzliche Wand",
+      "tooltip": "Diese Einstellung fügt jeder zweiten Schicht eine zusätzliche Wand hinzu. Damit wird die Füllung vertikal zwischen den Wänden eingeklemmt, was zu stärkeren Drucken führt. \n\nWenn diese Option aktiviert ist, muss die Option zur Sicherstellung der vertikalen Schalendicke deaktiviert werden. \n\nDie Verwendung von Lightning Infill zusammen mit dieser Option wird nicht empfohlen, da die Füllung begrenzt ist, um die zusätzlichen Umfänge zu verankern."
+    },
+    "auxiliary_fan": {
+      "label": "Hilfslüfter",
+      "tooltip": "Aktivieren Sie diese Option, wenn der Drucker einen zusätzlichen Lüfter für die Kühlung von Teilen hat. G-Code-Befehl: M106 P2 S(0-255)."
+    },
+    "bbl_calib_mark_logo": {
+      "label": "Zeige automatische Kalibrierungsmarkierungen"
+    },
+    "bbl_use_printhost": {
+      "label": "Benutze Drittanbieter-Druck-Hosts",
+      "tooltip": "Erlauben Sie die Steuerung von BambuLab-Druckern durch Drittanbieter-Druck-Hosts"
+    },
+    "bed_custom_model": {
+      "label": "Benutzerspezifisches Druckbettmodell"
+    },
+    "bed_custom_texture": {
+      "label": "Benutzerdefinierte Textur des Druckbettes"
+    },
+    "bed_exclude_area": {
+      "label": "ausgenommene Druckbettfläche"
+    },
+    "bed_mesh_max": {
+      "label": "Bett Max Abtastbereich",
+      "tooltip": "Diese Option legt den maximalen Punkt für den erlaubten Bett-Mesh-Bereich fest. Aufgrund des XY-Offsets der Sonde sind die meisten Drucker nicht in der Lage, das gesamte Bett abzutasten. Um sicherzustellen, dass der Abtastpunkt nicht außerhalb des Bettbereichs liegt, sollten die minimalen und maximalen Punkte des Bett-Mesh entsprechend festgelegt werden. ElegooSlicer stellt sicher, dass die Werte adaptive_bed_mesh_min/adaptive_bed_mesh_max diese Min-/Max-Punkte nicht überschreiten. Diese Informationen können in der Regel vom Druckerhersteller bezogen werden. Die Standardeinstellung ist (99999, 99999), was bedeutet, dass es keine Grenzen gibt und somit das Abtasten über das gesamte Bett ermöglicht wird."
+    },
+    "bed_mesh_min": {
+      "label": "Bett Min Abtastbereich",
+      "tooltip": "Diese Option legt den minimalen Punkt für den erlaubten Bett-Mesh-Bereich fest. Aufgrund des XY-Offsets der Sonde sind die meisten Drucker nicht in der Lage, das gesamte Bett abzutasten. Um sicherzustellen, dass der Abtastpunkt nicht außerhalb des Bettbereichs liegt, sollten die minimalen und maximalen Punkte des Bett-Mesh entsprechend festgelegt werden. ElegooSlicer stellt sicher, dass die Werte adaptive_bed_mesh_min/adaptive_bed_mesh_max diese Min-/Max-Punkte nicht überschreiten. Diese Informationen können in der Regel vom Druckerhersteller bezogen werden. Die Standardeinstellung ist (-99999, -99999), was bedeutet, dass es keine Grenzen gibt und somit das Abtasten über das gesamte Bett ermöglicht wird."
+    },
+    "bed_mesh_probe_distance": {
+      "label": "Abstand der Abtastpunkte",
+      "tooltip": "Diese Option legt den bevorzugten Abstand zwischen den Abtastpunkten (Raster-Größe) für die X- und Y-Richtung fest, wobei der Standardwert für beide X und Y 50 mm beträgt."
+    },
+    "before_layer_change_gcode": {
+      "label": "G-Code vor dem Schichtwechsel",
+      "tooltip": "Dieser G-Code wird bei jedem Schichtwechsel vor dem anheben von Z eingefügt."
+    },
+    "best_object_pos": {
+      "label": "Beste Objektposition",
+      "tooltip": "Beste automatische Positionierung im Bereich [0,1] bezogen auf das Bett."
+    },
+    "bottom_shell_layers": {
+      "label": "Untere Schalenschichten",
+      "full_label": "Untere Schalenschichten",
+      "tooltip": "Dies ist die Anzahl der massiven Schichten der Unterschale, einschließlich der ersten Schicht. Wenn die mit diesem Wert berechnete Dicke dünner ist als die Dicke der unteren Schale, werden die unteren Schalenschichten erhöht."
+    },
+    "bottom_shell_thickness": {
+      "label": "Dicke der unteren Schale",
+      "full_label": "Dicke der unteren Schale",
+      "tooltip": "Die Anzahl der unteren festen Schichten wird beim Slicen erhöht, wenn die untere Schalenstärke dünner als dieser Wert ist. Dies kann verhindern, dass die Schale zu dünn wird, wenn eine geringe Schichthöhe verwendet wird. 0 bedeutet, dass diese Einstellung deaktiviert ist und die Dicke der unteren Schale absolut durch die unteren Schalenschichten bestimmt wird."
+    },
+    "bottom_solid_infill_flow_ratio": {
+      "label": "Durchflussverhältnis untere Fläche",
+      "tooltip": "Dieser Faktor beeinflusst die Menge des Materials für die untere feste Füllung.\n\nDer tatsächliche Fluss für die untere feste Füllung wird berechnet, indem dieser Wert mit dem Filamentflussverhältnis und, falls festgelegt, dem Objektflussverhältnis multipliziert wird."
+    },
+    "bottom_surface_pattern": {
+      "label": "Muster der unteren Fläche",
+      "tooltip": "Linienmuster der Bodenfüllung. Brückenfüllung nicht eingeschlossen",
+      "enum_labels": [
+        "Konzentrisch",
+        "Geradlinig",
+        "Monotonisch",
+        "Monotonische Linie",
+        "Geradlinig ausgerichtet",
+        "Hilbert-Kurve",
+        "Archimedische Akkorde",
+        "Oktagramm Spirale"
+      ]
+    },
+    "bridge_acceleration": {
+      "label": "Überbrückung",
+      "tooltip": "Beschleunigung der Brücken. Wenn der Wert als Prozentwert angegeben wird (z.B. 50%), wird er auf der Grundlage der Beschleunigung der Außenwand berechnet."
+    },
+    "bridge_angle": {
+      "label": "Brückenfüllrichtung",
+      "tooltip": "Überbrückungswinkel überschreiben. 0 bedeutet, dass der Überbrückungswinkel automatisch berechnet wird. Andernfalls wird der angegebene Winkel für externe Brücken verwendet. Verwenden Sie 180° für keinen Winkel."
+    },
+    "bridge_density": {
+      "label": "Brückendichte",
+      "tooltip": "Die Standard-Einstellung für Density of external bridges ist 100%, was bedeutet, dass die Brücke als massives Material gedruckt wird. Diese Einstellung kann jedoch je nach Druckanforderungen und Objekt variieren und angepasst werden."
+    },
+    "bridge_flow": {
+      "label": "Brücken Flussrate",
+      "tooltip": "Verringern Sie diesen Wert leicht (zum Beispiel 0,9), um die Materialmenge für die Brücke zu reduzieren und das Durchhängen zu verbessern.\n\nDer tatsächliche Brückenfluss wird berechnet, indem dieser Wert mit dem Filamentflussverhältnis und, falls festgelegt, dem Objektflussverhältnis multipliziert wird."
+    },
+    "bridge_no_support": {
+      "label": "Brücken nicht unterstützen",
+      "tooltip": "Stützt den Brückenbereich nicht ab, was die die Menge der benötigten Stützen reduziert. Brücken können in der Regel direkt ohne Stützen gedruckt werden, wenn diese nicht sehr lang sind."
+    },
+    "bridge_speed": {
+      "label": "Extern",
+      "tooltip": "Geschwindigkeit der extern sichtbaren Brückenextrusionen.\n\nDarüber hinaus wird, wenn die Option zum Verlangsamen von gekrümmten Umfängen deaktiviert ist oder der klassische Überhangsmodus aktiviert ist, die Druckgeschwindigkeit der Überhangswände, die zu weniger als 13 % gestützt sind, ob sie Teil einer Brücke oder eines Überhangs sind."
+    },
+    "brim_ears": {
+      "label": "Brim Ohren",
+      "tooltip": "Zeichne den Brim nur über die scharfen Kanten des Modells."
+    },
+    "brim_ears_detection_length": {
+      "label": "Radius für die Erkennung von Brim-Ohren",
+      "tooltip": "Die Geometrie wird vor der Erkennung von scharfen Winkeln reduziert. DieserParameter gibt die minimale Länge der Abweichung für die Reduzierung an.\n0, um die Reduzierung zu deaktivieren."
+    },
+    "brim_ears_max_angle": {
+      "label": "Maximaler Winkel für Brim-Ohren",
+      "tooltip": "Höchster Winkel, bei dem ein Brim-Ohr erscheinen soll.\nWenn auf 0 gesetzt, wird kein Brim erstellt.\nWenn auf etwa 180 gesetzt, wird ein Brim auf allem außer geraden Abschnitten erstellt."
+    },
+    "brim_object_gap": {
+      "label": "Lücke zwischen Rand und Objekt",
+      "tooltip": "Eine Lücke zwischen der innersten Randlinie und dem Objekt kann das Abnehmen des Randes erleichtern"
+    },
+    "brim_type": {
+      "label": "Randtyp",
+      "tooltip": "Dies steuert die Erstellung des Brims an der äußeren und/oder inneren Seitevon Modellen. Auto bedeutet, dass die Breite des Brims automatisch analysiert und berechnet wird.",
+      "enum_labels": [
+        "Automatisch",
+        "Mausohren",
+        "Nur Außen",
+        "Nur Innenrand",
+        "Äußere und innere Randleiste",
+        "Keine Umrandung"
+      ]
+    },
+    "brim_width": {
+      "label": "Randbreite",
+      "tooltip": "Abstand vom Modell zur äußersten Randlinie"
+    },
+    "chamber_temperature": {
+      "label": "Druckraum Temperatur",
+      "full_label": "Druckraum Temperatur",
+      "tooltip": "Für Hochtemperaturmaterialien wie ABS, ASA, PC und PA kann eine höhere Druckraumtemperatur helfen, das Verziehen zu unterdrücken oder zu reduzieren und möglicherweise zu einer höheren Festigkeit der Zwischenschichtbindung führen. Gleichzeitig verringert eine höhere Druckraumtemperatur jedoch die Effizienz der Luftfiltration für ABS und ASA. \n\nFür PLA, PETG, TPU, PVA und andere Niedrigtemperaturmaterialien sollte diese Option deaktiviert sein (auf 0 gesetzt werden), da die Druckraumtemperatur niedrig sein sollte, um ein Verstopfen des Extruders durch Erweichung des Materials am Heizblock zu vermeiden. \n\nWenn diese Option aktiviert ist, wird auch eine G-Code-Variable namens chamber_temperature gesetzt, die verwendet werden kann, um die gewünschte Druckraumtemperatur an Ihr Druckstart-Makro oder ein Wärmespeicher-Makro weiterzugeben, wie z.B. PRINT_START (andere Variablen) CHAMBER_TEMP=[chamber_temperature]. Dies kann nützlich sein, wenn Ihr Drucker die Befehle M141/M191 nicht unterstützt oder wenn Sie das Wärmespeichern im Druckstart-Makro behandeln möchten, wenn kein aktiver Druckraumheizer installiert ist."
+    },
+    "change_extrusion_role_gcode": {
+      "label": "Ändere den G-Code der Extrusionsart",
+      "tooltip": "Dieser G-Code wird beim Wechsel der Extrusionsart eingefügt"
+    },
+    "change_filament_gcode": {
+      "label": "Filamentwechsel G-Code",
+      "tooltip": "Dieser G-Code wird beim Filamentwechsel eingefügt, einschließlich des T-Befehls zum Auslösen des Werkzeugwechsels"
+    },
+    "close_fan_the_first_x_layers": {
+      "label": "Keine Kühlung für die erste",
+      "tooltip": "Schalte alle Lüfter für die ersten Schichten aus. Dies kann genutzt werden, um die Betthaftung zu verbessern."
+    },
+    "compatible_printers": {
+      "label": "Kompatible Maschine"
+    },
+    "compatible_printers_condition": {
+      "label": "Kompatibler Maschinenzustand"
+    },
+    "compatible_prints": {
+      "label": "Kompatible Prozessprofile"
+    },
+    "compatible_prints_condition": {
+      "label": "Bedingung für kompatible Prozessprofile"
+    },
+    "complete_print_exhaust_fan_speed": {
+      "label": "Lüftergeschwindigkeit",
+      "tooltip": "Geschwindigkeit des Abluftventilators nach Abschluss des Drucks"
+    },
+    "cool_plate_temp": {
+      "label": "Andere Schichten",
+      "full_label": "Druckbetttemperatur",
+      "tooltip": "Dies ist die Betttemperatur für Schichten mit Ausnahme der Ersten. Ein Wert von 0 bedeutet, dass das Filament auf der kalten Druckplatte nicht unterstützt wird."
+    },
+    "cool_plate_temp_initial_layer": {
+      "label": "Erste Schicht",
+      "full_label": "Druckbettemperatur für die erste Schicht",
+      "tooltip": "Dies ist die Betttemperatur der ersten Schicht. Ein Wert von 0 bedeutet, dass das Filament auf der kalten Druckplatte nicht unterstützt wird."
+    },
+    "cooling_tube_length": {
+      "label": "Kühlrohrlänge",
+      "tooltip": "Länge des Kühlrohrs, um den Platz für Kühlbewegungen darin zu begrenzen."
+    },
+    "cooling_tube_retraction": {
+      "label": "Position des Kühlrohrs",
+      "tooltip": "Entfernung des Mittelpunkts des Kühlrohrs von der Düsenspitze."
+    },
+    "counterbore_hole_bridging": {
+      "label": "Brücken für Senkungen",
+      "tooltip": "Diese Option erstellt Brücken für Senkungen, die es ermöglichen, sie ohne Unterstützung zu drucken. Die verfügbaren Modi sind:\n1. Keine: Es wird keine Brücke erstellt.\n2. Teilweise überbrückt: Nur ein Teil des nicht unterstützten Bereichs wird überbrückt.\n3. Opferschicht: Es wird eine vollständige opfernde Brückenschicht erstellt.",
+      "enum_labels": [
+        "Keine",
+        "Teilweise überbrückt",
+        "Opferschicht"
+      ]
+    },
+    "curr_bed_type": {
+      "label": "Druckbetttyp",
+      "tooltip": "Vom Drucker unterstützte Druckbettypen",
+      "enum_labels": [
+        "Glatte kalte Druckplatte",
+        "Technische Druckplatte",
+        "Glatte Hochtemperatur-Druckplatte",
+        "Texturierte PEI-Platte",
+        "Strukturierte kalte Druckplatte"
+      ]
+    },
+    "default_acceleration": {
+      "label": "Normales Drucken",
+      "tooltip": "Die Standardbeschleunigung für den normalen Druck und den Eilgang nach der ersten Schicht."
+    },
+    "default_filament_colour": {
+      "label": "Standardfarbe",
+      "tooltip": "Standard-Filamentfarbe"
+    },
+    "default_filament_profile": {
+      "label": "Standard-Filamentprofil",
+      "tooltip": "Standard-Filamentprofil beim Wechsel zu diesem Maschinenprofil"
+    },
+    "default_jerk": {
+      "label": "Standard",
+      "tooltip": "Standard"
+    },
+    "default_print_profile": {
+      "label": "Standard-Prozessprofil",
+      "tooltip": "Standard-Prozessprofil beim Wechsel zu diesem Maschinenprofil"
+    },
+    "deretraction_speed": {
+      "label": "Wiedereinzugsgeschwindigkeit",
+      "full_label": "Wiedereinzugsgeschwindigkeit",
+      "tooltip": "Geschwindigkeit für das Einziehen von Filament in den Extruder nach einem Rückzug. Null bedeutet die gleiche Geschwindigkeit wie der Rückzug."
+    },
+    "detect_narrow_internal_solid_infill": {
+      "label": "Erkennen einer schmalen internen soliden Füllung",
+      "tooltip": "Mit dieser Option wird ein schmaler innerer Füllbereich automatisch erkannt. Wenn diese Option aktiviert ist, wird ein konzentrisches Muster für den Bereich verwendet, um den Druck zu beschleunigen. Andernfalls wird standardmäßig ein geradliniges Muster verwendet."
+    },
+    "detect_overhang_wall": {
+      "label": "Erkennen von Wandüberhängen",
+      "tooltip": "Erkennt den Prozentsatz des Überhangs im Verhältnis zur Linienbreite und verwenden hierfür eine unterschiedliche Druckgeschwindigkeiten. Bei einem 100%% Überhang wird die Brückengeschwindigkeit verwendet."
+    },
+    "detect_thin_wall": {
+      "label": "Dünne Wand erkennen",
+      "tooltip": "Erkennt dünne Wände, die keine zwei Linienbreiten enthalten können. Und verwendet eine einzelne Linie zum Drucken. Diese wird vielleicht nicht sehr gut gedruckt, weil es keine geschlossene Schleife ist."
+    },
+    "disable_m73": {
+      "label": "Deaktiviere die verbleibende Druckzeit",
+      "tooltip": "Deaktiviert das Generieren von M73: Setze die verbleibende Druckzeit im endgültigen G-Code"
+    },
+    "dont_filter_internal_bridges": {
+      "label": "Kleine interne Brücken herausfiltern (Beta)",
+      "tooltip": "Diese Option kann dazu beitragen, das Pillowing auf den oberen Oberflächen in stark geneigten oder gekrümmten Modellen zu reduzieren.\n\nStandardmäßig werden kleine interne Brücken herausgefiltert und das interne feste Infill wird direkt über dem dünnen Infill gedruckt. Dies funktioniert in den meisten Fällen gut und beschleunigt den Druck, ohne die Qualität der oberen Oberfläche zu beeinträchtigen.\n\nIn stark geneigten oder gekrümmten Modellen, insbesondere wenn eine zu geringe Dichte des dünnen Infill verwendet wird, kann dies jedoch zu einem Kräuseln des nicht unterstützten festen Infill führen, was zu Pillowing führt.\n\nWenn diese Option deaktiviert ist, wird die interne Brückenschicht über dem leicht nicht unterstützten internen festen Infill gedruckt. Die folgenden Optionen steuern die Filterung, d. h. die Anzahl der erstellten internen Brücken.\n\nFilter - aktivieren Sie diese Option. Dies ist das Standardverhalten und funktioniert in den meisten Fällen gut.\n\nBegrenzte Filterung - erstellt interne Brücken auf stark geneigten Oberflächen, vermeidet jedoch das Erstellen unnötiger interner Brücken. Dies funktioniert für die meisten schwierigen Modelle gut.\n\nKeine Filterung - erstellt interne Brücken an jedem potenziellen internen Überhang. Diese Option ist für stark geneigte obere Oberflächenmodelle nützlich. In den meisten Fällen erstellt sie jedoch zu viele unnötige Brücken.",
+      "enum_labels": [
+        "Filter",
+        "Begrenzte Filterung",
+        "Keine Filterung"
+      ]
+    },
+    "dont_slow_down_outer_wall": {
+      "label": "Äußere Wände nicht verlangsamen",
+      "tooltip": "Wenn diese Einstellung aktiviert ist, wird sichergestellt, dass die externen Umfänge nicht verlangsamt werden, um die Mindestschichtzeit zu erreichen. Dies ist besonders hilfreich in den folgenden Szenarien:\n\n 1. Um Änderungen im Glanz beim Drucken von glänzenden Filamenten zu vermeiden\n2. Um Änderungen in der Geschwindigkeit der äußeren Wand zu vermeiden, die leichte Wandartefakte erzeugen können, die wie Z-Banding aussehen\n3. Um das Drucken mit Geschwindigkeiten zu vermeiden, die VFAs (feine Artefakte) an den äußeren Wänden verursachen\n\n"
+    },
+    "draft_shield": {
+      "label": "Luftzug-Schutz",
+      "tooltip": "Ein Luftzug-Schutz ist nützlich, um einen ABS- oder ASA-Druck vor Verzug und dem Ablösen vom Druckbett aufgrund von Windzug zu schützen. Er wird normalerweise nur bei offenen Druckern benötigt, d.h. ohne Gehäuse. \n\nAktiviert = Umrandung ist so hoch wie das höchste gedruckte Objekt. Andernfalls wird 'Höhe der Umrandung' verwendet.\nHinweis: Mit aktiviertem Luftzug-Schutz wird die Umrandung in der Umrandungsdistanz vom Objekt gedruckt. Daher kann es bei aktiven Rändern zu Überschneidungen kommen. Um dies zu vermeiden, erhöhen Sie den Wert der Umrandungsdistanz.\n",
+      "enum_labels": [
+        "Deaktiviert",
+        "Aktiviert"
+      ]
+    },
+    "during_print_exhaust_fan_speed": {
+      "label": "Lüftergeschwindigkeit",
+      "tooltip": "Geschwindigkeit des Abluftventilators während des Drucks. Diese Geschwindig-keit überschreibt die Geschwindigkeit im Filament-Benutzerdefinierten G-Code"
+    },
+    "elefant_foot_compensation": {
+      "label": "Elefantenfußkompensation",
+      "tooltip": "Schrumpft die erste Schicht auf der Druckplatte, um den Elefantenfuß-Effekt auszugleichen."
+    },
+    "elefant_foot_compensation_layers": {
+      "label": "Elefantenfußkompensationsschichten",
+      "tooltip": "Die Anzahl der Schichten, in denen die Elefantenfußkompensation aktiv ist. Die erste Schicht wird um den Wert der Elefantenfußkompensation verkleinert, dann werden die nächsten Schichten linear weniger verkleinert, bis zur Schicht, die durch diesen Wert angegeben ist."
+    },
+    "emit_machine_limits_to_gcode": {
+      "label": "Werte im G-Code ausgeben",
+      "tooltip": "Wenn diese Option aktiviert ist, werden die Maschinengrenzen in die G-Code-Datei ausgegeben.\nDiese Option wird ignoriert, wenn der G-Code-Typ auf Klipper eingestellt ist."
+    },
+    "enable_arc_fitting": {
+      "label": "Als Bogen drucken",
+      "tooltip": "Aktivieren Sie diese Option, um eine G-Code-Datei zu erhalten, die G2- und G3-Bewegungen enthält. Die Passungstoleranz entspricht der Auflösung. \n\nHinweis: Für Klipper-Maschinen wird empfohlen, diese Option zu deaktivieren. Klipper profitiert nicht von Bogenbefehlen, da diese von der Firmware wieder in Linienabschnitte aufgeteilt werden. Dies führt zu einer Verringerung der Oberflächenqualität, da Linienabschnitte vom Slicer in Bögen umgewandelt und dann von der Firmware wieder in Linienabschnitte umgewandelt werden."
+    },
+    "enable_filament_ramming": {
+      "label": "Filamentrammen aktivieren",
+      "tooltip": "Filamentrammen aktivieren"
+    },
+    "enable_overhang_bridge_fan": {
+      "label": "Zwangskühlung für Überhänge und Brücken",
+      "tooltip": "Aktivieren Sie diese Option, um die Lüftergeschwindigkeit für Überhänge und Brücken zu optimieren, um eine bessere Kühlung zu erreichen"
+    },
+    "enable_overhang_speed": {
+      "label": "Verlangsamen bei Überhängen",
+      "tooltip": "Aktivieren Sie diese Option, um den Druck für verschiedene Überhangsgrade zu verlangsamen"
+    },
+    "enable_pressure_advance": {
+      "label": "Pressure advance aktivieren",
+      "tooltip": "Wenn Pressure Advance aktiviert ist,werden  Auto-Kalibrierungsergebnisse überschrieben."
+    },
+    "enable_prime_tower": {
+      "label": "Aktivieren",
+      "tooltip": "The Wiping Tower kann verwendet werden, um Rückstände auf der Düse zu entfernen und den Kammerdruck im Inneren der Düse zu stabilisieren, um Erscheinungsdefekte beim Drucken von Objekten zu vermeiden."
+    },
+    "enable_support": {
+      "label": "Stützstrukturen aktivieren",
+      "tooltip": "Erzeugung von Stützstrukturen aktivieren."
+    },
+    "eng_plate_temp": {
+      "label": "Andere Schichten",
+      "full_label": "Druckbetttemperatur",
+      "tooltip": "Dies ist die Betttemperatur für Schichten mit Ausnahme der Ersten. Ein Wert von 0 bedeutet, dass das Filament auf der technischen Druckplatte nicht unterstützt wird."
+    },
+    "eng_plate_temp_initial_layer": {
+      "label": "Erste Schicht",
+      "full_label": "Druckbettemperatur für die erste Schicht",
+      "tooltip": "Dies ist die Betttemperatur der ersten Schicht. Ein Wert von 0 bedeutet, dass das Filament auf der technischen Druckplatte nicht unterstützt wird."
+    },
+    "ensure_vertical_shell_thickness": {
+      "label": "Sicherstellung der vertikalen Wanddicke",
+      "tooltip": "Fügen Sie massives Infill in der Nähe von geneigten Oberflächen hinzu, um die vertikale Wanddicke (obere + untere feste Schichten) zu garantieren\nKeine: Kein massives Infill wird irgendwo hinzugefügt. Vorsicht: Verwenden Sie diese Option vorsichtig, wenn Ihr Modell geneigte Oberflächen hat\nNur kritisch: Vermeiden Sie das Hinzufügen von massivem Infill für Wände\nModerat: Fügen Sie massives Infill nur für stark geneigte Oberflächen hinzu\nAlle: Fügen Sie massives Infill für alle geeigneten geneigten Oberflächen hinzu\nDer Standardwert ist Alle.",
+      "enum_labels": [
+        "Keine",
+        "Nur kritisch",
+        "Moderat",
+        "Alle"
+      ]
+    },
+    "exclude_object": {
+      "label": "Objekte ausschließen",
+      "tooltip": "Aktivieren Sie diese Option, um den Befehl EXCLUDE OBJECT im G-Code hinzuzufügen."
+    },
+    "extra_loading_move": {
+      "label": "Zusätzliche Länge beim Laden",
+      "tooltip": "Wenn der Wert auf Null gesetzt ist, ist die Entfernung, die das Filament während des Ladevorgangs von der Parkposition bewegt wird, genau die gleiche wie beim Rückwärtsbewegen während des Entladens. Wenn der Wert positiv ist, wird es weiter geladen, wenn er negativ ist, ist der Ladevorgang kürzer als das Entladen."
+    },
+    "extra_perimeters_on_overhangs": {
+      "label": "Extra Umfänge bei Überhängen",
+      "tooltip": "Erstellen Sie zusätzliche Umfangspfade über steile Überhänge und Bereiche, in denen Brücken nicht verankert werden können."
+    },
+    "extruder": {
+      "label": "Extruder"
+    },
+    "extruder_clearance_height_to_lid": {
+      "label": "Höhe zum Deckel",
+      "tooltip": "Abstand von der Düsenspitze zum Deckel. Dient zur Kollisionsvermeidung beim objektweisen Drucken."
+    },
+    "extruder_clearance_height_to_rod": {
+      "label": "Höhe zur Führung",
+      "tooltip": "Abstand zwischen der Düsenspitze und dem unteren Stab. Wird zur Kollisionsvermeidung beim objektweisen Drucken verwendet."
+    },
+    "extruder_clearance_radius": {
+      "label": "Radius",
+      "tooltip": "Sicherheitsradius um den Extruder: Dient zur Kollisionsvermeidung beim objektweisen Drucken."
+    },
+    "extruder_colour": {
+      "label": "Extruder Farbe",
+      "tooltip": "Nur als visuelle Hilfe auf der UI verwendet"
+    },
+    "extruder_offset": {
+      "label": "Extruder-Versatz"
+    },
+    "fan_cooling_layer_time": {
+      "label": "Schichtdauer",
+      "tooltip": "Der Bauteillüfter wird für Schichten aktiviert, deren geschätzte Zeit kürzer als dieser Wert ist. Die Lüftergeschwindigkeit wird zwischen der minimalen und maximalen Geschwindigkeit entsprechend der Druckzeit der Schicht interpoliert."
+    },
+    "fan_kickstart": {
+      "label": "Lüfter Anlaufzeit",
+      "tooltip": "Gib für die angegebene Zeit einen Befehl zur maximalen Lüftergeschwindigkeit aus, bevor die Geschwindigkeit auf die Zielgeschwindigkeit reduziert wird, um den Kühlventilator anzuschubsen.Dies ist bei Lüftern nützlich, bei denen eine niedrige PWM-Leistung möglicherweise nicht ausreicht, um den Lüfter vom Stillstand aus zu starten oder um den Lüfter schneller auf Touren zu bringen.Setze den Wert auf 0, um diese Funktion zu deaktivieren."
+    },
+    "fan_max_speed": {
+      "label": "Lüftergeschwindigkeit",
+      "tooltip": "Die Drehzahl des Bauteillüfters kann sich erhöhen, wenn die automatische Kühlung aktiviert ist. Dies ist die maximale Drehzahlbegrenzung des Bauteillüfters."
+    },
+    "fan_min_speed": {
+      "label": "Lüftergeschwindigkeit",
+      "tooltip": "Mindestdrehzahl der Bauteilkühlung"
+    },
+    "fan_speedup_overhangs": {
+      "label": "Nur an Überhängen",
+      "tooltip": "Berücksichtigt nur die Verzögerung für die Kühlung von Überhängen."
+    },
+    "fan_speedup_time": {
+      "tooltip": "Starte den Lüfter diese Anzahl an Sekunden früher. (du kannst auch Milli-Sekunden verwenden). Dabei wird eine unendliche Beschleunigung angenommenund nur G1- und G0-Bewegungen berücksichtigt (Kurvenanpassung wird nicht unterstützt).Fan-Befehle in benutzerdefinierten G-Codes werden nicht verschoben (sie wirken wie eine Art 'Barriere').Fan-Befehle werden nicht in den Start-G-Code verschoben, wenn nur benutzerdefinierterStart-G-Code aktiviert ist. Verwende 0, um den Lüfter zu deaktivieren."
+    },
+    "filament_colour": {
+      "label": "Farbe",
+      "tooltip": "Nur als visuelle Hilfe auf der UI verwendet"
+    },
+    "filament_cooling_final_speed": {
+      "label": "Geschwindigkeit der letzten Kühlbewegung",
+      "tooltip": "Kühlbewegungen beschleunigen allmählich auf diese Geschwindigkeit."
+    },
+    "filament_cooling_initial_speed": {
+      "label": "Geschwindigkeit der ersten Kühlbewegung",
+      "tooltip": "Kühlbewegungen beschleunigen allmählich ab dieser Geschwindigkeit."
+    },
+    "filament_cooling_moves": {
+      "label": "Anzahl der Kühlbewegungen",
+      "tooltip": "Das Filament wird gekühlt, indem es in den Kühlrohren hin und her bewegt wird. Geben Sie die gewünschte Anzahl dieser Bewegungen an."
+    },
+    "filament_cost": {
+      "label": "Preis",
+      "tooltip": "Filamentpreis. Nur für statistische Zwecke."
+    },
+    "filament_density": {
+      "label": "Dichte",
+      "tooltip": "Filamentdichte. Nur für statistische Zwecke."
+    },
+    "filament_deretraction_speed": {
+      "label": "Wiedereinzugsgeschwindigkeit",
+      "full_label": "Wiedereinzugsgeschwindigkeit",
+      "tooltip": "Geschwindigkeit für das Einziehen von Filament in den Extruder nach einem Rückzug. Null bedeutet die gleiche Geschwindigkeit wie der Rückzug."
+    },
+    "filament_diameter": {
+      "label": "Durchmesser",
+      "tooltip": "Der Filamentdurchmesser wird für die Berechnung der Extrusion im G-Code verwendet, er ist also wichtig und sollte genau sein"
+    },
+    "filament_end_gcode": {
+      "label": "End G-Code",
+      "tooltip": "End-G-Code hinzufügen, wenn der Druck dieses Filaments beenden ist."
+    },
+    "filament_flow_ratio": {
+      "label": "Flussverhältnis",
+      "tooltip": "Das Material kann sich nach dem Wechsel zwischen geschmolzenem und kristallinem Zustand volumetrisch verändern. Mit dieser Einstellung werden alle Extrusionsströme dieses Filaments im G-Code proportional geändert. Der empfohlene Wertebereich liegt zwischen 0,95 und 1,05. Sie können diesen Wert anpassen, um eine schöne flache Oberfläche zu erhalten, wenn es eine leichte Über- oder Unterextrusion gibt."
+    },
+    "filament_is_support": {
+      "label": "Stützmaterial",
+      "tooltip": "Stützmaterial wird üblicherweise zum Drucken von Stützen und Stütz-Schnittstellen verwendet."
+    },
+    "filament_loading_speed": {
+      "label": "Lade-Geschwindigkeit",
+      "tooltip": "Lade-Geschwindigkeit für das Filament im Wischturm."
+    },
+    "filament_loading_speed_start": {
+      "label": "Lade-Geschwindigkeit am Anfang",
+      "tooltip": "Geschwindigkeit, die am Anfang der Lade-Phase verwendet wird."
+    },
+    "filament_long_retractions_when_cut": {
+      "label": "Langer Rückzug beim Schneiden (experimentell)",
+      "tooltip": "Experimentelle Funktion. Rückzug und Abschneiden des Filaments bei einem längeren Abstand während des Wechsels, um den Reinigungsvorgang zu minimieren. Obwohl dies den Reinigungsvorgang erheblich reduziert, kann es auch das Risiko von Düsenverstopfungen oder anderen Druckproblemen erhöhen."
+    },
+    "filament_max_volumetric_speed": {
+      "label": "Maximale Volumengeschwindigkeit",
+      "tooltip": "Diese Einstellung ist das Volumen des Filaments, das pro Sekunde geschmolzen und extrudiert werden kann. Die Druckgeschwindigkeit wird durch die maximale volumetrische Geschwindigkeit begrenzt, falls die Geschwindigkeit zu hoch und unangemessen eingestellt ist. Dieser Wert kann nicht Null sein."
+    },
+    "filament_minimal_purge_on_wipe_tower": {
+      "label": "Minimale Wischmenge im Wischturm",
+      "tooltip": "Nach einem Werkzeugwechsel ist die genaue Position des neu geladenen Filaments im Düsenkopf möglicherweise unbekannt und der Filamentdruck ist wahrscheinlich noch nicht stabil. Bevor ElegooSlicer den Druckkopf in ein Infill oder ein opferbares Objekt spült, wird immer diese Menge Material in den Wipe-Turm gefüllt, um zuverlässige nachfolgende Infill- oder opferbare Objekt-Extrusionen zu erzeugen. So wird sichergestellt, dass das Drucken nicht gestört wird und die Qualität des Drucks erhalten bleibt."
+    },
+    "filament_multitool_ramming": {
+      "label": "Ermöglicht das Rammen für Multitool-Setups",
+      "tooltip": "Rammen beim Einsatz eines Multitool-Druckers (d.h. wenn die Option 'Single Extruder Multimaterial' in den Druckereinstellungen nicht aktiviert ist). Wenn diese Option aktiviert ist, wird eine kleine Menge Filament kurz vor dem Werkzeugwechsel schnell auf den Wischturm extrudiert. Diese Option wird nur verwendet, wenn der Wischturm aktiviert ist."
+    },
+    "filament_multitool_ramming_flow": {
+      "label": "Multitool-Ramming-Fluss",
+      "tooltip": "Fluss, der zum Rammen des Filaments vor dem Werkzeugwechsel verwendet wird."
+    },
+    "filament_multitool_ramming_volume": {
+      "label": "Multitool-Ramming-Volumen",
+      "tooltip": "Das Volumen, das vor dem Werkzeugwechsel gerammt werden soll."
+    },
+    "filament_notes": {
+      "label": "Filamentnotizen",
+      "tooltip": "Sie können hier Ihre Notizen zum Filament eintragen."
+    },
+    "filament_ramming_parameters": {
+      "label": "Ramming-Parameter",
+      "tooltip": "Dieser String wird von RammingDialog bearbeitet und enthält ramming-spezifische Parameter."
+    },
+    "filament_retract_before_wipe": {
+      "label": "Rückzugsmenge vor der Reinigung",
+      "tooltip": "Die Länge des schnellen Rückzugs vor dem Abwischen, relativ zur Rückzugslänge."
+    },
+    "filament_retract_lift_above": {
+      "label": "Nur Z anheben über",
+      "tooltip": "Wenn Sie diesen Wert auf einen positiven Wert setzen, wird das Z-Heben nur oberhalb des angegebenen absoluten Z-Wertes erfolgen."
+    },
+    "filament_retract_lift_below": {
+      "label": "Nur Z anheben unter",
+      "tooltip": "Wenn Sie diesen Wert auf einen positiven Wert setzen, wird das Z-Heben nur unterhalb des angegebenen absoluten Z-Wertes erfolgen."
+    },
+    "filament_retract_lift_enforce": {
+      "label": "Auf Oberflächen",
+      "tooltip": "Verhalten des Z-Hops erzwingen. Diese Einstellung wird von den oben genannten Einstellungen (Nur Z überheben oberhalb/unterhalb) beeinflusst.",
+      "enum_labels": [
+        "Alle Oberflächen",
+        "Nur Oben",
+        "Nur Unten",
+        "Oben und Unten"
+      ]
+    },
+    "filament_retract_restart_extra": {
+      "label": "Zusätzliche Länge beim Neustart",
+      "tooltip": "Wenn die Rückzugskompensation nach dem Reisemove durchgeführt wird, wird der Extruder diese zusätzliche Menge an Filament schieben. Diese Einstellung wird nur selten benötigt."
+    },
+    "filament_retract_when_changing_layer": {
+      "label": "Zurückziehen beim Schichtwechsel",
+      "tooltip": "Erzwingen eines Rückzugs beim Schichtwechsel"
+    },
+    "filament_retraction_distances_when_cut": {
+      "label": "Rückzugslänge beim Schneiden",
+      "tooltip": "Experimentelle Funktion. Rückzugslänge vor dem Abschneiden beim Filament-Wechsel"
+    },
+    "filament_retraction_length": {
+      "label": "Länge",
+      "full_label": "Rückzugslänge",
+      "tooltip": "Menge an Material im Extruder zurückgezogen wird, um ein herauslaufen des Filaments bei langen Verfahrwegen zu vermeiden. Null deaktiviert dein Rückzug."
+    },
+    "filament_retraction_minimum_travel": {
+      "label": "Schwellenwert für die Fahrstrecke",
+      "tooltip": "Rückzug nur auslösen, wenn der Fahrweg länger als diese Schwelle ist"
+    },
+    "filament_retraction_speed": {
+      "label": "Rückzugsgeschwindigkeit",
+      "full_label": "Rückzugsgeschwindigkeit",
+      "tooltip": "Geschwindigkeit für den Rückzug"
+    },
+    "filament_shrink": {
+      "tooltip": "Gib das Schrumpfungsprozent ein, das der Filament nach dem Abkühlen haben wird(94%, wenn du 94mm anstatt 100mm misst). Das Teil wird in der xy-Ebene skaliert, um zukompensieren. Nur das Filament, das für den Umfang verwendet wird, wird berücksichtigt.Stelle sicher, dass genügend Platz zwischen den Objekten vorhanden ist, da diese Kompensation nach den Überprüfungen durchgeführt wird."
+    },
+    "filament_shrinkage_compensation_z": {
+      "tooltip": "Gib das Schrumpfungsprozent ein, die das Filament nach dem Abkühlen haben wird(94%, wenn du 94mm anstatt 100mm misst). Das Teil wird in der Z-Ebene skaliert, um das zukompensieren."
+    },
+    "filament_soluble": {
+      "label": "Lösliches Material",
+      "tooltip": "Lösliches Material wird in der Regel für den Druck von Stützen und Stütz-Schnittstellen verwendet"
+    },
+    "filament_stamping_distance": {
+      "label": "Stamping-Abstand, gemessen vom Zentrum des Kühlrohrs",
+      "tooltip": "Wenn ein Wert ungleich Null eingestellt ist, wird das Filament zwischen den einzelnen Kühlbewegungen (\"Stamping\") in Richtung der Düse bewegt. Diese Option konfiguriert, wie lange diese Bewegung sein soll, bevor das Filament wieder zurückgezogen wird."
+    },
+    "filament_stamping_loading_speed": {
+      "label": "Lade-Geschwindigkeit für das Stamping",
+      "tooltip": "Geschwindigkeit, die für das Stamping verwendet wird."
+    },
+    "filament_start_gcode": {
+      "label": "Start G-Code",
+      "tooltip": "G-Code hinzufügen, wenn der Druck dieses Filaments beginnt"
+    },
+    "filament_toolchange_delay": {
+      "label": "Verzögerung nach dem Entladen",
+      "tooltip": "Wartezeit nach dem Entladen des Filaments. Kann helfen, zuverlässige Werkzeugwechsel mit flexiblen Materialien zu erhalten, die möglicherweise mehr Zeit benötigen, um auf die ursprünglichen Abmessungen zu schrumpfen."
+    },
+    "filament_type": {
+      "label": "Typ",
+      "tooltip": "Filament-Materialtyp"
+    },
+    "filament_unloading_speed": {
+      "label": "Entlade-Geschwindigkeit",
+      "tooltip": "Geschwindigkeit, die zum Entladen des Filaments im Wischturm verwendet wird (beeinflusst nicht den Anfang des Entladens direkt nach dem Rammen)."
+    },
+    "filament_unloading_speed_start": {
+      "label": "Entlade-Geschwindigkeit am Anfang",
+      "tooltip": "Geschwindigkeit, die zum Entladen der Spitze des Filaments unmittelbar nach dem Rammen verwendet wird."
+    },
+    "filament_vendor": {
+      "label": "Hersteller",
+      "tooltip": "Hersteller des Filaments. Nur zur Anzeige."
+    },
+    "filament_wipe": {
+      "label": "Während des Rückzugs wischen",
+      "tooltip": "Bewegen Sie die Düse beim Zurückziehen entlang des letzten Extrusionsweges, um ausgetretenes Material an der Düse zu reinigen. Dies kann die Bildung von Tropfen an einem neuen Teil nach der Fahrt minimieren."
+    },
+    "filament_wipe_distance": {
+      "label": "Wischabstand",
+      "tooltip": "Beschreibt, wie lange die Düse entlang des letzten Pfades bewegt wird, wenn zurückgezogen wird. \n\nJe nachdem, wie lange die Wischoperation dauert, wie schnell und wie lange die Einstellungen für den Extruder-/Filamentrückzug sind, kann ein Rückzugsbefehl erforderlich sein, um das verbleibende Filament zurückzuziehen. \n\nWenn ein Wert in der Einstellung \"Rückzugsmenge vor dem Wischen\" unten angegeben ist, wird ein überschüssiger Rückzug vor dem Wischen ausgeführt, ansonsten wird er danach ausgeführt."
+    },
+    "filament_z_hop": {
+      "label": "Z-Hop beim Rückzug",
+      "tooltip": "Bei jedem Rückzug wird die Düse ein wenig angehoben, um einen Abstand zwischen Düse und Druck zu schaffen. Dadurch wird verhindert, dass die Düse bei der Verfahrbewegung gegen den Druck stößt. Die Verwendung einer Spirallinie zum Anheben von z kann Fadenbildung verhindern."
+    },
+    "filament_z_hop_types": {
+      "label": "Z-Hub Typ",
+      "tooltip": "Z-Hub Typ",
+      "enum_labels": [
+        "Automatisch",
+        "Normal",
+        "Steigung",
+        "Spirale"
+      ]
+    },
+    "filename_format": {
+      "label": "Format des Dateinamens",
+      "tooltip": "Der Benutzer kann den Projektdateinamen beim Export selbst bestimmen"
+    },
+    "filter_out_gap_fill": {
+      "label": "Filtert winzige Lücken aus",
+      "tooltip": "Drucken Sie keine Lückenfüllung mit einer Länge, die kleiner als der angegebene Schwellenwert (in mm) ist. Diese Einstellung gilt für die obere, untere und massive Füllung und, wenn der klassische Perimeter-Generator verwendet wird, für die Wandlückenfüllung."
+    },
+    "first_layer_print_sequence": {
+      "label": "Erste Schicht Druckreihenfolge"
+    },
+    "first_layer_sequence_choice": {
+      "label": "Erste Filament-Schichtsequenz",
+      "enum_labels": [
+        "Automatisch",
+        "Anpassen"
+      ]
+    },
+    "flush_into_infill": {
+      "label": "Düse in der Füllung des Objekts reinigen",
+      "tooltip": "Die Reinigung nach dem Filamentwechsel erfolgt innerhalb der Objektfüllung. Dies kann die Abfallmenge verringern und die Druckzeit verkürzen. Wenn die Wände mit transparentem Filament gedruckt werden, sind die unterschiedlichen Farben der Füllung sichtbar. Die Funktion ist nur dann wirksam, wenn der Reinigungsturm aktiviert ist."
+    },
+    "flush_into_objects": {
+      "label": "Düse in diesem Objekt reinigen",
+      "tooltip": "Dieses Objekt wird verwendet, um die Düse nach einem Filamentwechsel zu reinigen, Filament zu sparen und die Druckzeit zu verkürzen. Die Farben der Objekte werden dadurch gemischt. Dies wird nur wirksam, wenn der Reinigungsturm aktiviert ist."
+    },
+    "flush_into_support": {
+      "label": "Düse in der Stützstruktur des Objekts reinigen",
+      "tooltip": "Die Reinigung nach dem Filamentwechsel erfolgt innerhalb der Stützstrukturen. Dies kann die Abfallmenge verringern und die Druckzeit verkürzen. Die Funktion ist nur dann wirksam, wenn der Reinigungsturm aktiviert ist."
+    },
+    "flush_multiplier": {
+      "label": "Multiplikator der Düsenreinigung",
+      "tooltip": "Das tatsächliche Reinigungsvolumen entspricht dem Wert des Reinigungsmultiplikators multipliziert mit den in der Tabelle angegebenen Reinigungsvolumen."
+    },
+    "flush_volumes_matrix": {
+      "label": "Reinigungsvolumen"
+    },
+    "flush_volumes_vector": {
+      "label": "Reinigungsvolumen - Lade-/Entladevolumen"
+    },
+    "full_fan_speed_layer": {
+      "label": "Volle Lüfterdrehzahl ab Schicht",
+      "tooltip": "Die Lüftergeschwindigkeit wird linear von Null bei der Schicht\"close_fan_the_first_x_layers\" auf das Maximum bei der Schicht \"full_fan_speed_layer\" erhöht. \"full_fan_speed_layer\" wird ignoriert, wenn es niedriger ist als \"close_fan_the_first_x_layers\",in diesem Fall läuft der Lüfter bei Schicht \"close_fan_the_first_x_layers\"+ 1 mit maximal zulässiger Geschwindigkeit."
+    },
+    "fuzzy_skin": {
+      "label": "Fuzzy Skin",
+      "tooltip": "Diese Einstellung bewirkt, dass der Werkzeugkopf beim Drucken von Wänden zufällig zittert, so dass die Oberfläche ein raues, strukturiertes Aussehen erhält. Diese Einstellung steuert die Fuzzy-Position.",
+      "enum_labels": [
+        "Keine",
+        "Kontur",
+        "Kontur und Loch",
+        "Alle Wände"
+      ]
+    },
+    "fuzzy_skin_first_layer": {
+      "label": "Fuzzy Skin auf die erste Schicht anwenden",
+      "tooltip": "Ob Fuzzy Skin auf die erste Schicht angewendet werden soll"
+    },
+    "fuzzy_skin_point_distance": {
+      "label": "Fuzzy Skin Punktabstand",
+      "tooltip": "Der durchschnittliche Abstand zwischen den auf jedem Linienabschnitt eingeführten Zufallspunkten"
+    },
+    "fuzzy_skin_thickness": {
+      "label": "Fuzzy Skin Stärke",
+      "tooltip": "Die Breite, innerhalb der gezittert werden soll. Sie sollte unter der Breite der Außenwandlinie liegen."
+    },
+    "gap_fill_target": {
+      "label": "Lückenfüllung anwenden",
+      "tooltip": "Schaltet die Lückenfüllung für die ausgewählten massiven Oberflächen ein. Die minimale Lückenlänge, die gefüllt wird, kann von der Option zum Filtern kleiner Lücken unten gesteuert werden.\n\nOptionen:\n1. Überall: Füllt Lücken in oberen, unteren und internen massiven Oberflächen für maximale Festigkeit2. Obere und untere Oberflächen: Füllt Lücken nur in oberen und unteren Oberflächen, um Druckgeschwindigkeit zu erhöhen, potenzielle Überextrusion im massiven Infill zu reduzieren und sicherzustellen, dass die oberen und unteren Oberflächen keine Löcher aufweisen3. Nirgendwo: Deaktiviert die Lückenfüllung für alle massiven Infill-Bereiche.\n\nBeachten Sie, dass bei Verwendung des klassischen Umfangsgenerators Lückenfüllung auch zwischen Umfängen generiert werden kann, wenn eine volle Breitenlinie nicht zwischen ihnen passt. Diese Umfangslückenfüllung wird nicht durch diese Einstellung gesteuert.\n\nWenn Sie möchten, dass alle Lückenfüllungen, einschließlich der vom klassischen Umfangsgenerator generierten, entfernt werden, setzen Sie den Wert zum Filtern kleiner Lücken auf eine große Zahl, wie 999999.\n\nDies wird jedoch nicht empfohlen, da die Lückenfüllung zwischen Umfängen zur Festigkeit des Modells beiträgt. Für Modelle, bei denen zwischen Umfängen übermäßige Lückenfüllung generiert wird, wäre eine bessere Option, auf den Arachne-Wandgenerator umzusteigen und diese Option zu verwenden, um zu steuern, ob die kosmetische Lückenfüllung für obere und untere Oberflächen generiert wird.",
+      "enum_labels": [
+        "Überall",
+        "Obere und untere Oberflächen",
+        "Nirgendwo"
+      ]
+    },
+    "gap_infill_speed": {
+      "label": "Lückenfüllung",
+      "tooltip": "Geschwindigkeit für die Lückenfüllung. Lücken haben normalerweise eine unregelmäßige Linienbreite und sollten deshalb langsamer gedruckt werden."
+    },
+    "gcode_add_line_number": {
+      "label": "Liniennummer hinzufügen",
+      "tooltip": "Aktivieren Sie diese Option, um die Zeilennummer (Nx) am Anfang jeder G-Code-Zeile einzufügen"
+    },
+    "gcode_comments": {
+      "label": "ausführlicher G-Code",
+      "tooltip": "Aktivieren Sie diese Option, um eine kommentierte G-Code-Datei zu erhalten, in der jede Zeile durch einen beschreibenden Text erklärt wird. Wenn Sie von der SD-Karte drucken, kann das zusätzliche Gewicht der Datei dazu führen, dass Ihre Firmware langsamer wird."
+    },
+    "gcode_flavor": {
+      "label": "G-Code Typ",
+      "tooltip": "Mit welcher Art von G-Code ist der Drucker kompatibel",
+      "enum_labels": [
+        "Marlin(legacy)",
+        "Klipper",
+        "RepRapFirmware",
+        "Marlin 2"
+      ]
+    },
+    "gcode_label_objects": {
+      "label": "Objekte beschriften",
+      "tooltip": "Aktivieren Sie diese Option, um Kommentare in den G-Code einzufügen, die die Druckbewegungen mit dem zugehörigen Objekt kennzeichnen. Dies ist nützlich für das Octoprint CancelObject-Plugin. Diese Einstellung ist NICHT kompatibel mit der Einzeldruckerdüsen-Mehrmaterial-Konfiguration und mit der Option zum Wischen in das Objekt / in den Innenfüllbereich."
+    },
+    "high_current_on_filament_swap": {
+      "label": "Hoher Extruderstrom beim Filamentwechsel",
+      "tooltip": "Es kann vorteilhaft sein, den Extrudermotorstrom während der Filamentwechsel-Sequenz zu erhöhen, um schnelle Vorschubgeschwindigkeiten zu ermöglichen und um den Widerstand beim Laden eines Filaments mit einer unförmigen Spitze zu überwinden."
+    },
+    "hole_to_polyhole": {
+      "label": "Konvertiere Löcher zu Polyholes",
+      "tooltip": "Suchen Sie nach fast kreisförmigen Löchern, die sich über mehr als eine Schicht erstrecken, und konvertieren Sie die Geometrie in Polyholes. Verwenden Sie die Düsengröße und den (größten) Durchmesser, um das Polyhole zu berechnen.\nSiehe http://hydraraptor.blogspot.com/2011/02/polyholes.html"
+    },
+    "hole_to_polyhole_threshold": {
+      "label": "ab Wert erkenne Polyhole",
+      "tooltip": "Maximale Abweichung eines Punktes vom geschätzten Radius des Kreises.\nDa Zylinder oft als Dreiecke unterschiedlicher Größe exportiert werden, liegen die Punkte möglicherweise nicht auf dem Umfang des Kreises. Diese Einstellung ermöglicht es Ihnen, die Erkennung zu erweitern.\nIn mm oder in % des Radius."
+    },
+    "hole_to_polyhole_twisted": {
+      "label": "Polyhole verdrehen",
+      "tooltip": "Polyhole in jeder Schicht drehen."
+    },
+    "host_type": {
+      "label": "Host-Typ",
+      "tooltip": "ElegooSlicer kann G-Code-Dateien auf einen Drucker-Host hochladen. Dieses Feld muss die Art des Hosts enthalten.",
+      "enum_labels": [
+        "Elegoo Link",
+        "OctoPrint",
+        "PrusaLink",
+        "PrusaConnect",
+        "Duet",
+        "FlashAir",
+        "AstroBox",
+        "Repetier",
+        "MKS",
+        "ESP3D",
+        "CrealityPrint",
+        "Obico",
+        "Flashforge",
+        "SimplyPrint"
+      ]
+    },
+    "hot_plate_temp": {
+      "label": "Andere Schichten",
+      "full_label": "Druckbetttemperatur",
+      "tooltip": "Dies ist die Betttemperatur für Schichten mit Ausnahme der Ersten. Ein Wert von 0 bedeutet, dass das Filament auf der Hochtemperaturdruckplatte nicht unterstützt wird."
+    },
+    "hot_plate_temp_initial_layer": {
+      "label": "Erste Schicht",
+      "full_label": "Druckbettemperatur für die erste Schicht",
+      "tooltip": "Dies ist die Betttemperatur der ersten Schicht. Ein Wert von 0 bedeutet, dass das Filament auf der Hochtemperatur-Druckplatte nicht unterstützt wird."
+    },
+    "idle_temperature": {
+      "label": "Leerlauftemperatur",
+      "tooltip": "Düsentemperatur, wenn das Werkzeug in Mehrwerkzeug-Setups derzeit nicht verwendet wird. Dies wird nur verwendet, wenn die „Ausflussverhinderung“ in den Druckeinstellungen aktiviert ist. Auf 0 setzen, um zu deaktivieren."
+    },
+    "independent_support_layer_height": {
+      "label": "Unabhängige Stützstruktur-Schichthöhe",
+      "tooltip": "Die Stützschicht verwendet eine unabhängige Schichthöhe im Vergleich zur Objektschicht. Dadurch kann der Z-Abstand individuell angepasst und Druckzeit gespart werden. Diese Option ist ungültig, wenn der Prime-Tower aktiviert ist."
+    },
+    "infill_anchor": {
+      "label": "Länge des Infill-Ankers",
+      "tooltip": "Verbindet eine Infill-Linie mit einem kurzen Segment eines zusätzlichen Perimeters mit einem internen Perimeter. Wenn sie als Prozentsatz ausgedrückt wird (Beispiel: 15%), wird sie über die Breite der Infill-Extrusion berechnet. ElegooSlicer versucht, zwei nahe beieinander liegende Infill-Linien mit einem kurzen Perimetersegment zu verbinden. Wenn kein solches Perimetersegment gefunden wird, das kürzer als infill_anchor_max ist, wird die Infill-Linie nur an einer Seite mit einem Perimetersegment verbunden und die Länge des genommenen Perimetersegments ist auf diesen Parameter begrenzt, aber nicht länger als anchor_length_max. Setzen Sie diesen Parameter auf Null, um die Verankerung von Perimetern zu deaktivieren, die mit einer einzelnen Infill-Linie verbunden sind."
+    },
+    "infill_anchor_max": {
+      "label": "Maximale Länge des Infill-Ankers",
+      "tooltip": "Verbindet eine Infill-Linie mit einem kurzen Segment eines zusätzlichen Perimeters mit einem internen Perimeter. Wenn sie als Prozentsatz ausgedrückt wird (Beispiel: 15%), wird sie über die Breite der Infill-Extrusion berechnet. ElegooSlicer versucht, zwei nahe beieinander liegende Infill-Linien mit einem kurzen Perimetersegment zu verbinden. Wenn kein solches Perimetersegment gefunden wird, das kürzer als dieser Parameter ist, wird die Infill-Linie nur an einer Seite mit einem Perimetersegment verbunden und die Länge des genommenen Perimetersegments wird auf infill_anchor begrenzt, aber nicht länger als dieser Parameter. Setzen Sie diesen Parameter auf Null, um die Verankerung zu deaktivieren."
+    },
+    "infill_combination": {
+      "label": "Kombinieren der Füllung",
+      "tooltip": "Kombinieren Sie automatisch die Füllung von mehreren Schichten, um diese gemeinsam zu drucken und Zeit zu sparen. Die Wand wird weiterhin mit der ursprünglichen Schichthöhe gedruckt."
+    },
+    "infill_combination_max_layer_height": {
+      "label": "Kombinieren der Füllung - Maximale Schichthöhe",
+      "tooltip": "Maximale Schichthöhe für die kombinierte spärliche Füllung. \n\nSetzen Sie sie auf 0 oder 100%, um den Düsendurchmesser zu verwenden (für eine maximale Reduzierung der Druckzeit) oder einen Wert von ~80%, um die Festigkeit der spärlichen Füllung zu maximieren.\n\nDie Anzahl der Schichten, über die die Füllung kombiniert wird, wird durch Division dieses Werts durch die Schichthöhe abgeleitet und auf die nächste Dezimalstelle abgerundet.\n\nVerwenden Sie entweder absolute mm-Werte (z. B. 0,32 mm für eine 0,4 mm Düse) oder % Werte (z. B. 80%). Dieser Wert darf nicht größer als der Düsendurchmesser sein."
+    },
+    "infill_direction": {
+      "label": "Richtung des einfachereren Fülling",
+      "tooltip": "Winkel des Füllmusters, das die Richtung der Linien bestimmt."
+    },
+    "infill_jerk": {
+      "label": "Füllung",
+      "tooltip": "Ruckwert Füllung"
+    },
+    "infill_wall_overlap": {
+      "label": "Überlappung Füllung/Wand",
+      "tooltip": "Die Füllfläche wird leicht vergrößert, um mit der Wand zu überlappen und eine bessere Haftung zu gewährleisten. Der Prozentwert bezieht sich auf die Linienbreite der spärlichen Füllung. Setzen Sie diesen Wert auf ~10-15%, um eine mögliche Überextrusion und Materialansammlung zu minimieren, die zu rauen Oberflächen führen kann."
+    },
+    "initial_layer_acceleration": {
+      "label": "Erste Schicht",
+      "tooltip": "Beschleunigung der ersten Schicht. Die Verwendung eines niedrigeren Wertes kann die Druckbetthaftung verbessern"
+    },
+    "initial_layer_infill_speed": {
+      "label": "Füllung",
+      "tooltip": "Geschwindigkeit des massiven Füllung der ersten Schicht."
+    },
+    "initial_layer_jerk": {
+      "label": "Erste Schicht",
+      "tooltip": "Ruckwert erste Schicht"
+    },
+    "initial_layer_line_width": {
+      "label": "Erste Schicht",
+      "tooltip": "Linienbreite der ersten Schicht. Wenn als Prozentsatz angegeben, wird sie in Bezug auf den Düsendurchmesser berechnet."
+    },
+    "initial_layer_min_bead_width": {
+      "label": "Erste Schicht minimale Wandbreite",
+      "tooltip": "Die minimale Wandbreite, die für die erste Schicht verwendet werden soll, sollte auf die gleiche Größe wie die Düse eingestellt werden. Diese Anpassung soll die Haftung verbessern."
+    },
+    "initial_layer_print_height": {
+      "label": "Höhe der ersten Schicht",
+      "tooltip": "Höhe der ersten Schicht. Eine etwas dickere erste Schicht kann die Haftung der Druckplatte verbessern"
+    },
+    "initial_layer_speed": {
+      "label": "Erste Schicht",
+      "tooltip": "Geschwindigkeit der ersten Schicht mit Ausnahme der massiven Füllung."
+    },
+    "initial_layer_travel_speed": {
+      "label": "Bewegung",
+      "tooltip": "Bewegungsgeschwindigkeit der ersten Schicht"
+    },
+    "inner_wall_acceleration": {
+      "label": "Innere Wand",
+      "tooltip": "Beschleunigung Innenwände"
+    },
+    "inner_wall_jerk": {
+      "label": "Innere Wand",
+      "tooltip": "Ruckwert Innenwand"
+    },
+    "inner_wall_line_width": {
+      "label": "Innere Wand",
+      "tooltip": "Linienbreite der inneren Wand. Wenn als Prozentsatz angegeben, wird sie in Bezug auf den Düsendurchmesser berechnet."
+    },
+    "inner_wall_speed": {
+      "label": "Innere Wand",
+      "tooltip": "Druckgeschwindigkeit der Innenwand"
+    },
+    "interface_shells": {
+      "label": "Support-Verbindung",
+      "tooltip": "Erzwingen der Erstellung von festen Hüllen zwischen benachbarten Materialien/Volumina“ ist eine Funktion, die bei Drucken mit mehreren Extrudern verwendet werden kann, insbesondere bei Drucken mit durchsichtigen Materialien oder manuell lösbaren Unterstützungsmaterialien"
+    },
+    "interlocking_beam": {
+      "label": "Verwende Interlock-Strukturen",
+      "tooltip": "Erzeugen Sie eine verzahnte Struktur an den Stellen, an denen sich unterschiedliche Filamente berühren. Dies verbessert die Haftung zwischen den Filamenten, insbesondere bei Modellen, die aus verschiedenen Materialien gedruckt werden."
+    },
+    "interlocking_beam_layer_count": {
+      "label": "Interlock-Struktur Schichten",
+      "tooltip": "Die Höhe der Balken der Interlock-Strukture, gemessen in Anzahl von Schichten. Weniger Schichten sind stärker, aber anfälliger für Fehler."
+    },
+    "interlocking_beam_width": {
+      "label": "Interlock-Struktur-Breite",
+      "tooltip": "Die Breite der Interlock-Strukturen."
+    },
+    "interlocking_boundary_avoidance": {
+      "label": "Vermeidung von Interlock-Strukturgrenzen",
+      "tooltip": "Der Abstand von der Außenseite eines Modells, an dem keine Interlock-Strukturen generiert werden, gemessen in Zellen."
+    },
+    "interlocking_depth": {
+      "label": "Interlock-Struktur Tiefe",
+      "tooltip": "Der Abstand von der Grenze zwischen den Filamenten, um die Interlock-Strukturen-zu generieren, gemessen in Zellen. Zu wenige Zellen führen zu einer schlechten Haftung."
+    },
+    "interlocking_orientation": {
+      "label": "Interlock-Struktur Ausrichtung",
+      "tooltip": "Ausrichtung der Interlock-Strukturen."
+    },
+    "internal_bridge_flow": {
+      "label": "Interne Brücken Flussrate",
+      "tooltip": "Dieser Wert bestimmt die Dicke der internen Brückenschicht. Dies ist die erste Schicht über der dünnen Füllung. Verringern Sie diesen Wert leicht (zum Beispiel 0,9), um die Oberflächenqualität über der dünnen Füllung zu verbessern.\n\nDer tatsächliche interne Brückenfluss wird berechnet, indem dieser Wert mit dem Brückenflussverhältnis, dem Filamentflussverhältnis und, falls festgelegt, dem Objektflussverhältnis multipliziert wird."
+    },
+    "internal_bridge_speed": {
+      "label": "Intern",
+      "tooltip": "Geschwindigkeit der internen Brücken. Wenn der Wert als Prozentsatz angegeben wird, wird er auf der Grundlage der Brückengeschwindigkeit berechnet. Der Standardwert beträgt 150 %."
+    },
+    "internal_solid_infill_acceleration": {
+      "label": "Innere massive Füllung",
+      "tooltip": "Beschleunigung des internen massiven Innenfülls. Wenn der Wert als Prozentwert angegeben wird (z.B. 100%), wird er auf der Grundlage der Standardbeschleunigung berechnet."
+    },
+    "internal_solid_infill_line_width": {
+      "label": "Innere massive Füllung",
+      "tooltip": "Linienbreite des internen massiven Infill. Wenn als Prozentsatz angegeben, wird sie in Bezug auf den Düsendurchmesser berechnet."
+    },
+    "internal_solid_infill_pattern": {
+      "label": "Muster für das interne feste Füllmuster",
+      "tooltip": "Linienmuster des internen festen Füllmusters. Wenn die Erkennung von schmalem internen festen Infill aktiviert ist, wird das konzentrische Muster für den kleinen Bereich verwendet.",
+      "enum_labels": [
+        "Konzentrisch",
+        "Geradlinig",
+        "Monotonisch",
+        "Monotonische Linie",
+        "Geradlinig ausgerichtet",
+        "Hilbert-Kurve",
+        "Archimedische Akkorde",
+        "Oktagramm Spirale"
+      ]
+    },
+    "internal_solid_infill_speed": {
+      "label": "Innere massive Füllung",
+      "tooltip": "Geschwindigkeit der inneren massiven Füllungen, ohne die obere oder untere Oberfläche."
+    },
+    "ironing_angle": {
+      "label": "Glättwinkel",
+      "tooltip": "Der Winkel, in dem das Glätten durchgeführt wird. Eine negative Zahl deaktiviert diese Funktion und verwendet die Standardmethode."
+    },
+    "ironing_flow": {
+      "label": "Materialmenge",
+      "tooltip": "Die Materialmenge, die während des Glättens extrudiert wird. Dies ist relativ zum Fluss der normalen Schichthöhe. Ein zu hoher Wert führt zu einer Überextrusion der Oberfläche."
+    },
+    "ironing_pattern": {
+      "label": "Bügelmuster",
+      "tooltip": "Das Muster, das beim Glätten verwendet wird",
+      "enum_labels": [
+        "Konzentrisch",
+        "Geradlinig"
+      ]
+    },
+    "ironing_spacing": {
+      "label": "Abstand der Glättlinien",
+      "tooltip": "Der Abstand zwischen den Linien beim Glätten"
+    },
+    "ironing_speed": {
+      "label": "Geschwindigkeit beim Glätten",
+      "tooltip": "Druckgeschwindigkeit der Glättlinien"
+    },
+    "ironing_type": {
+      "label": "Glättungsmethode",
+      "tooltip": "Beim Glätten wird ein kleiner Fluss verwendet, um die gleiche Höhe der Oberfläche erneut zu bedrucken und die Oberfläche glatter zu machen. Diese Einstellung steuert, welche Schicht geglättet wird",
+      "enum_labels": [
+        "Kein Glätten",
+        "Obere Oberflächen",
+        "Oberste Oberfläche",
+        "Alle soliden Schichten"
+      ]
+    },
+    "is_infill_first": {
+      "label": "Drucke zuerst die Füllung",
+      "tooltip": "Reihenfolge der Wand/Füllung. Wenn das Kontrollkästchen nicht aktiviert ist,werden die Wände zuerst gedruckt, was in den meisten Fällen am besten funktioniert.\n\nDas Drucken der Füllung zuerst kann bei extremen Überhängen helfen, da die Wände an die benachbarte Füllung haften. Die Füllung drückt jedoch leicht gegen die gedruckten Wände, an denen sie befestigt ist, was zu einer schlechteren Oberflächenqualität führt. Es kann auch dazu führen, dass die Füllung durch die äußeren Oberflächen des Teils scheint."
+    },
+    "layer_change_gcode": {
+      "label": "Schichtwechsel G-Code",
+      "tooltip": "Dieser G-Code wird bei jedem Schichtwechsel nach dem anheben von Z eingefügt."
+    },
+    "layer_height": {
+      "label": "Schichthöhe",
+      "tooltip": "Definiert die Höhe der einzelnen Schichten. Eine geringe Schichthöhe steigert die Genauigkeit und verringert die Sichtbarkeit der einzelnen Schichten, verlängert dafür aber die Druckzeit."
+    },
+    "line_width": {
+      "label": "Standard",
+      "tooltip": "Standardmäßige Linienbreite, wenn andere Linienbreiten auf 0 gesetzt sind. Wenn als Prozentsatz angegeben, wird sie in Bezug auf den Düsendurchmesser berechnet."
+    },
+    "long_retractions_when_cut": {
+      "label": "Langer Rückzug beim Schneiden (experimentell)",
+      "tooltip": "Experimentelle Funktion. Rückzug und Abschneiden des Filaments bei einem längeren Abstand während des Wechsels, um den Reinigungsvorgang zu minimieren. Obwohl dies den Reinigungsvorgang erheblich reduziert, kann es auch das Risiko von Düsenverstopfungen oder anderen Druckproblemen erhöhen."
+    },
+    "machine_end_gcode": {
+      "label": "End G-Code",
+      "tooltip": "End G-Code nach dem fertigstellen des Drucks hinzufügen."
+    },
+    "machine_load_filament_time": {
+      "label": "Ladedauer des Filaments",
+      "tooltip": "Zeit zum Laden des neuen Filaments beim Wechsel des Filaments. Es ist in der Regel für Einzel-Extruder-Multi-Material-Maschinen anwendbar. Für Werkzeugwechsler oder Multi-Tool-Maschinen beträgt es in der Regel 0. Nur für Statistiken"
+    },
+    "machine_max_acceleration_e": {
+      "full_label": "Maximale Beschleunigung E",
+      "tooltip": "Maximale Beschleunigung der E-Achse"
+    },
+    "machine_max_acceleration_extruding": {
+      "full_label": "Maximale Beschleunigung beim Extrudieren",
+      "tooltip": "Maximale Beschleunigung beim Extrudieren (M204 P)"
+    },
+    "machine_max_acceleration_retracting": {
+      "full_label": "Maximale Beschleunigung beim Rückziehen",
+      "tooltip": "Maximale Beschleunigung beim Rückziehen (M204 R)"
+    },
+    "machine_max_acceleration_travel": {
+      "full_label": "Maximale Fahrgeschwindigkeit",
+      "tooltip": "Maximale Fahrgeschwindigkeit (M204 T), gilt nur für Marlin 2"
+    },
+    "machine_max_acceleration_x": {
+      "full_label": "Maximale Beschleunigung X",
+      "tooltip": "Maximale Beschleunigung der X-Achse"
+    },
+    "machine_max_acceleration_y": {
+      "full_label": "Maximale Beschleunigung Y",
+      "tooltip": "Maximale Beschleunigung der Y-Achse"
+    },
+    "machine_max_acceleration_z": {
+      "full_label": "Maximale Beschleunigung Z",
+      "tooltip": "Maximale Beschleunigung der Z-Achse"
+    },
+    "machine_max_jerk_e": {
+      "full_label": "Maximaler Ruck E",
+      "tooltip": "Maximaler Ruck auf der E-Achse"
+    },
+    "machine_max_jerk_x": {
+      "full_label": "Maximaler Ruck X",
+      "tooltip": "Maximaler Ruck auf der X-Achse"
+    },
+    "machine_max_jerk_y": {
+      "full_label": "Maximaler Ruck Y",
+      "tooltip": "Maximaler Ruck auf der Y-Achse"
+    },
+    "machine_max_jerk_z": {
+      "full_label": "Maximaler Ruck Z",
+      "tooltip": "Maximaler Ruck auf der Z-Achse"
+    },
+    "machine_max_speed_e": {
+      "full_label": "Maximale Geschwindigkeit E"
+    },
+    "machine_max_speed_x": {
+      "full_label": "Maximale Geschwindigkeit X"
+    },
+    "machine_max_speed_y": {
+      "full_label": "Maximale Geschwindigkeit Y"
+    },
+    "machine_max_speed_z": {
+      "full_label": "Maximale Geschwindigkeit Z"
+    },
+    "machine_min_extruding_rate": {
+      "full_label": "Mindestgeschwindigkeit beim Extrudieren",
+      "tooltip": "Mindestgeschwindigkeit beim Extrudieren (M205 S)"
+    },
+    "machine_min_travel_rate": {
+      "full_label": "Minimale Fahrgeschwindigkeit",
+      "tooltip": "Minimale Fahrgeschwindigkeit (M205 T)"
+    },
+    "machine_pause_gcode": {
+      "label": "Pausen G-Code",
+      "tooltip": "Dieser G-Code wird für die Druckpause verwendet. Benutzer können den Pausen-G-Code in dem G-Code-Viewer einfügen."
+    },
+    "machine_start_gcode": {
+      "label": "Start G-Code",
+      "tooltip": "G-Code hinzufügen, wenn der Druckvorgang beginnt"
+    },
+    "machine_tool_change_time": {
+      "label": "Werkzeugwechselzeit",
+      "tooltip": "Zeit, die zum Wechseln der Werkzeuge benötigt wird. Es ist in der Regel für Werkzeugwechsler oder Multi-Tool-Maschinen anwendbar. Für Einzel-Extruder-Multi-Material-Maschinen beträgt es in der Regel 0. Nur für Statistiken"
+    },
+    "machine_unload_filament_time": {
+      "label": "Entladezeit des Filaments",
+      "tooltip": "Zeit zum Entladen des alten Filaments beim Wechsel des Filaments. Es ist in der Regel für Einzel-Extruder-Multi-Material-Maschinen anwendbar. Für Werkzeugwechsler oder Multi-Tool-Maschinen beträgt es in der Regel 0. Nur für Statistiken"
+    },
+    "make_overhang_printable": {
+      "label": "Überhang druckbar machen",
+      "tooltip": "Die Geometrie anpassen, um Überhänge ohne Stützmaterial zu drucken."
+    },
+    "make_overhang_printable_angle": {
+      "label": "Maximaler Winkel für druckbare Überhänge",
+      "tooltip": "Maximaler Winkel der Überhänge, die erlaubt sind, nachdem steilere Überhänge druckbar gemacht wurden. 90° wird das Modell überhaupt nicht verändern und jeden Überhang erlauben, während 0 alle Überhänge durch konisches Material ersetzt."
+    },
+    "make_overhang_printable_hole_size": {
+      "label": "Flächenbereich für druckbare Überhänge von Löchern",
+      "tooltip": "Maximaler Flächenbereich eines Lochs in der Basis des Modells, bevor es mit konischem Material gefüllt wird. Ein Wert von 0 füllt alle Löcher in der Basis des Modells."
+    },
+    "manual_filament_change": {
+      "label": "Manueller Filamentwechsel",
+      "tooltip": "Diese Option aktivieren, um den benutzerdefinierten G-Code für den Filamentwechsel nur am Anfang des Drucks zu überspringen. Der Werkzeugwechselbefehl (z.B. T0) wird während des gesamten Drucks übersprungen. Dies ist nützlich für den manuellen Mehrmaterialdruck, bei dem "
+    },
+    "max_bridge_length": {
+      "label": "Max Überbrückungslänge",
+      "tooltip": "Maximale Länge der Brücken, die keine Unterstützung benötigen. Setzen Sie den Wert auf 0, wenn alle Brücken unterstützt werden sollen und legen Sie einen sehr großen Wert fest, wenn keine Brücken unterstützt werden sollen."
+    },
+    "max_layer_height": {
+      "label": "Maximal",
+      "tooltip": "Die größte druckbare Schichthöhe für den Extruder. Wird verwendet, um die maximale Schichthöhe zu begrenzen, wenn die adaptive Schichthöhe aktiviert ist"
+    },
+    "max_travel_detour_distance": {
+      "label": "Vermeide das Überqueren der Wand - Maximale Umleitungslänge",
+      "tooltip": "Maximale Umleitstrecke zur Vermeidung einer Wandüberquerung: Der Drucker fährt keinen Umweg, wenn die Umleitstrecke größer als dieser Wert ist. Die Umleitstrecke kann entweder als absoluter Wert oder als Prozentsatz (z. B. 50 %) eines direkten Fahrwegs angegeben werden. Ein Wert von 0 deaktiviert diese Funktion."
+    },
+    "max_volumetric_extrusion_rate_slope": {
+      "label": "Glättung der Extrusionsrate",
+      "tooltip": "Dieser Parameter gleicht plötzliche Änderungen der Extrusionsrate aus, die auftreten, wenn der Drucker von einer hohen Flussrate (hohe Geschwindigkeit/größere Breite) zu einer niedrigeren Flussrate (niedrigere Geschwindigkeit/kleinere Breite) und umgekehrt wechselt.\n\nEs definiert die maximale Rate, mit der sich der extrudierte Volumenstrom in mm3/s über die Zeit ändern kann. Höhere Werte bedeuten, dass höhere Extrusionsratenänderungen zulässig sind, was zu schnelleren Geschwindigkeitsübergängen führt.\n\nEin Wert von 0 deaktiviert die Funktion. \n\nFür einen Hochgeschwindigkeits-, Hochfluss-Direktantriebsdrucker (wie den Bambu-Labor- oder Voron-Drucker) ist dieser Wert normalerweise nicht erforderlich. Er kann jedoch in bestimmten Fällen einen geringfügigen Vorteil bieten, in denen sich die Funktionen stark unterscheiden. Zum Beispiel, wenn es aggressive Verlangsamungen aufgrund von Überhängen gibt. In diesen Fällen wird ein hoher Wert von ca. 300-350mm3/s2 empfohlen, da "
+    },
+    "max_volumetric_extrusion_rate_slope_segment_length": {
+      "label": "Segmentlänge für die Glättung",
+      "tooltip": "Ein niedrigerer Wert führt zu glatteren Extrusionsratenübergängen. Dies führt jedoch zu einer deutlich größeren G-Code-Datei und mehr Anweisungen für den Drucker, die verarbeitet werden müssen. \n\nDer Standardwert von 3 funktioniert für die meisten Fälle gut. Wenn Ihr Drucker stottert, erhöhen Sie diesen Wert, um die Anzahl der Anpassungen zu reduzieren\n\nZulässige Werte: 1-5"
+    },
+    "min_bead_width": {
+      "label": "Minimale Wandbreite",
+      "tooltip": "Breite der Wand, die dünne Features (entsprechend der Mindest-Featuregröße) des Modells ersetzen wird. Wenn die minimale Wandbreite dünner ist als die Dicke des Features, wird die Wand so dick wie das Feature selbst. Wird als Prozentsatz des Düsendurchmessers angegeben."
+    },
+    "min_feature_size": {
+      "label": "Minimale Merkmalgröße",
+      "tooltip": "Mindestdicke für dünne Features. Modellfeatures, die dünner als dieser Wert sind, werden nicht gedruckt, während Features, die dicker als die Mindestfeaturegröße sind, auf die Mindestwandbreite verbreitert werden. Bezogen als Prozentsatz auf Düsendurchmesser."
+    },
+    "min_layer_height": {
+      "label": "Min",
+      "tooltip": "Die niedrigste druckbare Schichthöhe für den Extruder. Wird verwendet, um die minimale Schichthöhe zu begrenzen, wenn die adaptive Schichthöhe aktiviert ist"
+    },
+    "min_length_factor": {
+      "label": "Minimale Wandlänge",
+      "tooltip": "Passen Sie diesen Wert an, um zu verhindern, dass kurze, offene Wände gedruckt werden, was die Druckzeit erhöhen könnte. Höhere Werte entfernen mehr und längere Wände.\n\nHINWEIS: Die unteren und oberen Oberflächen werden von diesem Wert nicht beeinflusst, um visuelle Lücken an der Außenseite des Modells zu vermeiden. Passen Sie die \"One wall threshold\" in den erweiterten Einstellungen unten an, um die Empfindlichkeit dessen anzupassen, was als obere Oberfläche angesehen wird. \"One wall threshold\" ist nur sichtbar, wenn diese Einstellung über den Standardwert von 0,5 gesetzt ist oder wenn einzelne Wände für die Oberfläche aktiviert sind."
+    },
+    "min_skirt_length": {
+      "label": "Minimale Extrusionslänge der Umrandung",
+      "full_label": "Minimale Extrusionslänge der Umrandung",
+      "tooltip": "Minimale Filamentextrusionslänge in mm beim Drucken der Umrandung. Null bedeutet, dass diese Funktion deaktiviert ist.\n\nDie Verwendung eines Werts ungleich Null ist nützlich, wenn der Drucker so eingestellt ist, dass er ohne eine Primelinie druckt.\nDie endgültige Anzahl der Schleifen wird nicht berücksichtigt, wenn die Objektabstände angeordnet oder validiert werden. Erhöhen Sie die Anzahl der Schleifen in einem solchen Fall."
+    },
+    "min_width_top_surface": {
+      "label": "Schwellenwert für eine Wand",
+      "tooltip": "Wenn eine obere Oberfläche gedruckt werden muss und sie teilweise von einer anderen Schicht bedeckt ist, wird sie nicht als obere Schicht betrachtet, wenn ihre Breite unterhalb dieses Werts liegt. Dies kann nützlich sein, um das Auslösen von 'einem Umfang oben' zu verhindern, wenn Oberflächen nur von Umfängen bedeckt werden sollen. Dieser Wert kann in Millimetern oder als Prozentsatz der Extrusionsbreite des Umfangs angegeben werden.\nWarnung: Wenn aktiviert, können Artefakte entstehen, wenn Sie dünnere Merkmale auf der nächsten Schicht haben, z. B. Buchstaben. Setzen Sie diesen Wert auf 0, um diese Artefakte zu entfernen."
+    },
+    "minimum_sparse_infill_area": {
+      "label": "Mindestschwelle für Füllung",
+      "tooltip": "Innere Füllbereiche, die kleiner als dieser Wert sind, werden durch massive Füllungen ersetzt."
+    },
+    "mmu_segmented_region_interlocking_depth": {
+      "label": "Interlock-Struktur-Tiefe eines segmentierten Bereichs",
+      "tooltip": "Interlock-Tiefe eines segmentierten Bereichs. Es wird ignoriert, wenn \"mmu_segmented_region_max_width\" null ist oder wenn \"mmu_segmented_region_interlocking_depth\" größer ist als \"mmu_segmented_region_max_width\". Null deaktiviert diese Funktion."
+    },
+    "mmu_segmented_region_max_width": {
+      "label": "Maximale Breite eines segmentierten Bereichs",
+      "tooltip": "Maximale Breite eines segmentierten Bereichs. Null deaktiviert diese Funktion."
+    },
+    "notes": {
+      "label": "Konfigurationsnotizen",
+      "tooltip": "Hier können Sie Ihre persönlichen Notizen eintragen. Dieser Text wird den Kommentaren im G-Code-Kopf hinzugefügt."
+    },
+    "nozzle_diameter": {
+      "label": "Düsendurchmesser",
+      "tooltip": "Düsendurchmesser"
+    },
+    "nozzle_height": {
+      "label": "Düsenhöhe",
+      "tooltip": "Die Höhe der Düsenspitze."
+    },
+    "nozzle_hrc": {
+      "label": "Düse HRC",
+      "tooltip": "Die Härte der Düse. Null bedeutet, dass die Düsenhärte beim Slicen nicht geprüft wird."
+    },
+    "nozzle_temperature": {
+      "label": "Andere Schichten",
+      "full_label": "Düsentemperatur",
+      "tooltip": "Düsentemperatur nach der ersten Schicht"
+    },
+    "nozzle_temperature_initial_layer": {
+      "label": "Erste Schicht",
+      "full_label": "Düsentemperatur für die erste Schicht",
+      "tooltip": "Düsentemperatur zum Drucken der ersten Schicht bei Verwendung dieses Filaments"
+    },
+    "nozzle_temperature_range_high": {
+      "label": "Maximal"
+    },
+    "nozzle_temperature_range_low": {
+      "label": "Min"
+    },
+    "nozzle_type": {
+      "label": "Düsentyp",
+      "tooltip": "Das metallische Material der Düse. Dies bestimmt die Abriebfestigkeit der Düse und welche Art von Filamenten gedruckt werden kann.",
+      "enum_labels": [
+        "Undefiniert",
+        "Gehärteter Stahl",
+        "Edelstahl",
+        "Messing"
+      ]
+    },
+    "nozzle_volume": {
+      "label": "Volumen der Düse",
+      "tooltip": "Volumen der Düse zwischen dem Messer und dem Ende der Düse"
+    },
+    "only_one_wall_first_layer": {
+      "label": "Nur eine Wand in der ersten Schicht",
+      "tooltip": "Verwenden Sie nur eine Wand in der ersten Schicht, um dem Muster der unteren Füllung mehr Platz zu geben"
+    },
+    "only_one_wall_top": {
+      "label": "Nur eine Wand auf den oberen Flächen",
+      "tooltip": "Verwenden Sie nur eine Wand auf der Oberfläche, um mehr Platz für das obere Füllungsmuster zu schaffen"
+    },
+    "ooze_prevention": {
+      "label": "Aktivieren",
+      "tooltip": "Diese Option senkt die Temperatur der inaktiven Extruder, um das Herauslaufen des Filaments zu verhindern."
+    },
+    "other_layers_print_sequence": {
+      "label": "Andere Schichten Druckreihenfolge"
+    },
+    "other_layers_print_sequence_nums": {
+      "label": "Die Anzahl der anderen Schichten Druckreihenfolge"
+    },
+    "other_layers_sequence_choice": {
+      "label": "Andere Schichten Filamentreihenfolge",
+      "enum_labels": [
+        "Automatisch",
+        "Anpassen"
+      ]
+    },
+    "outer_wall_acceleration": {
+      "label": "Außenwand",
+      "tooltip": "Beschleunigung der Außenwand: Die Verwendung eines niedrigeren Wertes kann die Qualität verbessern."
+    },
+    "outer_wall_jerk": {
+      "label": "Außenwand",
+      "tooltip": "Ruckwert Außenwand"
+    },
+    "outer_wall_line_width": {
+      "label": "Außenwand",
+      "tooltip": "Linienbreite der Außenwand. Wenn als Prozentsatz angegeben, wird sie in Bezug auf den Düsendurchmesser berechnet."
+    },
+    "outer_wall_speed": {
+      "label": "Außenwand",
+      "tooltip": "Geschwindigkeit der äußersten Wand, welche später sichtbar ist. Wird in der Regel langsamer als die Innenwände gedruckt, um eine bessere Qualität zu erzielen."
+    },
+    "overhang_fan_speed": {
+      "label": "Lüftergeschwindigkeit für Überhänge",
+      "tooltip": "Erzwinge diese Lüftergeschwindigkeit beim Drucken von Brücken oder Wänden, die einen großen Überhang aufweisen. Erzwungene Kühlung für Überhänge und Brücken kann eine bessere Qualität für diese Abschnitte erzielen."
+    },
+    "overhang_fan_threshold": {
+      "label": "Schwellenwert für die Kühlung von Überhängen",
+      "tooltip": "Erzwingt eine bestimmte Lüftergeschwindigkeit, wenn der Winkel des Überhangs des gedruckten Teils diesen Wert überschreitet. Dies wird als Prozentsatz ausgedrückt, der angibt, wie groß die Breite der Linie ohne Unterstützung durch die untere Schicht ist. 0%% bedeutet, dass die Kühlung für die gesamte Außenwand erzwungen wird, unabhängig vom Winkel des Überhangs.",
+      "enum_labels": [
+        "0%",
+        "10%",
+        "25%",
+        "50%",
+        "75%",
+        "95%"
+      ]
+    },
+    "overhang_reverse": {
+      "label": "Umkehren auf geraden Schichten",
+      "full_label": "Überhangsumkehr",
+      "tooltip": "Extrudieren Sie Umfänge, die über einem Überhang liegen, in umgekehrter Richtung auf geraden Schichten. Dieses abwechselnde Muster kann steile Überhänge drastisch verbessern.\n\nDiese Einstellung kann auch dazu beitragen, das Verziehen des Teils aufgrund der Reduzierung der Spannungen in den Teilwänden zu verringern."
+    },
+    "overhang_reverse_internal_only": {
+      "label": "Nur interne Umfänge umkehren",
+      "full_label": "Nur interne Umfänge umkehren",
+      "tooltip": "Wenden Sie die Logik der umgekehrten Umfänge nur auf interne Umfänge an.\n\nDiese Einstellung reduziert die Spannungen im Teil erheblich, da sie jetzt in abwechselnde Richtungen verteilt sind. Dies sollte das Verziehen des Teils reduzieren und gleichzeitig die Qualität der äußeren Wand erhalten. Diese Funktion kann sehr nützlich für Materialien sein, die zum Verziehen neigen, wie ABS/ASA, und auch für elastische Filamente, wie TPU und Seiden-PLA. Sie kann auch dazu beitragen, das Verziehen in schwebenden Bereichen über Stützen zu reduzieren.\n\nDamit diese Einstellung am effektivsten ist, wird empfohlen, den Umkehrschwellenwert auf 0 zu setzen, damit alle internen Wände auf geraden Schichten unabhängig von ihrem Überhangswinkel in abwechselnden Richtungen gedruckt werden."
+    },
+    "overhang_reverse_threshold": {
+      "label": "Umkehrschwelle",
+      "full_label": "Schwellenwert für die Überhangsumkehr"
+    },
+    "overhang_speed_classic": {
+      "label": "Klassicher Modus",
+      "tooltip": "Diese Option aktivieren, um den klassischen Modus zu verwenden"
+    },
+    "parking_pos_retraction": {
+      "label": "Filament Parkposition",
+      "tooltip": "Entfernung der Düsenspitze von der Position, an der das Filament geparkt wird, wenn es entladen ist. Dies sollte dem Wert in der Drucker-Firmware entsprechen."
+    },
+    "pellet_flow_coefficient": {
+      "label": "Pellet-Flusskoeffizient",
+      "tooltip": "Der Pellet-Flusskoeffizient wird empirisch abgeleitet und ermöglicht die Volumenberechnung für Pellet-Drucker.\n\nIntern wird er in den Filamentdurchmesser umgerechnet. Alle anderen Volumenberechnungen bleiben gleich.\n\nFilamentdurchmesser = sqrt( (4 * Pellet-Flusskoeffizient) / PI )"
+    },
+    "pellet_modded_printer": {
+      "label": "Pellet-Modifizierter Drucker",
+      "tooltip": "aktivieren Sie diese Option, wenn Ihr Drucker Pellets anstelle von Filamenten verwendet"
+    },
+    "post_process": {
+      "label": "Post-Processing Scripts",
+      "tooltip": "Wenn Sie die Ausgabe-G-Code-Datei durch benutzerdefinierte Skripts verarbeiten möchten, geben Sie hier die absoluten Pfade auf. Trennen Sie mehrere Skripts durch ein Semikolon. Die Skripts erhalten den absoluten Pfad zur G-Code-Datei als erstes Argument und können die ElegooSlicer-Konfigurationseinstellungen durch Lesen von Umgebungsvariablen abrufen."
+    },
+    "precise_outer_wall": {
+      "label": "Exakte Wand",
+      "tooltip": "Verbessern Sie die Schalenpräzision, indem Sie den Abstand der äußeren Wand anpassen. Dies verbessert auch die Schichtkonsistenz.\nHinweis: Diese Einstellung wird nur wirksam, wenn die Wandsequenz auf Inner-Outer konfiguriert ist."
+    },
+    "precise_z_height": {
+      "label": "Präzise Z-Höhe",
+      "tooltip": "Aktivieren Sie diese Option, um die genaue Z-Höhe des Objekts nach dem Slicen zu erhalten. Es wird die genaue Objekthöhe durch Feinabstimmung der Schichthöhen der letzten Schichten erhalten. Beachten Sie, dass dies ein experimenteller Parameter ist."
+    },
+    "preferred_orientation": {
+      "label": "Bevorzugte Ausrichtung",
+      "tooltip": "Automatische Ausrichtung von STLs auf der Z-Achse beim Import"
+    },
+    "preheat_steps": {
+      "label": "Vorheizschritte",
+      "tooltip": "Fügen Sie mehrere Vorheizbefehle ein (z.B. M104.1). Nur nützlich für Prusa XL. Für andere Drucker bitte auf 1 setzen."
+    },
+    "preheat_time": {
+      "label": "Vorheizzeit",
+      "tooltip": "Um die Wartezeit nach dem Werkzeugwechsel zu reduzieren, kann Orca das nächste Werkzeug vorheizen, während das aktuelle Werkzeug noch in Gebrauch ist. Diese Einstellung gibt die Zeit in Sekunden an, um das nächste Werkzeug vorzuheizen. Orca fügt einen M104-Befehl ein, um das Werkzeug im Voraus zu vorzuheizen."
+    },
+    "preset_names": {
+      "label": "Drucker Profilname",
+      "tooltip": "Namen der Profile, die sich auf den physischen Drucker beziehen"
+    },
+    "pressure_advance": {
+      "label": "Pressure advance",
+      "tooltip": "Pressure advance(Klipper)AKA Linear advance Faktor(Marlin)"
+    },
+    "prime_tower_brim_width": {
+      "label": "Randbreite",
+      "tooltip": "Randbreite"
+    },
+    "prime_tower_width": {
+      "label": "Breite",
+      "tooltip": "Breite des Reinigungsturms."
+    },
+    "prime_volume": {
+      "label": "Reinigungsvolumen",
+      "tooltip": "Das Volumen des Materials, das der Extruder am Turm entladen soll."
+    },
+    "print_flow_ratio": {
+      "label": "Flussverhältnis",
+      "tooltip": "Das Material kann sich nach dem Wechsel zwischen geschmolzenem und kristallinem Zustand volumetrisch verändern. Mit dieser Einstellung werden alle Extrusionsströme dieses Filaments im G-Code proportional geändert. Der empfohlene Wertebereich liegt zwischen 0,95 und 1,05. Sie können diesen Wert anpassen, um eine schöne flache Oberfläche zu erhalten, wenn es eine leichte Über- oder Unterextrusion gibt. \n\nDas endgültige Objekt-Flussverhältnis ist das Produkt aus diesem Wert und dem Filament-Flussverhältnis."
+    },
+    "print_host": {
+      "label": "Hostname, IP oder URL",
+      "tooltip": "ElegooSlicer kann G-Code-Dateien auf einen Drucker-Host hochladen. Dieses Feld sollte den Hostnamen, die IP-Adresse oder die URL der Drucker-Host-Instanz enthalten. Auf einen Drucker-Host hinter HAProxy mit aktivierter Basisauthentifizierung kann zugegriffen werden, indem Benutzername und Passwort in die URL in folgendem Format eingegeben werden: https://username:password@Ihre-octopi-Adresse/"
+    },
+    "print_host_webui": {
+      "label": "Gerät",
+      "tooltip": "Bitte geben Sie die URL der Benutzeroberfläche Ihres Geräts an, falls sie nicht mit print_host identisch ist."
+    },
+    "print_order": {
+      "label": "Intra-Schicht-Reihenfolge",
+      "tooltip": "Druckreihenfolge innerhalb einer einzelnen Schicht",
+      "enum_labels": [
+        "Standard",
+        "Als Objektliste"
+      ]
+    },
+    "print_sequence": {
+      "label": "Druckreihenfolge",
+      "tooltip": "Druckreihenfolge, Schicht für Schicht oder Objekt für Objekt",
+      "enum_labels": [
+        "Nach Ebene",
+        "Nach Objekt"
+      ]
+    },
+    "printable_area": {
+      "label": "Druckbarer Bereich"
+    },
+    "printable_height": {
+      "label": "Druckbare Höhe",
+      "tooltip": "Maximale bedruckbare Höhe, die durch den Bauraum des Druckers begrenzt ist."
+    },
+    "printer_model": {
+      "label": "Druckertyp",
+      "tooltip": "Typ des Druckers"
+    },
+    "printer_notes": {
+      "label": "Druckernotizen",
+      "tooltip": "Sie können hier Ihre Notizen zum Drucker eintragen."
+    },
+    "printer_structure": {
+      "label": "Druckerstruktur",
+      "tooltip": "Die physische Anordnung und Komponenten eines Druckers",
+      "enum_labels": [
+        "Undefiniert",
+        "CoreXY",
+        "I3",
+        "Hbot",
+        "Delta"
+      ]
+    },
+    "printer_variant": {
+      "label": "Druckervariante"
+    },
+    "printhost_apikey": {
+      "label": "API-Schlüssel / Passwort",
+      "tooltip": "ElegooSlicer kann G-Code-Dateien auf einen Drucker-Host hochladen. Dieses Feld sollte den API-Schlüssel oder das für die Authentifizierung erforderliche Passwort enthalten."
+    },
+    "printhost_authorization_type": {
+      "label": "Autorisierungstyp",
+      "enum_labels": [
+        "API-Schlüssel",
+        "HTTP-Digest"
+      ]
+    },
+    "printhost_cafile": {
+      "label": "HTTPS CA-Datei",
+      "tooltip": "Für HTTPS OctoPrint-Verbindungen kann eine eigene CA-Zertifikatsdatei im crt/pem-Format hinterlegt werden. Wenn das Feld leer gelassen wird, wird das Standard CA-Zertifikat des Betriebssystems genutzt."
+    },
+    "printhost_password": {
+      "label": "Passwort"
+    },
+    "printhost_port": {
+      "label": "Drucker",
+      "tooltip": "Name des Druckers"
+    },
+    "printhost_ssl_ignore_revoke": {
+      "label": "HTTPS-Zertifikatssperrprüfungen ignorieren",
+      "tooltip": "Ignorieren Sie HTTPS-Zertifikatssperrprüfungen im Fall von fehlenden oder offline Verteilungspunkten. Sie können diese Option für selbst signierte Zertifikate aktivieren, wenn die Verbindung fehlschlägt."
+    },
+    "printhost_user": {
+      "label": "Benutzer"
+    },
+    "printing_by_object_gcode": {
+      "label": "Zwischen Objekt G-Code",
+      "tooltip": "Füge G-Code zwischen den Objekten ein. Dieser Parameter wird nur wirksam, wenn Sie Ihre Modelle Objekt für Objekt drucken."
+    },
+    "purge_in_prime_tower": {
+      "label": "Reinige im Reinigungsturm",
+      "tooltip": "Reinige das restliche Filament im Reinigungsturm"
+    },
+    "raft_contact_distance": {
+      "label": "Z Abstand Objekt Druckbasis ",
+      "tooltip": "Z-Abstand zwischen Objekt und Druckbasis. Bei löslicher Oberfläche ignoriert"
+    },
+    "raft_expansion": {
+      "label": "Druckbasis Erweiterung",
+      "tooltip": "Druckbasis in der XY-Ebene erweitern"
+    },
+    "raft_first_layer_density": {
+      "label": "Dichte der ersten Schicht",
+      "tooltip": "Dichte der ersten Schicht der Druckbasis oder Support"
+    },
+    "raft_first_layer_expansion": {
+      "label": "Ausdehnung der ersten Schicht",
+      "tooltip": "Ausdehnung der ersten Druckbasis oder Support-Schicht um die Druckplattenhaftung zu verbessern"
+    },
+    "raft_layers": {
+      "label": "Druckbasisschichten",
+      "tooltip": "Das Objekt wird um diese Anzahl von Stützschichten erhöht. Verwenden Sie diese Funktion, um ein verziehen bei ABS zu vermeiden."
+    },
+    "reduce_crossing_wall": {
+      "label": "Vermeiden von Wandüberquerungen",
+      "tooltip": "Fahren Sie einen Umweg und vermeiden Sie es, über die Wand zu fahren, was zu Tropfenbildung auf der Oberfläche führen kann"
+    },
+    "reduce_fan_stop_start_freq": {
+      "label": "Lüfter ständig laufen lassen",
+      "tooltip": "Wenn diese Einstellung aktiviert ist, wird der Teillüfter nie abgeschaltet und läuft zumindest mit minimaler Geschwindigkeit, um die Häufigkeit des Ein- und Ausschaltens zu reduzieren"
+    },
+    "reduce_infill_retraction": {
+      "label": "Rückzug bei der Füllung verringern",
+      "tooltip": "Kein Rückzug, wenn sich die Bewegung des Druckkopfes vollständig in einem Füllbereich befindet. Das bedeutet, dass das herauslaufen des Filaments nicht zu sehen ist. Dies kann die Zeit für das zurückziehen des Filaments bei komplexeren Modellen verkürzen und Druckzeit sparen, verlangsamt aber das Slicen und die G-Code Generierung."
+    },
+    "required_nozzle_HRC": {
+      "label": "Erforderliche Düse HRC",
+      "tooltip": "Mindest-HRC der Düse, die zum Drucken des Filaments erforderlich ist. Ein Wert von 0 bedeutet, dass die HRC der Düse nicht geprüft wird."
+    },
+    "resolution": {
+      "label": "Auflösung",
+      "tooltip": "Der G-Code-Pfad wird nach der Vereinfachung der Kontur des Modells generiert, um zu viele Punkte und G-Code Befehle in der G-Code-Datei zu vermeiden. Ein kleinerer Wert bedeutet eine höhere Auflösung und mehr Zeit zum Slicen"
+    },
+    "retract_before_wipe": {
+      "label": "Rückzugsmenge vor der Reinigung",
+      "tooltip": "Die Länge des schnellen Rückzugs vor dem Abwischen, relativ zur Rückzugslänge."
+    },
+    "retract_length_toolchange": {
+      "label": "Länge"
+    },
+    "retract_lift_above": {
+      "label": "Nur Z anheben über",
+      "tooltip": "Wenn Sie diesen Wert auf einen positiven Wert setzen, wird das Z-Heben nur oberhalb des angegebenen absoluten Z-Wertes erfolgen."
+    },
+    "retract_lift_below": {
+      "label": "Nur Z anheben unter",
+      "tooltip": "Wenn Sie diesen Wert auf einen positiven Wert setzen, wird das Z-Heben nur unterhalb des angegebenen absoluten Z-Wertes erfolgen."
+    },
+    "retract_lift_enforce": {
+      "label": "Auf Oberflächen",
+      "tooltip": "Verhalten des Z-Hops erzwingen. Diese Einstellung wird von den oben genannten Einstellungen (Nur Z überheben oberhalb/unterhalb) beeinflusst.",
+      "enum_labels": [
+        "Alle Oberflächen",
+        "Nur Oben",
+        "Nur Unten",
+        "Oben und Unten"
+      ]
+    },
+    "retract_restart_extra": {
+      "label": "Zusätzliche Länge beim Neustart",
+      "tooltip": "Wenn die Rückzugskompensation nach dem Reisemove durchgeführt wird, wird der Extruder diese zusätzliche Menge an Filament schieben. Diese Einstellung wird nur selten benötigt."
+    },
+    "retract_restart_extra_toolchange": {
+      "label": "Zusätzliche Länge beim Neustart",
+      "tooltip": "Wenn die Rückzugskompensation nach dem Wechsel des Werkzeugs durchgeführt wird, wird der Extruder diese zusätzliche Menge an Filament schieben."
+    },
+    "retract_when_changing_layer": {
+      "label": "Zurückziehen beim Schichtwechsel",
+      "tooltip": "Erzwingen eines Rückzugs beim Schichtwechsel"
+    },
+    "retraction_distances_when_cut": {
+      "label": "Rückzugslänge beim Schneiden",
+      "tooltip": "Experimentelle Funktion. Rückzugslänge vor dem Abschneiden beim Filament-Wechsel"
+    },
+    "retraction_length": {
+      "label": "Länge",
+      "full_label": "Rückzugslänge",
+      "tooltip": "Menge an Material im Extruder zurückgezogen wird, um ein herauslaufen des Filaments bei langen Verfahrwegen zu vermeiden. Null deaktiviert dein Rückzug."
+    },
+    "retraction_minimum_travel": {
+      "label": "Schwellenwert für die Fahrstrecke",
+      "tooltip": "Rückzug nur auslösen, wenn der Fahrweg länger als diese Schwelle ist"
+    },
+    "retraction_speed": {
+      "label": "Rückzugsgeschwindigkeit",
+      "full_label": "Rückzugsgeschwindigkeit",
+      "tooltip": "Geschwindigkeit für den Rückzug"
+    },
+    "role_based_wipe_speed": {
+      "label": "Rollenbasierte Wipe Geschwindigkeit",
+      "tooltip": "Die Wischengeschwindigkeit wird durch die Geschwindigkeit der aktuellen Extrusion bestimmt.\nz.B. wenn eine Wischenaktion unmittelbar nach einer äußeren Wand-Extrusion ausgeführt wird, wird die Geschwindigkeit der äußeren Wand-Extrusion für die Wischenaktion verwendet."
+    },
+    "rotate_solid_infill_direction": {
+      "label": "Massives Füllmuster drehen",
+      "tooltip": "Drehe das massive Füllmuster um 90° für jede Schicht."
+    },
+    "scan_first_layer": {
+      "label": "Erste Schicht scannen",
+      "tooltip": "Aktivieren Sie diese Option, damit die Kamera des Druckers die Qualität der ersten Schicht überprüft."
+    },
+    "scarf_angle_threshold": {
+      "label": "Winkel-Schwellenwert",
+      "tooltip": "Diese Option legt den Schwellenwinkel für das Anwenden einer bedingten Schrägnaht fest.\nWenn der maximale Winkel innerhalb der Umfangsschleife diesen Wert überschreitet (was auf das Fehlen von scharfen Ecken hinweist), wird eine Schrägnaht verwendet. Der Standardwert beträgt 155°."
+    },
+    "scarf_joint_flow_ratio": {
+      "label": "Schrägnaht Flussverhältnis",
+      "tooltip": "Dieser Faktor beeinflusst die Menge an Material für Schrägnähte."
+    },
+    "scarf_joint_speed": {
+      "label": "Schrägnaht Geschwindigkeit",
+      "tooltip": "Diese Option legt die Druckgeschwindigkeit für Schrägnähte fest. Es wird empfohlen, Schrägnähte mit einer langsamen Geschwindigkeit (weniger als 100 mm/s) zu drucken. Es ist auch ratsam, die 'Glättung der Extrusionsrate' zu aktivieren, wenn die eingestellte Geschwindigkeit erheblich von der Geschwindigkeit der äußeren oder inneren Wände abweicht. Wenn die hier angegebene Geschwindigkeit höher ist als die Geschwindigkeit der äußeren oder inneren Wände, wird der Drucker auf die langsamere der beiden Geschwindigkeiten zurückgesetzt. Wenn sie als Prozentsatz angegeben wird (z.B. 80%), wird die Geschwindigkeit auf der Grundlage der jeweiligen Geschwindigkeit der äußeren oder inneren Wand berechnet. Der Standardwert ist auf 100% eingestellt."
+    },
+    "scarf_overhang_threshold": {
+      "label": "Bedingte Überstandsschwelle",
+      "tooltip": "Diese Option bestimmt den Überhangsschwellenwert für die Anwendung von Schrägnahtnähten. Wenn der nicht unterstützte Teil des Umfangs kleiner als dieser Schwellenwert ist, werden Schrägnahtnähte angewendet. Der Standardwert für die Schwelle beträgt 40% der Breite der äußeren Wand. Auf Grund von Leistungserwägungen wird der Grad des Überhangs geschätzt."
+    },
+    "seam_gap": {
+      "label": "Naht Zwischenraum",
+      "tooltip": "Um die Sichtbarkeit der Naht in einer geschlossenen Schleifenextrusion zu reduzieren, wird die Schleife unterbrochen und um eine bestimmte Menge verkürzt.\nDiese Menge kann in Millimetern oder als Prozentsatz des aktuellen Extruderdurchmessers angegeben werden.\nDer Standardwert für diesen Parameter beträgt 10%. Dies wird durchgeführt, um das endgültige Produkt glatter und nahtloser aussehen zu lassen."
+    },
+    "seam_position": {
+      "label": "Nahtposition",
+      "tooltip": "Die Startposition für den Druck jedes Teils der Außenwand",
+      "enum_labels": [
+        "Nächste",
+        "Ausgerichtet",
+        "Rückseite",
+        "Zufall"
+      ]
+    },
+    "seam_slope_conditional": {
+      "label": "Bedingte Schrägnaht",
+      "tooltip": "Wenden Sie Schrägnähte nur auf glatte Umfänge an, bei denen traditionelle Nahtstellen die Nähte an scharfen Ecken nicht effektiv verbergen."
+    },
+    "seam_slope_entire_loop": {
+      "label": "Schrägnaht um die gesamte Wand",
+      "tooltip": "Die Schrägnaht erstreckt sich über die gesamte Länge der Wand."
+    },
+    "seam_slope_inner_walls": {
+      "label": "Schrägnaht für innere Wände",
+      "tooltip": "Verwenden Sie Schrägnaht auch für innere Wände."
+    },
+    "seam_slope_min_length": {
+      "label": "Länge der Schrägnaht",
+      "tooltip": "Länge der Schrägnaht. Das Einstellen dieses Parameters auf Null deaktiviert effektiv die Schrägnaht."
+    },
+    "seam_slope_start_height": {
+      "label": "Starthöhe der Schrägnaht",
+      "tooltip": "Start Höhe der Schrägnaht.\nDiese Menge kann in Millimetern oder als Prozentsatz der aktuellen Schichthöhe angegeben werden.\nDer Standardwert für diesen Parameter beträgt 0."
+    },
+    "seam_slope_steps": {
+      "label": "Schrägnaht Schritte",
+      "tooltip": "Mindestanzahl von Segmenten jeder Schrägnaht."
+    },
+    "seam_slope_type": {
+      "label": "Schrägnaht (Beta)",
+      "tooltip": "Benutze die Schrägnaht um die Sichtbarkeit der Naht zu minimieren und die Nahtstärke zu erhöhen.",
+      "enum_labels": [
+        "Keine",
+        "Kontur",
+        "Kontur und Loch"
+      ]
+    },
+    "silent_mode": {
+      "label": "Unterstützt den Leise-Modus",
+      "tooltip": "Ob das Gerät den Leisen-Modus unterstützt, bei dem das Gerät eine geringere Beschleunigung zum Drucken verwendet"
+    },
+    "single_extruder_multi_material": {
+      "label": "Einzelner Extruder, mehrere Materialien",
+      "tooltip": "Benutze eine einzelne Düse zum Drucken mit mehreren Filamenten"
+    },
+    "single_extruder_multi_material_priming": {
+      "label": "Reinige alle Druckextruder",
+      "tooltip": "Wenn aktiviert, werden alle Druckextruder am vorderen Rand des Druckbetts am Anfang des Drucks gereinigt."
+    },
+    "skirt_distance": {
+      "label": "Abstand der Umrandung",
+      "tooltip": "Abstand von der Umrandung zum Rand oder zum Objekt"
+    },
+    "skirt_height": {
+      "label": "Höhe der Umrandungsringe",
+      "tooltip": "Wie viele Schichten des Skirts. Normalerweise nur eine Schicht."
+    },
+    "skirt_loops": {
+      "label": "Anzahl Umrandungsringe",
+      "full_label": "Anzahl Umrandungsringe",
+      "tooltip": "Anzahl der Ringe für die Umrandung. Null bedeutet Deaktivierung der Umrandung"
+    },
+    "skirt_speed": {
+      "label": "Druckgeschwindigkeit der Umrandung",
+      "full_label": "Druckgeschwindigkeit der Umrandung",
+      "tooltip": "Geschwindigkeit der Umrandung in mm/s. Null bedeutet Verwendung der Standard-Schichtextrusionsgeschwindigkeit."
+    },
+    "skirt_start_angle": {
+      "label": "Startpunkt der Umrandung",
+      "tooltip": "Winkel vom Objektzentrum zum Startpunkt der Umrandung. Null ist die rechteste Position, gegen den Uhrzeigersinn ist der Winkel positiv."
+    },
+    "skirt_type": {
+      "label": "Art der Umrandung",
+      "full_label": "Art der Umrandung",
+      "tooltip": "Kombiniert - eine Umrandung für alle Objekte, Pro Objekt - individuelle Objektumrandung.",
+      "enum_labels": [
+        "Kombiniert",
+        "Pro Objekt"
+      ]
+    },
+    "slice_closing_radius": {
+      "label": "Slice-Lückenschlussradius",
+      "tooltip": "Risse, die kleiner als das 2-fache des Lückenschlussradius sind, werden beim Slicen des Modellnetzes gefüllt. Der Vorgang des Lückenschließens kann die endgültige Druckauflösung verringern, daher ist es ratsam, den Wert relativ niedrig zu halten."
+    },
+    "slicing_mode": {
+      "label": "Slicing-Modus",
+      "tooltip": "Verwenden Sie \"Gerade-ungerade\" für 3DLabPrint-Flugzeugmodelle. Verwenden Sie \"Löcher schließen\", um alle Löcher im Modell zu schließen.",
+      "enum_labels": [
+        "Regulär",
+        "Gerade-ungerade",
+        "Löcher schließen"
+      ]
+    },
+    "slow_down_for_layer_cooling": {
+      "label": "Verlangsamen Sie den Druck für eine bessere Schichtkühlung",
+      "tooltip": "Aktivieren Sie diese Option, um die Druckgeschwindigkeit zu verlangsamen, so dass die endgültige Schichtzeit nicht kürzer als die Mindestschichtzeit in \"Maximale Lüftergeschwindigkeit\" ist, so dass die Schichten länger gekühlt werden können. Dies kann die Druckqualität für Spitzen und kleine Details verbessern."
+    },
+    "slow_down_layer_time": {
+      "label": "Schichtdauer",
+      "tooltip": "Die Druckgeschwindigkeit im exportierten G-Code wird verlangsamt, wenn die geschätzte Schichtzeit kürzer als dieser Wert ist, um eine bessere Kühlung für diese Schichten zu erreichen"
+    },
+    "slow_down_layers": {
+      "label": "Anzahl der lansamen Schichten",
+      "tooltip": "Die ersten paar Schichten werden langsamer als normal gedruckt. Die Geschwindigkeitwird allmählich linear über die angegebene Anzahl von Schichten erhöht."
+    },
+    "slow_down_min_speed": {
+      "label": "Minimale Druckgeschwindigkeit",
+      "tooltip": "Die minimale Druckgeschwindigkeit, die der Drucker einhält, um zu versuchen, die minimale Schichtzeit einzuhalten, wenn die Verlangsamung für eine bessere Schichtkühlung aktiviert ist."
+    },
+    "slowdown_for_curled_perimeters": {
+      "label": "Langsamer Druck für gekrümmte Umfänge"
+    },
+    "small_area_infill_flow_compensation": {
+      "label": "Kleine Flächen-Flusskompensation (Beta)",
+      "tooltip": "Flusskompensation für kleine Füllbereiche aktivieren"
+    },
+    "small_area_infill_flow_compensation_model": {
+      "label": "Flusskompensationsmodell",
+      "tooltip": "Flusskompensationsmodell, das verwendet wird, um den Fluss für kleine Füllbereiche anzupassen. Das Modell wird als durch Komma getrenntes Paar von Werten für die Extrusionslänge und die Flusskorrekturfaktoren, eine pro Zeile, im folgenden Format ausgedrückt: \"1.234,5.678\""
+    },
+    "small_perimeter_speed": {
+      "label": "Feine Strukturen",
+      "tooltip": "Diese separate Einstellung beeinflusst die Geschwindigkeit von Umfängen mit einem Radius <= small_perimeter_threshold (normalerweise Löcher). Wenn es als Prozentsatz ausgedrückt wird (z.B. 80%), wird es auf die oben genannte Einstellung der Geschwindigkeit der Außenwand berechnet. Setzen Sie es auf Null für automatisch."
+    },
+    "small_perimeter_threshold": {
+      "label": "Schwelle für kleine Strukturen",
+      "tooltip": "Dies legt die Schwelle für eine kleine Umfangslänge fest. Der Standardwert für die Schwelle beträgt 0 mm."
+    },
+    "solid_infill_direction": {
+      "label": "Richtung des massiven Füllmusters",
+      "tooltip": "Winkel des massiven Füllmusters, der die Start- oder Hauptrichtung der Linie steuert."
+    },
+    "solid_infill_filament": {
+      "label": "Massive Füllung",
+      "tooltip": "Filament für den Druck der massiven Füllung"
+    },
+    "sparse_infill_acceleration": {
+      "label": "Füllung",
+      "tooltip": "Beschleunigung der spärlichen Innenfüllung. Wenn der Wert als Prozentwert angegeben wird (z.B. 100%), wird er auf der Grundlage der Standardbeschleunigung berechnet."
+    },
+    "sparse_infill_density": {
+      "label": "Fülldichte",
+      "tooltip": "Dichte der internen Füllung, 100% verwandelt alle interne Füllung in massive Füllung und das interne massive Füllmuster wird verwendet."
+    },
+    "sparse_infill_filament": {
+      "label": "Füllung",
+      "tooltip": "Filament für den Druck der inneren Füllung."
+    },
+    "sparse_infill_line_width": {
+      "label": "Füllung",
+      "tooltip": "Linienbreite des internen geringen Füllmusters. Wenn als Prozentsatz angegeben, wird sie in Bezug auf den Düsendurchmesser berechnet."
+    },
+    "sparse_infill_pattern": {
+      "label": "Füllmuster",
+      "tooltip": "Linienmuster für innere Füllung.",
+      "enum_labels": [
+        "Konzentrisch",
+        "Geradlinig",
+        "Gitternetz",
+        "Linie",
+        "Kubisch",
+        "Dreiecke",
+        "Tri-Hexagon",
+        "Gyroid",
+        "Bienenwabe",
+        "Adaptiv kubisch",
+        "Geradlinig ausgerichtet",
+        "3D-Waben",
+        "Hilbert-Kurve",
+        "Archimedische Akkorde",
+        "Oktagramm Spirale",
+        "Kubisch Stützen",
+        "Blitz",
+        "Kreuzschraffur"
+      ]
+    },
+    "sparse_infill_speed": {
+      "label": "Füllung",
+      "tooltip": "Geschwindigkeit der inneren Füllung"
+    },
+    "spiral_mode": {
+      "label": "Vasenmodus",
+      "tooltip": "Aktiviert die Spiralisierung, welche die Z-Bewegungen der Außenkontur glättet und verwandelt ein Volumenmodell in einen einwandigen Druck mit soliden unteren Schichten. Das endgültig erzeugte Modell hat dadurch keine Naht."
+    },
+    "spiral_mode_max_xy_smoothing": {
+      "label": "Maximale XY-Glättung",
+      "tooltip": "Maximaler Abstand, um Punkte in XY zu verschieben, um eine glatte Spirale zu erreichen. Wenn als Prozentsatz angegeben, wird er in Bezug auf den Düsendurchmesser berechnet."
+    },
+    "spiral_mode_smooth": {
+      "label": "Gleichmäßig Spirale",
+      "tooltip": "Die gleichmäßige Spirale glättet auch die X- und Y-Bewegungen, so dass keine Naht sichtbar ist, auch nicht in den XY-Richtungen an Wänden, die nicht senkrecht sind."
+    },
+    "staggered_inner_seams": {
+      "label": "Versetzte innere Nähte",
+      "tooltip": "Durch diese Option werden die inneren Nähte basierend auf ihrer Tiefe nach hinten verschoben und bilden ein Zickzack-Muster."
+    },
+    "standby_temperature_delta": {
+      "label": "Temperaturvariation",
+      "tooltip": "Temperaturunterschied, der angewendet wird, wenn ein Extruder nicht aktiv ist. Der Wert wird nicht verwendet, wenn 'idle_temperature' in den Filament-Einstellungen auf einen Wert ungleich Null gesetzt ist."
+    },
+    "start_end_points": {
+      "label": "Anfangs- und Endpunkte",
+      "tooltip": "Die Start- und Endpunkte, vom Schnittbereich bis zum Auswurfschacht."
+    },
+    "support_air_filtration": {
+      "label": "Luftfilterung unterstützen",
+      "tooltip": "Aktivieren Sie diese Option, wenn der Drucker die Luft filtern kann\nG-Code-Befehl: M106 P3 S(0-255)"
+    },
+    "support_angle": {
+      "label": "Winkel des Musters",
+      "tooltip": "Verwenden Sie diese Einstellung, um das Stützmuster in der horizontalen Ebene zu drehen."
+    },
+    "support_base_pattern": {
+      "label": "Basismuster",
+      "tooltip": "Linienmuster der Stützstrukturen",
+      "enum_labels": [
+        "Standard",
+        "Geradlinig",
+        "Rechtwinkliges Gitter",
+        "Bienenwabe",
+        "Blitz",
+        "Hohl"
+      ]
+    },
+    "support_base_pattern_spacing": {
+      "label": "Abstand des Grundmusters",
+      "tooltip": "Abstände zwischen den Stützlinien"
+    },
+    "support_bottom_interface_spacing": {
+      "label": "Abstand der unteren Schnittstelle",
+      "tooltip": "Abstand der unteren Trennschichtlinien der Stützstrukturen. Null bedeutet eine solide Schnittstelle."
+    },
+    "support_bottom_z_distance": {
+      "label": "Unterer Z-Abstand",
+      "tooltip": "Der Z-Abstand zwischen der unteren Stütz-Schnittstelle und dem Objekt"
+    },
+    "support_chamber_temp_control": {
+      "label": "Druckkammer-Temperatursteuerung",
+      "tooltip": "Diese Option ist aktiviert, wenn der Drucker die Temperatur der Druckkammer steuern kann\nG-Code-Befehl: M141 S(0-255)"
+    },
+    "support_critical_regions_only": {
+      "label": "Nur kritische Bereiche stützen",
+      "tooltip": "Erstelle nur Stützstrukturen für kritische Bereiche, z. B. für steile Kanten, Ausragungen, usw."
+    },
+    "support_expansion": {
+      "label": "Normale Stützerweiterung",
+      "tooltip": "Vergrößern (+) oder Verkleinern (-) der horizontalen Spannweite der normalen Stützen"
+    },
+    "support_filament": {
+      "label": "Stütz-/Basis-Objekt",
+      "tooltip": "Filament zum Drucken von Stützbasen und Flöße. \"Standard\" bedeutet, dass kein spezielles Filament für die Stützen verwendet wird, sondern das aktuelle Filament."
+    },
+    "support_interface_bottom_layers": {
+      "label": "Untere Schnittstellenschichten",
+      "tooltip": "Anzahl der unteren Schnittstellenschichten"
+    },
+    "support_interface_filament": {
+      "label": "Stütz-/Raft-Schnittstelle",
+      "tooltip": "Filament zum Drucken von Stütz-Schnittstellen. \"Standard\" bedeutet, dass kein spezielles Filament für die Stütz-Schnittstellen vorhanden ist und das aktuelle Filament verwendet wird."
+    },
+    "support_interface_loop_pattern": {
+      "label": "Schleifenmuster-Schnittstelle",
+      "tooltip": "Deckt die obere Kontaktschicht der Stützstrukturen mit Schleifen ab. Standardmäßig deaktiviert."
+    },
+    "support_interface_not_for_body": {
+      "label": "Schnittstellenfilament für die Basis verringern",
+      "tooltip": "Vermeiden Sie es, Stütz-Schnittstellenfilament für die Basis zu verwenden"
+    },
+    "support_interface_pattern": {
+      "label": "Schnittstellenmuster",
+      "tooltip": "Linienmuster der Stützstruktur-Schnittstelle. Das Standardmuster für nicht lösliche Schnittstellen ist Geradlinig, während das Standardmuster für lösliche Schnittstellen konzentrisch ist.",
+      "enum_labels": [
+        "Standard",
+        "Geradlinig",
+        "Konzentrisch",
+        "Rechteckiges Wechselmuster",
+        "Gitternetz"
+      ]
+    },
+    "support_interface_spacing": {
+      "label": "Oberer Schnittstellenabstand",
+      "tooltip": "Abstand der Schnittstellenlinien. Null bedeutet feste Schnittstelle"
+    },
+    "support_interface_speed": {
+      "label": "Stützstruktur-Schnittstelle",
+      "tooltip": "Geschwindigkeit der Stützstruktur-Schnittstellen."
+    },
+    "support_interface_top_layers": {
+      "label": "Obere Schnittstellenschichten",
+      "tooltip": "Anzahl der oberen Schnittstellenschichten"
+    },
+    "support_line_width": {
+      "label": "Stützen",
+      "tooltip": "Linienbreite der Stützstrukturen. Wenn als Prozentsatz angegeben, wird sie in Bezug auf den Düsendurchmesser berechnet."
+    },
+    "support_material_interface_fan_speed": {
+      "label": "Stützstruktur-Schnittstelle",
+      "tooltip": "Diese Lüftergeschwindigkeit wird während der Stützstruktur verwendet.\nSetzen Sie es auf -1, um dies zu deaktivieren.\nKann nur durch disable_fan_first_layers außer Kraft gesetzt werden."
+    },
+    "support_multi_bed_types": {
+      "label": "Unterstützung mehrerer Betttypen",
+      "tooltip": "Aktivieren Sie diese Option, wenn Sie mehrere Betttypen verwenden möchten"
+    },
+    "support_object_xy_distance": {
+      "label": "Stützen/Objekt XY-Abstand",
+      "tooltip": "XY-Abstand zwischen einem Objekt und seinen Stützstrukturen."
+    },
+    "support_on_build_plate_only": {
+      "label": "Nur auf Druckplatte",
+      "tooltip": "Stützen nicht auf der Modelloberfläche, sondern nur auf der Druckplatte erzeugen"
+    },
+    "support_remove_small_overhang": {
+      "label": "Kleine Überhänge entfernen",
+      "tooltip": "Kleine Überhänge entfernen, die möglicherweise keine Stützstrukturen benötigen."
+    },
+    "support_speed": {
+      "label": "Stützen",
+      "tooltip": "Druckgeschwindigkeit für Stützstrukturen."
+    },
+    "support_style": {
+      "label": "Stil",
+      "tooltip": "Stil und Form der Stützstrukturen. Für normale Stützstrukturen erzeugt die Projektion der Stützstrukturen in ein regelmäßiges Gitter stabilere Stützstrukturen (Standard), während schlanke Stütztürme Material sparen und Objektverletzungen reduzieren.\nFür Baumstützen werden die schlanken und organischen Stile die Äste aggressiver zusammenführen und viel Material sparen (Standardorganisch), während der Hybridstil eine ähnliche Struktur wie normale Stützstrukturen unter großen flachen Überhängen erzeugt.",
+      "enum_labels": [
+        "Standard (Gitter/Organisch)",
+        "Gitternetz",
+        "Nahtlos",
+        "Organisch",
+        "Baum schlank",
+        "Baum stark",
+        "Baum-Hybrid"
+      ]
+    },
+    "support_threshold_angle": {
+      "label": "Schwellenwinkel",
+      "tooltip": "Für Überhänge, deren Neigungswinkel unter diesem Wert liegt, werden Stützen generiert."
+    },
+    "support_top_z_distance": {
+      "label": "Oberer Z-Abstand",
+      "tooltip": "Der Z-Abstand zwischen der oberen Stütz-Schnittstelle und dem Objekt"
+    },
+    "support_type": {
+      "label": "Typ",
+      "tooltip": "Normal (auto) und Baum (auto) werden verwendet, um automatisch Stützstrukturen zu generieren. Wenn Normal (manuell) oder Baum (manuell) ausgewählt ist, werden nur Stützerzwinger erzeugt.",
+      "enum_labels": [
+        "Normal (auto)",
+        "Baum (auto)",
+        "Normal (manuell)",
+        "Baum (manuell)"
+      ]
+    },
+    "temperature_vitrification": {
+      "label": "Erweichungstemperatur",
+      "tooltip": "Das Material wird bei dieser Temperatur weich, daher wird dringend empfohlen, die vordere Tür zu öffnen und/oder das obere Glas zu entfernen, wenn die Betttemperatur gleich oder größer als diese Temperatur ist, um Verstopfungen zu vermeiden."
+    },
+    "template_custom_gcode": {
+      "label": "Benutzerdefinierter G-Code",
+      "tooltip": "Dieser G-Code wird als benutzerdefinierter Code verwendet"
+    },
+    "textured_cool_plate_temp": {
+      "label": "Andere Schichten",
+      "full_label": "Druckbetttemperatur",
+      "tooltip": "Dies ist die Betttemperatur für Schichten mit Ausnahme der Ersten. Ein Wert von 0 bedeutet, dass das Filament auf der strukturierten kalten Druckplatte nicht unterstützt wird."
+    },
+    "textured_cool_plate_temp_initial_layer": {
+      "label": "Erste Schicht",
+      "full_label": "Druckbettemperatur für die erste Schicht",
+      "tooltip": "Dies ist die Betttemperatur der ersten Schicht. Ein Wert von 0 bedeutet, dass das Filament auf der strukturierten kalten Druckplatte nicht unterstützt wird."
+    },
+    "textured_plate_temp": {
+      "label": "Andere Schichten",
+      "full_label": "Druckbetttemperatur",
+      "tooltip": "Druckbetttemperatur nach der ersten Schicht. 0 bedeutet, dass das Filament nicht auf der texturierten PEI-Platte unterstützt wird."
+    },
+    "textured_plate_temp_initial_layer": {
+      "label": "Erste Schicht",
+      "full_label": "Druckbettemperatur für die erste Schicht",
+      "tooltip": "Druckbetttemperatur der ersten Schicht. 0 bedeutet, dass das Filament nicht auf der texturierten PEI-Platte unterstützt wird."
+    },
+    "thick_bridges": {
+      "label": "Dicke Brücken",
+      "tooltip": "Wenn diese Option aktiviert ist, sind die Brücken zuverlässiger und können größere Entfernungen überbrücken, sehen aber möglicherweise schlechter aus. Wenn deaktiviert, sehen Brücken besser aus, sind aber nur für kürzere Entfernungen zuverlässig."
+    },
+    "thick_internal_bridges": {
+      "label": "Dicke interne Brücken",
+      "tooltip": "Wenn diese Option aktiviert ist, werden dicke interne Brücken verwendet. Es wird normalerweise empfohlen, diese Funktion zu aktivieren. Wenn Sie jedoch große Düsen verwenden, sollten Sie diese Funktion deaktivieren."
+    },
+    "thumbnails": {
+      "label": "G-Code Vorschaubilder",
+      "tooltip": "Bildgrößen, die in eine .gcode und .sl1 / .sl1s-Datei gespeichert werden sollen, im folgenden Format: „XxY, XxY, …"
+    },
+    "thumbnails_format": {
+      "label": "Format der G-Code-Vorschaubilder",
+      "tooltip": "Format der G-Code-Vorschaubilder: PNG für beste Qualität, JPG für kleinste Größe, QOI für Firmware mit geringem Speicherbedarf",
+      "enum_labels": [
+        "PNG",
+        "JPG",
+        "QOI",
+        "BTT TT",
+        "ColPic"
+      ]
+    },
+    "time_cost": {
+      "label": "Druckzeit Kosten",
+      "tooltip": "Die Druckkosten pro Stunde"
+    },
+    "time_lapse_gcode": {
+      "label": "Zeitraffer G-Code"
+    },
+    "timelapse_type": {
+      "label": "Zeitraffer",
+      "tooltip": "Wenn der Modus \"Gleichmäßig\" oder \"Traditionell\" ausgewählt ist, wird für jeden Druck ein Zeitraffer-Video generiert. Nachdem jede Schicht gedruckt wurde, wird eine Momentaufnahme mit der Kamerakammer erstellt. Alle diese Schnappschüsse werden zu einem Zeitraffer-Video zusammengesetzt, wenn der Druck abgeschlossen ist. Wenn der Modus \"Gleichmäßig\" ausgewählt ist, bewegt sich der Druckkopf nach dem Drucken jeder Schicht zum Überschusskanal und nimmt dann eine Momentaufnahme auf. Da das geschmolzene Filament während des Aufnahmeprozesses aus der Düse austreten kann, ist ein Reinigungsturm erforderlich, damit der Druckkopf gereinigt wird.",
+      "enum_labels": [
+        "Traditionell",
+        "Höhenunterschiede glätten"
+      ]
+    },
+    "top_bottom_infill_wall_overlap": {
+      "label": "Überlappung des oberen/unteren massiven Füllung/Wand",
+      "tooltip": "Der obere massive Füllbereich wird leicht vergrößert, um mit der Wand zu überlappen und eine bessere Haftung zu gewährleisten und das Auftreten von Pinholes zu minimieren, wo die obere Füllung auf die Wände trifft. Ein Wert von 25-30% ist ein guter Ausgangspunkt, um das Auftreten von Pinholes zu minimieren. Der Prozentwert bezieht sich auf die Linienbreite der spärlichen Füllung."
+    },
+    "top_shell_layers": {
+      "label": "Obere Schalenschichten",
+      "full_label": "Obere massive Schichten",
+      "tooltip": "Dies ist die Anzahl der massiven Schichten der oberen Schale, einschließlich der Oberflächenschicht. Wenn die mit diesem Wert berechnete Dicke dünner ist als die Dicke der oberen Schale, werden die Schichten der oberen Schale erhöht."
+    },
+    "top_shell_thickness": {
+      "label": "Dicke der oberen Schale",
+      "full_label": "Dicke der oberen Schale",
+      "tooltip": "Die Anzahl der oberen festen Schichten wird beim Slicen erhöht, wenn die obere Schalenstärke dünner als dieser Wert ist. Dies kann verhindern, dass die Schale zu dünn wird, wenn eine geringe Schichthöhe verwendet wird. 0 bedeutet, dass diese Einstellung deaktiviert ist und die Dicke der oberen Schale absolut durch die oberen Schalenschichten bestimmt wird."
+    },
+    "top_solid_infill_flow_ratio": {
+      "label": "Durchflussverhältnis obere Fläche",
+      "tooltip": "Dieser Faktor beeinflusst die Menge des Materials für die obere feste Füllung. Sie können ihn leicht verringern, um eine glatte Oberfläche zu erhalten.\n\nDer tatsächliche obere Fluss wird berechnet, indem dieser Wert mit dem Filamentflussverhältnis und, falls festgelegt, dem Objektflussverhältnis multipliziert wird."
+    },
+    "top_surface_acceleration": {
+      "label": "Obere Oberfläche",
+      "tooltip": "Dies ist die Beschleunigung der Füllung von der obersten Schicht. Die Verwendung eines niedrigeren Werts kann die Qualität der Oberfläche verbessern."
+    },
+    "top_surface_jerk": {
+      "label": "Obere Oberfläche",
+      "tooltip": "Ruckwert Oberseiten"
+    },
+    "top_surface_line_width": {
+      "label": "Obere Oberfläche",
+      "tooltip": "Linienbreite für obere Oberflächen. Wenn als Prozentsatz angegeben, wird sie in Bezug auf den Düsendurchmesser berechnet."
+    },
+    "top_surface_pattern": {
+      "label": "Muster der Oberfläche",
+      "tooltip": "Füllmuster der obersten Fläche",
+      "enum_labels": [
+        "Konzentrisch",
+        "Geradlinig",
+        "Monotonisch",
+        "Monotonische Linie",
+        "Geradlinig ausgerichtet",
+        "Hilbert-Kurve",
+        "Archimedische Akkorde",
+        "Oktagramm Spirale"
+      ]
+    },
+    "top_surface_speed": {
+      "label": "Obere Oberfläche",
+      "tooltip": "Geschwindigkeit der massiven Füllung der Oberseite."
+    },
+    "travel_acceleration": {
+      "label": "Eilgang",
+      "tooltip": "Beschleunigung Bewegung"
+    },
+    "travel_jerk": {
+      "label": "Eilgang",
+      "tooltip": "Jerk for Bewegung"
+    },
+    "travel_slope": {
+      "label": "Bewegungswinkel",
+      "tooltip": "Bewegungswinkel für den Z-Hub-Typ \"Steigung\" und \"Spirale\". Wenn Sie es auf 90° einstellen, erhalten Sie eine normale Anhebung"
+    },
+    "travel_speed": {
+      "label": "Eilgang",
+      "tooltip": "Eilgeschwindigkeit, wenn nicht extrudiert wird."
+    },
+    "tree_support_adaptive_layer_height": {
+      "label": "Adaptive Schichthöhe",
+      "tooltip": "Wenn Sie diese Option aktivieren, wird die Höhe der Baumstützschicht außer der ersten automatisch berechnet."
+    },
+    "tree_support_angle_slow": {
+      "label": "Bevorzugter Astwinkel",
+      "tooltip": "Der bevorzugte Winkel der Äste, wenn sie das Modell nicht vermeiden müssen. Verwenden Sie einen niedrigeren Winkel, um sie vertikaler und stabiler zu machen. Verwenden Sie einen höheren Winkel, damit die Äste schneller zusammenwachsen."
+    },
+    "tree_support_auto_brim": {
+      "label": "Automatische Randbreite",
+      "tooltip": "Das Aktivieren dieser Option bedeutet, dass die Breite des Brims für Baumstützstrukturen automatisch durch die 3D-Drucksoftware berechnet wird."
+    },
+    "tree_support_branch_angle": {
+      "label": "Baumstütze Astwinkel",
+      "tooltip": "Diese Einstellung legt den maximalen Überhangwinkel fest, den die Äste der Baumstütze haben dürfen: Je größer der Winkel, desto horizontaler können die Äste gedruckt werden und desto weiter reichen sie."
+    },
+    "tree_support_branch_angle_organic": {
+      "label": "Baumstütze Astwinkel",
+      "tooltip": "Diese Einstellung legt den maximalen Überhangwinkel fest, den die Äste der Baumstütze haben dürfen: Je größer der Winkel, desto horizontaler können die Äste gedruckt werden und desto weiter reichen sie."
+    },
+    "tree_support_branch_diameter": {
+      "label": "Durchmesser des Stützastes eines Baumes",
+      "tooltip": "Diese Einstellung bestimmt den Anfangsdurchmesser der Stützknoten."
+    },
+    "tree_support_branch_diameter_angle": {
+      "label": "Ast-Verjüngungs-Winkel",
+      "tooltip": "Der Winkel des Ast-Durchmessers, da sie sich allmählich zum Boden hin verdicken. Ein Winkel von 0 bewirkt, dass die Äste über ihre Länge eine gleichmäßige Dicke haben. Ein kleiner Winkel kann die Stabilität der organischen Stütze erhöhen."
+    },
+    "tree_support_branch_diameter_double_wall": {
+      "label": "Doppelte Wände für Ast-Durchmesser ab",
+      "tooltip": "Äste mit einer Fläche, die größer ist als die Fläche eines Kreises mit diesem Durchmesser, werden mit doppelten Wänden für die Stabilität gedruckt. Setzen Sie diesen Wert auf Null, um keine doppelten Wände zu erhalten."
+    },
+    "tree_support_branch_diameter_organic": {
+      "label": "Durchmesser des Stützastes eines Baumes",
+      "tooltip": "Diese Einstellung bestimmt den Anfangsdurchmesser der Stützknoten."
+    },
+    "tree_support_branch_distance": {
+      "label": "Abstand der Baumstützenäste",
+      "tooltip": "Mit dieser Einstellung wird der Abstand zwischen benachbarten Baum-Stützknoten festgelegt."
+    },
+    "tree_support_branch_distance_organic": {
+      "label": "Abstand der Baumstützenäste",
+      "tooltip": "Mit dieser Einstellung wird der Abstand zwischen benachbarten Baum-Stützknoten festgelegt."
+    },
+    "tree_support_brim_width": {
+      "label": "Baumsupport mit Füllung",
+      "tooltip": "Abstand vom Modell zur äußersten Randlinie"
+    },
+    "tree_support_tip_diameter": {
+      "label": "Durchmesser der Spitze",
+      "tooltip": "Astspitzen-Durchmesser für organische Stützstrukturen."
+    },
+    "tree_support_top_rate": {
+      "label": "Ast-Dichte",
+      "tooltip": "Stellt die Dichte der Stützstruktur ein, die zum Erzeugen der Spitzen der Äste verwendet wird. Ein höherer Wert ergibt bessere Überhänge, aber die Stützen sind schwerer zu entfernen. Daher wird empfohlen, stattdessen obere Stützschnittstellen zu aktivieren, wenn dichte Schnittstellen benötigt werden."
+    },
+    "tree_support_wall_count": {
+      "label": "Wände um Stützstrukturen",
+      "tooltip": "Diese Einstellung gibt die Anzahl der Wände um die Stützstrukturen an"
+    },
+    "tree_support_with_infill": {
+      "label": "Baumsupport mit Füllung",
+      "tooltip": "Diese Einstellung gibt die Anzahl der Wände um den Baumsupport an"
+    },
+    "upward_compatible_machine": {
+      "label": "Aufwärtskompatible Maschine"
+    },
+    "use_firmware_retraction": {
+      "label": "Filament Rückzug durch Firmware",
+      "tooltip": "Diese experimentelle Einstellung nutzt die Befehle G10 und G11, um die Firmware das Zurückziehen zu handhaben.Dies wird nur von aktuellen Marlin-Firmware unterstützt."
+    },
+    "use_relative_e_distances": {
+      "label": "Relative Extrusion",
+      "tooltip": "Relative Extrusion wird empfohlen, wenn die Option \"label_objects\" verwendet wird. Einige Extruder arbeiten besser mit dieser Option deaktiviert (absoluter Extrusionsmodus). Der Reinigungsturm ist nur mit dem relativen Modus kompatibel. Es wird auf den meisten Druckern empfohlen. Standardmäßig ist es aktiviert."
+    },
+    "wall_direction": {
+      "label": "Druck-Richtung der Wand",
+      "tooltip": "Die Richtung, in der die Wand-Schleifen extrudiert werdenStandardmäßig werden alle Wände gegen den Uhrzeigersinn extrudiert, es sei denn, die Option Umkehrung bei geraden Schichten ist aktiviert. Wenn diese Option auf einen anderen Wert als Auto gesetzt wird, wird die Wandrichtung unabhängig von der Umkehrung bei geraden Schichten festgelegt.\nDiese Option wird deaktiviert, wenn der Spiral-Vase-Modus aktiviert ist.",
+      "enum_labels": [
+        "Automatisch",
+        "Gegen den Uhrzeigersinn",
+        "Im Uhrzeigersinn"
+      ]
+    },
+    "wall_distribution_count": {
+      "label": "Anzahl der Wände",
+      "tooltip": "Die Anzahl der Wände, von der Mitte aus gezählt, über die die Veränderung verteilt werden muss. Niedrigere Werte bedeuten, dass sich die Außenwände nicht in der Breite verändern."
+    },
+    "wall_filament": {
+      "label": "Wände",
+      "tooltip": "Filament für den Druck der Wände"
+    },
+    "wall_generator": {
+      "label": "Wandgenerator",
+      "tooltip": "Der klassische Wandgenerator erzeugt Wände mit konstanter Extrusionsbreite, wobei für sehr dünne Bereiche die Lückenfüllung verwendet wird. Die Arachne-Engine erzeugt Wände mit variabler Extrusionsbreite.",
+      "enum_labels": [
+        "Klassisch",
+        "Arachne"
+      ]
+    },
+    "wall_loops": {
+      "label": "Wandschleifen",
+      "tooltip": "Anzahl der Wände jeder Schicht"
+    },
+    "wall_sequence": {
+      "label": "Anordnung der Wände",
+      "tooltip": "Druckreihenfolge der inneren und äußeren Wände.\n\nVerwenden Sie Innen/Außen für die besten Überhänge. Dies liegt daran, dass die überhängenden Wände beim Drucken an eine benachbarte Umfangsfläche haften können. Diese Option führt jedoch zu einer geringfügig reduzierten Oberflächenqualität, da die Außenwand durch das Zusammendrücken der Innenwand verformt wird.\n\nVerwenden Sie Innen/Außen/Innen für die beste Oberflächenqualität und dimensionale Genauigkeit, da die Außenwand ungestört von einer inneren Wand gedruckt wird. Die Überhangsleistung wird jedoch verringert, da keine innere Wand vorhanden ist, um die Außenwand zu drucken. Diese Option erfordert ein Minimum von 3 Wänden, um wirksam zu sein, da die inneren Wände ab der 3. Umfangsfläche zuerst gedruckt werden, dann die äußere Umfangsfläche und schließlich die erste innere Umfangsfläche. Diese Option wird in den meisten Fällen gegen die Option Außen/Innen empfohlen.\n\nVerwenden Sie Außen/Innen für die gleiche externe Wandqualität und dimensionale Genauigkeit wie die Option Innen/Außen/Innen. Die Z-Nähte werden jedoch weniger konsistent erscheinen, da die erste Extrusion einer neuen Schicht auf einer sichtbaren Oberfläche beginnt.\n\n ",
+      "enum_labels": [
+        "Innen/Außen",
+        "Außen/Innen",
+        "Innenwand/Außenwand/Innenwand"
+      ]
+    },
+    "wall_transition_angle": {
+      "label": "Schwellenwinkel für den Wandübergang",
+      "tooltip": "Wenn Übergänge zwischen einer geraden und einer ungeraden Anzahl von Wänden erstellt werden sollen. Eine Keilform mit einem größeren Winkel als dieser Einstellung hat keine Übergänge und es werden keine Wände in der Mitte gedruckt, um den verbleibenden Raum zu füllen. Wenn Sie diese Einstellung verringern, wird die Anzahl und Länge der mittleren Wände reduziert, was jedoch Lücken oder Überextrusion verursachen kann."
+    },
+    "wall_transition_filter_deviation": {
+      "label": "Filter für die Größe des Wandübergangs",
+      "tooltip": "Verhindern Sie das Hin- und Herwechseln zwischen einer zusätzlichen Wand und einer weniger. Diese Spanne erweitert den Bereich der  Extrusionsbreiten auf [Mindestwandbreite - Spanne, 2 * Mindestwandbreite + Spanne]. Durch die Vergrößerung dieses Bereichs wird die Anzahl der Übergänge reduziert, was die Anzahl der Extrusionsstarts/-stopps und die Verfahrzeit verringert. Eine große Variation der Extrusionsbreite kann jedoch zu Unter- oder Überextrusionsproblemen führen. Er wird als Prozentsatz des Düsendurchmessers ausgedrückt"
+    },
+    "wall_transition_length": {
+      "label": "Länge des Wandübergangs",
+      "tooltip": "Beim Übergang zwischen verschiedenen Wandstärken, wenn das Teil dünner wird, wird eine bestimmte Menge an Platz zum Trennen oder Verbinden der Wandsegmente zugewiesen. Wird als Prozentsatz des Düsendurchmessers ausgedrückt."
+    },
+    "wipe": {
+      "label": "Während des Rückzugs wischen",
+      "tooltip": "Bewegen Sie die Düse beim Zurückziehen entlang des letzten Extrusionsweges, um ausgetretenes Material an der Düse zu reinigen. Dies kann die Bildung von Tropfen an einem neuen Teil nach der Fahrt minimieren."
+    },
+    "wipe_before_external_loop": {
+      "label": "Wischbewegung vor äußerer Schleife",
+      "tooltip": "Um die Sichtbarkeit einer möglichen Überextrusion am Anfang eines äußeren Umfangs zu minimieren, wenn mit der Druckreihenfolge \"Außen/Innen\" oder \"Innen/Außen/Innen\" gedruckt wird, wird der Rückzug etwas nach innen vom Anfang des äußeren Umfangs ausgeführt. Auf diese Weise wird eine mögliche Überextrusion von der Außenfläche verdeckt. \n\nDies ist nützlich, wenn mit der Druckreihenfolge \"Außen/Innen\" oder \"Innen/Außen/Innen\" gedruckt wird, da in diesen Modi ein äußerer Umfang unmittelbar nach einem Rückzug gedruckt wird."
+    },
+    "wipe_distance": {
+      "label": "Wischabstand",
+      "tooltip": "Beschreibt, wie lange die Düse entlang des letzten Pfades bewegt wird, wenn zurückgezogen wird. \n\nJe nachdem, wie lange die Wischoperation dauert, wie schnell und wie lange die Einstellungen für den Extruder-/Filamentrückzug sind, kann ein Rückzugsbefehl erforderlich sein, um das verbleibende Filament zurückzuziehen. \n\nWenn ein Wert in der Einstellung \"Rückzugsmenge vor dem Wischen\" unten angegeben ist, wird ein überschüssiger Rückzug vor dem Wischen ausgeführt, ansonsten wird er danach ausgeführt."
+    },
+    "wipe_on_loops": {
+      "label": "Wischbewegung nach innen",
+      "tooltip": "Um die Sichtbarkeit der Naht in einer geschlossenen Schleifen-Extrusion zu minimieren, wird vor dem Verlassen der Schleife eine kleine Bewegung nach innen ausgeführt."
+    },
+    "wipe_speed": {
+      "label": "Wipe Geschwindigkeit",
+      "tooltip": "Die Wischengeschwindigkeit wird durch die im Konfigurationsmenü angegebene Geschwindigkeit bestimmt.Wenn der Wert als Prozentsatz (z.B. 80%) angegeben ist, wird er aufgrund der oben angegebenen Reisegeschwindigkeit berechnet. Der Standardwert für diesen Parameter beträgt 80%"
+    },
+    "wipe_tower_bridging": {
+      "label": "Maximale Brückenlänge",
+      "tooltip": "Maximaler Abstand zwischen Stützstrukturen auf dünnem Infill."
+    },
+    "wipe_tower_cone_angle": {
+      "label": "Winkel des Stabilisierungskegels",
+      "tooltip": "Winkel an der Spitze des Kegels, der zum Stabilisieren des Reinigungsturms verwendet wird. Ein größerer Winkel bedeutet eine breitere Basis."
+    },
+    "wipe_tower_extra_flow": {
+      "label": "Zusätzlicher Fluss für Reinigung",
+      "tooltip": "Zusätzlicher Fluss, der für die Reinigungslinien auf dem Reinigungsturm verwendet wird. Dadurch werden die Reinigungslinien dicker oder schmaler, als sie normalerweise wären. Der Abstand wird automatisch angepasst."
+    },
+    "wipe_tower_extra_spacing": {
+      "label": "Wischabstand der Reinigungsturmpurges",
+      "tooltip": "Abstand der Reinigungsturmpurges."
+    },
+    "wipe_tower_filament": {
+      "label": "Reinigungsturm",
+      "tooltip": "Der Extruder, der zum Drucken des Umfangs des Reinigungsturms verwendet wird. Auf 0 setzen, um den verfügbaren Extruder zu verwenden (nicht lösliches Filament wird bevorzugt)."
+    },
+    "wipe_tower_max_purge_speed": {
+      "label": "Maximale Druckgeschwindigkeit des Reinigungsturms",
+      "tooltip": "Die maximale Druckgeschwindigkeit beim Reinigen im Reinigungsturm und beim Drucken der dünnen Schichten des Reinigungsturms. Beim Reinigen wird, wenn die Geschwindigkeit des dünnen Infill oder die berechnete Geschwindigkeit aus der maximalen Volumengeschwindigkeit des Filaments niedriger ist, die niedrigste verwendet.\n\nBeim Drucken der dünnen Schichten wird, wenn die Geschwindigkeit des inneren Umfangs oder die berechnete Geschwindigkeit aus der maximalen Volumengeschwindigkeit des Filaments niedriger ist, die niedrigste verwendet.\n\nDas Erhöhen dieser Geschwindigkeit kann die Stabilität des Turms beeinträchtigen sowie die Kraft erhöhen, mit der die Düse auf mögliche Klumpen trifft, die sich auf dem Reinigungsturm gebildet haben.\n\nBevor Sie diesen Parameter über den Standardwert von 90 mm/s erhöhen, stellen Sie sicher, dass Ihr Druckerzuverlässig bei den erhöhten Geschwindigkeiten Brücken drucken kann und dass das Auslaufen beim Werkzeugwechsel gut kontrolliert wird.\n\nFür die äußeren Umfänge des Reinigungsturms wird die Geschwindigkeit des inneren Umfangs unabhängig von dieser Einstellung verwendet."
+    },
+    "wipe_tower_no_sparse_layers": {
+      "label": "Keine dünnen Schichten (Beta)",
+      "tooltip": "Wenn aktiviert, wird der Reinigungsturm nicht auf Schichten ohne Werkzeugwechsel gedruckt. Auf Schichten mit einem Werkzeugwechsel wird der Extruder nach unten fahren, um den Reinigungsturm zu drucken. Der Benutzer ist dafür verantwortlich, dass es keine Kollision mit dem Druck gibt."
+    },
+    "wipe_tower_rotation_angle": {
+      "label": "Winkel der Reinigungsturmrotation",
+      "tooltip": "Winkel der Reinigungsturmrotation in Bezug auf die X-Achse."
+    },
+    "wiping_volumes_extruders": {
+      "label": "Reinigungsvolumen - Lade-/Entladevolumen",
+      "tooltip": "Dieser Vektor speichert die erforderlichen Volumina zum Wechseln von / zu jedem Werkzeug, das auf dem Reinigungsturm verwendet wird. Diese Werte werden verwendet, um die Erstellung der vollständigen Reinigungsvolumina unten zu vereinfachen."
+    },
+    "xy_contour_compensation": {
+      "label": "X-Y-Konturkompensation",
+      "tooltip": "Die Kontur von Objekten wird in der XY-Ebene um den eingestellten Wert vergrößert oder verkleinert. Positive Werte vergrößern Konturen, negative Werte verkleinern Konturen. Diese Funktion wird verwendet, um die Größe geringfügig anzupassen, wenn Objekte Probleme bei der Montage haben."
+    },
+    "xy_hole_compensation": {
+      "label": "X-Y-Loch-Kompensation",
+      "tooltip": "Die Löcher des Objekts werden in der XY-Ebene um den eingestellten Wert vergrößert oder verkleinert. Ein positiver Wert macht die Löcher größer, ein negativer Wert macht die Löcher kleiner. Diese Funktion wird verwendet, um die Größe geringfügig anzupassen, wenn Objekte Montageprobleme haben."
+    },
+    "z_hop": {
+      "label": "Z-Hop beim Rückzug",
+      "tooltip": "Bei jedem Rückzug wird die Düse ein wenig angehoben, um einen Abstand zwischen Düse und Druck zu schaffen. Dadurch wird verhindert, dass die Düse bei der Verfahrbewegung gegen den Druck stößt. Die Verwendung einer Spirallinie zum Anheben von z kann Fadenbildung verhindern."
+    },
+    "z_hop_types": {
+      "label": "Z-Hub Typ",
+      "tooltip": "Z-Hub Typ",
+      "enum_labels": [
+        "Automatisch",
+        "Normal",
+        "Steigung",
+        "Spirale"
+      ]
+    },
+    "z_offset": {
+      "label": "Z-Offset",
+      "tooltip": "Dieser Wert wird zu allen Z-Koordinaten im Ausgabe-G-Code addiert (oder subtrahiert). Er wird verwendet, um die schlechte Z-Endschalterposition zu kompensieren: Wenn Ihr Endschalter-Nullpunkt tatsächlich die Düse 0,3 mm vom Druckbett entfernt lässt, setzen Sie diesen Wert auf -0,3 (oder korrigieren Sie Ihren Endschalter)."
+    }
+  },
+  "ui": {
+    "Acceleration": "Beschleunigung",
+    "Acceleration limitation": "Beschleunigungsbegrenzung",
+    "Accessory": "Zubehör",
+    "Adaptive bed mesh": "Adaptives Bett Gitter",
+    "Advanced": "Erweiterte Einstellungen",
+    "Auxiliary part cooling fan": "Hilfslüfter",
+    "Basic information": "Grundlegende Informationen",
+    "Bed temperature": "Druckbetttemperatur",
+    "Before layer change G-code": "G-Code vor dem Schichtwechsel",
+    "Bridging": "Brücken",
+    "Brim": "Umrandung",
+    "Change extrusion role G-code": "Ändere den G-Code der Extrusionsart",
+    "Change filament G-code": "Filamentwechsel G-Code",
+    "Cooling": "Kühlung",
+    "Cooling Fan": "Kühlung",
+    "Cooling for specific layer": "Kühlung für eine bestimmte Schicht",
+    "Exhaust fan": "Abluftventilator",
+    "Extruder Clearance": "Freiraum des Extruders",
+    "Filament": "Filament",
+    "Filament end G-code": "Filament End G-Code",
+    "Filament for Features": "Filament für Funktionen",
+    "Filament start G-code": "Filament Start G-Code",
+    "Flow ratio and Pressure Advance": "Flussverhältnis und Pressure Advance",
+    "Flush options": "Optionen für die Düsenreinigung",
+    "G-code output": "G-Code-Ausgabe",
+    "Infill": "Füllung",
+    "Initial layer speed": "Geschwindigkeit der ersten Schicht",
+    "Ironing": "Glätten",
+    "Jerk limitation": "Jerkbegrenzung",
+    "Jerk(XY)": "Jerk(XY)",
+    "Layer change G-code": "Schichtwechsel G-Code",
+    "Layer height": "Schichthöhe",
+    "Layer height limits": "Höhenbegrenzungen für Schichten",
+    "Lift Z Enforcement": "Z-Höhe einhalten",
+    "Line width": "Breite der Linie",
+    "Machine end G-code": "Maschine Ende G-Code",
+    "Machine gcode": "Maschinen G-Code",
+    "Machine start G-code": "Maschinen Start G-Code",
+    "Motion ability": "Bewegungseinstellung",
+    "Multimaterial": "Multimaterial",
+    "Notes": "Notizen",
+    "Ooze prevention": "Ooze-Prävention",
+    "Other layers speed": "Geschwindigkeit der restlichen Schichten",
+    "Others": "Sonstiges",
+    "Overhang speed": "Überhanggeschwindigkeit",
+    "Overhangs": "Überhänge",
+    "Part cooling fan": "Bauteillüfter",
+    "Pause G-code": "Pausen G-Code",
+    "Position": "Position",
+    "Post-processing Scripts": "Post-Processing Scripts",
+    "Precision": "Präzision",
+    "Prime tower": "Reinigungsturm",
+    "Print chamber temperature": "Druckkammertemperatur",
+    "Print temperature": "Drucktemperatur",
+    "Printable space": "Druckbarer Raum",
+    "Printing by object G-code": "Drucken nach Objekt G-Code",
+    "Quality": "Qualität",
+    "Raft": "Druckbasis (Raft)",
+    "Retraction": "Rückzug",
+    "Retraction when switching material": "Rückzug bei Materialwechsel",
+    "Seam": "Naht",
+    "Setting Overrides": "Überschreiben der Einstellungen",
+    "Single extruder multi-material parameters": "Single-Extruder-Multimaterial-Parameter",
+    "Single extruder multi-material setup": "Single-Extruder-Multimaterial-Einstellung",
+    "Size": "Größe",
+    "Skirt": "Saum",
+    "Special mode": "Spezialmodus",
+    "Speed": "Geschwindigkeit",
+    "Speed limitation": "Geschwindigkeitsbegrenzung",
+    "Strength": "Struktur",
+    "Support": "Stützen",
+    "Support filament": "Supportfilament",
+    "Template Custom G-code": "Vorlage Benutzerdefinierter G-Code",
+    "Time lapse G-code": "Zeitraffer G-Code",
+    "Toolchange parameters with multi extruder MM printers": "Toolchange-Parameter bei Multi-Extruder-MM-Druckern",
+    "Toolchange parameters with single extruder MM printers": "Toolchange-Parameter bei Single-Extruder-MM-Druckern",
+    "Top/bottom shells": "Obere/Untere Schichten",
+    "Travel speed": "Fahrgeschwindigkeit",
+    "Tree supports": "Baumstützen",
+    "Volumetric speed limitation": "Volumetrische Geschwindigkeitsbegrenzung",
+    "Wall generator": "Wandgenerator",
+    "Walls": "Wände",
+    "Walls and surfaces": "Wände und Oberflächen",
+    "Wipe tower": "Reinigungsturm",
+    "Wipe tower parameters": "Reinigungsturm-Parameter"
+  }
+}

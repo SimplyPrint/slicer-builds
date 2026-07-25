@@ -1,0 +1,2545 @@
+{
+  "schema_version": 1,
+  "locale": "lt",
+  "source_locale": "en",
+  "messages": {},
+  "settings": {
+    "accel_to_decel_enable": {
+      "label": "Įjungti accel_to_decel"
+    },
+    "accel_to_decel_factor": {
+      "label": "accel_to_decel",
+      "tooltip": "\"Klipper\" max_accel_to_decel bus pakoreguotas pagal šį pagreičio %%"
+    },
+    "activate_air_filtration": {
+      "label": "Įjungti oro filtravimą",
+      "tooltip": "Suaktyvinkite, kad geriau filtruotumėte orą. G-kodo komanda: M106 P3 S(0-255)"
+    },
+    "activate_chamber_temp_control": {
+      "label": "Suaktyvinti temperatūros reguliavimą",
+      "tooltip": "Įjunkite šią parinktį, kad būtų galima automatizuotai valdyti kameros temperatūrą. Ši parinktis įjungia M191 komandos transliavimą prieš „machine_start_gcode“\n kuri nustato kameros temperatūrą ir laukia, kol ji bus pasiekta. Be to, spausdinimo pabaigoje ji išspinduliuoja komandą M141, kad būtų išjungtas kameros šildytuvas, jei toks yra.\n\nŠi parinktis priklauso nuo to, ar programinė įranga palaiko komandas M191 ir M141 per makrokomandas, ar gimtąja kalba, ir paprastai naudojama, kai įrengtas aktyvus kameros šildytuvas."
+    },
+    "adaptive_bed_mesh_margin": {
+      "label": "Figūros riba",
+      "tooltip": "Šia parinktimi nustatomas papildomas atstumas, kuriuo XY kryptimis turėtų būti išplėsta adaptyviojo pagrindo figūros sritis."
+    },
+    "adaptive_pressure_advance": {
+      "label": "Įjungti prisitaikantį išankstinį slėgį (beta)",
+      "tooltip": "Pastebėta, kad didėjant spausdinimo greičiui (taigi ir tūriniam srautui per purkštuką) ir didėjant pagreičiui, efektyvioji IS vertė paprastai mažėja. Tai reiškia, kad viena IS reikšmė ne visada yra 100 % optimali visiems elementams ir paprastai naudojama kompromisinė reikšmė, kuri nesukelia per didelio išgaubimo elementams, kurių srauto greitis ir pagreičiai yra mažesni, ir kartu nesukelia spragų greitesniems elementams.\n\nŠia funkcija siekiama išspręsti šį apribojimą modeliuojant spausdintuvo išspaudimo sistemos reakciją priklausomai nuo tūrinio srauto greičio ir pagreičio, kuriuo spausdinama. Viduje sukuriamas pritaikytas modelis, pagal kurį galima ekstrapoliuoti reikiamą slėgio padidėjimą bet kokiam tūrio srauto greičiui ir pagreičiui, kuris tada siunčiamas spausdintuvui, atsižvelgiant į esamas spausdinimo sąlygas.\n\nKai ši funkcija įjungta, pirmiau nurodyta išankstinio slėgio vertė pakeičiama. Tačiau rekomenduojama nustatyti pagrįstą numatytąją pirmiau nurodytą vertę, kad ji veiktų kaip atsarginis variantas ir būtų naudojama keičiant įrankį.\n"
+    },
+    "adaptive_pressure_advance_bridges": {
+      "label": "Tiltų išankstinis slėgis",
+      "tooltip": "Išankstinio slėgio vertė tiltams. Nustatykite 0, kad išjungtumėte.\n\n Mažesnė IS vertė spausdinant tiltus padeda sumažinti nedidelį nepakankamą išspaudimą iškart po tiltų. Taip atsitinka dėl slėgio kritimo purkštuke, kai spausdinama ore, o mažesnė IS vertė padeda tai neutralizuoti."
+    },
+    "adaptive_pressure_advance_model": {
+      "label": "Adaptyvūs išankstinio slėgio matavimai (beta)",
+      "tooltip": "Pridėkite išankstinio slėgio (IS) verčių rinkinius, tūrinius srauto greičius ir pagreičius, kuriems esant jie buvo išmatuoti, atskirti kableliu. Vienoje eilutėje pateikite po vieną verčių rinkinį. Pavyzdžiui\n0.04,3.96,3000\n0.033,3.96,10000\n0.029,7.91,3000\n0.026,7.91,10000\n\nKaip kalibruoti:\n1. Atlikite slėgio avanso bandymą bent 3 greičiams pagal kiekvieną pagreičio reikšmę. Rekomenduojama testą atlikti bent išorinių perimetrų greičiui, vidinių perimetrų greičiui ir greičiausiam jūsų profilio funkcijos spausdinimo greičiui (paprastai tai būna retas arba vientisas užpildas). Tada paleiskite juos tokiems pat greičiams, kai spausdinama lėčiausiu ir sparčiausiu greičiu, ir ne didesniu nei rekomenduojamas didžiausias pagreitis, nurodytas „Klipper“ įvesties formuotuve.\n2. Atkreipkite dėmesį į optimalią IS vertę kiekvienam tūrinio srauto greičiui ir pagreičiui. Srauto skaičių galite rasti pasirinkę srautą iš spalvų schemos išskleidžiamojo sąrašo ir perkeldami horizontalųjį slankiklį virš IS modelio linijų. Skaičius turėtų būti matomas puslapio apačioje. Ideali IS vertė turėtų mažėti, kuo didesnis tūrinis srautas. Jei taip nėra, įsitikinkite, kad jūsų ekstruderis veikia tinkamai. kuo lėčiau ir su mažesniu pagreičiu spausdinate, tuo didesnis priimtinų IS verčių diapazonas. Jei jokio skirtumo nematyti, naudokite IS vertę, gautą atliekant greitesnį bandymą.\n3. Čia esančiame teksto laukelyje įveskite IS verčių, srauto ir pagreičio reikšmes ir išsaugokite gijos profilį."
+    },
+    "adaptive_pressure_advance_overhangs": {
+      "label": "Įjungti prisitaikantį išankstinį slėgį iškyšoms (beta versija)",
+      "tooltip": "Įjunkite prisitaikantį IS iškyšoms, taip pat kai srautas keičiasi toje pačioje vietoje. Tai eksperimentinė parinktis, nes jei IS profilis nustatomas netiksliai, gali kilti išorinių paviršių vienodumo problemų prieš ir už iškyšų.\n"
+    },
+    "additional_cooling_fan_speed": {
+      "label": "Ventiliatoriaus greitis",
+      "tooltip": "Pagalbinės dalies aušinimo ventiliatoriaus greitis. Pagalbinis ventiliatorius veiks šiuo greičiu spausdinimo metu, išskyrus pirmuosius kelis sluoksnius, kuriems netaikomas sluoksnių aušinimas.\nNorėdami naudotis šia funkcija, spausdintuvo nustatymuose įjunkite auxiliary_fan. G-kodo komanda: M106 P2 S(0-255)"
+    },
+    "align_infill_direction_to_model": {
+      "label": "Suderinti užpildymo kryptį su modeliu",
+      "tooltip": "Suderina užpildymo ir paviršiaus užpildymo kryptis, kad jos atitiktų modelio orientaciją ant spausdinimo plokštės. Kai ši funkcija įjungta, užpildymo kryptys pasisuka kartu su modeliu, kad būtų išlaikytos optimalios stiprumo charakteristikos."
+    },
+    "alternate_extra_wall": {
+      "label": "Alternatyvi papildoma siena",
+      "tooltip": "Šis nustatymas prie kiekvieno kito sluoksnio prideda papildomą sienelę. Taip užpildas vertikaliai įsiterpia tarp sienelių, todėl atspaudai tampa tvirtesni.\n\nKai ši parinktis įjungta, reikia išjungti parinktį Užtikrinti vertikalų apvalkalo storį.\n\nNaudoti žaibo užpildą kartu su šia parinktimi nerekomenduojama, nes yra nedaug užpildo, prie kurio būtų galima pritvirtinti papildomą perimetrą."
+    },
+    "auxiliary_fan": {
+      "label": "Pagalbinis dalies aušinimo ventiliatorius",
+      "tooltip": "Įjunkite šią parinktį, jei mašinoje yra papildomas dalių aušinimo ventiliatorius. G-kodo komanda: M106 P2 S(0-255)."
+    },
+    "bbl_calib_mark_logo": {
+      "label": "Rodyti automatinio kalibravimo ženklus"
+    },
+    "bbl_use_printhost": {
+      "label": "Naudokite trečiosios šalies spausdinimo prieglobą",
+      "tooltip": "Leidimas valdyti \"BambuLab\" spausdintuvą per trečiosios šalies spausdinimo prieglobą"
+    },
+    "bed_custom_model": {
+      "label": "Pasirinktinis pagrindo modelis"
+    },
+    "bed_custom_texture": {
+      "label": "Pasirinktinė pagrindo tekstūra"
+    },
+    "bed_exclude_area": {
+      "label": "Nespausdinama pagrindo sritis"
+    },
+    "bed_mesh_max": {
+      "label": "Pagrindo figūros maks"
+    },
+    "bed_mesh_min": {
+      "label": "Pagrindo figūros min"
+    },
+    "bed_mesh_probe_distance": {
+      "label": "Atstumas iki zondo taško",
+      "tooltip": "Šia parinktimi nustatomas pageidaujamas atstumas tarp zondo taškų (tinklelio dydis) X ir Y kryptimis; pagal numatytuosius nustatymus tiek X, tiek Y kryptimis nustatomas 50 mm atstumas."
+    },
+    "before_layer_change_gcode": {
+      "label": "G-kodas prieš keičiant sluoksnį",
+      "tooltip": "Šis G-kodas įterpiamas kiekvieną kartą keičiant sluoksnį prieš pakeliant z"
+    },
+    "best_object_pos": {
+      "label": "Geriausia objekto padėtis",
+      "tooltip": "Geriausia automatinio išdėstymo padėtis intervale [0,1] pagal pagrindo formą."
+    },
+    "bottom_shell_layers": {
+      "label": "Apatiniai sluoksniai",
+      "full_label": "Apatiniai sluoksniai",
+      "tooltip": "Tai yra apatinio korpuso vientisų sluoksnių skaičius, įskaitant apatinį paviršiaus sluoksnį. Kai pagal šią reikšmę apskaičiuotas storis yra plonesnis už apatinio apvalkalo storį, apatinio apvalkalo sluoksniai bus padidinti"
+    },
+    "bottom_shell_thickness": {
+      "label": "Apatinio apvalkalo storis",
+      "full_label": "Apatinio apvalkalo storis",
+      "tooltip": "Pjaustant didinamas apatinių vientisų sluoksnių skaičius, jei pagal apatinius apvalkalo sluoksnius apskaičiuotas storis yra plonesnis už šią vertę. Taip galima išvengti per plono apvalkalo, kai sluoksnių aukštis yra mažas. 0 reiškia, kad šis nustatymas išjungtas ir apatinio apvalkalo storis visiškai nustatomas pagal apatinio apvalkalo sluoksnius"
+    },
+    "bottom_solid_infill_flow_ratio": {
+      "label": "Dugno paviršiaus srauto koeficientas",
+      "tooltip": "Šis veiksnys turi įtakos medžiagos vientiso dugno užpildo kiekiui.\n\nFaktinis apatinio vientiso užpildo srautas apskaičiuojamas padauginus šią vertę iš gijų srauto koeficiento ir, jei nustatyta, iš objekto srauto koeficiento."
+    },
+    "bottom_surface_density": {
+      "label": "Apatinio paviršiaus tankis",
+      "tooltip": "Apatinio paviršiaus sluoksnio tankis. Skirtas estetinėms arba funkcinėms reikmėms, ne tam, kad išspręstų tokias problemas kaip per didelis ekstruzijos kiekis. \nĮSPĖJIMAS: Šio parametro sumažinimas gali neigiamai paveikti sluoksnio sukibimą su pagrindu."
+    },
+    "bottom_surface_pattern": {
+      "label": "Apatinio paviršiaus užpildo linijų raštas",
+      "tooltip": "Tai apatinio paviršiaus užpildymo linijioms raštas, išskyrus tiltų užpildymą",
+      "enum_labels": [
+        "Monotoniškas",
+        "Monotoniška linija",
+        "Tiesia linija",
+        "Tiesiai sulygiuota",
+        "Koncentrinis",
+        "Hilberto kreivė",
+        "Archimedo akordai",
+        "Oktagramos spiralė"
+      ]
+    },
+    "bridge_acceleration": {
+      "label": "Tiltas",
+      "tooltip": "Tiltų pagreitis. Jei reikšmė išreikšta procentais (pvz., 50 %), ji bus apskaičiuota pagal išorinės sienos pagreitį."
+    },
+    "bridge_angle": {
+      "label": "Išorinio tilto užpildymo kryptis",
+      "tooltip": "Tilto kampo panaikinimas. Jei paliekama nulinė reikšmė, tilto kampas apskaičiuojamas automatiškai. Priešingu atveju išoriniams tilteliams bus naudojamas pateiktas kampas. Nuliniam kampui naudokite 180°."
+    },
+    "bridge_density": {
+      "label": "Išorinio tilto tankis",
+      "tooltip": "Valdo išorinių tiltelių linijų tankį (atstumus). 100 % reiškia vientisą tiltą. Numatytoji reikšmė yra 100 %.\n\nMažesnio tankio išoriniai tilteliai gali padėti padidinti patikimumą, nes aplink išspaustą tiltelį cirkuliuoja daugiau vietos orui, todėl pagerėja jo aušinimo greitis."
+    },
+    "bridge_flow": {
+      "label": "Tilto srauto santykis",
+      "tooltip": "Šiek tiek sumažinkite šią reikšmę (pvz., 0,9), kad sumažintumėte tilto medžiagos kiekį ir pagerintumėte įlinkį.\n\nFaktinis tiltelio srautas apskaičiuojamas padauginus šią reikšmę iš gijos srauto santykio ir, jei nustatyta, objekto srauto santykio."
+    },
+    "bridge_no_support": {
+      "label": "Nekurti atramų tiltams",
+      "tooltip": "Taip išjungiami atraminiai tilteliai, todėl sumažėja reikalingų atramų kiekis. Tiltus paprastai galima spausdinti tiesiogiai be atramų priimtinu atstumu"
+    },
+    "bridge_speed": {
+      "label": "Išorinis",
+      "tooltip": "Išoriškai matomų tilto išspaudų greitis.\n\nBe to, jei išjungta funkcija Lėtinimas lenktiems perimetrams arba įjungtas klasikinis iškyšų režimas, tai bus spausdinimo greitis iškyšų sienelėms, kurių atramos yra mažesnės nei 13 %, nepriklausomai nuo to, ar jos yra tilto, ar iškyšos dalis."
+    },
+    "brim_ears": {
+      "label": "Krašto \"ausys\"",
+      "tooltip": "Generuoti kraštą tik aplink aštrius modelio kraštus."
+    },
+    "brim_ears_detection_length": {
+      "label": "Kraštų ausies aptikimo spindulys",
+      "tooltip": "Prieš aptikdami aštrius kampus, geometrija bus išskaidyta. Šis parametras nurodo mažiausią nuokrypio ilgį decimavimui.\n0 - išjungti"
+    },
+    "brim_ears_max_angle": {
+      "label": "Maksimalus krašto \"ausies \" kampas",
+      "tooltip": "Didžiausias kampas, kad atsirastų ausies kraštas.\nJei nustatyta 0, kraštas nebus sukurtas.\nJei nustatyta ~ 180, apvadas bus kuriamas visuose, išskyrus tiesias atkarpas."
+    },
+    "brim_object_gap": {
+      "label": "Tarpas tarp krašto ir objekto",
+      "tooltip": "Sukuriamas tarpas tarp vidinės krašto linijos ir objekto, todėl galima lengviau jį atskirti"
+    },
+    "brim_type": {
+      "label": "Krašto tipas",
+      "tooltip": "Taip reguliuojamas modelių išorinės ir (arba) vidinės pusės krašto formavimas. Automatinis reiškia, kad apvado plotis analizuojamas ir apskaičiuojamas automatiškai.",
+      "enum_labels": [
+        "Automatiškai",
+        "Pelės ausis",
+        "Piešta",
+        "Tik išorinis kraštas",
+        "Tik vidinis kraštas",
+        "Išorinis ir vidinis kraštai",
+        "Nėra pagrindo sluoksnio"
+      ]
+    },
+    "brim_width": {
+      "label": "Krašto plotis",
+      "tooltip": "Atstumas nuo modelio iki išorinės krašto linijos"
+    },
+    "chamber_temperature": {
+      "label": "Kameros temperatūra",
+      "full_label": "Kameros temperatūra",
+      "tooltip": "Aukštos temperatūros medžiagoms, tokioms kaip ABS, ASA, PC ir PA, aukštesnė temperatūra kameroje gali padėti sumažinti arba sumažinti deformacijas ir padidinti tarpsluoksninio sukibimo stiprumą. Tačiau tuo pat metu aukštesnė kameros temperatūra sumažina ABS ir ASA oro filtravimo efektyvumą.\n\nPLA, PETG, TPU, PVA ir kitoms žemos temperatūros medžiagoms ši parinktis turėtų būti išjungta (nustatyta į 0), nes kameros temperatūra turėtų būti žema, kad būtų išvengta ekstruderio užsikimšimo dėl medžiagos suminkštėjimo šilumos slenkstyje.\n\nJei įjungtas, šis parametras taip pat nustato gkodo kintamąjį chamber_temperature, kuris gali būti naudojamas norimai kameros temperatūrai perduoti spausdinimo pradžios makrokomandai arba tokiai šiluminio įšilimo makrokomandai: (kiti kintamieji) CHAMBER_TEMP=[chamber_temperature]. Tai gali būti naudinga, jei jūsų spausdintuvas nepalaiko M141/M191 komandų arba jei norite, kad spausdinimo pradžios makrokomandoje būtų tvarkomas šilumos įšildymas, jei nėra aktyvaus kameros šildytuvo."
+    },
+    "change_extrusion_role_gcode": {
+      "label": "Keisti išspaudimo vaidmenį G-kodas",
+      "tooltip": "Šis G kodas įterpiamas, kai keičiamas išspaudimo vaidmuo."
+    },
+    "change_filament_gcode": {
+      "label": "Gijos keitimo G-kodas",
+      "tooltip": "Šis G kodas įterpiamas keičiant giją, įskaitant T komandas, skirtas įrankio keitimui suaktyvinti."
+    },
+    "close_fan_the_first_x_layers": {
+      "label": "Nėra aušinimo pirmiesiems",
+      "tooltip": "Pirmiesiems sluoksniams išjungti visus aušinimo ventiliatorius. Tai gali būti naudojama siekiant pagerinti sluoksnio sukibimą"
+    },
+    "compatible_printers": {
+      "label": "Pasirinkite spausdintuvus"
+    },
+    "compatible_printers_condition": {
+      "label": "Sąlyga",
+      "tooltip": "Loginė išraiška, kurioje naudojamos aktyvaus spausdintuvo profilio konfigūracijos vertės. Jei ši išraiška yra \"tiesa\", šis profilis laikomas suderinamu su aktyviu spausdintuvo profiliu."
+    },
+    "compatible_prints": {
+      "label": "Pasirinkite profilius"
+    },
+    "compatible_prints_condition": {
+      "label": "Sąlyga",
+      "tooltip": "Loginė išraiška, kurioje naudojamos aktyvaus spausdinimo profilio konfigūracijos reikšmės. Jei ši išraiška lygi „tiesa“, šis profilis laikomas suderinamu su aktyviuoju spausdinimo profiliu."
+    },
+    "complete_print_exhaust_fan_speed": {
+      "label": "Ventiliatoriaus greitis",
+      "tooltip": "Ištraukimo ventiliatoriaus greitis baigus spausdinti"
+    },
+    "cool_plate_temp": {
+      "label": "Kiti sluoksniai",
+      "full_label": "Pagrindo temperatūra",
+      "tooltip": "Pagrindo temperatūra po pirmojo sluoksnio. 0 reiškia, kad gija nepalaiko spausdinimo ant šaltos plokštės"
+    },
+    "cool_plate_temp_initial_layer": {
+      "label": "Pradinis sluoksnis",
+      "full_label": "Pradinė sluoksnio pagrindo temperatūra",
+      "tooltip": "Pirmojo sluoksnio temperatūra. 0 reiškia, kad gija nepalaiko spausdinimo ant šaltos plokštės"
+    },
+    "cooling_tube_length": {
+      "label": "Aušinimo vamzdžio ilgis",
+      "tooltip": "Aušinimo vamzdžio ilgis, kad būtų apribota erdvė aušinimo judesiams viduje."
+    },
+    "cooling_tube_retraction": {
+      "label": "Aušinimo vamzdžio padėtis",
+      "tooltip": "Aušinimo vamzdžio centro taško atstumas nuo ekstruderio antgalio."
+    },
+    "counterbore_hole_bridging": {
+      "label": "Tilto priešpriešinės skylės",
+      "tooltip": "Šia parinktimi sukuriami tilteliai priešpriešinėms skylėms, todėl jas galima spausdinti be atramos. Galimi šie režimai:\n1. Nėra: Nesukuriamas joks tiltelis.\n2. Iš dalies sujungtas tiltas: Tik dalis nepalaikomos srities bus sujungta tiltu.\n3. Apsauginis sluoksnis: Sukuriamas visas paviršinis tilto sluoksnis.",
+      "enum_labels": [
+        "Nieko",
+        "Iš dalies sujungtas tiltu",
+        "Apsauginis sluoksnis"
+      ]
+    },
+    "curr_bed_type": {
+      "label": "Pagrindo tipas",
+      "tooltip": "Spausdintuvo palaikomi pagrindo tipai",
+      "enum_labels": [
+        "Glotni vėsi plokštė",
+        "Inžinerinė plokštė",
+        "Lygi aukštos temperatūros plokštė",
+        "Tekstūruota PEI plokštė",
+        "Tekstūruota vėsi plokštė",
+        "Šalta plokštė (SuperTack)"
+      ]
+    },
+    "default_acceleration": {
+      "label": "Įprastas spausdinimas",
+      "tooltip": "Tai numatytasis pagreitis tiek įprastam spausdinimui, tiek judėjimui po pirmojo sluoksnio"
+    },
+    "default_bed_type": {
+      "label": "Numatytasis pagrindo tipas",
+      "tooltip": "Numatytasis spausdintuvo pagrindo tipas (palaiko tiek skaitmenų, tiek simbolių formatą)."
+    },
+    "default_filament_colour": {
+      "label": "Numatytoji spalva",
+      "tooltip": "Numatytoji gijos spalva.\nDešiniuoju pelės mygtuku spustelėkite, kad nustatytumėte sistemos numatytąją vertę."
+    },
+    "default_filament_profile": {
+      "label": "Numatytasis gijų profilis",
+      "tooltip": "Numatytasis gijos profilis, kai pereinama prie šio įrenginio profilio"
+    },
+    "default_jerk": {
+      "label": "Numatytas",
+      "tooltip": "Numatytasis trūkčiojimas."
+    },
+    "default_junction_deviation": {
+      "label": "Sujungimo nuokrypis",
+      "tooltip": "Marlin Firmware jungties nuokrypis (pakeičia tradicinį XY trūkčiojimo nustatymą)."
+    },
+    "default_print_profile": {
+      "label": "Numatytasis proceso profilis",
+      "tooltip": "Numatytasis proceso profilis, kai pereinama prie šio įrenginio profilio"
+    },
+    "deretraction_speed": {
+      "label": "Atitraukimo greitis",
+      "full_label": "Atitraukimo greitis",
+      "tooltip": "Gijos įtraukimo į purkštuką greitis. Nulis reiškia tokį patį ištraukimo greitį."
+    },
+    "detect_narrow_internal_solid_infill": {
+      "label": "Aptikti siaurą vidinį vientisą užpildą",
+      "tooltip": "Ši parinktis automatiškai nustato siaurą vidinę vientiso užpildo sritį. Jei ši parinktis įjungta, šiai sričiai bus naudojamas koncentrinis raštas, kad būtų pagreitintas spausdinimas. Priešingu atveju pagal numatytuosius nustatymus naudojamas tiesiaeigis raštas."
+    },
+    "detect_overhang_wall": {
+      "label": "Aptikti išsikišusią sieną",
+      "tooltip": "Nustatykite iškyšos procentinę dalį, palyginti su linijos pločiu, ir naudokite skirtingą spausdinimo greitį. Jei iškyša 100 %%, naudojamas tilto greitis."
+    },
+    "detect_thin_wall": {
+      "label": "Aptikti plonas sieneles",
+      "tooltip": "Aptikti ploną sienelę, kurioje negali būti dviejų eilučių pločio. Spausdinimui naudoti vieną liniją. Gali būti, kad nebus išspausdinta labai gerai, nes tai nėra uždaras kontūras"
+    },
+    "disable_m73": {
+      "label": "Išjungti nustatytą likusį spausdinimo laiką",
+      "tooltip": "Išjungti M73 generavimą: Nustatyti likusį spausdinimo laiką galutiniame G kode."
+    },
+    "dont_filter_internal_bridges": {
+      "label": "Filtruoti mažus vidinius tiltus",
+      "tooltip": "Ši parinktis gali padėti sumažinti viršutinių paviršių, esančių smarkiai nuožulniuose ar išlenktuose modeliuose, iškilimą.\nPagal numatytuosius nustatymus nedideli vidiniai tiltai filtruojami, o vidinis vientisas užpildas spausdinamas tiesiai ant reto užpildo. Daugeliu atvejų tai gerai veikia, nes pagreitina spausdinimą per daug nepakenkiant viršutinio paviršiaus kokybei.\nTačiau smarkiai pasvirusiuose ar išlenktuose modeliuose, ypač jei naudojamas per mažas reto užpildo tankis, gali susiraukšlėti nepalaikomas vientisas užpildas, todėl gali atsirasti iškilimų.\nĮjungus ribotą filtravimą arba jo neįjungus, vidinis tilto sluoksnis bus spausdinamas ant šiek tiek nepalaikomo vidinio vientiso užpildo. Toliau pateiktomis parinktimis valdomas filtravimo jautrumas, t. y. jomis nustatoma, kurioje vietoje sukuriami vidiniai tiltai.\n1. Filtruoti - įjungiama ši parinktis. Tai numatytoji elgsena, kuri daugeliu atvejų veikia gerai.\n2. Ribotas filtravimas - sukuriami vidiniai tiltai smarkiai nuožulniuose paviršiuose, išvengiant nereikalingų tiltų. Tai gerai veikia daugumai sudėtingų modelių.\n3. Be filtravimo - sukuria vidinius tiltus kiekvienoje potencialioje vidinėje iškyšoje. Ši parinktis naudinga stipriai nuožulnių viršutinių paviršių modeliams, tačiau daugeliu atvejų ji sukuria per daug nereikalingų tiltų.",
+      "enum_labels": [
+        "Filtras",
+        "Ribotas filtravimas",
+        "Išjungta"
+      ]
+    },
+    "dont_slow_down_outer_wall": {
+      "label": "Nelėtinti išorinių sienų"
+    },
+    "draft_shield": {
+      "label": "Apsauginis kokonas",
+      "tooltip": "Apsauginis skydas yra naudingas siekiant apsaugoti ABS arba ASA spaudinį nuo išlinkimo ir atsiskyrimo nuo spausdinimo pagrindo dėl skersvėjo. Jo paprastai reikia tik atviruose rėminiuose spausdintuvuose, t. y. be gaubto.\n\nĮjungta = apvadas yra tokio aukščio kaip aukščiausias spausdinamas objektas. Priešingu atveju naudojamas „apvado aukštis“.\nPastaba: Kai įjungtas apsauginis skydas, apvadas bus spausdinamas apvado atstumu nuo objekto. Todėl, jei aktyvuoti apvadai, jis gali su jais susikirsti. Norėdami to išvengti, padidinkite apvado atstumo reikšmę.\n",
+      "enum_labels": [
+        "Išjungta",
+        "Įjungta"
+      ]
+    },
+    "during_print_exhaust_fan_speed": {
+      "label": "Ventiliatoriaus greitis"
+    },
+    "elefant_foot_compensation": {
+      "label": "Dramblio pėdos kompensacija",
+      "tooltip": "Taip sutraukiamas pirmasis spausdinio sluoksnis, kad būtų kompensuotas dramblio pėdos efektas"
+    },
+    "elefant_foot_compensation_layers": {
+      "label": "Dramblio pėdos kompensavimo sluoksniai",
+      "tooltip": "Sluoksnių, kuriuose veiks dramblio pėdos kompensavimas, skaičius. Pirmasis sluoksnis bus sumažintas pagal dramblio pėdos kompensavimo vertę, tada kiti sluoksniai bus tiesiškai mažinami mažiau, iki šia verte nurodyto sluoksnio."
+    },
+    "emit_machine_limits_to_gcode": {
+      "label": "Išsiųsti apribojimus į G-kodą",
+      "tooltip": "Jei įjungta, įrenginio apribojimai bus perduodami į G-kodo failą.\nŠi parinktis bus ignoruojama, jei g-kodo tipas nustatytas kaip Klipper."
+    },
+    "enable_arc_fitting": {
+      "label": "Lanko talpinimas",
+      "tooltip": "Įgalinkite šią funkciją, kad gautumėte G-kodo failą su G2 ir G3 judesiais. Montavimo tolerancija yra tokia pati kaip skiriamoji geba.\n\nPastaba: „Klipper“ mašinoms šią parinktį rekomenduojama išjungti. Klipper neturi naudos iš lanko komandų, nes jas programinė įranga vėl suskaido į linijų segmentus. Dėl to suprastėja paviršiaus kokybė, nes linijiniai segmentai pjaustytuve paverčiami lankais, o programinėje įrangoje vėl paverčiami linijiniais segmentais."
+    },
+    "enable_extra_bridge_layer": {
+      "label": "Papildomi tilto sluoksniai (beta)",
+      "tooltip": "Ši parinktis leidžia sukurti papildomą tilto sluoksnį virš vidinių ir (arba) išorinių tiltų.\n\nPapildomi tiltų sluoksniai padeda pagerinti tiltų išvaizdą ir patikimumą, nes kietasis užpildas geriau atremiamas. Tai ypač naudinga greituosiuose spausdintuvuose, kuriuose tilto ir kietojo užpildo greitis labai skiriasi. Dėl papildomo tiltelio sluoksnio sumažėja viršutinių paviršių pagalvėlių, taip pat sumažėja išorinio tiltelio sluoksnio atsiskyrimas nuo jį supančių perimetrų.\n\nPaprastai rekomenduojama nustatyti bent jau „External bridge only“ (tik išorinis tiltelis), nebent būtų nustatyta specifinių problemų, susijusių su supjaustytu modeliu.\n\nParinktys:\n1. Išjungta - negeneruojami antrojo tilto sluoksniai. Tai numatytasis nustatymas, kuris nustatytas suderinamumo tikslais.\n2. Tik išorinis tiltas - generuoja antrojo tilto sluoksnius tik į išorę orientuotiems tiltams. Atkreipkite dėmesį, kad maži tiltai, kurie yra trumpesni arba siauresni už nustatytą perimetrų skaičių, bus praleisti, nes jiems antrasis tilto sluoksnis nebus naudingas. Jei sugeneruojamas, antrasis tilto sluoksnis bus išspaustas lygiagrečiai pirmajam tilto sluoksniui, kad būtų sustiprintas tilto tvirtumas.\n3. Tik vidinis tiltas - generuojami antrieji tilto sluoksniai, skirti tik vidiniams tiltams virš reto užpildo. Atkreipkite dėmesį, kad vidiniai tiltai įskaičiuojami į modelio viršutinio apvalkalo sluoksnių skaičių. Antrasis vidinio tilto sluoksnis bus išspaustas kuo arčiau statmenai pirmajam. Jei toje pačioje saloje yra keli regionai su skirtingais tiltelių kampais, kaip atskaitos kampas bus pasirinktas paskutinis tos salos regionas.\n4. Taikyti visiems - sukuriami antrieji tiltų sluoksniai, skirti tiek į vidiniams, tiek į išoriniams tiltams.\n",
+      "enum_labels": [
+        "Išjungta",
+        "Tik išorinis tiltas",
+        "Tik vidinis tiltas",
+        "Taikyti visiems"
+      ]
+    },
+    "enable_filament_ramming": {
+      "label": "Įjungti gijos ramingą",
+      "tooltip": "Įjungti gijos ramingą"
+    },
+    "enable_overhang_bridge_fan": {
+      "label": "Iškyšų ir tiltų priverstinis aušinimas",
+      "tooltip": "Įjunkite šią parinktį, kad būtų galima reguliuoti detalės aušinimo ventiliatoriaus greitį specialiai iškyšoms, vidiniams ir išoriniams tilteliams. Nustatant ventiliatoriaus greitį specialiai šiems elementams, galima pagerinti bendrą spausdinimo kokybę ir sumažinti deformacijas."
+    },
+    "enable_overhang_speed": {
+      "label": "Sulėtinti greitį dėl iškyšų",
+      "tooltip": "Įjunkite šią parinktį, kad spausdinant iškyšas sulėtėtų spausdinimas"
+    },
+    "enable_pressure_advance": {
+      "label": "Įjungti išankstinį slėgio didinimą",
+      "tooltip": "Įjunkite išankstinį slėgį, įjungus automatinio kalibravimo rezultatą, jis bus perrašytas."
+    },
+    "enable_prime_tower": {
+      "label": "Įgalinti",
+      "tooltip": "Valymo bokštas gali būti naudojamas likučiams ant purkštuko išvalyti ir kameros slėgiui purkštuko viduje stabilizuoti, kad spausdinant objektus būtų išvengta paviršiaus defektų."
+    },
+    "enable_support": {
+      "label": "Įgalinti atramas",
+      "tooltip": "Įgalinti atramų generavimą."
+    },
+    "eng_plate_temp": {
+      "label": "Kiti sluoksniai",
+      "full_label": "Pagrindo temperatūra",
+      "tooltip": "Pagrindo temperatūra po pirmojo sluoksnio. 0 reiškia, kad gija nepalaiko spausdinimo ant inžinerinės plokštės"
+    },
+    "eng_plate_temp_initial_layer": {
+      "label": "Pradinis sluoksnis",
+      "full_label": "Pradinė sluoksnio pagrindo temperatūra",
+      "tooltip": "Pirmojo sluoksnio temperatūra. 0 reiškia, kad gija nepalaiko spausdinimo ant inžinerinės plokštės"
+    },
+    "ensure_vertical_shell_thickness": {
+      "label": "Užtikrinti vertikalaus apvalkalo storį",
+      "tooltip": "Prie nuožulnių paviršių pridėti kietąjį užpildą, kad būtų užtikrintas vertikalus apvalkalo storis (viršutinis ir apatinis vientisi sluoksniai).\nNėra: Vientisas užpildas niekur nepridedamas. Dėmesio: Jei jūsų modelyje yra nuožulnių paviršių, naudokite šią parinktį atsargiai.\nTik kritiniai: Venkite pridėti vientisą sienų užpildą\nVidutiniai: Pridėti vientisą užpildą tik smarkiai nuožulniems paviršiams\nVisi: pridėkite vientisą užpildą visiems tinkamiems nuožulniems paviršiams\nNumatytoji reikšmė yra Visi.",
+      "enum_labels": [
+        "Nieko",
+        "Tik kritiniai",
+        "Vidutiniai",
+        "Visi"
+      ]
+    },
+    "exclude_object": {
+      "label": "Išskirti objektus",
+      "tooltip": "Įjunkite šią parinktį, kad G-kode būtų pridėta komanda EXCLUDE OBJECT."
+    },
+    "extra_loading_move": {
+      "label": "Papildomas pakrovimo atstumas",
+      "tooltip": "Nustačius nulį, atstumas, kuriuo gija išleidžiama iš stovėjimo padėties įdėjimo metu, yra lygiai toks pat, koks buvo perkeltas atgal išėmimo metu. Jei parametras teigiamas, įdėjimo atstumas didesnis, jei neigiamas, - įdėjimo atstumas yra mažesnis nei išėmimo."
+    },
+    "extra_perimeters_on_overhangs": {
+      "label": "Papildomi iškyšų perimetrai",
+      "tooltip": "Sukurti papildomus perimetrinius takus per stačias iškyšas ir vietas, kuriose negalima įtvirtinti tiltų."
+    },
+    "extra_solid_infills": {
+      "label": "Įterpti vientisus sluoksnius",
+      "tooltip": "Įterpkite vientisą užpildą tam tikruose sluoksniuose. Naudokite N, kad įterptumėte kas N-tą sluoksnį, N#K, kad įterptumėte K iš eilės einančius vientisus sluoksnius kas N sluoksnius (K yra neprivalomas, pvz., „5#“ yra lygus „5#1“), arba kableliais atskirtą sąrašą (pvz., 1,7,9), kad įterptumėte aiškiai nurodytuose sluoksniuose. Sluoksniai yra numeruojami nuo 1."
+    },
+    "extruder": {
+      "label": "Ekstruderis"
+    },
+    "extruder_clearance_height_to_lid": {
+      "label": "Aukštis iki dangtelio",
+      "tooltip": "Atstumas nuo antgalio galo iki dangtelio. Naudojamas siekiant išvengti susidūrimų spausdinant pagal objektus."
+    },
+    "extruder_clearance_height_to_rod": {
+      "label": "Aukštis iki strypo",
+      "tooltip": "Atstumas nuo purkštuko galo iki apatinio strypo. Naudojamas siekiant išvengti susidūrimų spausdinant pagal objektus."
+    },
+    "extruder_clearance_radius": {
+      "label": "Spindulys",
+      "tooltip": "Tarpas aplink ekstruderį. Naudojamas siekiant išvengti susidūrimų spausdinant pagal objektus."
+    },
+    "extruder_colour": {
+      "label": "Ekstruderio spalva",
+      "tooltip": "Naudojama tik kaip vaizdinė pagalba vartotojo sąsajai"
+    },
+    "extruder_offset": {
+      "label": "Ekstruderio poslinkis"
+    },
+    "extrusion_rate_smoothing_external_perimeter_only": {
+      "label": "Taikyti tik išoriniams elementams",
+      "tooltip": "Išspaudimo greičio išlyginimas taikomas tik išoriniams perimetrams ir iškyšoms. Tai gali padėti sumažinti artefaktus, atsirandančius dėl staigių greičio perėjimų išorėje matomose iškyšuose, nedarant poveikio elementų, kurie nebus matomi naudotojui, spausdinimo greičiui."
+    },
+    "fan_cooling_layer_time": {
+      "label": "Sluoksnio laikas",
+      "tooltip": "Dalių aušinimo ventiliatorius bus įjungtas sluoksniams, kurių numatomas laikas yra trumpesnis už šią vertę. Ventiliatoriaus greitis nustatomas tarp mažiausio ir didžiausio ventiliatoriaus greičio pagal sluoksnio spausdinimo laiką"
+    },
+    "fan_kickstart": {
+      "label": "Ventiliatoriaus paleidimo laikas",
+      "tooltip": "Šį kiekį sekundžių siunčia maksimalaus ventiliatoriaus greičio komandą, o po to sumažina greitį, kad aušinimo ventiliatorius pradėtų veikti.\nTai naudinga ventiliatoriams, kai mažos PWM / galios gali nepakakti, kad ventiliatorius pradėtų suktis nuo sustojimo, arba kad ventiliatorius greičiau įsibėgėtų.\nNustatykite 0, kad išjungtumėte."
+    },
+    "fan_max_speed": {
+      "label": "Ventiliatoriaus greitis",
+      "tooltip": "Kai įjungtas automatinis aušinimas, dalių ventiliatoriaus greitis gali būti padidintas. Tai didžiausias dalių aušinimo ventiliatoriaus greitis"
+    },
+    "fan_min_speed": {
+      "label": "Ventiliatoriaus greitis",
+      "tooltip": "Mažiausias dalies aušinimo ventiliatoriaus greitis"
+    },
+    "fan_speedup_overhangs": {
+      "label": "Tik iškyšos",
+      "tooltip": "Atsižvelgs tik į iškyšų aušinimo vėlavimą."
+    },
+    "fan_speedup_time": {
+      "tooltip": "Įjunkite ventiliatorių šiuo sekundžių skaičiumi anksčiau už jo tikslinį paleidimo laiką (galite naudoti sekundžių dalis). Įvertinant šį laiką daroma prielaida, kad pagreitis yra begalinis, ir atsižvelgiama tik į G1 ir G0 judesius (lanko pritaikymas nepalaikomas).\nJis neperkelia ventiliatoriaus komandų iš pasirinktinių G-kodą (jie veikia kaip tam tikras „barjeras“).\nJis neperkelia ventiliatoriaus komandų į pradžios G-kodą, jei įjungta parinktis „tik pasirinktinis pradžios gkodas“.\nJei norite išjungti, naudokite 0."
+    },
+    "filament_colour": {
+      "label": "Spalva",
+      "tooltip": "Naudojama tik kaip vaizdinė pagalba vartotojo sąsajai"
+    },
+    "filament_cooling_final_speed": {
+      "label": "Paskutinio aušinimo judesio greitis",
+      "tooltip": "Aušinimo judesiai palaipsniui greitėja link šio greičio."
+    },
+    "filament_cooling_initial_speed": {
+      "label": "Pirmojo aušinimo judesio greitis",
+      "tooltip": "Aušinimo judesiai palaipsniui greitėja, pradedant tokiu greičiu."
+    },
+    "filament_cooling_moves": {
+      "label": "Aušinimo judesių skaičius",
+      "tooltip": "Gija aušinama judant pirmyn ir atgal aušinimo vamzdeliuose. Nurodykite pageidaujamą šių judesių skaičių."
+    },
+    "filament_cost": {
+      "label": "Kaina",
+      "tooltip": "Gijos kaina, tik statistikai"
+    },
+    "filament_density": {
+      "label": "Tankis",
+      "tooltip": "Gijų tankis, tik statistikai"
+    },
+    "filament_deretraction_speed": {
+      "label": "Atitraukimo greitis",
+      "full_label": "Atitraukimo greitis",
+      "tooltip": "Gijos įtraukimo į purkštuką greitis. Nulis reiškia tokį patį ištraukimo greitį."
+    },
+    "filament_diameter": {
+      "label": "Skersmuo",
+      "tooltip": "G-kodo ekstruzijos apskaičiavimui naudojamas gijos skersmuo, todėl jis yra svarbus ir turi būti tikslus."
+    },
+    "filament_end_gcode": {
+      "label": "Pabaigos G-kodas",
+      "tooltip": "Pridėti pabaigos G-kodą, kai bus baigta spausdinti ši gija"
+    },
+    "filament_flow_ratio": {
+      "label": "Srauto santykis",
+      "tooltip": "Medžiaga gali keisti tūrį, kai pereina iš lydyto į kristalinį būvį. Šis nustatymas proporcingai keičia visą šios gijos ekstruzijos srautą G kodu. Rekomenduojamas vertės diapazonas yra nuo 0,95 iki 1,05. Jei yra nedidelis perteklius arba trūkumas, galite sureguliuoti šią vertę, kad gautumėte gražų lygų paviršių."
+    },
+    "filament_is_support": {
+      "label": "Atramų medžiaga",
+      "tooltip": "Pagalbinė medžiaga paprastai naudojama pagalbinėms ir atraminėms sąsajoms spausdinti"
+    },
+    "filament_loading_speed": {
+      "label": "Pakrovimo greitis",
+      "tooltip": "Greitis, naudojamas kaitinamojo siūlelio uždėjimui ant šluostymo bokštelio."
+    },
+    "filament_loading_speed_start": {
+      "label": "Pakrovimo greitis pradžioje",
+      "tooltip": "Greitis, naudojamas pačioje pakrovimo fazės pradžioje."
+    },
+    "filament_long_retractions_when_cut": {
+      "label": "Ilgas įtraukimas, kai pjaunama (beta)",
+      "tooltip": "Eksperimentinė funkcija: Pakeitimų metu gija įtraukiama ir nukerpama didesniu atstumu, kad būtų sumažintas išleidimas. Nors tai gerokai sumažina išleidimą, taip pat gali padidėti purkštukų užsikimšimo ar kitų spausdinimo problemų rizika."
+    },
+    "filament_max_volumetric_speed": {
+      "label": "Maksimalus tūrinis greitis",
+      "tooltip": "Gijos tūris, kurį galima išlydyti ir išspausti per sekundę. Jei nustatytas per didelis ir nepagrįstas greitis, spausdinimo greitį riboja maksimalus tūrinis greitis. Ši reikšmė negali būti lygi nuliui"
+    },
+    "filament_minimal_purge_on_wipe_tower": {
+      "label": "Minimalus valymas ant šluostymo bokštelio"
+    },
+    "filament_multitool_ramming": {
+      "label": "Įgalinti daugiafunkcinių įrankių nustatymų tankinimą",
+      "tooltip": "Atlikti tankinimą, kai naudojamas daugiafunkcinis spausdintuvas (t. y. kai spausdintuvo nustatymuose nepažymėta parinktis „Vienas išspaudiklis, įvairios medžiagos“). Kai ši parinktis pažymėta, nedidelis gijos kiekis greitai išspaudžiamas ant valymo bokšto prieš pat įrankio keitimą. Ši parinktis naudojama tik tada, kai įjungtas valymo bokštas."
+    },
+    "filament_multitool_ramming_flow": {
+      "label": "Daugiafunkcinių įrankių tankinimo srautas",
+      "tooltip": "Srautas, naudojamas gijai įspausti prieš keičiant įrankį."
+    },
+    "filament_multitool_ramming_volume": {
+      "label": "Daugiafunkcinių įrankių tankinimo tūris",
+      "tooltip": "Tūris, kuris turi būti įspaustas prieš keičiant įrankį."
+    },
+    "filament_notes": {
+      "label": "Gijos pastabos",
+      "tooltip": "Čia galite įdėti pastabas apie giją."
+    },
+    "filament_ramming_parameters": {
+      "label": "Įspaudimo parametrai",
+      "tooltip": "Šią eilutę redaguoja RammingDialog ir joje yra specifiniai įspaudimo parametrai."
+    },
+    "filament_retract_before_wipe": {
+      "label": "Įtraukiamas kiekis prieš nuvalymą",
+      "tooltip": "Greito įtraukimo prieš nuvalymą ilgis, palyginti su įtraukimo ilgiu"
+    },
+    "filament_retract_lift_above": {
+      "label": "Pakelti tik Z aukščiau",
+      "tooltip": "Jei nustatysite teigiamą reikšmę, Z kėlimas bus vykdomas tik virš nurodytos absoliučiosios Z reikšmės."
+    },
+    "filament_retract_lift_below": {
+      "label": "Pakelti tik Z žemiau",
+      "tooltip": "Jei nustatysite teigiamą reikšmę, Z kėlimas bus vykdomas tik žemiau nurodytos absoliučiosios Z reikšmės."
+    },
+    "filament_retract_lift_enforce": {
+      "label": "Ant paviršių",
+      "tooltip": "Užtikrinkite \"Z šuolio\" elgesį. Šiam nustatymui įtakos turi pirmiau nurodyti nustatymai (tik pakelti Z virš/žemiau).",
+      "enum_labels": [
+        "Visi paviršiai",
+        "Tik viršus",
+        "Tik apačia",
+        "Viršus ir apačia"
+      ]
+    },
+    "filament_retract_restart_extra": {
+      "label": "Papildomas ilgis paleidus iš naujo",
+      "tooltip": "Kai įtraukimas kompensuojamas po judesio, ekstruderis išstums šį papildomą gijos kiekį. Šis nustatymas reikalingas retai."
+    },
+    "filament_retract_when_changing_layer": {
+      "label": "Įtraukti, kai keičiamas sluoksnis",
+      "tooltip": "Priverstinis įtraukimas, kai keičiasi sluoksnis"
+    },
+    "filament_retraction_distances_when_cut": {
+      "label": "Įtraukimo atstumas, kai kerpama",
+      "tooltip": "Eksperimentinė savybė: Įtraukimo ilgis prieš nupjaunant keičiant giją"
+    },
+    "filament_retraction_length": {
+      "label": "Ilgis",
+      "full_label": "Įtraukimo ilgis",
+      "tooltip": "Tam tikras kiekis medžiagos ekstruderyje yra įtraukiamas atgal, kad ilgos kelionės metu nesusidarytų išsiliejimas. Nustatykite nulį, kad išjungtumėte įtraukimą."
+    },
+    "filament_retraction_minimum_travel": {
+      "label": "Judėjimo atstumo riba",
+      "tooltip": "Įtraukimas įjungiamas tik tada, kai judėjimo atstumas yra ilgesnis už šią ribą"
+    },
+    "filament_retraction_speed": {
+      "label": "Įtraukimo greitis",
+      "full_label": "Įtraukimo greitis",
+      "tooltip": "Gijos įtraukimo į purkštuką greitis."
+    },
+    "filament_shrink": {
+      "label": "Susitraukimas (XY)",
+      "tooltip": "Įveskite susitraukimo procentą, kurį gija gaus po aušinimo (94%, jei matuojate 94 mm, o ne 100 mm). Dalis bus keičiama xy masteliu, kad būtų kompensuota. Atsižvelgiama tik į perimetrui naudojamą giją.\nBūtinai palikite pakankamai vietos tarp objektų, nes ši kompensacija atliekama po patikrinimų."
+    },
+    "filament_shrinkage_compensation_z": {
+      "label": "Susitraukimas (Z)",
+      "tooltip": "Įveskite susitraukimo procentą, kurį gija gaus po aušinimo (94 %, jei matuojate 94 mm, o ne 100 mm). Dalis bus keičiama Z masteliu, kad tai būtų kompensuota."
+    },
+    "filament_soluble": {
+      "label": "Tirpi medžiaga",
+      "tooltip": "Tirpi medžiaga paprastai naudojama spausdinant atramą ir atramos sąsają"
+    },
+    "filament_stamping_distance": {
+      "label": "Štampavimo atstumas, matuojamas nuo aušinimo vamzdelio centro",
+      "tooltip": "Jei nustatyta nenulinė reikšmė, gija tarp atskirų aušinimo judesių judinama link purkštuko („štampavimas“). Šia parinktimi nustatoma, kiek laiko turi trukti šis judėjimas, kol gija vėl įtraukiama."
+    },
+    "filament_stamping_loading_speed": {
+      "label": "Antspaudų užkrovimo greitis",
+      "tooltip": "Greitis, naudojamas štampavimui."
+    },
+    "filament_start_gcode": {
+      "label": "Pradžios G-kodas",
+      "tooltip": "Paleisti G-kodą, kai pradedama spausdinti šia gija"
+    },
+    "filament_toolchange_delay": {
+      "label": "Vėlavimas po išleidimo",
+      "tooltip": "Laukimo laikas po to, kai gija išleista. Gali padėti naudojant lanksčias medžiagas, kurioms gali prireikti daugiau laiko susitraukti iki pradinių matmenų."
+    },
+    "filament_type": {
+      "label": "Tipas",
+      "tooltip": "Gijos medžiagos tipas"
+    },
+    "filament_unloading_speed": {
+      "label": "Iškrovimo greitis",
+      "tooltip": "Greitis, naudojamas gijos išleidimui ant valymo bokštelio (neturi įtakos pradinei išleidimo daliai iškart po lyginimo)."
+    },
+    "filament_unloading_speed_start": {
+      "label": "Iškrovimo greitis pradžioje",
+      "tooltip": "Greitis, naudojamas gijos galiuko iškrovimui iš karto po ramingo."
+    },
+    "filament_vendor": {
+      "label": "Pardavėjas",
+      "tooltip": "Gijos pardavėjas. Tik parodymui"
+    },
+    "filament_wipe": {
+      "label": "Nuvalyti įtraukiant",
+      "tooltip": "Įtraukiant antgalį judinti išilgai paskutinio išspaudimo kelio, kad būtų išvalyta ant antgalio nutekėjusi medžiaga. Tai gali sumažinti artefaktų kiekį, kai po judėjimo spausdinama nauja dalis"
+    },
+    "filament_wipe_distance": {
+      "label": "Valymo atstumas",
+      "tooltip": "Apibūdinkite, kiek laiko antgalis judės paskutiniu keliu, kai bus įtraukiamas.\n\nPriklausomai nuo to, kiek laiko trunka valymo operacija, kokie greiti ir ilgi yra ekstruderio / gijų įtraukimo nustatymai, gali prireikti įtraukimo judesio, kad būtų įtraukta likusi gija.\n\nNustačius toliau esančio įvilkimo kiekio prieš valymą nustatymo reikšmę, bet koks perteklinis įvilkimas bus atliktas prieš valymą, priešingu atveju jis bus atliktas po jo."
+    },
+    "filament_z_hop": {
+      "label": "Z šuolio aukštis",
+      "tooltip": "Kiekvieną kartą, kai gija įtraukiama, purkštukas šiek tiek pakeliamas, kad tarp purkštuko ir spaudinio atsirastų tarpas. Taip purkštukas, judėdamas daugiau, neužkliudo spaudinio. Naudojant spiralines linijas z pakėlimui, galima išvengti stygų susidarymo"
+    },
+    "filament_z_hop_types": {
+      "label": "Z šuolio tipas",
+      "tooltip": "Z-šuolio tipas.",
+      "enum_labels": [
+        "Automatiškai",
+        "Normalus",
+        "Nuolydis",
+        "Spiralė"
+      ]
+    },
+    "filename_format": {
+      "label": "Failų pavadinimų formatas",
+      "tooltip": "Eksportuodami vartotojai gali pasirinkti projekto failų pavadinimus"
+    },
+    "fill_multiline": {
+      "label": "Užpildyti kelias eilutes",
+      "tooltip": "Naudoti kelias linijas užpildymo šablonui, jei tai palaiko užpildymo šablonas."
+    },
+    "filter_out_gap_fill": {
+      "label": "Filtruoti mažus tarpus",
+      "tooltip": "Nespausdinti tarpo užpildymo, kurio ilgis yra mažesnis už nurodytą ribą (mm). Šis nustatymas taikomas viršutiniam, apatiniam ir vientisam užpildui, o jei naudojamas klasikinis perimetro generatorius - ir sienos tarpo užpildymui."
+    },
+    "first_layer_print_sequence": {
+      "label": "Pirmojo sluoksnio spausdinimo seka"
+    },
+    "first_layer_sequence_choice": {
+      "label": "Pirmojo sluoksnio gijos eiga",
+      "enum_labels": [
+        "Automatiškai",
+        "Pritaikyti"
+      ]
+    },
+    "flush_into_infill": {
+      "label": "Nuvalyti į objektų užpildą",
+      "tooltip": "Pakeitus giją, valymas bus atliekamas objektų užpildų viduje. Tai gali sumažinti atliekų kiekį ir sutrumpinti spausdinimo laiką. Jei sienos atspausdintos iš skaidraus filamento, mišrios spalvos užpildas bus matomas išorėje. Jis nebus taikomas, nebent įjungtas pirminis bokštas."
+    },
+    "flush_into_objects": {
+      "label": "Nuvalyti į šį objektą",
+      "tooltip": "Šis objektas bus naudojamas purkštuko valymui po filamento keitimo, siekiant sutaupyti filamento ir sutrumpinti spausdinimo laiką. Dėl to objektų spalvos bus sumaišytos. Tai neveiks, jei nebus įjungtas pagrindinis bokštas."
+    },
+    "flush_into_support": {
+      "label": "Nuvalyti į objekto atramas",
+      "tooltip": "Pakeitus giją, valymas bus atliekamas objektų atramos viduje. Tai gali sumažinti atliekų kiekį ir sutrumpinti spausdinimo laiką. Tai nebus veiksminga, jei nebus įjungtas pirminis bokštas."
+    },
+    "flush_multiplier": {
+      "label": "Išleidimo daugiklis",
+      "tooltip": "Faktinis išleidimo kiekis yra lygus išleidimo daugikliui, padaugintam iš lentelėje nurodytų išleidimo kiekių."
+    },
+    "flush_volumes_matrix": {
+      "label": "Valymo tūriai"
+    },
+    "flush_volumes_vector": {
+      "label": "Išleidimo tūriai – pakrovimo/iškrovimo tūriai"
+    },
+    "full_fan_speed_layer": {
+      "label": "Visas ventiliatoriaus greitis sluoksnyje",
+      "tooltip": "Ventiliatoriaus greitis bus didinamas tiesiškai nuo nulio sluoksnyje \"close_fan_the_first_x_layers\" iki maksimalaus sluoksnyje \"full_fan_speed_layer\". Į \"full_fan_speed_layer\" bus neatsižvelgiama, jei jis bus mažesnis už \"close_fan_the_first_x_layers\"; tokiu atveju ventiliatorius veiks didžiausiu leistinu greičiu sluoksnyje \"close_fan_the_first_x_layers\" + 1."
+    },
+    "fuzzy_skin": {
+      "label": "Grublėtas paviršius",
+      "tooltip": "Dėl šio nustatymo spausdinant sienas įrankio galvutė atsitiktinai trūkčioja, todėl paviršius atrodo grublėtas. Šiuo nustatymu kontroliuojama grublėtumo padėtis",
+      "enum_labels": [
+        "Nieko",
+        "Kontūras",
+        "Kontūras ir skylė",
+        "Visos sienos"
+      ]
+    },
+    "fuzzy_skin_first_layer": {
+      "label": "Taikyti grublėtą paviršių pirmajam sluoksniui",
+      "tooltip": "Ar taikyti grublėtą paviršių pirmajame sluoksnyje"
+    },
+    "fuzzy_skin_mode": {
+      "label": "Grublėto paviršiaus generatoriaus režimas",
+      "tooltip": "Grublėto paviršiaus generavimo režimas. Veikia tik su Arachne!\nPerkėlimas: Klasikinis režimas, kai raštas formuojamas šoniniu purkštuvo poslinkiu nuo pradinio kelio.\nEkstruzija: režimas, kai raštas formuojamas ekstruzuojamo plastiko kiekiu. Tai greitas ir tiesus algoritmas be nereikalingo purkštuvo judėjimo, kuris suteikia lygų raštą. Tačiau jis yra naudingesnis formuojant laisvas sienas visame jų masyve.\nKombinuotas: jungtinis režimas [Perkėlimas] + [Ekstruzija]. Sienų išvaizda yra panaši į [Perkėlimo] režimą, tačiau tarp perimetrų nelieka porų.\n\nDėmesio! [Ekstruzijos] ir [Kombinuoto] režimai veikia tik tada, kai parametras fuzzy_skin_thickness yra ne didesnis už spausdintos kilpos storį. Tuo pačiu metu ekstruzijos plotis tam tikram sluoksniui taip pat neturėtų būti mažesnis už tam tikrą lygį. Paprastai jis yra lygus 15–25%% sluoksnio aukščio. Todėl maksimalus grublėto paviršiaus storis, kai perimetro plotis yra 0,4 mm, o sluoksnio aukštis – 0,2 mm, bus 0,4-(0,2*0,25)=±0,35 mm! Jei įvesite didesnį parametrą, bus rodomas klaidos pranešimas Flow::spacing(), o modelis nebus supjaustytas. Galite parinkinėti šį skaičių, kol šios klaidos neliks.",
+      "enum_labels": [
+        "Perkėlimas",
+        "Ekstruzija",
+        "Kombinuotas"
+      ]
+    },
+    "fuzzy_skin_noise_type": {
+      "label": "Grublėto paviršiaus nelygumų tipas",
+      "tooltip": "Nelygumų tipas, kurį naudoti generuojant grublėtą paviršių.\nKlasikinis: Klasikinis vienodas atsitiktinis triukšmas.\nPerlin: Perlino triukšmas, kuris suteikia nuoseklesnę tekstūrą.\nBillow: Panašus į Perlino triukšmą, bet gremėzdiškesnis.\nRidged Multifractal: Tai - rifliuotas triukšmas su aštriomis, dantytomis savybėmis. Sukuria marmurines tekstūras.\nVoronoi: Paviršius padalijamas į Voronoi ląsteles ir kiekviena iš jų pasislenka atsitiktiniu dydžiu. Sukuriama mozaikinė tekstūra.",
+      "enum_labels": [
+        "Klasikinis",
+        "Perlin",
+        "Billow",
+        "Ridged Multifractal",
+        "Voronoi"
+      ]
+    },
+    "fuzzy_skin_octaves": {
+      "label": "Grublėto paviršiaus nelygumų oktavos",
+      "tooltip": "Koherentinio triukšmo oktavų skaičius, kuris bus naudojamas. Didesnės reikšmės padidina triukšmo detalumą, tačiau taip pat pailgina skaičiavimo laiką."
+    },
+    "fuzzy_skin_persistence": {
+      "label": "Grublėto paviršiaus nelygumų patvarumas",
+      "tooltip": "Aukštesnių oktavų koherentinio triukšmo silpnėjimo greitis. Dėl mažesnių verčių triukšmas bus lygesnis."
+    },
+    "fuzzy_skin_point_distance": {
+      "label": "Grublėto paviršiaus taško atstumas",
+      "tooltip": "Vidutinis atstumas tarp atsitiktinių taškų, įvestų kiekvienoje linijos atkarpoje"
+    },
+    "fuzzy_skin_scale": {
+      "label": "Grublėto paviršiaus elementų dydis",
+      "tooltip": "Koherentinio triukšmo elementų bazinis dydis, mm. Didesnės reikšmės reiškia didesnius elementus."
+    },
+    "fuzzy_skin_thickness": {
+      "label": "Grublėto paviršiaus storis",
+      "tooltip": "Plotis, kurio ribose turi būti drebėjimas. Rekomenduojama, kad jis būtų mažesnis už išorinės sienos linijos plotį"
+    },
+    "gap_fill_target": {
+      "label": "Taikyti tarpų užpildymą",
+      "tooltip": "Įjungiamas pasirinktų vientisų paviršių tarpų užpildymas. Mažiausias užpildomo tarpo ilgis gali būti kontroliuojamas naudojant toliau esančią mažų tarpų filtravimo parinktį.\n\nParinktys:\n1. Visur: Taikomas tarpo užpildymas viršutiniam, apatiniam ir vidiniam vientisam paviršiui, kad jis būtų maksimaliai tvirtas.\n2. Viršutinis ir apatinis paviršiai: Užpildomi tik viršutiniai ir apatiniai paviršiai, taip subalansuojant spausdinimo greitį, sumažinant galimą vientisų užpildų perteklinį išspaudimą ir užtikrinant, kad viršutiniuose ir apatiniuose paviršiuose nebūtų skylučių tarpų.\n3. Niekur: Išjungiamas tarpų užpildymas visuose vientiso užpildo plotuose.\n\nAtkreipkite dėmesį, kad jei naudojamas klasikinis perimetro generatorius, tarpų užpildymas gali būti generuojamas ir tarp perimetrų, jei tarp jų netelpa viso pločio linija. Šis nustatymas tokio perimetro tarpo užpildymo nekontroliuoja.\n\nJei norite, kad visi tarpų užpildymai, įskaitant klasikinio perimetro generuojamą tarpą, būtų pašalinti, nustatykite mažų tarpų filtravimo reikšmę dideliu skaičiumi, pavyzdžiui, 999999.\n\nTačiau to daryti nerekomenduojama, nes tarpų tarp perimetrų užpildymas prisideda prie modelio tvirtumo. Modeliuose, kuriuose tarp perimetrų generuojamas per didelis tarpų užpildas, geresnis variantas būtų pereiti prie arachne sienų generatoriaus ir šia parinktimi valdyti, ar generuojamas kosmetinis viršutinio ir apatinio paviršiaus tarpų užpildas",
+      "enum_labels": [
+        "Visur",
+        "Viršutinis ir apatinis paviršiai",
+        "Niekur"
+      ]
+    },
+    "gap_infill_speed": {
+      "label": "Tarpų užpildymas",
+      "tooltip": "Tarpų užpildymo greitis. Tarpai paprastai būna netaisyklingo pločio, todėl juos reikia spausdinti lėčiau"
+    },
+    "gcode_add_line_number": {
+      "label": "Pridėti eilutės numerį",
+      "tooltip": "Įjunkite šią funkciją, kad kiekvienos G kodo eilutės pradžioje būtų įterptas eilutės numeris (Nx)."
+    },
+    "gcode_comments": {
+      "label": "Išsamus G-kodas",
+      "tooltip": "Įjunkite tai, kad gautumėte komentuojamą G-kodo failą su kiekviena eilute paaiškinta aprašomuoju tekstu. Jei spausdinate iš SD kortelės, dėl papildomo failo dydžio gali sulėtėti veikimas."
+    },
+    "gcode_flavor": {
+      "label": "G-kodo tipas",
+      "tooltip": "Su kokiu G kodu suderinamas spausdintuvas.",
+      "enum_labels": [
+        "Marlin(legacy)",
+        "Klipper",
+        "RepRapFirmware",
+        "Marlin 2"
+      ]
+    },
+    "gcode_label_objects": {
+      "label": "Objektų žymėjimas",
+      "tooltip": "Įgalinkite šią funkciją, jei norite pridėti komentarų prie G-kodo žymėjimo spausdinimo judesių su objektu, kuriam jie priklauso. Tai naudinga „Octoprint CancelObject“ papildiniui. Šie nustatymai NĖRA suderinami su Vieno Ekstruderio Kelių Medžiagų sąranka ir Valyti Objekte / Valyti Užpildyme."
+    },
+    "high_current_on_filament_swap": {
+      "label": "Didelė ekstruderio srovė keičiant giją",
+      "tooltip": "Gali būti naudinga padidinti ekstruderio variklio srovę vykstant gijos keitimo sekai, kad būtų užtikrintas greitas tiekimo greitis ir įveiktų pasipriešinimą apkraunant giją su netipinės formos antgaliu."
+    },
+    "hole_to_polyhole": {
+      "label": "Konvertuoti skyles į daugiakampes",
+      "tooltip": "Ieškokite beveik apskritų skylių, apimančių daugiau nei vieną sluoksnį, ir paverskite geometriją į daugiasluoksnes skyles. Norėdami apskaičiuoti daugialypę skylę, naudokite purkštuko dydį ir (didžiausią) skersmenį.\nŽr. http://hydraraptor.blogspot.com/2011/02/polyholes.html"
+    },
+    "hole_to_polyhole_threshold": {
+      "label": "Daugiašakių aptikimo riba",
+      "tooltip": "Didžiausias taško nuokrypis nuo apskaičiuoto apskritimo spindulio.\nKadangi cilindrai dažnai eksportuojami kaip įvairaus dydžio trikampiai, taškai gali būti ne apskritimo perimetre. Šis nustatymas suteikia tam tikrą laisvę išplėsti aptikimą.\nmm arba % spindulio."
+    },
+    "hole_to_polyhole_twisted": {
+      "label": "Daugiašakės sukimas",
+      "tooltip": "Pasukite daugialypę skylę kiekviename sluoksnyje."
+    },
+    "host_type": {
+      "label": "Hosto tipas",
+      "enum_labels": [
+        "ElegooLink",
+        "OctoPrint",
+        "PrusaLink",
+        "PrusaConnect",
+        "Duet",
+        "FlashAir",
+        "AstroBox",
+        "Repetier",
+        "MKS",
+        "ESP3D",
+        "CrealityPrint",
+        "Obico",
+        "Flashforge",
+        "SimplyPrint"
+      ]
+    },
+    "hot_plate_temp": {
+      "label": "Kiti sluoksniai",
+      "full_label": "Pagrindo temperatūra",
+      "tooltip": "Pagrindo temperatūra po pirmojo sluoksnio. 0 reiškia, kad gija nepalaiko spausdinimo ant aukštos temperatūros plokštės"
+    },
+    "hot_plate_temp_initial_layer": {
+      "label": "Pradinis sluoksnis",
+      "full_label": "Pradinė sluoksnio pagrindo temperatūra",
+      "tooltip": "Pirmojo sluoksnio temperatūra. 0 reiškia, kad gija nepalaiko spausdinimo ant aukštos temperatūros plokštės"
+    },
+    "idle_temperature": {
+      "label": "Tuščiosios eigos temperatūra",
+      "tooltip": "Purkštuko temperatūra, kai įrankis šiuo metu nenaudojamas kelių įrankių nustatymuose.Tai naudojama tik tada, kai spausdinimo nustatymuose įjungta Išleidimo prevencija. Nustatykite 0, kad išjungtumėte."
+    },
+    "independent_support_layer_height": {
+      "label": "Nepriklausomas atraminio sluoksnio aukštis",
+      "tooltip": "Atraminis sluoksnis naudoja sluoksnio aukštį, nepriklausomą nuo objekto sluoksnio. Taip palaikomas z tarpo pritaikymas ir taupomas spausdinimo laikas.Ši parinktis negalioja, kai įjungtas pagrindinis bokštas."
+    },
+    "infill_anchor": {
+      "label": "Reto užpildo tvirtinimo ilgis"
+    },
+    "infill_anchor_max": {
+      "label": "Maksimalus užpildymo tvirtinimų ilgis"
+    },
+    "infill_combination": {
+      "label": "Užpildymo derinys",
+      "tooltip": "Automatiškai sujungti kelių sluoksnių retą užpildą, kad būtų spausdinama kartu ir sutrumpėtų laikas. Siena vis tiek spausdinama su pradiniu sluoksnio aukščiu."
+    },
+    "infill_combination_max_layer_height": {
+      "label": "Užpildų derinys - Maksimalus sluoksnio aukštis",
+      "tooltip": "Didžiausias kombinuoto reto užpildo sluoksnio aukštis.\n\nNustatykite 0 arba 100 %, jei norite naudoti purkštuko skersmenį (kad maksimaliai sutrumpėtų spausdinimo laikas), arba ~80 %, jei norite maksimaliai padidinti reto užpildo stiprumą.\n\nSluoksnių, per kuriuos derinamas užpildas, skaičius gaunamas dalijant šią vertę iš sluoksnio aukščio ir suapvalinant žemyn iki artimiausio dešimtainio skaičiaus.\n\nNaudokite absoliučias mm vertes (pvz., 0,32 mm 0,4 mm antgaliui) arba % vertes (pvz., 80 %). Ši vertė neturi būti didesnė už purkštuko skersmenį."
+    },
+    "infill_direction": {
+      "label": "Reto užpildymo kryptis",
+      "tooltip": "Reto užpildymo rašto kampas, kuriuo nustatoma linijų pradžios arba pagrindinė kryptis"
+    },
+    "infill_jerk": {
+      "label": "Užpildymas",
+      "tooltip": "Užpildymo trūkčiojimas"
+    },
+    "infill_lock_depth": {
+      "label": "Užpildymo fiksavimo gylis",
+      "tooltip": "Šis parametras nustato vidaus ir išorės sluoksnių persidengimo gylį."
+    },
+    "infill_overhang_angle": {
+      "label": "Užpildymo iškyšos kampas",
+      "tooltip": "Užpildymo kampuoto linijų kampas. 60° kampas sukurs gryną korį."
+    },
+    "infill_shift_step": {
+      "label": "Užpildymo poslinkio žingsnis",
+      "tooltip": "Šis parametras prideda nedidelį poslinkį kiekvienam užpildo sluoksniui, kad būtų sukurta kryžminė tekstūra."
+    },
+    "infill_wall_overlap": {
+      "label": "Užpildo ir sienos persidengimas",
+      "tooltip": "Užpildo plotas šiek tiek padidintas, kad persidengtų su siena ir geriau sukibtų. Procentinė vertė yra santykinė su reto užpildo linijos pločiu. Nustatykite šią vertę ~10-15 %, kad sumažintumėte galimą perteklinį išspaudimą ir medžiagos sankaupas, dėl kurių susidaro šiurkštus viršutinis paviršius."
+    },
+    "inherits": {
+      "label": "Paveldi profilį",
+      "tooltip": "Pirminio profilio pavadinimas"
+    },
+    "initial_layer_acceleration": {
+      "label": "Pradinis sluoksnis",
+      "tooltip": "Tai pirmojo sluoksnio spausdinimo pagreitis. Naudojant ribotą pagreitį galima pagerinti sukibimą su pagrindu"
+    },
+    "initial_layer_infill_speed": {
+      "label": "Pradinio sluoksnio užpildymas",
+      "tooltip": "Pirmojo sluoksnio vientiso užpildo dalių greitis"
+    },
+    "initial_layer_jerk": {
+      "label": "Pradinis sluoksnis",
+      "tooltip": "Pradinio sluoksnio trūkčiojimas"
+    },
+    "initial_layer_line_width": {
+      "label": "Pradinis sluoksnis",
+      "tooltip": "Pradinio sluoksnio linijos plotis. Jei išreiškiamas %, jis apskaičiuojamas pagal purkštuko skersmenį."
+    },
+    "initial_layer_min_bead_width": {
+      "label": "Pirmojo sluoksnio mažiausias sienos plotis",
+      "tooltip": "Mažiausią sienos plotį, kuris turėtų būti naudojamas pirmajam sluoksniui, rekomenduojama nustatyti tokio pat dydžio, kaip ir purkštukas. Manoma, kad šis nustatymas pagerins sukibimą."
+    },
+    "initial_layer_print_height": {
+      "label": "Pradinio sluoksnio aukštis",
+      "tooltip": "Pradinio sluoksnio aukštis. Šiek tiek padidinus pradinio sluoksnio aukštį galima pagerinti pagrindo plokštės sukibimą"
+    },
+    "initial_layer_speed": {
+      "label": "Pradinis sluoksnis",
+      "tooltip": "Greitis taikomas pirmajam sluoksniui, išskyrus vientiso užpildo ruožus"
+    },
+    "initial_layer_travel_speed": {
+      "label": "Pradinio sluoksnio judėjimo greitis",
+      "tooltip": "Pradinio sluoksnio judėjimo greitis"
+    },
+    "inner_wall_acceleration": {
+      "label": "Vidinė siena",
+      "tooltip": "Vidinių sienų pagreitis"
+    },
+    "inner_wall_jerk": {
+      "label": "Vidinė siena",
+      "tooltip": "Vidinių sienų trūkčiojimas"
+    },
+    "inner_wall_line_width": {
+      "label": "Vidinė siena",
+      "tooltip": "Vidinės sienos linijos plotis. Jei išreiškiamas %, jis apskaičiuojamas pagal purkštuko skersmenį."
+    },
+    "inner_wall_speed": {
+      "label": "Vidinė siena",
+      "tooltip": "Tai vidinių sienų greitis"
+    },
+    "interface_shells": {
+      "label": "Sąsajos apvalkalai",
+      "tooltip": "Priverstinai sukuriami vientisi apvalkalai tarp gretimų medžiagų ir (arba) tūrių. Naudinga spausdinant daugiasluoksniais ekstruderiais su permatomomis medžiagomis arba rankiniu būdu tirpiomis pagalbinėmis medžiagomis"
+    },
+    "interlocking_beam": {
+      "label": "Naudoti pluošto blokavimą",
+      "tooltip": "Vietose, kuriose liečiasi skirtingos gijos, sukurkite susisiekiančių sijų struktūrą. Tai pagerina sukibimą tarp gijų, ypač modelių, atspausdintų iš skirtingų medžiagų."
+    },
+    "interlocking_beam_layer_count": {
+      "label": "Tarpusavyje besijungiantys sijų sluoksniai",
+      "tooltip": "Sujungtos konstrukcijos sijų aukštis, matuojamas sluoksnių skaičiumi. Mažesnis sluoksnių skaičius yra tvirtesnis, bet labiau linkęs į defektus."
+    },
+    "interlocking_beam_width": {
+      "label": "Blokavimo sijų plotis",
+      "tooltip": "Susikertančių konstrukcijos sijų plotis."
+    },
+    "interlocking_boundary_avoidance": {
+      "label": "Blokuotų ribų vengimas",
+      "tooltip": "Atstumas nuo modelio išorės, kai nesukuriamos susikertančios struktūros, matuojamas ląstelėmis."
+    },
+    "interlocking_depth": {
+      "label": "Blokavimo gylis",
+      "tooltip": "Atstumas nuo ribos tarp gijų iki susikertančios struktūros, matuojamas ląstelėmis. Dėl per mažo ląstelių skaičiaus sukibimas bus silpnas."
+    },
+    "interlocking_orientation": {
+      "label": "Susiejimo kryptis",
+      "tooltip": "Blokavimo sijų kryptis."
+    },
+    "internal_bridge_angle": {
+      "label": "Vidinio tilto užpildymo kryptis",
+      "tooltip": "Vidinio pertvaros kampo panaikinimas. Jei paliekama nulinė reikšmė, tilto kampas apskaičiuojamas automatiškai. Priešingu atveju vidiniams tiltams bus naudojamas nurodytas kampas. Naudokite 180°, kad kampas būtų lygus nuliui.\n\nRekomenduojama palikti 0, nebent yra konkretus modelio poreikis to nedaryti."
+    },
+    "internal_bridge_density": {
+      "label": "Vidinių tiltų tankis",
+      "tooltip": "Valdo vidinių tiltelių linijų tankį (atstumus). 100 % reiškia vientisą tiltą. Numatytoji reikšmė yra 100 %.\n\n Mažesnio tankio vidiniai tilteliai gali padėti sumažinti viršutinio paviršiaus iškilimą ir padidinti vidinio tiltelio patikimumą, nes aplink išspaustą tiltelį cirkuliuoja daugiau erdvės orui, todėl pagerėja jo aušinimo greitis.\n\nŠi parinktis ypač gerai veikia kartu su antrojo vidinio tiltelio virš užpildo parinktimi, dar labiau pagerinančia vidinio tiltelio struktūrą prieš išspaudžiant kietąjį užpildą."
+    },
+    "internal_bridge_fan_speed": {
+      "label": "Vidinių tiltų ventiliatoriaus greitis",
+      "tooltip": "Dalies aušinimo ventiliatoriaus greitis, naudojamas visiems vidiniams tilteliams. Nustatykite į -1, kad vietoj to būtų naudojami iškyšos ventiliatoriaus greičio nustatymai.\n\nSumažinus vidinių tiltelių ventiliatoriaus greitį, palyginti su įprastu ventiliatoriaus greičiu, galima sumažinti detalės deformaciją dėl per didelio aušinimo, ilgą laiką taikomo dideliam paviršiui."
+    },
+    "internal_bridge_flow": {
+      "label": "Vidinio tilto srauto koeficientas",
+      "tooltip": "Ši vertė lemia vidinio tilto sluoksnio storį. Tai yra pirmasis sluoksnis virš reto užpildo. Šiek tiek sumažinkite šią reikšmę (pavyzdžiui, 0,9), kad pagerintumėte paviršiaus kokybę virš reto užpildo.\n\nFaktinis naudojamas vidinio tiltelio srautas apskaičiuojamas padauginus šią vertę iš tiltelio srauto santykio, gijų srauto santykio ir, jei nustatyta, objekto srauto santykio."
+    },
+    "internal_bridge_speed": {
+      "label": "Vidinis",
+      "tooltip": "Vidinių tiltų greitis. Jei reikšmė išreiškiama procentais, ji bus apskaičiuojama pagal bridge_speed. Numatytoji vertė yra 150 %."
+    },
+    "internal_solid_infill_acceleration": {
+      "label": "Vidinis vientisas užpildas",
+      "tooltip": "Vidinio vientiso užpildo pagreitis. Jei reikšmė išreikšta procentais (pvz., 100 %), ji bus apskaičiuota pagal numatytąjį pagreitį."
+    },
+    "internal_solid_infill_line_width": {
+      "label": "Vidinis vientisas užpildas",
+      "tooltip": "Vidinio vientiso užpildo linijos plotis. Jei išreiškiamas %, jis apskaičiuojamas pagal purkštuko skersmenį."
+    },
+    "internal_solid_infill_pattern": {
+      "label": "Vidinis vientiso užpildo raštas",
+      "tooltip": "Vidinio vientiso užpildo linijų raštas. Jei įjungta funkcija aptikti siaurą vidinį vientisą užpildą, mažam plotui bus naudojamas koncentrinis raštas.",
+      "enum_labels": [
+        "Monotoniškas",
+        "Monotoniška linija",
+        "Tiesia linija",
+        "Tiesiai sulygiuota",
+        "Koncentrinis",
+        "Hilberto kreivė",
+        "Archimedo akordai",
+        "Oktagramos spiralė"
+      ]
+    },
+    "internal_solid_infill_speed": {
+      "label": "Vidinis vientisas užpildas",
+      "tooltip": "Tai vidinio vientiso užpildo greitis, neįskaitant viršutinio ar apatinio paviršiaus"
+    },
+    "ironing_angle": {
+      "label": "Lyginimo kampas",
+      "tooltip": "Atliekamas kampinis lyginimas. Neigiamas skaičius išjungia šią funkciją ir naudojamas numatytasis metodas."
+    },
+    "ironing_fan_speed": {
+      "label": "Lyginimo ventiliatoriaus greitis",
+      "tooltip": "Šis dalies aušinimo ventiliatoriaus greitis taikomas lyginant. Nustačius šį parametrą mažesniu nei įprastas greitis, sumažėja galimas purkštuko užsikimšimas dėl mažo tūrinio srauto, todėl sąsaja tampa sklandesnė.\nNorėdami išjungti, nustatykite -1."
+    },
+    "ironing_flow": {
+      "label": "Lyginimo srautas",
+      "tooltip": "Medžiagos kiekis, kuris turi būti išspaustas lyginimo metu. Jis yra susijęs su įprasto sluoksnio aukščio srautu. Dėl per didelės vertės paviršiuje atsiras perteklinis išspaudimas"
+    },
+    "ironing_inset": {
+      "label": "Lyginimo intarpas",
+      "tooltip": "Atstumas, kurį reikia išlaikyti nuo kraštų. Jei reikšmė 0, nustatoma pusė purkštuko skersmens."
+    },
+    "ironing_pattern": {
+      "label": "Lyginimo raštas",
+      "tooltip": "Raštas, kuris bus naudojamas lyginant",
+      "enum_labels": [
+        "Tiesia linija",
+        "Koncentrinis"
+      ]
+    },
+    "ironing_spacing": {
+      "label": "Tarpai tarp lyginimo linijų",
+      "tooltip": "Atstumas tarp lyginimui naudojamų linijų"
+    },
+    "ironing_speed": {
+      "label": "Lyginimo greitis",
+      "tooltip": "Lyginimo linijų spausdinimo greitis"
+    },
+    "ironing_type": {
+      "label": "Lyginimo tipas",
+      "tooltip": "Lyginant naudojamas nedidelis srautas, kuris spausdina tame pačiame paviršiaus aukštyje, kad plokšti paviršiai būtų lygesni. Šis nustatymas kontroliuoja, kurie sluoksniai lyginami",
+      "enum_labels": [
+        "Nėra lyginimo",
+        "Viršutiniai paviršiai",
+        "Aukščiausias paviršius",
+        "Visas vientisas sluoksnis"
+      ]
+    },
+    "is_infill_first": {
+      "label": "Pirmiausia spausdinti užpildą",
+      "tooltip": "Sienų ir (arba) užpildymo tvarka. Kai žymės langelis nepažymėtas, sienos spausdinamos pirmosios, o tai daugeliu atvejų veikia geriausiai.\n\nSpausdinti užpildą pirmiausia gali būti lengviau, kai yra labai dideli iškyšuliai, nes sienos turi laikytis gretimo užpildo. Tačiau užpildas šiek tiek išstumia atspausdintas sienas ten, kur jis prie jų pritvirtintas, todėl išorinio paviršiaus apdaila būna prastesnė. Dėl to užpildas taip pat gali persišviesti per išorinius detalės paviršius."
+    },
+    "lateral_lattice_angle_1": {
+      "label": "Rašto kampas 1",
+      "tooltip": "Pirmojo 2D grotelių elementų rinkinio kampas Z kryptimi. Nulis yra vertikalus."
+    },
+    "lateral_lattice_angle_2": {
+      "label": "Rašto kampas 2",
+      "tooltip": "Antrojo 2D grotelių elementų rinkinio kampas Z kryptimi. Nulis yra vertikalus."
+    },
+    "layer_change_gcode": {
+      "label": "Sluoksnio keitimas G-kodas",
+      "tooltip": "Šis G kodas įterpiamas po kiekvieno sluoksnio keitimo po Z pakėlimo."
+    },
+    "layer_height": {
+      "label": "Sluoksnio aukštis",
+      "tooltip": "Tai kiekvieno sluoksnio aukštis. Mažesni sluoksnių aukščiai užtikrina didesnį tikslumą, bet ilgesnį spausdinimo laiką"
+    },
+    "line_width": {
+      "label": "Numatytas",
+      "tooltip": "Numatytasis linijos plotis, jei kitų linijų plotis lygus 0. Jei išreiškiamas %, apskaičiuojamas pagal purkštuko skersmenį."
+    },
+    "long_retractions_when_cut": {
+      "label": "Ilgas įtraukimas, kai pjaunama (beta)",
+      "tooltip": "Eksperimentinė funkcija: Pakeitimų metu gija įtraukiama ir nukerpama didesniu atstumu, kad būtų sumažintas išleidimas. Nors tai gerokai sumažina išleidimą, taip pat gali padidėti purkštukų užsikimšimo ar kitų spausdinimo problemų rizika."
+    },
+    "machine_end_gcode": {
+      "label": "Pabaigos G-kodas",
+      "tooltip": "Pridėti pabaigos G-kodą, kai bus baigtas visas spausdinimas"
+    },
+    "machine_load_filament_time": {
+      "label": "Gijos įkrovimo laikas",
+      "tooltip": "Naujos gijos įkrovimo laikas, kai perjungiama gija. Tai paprastai taikoma vieno ekstruderio daugialypės terpės mašinoms. Įrankių keitimo arba daugiafunkcinėms mašinoms paprastai taikomas 0. Tik statistiniams duomenims"
+    },
+    "machine_max_acceleration_e": {
+      "full_label": "Didžiausias pagreitis E",
+      "tooltip": "Didžiausias E ašies pagreitis"
+    },
+    "machine_max_acceleration_extruding": {
+      "full_label": "Didžiausias ekstruzijos pagreitis",
+      "tooltip": "Didžiausias ekstruzijos pagreitis (M204 P)"
+    },
+    "machine_max_acceleration_retracting": {
+      "full_label": "Didžiausias įtraukimo pagreitis",
+      "tooltip": "Didžiausias įtraukimo pagreitis (M204 R)"
+    },
+    "machine_max_acceleration_travel": {
+      "full_label": "Didžiausias judėjimo pagreitis",
+      "tooltip": "Didžiausias judėjimo pagreitis (M204 T), jis taikomas tik \"Marlin 2\""
+    },
+    "machine_max_acceleration_x": {
+      "full_label": "Didžiausias pagreitis X",
+      "tooltip": "Didžiausias X ašies pagreitis"
+    },
+    "machine_max_acceleration_y": {
+      "full_label": "Didžiausias pagreitis Y",
+      "tooltip": "Didžiausias Y ašies pagreitis"
+    },
+    "machine_max_acceleration_z": {
+      "full_label": "Didžiausias pagreitis Z",
+      "tooltip": "Didžiausias Z ašies pagreitis"
+    },
+    "machine_max_jerk_e": {
+      "full_label": "Didžiausias trūkčiojimas E",
+      "tooltip": "Didžiausias E ašies trūkčiojimas"
+    },
+    "machine_max_jerk_x": {
+      "full_label": "Didžiausias trūkčiojimas X",
+      "tooltip": "Didžiausias X ašies trūkčiojimas"
+    },
+    "machine_max_jerk_y": {
+      "full_label": "Didžiausias trūkčiojimas Y",
+      "tooltip": "Didžiausias Y ašies trūkčiojimas"
+    },
+    "machine_max_jerk_z": {
+      "full_label": "Didžiausias trūkčiojimas Z",
+      "tooltip": "Didžiausias Z ašies trūkčiojimas"
+    },
+    "machine_max_junction_deviation": {
+      "full_label": "Maksimalus jungties nuokrypis"
+    },
+    "machine_max_speed_e": {
+      "full_label": "Didžiausias greitis E"
+    },
+    "machine_max_speed_x": {
+      "full_label": "Didžiausias greitis X"
+    },
+    "machine_max_speed_y": {
+      "full_label": "Didžiausias greitis Y"
+    },
+    "machine_max_speed_z": {
+      "full_label": "Didžiausias greitis Z"
+    },
+    "machine_min_extruding_rate": {
+      "full_label": "Mažiausias ekstruzijos greitis",
+      "tooltip": "Minimum speed for extruding (M205 S)"
+    },
+    "machine_min_travel_rate": {
+      "full_label": "Mažiausias judėjimo greitis",
+      "tooltip": "Mažiausias judėjimo greitis (M205 T)"
+    },
+    "machine_pause_gcode": {
+      "label": "Pauzė G-kodas",
+      "tooltip": "Šis G kodas bus naudojamas kaip pauzės spausdinimo kodas. Vartotojai gali įterpti pauzės G kodą G kodo peržiūroje."
+    },
+    "machine_start_gcode": {
+      "label": "Pradžios G-kodas",
+      "tooltip": "G kodo paleidimas, kai pradedamas visas spausdinimas"
+    },
+    "machine_tool_change_time": {
+      "label": "Įrankių keitimo laikas",
+      "tooltip": "Įrankių keitimo laikas. Jis paprastai taikomas įrankių keitimo įrenginiams arba daugiafunkcinėms staklėms. Vieno ekstruderio kelių medžiagų mašinoms jis paprastai lygus 0. Tik statistiniams duomenims"
+    },
+    "machine_unload_filament_time": {
+      "label": "Gijos iškrovimo laikas",
+      "tooltip": "Laikas senos gijos iškrovimui, kai keičiama gija. Tai paprastai taikoma vieno ekstruderio kelių medžiagų mašinoms. Įrankių keitimo arba daugiafunkcinėms mašinoms paprastai taikomas 0. Tik statistiniams duomenims"
+    },
+    "make_overhang_printable": {
+      "label": "Padaryti iškyšas spausdinamas",
+      "tooltip": "Pakeisti geometriją, kad būtų galima spausdinti iškyšas be atraminės medžiagos."
+    },
+    "make_overhang_printable_angle": {
+      "label": "Spausdintinos iškyšos - Didžiausias kampas",
+      "tooltip": "Didžiausias leistinas iškyšų kampas, kurį galima spausdinti padarius statesnes iškyšas. 90° visiškai nepakeis modelio ir leis bet kokią iškyšą, o 0 - visas iškyšas pakeis kūgio formos medžiaga."
+    },
+    "make_overhang_printable_hole_size": {
+      "label": "Spausdintinos iškyšos - Skylės plotas",
+      "tooltip": "Didžiausias modelio pagrindo skylės plotas prieš ją užpildant kūgine medžiaga. 0 reikšmė užpildys visas modelio pagrindo skyles."
+    },
+    "manual_filament_change": {
+      "label": "Rankinis gijų keitimas",
+      "tooltip": "Įjunkite šią parinktį, kad pasirinktinis Keisti gijos G-kodas būtų praleistas tik spausdinimo pradžioje. Įrankio keitimo komanda (pvz., T0) bus praleista viso spausdinimo metu. Tai naudinga spausdinant keliomis medžiagomis rankiniu būdu, kai rankinio gijos keitimo veiksmui įjungti naudojame M600/PAUSE."
+    },
+    "max_bridge_length": {
+      "label": "Maksimalus tilto ilgis",
+      "tooltip": "Maksimalus tiltų, kuriems nereikia atramos, ilgis. Nustatykite 0, jei norite, kad būtų remiami visi tiltai, ir labai didelę reikšmę, jei nenorite, kad būtų remiami jokie tiltai."
+    },
+    "max_layer_height": {
+      "label": "Maks",
+      "tooltip": "Didžiausias spausdinimo sluoksnio aukštis ekstruderiui. Naudojamas norint apriboti maksimalų sluoksnio aukštį, kai įjungtas prisitaikantis sluoksnio aukštis."
+    },
+    "max_resonance_avoidance_speed": {
+      "label": "Maks",
+      "tooltip": "Maksimalus greitis, leidžiantis išvengti rezonanso."
+    },
+    "max_travel_detour_distance": {
+      "label": "Vengti kirsti sieną - Didžiausias apylankos ilgis",
+      "tooltip": "Didžiausias apylankos atstumas, kad būtų išvengta sienos kirtimo: Spausdintuvas neaplenks sienos, jei aplenkimo atstumas yra didesnis nei ši vertė. Apylankos ilgis gali būti nurodomas kaip absoliuti vertė arba kaip procentinė dalis (pvz., 50 %) nuo tiesioginio judėjimo kelio. Nustačius 0 reikšmę, ši funkcija bus išjungta"
+    },
+    "max_volumetric_extrusion_rate_slope": {
+      "label": "Ekstruzijos greičio išlyginimas"
+    },
+    "max_volumetric_extrusion_rate_slope_segment_length": {
+      "label": "Išlyginamojo segmento ilgis",
+      "tooltip": "Mažesnė vertė užtikrina sklandesnius ekstruzijos greičio pokyčius. Tačiau dėl to G kodo failas tampa žymiai didesnis, o spausdintuvas turi apdoroti daugiau instrukcijų.\n\nDaugeliu atvejų gerai tinka numatytoji vertė 3. Jei spausdintuvas striginėja, padidinkite šią vertę, kad sumažintumėte atliekamų koregavimų skaičių.\n\nLeidžiamos vertės: 0,5–5"
+    },
+    "min_bead_width": {
+      "label": "Mažiausias sienos plotis",
+      "tooltip": "Sienos, kuri pakeis plonus modelio elementus, plotis (pagal minimalų elemento dydį). Jei Minimalus sienos plotis yra plonesnis už elemento storį, siena taps tokio pat storio kaip ir pats elementas. Jis išreiškiamas procentais nuo purkštuko skersmens"
+    },
+    "min_feature_size": {
+      "label": "Minimalus elemento dydis",
+      "tooltip": "Mažiausias plonų elementų storis. Modelio elementai, kurie yra plonesni už šią vertę, nebus spausdinami, o elementai, kurie yra storesni už šią vertę, bus praplatinti iki minimalaus sienelės storio. Išreiškiama procentais nuo purkštuko skersmens."
+    },
+    "min_layer_height": {
+      "label": "Min",
+      "tooltip": "Mažiausias spausdinimo sluoksnio aukštis ekstruderiui. Naudojamas norint apriboti minimalų sluoksnio aukštį, kai įjungtas prisitaikantis sluoksnio aukštis."
+    },
+    "min_length_factor": {
+      "label": "Mažiausias sienos ilgis",
+      "tooltip": "Nustatykite šią reikšmę, kad nebūtų spausdinamos trumpos, neuždarytos sienos, dėl kurių gali pailgėti spausdinimo laikas. Didesnės reikšmės pašalina daugiau ir ilgesnių sienelių.\n\nPASTABA: Apatiniams ir viršutiniams paviršiams ši reikšmė įtakos neturės, kad modelio išorėje nesusidarytų vizualūs tarpai. Toliau esančiuose išplėstiniuose nustatymuose sureguliuokite Vienos sienelės slenkstis, kad nustatytumėte jautrumą, kas laikoma viršutiniu paviršiumi. Vienos sienelės slenkstis matomas tik tada, jei šis nustatymas nustatytas didesnis už numatytąją vertę 0,5 arba jei įjungta vienos sienelės viršutinių paviršių funkcija."
+    },
+    "min_resonance_avoidance_speed": {
+      "label": "Min",
+      "tooltip": "Minimalus greitis, leidžiantis išvengti rezonanso."
+    },
+    "min_skirt_length": {
+      "label": "Minimalus apvado išspaudimo ilgis",
+      "full_label": "Minimalus apvado išspaudimo ilgis",
+      "tooltip": "Mažiausias gijos išspaudimo ilgis mm, kai spausdinamas apvadas. Nulis reiškia, kad ši funkcija išjungta.\n\nNaudoti nenulinę vertę naudinga, jei spausdintuvas nustatytas spausdinti be pirminės linijos.\nĮ galutinį kontūrų skaičių neatsižvelgiama, kai organizuojamas arba patvirtinamas objektų atstumas. Tokiu atveju padidinkite kontūrų skaičių."
+    },
+    "min_width_top_surface": {
+      "label": "Vienos sienos riba",
+      "tooltip": "Jei viršutinį paviršių reikia atspausdinti ir jį iš dalies dengia kitas sluoksnis, jis nebus laikomas viršutiniu sluoksniu, jei jo plotis yra mažesnis už šią reikšmę. Tai gali būti naudinga norint, kad nebūtų įjungta funkcija \"vienas perimetras viršuje\" ant paviršiaus, kurį turėtų dengti tik perimetrai. Ši vertė gali būti mm arba % perimetro išspaudimo pločio.\nĮspėjimas: Jei ši funkcija įjungta, gali atsirasti artefaktų, jei kitame sluoksnyje yra plonų elementų, pavyzdžiui, raidžių. Nustatykite šią nuostatą į 0, kad šie artefaktai būtų pašalinti."
+    },
+    "minimum_sparse_infill_area": {
+      "label": "Minimali reto užpildymo riba",
+      "tooltip": "Reto užpildymo sritys, kurios yra mažesnės už šią ribinę vertę, pakeičiamos vidiniu vientisu užpildymu"
+    },
+    "mmu_segmented_region_interlocking_depth": {
+      "label": "Segmentuotos srities susikirtimo gylis",
+      "tooltip": "Segmentuoto regiono susikirtimo gylis. Jis bus ignoruojamas, jei „mmu_segmented_region_max_width“ yra nulis arba jei „mmu_segmented_region_interlocking_depth“ yra didesnis už „mmu_segmented_region_max_width“. Nulis išjungia šią funkciją."
+    },
+    "mmu_segmented_region_max_width": {
+      "label": "Didžiausias segmentuotos srities plotis",
+      "tooltip": "Didžiausias segmentuotos srities plotis. Nulis išjungia šią funkciją."
+    },
+    "notes": {
+      "label": "Konfigūracijos pastabos",
+      "tooltip": "Čia galite įdėti savo asmeninius užrašus. Šis tekstas bus pridėtas prie G kodo antraštės komentarų."
+    },
+    "nozzle_diameter": {
+      "label": "Purkštuko skersmuo",
+      "tooltip": "Purkštuvo skersmuo"
+    },
+    "nozzle_height": {
+      "label": "Purkštuko aukštis",
+      "tooltip": "Purkštuko antgalio aukštis."
+    },
+    "nozzle_hrc": {
+      "label": "Purkštuko HRC",
+      "tooltip": "Antgalio kietumas. Nulis reiškia, kad sluoksniavimo antgalio kietumas netikrinamas."
+    },
+    "nozzle_temperature": {
+      "label": "Kiti sluoksniai",
+      "full_label": "Purkštuko temperatūra",
+      "tooltip": "Po pradinio sluoksnio esančių sluoksnių purkštuko temperatūra"
+    },
+    "nozzle_temperature_initial_layer": {
+      "label": "Pradinis sluoksnis",
+      "full_label": "Pradinė sluoksnio purkštuko temperatūra",
+      "tooltip": "Purkštuko temperatūra pradiniam sluoksniui spausdinti, kai naudojama ši gija"
+    },
+    "nozzle_temperature_range_high": {
+      "label": "Maks"
+    },
+    "nozzle_temperature_range_low": {
+      "label": "Min"
+    },
+    "nozzle_type": {
+      "label": "Purkštuko tipas",
+      "tooltip": "Nuo purkštuko medžiagos priklauso antgalio atsparumas abrazyvui ir tai, kokią giją galima spausdinti",
+      "enum_labels": [
+        "Neapibrėžti",
+        "Kietintas plienas",
+        "Nerūdijantis plienas",
+        "Žalvaris"
+      ]
+    },
+    "nozzle_volume": {
+      "label": "Purkštuko tūris",
+      "tooltip": "Purkštuko tūris tarp pjaustytuvo ir purkštuko galo"
+    },
+    "only_one_wall_first_layer": {
+      "label": "Tik viena pirmojo sluoksnio siena",
+      "tooltip": "Pirmajame sluoksnyje naudokite tik vieną sienelę, kad būtų daugiau vietos apatiniam užpildymo raštui"
+    },
+    "only_one_wall_top": {
+      "label": "Tik viena viršutinių paviršių siena",
+      "tooltip": "Ant lygaus viršutinio paviršiaus naudokite tik vieną sienelę, kad būtų daugiau vietos viršutiniam užpildymo raštui"
+    },
+    "ooze_prevention": {
+      "label": "Įgalinti",
+      "tooltip": "Pasirinkus šią parinktį sumažės neaktyvių ekstruderių temperatūra, kad būtų išvengta išsiliejimo."
+    },
+    "other_layers_print_sequence": {
+      "label": "Kitų sluoksnių spausdinimo seka"
+    },
+    "other_layers_print_sequence_nums": {
+      "label": "Sluoksnių skaičiaus spausdinimo seka"
+    },
+    "other_layers_sequence_choice": {
+      "label": "Kitų sluoksnių gijų seka",
+      "enum_labels": [
+        "Automatiškai",
+        "Pritaikyti"
+      ]
+    },
+    "outer_wall_acceleration": {
+      "label": "Išorinė siena",
+      "tooltip": "Išorinės sienos pagreitis: naudojant mažesnę vertę galima pagerinti kokybę"
+    },
+    "outer_wall_jerk": {
+      "label": "Išorinė siena",
+      "tooltip": "Išorinių sienų trūkčiojimas"
+    },
+    "outer_wall_line_width": {
+      "label": "Išorinė siena",
+      "tooltip": "Išorinės sienos linijos plotis. Jei išreiškiamas %, jis apskaičiuojamas pagal purkštuko skersmenį."
+    },
+    "outer_wall_speed": {
+      "label": "Išorinė siena",
+      "tooltip": "Išorinės sienos, kuri yra išorinė ir matoma, greitis. Naudojamas lėtesnis nei vidinės sienelės greitis, kad būtų pasiekta geresnė kokybė."
+    },
+    "overhang_fan_speed": {
+      "label": "Ventiliatoriaus greitis iškyšose ir išoriniuose tiltuose",
+      "tooltip": "Šį dalies aušinimo ventiliatoriaus greitį naudokite spausdindami tiltus arba iškyšas, kurių iškyšų slenkstis viršija pirmiau nustatyto parametro „Iškyšų aušinimo slenkstis“ vertę. Padidinus specialiai iškyšoms ir tilteliams skirtą aušinimą, gali pagerėti bendra šių elementų spausdinimo kokybė.\n\nAtkreipkite dėmesį, kad šis ventiliatoriaus greitis yra ribojamas apatinėje dalyje pagal pirmiau nustatytą mažiausią ventiliatoriaus greičio ribą. Jis taip pat reguliuojamas aukštyn iki didžiausios ventiliatoriaus greičio ribos, kai nepasiekiama minimali sluoksnio trukmės riba."
+    },
+    "overhang_fan_threshold": {
+      "label": "Iškyšos vėsinimo aktyvavimo riba",
+      "tooltip": "Kai iškyša viršija šią nustatytą ribą, priverskite aušinimo ventiliatorių veikti toliau nustatytu „Iškyšos ventiliatoriaus greičiu“. Ši riba išreiškiama procentais, nurodant kiekvienos linijos pločio dalį, kurios nepalaiko po ja esantis sluoksnis. Nustačius šią reikšmę 0 %, aušinimo ventiliatorius priverstas veikti visoms išorinėms sienoms, nepriklausomai nuo iškyšos laipsnio.",
+      "enum_labels": [
+        "0%",
+        "10%",
+        "25%",
+        "50%",
+        "75%",
+        "95%"
+      ]
+    },
+    "overhang_reverse": {
+      "label": "Atvirkštinis judėjimas lyginis",
+      "full_label": "Iškyšos apvertimas",
+      "tooltip": "Perimetrus, kurių dalis yra virš iškyšos, ekstruzijuokite atvirkštine kryptimi lygiuose sluoksniuose. Šis kaitaliojamasis modelis gali smarkiai pagerinti stačias iškyšas.\n\nŠis nustatymas taip pat gali padėti sumažinti detalės deformaciją dėl sumažėjusių įtempių detalės sienelėse."
+    },
+    "overhang_reverse_internal_only": {
+      "label": "Atvirkštinis tik vidinis perimetras",
+      "full_label": "Atvirkštinis tik vidinis perimetras",
+      "tooltip": "Atvirkštinių perimetrų logiką taikykite tik vidiniams perimetrams.\n\nŠis nustatymas labai sumažina detalių įtempius, nes dabar jie pasiskirsto pakaitinėmis kryptimis. Tai turėtų sumažinti detalės deformacijas, kartu išlaikant išorinių sienelių kokybę. Ši funkcija gali būti labai naudinga į deformacijas linkusioms medžiagoms, pavyzdžiui, ABS/ASA, taip pat elastingoms gijoms, pavyzdžiui, TPU ir šilko PLA. Ji taip pat gali padėti sumažinti plūduriuojančių sričių virš atramų deformacijas.\n\nKad šis nustatymas būtų veiksmingiausias, rekomenduojama nustatyti atvirkštinio slenksčio reikšmę 0, kad visos vidinės sienelės būtų spausdinamos pakaitinėmis kryptimis lygiuose sluoksniuose, neatsižvelgiant į jų išsikišimo laipsnį."
+    },
+    "overhang_reverse_threshold": {
+      "label": "Atvirkštinis slenkstis",
+      "full_label": "Iškyšos apvertimo slenkstis",
+      "tooltip": "Kiek mm turi būti iškyša, kad būtų galima laikyti, jog apvertimas yra naudingas. Gali būti perimetro pločio %.\nReikšmė 0 įjungia apvertimą kiekviename lyginiame sluoksnyje nepriklausomai.\nKai aptikti iškyšos sienelę neįjungta, ši parinktis ignoruojama ir apvertimas atliekamas nepriklausomai nuo kiekvieno lyginio sluoksnio."
+    },
+    "parking_pos_retraction": {
+      "label": "Gijos stovėjimo padėtis",
+      "tooltip": "Ekstruderio antgalio atstumas nuo padėties, kurioje gija yra pastatyta, kai ji išimama. Tai turėtų atitikti spausdintuvo programinės įrangos reikšmę."
+    },
+    "pellet_flow_coefficient": {
+      "label": "Granulių srauto koeficientas",
+      "tooltip": "Granulių srauto koeficientas nustatomas empiriškai ir leidžia apskaičiuoti granulių spausdintuvų tūrį.\n\nViduje jis konvertuojamas į filament_diameter. Visi kiti tūrio skaičiavimai išlieka tokie patys.\n\nfilament_diameter = sqrt( (4 * granulių srauto koeficientas) / PI )"
+    },
+    "pellet_modded_printer": {
+      "label": "Modifikuotas granulių spausdintuvas"
+    },
+    "post_process": {
+      "label": "Scenarijai po apdorojimo"
+    },
+    "precise_outer_wall": {
+      "label": "Tiksli siena",
+      "tooltip": "Pagerinkite apvalkalo tikslumą, reguliuodami išorinės sienos tarpą. Tai taip pat pagerina sluoksnių nuoseklumą. PASTABA: Ši parinktis bus ignoruojama išorinės-vidinės arba vidinės-išorinės-vidinės sienos sekose."
+    },
+    "precise_z_height": {
+      "label": "Tikslus Z aukštis",
+      "tooltip": "Įjunkite šią funkciją, jei norite gauti tikslų objekto z aukštį po sluoksniavimo. Tikslus objekto aukštis bus gautas tiksliai nustatant kelių paskutinių sluoksnių aukštį. Atkreipkite dėmesį, kad tai eksperimentinis parametras."
+    },
+    "preferred_orientation": {
+      "label": "Pageidautina orientacija",
+      "tooltip": "Automatiškai orientuoti stl failus pagal Z ašį pradinio importo metu"
+    },
+    "preheat_steps": {
+      "label": "Įkaitinimo etapai",
+      "tooltip": "Įterpkite kelias įkaitinimo komandas (pvz., M104.1). Naudinga tik „Prusa XL“. Kitiems spausdintuvams nustatykite 1."
+    },
+    "preheat_time": {
+      "label": "Įkaitinimo laikas",
+      "tooltip": "Kad sutrumpėtų laukimo laikas pakeitus įrankį, Orca gali iš anksto įkaitinti kitą įrankį, kol dabartinis įrankis dar naudojamas. Šis nustatymas nurodo kito įrankio įkaitinimo laiką sekundėmis. Orca įterps komandą M104, kad įrankis būtų įkaitintas iš anksto."
+    },
+    "preset_names": {
+      "label": "Spausdintuvo nustatymų pavadinimai",
+      "tooltip": "Su fiziniu spausdintuvu susijusių išankstinių nustatymų pavadinimai"
+    },
+    "pressure_advance": {
+      "label": "Filamento tiekimas posūkio metu",
+      "tooltip": "Išankstinis slėgis (Klipper) arba linijinis išankstinis veiksnys (Marlin)"
+    },
+    "prime_tower_brim_width": {
+      "label": "Krašto plotis"
+    },
+    "prime_tower_width": {
+      "label": "Plotis",
+      "tooltip": "Pagrindinio bokšto plotis"
+    },
+    "prime_volume": {
+      "label": "Pagrindinis tūris",
+      "tooltip": "Medžiagos kiekis, skirtas ekstruderiui užpildyti ant bokšto."
+    },
+    "print_flow_ratio": {
+      "label": "Srauto santykis",
+      "tooltip": "Medžiaga gali keisti tūrį, pereidama iš lydyto į kristalinį būvį. Šis nustatymas proporcingai keičia visą šios gijos ekstruzijos srautą G kodu. Rekomenduojamas vertės diapazonas yra nuo 0,95 iki 1,05. Jei yra nedidelis perteklius arba trūkumas, galite sureguliuoti šią vertę, kad gautumėte gražų lygų paviršių.\n\nGalutinis objekto srauto santykis yra ši vertė, padauginta iš gijos srauto santykio."
+    },
+    "print_host": {
+      "label": "Hosto pavadinimas, IP arba URL"
+    },
+    "print_host_webui": {
+      "label": "Įrenginio sąsaja",
+      "tooltip": "Nurodykite savo įrenginio naudotojo sąsajos URL, jei jis nesutampa su print_host"
+    },
+    "print_order": {
+      "label": "Vidinė sluoksnių tvarka",
+      "tooltip": "Spausdinimo eiliškumas viename sluoksnyje",
+      "enum_labels": [
+        "Numatytas",
+        "Kaip objektų sąrašas"
+      ]
+    },
+    "print_sequence": {
+      "label": "Spausdinimo eiga",
+      "tooltip": "Spausdinimo seka, leidžianti spausdinti sluoksnį po sluoksnio arba objektą po objekto",
+      "enum_labels": [
+        "Pagal sluoksnį",
+        "Pagal objektą"
+      ]
+    },
+    "printable_area": {
+      "label": "Spausdinama sritis"
+    },
+    "printable_height": {
+      "label": "Spausdinamas aukštis",
+      "tooltip": "Tai didžiausias spausdinamas aukštis, kurį riboja spausdinimo zonos aukštis"
+    },
+    "printer_model": {
+      "label": "Spausdintuvo tipas",
+      "tooltip": "Spausdintuvo tipas"
+    },
+    "printer_notes": {
+      "label": "Spausdintuvo užrašai",
+      "tooltip": "Čia galite pridėti pastabas apie spausdintuvą."
+    },
+    "printer_structure": {
+      "label": "Spausdintuvo konstrukcija",
+      "tooltip": "Spausdinimo įrenginio fizinis išdėstymas ir sudedamosios dalys",
+      "enum_labels": [
+        "Neapibrėžti",
+        "CoreXY",
+        "I3",
+        "Hbot",
+        "Delta"
+      ]
+    },
+    "printer_technology": {
+      "label": "Spausdintuvo technologija"
+    },
+    "printer_variant": {
+      "label": "Spausdintuvo variantas"
+    },
+    "printhost_apikey": {
+      "label": "API raktas / slaptažodis"
+    },
+    "printhost_authorization_type": {
+      "label": "Autorizacijos tipas",
+      "enum_labels": [
+        "API raktas",
+        "HTTP santrauka"
+      ]
+    },
+    "printhost_cafile": {
+      "label": "HTTPS CA failas",
+      "tooltip": "Pasirinktinis CA sertifikato failas gali būti nurodytas HTTPS OctoPrint ryšiams crt/pem formatu. Jei paliekama tuščia, naudojama numatytoji OS CA sertifikatų saugykla."
+    },
+    "printhost_password": {
+      "label": "Slaptažodis"
+    },
+    "printhost_port": {
+      "label": "Spausdintuvas",
+      "tooltip": "Spausdintuvo pavadinimas"
+    },
+    "printhost_ssl_ignore_revoke": {
+      "label": "Nepaisyti HTTPS sertifikato atšaukimo patikrų",
+      "tooltip": "Nepaisyti HTTPS sertifikato atšaukimo patikrų, jei paskirstymo taškų trūksta arba jie neprisijungę. Jei nepavyksta prisijungti, galite įjungti šią parinktį savarankiškai pasirašytiems sertifikatams."
+    },
+    "printhost_user": {
+      "label": "Naudotojas"
+    },
+    "printing_by_object_gcode": {
+      "label": "Tarp objektų G-kodas",
+      "tooltip": "Įterpti G kodą tarp objektų. Šis parametras bus taikomas tik tada, kai spausdinsite modelius po vieną objektą."
+    },
+    "purge_in_prime_tower": {
+      "label": "Valymas pagrindiniame bokšte",
+      "tooltip": "Išstumti likusias gijas į pirminio valymo bokštą"
+    },
+    "raft_contact_distance": {
+      "label": "Platformos kontakto Z atstumas",
+      "tooltip": "Z tarpas tarp objekto ir platformos. Į jį neatsižvelgiama tirpių sąsajų atveju"
+    },
+    "raft_expansion": {
+      "label": "Platformos išplėtimas",
+      "tooltip": "Tai išplečia visus platformos sluoksnius XY plokštumoje"
+    },
+    "raft_first_layer_density": {
+      "label": "Pradinio sluoksnio tankis",
+      "tooltip": "Pirmojo platformos arba atraminio sluoksnio tankis"
+    },
+    "raft_first_layer_expansion": {
+      "label": "Pradinio sluoksnio išplėtimas",
+      "tooltip": "Kad pagerėtų sukibimas su pagrindu, išplečiamas pirmasis platformos arba atraminis sluoksnis"
+    },
+    "raft_layers": {
+      "label": "Platformos sluoksniai",
+      "tooltip": "Objektas bus padidintas šiuo atraminių sluoksnių skaičiumi. Šią funkciją naudokite norėdami išvengti deformacijų spausdinant ABS"
+    },
+    "reduce_crossing_wall": {
+      "label": "Vengti kirsti sieną",
+      "tooltip": "Apvažiuoti ir vengti važiuoti per sieną, nes dėl to ant paviršiaus gali atsirasti žymė"
+    },
+    "reduce_fan_stop_start_freq": {
+      "label": "Visada laikyti ventiliatorių įjungtą",
+      "tooltip": "Jei įjungsite šį nustatymą, aušinimo ventiliatorius niekada nebus sustabdytas ir veiks bent minimaliu greičiu, kad sumažėtų įjungimo ir išjungimo dažnis"
+    },
+    "reduce_infill_retraction": {
+      "label": "Sumažinti užpildų įtraukimą",
+      "tooltip": "Neįtraukti, kai judėjimas vyksta tik užpildytoje zonoje. Tai reiškia, kad ištekėjimo nematyti. Tai gali sutrumpinti įtraukimo laiką sudėtingam modeliui ir sutaupyti laiką spausdinimui, tačiau sluoksniavimas ir G kodo generavimas bus lėtesni"
+    },
+    "required_nozzle_HRC": {
+      "label": "Būtinas antgalis HRC",
+      "tooltip": "Mažiausia antgalio HRC, kurios reikia norint spausdinti gijomis. Nulis reiškia, kad antgalio HRC netikrinama."
+    },
+    "resolution": {
+      "label": "Skiriamoji geba",
+      "tooltip": "G kodo kelias generuojamas supaprastinus modelių kontūrus, kad būtų išvengta pernelyg didelio taškų ir G kodo linijų skaičiaus. Mažesnė vertė reiškia didesnę skiriamąją gebą ir ilgesnį sluoksniavimo laiką."
+    },
+    "resonance_avoidance": {
+      "label": "Rezonanso vengimas",
+      "tooltip": "Sumažinus išorinės sienos greitį, kad būtų išvengta spausdintuvo rezonanso zonos, išvengiama modelio paviršiaus bangavimo.\nPrašome išjungti šią parinktį, kai bandote bangavimą."
+    },
+    "retract_before_wipe": {
+      "label": "Įtraukiamas kiekis prieš nuvalymą",
+      "tooltip": "Greito įtraukimo prieš nuvalymą ilgis, palyginti su įtraukimo ilgiu"
+    },
+    "retract_length_toolchange": {
+      "label": "Ilgis"
+    },
+    "retract_lift_above": {
+      "label": "Pakelti tik Z aukščiau",
+      "tooltip": "Jei nustatysite teigiamą reikšmę, Z kėlimas bus vykdomas tik virš nurodytos absoliučiosios Z reikšmės."
+    },
+    "retract_lift_below": {
+      "label": "Pakelti tik Z žemiau",
+      "tooltip": "Jei nustatysite teigiamą reikšmę, Z kėlimas bus vykdomas tik žemiau nurodytos absoliučiosios Z reikšmės."
+    },
+    "retract_lift_enforce": {
+      "label": "Ant paviršių",
+      "tooltip": "Užtikrinkite \"Z šuolio\" elgesį. Šiam nustatymui įtakos turi pirmiau nurodyti nustatymai (tik pakelti Z virš/žemiau).",
+      "enum_labels": [
+        "Visi paviršiai",
+        "Tik viršus",
+        "Tik apačia",
+        "Viršus ir apačia"
+      ]
+    },
+    "retract_restart_extra": {
+      "label": "Papildomas ilgis paleidus iš naujo",
+      "tooltip": "Kai įtraukimas kompensuojamas po judesio, ekstruderis išstums šį papildomą gijos kiekį. Šis nustatymas reikalingas retai."
+    },
+    "retract_restart_extra_toolchange": {
+      "label": "Papildomas ilgis paleidus iš naujo",
+      "tooltip": "Kai atitraukimas kompensuojamas pakeitus įrankį, ekstruderis išstums šį papildomą gijos kiekį."
+    },
+    "retract_when_changing_layer": {
+      "label": "Įtraukti, kai keičiamas sluoksnis",
+      "tooltip": "Priverstinis įtraukimas, kai keičiasi sluoksnis"
+    },
+    "retraction_distances_when_cut": {
+      "label": "Įtraukimo atstumas, kai kerpama",
+      "tooltip": "Eksperimentinė savybė: Įtraukimo ilgis prieš nupjaunant keičiant giją"
+    },
+    "retraction_length": {
+      "label": "Ilgis",
+      "full_label": "Įtraukimo ilgis",
+      "tooltip": "Tam tikras kiekis medžiagos ekstruderyje yra įtraukiamas atgal, kad ilgos kelionės metu nesusidarytų išsiliejimas. Nustatykite nulį, kad išjungtumėte įtraukimą."
+    },
+    "retraction_minimum_travel": {
+      "label": "Judėjimo atstumo riba",
+      "tooltip": "Įtraukimas įjungiamas tik tada, kai judėjimo atstumas yra ilgesnis už šią ribą"
+    },
+    "retraction_speed": {
+      "label": "Įtraukimo greitis",
+      "full_label": "Įtraukimo greitis",
+      "tooltip": "Gijos įtraukimo į purkštuką greitis."
+    },
+    "role_based_wipe_speed": {
+      "label": "Vaidmens pagrindo nuvalymo greitis",
+      "tooltip": "Jei nuvalymo veiksmas atliekamas iš karto po išorinės sienelės išspaudimo, nuvalymo veiksmui bus naudojamas išorinės sienelės išspaudimo greitis."
+    },
+    "scan_first_layer": {
+      "label": "Nuskaityti pirmąjį sluoksnį",
+      "tooltip": "Įjunkite šią funkciją, kad spausdintuvo kamera būtų galima patikrinti pirmojo sluoksnio kokybę"
+    },
+    "scarf_angle_threshold": {
+      "label": "Sąlyginė kampo riba",
+      "tooltip": "Šia parinktimi nustatomas ribinis kampas, kuriuo taikoma sąlyginė juostinė siūlė.\nJei didžiausias kampas perimetro kilpoje viršija šią vertę (tai rodo, kad nėra aštrių kampų), bus naudojama juostinė siūlė. Numatytoji vertė yra 155°."
+    },
+    "scarf_joint_flow_ratio": {
+      "label": "Juostinės jungties srauto koeficientas",
+      "tooltip": "Šis veiksnys turi įtakos medžiagos kiekiui, reikalingam juostinėms siūlėms."
+    },
+    "scarf_joint_speed": {
+      "label": "Juostos jungties greitis",
+      "tooltip": "Šia parinktimi nustatomas juostinių jungčių spausdinimo greitis. Rekomenduojama juostines jungtis spausdinti nedideliu greičiu (mažesniu nei 100 mm/s). Taip pat patartina įjungti funkciją \"Spausdinimo greičio išlyginimas\", jei nustatytas greitis labai skiriasi nuo išorinių arba vidinių sienų greičio. Jei čia nustatytas greitis yra didesnis už išorinių arba vidinių sienų greitį, spausdintuvas pagal numatytuosius nustatymus pasirinks lėtesnį iš šių dviejų greičių. Kai nurodyta procentais (pvz., 80 %), greitis apskaičiuojamas pagal atitinkamą išorinių arba vidinių sienų greitį. Numatytoji vertė yra 100 %."
+    },
+    "scarf_overhang_threshold": {
+      "label": "Sąlyginė iškyšos riba",
+      "tooltip": "Šia parinktimi nustatoma iškyšos riba, kurią pasiekus taikomos juostinės siūlės. Jei perimetro neatraminė dalis yra mažesnė už šią ribą, bus taikomos jungiamosios siūlės. Pagal numatytuosius nustatymus ši riba yra 40 % išorinės sienos pločio. Dėl eksploatacinių sumetimų įvertinamas iškyšos laipsnis."
+    },
+    "seam_gap": {
+      "label": "Siūlės tarpas",
+      "tooltip": "Siekiant sumažinti uždaros kilpos ekstruzijos siūlės matomumą, kilpa pertraukiama ir sutrumpinama tam tikru dydžiu.\nŠį kiekį galima nurodyti milimetrais arba procentais nuo esamo ekstruderio skersmens. Numatytoji šio parametro vertė yra 10 %."
+    },
+    "seam_position": {
+      "label": "Siūlės padėtis",
+      "tooltip": "Kiekvienos išorinės sienos dalies pradinė padėtis",
+      "enum_labels": [
+        "Artimiausia",
+        "Sulygiuota",
+        "Sulygiuotos galinės dalys",
+        "Gale",
+        "Atsitiktinė"
+      ]
+    },
+    "seam_slope_conditional": {
+      "label": "Sąlyginė juostinė jungtis",
+      "tooltip": "Skersines siūles naudokite tik ties lygiais perimetrais, kai įprastinės siūlės efektyviai nepaslepia aštrių kampų siūlių."
+    },
+    "seam_slope_entire_loop": {
+      "label": "Juosta aplink visą sieną",
+      "tooltip": "Juosta tęsiasi per visą sienos ilgį."
+    },
+    "seam_slope_inner_walls": {
+      "label": "Vidinių sienų juostos jungtis",
+      "tooltip": "Vidinėms sienoms taip pat naudoti juostos jungtį."
+    },
+    "seam_slope_min_length": {
+      "label": "Juostos ilgis",
+      "tooltip": "Juostos ilgis. Nustačius šį parametrą lygų nuliui, juosta išjungiama."
+    },
+    "seam_slope_start_height": {
+      "label": "Juostos pradžios aukštis",
+      "tooltip": "Pradinis juostos aukštis.\nŠį dydį galima nurodyti milimetrais arba kaip dabartinio sluoksnio aukščio procentinę dalį. Numatytoji šio parametro reikšmė yra 0."
+    },
+    "seam_slope_steps": {
+      "label": "Jostos žingsniai",
+      "tooltip": "Mažiausias kiekvienos juostos segmentų skaičius."
+    },
+    "seam_slope_type": {
+      "label": "Juostos jungiamoji siūlė (beta)",
+      "tooltip": "Naudokite juostos jungtį, kad siūlės būtų kuo mažiau matomos ir padidėtų siūlės tvirtumas.",
+      "enum_labels": [
+        "Nieko",
+        "Kontūras",
+        "Kontūras ir skylė"
+      ]
+    },
+    "silent_mode": {
+      "label": "Palaikomas tylusis režimas",
+      "tooltip": "Ar įrenginys palaiko tylųjį režimą, kai spausdindamas naudoja mažesnį pagreitį"
+    },
+    "single_extruder_multi_material": {
+      "label": "Vieno ekstruderio daugialypė medžiaga",
+      "tooltip": "Naudoti vieną antgalį spausdinti keliomis gijomis"
+    },
+    "single_extruder_multi_material_priming": {
+      "label": "Pripildyti visus spausdinimo ekstruderius",
+      "tooltip": "Jei įjungta, visi spausdinimo ekstruderiai bus užpildyti priekiniame spausdinimo pagrindo krašte spausdinimo pradžioje."
+    },
+    "single_loop_draft_shield": {
+      "label": "Viengubas kontūras po pirmojo sluoksnio",
+      "tooltip": "Apriboja apvado/apsauginio skydo kontūrus iki vienos sienos po pirmojo sluoksnio. Tai kartais yra naudinga, norint sutaupyti giją, tačiau gali sukelti apsauginio skydo/apvado deformaciją/įtrūkimus."
+    },
+    "skeleton_infill_density": {
+      "label": "Karkaso užpildymo tankis",
+      "tooltip": "Modelio kontūro dalis, likusi po tam tikro gylio pašalinimo nuo paviršiaus, vadinama skeletu. Šis parametras naudojamas šio skirsnio tankiui reguliuoti. Kai dvi sritys turi tuos pačius retų užpildų nustatymus, bet skirtingą skeleto tankį, jų karkaso sritys susidurs su persidengiančiais skirsniais. Numatytasis nustatymas yra toks pat kaip užpildų tankis."
+    },
+    "skeleton_infill_line_width": {
+      "label": "Karkaso linijos plotis",
+      "tooltip": "Nustatykite pasirinktų karkaso kontūrų linijų plotį."
+    },
+    "skin_infill_density": {
+      "label": "Paviršiaus užpildymo tankis",
+      "tooltip": "Modelio išorinio paviršiaus dalis tam tikrame gylio intervale vadinama paviršiumi. Šis parametras naudojamas šio skirsnio tankiui reguliuoti. Kai dvi sritys turi tuos pačius retų užpildų nustatymus, bet skirtingą paviršiaus tankį, ši sritis nebus padalyta į dvi atskiras sritis. Numatytasis nustatymas yra toks pat kaip užpildų tankis."
+    },
+    "skin_infill_depth": {
+      "label": "Paviršiaus užpildymo gylis",
+      "tooltip": "Parametras nustato paviršiaus gylį."
+    },
+    "skin_infill_line_width": {
+      "label": "Paviršiaus linijos plotis",
+      "tooltip": "Nustatykite pasirinktų paviršiaus kontūrų linijų plotį."
+    },
+    "skirt_distance": {
+      "label": "Apvado atstumas",
+      "tooltip": "Tai atstumas nuo apvado iki krašto arba objekto"
+    },
+    "skirt_height": {
+      "label": "Apvado aukštis",
+      "tooltip": "Kiek sluoksnių apvado. Paprastai tik vienas sluoksnis"
+    },
+    "skirt_loops": {
+      "label": "Apvado kontūrai",
+      "full_label": "Apvado kontūrai",
+      "tooltip": "Tai yra apvado kontūrų skaičius. 0 reiškia, kad apvadas išjungtas"
+    },
+    "skirt_speed": {
+      "label": "Apvado greitis",
+      "full_label": "Apvado greitis",
+      "tooltip": "Apvado greitis, mm/s. Nulis reiškia, kad naudojamas numatytasis sluoksnio išspaudimo greitis."
+    },
+    "skirt_start_angle": {
+      "label": "Apvado pradžios taškas",
+      "tooltip": "Kampas nuo objekto centro iki apvado pradžios taško. Nulis yra labiausiai į dešinę nukreipta padėtis, prieš laikrodžio rodyklę - teigiamas kampas."
+    },
+    "skirt_type": {
+      "label": "Apvado tipas",
+      "full_label": "Apvado tipas",
+      "tooltip": "Kombinuota - vienas apvadas visiems objektams, Objektui - atskiras objekto apvadas.",
+      "enum_labels": [
+        "Kombinuotas",
+        "Objektui"
+      ]
+    },
+    "slice_closing_radius": {
+      "label": "Sluoksniavimo tarpo uždarymo spindulys",
+      "tooltip": "Plyšiai, mažesni nei 2x tarpo uždarymo spindulys, užpildomi trikampio figūros sluoksniavimo metu. Tarpo uždarymo operacija gali sumažinti galutinę spausdinimo skiriamąją gebą, todėl patartina išlaikyti pakankamai žemą reikšmę."
+    },
+    "slicing_mode": {
+      "label": "Sluoksniavimo režimas",
+      "tooltip": "3DLabPrint lėktuvų modeliams naudokite „Lyginis-Nelyginis“. Naudokite „Uždaryti skyles“, kad uždarytumėte visas modelio skyles.",
+      "enum_labels": [
+        "Įprastas",
+        "Lyginis-nelyginis",
+        "Uždaryti skyles"
+      ]
+    },
+    "slow_down_for_layer_cooling": {
+      "label": "Sulėtinti spausdinimą, kad geriau būtų aušinami sluoksniai",
+      "tooltip": "Įjunkite šią parinktį, jei norite sulėtinti spausdinimo greitį, kad galutinė sluoksnio trukmė nebūtų trumpesnė už maksimalaus ventiliatoriaus greičio slenkstičio nustatytą sluoksnio trukmės ribą, kad sluoksnį būtų galima aušinti ilgiau. Tai gali pagerinti smulkių detalių kokybę"
+    },
+    "slow_down_layer_time": {
+      "label": "Sluoksnio laikas",
+      "tooltip": "Spausdinimo greitis eksportuotame G-kode bus sulėtintas, kai numatomas sluoksnio laikas bus trumpesnis už šią vertę, siekiant užtikrinti geresnį šių sluoksnių aušinimą."
+    },
+    "slow_down_layers": {
+      "label": "Viršutinių sąsajos sluoksnių skaičius",
+      "tooltip": "Keli pirmieji sluoksniai spausdinami lėčiau nei įprastai. Greitis palaipsniui linijiniu būdu didinamas per nurodytą sluoksnių skaičių."
+    },
+    "slow_down_min_speed": {
+      "label": "Minimalus spausdinimo greitis",
+      "tooltip": "Mažiausias spausdinimo greitis, iki kurio spausdintuvas sulėtėja, kad išlaikytų pirmiau apibrėžtą minimalų sluoksnio laiką, kai įjungtas sulėtinimas dėl geresnio sluoksnių aušinimo."
+    },
+    "slowdown_for_curled_perimeters": {
+      "label": "Sulėtinti greitį, jei perimetras yra vingiuotas",
+      "tooltip": "Įjunkite šią parinktį, kad sulėtintumėte spausdinimą tose srityse, kuriose perimetras gali būti išlinkęs į viršų. Pavyzdžiui, papildomas sulėtinimas bus taikomas spausdinant iškyšas ant aštrių kampų, pavyzdžiui, „Benchy“ korpuso priekyje, sumažinant susisukimą, kuris susidaro per kelis sluoksnius.\n\n Paprastai rekomenduojama įjungti šią parinktį, nebent jūsų spausdintuvo aušinimas yra pakankamai galingas arba spausdinimo greitis pakankamai lėtas, kad perimetro susisukimas neįvyktų. Jei spausdinama dideliu išoriniu perimetro greičiu, šis parametras gali sukelti nedidelius artefaktus, kai sulėtėja dėl didelio spausdinimo greičio skirtumo. Jei pastebėsite artefaktus, įsitikinkite, kad išankstinis slėgis sureguliuotas teisingai.\n\nPastaba: Kai ši parinktis įjungta, iškyšos perimetras traktuojamas kaip iškyša, t. y. iškyšos greitis taikomas net jei iškyšos perimetras yra tilto dalis. Pavyzdžiui, kai perimetrai yra 100 % išsikišę, o iš apačios jų nepalaiko jokia siena, bus taikomas 100 % išsikišimo greitis."
+    },
+    "small_area_infill_flow_compensation": {
+      "label": "Mažo ploto srauto kompensavimas (beta)",
+      "tooltip": "Įgalinti srauto kompensavimą mažuose užpildymo plotuose"
+    },
+    "small_area_infill_flow_compensation_model": {
+      "label": "Srauto kompensavimo modelis",
+      "tooltip": "Srauto kompensavimo modelis, naudojamas srautui mažose užpildymo srityse reguliuoti. Modelis išreiškiamas kaip kableliu atskirtos ekstruzijos ilgio ir srauto korekcijos koeficiento poros. Kiekviena pora yra atskiroje eilutėje, po kurios eina kabliataškis, tokio formato: „1,234, 5,678;“."
+    },
+    "small_perimeter_speed": {
+      "label": "Maži perimetrai",
+      "tooltip": "Šis atskiras nustatymas turės įtakos perimetrų, kurių spindulys <= small_perimeter_threshold (paprastai skylės), greičiui. Jei jis išreikštas procentais (pvz., 80 %), jis bus apskaičiuojamas pagal pirmiau nurodytą išorinės sienos greičio nustatymą. Nustatykite nulį, jei norite, kad greitis būtų automatinis."
+    },
+    "small_perimeter_threshold": {
+      "label": "Mažo perimetro ribos",
+      "tooltip": "Nustatoma mažo perimetro ilgio riba. Numatytoji riba yra 0 mm"
+    },
+    "solid_infill_direction": {
+      "label": "Vientiso užpildo kryptis",
+      "tooltip": "Vientiso užpildo rašto kampas, kuriuo nustatoma linijos pradžios arba pagrindinė kryptis"
+    },
+    "solid_infill_filament": {
+      "label": "Vientisas užpildas",
+      "tooltip": "Filamentas vientisam užpildui spausdinti"
+    },
+    "solid_infill_rotate_template": {
+      "label": "Vientiso užpildo pasukimo šablonas",
+      "tooltip": "Šis parametras prideda kiekvienam sluoksniui vientiso užpildo krypties pasukimą pagal nurodytą šabloną. Šablonas yra kableliais atskirtas kampų laipsnių sąrašas, pvz., „0,90“. Pirmasis kampas taikomas pirmajam sluoksniui, antrasis kampas – antrajam sluoksniui ir t. t. Jei sluoksnių yra daugiau nei kampų, kampai bus kartojami. Atkreipkite dėmesį, kad ne visi vientiso užpildo modeliai palaiko pasukimą."
+    },
+    "sparse_infill_acceleration": {
+      "label": "Retas užpildymas",
+      "tooltip": "Retų užpildų pagreitis. Jei reikšmė išreikšta procentais (pvz., 100 %), ji bus apskaičiuota pagal numatytąjį pagreitį."
+    },
+    "sparse_infill_density": {
+      "label": "Reto užpildymo tankis",
+      "tooltip": "Vidinio reto užpildymo tankis, 100% paverčia visą retą užpildymą vientisu užpildymu, tuomet bus naudojamas vidinis vientiso užpildymo raštas"
+    },
+    "sparse_infill_filament": {
+      "label": "Užpildymas",
+      "tooltip": "Gija, skirta spausdinti vidinį retą užpildą."
+    },
+    "sparse_infill_line_width": {
+      "label": "Retas užpildymas",
+      "tooltip": "Vidinio reto užpildo linijos plotis. Jei išreiškiamas %, jis apskaičiuojamas pagal purkštuko skersmenį."
+    },
+    "sparse_infill_pattern": {
+      "label": "Reto užpildymo raštas",
+      "tooltip": "Vidinio reto užpildymo linijomis modelis",
+      "enum_labels": [
+        "Tiesia linija",
+        "Tiesiai sulygiuota",
+        "Zigzagas",
+        "Sukryžiuotas zigzagas",
+        "Surakintas zigzagas",
+        "Linija",
+        "Tinklelis",
+        "Trikampiai",
+        "Trijų šešiakampių sistema",
+        "Kubinis",
+        "Prisitaikantis kubinis",
+        "Ketvirtis kubo",
+        "Atrama kubinė",
+        "Apšvietimas",
+        "Korys",
+        "3D korys",
+        "Šoninis korys",
+        "2D grotelės",
+        "Kryžminis skliautas",
+        "TPMS-D",
+        "TPMS-FK",
+        "Giroidas",
+        "Koncentrinis",
+        "Hilberto kreivė",
+        "Archimedo akordai",
+        "Oktagramos spiralė"
+      ]
+    },
+    "sparse_infill_rotate_template": {
+      "label": "Retas užpildymo rotacijos šablonas",
+      "tooltip": "Pasukite retą užpildymo kryptį pagal sluoksnį naudodami kampų šabloną. Įveskite kableliais atskirtus laipsnius (pvz., „0,30,60,90“). Kampai taikomi pagal sluoksnį ir kartojami, kai sąrašas baigiasi. Palaikoma išplėstinė sintaksė: „+5“ pasuka +5° kiekviename sluoksnyje; „+5#5“ pasuka +5° kas 5 sluoksnius. Daugiau informacijos rasite Wiki. Kai nustatytas šablonas, standartinis užpildymo krypties nustatymas ignoruojamas. Pastaba: kai kurie užpildymo modeliai (pvz., Gyroid) patys kontroliuoja pasukimą; naudokite atsargiai."
+    },
+    "sparse_infill_speed": {
+      "label": "Retas užpildymas",
+      "tooltip": "Vidinio reto užpildymo greitis"
+    },
+    "spiral_finishing_flow_ratio": {
+      "label": "Galinis srauto santykis spiralėje",
+      "tooltip": "Nustato baigiamojo srauto santykį, kai baigiama spiralė. Paprastai spiralės perėjimo metu srauto santykis keičiamas nuo 100 % iki 0 % paskutinio ciklo metu, todėl kai kuriais atvejais spiralės pabaigoje gali būti nepakankamas išspaudimas."
+    },
+    "spiral_mode": {
+      "label": "Spiralinė vaza",
+      "tooltip": "Tai leidžia atlikti spiralinį išlyginimą, kuris išlygina išorinio kontūro Z judesius ir paverčia vientisą modelį į vienos sienelės atspaudą su vientisais apatiniais sluoksniais. Galutiniame sudarytame modelyje nėra siūlės"
+    },
+    "spiral_mode_max_xy_smoothing": {
+      "label": "Didžiausias XY išlyginimas",
+      "tooltip": "Didžiausias atstumas, kuriuo galima perkelti taškus XY kryptimi, kad būtų pasiekta tolygi spiralė. Jei išreiškiamas %, jis bus apskaičiuojamas pagal purkštuko skersmenį."
+    },
+    "spiral_mode_smooth": {
+      "label": "Lygi spiralė",
+      "tooltip": "Sklandi spiralė išlygina X ir Y judesius, todėl XY kryptimis ant ne vertikalių sienų visiškai nesimato siūlių"
+    },
+    "spiral_starting_flow_ratio": {
+      "label": "Pradinis srauto santykis spiralėje",
+      "tooltip": "Nustato pradinį srauto santykį pereinant iš paskutinio apatinio sluoksnio į spiralę. Įprastai perėjimo į spiralę metu srauto santykis pirmojo ciklo metu keičiamas nuo 0 % iki 100 %, todėl kai kuriais atvejais spiralės pradžioje gali būti nepakankamas išspaudimas."
+    },
+    "staggered_inner_seams": {
+      "label": "Vientisos vidinės siūlės",
+      "tooltip": "Vientisos vidinės siūlės Dėl šios parinkties vidinės siūlės bus paslinktos atgal pagal jų gylį, suformuojant zigzago raštą."
+    },
+    "standby_temperature_delta": {
+      "label": "Temperatūros kitimas",
+      "tooltip": "Temperatūros skirtumas, taikomas, kai ekstruderis nėra aktyvus. Ši vertė nenaudojama, kai „idle_temperature“ gijų nustatymuose nustatyta ne nulinė vertė."
+    },
+    "start_end_points": {
+      "label": "Pradžios ir pabaigos taškai",
+      "tooltip": "Pradžios ir pabaigos taškai, t. y. nuo pjaustymo zonos iki šiukšliadėžės."
+    },
+    "supertack_plate_temp": {
+      "label": "Kiti sluoksniai",
+      "full_label": "Pagrindo temperatūra",
+      "tooltip": "Pagrindo temperatūra sluoksniams, išskyrus pradinį. Vertė 0 reiškia, kad gija nepalaiko spausdinimo ant „Cool Plate SuperTack“."
+    },
+    "supertack_plate_temp_initial_layer": {
+      "label": "Pradinis sluoksnis",
+      "full_label": "Pradinė sluoksnio pagrindo temperatūra",
+      "tooltip": "Pradinio sluoksnio pagrindo temperatūra. Reikšmė 0 reiškia, kad gija nepalaiko spausdinimo ant šaltos plokštės „SuperTack“."
+    },
+    "support_air_filtration": {
+      "label": "Oro filtravimo palaikymas",
+      "tooltip": "Įjunkite šią funkciją, jei spausdintuvas palaiko oro filtravimą\nG-kodo komanda: M106 P3 S(0-255)"
+    },
+    "support_angle": {
+      "label": "Rašto kampas",
+      "tooltip": "Šį nustatymą naudokite norėdami pasukti atraminį modelį horizontalioje plokštumoje."
+    },
+    "support_base_pattern": {
+      "label": "Pagrindinis raštas",
+      "tooltip": "Linijinis atramų raštas",
+      "enum_labels": [
+        "Numatytas",
+        "Tiesia linija",
+        "Tiesus tinklelis",
+        "Korys",
+        "Apšvietimas",
+        "Tuščiaviduris"
+      ]
+    },
+    "support_base_pattern_spacing": {
+      "label": "Pagrindinio rašto tarpai",
+      "tooltip": "Atstumai tarp atraminių linijų"
+    },
+    "support_bottom_interface_spacing": {
+      "label": "Apatinės sąsajos tarpas",
+      "tooltip": "Atstumas tarp apatinių sąsajos linijų. 0 reiškia vientisą sąsają"
+    },
+    "support_bottom_z_distance": {
+      "label": "Apatinis Z atstumas",
+      "tooltip": "Z tarpas tarp apatinės atramos sąsajos ir objekto"
+    },
+    "support_chamber_temp_control": {
+      "label": "Kameros temperatūros kontrolės palaikymas",
+      "tooltip": "Ši parinktis įjungiama, jei mašina palaiko kameros temperatūros kontrolę.\nG-kodo komanda: M141 S(0-255)"
+    },
+    "support_critical_regions_only": {
+      "label": "Paremti tik kritines sritis",
+      "tooltip": "Atramas kurkite tik kritinėse srityse, įskaitant aštrų galą, konsolę ir pan."
+    },
+    "support_expansion": {
+      "label": "Įprastų atramų išplėtimas",
+      "tooltip": "Padidinkite (+) arba sumažinkite (-) įprastinės atramos horizontalųjį atstumą"
+    },
+    "support_filament": {
+      "label": "Atraminis ir (arba) platformos pagrindas",
+      "tooltip": "Gija, skirta spausdinti atraminį pagrindą ir platformą. \"Numatytoji\" reiškia, kad nėra konkrečios gijos atramai ir naudojama dabartinė gija"
+    },
+    "support_interface_bottom_layers": {
+      "label": "Apatiniai sąsajos sluoksniai",
+      "tooltip": "Apatinių sąsajos sluoksnių skaičius"
+    },
+    "support_interface_filament": {
+      "label": "Atramų ir (arba) platformos sąsaja",
+      "tooltip": "Gija skirta spausdinti atramos sąsają. \"Numatytoji\" reiškia, kad atramos sąsajai nėra konkrečios gijos ir naudojama dabartinė gija"
+    },
+    "support_interface_loop_pattern": {
+      "label": "Sąsaja naudoja kontūro raštą",
+      "tooltip": "Viršutinį kontaktinį atramų sluoksnį uždenkite kilpomis. Išjungta pagal numatytuosius nustatymus."
+    },
+    "support_interface_not_for_body": {
+      "label": "Venkite pagrindo sąsajos gijų",
+      "tooltip": "Jei įmanoma, vengti naudoti atraminės sąsajos giją atraminiam pagrindui spausdinti."
+    },
+    "support_interface_pattern": {
+      "label": "Sąsajos raštas",
+      "tooltip": "Linijinis atraminės sąsajos raštas. Numatytasis netirpios atraminės sąsajos raštas yra tiesiaeigis, o tirpios atraminės sąsajos numatytasis raštas yra koncentrinis",
+      "enum_labels": [
+        "Numatytas",
+        "Tiesia linija",
+        "Koncentrinis",
+        "Tiesiaeigis, persipynęs",
+        "Tinklelis"
+      ]
+    },
+    "support_interface_spacing": {
+      "label": "Viršutinės sąsajos tarpas",
+      "tooltip": "Sąsajos linijų tarpas. Nulis reiškia vientisą sąsają. \nNaudokite vientisą sąsają, kai įjungta atramų lyginimo funkcija."
+    },
+    "support_interface_speed": {
+      "label": "Atramų sąsaja",
+      "tooltip": "Atramų sąsajų greitis"
+    },
+    "support_interface_top_layers": {
+      "label": "Viršutiniai sąsajos sluoksniai",
+      "tooltip": "Viršutinių sąsajos sluoksnių skaičius"
+    },
+    "support_ironing": {
+      "label": "Atramų lyginimo sąsaja",
+      "tooltip": "Lyginimas – tai mažo srauto naudojimas, kad būtų galima vėl spausdinti ant tos pačios aukščio atramos sąsajos, kad ji taptų lygesnė. Šis nustatymas kontroliuoja, ar atramos sąsaja bus lyginama. Kai šis nustatymas įjungtas, atramos sąsaja taip pat bus išspaudžiama kaip vientisa."
+    },
+    "support_ironing_flow": {
+      "label": "Atramų lyginimo srautas",
+      "tooltip": "Išspaudžiamo medžiagos kiekis lyginimo metu. Santykinis normalaus atraminio sąsajos sluoksnio aukščio srautas. Per didelė vertė sukelia per didelį išspaudimą ant paviršiaus."
+    },
+    "support_ironing_pattern": {
+      "label": "Atramų lyginimo raštas",
+      "tooltip": "Raštas, kuris bus naudojamas lyginant",
+      "enum_labels": [
+        "Tiesia linija",
+        "Koncentrinis"
+      ]
+    },
+    "support_ironing_spacing": {
+      "label": "Atramų lyginimo linijų tarpai",
+      "tooltip": "Atstumas tarp lyginimui naudojamų linijų"
+    },
+    "support_line_width": {
+      "label": "Atramos",
+      "tooltip": "Atramos linijos plotis. Jei išreiškiamas %, jis apskaičiuojamas pagal purkštuko skersmenį."
+    },
+    "support_material_interface_fan_speed": {
+      "label": "Atramų sąsajos ventiliatoriaus greitis",
+      "tooltip": "Šis dalies aušinimo ventiliatoriaus greitis taikomas spausdinant atramines sąsajas. Nustačius šį parametrą didesniu nei įprastai greičiu, sumažėja sluoksnių surišimo stiprumas tarp atramų ir remiamos dalies, todėl jas lengviau atskirti.\nNustatykite -1, kad išjungtumėte šį parametrą.\nŠis parametras pakeičiamas parametru \"Išjungti pirmųjų sluoksnių aušinimą\"."
+    },
+    "support_multi_bed_types": {
+      "label": "Kelių tipų pagrindų palaikymas",
+      "tooltip": "Įjunkite šią parinktį, jei norite naudoti kelių tipų pagrindus"
+    },
+    "support_object_first_layer_gap": {
+      "label": "Atramos ir objekto pirmojo sluoksnio tarpas",
+      "tooltip": "XY atstumas tarp objekto ir jo atramos pirmajame sluoksnyje."
+    },
+    "support_object_xy_distance": {
+      "label": "Atramos/objekto xy atstumas",
+      "tooltip": "Šiuo parametru nustatomas objekto ir atramos XY atstumas"
+    },
+    "support_on_build_plate_only": {
+      "label": "Tik ant pagrindo plokštės",
+      "tooltip": "Šis nustatymas generuoja tik tas atramas, kurios prasideda ant spausdinimo plokštės"
+    },
+    "support_remove_small_overhang": {
+      "label": "Pašalinti nedideles iškyšas",
+      "tooltip": "Pašalinti nedideles iškyšas, kurioms galbūt nereikia atramų."
+    },
+    "support_speed": {
+      "label": "Atramos",
+      "tooltip": "Atramų greitis"
+    },
+    "support_style": {
+      "label": "Stilius",
+      "tooltip": "Atramos stilius ir forma. Įprastoms atramoms projektuojant atramas į taisyklingą tinklelį, bus sukurtos stabilesnės atramos (numatytasis nustatymas), o prigludę atramų bokšteliai leis sutaupyti medžiagos ir sumažinti objekto nubrozdinimus.\nMedžių atramoms siauras ir organinis stilius agresyviau sujungs šakas ir sutaupys daug medžiagos (numatytasis organinis), o hibridinis stilius sukurs panašią struktūrą kaip įprastos atramos po didelėmis plokščiomis iškyšomis.",
+      "enum_labels": [
+        "Numatytoji reikšmė (Tinklelis/organinis)",
+        "Tinklelis",
+        "Aptemti",
+        "Organiškas",
+        "Medis plonas",
+        "Tvirtas medis",
+        "Hibridinis medis"
+      ]
+    },
+    "support_threshold_angle": {
+      "label": "Ribinis kampas",
+      "tooltip": "Iškyšoms, kurių nuolydžio kampas yra mažesnis už ribą, bus sukurta atrama."
+    },
+    "support_threshold_overlap": {
+      "label": "Slenksčio persidengimas",
+      "tooltip": "Jei slenkstinis kampas lygus nuliui, atrama bus sukurta iškyšoms, kurių persidengimas yra mažesnis už slenkstį. Kuo mažesnė ši vertė, tuo statesnė iškyša, kurią galima spausdinti be atramos."
+    },
+    "support_top_z_distance": {
+      "label": "Viršutinis Z atstumas",
+      "tooltip": "Taip nustatomas Z tarpas tarp viršutinių atramų sąsajų ir objektų"
+    },
+    "support_type": {
+      "label": "Tipas",
+      "tooltip": "Normalus (automatinis) ir Medis (automatinis) naudojamas automatiškai generuoti atramas. Pasirinkus Normalus (rankinis) arba Medis (rankinis), generuojamos tik atramos",
+      "enum_labels": [
+        "Įprastas (auto)",
+        "Medis (auto)",
+        "Įprastas (rankinis)",
+        "Medis (rankinis)"
+      ]
+    },
+    "symmetric_infill_y_axis": {
+      "label": "Simetriškas užpildymas Y ašies",
+      "tooltip": "Jei modelis turi dvi dalis, kurios yra simetriškos Y ašies atžvilgiu, ir norite, kad šios dalys turėtų simetriškas tekstūras, spustelėkite šią parinktį vienoje iš dalių."
+    },
+    "temperature_vitrification": {
+      "label": "Minkštėjimo temperatūra",
+      "tooltip": "Esant tokiai temperatūrai medžiaga suminkštėja, todėl, kai pagrindo temperatūra yra lygi arba didesnė už ją, labai rekomenduojama atidaryti priekines dureles ir (arba) nuimti viršutinį stiklą, kad būtų išvengta užsikimšimo."
+    },
+    "template_custom_gcode": {
+      "label": "Pasirinktinis G-kodas",
+      "tooltip": "Šis G-kodas bus naudojamas kaip pasirinktinis kodas"
+    },
+    "textured_cool_plate_temp": {
+      "label": "Kiti sluoksniai",
+      "full_label": "Pagrindo temperatūra",
+      "tooltip": "Sluoksnių, išskyrus pradinį, pagrindo temperatūra. Reikšmė 0 reiškia, kad gija neleidžia spausdinti ant tekstūrinės vėsios plokštės"
+    },
+    "textured_cool_plate_temp_initial_layer": {
+      "label": "Pradinis sluoksnis",
+      "full_label": "Pradinė sluoksnio pagrindo temperatūra",
+      "tooltip": "Pradinio sluoksnio pagrindo temperatūra. Reikšmė 0 reiškia, kad gija neleidžia spausdinti ant tekstūruotos vėsios plokštės"
+    },
+    "textured_plate_temp": {
+      "label": "Kiti sluoksniai",
+      "full_label": "Pagrindo temperatūra",
+      "tooltip": "Pagrindo temperatūra po pirmojo sluoksnio. 0 reiškia, kad gija nepalaiko spausdinimo ant tekstūruotos PEI plokštės"
+    },
+    "textured_plate_temp_initial_layer": {
+      "label": "Pradinis sluoksnis",
+      "full_label": "Pradinė sluoksnio pagrindo temperatūra",
+      "tooltip": "Pirmojo sluoksnio temperatūra. 0 reiškia, kad gija nepalaiko spausdinimo ant tekstūruotos PEI plokštės"
+    },
+    "thick_bridges": {
+      "label": "Stori vidiniai tiltai",
+      "tooltip": "Jei įjungta, tiltai yra patikimesni, gali įveikti didesnius atstumus, tačiau gali atrodyti blogiau. Jei išjungta, tiltai atrodo geriau, bet yra patikimi tik trumpesniems atstumams."
+    },
+    "thick_internal_bridges": {
+      "label": "Stori vidiniai tiltai",
+      "tooltip": "Jei įjungta, bus naudojami stori vidiniai tiltai. Paprastai rekomenduojama šią funkciją įjungti. Tačiau jei naudojate didelius antgalius, apsvarstykite galimybę ją išjungti."
+    },
+    "thumbnails": {
+      "label": "G-kodo miniatiūros",
+      "tooltip": "Nuotraukų dydžiai, saugomi .gcode ir .sl1 / .sl1s failuose tokiu formatu: \"XxY, XxY, ...\""
+    },
+    "thumbnails_format": {
+      "label": "G-kodo miniatiūrų formatas",
+      "tooltip": "G-kodo miniatiūrų formatas: PNG – geriausia kokybė, JPG – mažiausio dydžio, QOI – mažos atminties programinei įrangai",
+      "enum_labels": [
+        "PNG",
+        "JPG",
+        "QOI",
+        "BTT TT",
+        "ColPic"
+      ]
+    },
+    "time_cost": {
+      "label": "Laiko kaina",
+      "tooltip": "Spausdintuvo valandos kaina"
+    },
+    "time_lapse_gcode": {
+      "label": "Pakadrinio filmavimo G-kodas"
+    },
+    "timelapse_type": {
+      "label": "Greitintas vaizdo įrašas",
+      "tooltip": "Jei pasirinktas lygus arba tradicinis režimas, kiekvienam spaudiniui bus sukurtas pakadrinis vaizdo įrašas. Atspausdinus kiekvieną sluoksnį, kameros fotoaparatu padaroma momentinė nuotrauka. Baigus spausdinti, visos šios momentinės nuotraukos sudedamos į laike rodomą vaizdo įrašą. Jei pasirinktas sklandus režimas, po kiekvieno sluoksnio atspausdinimo įrankio galvutė persikels į perteklinį lataką ir tada padarys momentinę nuotrauką. Kadangi darant momentinę nuotrauką iš purkštuko gali ištekėti lydalo gija, norint nuvalyti purkštuką, naudojant sklandųjį režimą reikalingas pirminis bokštelis.",
+      "enum_labels": [
+        "Tradicinis",
+        "Glotniai"
+      ]
+    },
+    "top_bottom_infill_wall_overlap": {
+      "label": "Viršutinio ir apatinio vientiso užpildo ir sienos persidengimas",
+      "tooltip": "Viršutinė vientiso užpildo sritis šiek tiek padidinta, kad geriau sutaptų su siena ir kad viršutinio užpildo vietoje, kur jis jungiasi su sienomis, atsirastų kuo mažiau skylučių. 25-30 % vertė yra geras pradinis taškas, sumažinantis skylučių atsiradimą. Procentinė vertė yra santykinė su reto užpildo linijos pločiu"
+    },
+    "top_shell_layers": {
+      "label": "Viršutiniai apvalkalo sluoksniai",
+      "full_label": "Viršutiniai vientisi sluoksniai",
+      "tooltip": "Tai viršutinio apvalkalo vientisų sluoksnių skaičius, įskaitant viršutinį paviršiaus sluoksnį. Kai pagal šią reikšmę apskaičiuotas storis yra plonesnis už viršutinio apvalkalo storį, viršutinio apvalkalo sluoksnių skaičius bus padidintas"
+    },
+    "top_shell_thickness": {
+      "label": "Viršutinio apvalkalo storis",
+      "full_label": "Viršutinio apvalkalo storis",
+      "tooltip": "Sluoksniuojant didinamas viršutinių vientisų sluoksnių skaičius, jei pagal viršutinius apvalkalo sluoksnius apskaičiuotas storis yra plonesnis už šią vertę. Taip galima išvengti per plono apvalkalo, kai sluoksnių aukštis yra mažas. 0 reiškia, kad šis nustatymas išjungtas ir viršutinio apvalkalo storis visiškai nustatomas pagal viršutinio apvalkalo sluoksnius"
+    },
+    "top_solid_infill_flow_ratio": {
+      "label": "Viršutinio paviršiaus srauto koeficientas",
+      "tooltip": "Šis veiksnys turi įtakos viršutinio vientiso užpildo medžiagos kiekiui. Galite jį šiek tiek sumažinti, kad paviršius būtų lygus.\n\nFaktinis naudojamas viršutinio paviršiaus srautas apskaičiuojamas padauginus šią reikšmę iš gijų srauto koeficiento ir, jei nustatyta, iš objekto srauto koeficiento."
+    },
+    "top_surface_acceleration": {
+      "label": "Viršutinis paviršius",
+      "tooltip": "Viršutinio paviršiaus užpildymo pagreitis. Naudojant mažesnę vertę gali pagerėti viršutinio paviršiaus kokybė"
+    },
+    "top_surface_density": {
+      "label": "Viršutinio paviršiaus tankis",
+      "tooltip": "Viršutinio paviršiaus sluoksnio tankis. 100 % vertė sukuria visiškai vientisą, lygų viršutinį sluoksnį. Sumažinus šią vertę, viršutinis paviršius tampa tekstūruotas, atsižvelgiant į pasirinktą viršutinio paviršiaus raštą. 0 % vertė reiškia, kad bus sukurti tik ant viršutinio sluoksnio sienos. Skirta estetiniais ar funkciniais tikslais, ne tam, kad išspręstų tokias problemas kaip per didelis ekstruzijos kiekis."
+    },
+    "top_surface_jerk": {
+      "label": "Viršutinis paviršius",
+      "tooltip": "Viršutinio paviršiaus trūkčiojimas"
+    },
+    "top_surface_line_width": {
+      "label": "Viršutinis paviršius",
+      "tooltip": "Viršutinių paviršių linijos plotis. Jei išreiškiamas %, jis bus apskaičiuojamas pagal purkštuko skersmenį."
+    },
+    "top_surface_pattern": {
+      "label": "Viršutinio paviršiaus raštas",
+      "tooltip": "Tai viršutinio paviršiaus užpildymo linijomis modelis",
+      "enum_labels": [
+        "Monotoniškas",
+        "Monotoniška linija",
+        "Tiesia linija",
+        "Tiesiai sulygiuota",
+        "Koncentrinis",
+        "Hilberto kreivė",
+        "Archimedo akordai",
+        "Oktagramos spiralė"
+      ]
+    },
+    "top_surface_speed": {
+      "label": "Viršutinis paviršius",
+      "tooltip": "Viršutinio vientiso paviršiaus užpildo greitis"
+    },
+    "travel_acceleration": {
+      "label": "Judėjimas",
+      "tooltip": "Judėjimo judesių pagreitis"
+    },
+    "travel_jerk": {
+      "label": "Judėjimas",
+      "tooltip": "Judėjimo trūkčiojimas"
+    },
+    "travel_slope": {
+      "label": "Judėjimo kampas",
+      "tooltip": "Šlaito ir spiralės Z-šuolio tipo judėjimo kampas. Nustačius jį į 90°, gaunamas normalus pakėlimas."
+    },
+    "travel_speed": {
+      "label": "Judėjimas",
+      "tooltip": "Judėjimo greitis, kuris yra greitesnis ir be ekstruzijos"
+    },
+    "tree_support_adaptive_layer_height": {
+      "label": "Prisitaikantis sluoksnio aukštis",
+      "tooltip": "Įjungus šią parinktį, medžio atraminio sluoksnio, išskyrus pirmąjį, aukštis bus apskaičiuojamas automatiškai. "
+    },
+    "tree_support_angle_slow": {
+      "label": "Pageidaujamas šakos kampas",
+      "tooltip": "Pageidaujamas šakų kampas, kai joms nereikia vengti modelio. Naudokite mažesnį kampą, kad jos būtų vertikalesnės ir stabilesnės. Naudokite didesnį kampą, kad šakos greičiau susijungtų."
+    },
+    "tree_support_auto_brim": {
+      "label": "Automatinis kraštų plotis",
+      "tooltip": "Įjungus šią parinktį, medžio atramos krašto plotis apskaičiuojamas automatiškai"
+    },
+    "tree_support_branch_angle": {
+      "label": "Atraminio medžio šakos kampas",
+      "tooltip": "Šis nustatymas nustato didžiausią iškyšos kampą, kurį gali sudaryti medžio atramos šakos. Padidinus kampą, šakos gali būti atspausdintos horizontaliau, todėl jos gali siekti toliau."
+    },
+    "tree_support_branch_angle_organic": {
+      "label": "Atraminio medžio šakos kampas",
+      "tooltip": "Šis nustatymas nustato didžiausią iškyšos kampą, kurį gali sudaryti medžio atramos šakos. Padidinus kampą, šakos gali būti atspausdintos horizontaliau, todėl jos gali siekti toliau."
+    },
+    "tree_support_branch_diameter": {
+      "label": "Atraminio medžio šakų skersmuo",
+      "tooltip": "Šiuo nustatymu nustatomas pradinis atraminių mazgų skersmuo."
+    },
+    "tree_support_branch_diameter_angle": {
+      "label": "Šakų skersmens kampas",
+      "tooltip": "Šakų skersmens kampas, joms palaipsniui storėjant link apačios. Jei kampas lygus 0, šakos bus vienodo storio per visą ilgį. Šiek tiek didesnis kampas gali padidinti organinės atramos stabilumą."
+    },
+    "tree_support_branch_diameter_organic": {
+      "label": "Atraminio medžio šakų skersmuo",
+      "tooltip": "Šiuo nustatymu nustatomas pradinis atraminių mazgų skersmuo."
+    },
+    "tree_support_branch_distance": {
+      "label": "Atstumas tarp atraminio medžio šakų",
+      "tooltip": "Šis nustatymas nustato atstumą tarp kaimyninių medžio atraminių mazgų."
+    },
+    "tree_support_branch_distance_organic": {
+      "label": "Atstumas tarp atraminio medžio šakų",
+      "tooltip": "Šis nustatymas nustato atstumą tarp kaimyninių medžio atraminių mazgų."
+    },
+    "tree_support_brim_width": {
+      "label": "Atraminio medžio krašto plotis",
+      "tooltip": "Atstumas nuo medžio šakos iki išorinės krašto linijos"
+    },
+    "tree_support_tip_diameter": {
+      "label": "Galo skersmuo",
+      "tooltip": "Organinių atramų šakos galo skersmuo."
+    },
+    "tree_support_top_rate": {
+      "label": "Šakų tankis",
+      "tooltip": "Reguliuoja atraminės struktūros, naudojamos šakų viršūnėms formuoti, tankį. Pasirinkus didesnę reikšmę, gaunamos geresnės iškyšos, tačiau atramas sunkiau pašalinti, todėl, jei reikia tankios atramos, rekomenduojama įjungti viršutinių atramų sąsajas, o ne didelę šakų tankio reikšmę."
+    },
+    "tree_support_wall_count": {
+      "label": "Atramų sienų kontūrai",
+      "tooltip": "Šis nustatymas nurodo atramų sienų storį intervale [0,2]. 0 reiškia automatinis."
+    },
+    "tree_support_with_infill": {
+      "label": "Medžių atramos su užpildymu",
+      "tooltip": "Šis nustatymas nurodo, ar į dideles medžio atramos ertmes dėti užpildą"
+    },
+    "upward_compatible_machine": {
+      "label": "į viršų suderinamas įrenginys"
+    },
+    "use_firmware_retraction": {
+      "label": "Naudoti nustatytąjį įtraukimą",
+      "tooltip": "Šis eksperimentinis nustatymas naudoja G10 ir G11 komandas, kad programinė įranga valdytų įtraukimą. Tai palaikoma tik naujausioje „Marlin“."
+    },
+    "use_relative_e_distances": {
+      "label": "Naudoti santykinius E atstumus",
+      "tooltip": "Naudojant parinktį „label_objects“ rekomenduojama naudoti santykinį išspaudimą. Kai kurie ekstruzijos įrenginiai veikia geriau, jei ši parinktis nepažymėta (absoliučiosios ekstruzijos režimas). Valymo bokštas suderinamas tik su santykiniu režimu. Jį rekomenduojama naudoti daugumoje spausdintuvų. Pagal numatytuosius nustatymus pažymėta"
+    },
+    "wall_direction": {
+      "label": "Sienos kontūro kryptis",
+      "tooltip": "Sienų kontūrų išspaudimo kryptis žiūrint iš viršaus žemyn.\n\nPagal numatytuosius nustatymus visos sienos išspaudžiamos prieš laikrodžio rodyklę, nebent įjungta galimybė „ Apsukti lyginius“. Nustačius bet kurią kitą parinktį, išskyrus Auto (automatinis), sienos kryptis bus priverstinė, neatsižvelgiant į įjungtą funkciją Apsukti lyginius.\n\nŠi parinktis bus išjungta, jei įjungtas spiralinės vazos režimas.",
+      "enum_labels": [
+        "Automatiškai",
+        "Prieš laikrodžio rodyklę",
+        "Pagal laikrodžio rodyklę"
+      ]
+    },
+    "wall_distribution_count": {
+      "label": "Sienų pasiskirstymo skaičius",
+      "tooltip": "Sienų skaičius, skaičiuojant nuo centro, ant kurių reikia paskirstyti pokytį. Mažesnės reikšmės reiškia, kad išorinių sienų plotis nesikeičia"
+    },
+    "wall_filament": {
+      "label": "Sienos",
+      "tooltip": "Gijos sienoms spausdinti"
+    },
+    "wall_generator": {
+      "label": "Sienų generatorius",
+      "tooltip": "Klasikinis sienų generatorius sukuria pastovaus pločio sieneles, o labai plonoms sritims užpildyti naudojamas tarpų užpildymas. \"Arachne\" variklis gamina kintamo išspaudimo pločio sienas",
+      "enum_labels": [
+        "Klasikinis",
+        "Arachnė"
+      ]
+    },
+    "wall_loops": {
+      "label": "Sienelės linijos",
+      "tooltip": "Vieno sluoksnio sienų skaičius"
+    },
+    "wall_sequence": {
+      "label": "Sienų spausdinimo eiliškumas",
+      "tooltip": "Vidinių (vidinių) ir išorinių (išorinių) sienų spausdinimo seka.\n\nNaudokite Vidinės / Išorinės, jei norite, kad iškyšos būtų geriausios. Taip yra todėl, kad spausdinant išsikišusios sienos gali prilipti prie kaimyninio perimetro. Tačiau dėl šios parinkties šiek tiek suprastėja paviršiaus kokybė, nes išorinis perimetras deformuojamas prispaudžiant jį prie vidinio perimetro.\n\nNaudokite Vidinis / išorinis / vidinis, jei norite gauti geriausią išorinio paviršiaus apdailą ir matmenų tikslumą, nes išorinė siena spausdinama nepažeista vidinio perimetro. Tačiau iškyšų kokybė sumažėja, nes nėra vidinio perimetro, prie kurio būtų galima atspausdinti išorinę sienelę. Kad ši parinktis būtų veiksminga, reikia mažiausiai 3 sienų, nes pirmiausia atspausdinamos vidinės sienos nuo trečiojo perimetro, tada išorinis perimetras ir galiausiai pirmasis vidinis perimetras. Šią parinktį daugeliu atvejų rekomenduojama rinktis ne kaip išorinę / vidinę parinktį.\n\nNaudokite Išorinė / vidinė, kad išorinių sienų kokybė ir matmenų tikslumas būtų tokie patys, kaip ir pasirinkus Vidinė / išorinė / vidinė parinktį. Tačiau z siūlės atrodys ne tokios nuoseklios, nes pirmasis naujo sluoksnio išspaudimas prasideda matomame paviršiuje.\n\n ",
+      "enum_labels": [
+        "Vidinės/Išorinės",
+        "Išorinės/Vidinės",
+        "Vidinės/Išorinės/Vidinės"
+      ]
+    },
+    "wall_transition_angle": {
+      "label": "Sienų perėjimo slenksčio kampas",
+      "tooltip": "Kai reikia sukurti perėjimus tarp lyginio ir nelyginio sienų skaičiaus. Pleišto formos, kurios kampas didesnis už šį nustatymą, perėjimų nebus, o centre nebus atspausdintos sienos, kad būtų užpildyta likusi erdvė. Sumažinus šį nustatymą, sumažėja šių centrinių sienelių skaičius ir ilgis, tačiau gali likti tarpų arba jos gali būti per daug išsikišusios"
+    },
+    "wall_transition_filter_deviation": {
+      "label": "Sienos perėjimo filtro riba",
+      "tooltip": "Neleidžia pereiti iš vienos papildomos sienos į kitą. Ši riba išplečia sekančio išspaudimo pločio diapazoną iki [minimalus sienelės plotis - riba, 2 * minimalus sienelės plotis + riba]. Padidinus šią ribą, sumažėja perėjimų skaičius, todėl sumažėja ekstruzijos paleidimų / stabdymų skaičius ir judėjimo laikas. Tačiau dėl didelio ekstruzijos pločio skirtumo gali kilti nepakankamo arba per didelio ekstruzijos pločio problemų. Jis išreiškiamas procentais nuo purkštuko skersmens"
+    },
+    "wall_transition_length": {
+      "label": "Sienų perėjimo ilgis",
+      "tooltip": "Pereinant nuo vieno sienelių skaičiaus prie kito, kai detalė tampa plonesnė, sienelių segmentams padalyti arba sujungti skiriama tam tikra erdvė. Jis išreiškiamas procentais nuo purkštuko skersmens"
+    },
+    "wipe": {
+      "label": "Nuvalyti įtraukiant",
+      "tooltip": "Įtraukiant antgalį judinti išilgai paskutinio išspaudimo kelio, kad būtų išvalyta ant antgalio nutekėjusi medžiaga. Tai gali sumažinti artefaktų kiekį, kai po judėjimo spausdinama nauja dalis"
+    },
+    "wipe_before_external_loop": {
+      "label": "Nuvalyti prieš išorinę kilpą",
+      "tooltip": "Siekiant sumažinti galimo perteklinio išspaudimo matomumą išorinio perimetro pradžioje, kai spausdinama išorinės / vidinės arba vidinės / išorinės / išorinės / vidinės sienos spausdinimo tvarka, ištraukimas atliekamas šiek tiek į vidų nuo išorinio perimetro pradžios. Taip bet koks galimas perteklinis išspaudimas paslepiamas nuo išorinio paviršiaus.\n\nTai naudinga, kai spausdinama naudojant išorinės / vidinės arba vidinės / išorinės / išorinės / vidinės sienos spausdinimo tvarką, nes šiuose režimuose didesnė tikimybė, kad išorinis perimetras bus išspausdintas iš karto po ištraukimo pašalinimo judesio."
+    },
+    "wipe_distance": {
+      "label": "Valymo atstumas",
+      "tooltip": "Apibūdinkite, kiek laiko antgalis judės paskutiniu keliu, kai bus įtraukiamas.\n\nPriklausomai nuo to, kiek laiko trunka valymo operacija, kokie greiti ir ilgi yra ekstruderio / gijų įtraukimo nustatymai, gali prireikti įtraukimo judesio, kad būtų įtraukta likusi gija.\n\nNustačius toliau esančio įvilkimo kiekio prieš valymą nustatymo reikšmę, bet koks perteklinis įvilkimas bus atliktas prieš valymą, priešingu atveju jis bus atliktas po jo."
+    },
+    "wipe_on_loops": {
+      "label": "Nuvalyti kilpas",
+      "tooltip": "Siekiant sumažinti siūlės matomumą uždaroje ekstruzijos kilpoje, prieš ekstruderiui išeinant iš kilpos atliekamas nedidelis judesys į vidų."
+    },
+    "wipe_speed": {
+      "label": "Valymo greitis",
+      "tooltip": "Valymo greitis nustatomas pagal šioje konfigūracijoje nurodytą greičio nustatymą.Jei vertė išreikšta procentais (pvz., 80 %), ji bus apskaičiuota pagal pirmiau nurodytą judėjimo greičio nustatymą. Numatytoji šio parametro vertė yra 80 %"
+    },
+    "wipe_tower_bridging": {
+      "label": "Maksimalus tiltelio atstumas",
+      "tooltip": "Maksimalus atstumas tarp atramų retose užpildymo dalyse."
+    },
+    "wipe_tower_cone_angle": {
+      "label": "Stabilizavimo kūgio viršūnės kampas",
+      "tooltip": "Kūgio viršūnės kampas, naudojamas valymo bokštui stabilizuoti. Didesnis kampas reiškia platesnį pagrindą."
+    },
+    "wipe_tower_extra_flow": {
+      "label": "Papildomas srautas valymui",
+      "tooltip": "Papildomas srautas, naudojamas valymo bokšto išleidimo linijoms. Dėl to išleidimo linijos tampa storesnės arba siauresnės nei įprastai. Atstumai reguliuojami automatiškai."
+    },
+    "wipe_tower_extra_rib_length": {
+      "label": "Papildomas briaunų ilgis"
+    },
+    "wipe_tower_extra_spacing": {
+      "label": "Atstumai tarp valymo bokšto valymo linijų",
+      "tooltip": "Valymo bokšto valymo linijų atstumai."
+    },
+    "wipe_tower_filament": {
+      "label": "Valymo bokštas",
+      "tooltip": "Ekstruderis, naudojamas spausdinant valymo bokšto perimetrą. Nustatykite į 0, kad būtų naudojamas turimas ekstruderis (pageidautina, kad būtų naudojamas netirpus)."
+    },
+    "wipe_tower_fillet_wall": {
+      "label": "Užapvalinta siena",
+      "tooltip": "Pagrindinio bokšto siena bus suapvalinta."
+    },
+    "wipe_tower_max_purge_speed": {
+      "label": "Didžiausias valymo bokšto spausdinimo greitis",
+      "tooltip": "Didžiausias spausdinimo greitis, kai atliekamas valymas valymo bokšte ir spausdinami reti valymo bokšto sluoksniai. Jei valant reto sluoksnio užpildymo greitis arba apskaičiuotas greitis pagal gijos maksimalų tūrinį greitį yra mažesnis, vietoj jo bus naudojamas mažiausias.\n\nSpausdinant retus sluoksnius, jei vidinio perimetro greitis arba apskaičiuotas greitis pagal gijos maksimalų tūrinį greitį yra mažesnis, vietoj jo bus naudojamas mažiausias.\n\nPadidinus šį greitį, gali nukentėti bokšto stabilumas, taip pat padidėti jėga, su kuria purkštuvas susiduria su bet kokiais nelygumais, kurie gali susidaryti ant valymo bokšto.\n\nPrieš didindami šį parametrą daugiau nei numatytasis 90 mm/s, įsitikinkite, kad jūsų spausdintuvas gali patikimai nutiesti tiltą didesniu greičiu ir kad gijos pratekėjimas keičiant įrankį yra gerai kontroliuojamas.\n\nValymo bokšto išoriniam perimetrui, nepriklausomai nuo šio parametro, naudojamas vidinio perimetro greitis."
+    },
+    "wipe_tower_no_sparse_layers": {
+      "label": "Nėra retų sluoksnių (beta)",
+      "tooltip": "Jei įjungta, valymo bokštas nebus spausdinamas ant sluoksnių, nepakeitus įrankio. Sluoksniuose, kuriuose keičiamas įrankis, ekstruderis judės žemyn, kad atspausdintų valymo bokštą. Vartotojas yra atsakingas už tai, kad nebūtų susidūrimo su spaudiniu."
+    },
+    "wipe_tower_rib_width": {
+      "label": "Briaunų plotis",
+      "tooltip": "Briaunų plotis"
+    },
+    "wipe_tower_rotation_angle": {
+      "label": "Valymo bokšto sukimosi kampas",
+      "tooltip": "Valymo bokšto sukimosi kampas x ašies atžvilgiu."
+    },
+    "wipe_tower_wall_type": {
+      "label": "Sienos tipas",
+      "tooltip": "Nuvalymo bokšto išorinės sienos tipas. \n1. Stačiakampis: numatytasis sienos tipas, stačiakampis su fiksuotu pločiu ir aukščiu. \n2. Kūgis: kūgis su apatine išgaubta dalimi, padedančia stabilizuoti nuvalymo bokštą. \n3. Briauna: bokšto sienai pridedamos keturios briaunos, padedančios padidinti stabilumą.",
+      "enum_labels": [
+        "Stačiakampis",
+        "Konusas",
+        "Rib"
+      ]
+    },
+    "wiping_volumes_extruders": {
+      "label": "Išleidimo tūriai – pakrovimo/iškrovimo tūriai",
+      "tooltip": "Šis vektorius išsaugo reikiamus tūrius, kad būtų galima pakeisti/į kiekvieną įrankį, naudojamą valymo bokštelyje. Šios vertės naudojamos siekiant supaprastinti toliau pateiktų išvalymo tūrių kūrimą."
+    },
+    "xy_contour_compensation": {
+      "label": "X-Y kontūro kompensavimas"
+    },
+    "xy_hole_compensation": {
+      "label": "X-Y angų kompensavimas"
+    },
+    "z_hop": {
+      "label": "Z šuolio aukštis",
+      "tooltip": "Kiekvieną kartą, kai gija įtraukiama, purkštukas šiek tiek pakeliamas, kad tarp purkštuko ir spaudinio atsirastų tarpas. Taip purkštukas, judėdamas daugiau, neužkliudo spaudinio. Naudojant spiralines linijas z pakėlimui, galima išvengti stygų susidarymo"
+    },
+    "z_hop_types": {
+      "label": "Z šuolio tipas",
+      "tooltip": "Z-šuolio tipas.",
+      "enum_labels": [
+        "Automatiškai",
+        "Normalus",
+        "Nuolydis",
+        "Spiralė"
+      ]
+    },
+    "z_offset": {
+      "label": "Z poslinkis",
+      "tooltip": "Ši vertė bus pridėta (arba atimta) prie visų išvesties G kodo Z koordinačių. Ji naudojama blogai Z galinio ribotuvo padėčiai kompensuoti: pavyzdžiui, jei jūsų nulinis ribotuvas iš tikrųjų palieka purkštuką 0,3 mm atstumu nuo spausdinimo pagrindo, nustatykite šią reikšmę -0,3 (arba pataisykite galinį ribotuvą)."
+    }
+  },
+  "ui": {
+    "Acceleration": "Pagreitis",
+    "Acceleration limitation": "Pagreičio ribojimas",
+    "Accessory": "Priedai",
+    "Adaptive bed mesh": "Prisitaikanti pagrindo forma",
+    "Advanced": "Plačiau",
+    "Auxiliary part cooling fan": "Pagalbinis dalies aušinimo ventiliatorius",
+    "Basic information": "Pagrindinė informacija",
+    "Bed temperature": "Pagrindo temperatūra",
+    "Before layer change G-code": "G-kodas prieš keičiant sluoksnį",
+    "Bridging": "Tiltai",
+    "Brim": "Kraštas",
+    "Change extrusion role G-code": "Keisti išspaudimo vaidmenį G-kodas",
+    "Change filament G-code": "Gijos keitimo G-kodas",
+    "Compatible printers": "Suderinami spausdintuvai",
+    "Compatible process profiles": "Suderinamų procesų profiliai",
+    "Cooling": "Aušinimas",
+    "Cooling Fan": "Aušinimo ventiliatorius",
+    "Cooling for specific layer": "Konkretaus sluoksnio aušinimas",
+    "Dependencies": "Priklausomybės",
+    "Exhaust fan": "Ištraukimo ventiliatorius",
+    "Extruder Clearance": "Ekstruderio laisvoji erdvė",
+    "Filament": "Gija",
+    "Filament end G-code": "Gijos pabaigos G-kodas",
+    "Filament for Features": "Gija funkcijoms",
+    "Filament start G-code": "Gijos pradžios G-kodas",
+    "Flow ratio and Pressure Advance": "Srauto santykis ir slėgis",
+    "Flush options": "Gijos išleidimo nustatymai",
+    "Fuzzy Skin": "Grublėtas paviršius",
+    "G-code output": "G-kodo išvestis",
+    "Infill": "Užpildymas",
+    "Initial layer speed": "Pradinio sluoksnio greitis",
+    "Ironing": "Lyginimas",
+    "Jerk limitation": "Trūkčiojimo ribojimai",
+    "Jerk(XY)": "Pagreitis (XY)",
+    "Layer change G-code": "Sluoksnio keitimas G-kodas",
+    "Layer height": "Sluoksnio aukštis",
+    "Layer height limits": "Sluoksnio aukščio ribos",
+    "Line width": "Linijos plotis",
+    "Machine G-code": "Įrenginio gkodas",
+    "Machine end G-code": "Įrangos pabaigos G-kodas",
+    "Machine start G-code": "Įrangos paleidimo G-kodas",
+    "Motion ability": "Judėjimo parinktys",
+    "Multimaterial": "Kelios medžiagos",
+    "Notes": "Pastabos",
+    "Ooze prevention": "Ištekėjimo prevencija",
+    "Other layers speed": "Kitų sluoksnių greitis",
+    "Others": "Kita",
+    "Overhang speed": "Iškyšų greitis",
+    "Overhangs": "Iškyšos",
+    "Part cooling fan": "Dalies aušinimo ventiliatorius",
+    "Pause G-code": "Pauzė G-kodas",
+    "Position": "Padėtis",
+    "Post-processing Scripts": "Scenarijai po apdorojimo",
+    "Precision": "Tikslumas",
+    "Prime tower": "Valymo bokštas",
+    "Print chamber temperature": "Spausdinimo kameros temperatūra",
+    "Print temperature": "Spausdinimo temperatūra",
+    "Printable space": "Erdvė spausdinimui",
+    "Printing by object G-code": "Spausdinimas pagal objektą G-kodas",
+    "Quality": "Kokybė",
+    "Raft": "Platforma",
+    "Resonance Avoidance": "Rezonanso vengimas",
+    "Retraction": "Įtraukimas",
+    "Retraction when switching material": "Įtraukimas keičiant medžiagą",
+    "Seam": "Siūlė",
+    "Setting Overrides": "Apribojimų nustatymas",
+    "Single extruder multi-material parameters": "Vieno ekstruderio kelių medžiagų parametrai",
+    "Single extruder multi-material setup": "Vieno ekstruderio kelių medžiagų sąranka",
+    "Size": "Dydis",
+    "Skirt": "Apvadas",
+    "Special mode": "Specialus režimas",
+    "Speed": "Greitis",
+    "Speed limitation": "Greičio ribojimas",
+    "Strength": "Stiprumas",
+    "Support": "Atramos",
+    "Support filament": "Atramų gija",
+    "Support ironing": "Atramų lyginimas",
+    "Template Custom G-code": "Pasirinktinis G-kodo šablonas",
+    "Timelapse G-code": "Pakadrinio filmavimo G-kodas",
+    "Tool change parameters with multi extruder MM printers": "Įrankių keitimo parametrai su kelių ekstruderių MM spausdintuvais",
+    "Tool change parameters with single extruder MM printers": "Įrankių keitimo parametrai naudojant vieno ekstruderio MM spausdintuvus",
+    "Top/bottom shells": "Viršutiniai/apatiniai paviršiai",
+    "Travel speed": "Judėjimo greitis",
+    "Tree supports": "Medžio tipo atramos",
+    "Volumetric speed limitation": "Tūrinio greičio ribojimas",
+    "Wall generator": "Sienų generatorius",
+    "Walls": "Sienos",
+    "Walls and surfaces": "Sienos ir paviršiai",
+    "Wipe tower": "Valymo bokštas",
+    "Wipe tower parameters": "Valymo bokšto parametrai",
+    "Z-Hop": "Z šuolis"
+  }
+}

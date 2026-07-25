@@ -1,0 +1,2741 @@
+{
+  "schema_version": 1,
+  "locale": "pt_BR",
+  "source_locale": "en",
+  "messages": {},
+  "settings": {
+    "accel_to_decel_enable": {
+      "label": "Habilitar accel_to_decel",
+      "tooltip": "O max_accel_to_decel do Klipper será ajustado automaticamente"
+    },
+    "accel_to_decel_factor": {
+      "label": "accel_to_decel",
+      "tooltip": "O max_accel_to_decel do Klipper será ajustado para esse %% de aceleração"
+    },
+    "acceleration_limit_mess": {
+      "label": "Velocidade limite de peso e aceleração",
+      "tooltip": "Velocidade limite de peso e aceleração"
+    },
+    "acceleration_limit_mess_enable": {
+      "label": "Velocidade limite de peso e aceleração",
+      "tooltip": "Velocidade limite de peso e aceleração"
+    },
+    "activate_air_filtration": {
+      "label": "Ativar filtragem de ar",
+      "tooltip": "Ative para uma melhor filtragem de ar. "
+    },
+    "activate_chamber_layer": {
+      "label": "Ativar camada da câmara",
+      "full_label": "Ativar camada da câmara",
+      "tooltip": "O número de camadas para abrir a temperatura da cavidade"
+    },
+    "activate_chamber_temp_control": {
+      "label": "Ativar controle de temperatura",
+      "tooltip": "Ative esta opção para controle de temperatura da câmara. Um comando M191 será adicionado antes de \"machine_start_gcode\"\nComandos G-code: M141/M191 S(0-255)"
+    },
+    "adaptive_bed_mesh_margin": {
+      "label": "Margem da malha",
+      "tooltip": "Esta opção determina a distância adicional pela qual a área do bed mesh adaptável deve ser expandida nas direções XY."
+    },
+    "additional_cooling_fan_speed": {
+      "label": "Fan speed",
+      "tooltip": "Velocidade do ventilador auxiliar de resfriamento de peças. O ventilador auxiliar funcionará nesta velocidade durante a impressão, exceto nas primeiras camadas, que são definidas por camadas sem resfriamento.\n\nPor favor, habilite o ventilador auxiliar nas configurações da impressora para usar esta função. Comando G-code: M106 P2 S(0-255)"
+    },
+    "ai_infill": {
+      "label": "AI infill",
+      "tooltip": "Ative o preenchimento AI Com base no enchimento esparso original."
+    },
+    "align_infill_direction_to_model": {
+      "label": "Alinhar direção de preenchimento ao modelo",
+      "tooltip": "Alinha as direções de enchimento e enchimento de superfície para seguir a orientação do modelo na placa de construção.Quando habilitado, as direções de enchimento giram com o modelo para manter características de resistência óptimas."
+    },
+    "alternate_extra_wall": {
+      "label": "Parede extra alternada",
+      "tooltip": "Esta configuração adiciona um perímetro extra a cada duas camadas. Dessa forma, o preenchimento fica encaixado verticalmente entre as paredes, resultando em impressões mais resistentes. \n\nQuando esta opção está ativada, a opção de garantir a espessura vertical do perímetro precisa ser desativada. \n\nNão é recomendado usar o preenchimento rápido juntamente com esta opção, pois há preenchimento limitado para ancorar os perímetros extras."
+    },
+    "arc_tolerance": {
+      "label": "Tolerância ao arco",
+      "tooltip": "Tolerância ao arco"
+    },
+    "auxiliary_fan": {
+      "label": "Ventoinha lateral",
+      "tooltip": "Habilitar esta opção se a máquina tiver ventilador auxiliar de resfriamento da peça. Comando G-code: M106 P2 S(0-255)."
+    },
+    "bbl_calib_mark_logo": {
+      "label": "Mostrar marcas de autocalibração automática"
+    },
+    "bbl_use_printhost": {
+      "label": "Usar host de impressão de terceiros",
+      "tooltip": "Permitir o controle da impressora CrealityPrint por meio de hosts de impressão de terceiros"
+    },
+    "bed_custom_model": {
+      "label": "Modelo personalizado da mesa"
+    },
+    "bed_custom_texture": {
+      "label": "Textura personalizada da mesa"
+    },
+    "bed_exclude_area": {
+      "label": "Área de exclusão da mesa",
+      "tooltip": "Área não imprimível no plano XY. Por exemplo, impressoras da série X1 usam o canto esquerdo frontal para cortar o filamento durante a troca de filamento. A área é expressa como um polígono por pontos no seguinte formato: \"XxY, XxY, ...\""
+    },
+    "bed_mesh_max": {
+      "label": "Máximo do bed mesh",
+      "tooltip": "Esta opção define o ponto máximo para a área permitida do bed mesh. Devido ao deslocamento XY da sonda, a maioria das impressoras não consegue sondar toda a mesa. Para garantir que o ponto da sonda não saia da área da mesa, os pontos mínimo e máximo do bed mesh devem ser configurados adequadamente. O CrealityPrint garante que os valores adaptive_bed_mesh_min/adaptive_bed_mesh_max não excedam esses pontos mínimo/máximo. Essas informações geralmente podem ser obtidas com o fabricante da sua impressora. A configuração padrão é (99999, 99999), o que significa que não há limites, permitindo a sondagem em toda a mesa."
+    },
+    "bed_mesh_min": {
+      "label": "Mínimo do bed mesh",
+      "tooltip": "Esta opção define o ponto mínimo para a área permitida do bed mesh. Devido ao deslocamento XY da sonda, a maioria das impressoras não consegue sondar toda a mesa. Para garantir que o ponto da sonda não saia da área da mesa, os pontos mínimo e máximo do bed mesh devem ser configurados adequadamente. O CrealityPrint garante que os valores adaptive_bed_mesh_min/adaptive_bed_mesh_max não excedam esses pontos mínimo/máximo. Essas informações geralmente podem ser obtidas com o fabricante da sua impressora. A configuração padrão é (-99999, -99999), o que significa que não há limites, permitindo a sondagem em toda a mesa."
+    },
+    "bed_mesh_probe_distance": {
+      "label": "Distância entre pontos de sonda",
+      "tooltip": "Esta opção define a distância preferencial entre pontos de sonda (tamanho da grade) para as direções X e Y, sendo o padrão 50mm para ambas as direções X e Y."
+    },
+    "before_layer_change_gcode": {
+      "label": "G-Code antes da mudança de camada",
+      "tooltip": "Este G-code é inserido em cada mudança de camada antes de levantar z"
+    },
+    "belt_Z_offset": {
+      "label": "Máquina de cinto Z offset",
+      "tooltip": "O deslocamento do eixo Z da máquina de correia."
+    },
+    "best_object_pos": {
+      "label": "Melhor posição do objeto",
+      "tooltip": "Melhor posição de arranjo automático na faixa [0,1] em relação ao formato da mesa."
+    },
+    "bottom_shell_layers": {
+      "label": "Camadas de base",
+      "full_label": "Camadas de base",
+      "tooltip": "Este é o número de camadas sólidas da base, incluindo a primeira camada. Quando a espessura calculada por este valor for mais fina do que a espessura da base, o número das camadas da base serão aumentadas"
+    },
+    "bottom_shell_thickness": {
+      "label": "Espessura da base",
+      "full_label": "Espessura da base",
+      "tooltip": "O número de camadas sólidas da base é aumentado ao fatiar se a espessura calculada pelas camadas da base for mais fina do que este valor. Isso pode evitar que a base seja muito fina quando a altura da camada é pequena. 0 significa que esta configuração está desativada e a espessura da base é absolutamente determinada pelas camadas da base"
+    },
+    "bottom_solid_infill_flow_ratio": {
+      "label": "Fluxo em superfície inferior",
+      "tooltip": "Este fator afeta a quantidade de filamento para o preenchimento sólido inferior"
+    },
+    "bottom_surface_pattern": {
+      "label": "Padrão de superfície inferior",
+      "tooltip": "Padrão de linha do preenchimento da superfície inferior, não do preenchimento da ponte",
+      "enum_labels": [
+        "Concêntrico",
+        "Retilíneo",
+        "Monótono",
+        "Linha monótona",
+        "Retilíneo alinhado",
+        "Curva de Hilbert",
+        "Cordas Arquimedeanas",
+        "Espiral de Octagrama"
+      ]
+    },
+    "bridge_acceleration": {
+      "label": "Ponte",
+      "tooltip": "Aceleração das pontes. Se o valor for expresso como uma porcentagem (por exemplo, 50%), será calculado com base na aceleração do perímetro externo."
+    },
+    "bridge_angle": {
+      "label": "Direção de preenchimento de ponte",
+      "tooltip": "Substituição de ângulo de ponte. Se deixado em zero, o ângulo de ponte será calculado automaticamente. Caso contrário, o ângulo fornecido será usado para pontes externas. Use 180° para ângulo zero."
+    },
+    "bridge_density": {
+      "label": "Densidade de ponte",
+      "tooltip": "Densidade de pontes externas. 100% significa ponte sólida. O padrão é 100%."
+    },
+    "bridge_flow": {
+      "label": "Fluxo em ponte",
+      "tooltip": "Diminua ligeiramente este valor (por exemplo, 0.9) para reduzir a quantidade de filamento para ponte, para melhorar a flacidez"
+    },
+    "bridge_no_support": {
+      "label": "Não suportar pontes",
+      "tooltip": "Não suportar toda a área da ponte que faz com que o suporte seja muito grande. Ponte geralmente pode ser impressa diretamente sem suporte se não for muito longa"
+    },
+    "bridge_speed": {
+      "label": "Externo",
+      "tooltip": "Velocidade de ponte e paredes compostas completamente de overhangs"
+    },
+    "brim_ears": {
+      "label": "Orelhas da borda",
+      "tooltip": "Desenhe a borda apenas sobre as bordas afiadas do modelo."
+    },
+    "brim_ears_detection_length": {
+      "label": "Raio de detecção da orelha da borda",
+      "tooltip": "A geometria será decimada antes de detectar ângulos agudos. Este parâmetro indica o comprimento mínimo da divergência para a decimação.\n0 para desativar"
+    },
+    "brim_ears_max_angle": {
+      "label": "Ângulo máximo da orelha da borda",
+      "tooltip": "Ângulo máximo para permitir que uma orelha da borda apareça. \nSe definido como 0, nenhuma borda será criado. \nSe definido como ~180, a borda será criada em tudo, exceto em seções retas."
+    },
+    "brim_object_gap": {
+      "label": "Espaço entre a borda e objeto",
+      "tooltip": "Um espaço entre a linha da borda mais interna e o objeto pode facilitar a remoção da borda"
+    },
+    "brim_type": {
+      "label": "Tipo de borda",
+      "tooltip": "Isso controla a geração da borda no lado externo e/ou interno dos modelos. Automático significa que a largura da borda é analisada e calculada automaticamente.",
+      "enum_labels": [
+        "Auto",
+        "Orelha de rato",
+        "Pintado",
+        "Somente borda externa",
+        "Somente borda interna",
+        "Borda externa e interna",
+        "Sem borda"
+      ]
+    },
+    "brim_width": {
+      "label": "Largura da borda",
+      "tooltip": "Distância do modelo até a linha da borda mais externa"
+    },
+    "chamber_temperature": {
+      "label": "Temperatura da câmara",
+      "full_label": "Temperatura da câmara",
+      "tooltip": "Uma temperatura mais alta na câmara pode ajudar a suprimir ou reduzir o empenamento e potencialmente levar a uma maior resistência de ligação entre camadas para materiais de alta temperatura como ABS, ASA, PC, PA e assim por diante. Ao mesmo tempo, a filtragem de ar de ABS e ASA ficará pior. Para PLA, PETG, TPU, PVA e outros materiais de baixa temperatura, a temperatura real da câmara não deve ser alta para evitar obstruções, portanto, é altamente recomendável usar 0, que significa desligado"
+    },
+    "change_extrusion_role_gcode": {
+      "label": "G-Code de mudança de tipo de extrusão",
+      "tooltip": "Esse gcode é inserido quando o tipo de extrusão muda"
+    },
+    "change_filament_gcode": {
+      "label": "G-Code de mudança de filamento",
+      "tooltip": "Este gcode é inserido ao trocar o filamento, incluindo o comando T para acionar a troca de ferramenta"
+    },
+    "close_fan_the_first_x_layers": {
+      "label": "Sem resfriamento para as primeiras",
+      "tooltip": "Feche todos os ventiladores de resfriamento para as primeiras camadas. O ventilador de resfriamento da primeira camada costuma ser desligado para obter uma melhor adesão à mesa"
+    },
+    "color_bed_exclude_area": {
+      "label": "Cama colorida excluindo área",
+      "tooltip": "Cama colorida excluindo área"
+    },
+    "compatible_printers": {
+      "label": "Máquina compatível"
+    },
+    "compatible_printers_condition": {
+      "label": "Condição de máquina compatível"
+    },
+    "compatible_prints": {
+      "label": "Perfis de processo compatíveis"
+    },
+    "compatible_prints_condition": {
+      "label": "Condição de perfis de processo compatíveis"
+    },
+    "complete_print_exhaust_fan_speed": {
+      "label": "Fan speed",
+      "tooltip": "Velocidade do ventilador de exaustão após a conclusão da impressão"
+    },
+    "cool_cds_fan_start_at_height": {
+      "label": "Altura de abertura da ventoinha auxiliar",
+      "tooltip": "Altura de abertura da ventoinha auxiliar"
+    },
+    "cool_plate_temp": {
+      "label": "Outras camadas",
+      "tooltip": "Temperatura da mesa para camadas exceto a inicial. O valor 0 significa que o filamento não suporta a impressão na Cool Plate (Mesa Fria)"
+    },
+    "cool_plate_temp_initial_layer": {
+      "label": "Primeira camada",
+      "tooltip": "Temperatura da mesa na primeira camada. O valor 0 significa que o filamento não suporta a impressão na Cool Plate (Mesa Fria)"
+    },
+    "cool_special_cds_fan_speed": {
+      "label": "Área especial velocidade adicional do ventilador de resfriamento",
+      "tooltip": "Área especial velocidade adicional do ventilador de resfriamento"
+    },
+    "cooling_perimeter_transition_distance": {
+      "label": "Distância de transição do perímetro",
+      "tooltip": "Distância em milímetros antes dos perímetros não diminuídos onde a velocidade de impressão original não diminuída é restaurada. Issoreduz os problemas de qualidade de impressão ao fazer a transição de um recurso altamente lento para uma impressãoperimetral rápida."
+    },
+    "cooling_slowdown_logic": {
+      "label": "Lógica de desaceleração de resfriamento",
+      "tooltip": "Determina como a impressora retarda a impressão de camada quando o tempo mínimo de camada não é alcançado. A\"superfície consistente\" tenta primeiro preservar as velocidades de impressão dos dois primeiros perímetros, diminuindo todas as outras características. Somentese isso não for suficiente, também diminui esses dois primeiros perímetros. O \"resfriamento uniforme\" retarda todas as características deimpressão, incluindo os dois primeiros perímetros.",
+      "enum_labels": [
+        "Refrigeração uniforme",
+        "Superfície consistente",
+        "Não abrandeça as paredes externas",
+        "Zonas de resfriamento inteligentes (Beta)"
+      ]
+    },
+    "cooling_tube_length": {
+      "label": "Comprimento do tubo de resfriamento",
+      "tooltip": "Comprimento do tubo de resfriamento para limitar o espaço para movimentos de resfriamento dentro dele."
+    },
+    "cooling_tube_retraction": {
+      "label": "Posição do tubo de resfriamento",
+      "tooltip": "Distância do ponto central do tubo de resfriamento da ponta do extrusor."
+    },
+    "counterbore_hole_bridging": {
+      "label": "Pontes para furos rebaixados",
+      "tooltip": "Esta opção cria pontes para furos rebaixados, permitindo que sejam impressos sem suporte. Os modos disponíveis incluem:\n1. Nenhum: Nenhuma ponte é criada.\n2. Parcialmente Ponteada: Apenas uma parte da área não suportada será ponteada.\n3. Camada Sacrificial: Uma camada completa de ponte sacrificial é criada.",
+      "enum_labels": [
+        "Nenhum",
+        "Ponte parcial",
+        "Camada de sacrifício"
+      ]
+    },
+    "creality_flush_time": {
+      "label": "Tempo por lavagem",
+      "tooltip": "Tempo por lavagem"
+    },
+    "curr_bed_type": {
+      "label": "Tipo de mesa",
+      "tooltip": "Tipos de mesa suportadas pela impressora",
+      "enum_labels": [
+        "Mesa Fria",
+        "Engenharia Plate",
+        "Mesa PEI lisa / Mesa de alta temperatura",
+        "Mesa PEI Texturizada",
+        "Placa personalizada",
+        "Placa de resina epóxi"
+      ]
+    },
+    "customized_plate_temp": {
+      "label": "Outras camadas",
+      "tooltip": "Temperatura do leito para camadas exceto a inicial. Valor 0 significa que o filamento não suporta imprimir na placapersonalizada"
+    },
+    "customized_plate_temp_initial_layer": {
+      "label": "Primeira camada",
+      "tooltip": "Temperatura do leito da camada inicial. Valor 0 significa que o filamento não suporta imprimir na placa personalizada"
+    },
+    "default_acceleration": {
+      "label": "Impressão normal",
+      "tooltip": "A aceleração padrão tanto para a impressão normal quanto para o movimento, exceto na primeira camada"
+    },
+    "default_filament_colour": {
+      "label": "Cor padrão",
+      "tooltip": "Cor padrão do filamento"
+    },
+    "default_filament_profile": {
+      "label": "Perfil de filamento padrão",
+      "tooltip": "Perfil de filamento padrão ao mudar para este perfil de máquina"
+    },
+    "default_filament_type": {
+      "label": "Tipo padrão",
+      "tooltip": "Tipo de filamento padrão"
+    },
+    "default_jerk": {
+      "label": "Padrão",
+      "tooltip": "Padrão"
+    },
+    "default_print_profile": {
+      "label": "Perfil de processo padrão",
+      "tooltip": "Perfil de processo padrão ao mudar para este perfil de máquina"
+    },
+    "deretraction_speed": {
+      "label": "Velocidade de desretração",
+      "full_label": "Velocidade de desretração",
+      "tooltip": "Velocidade para recarregar o filamento no extrusor. Zero significa mesma velocidade de retração"
+    },
+    "detect_narrow_internal_solid_infill": {
+      "label": "Detectar preenchimento sólido interno estreito",
+      "tooltip": "Esta opção irá detectar automaticamente áreas de preenchimento sólido interno estreito. Se ativada, o padrão concêntrico será usado para a área para acelerar a impressão. Caso contrário, o padrão reticulado é usado por padrão."
+    },
+    "detect_overhang_wall": {
+      "label": "Detectar overhangs",
+      "tooltip": "Detecta a porcentagem relativa de overhang em relação a largura do perímetro e usa uma velocidade diferente de impressão. Para overhangs 100%%, a velocidade de ponte é usada."
+    },
+    "detect_thin_wall": {
+      "label": "Detectar perímetro fino",
+      "tooltip": "Detecta paredes finas que não podem conter duas larguras de linha. E usa uma linha única para imprimir. Talvez seja impresso não muito bem, porque não é um loop fechado"
+    },
+    "disable_m73": {
+      "label": "Desabilitar definir tempo de impressão restante",
+      "tooltip": "Desativar a geração do M73: Definir tempo restante de impressão no código final"
+    },
+    "dont_filter_internal_bridges": {
+      "label": "Não filtrar pequenas pontes internas (beta)",
+      "tooltip": "Esta opção pode ajudar a reduzir o pillowing nas superfícies superiores em modelos fortemente inclinados ou curvos.\n\nPor padrão, pequenas pontes internas são filtradas e o preenchimento sólido interno é impresso diretamente sobre o preenchimento não sólido. Isso funciona bem na maioria dos casos, acelerando a impressão sem comprometer muito a qualidade da superfície superior. \n\nNo entanto, em modelos fortemente inclinados ou curvos, especialmente quando a densidade de preenchimento não sólido é muito baixa, isso pode resultar em enrolamento do preenchimento sólido não suportado, causando pillowing.\n\nAtivar esta opção imprimirá uma camada de ponte interna sobre o preenchimento sólido interno ligeiramente não suportado. As opções abaixo controlam a quantidade de filtragem, ou seja, a quantidade de pontes internas criadas.\n\nDesativado - Desativa esta opção. Este é o comportamento padrão e funciona bem na maioria dos casos.\n\nFiltragem limitada - Cria pontes internas em superfícies fortemente inclinadas, evitando a criação de pontes internas desnecessárias. Isso funciona bem para a maioria dos modelos difíceis.\n\nSem filtragem - Cria pontes internas em cada inclinação interna potencial. Esta opção é útil para modelos com superfície superior fortemente inclinada. No entanto, na maioria dos casos, cria pontes desnecessárias demais.",
+      "enum_labels": [
+        "Desativado",
+        "Filtragem limitada",
+        "Sem filtragem"
+      ]
+    },
+    "dont_slow_down_outer_wall": {
+      "label": "Não abrandeça as paredes externas",
+      "tooltip": "Se ativado, essa configuração garantirá que os perímetros externos não sejam desacelerados para atender ao tempo mínimo de camada.Isso é particularmente útil nos cenários abaixo:\n\n 1. Para evitar alterações no brilho ao imprimir filamentos brilhantes \n2. Paraevitar mudanças na velocidade da parede externa que podem criar pequenos artefatos da parede que aparecem como bandagem z\n3. Para evitar a impressão a velocidades que causam VFAs (artefatos finos) nas paredes externas\n\n"
+    },
+    "draft_shield": {
+      "label": "Escudo",
+      "tooltip": "Um escudo é útil para proteger uma impressão ABS ou ASA de empenamento e de se descolar da mesa de impressão devido à corrrentes de ar. Normalmente, só é necessária com impressoras abertas, ou seja, sem câmara fechada. \n\nOpções:\nAtivado = saia tem a mesma altura que o maior objeto a ser impresso.\nLimitado = saia tem altura especificada pela altura de saia.\n\nNota: Com o escudo ativo, a saia será impressa na distância de saia do objeto. Portanto, se bordas estiverem ativas, pode se interceptar com eles. Para evitar isso, aumente o valor da distância da saia.\n",
+      "enum_labels": [
+        "Desativado",
+        "Limitada",
+        "Ativado"
+      ]
+    },
+    "during_print_exhaust_fan_speed": {
+      "label": "Fan speed",
+      "tooltip": "Velocidade do ventilador de exaustão durante a impressão. Esta velocidade substituirá a velocidade no gcode personalizado do filamento"
+    },
+    "elefant_foot_compensation": {
+      "label": "Compensação de pé de elefante",
+      "tooltip": "Reduza a primeira camada na mesa para compensar o efeito de pé de elefante"
+    },
+    "elefant_foot_compensation_layers": {
+      "label": "Camadas de compensação de pé de elefante",
+      "tooltip": "O número de camadas em que a compensação de pé de elefante estará ativa. A primeira camada será reduzida pelo valor de compensação de pé de elefante, e então as próximas camadas serão reduzidas linearmente, até a camada indicada por este valor."
+    },
+    "embedding_wall_into_infill": {
+      "label": "Incorporar a parede no infill",
+      "tooltip": "Incorporar a parede em partes onde os laços da parede estão ausentes garante que a parede se conecte semproblemas ao enchimento."
+    },
+    "emit_machine_limits_to_gcode": {
+      "label": "Emitir limites para o G-code",
+      "tooltip": "Se ativado, os limites da máquina serão emitidos para o arquivo de G-code.\nEsta opção será ignorada se o tipo do G-code estiver definido para Klipper."
+    },
+    "enable_arc_fitting": {
+      "label": "Ajuste de arco (Arc fitting)",
+      "tooltip": "Habilite isso para obter um arquivo de G-code, que tenha movimentos G2 e G3. A tolerância adequada é a mesma que a resolução. \n\n"
+    },
+    "enable_filament_ramming": {
+      "label": "Ativar moldeamento de ponta de filamento",
+      "tooltip": "Ativar moldeamento de ponta de filamento"
+    },
+    "enable_overhang_bridge_fan": {
+      "label": "Forçar resfriamento para overhangs e pontes",
+      "tooltip": "Ative esta opção para otimizar a velocidade do ventilador de resfriamento de peças para overhangs e ponte para obter melhor resfriamento"
+    },
+    "enable_overhang_speed": {
+      "label": "Reduzir velocidade em overhangs",
+      "tooltip": "Ative esta opção para diminuir a velocidade de impressão em diferentes graus de inclinação"
+    },
+    "enable_pressure_advance": {
+      "label": "Habilitar Pressure advance",
+      "tooltip": "Habilitar Pressure advance, o resultado da calibração automática será sobrescrito uma vez habilitado."
+    },
+    "enable_prime_tower": {
+      "label": "Ativar",
+      "tooltip": "A Torre Prime pode ser usada para limpar o resíduo no bico e estabilizar a pressão na câmara dentro do bico, a fim de evitar defeitos de aparência ao imprimir objetos."
+    },
+    "enable_special_area_additional_cooling_fan": {
+      "label": "Ativar área especial ventilador de refrigeração adicional",
+      "tooltip": "Ativar área especial ventilador de refrigeração adicional"
+    },
+    "enable_support": {
+      "label": "Ativar suporte",
+      "tooltip": "Ativar a geração de suporte."
+    },
+    "eng_plate_temp": {
+      "label": "Outras camadas",
+      "tooltip": "Temperatura da mesa para camadas exceto a inicial. O valor 0 significa que o filamento não suporta a impressão no Engenharia Plate"
+    },
+    "eng_plate_temp_initial_layer": {
+      "label": "Primeira camada",
+      "tooltip": "Temperatura da mesa na primeira camada. O valor 0 significa que o filamento não suporta a impressão no Engenharia Plate"
+    },
+    "ensure_vertical_shell_thickness": {
+      "label": "Garantir a espessura vertical do perímetro",
+      "tooltip": "Adicione preenchimento sólido próximo a superfícies inclinadas para garantir a espessura vertical (camadas de topo+base)\nNenhum: Nenhum preenchimento sólido será adicionado em nenhum lugar. Cuidado: Use esta opção com cuidado se o seu modelo tiver superfícies inclinadas\nApenas crítico: Evite adicionar preenchimento sólido para paredes\nModerado: Adicione preenchimento sólido apenas para superfícies fortemente inclinadas\nTodos: Adicione preenchimento sólido para todas as superfícies inclinadas adequadas\nO valor padrão é Todos.",
+      "enum_labels": [
+        "Nenhum",
+        "Apenas crítico",
+        "Moderado",
+        "Todos"
+      ]
+    },
+    "epoxy_resin_plate_temp": {
+      "label": "Outras camadas",
+      "tooltip": "Temperatura do leito para camadas exceto a inicial. Valor 0 significa que o filamento não suporta imprimir na placade resina epoxi"
+    },
+    "epoxy_resin_plate_temp_initial_layer": {
+      "label": "Primeira camada",
+      "tooltip": "Temperatura do leito da camada inicial. Valor 0 significa que o filamento não suporta imprimir na placa de resinaepoxi"
+    },
+    "exclude_object": {
+      "label": "Excluir objetos",
+      "tooltip": "Ative esta opção para adicionar o comando EXCLUDE OBJECT no g-code"
+    },
+    "external_infill_margin": {
+      "label": "Enchimento sólido de âncora por X mm",
+      "tooltip": "Este parâmetro aumenta as camadas superiores / inferiores / sólidas pelo mm especificado para ancorá-las no preenchimento esparso esuportar os perímetros acima. Coloque 0 para desativá-lo. Pode ser um %% da largura dos perímetros."
+    },
+    "extra_loading_move": {
+      "label": "Distância de carregamento extra",
+      "tooltip": "Quando definido como zero, a distância que o filamento é movido da posição de estacionamento durante o carregamento é exatamente a mesma que foi movida durante o descarregamento. Quando positivo, é carregado mais longe, se negativo, o movimento de carregamento é mais curto do que o descarregamento."
+    },
+    "extra_perimeters_on_overhangs": {
+      "label": "Perímetros extras em overhangs",
+      "tooltip": "Crie caminhos de perímetro adicionais em overhangs íngremes e áreas onde pontes não podem ser ancoradas. "
+    },
+    "extruder": {
+      "label": "Extrusora"
+    },
+    "extruder_clearance_height_to_lid": {
+      "label": "Altura até a tampa",
+      "tooltip": "Distância da ponta do bico à tampa. Usado para evitar colisões na impressão por objeto."
+    },
+    "extruder_clearance_height_to_rod": {
+      "label": "Altura até a haste",
+      "tooltip": "Distância da ponta do bico ao tubo inferior. Usado para evitar colisões na impressão por objeto."
+    },
+    "extruder_clearance_radius": {
+      "label": "Raio",
+      "tooltip": "Raio de folga ao redor do extrusor. Usado para evitar colisões na impressão por objeto."
+    },
+    "extruder_colour": {
+      "label": "Cor do extrusor",
+      "tooltip": "Usado apenas como ajuda visual na interface do usuário"
+    },
+    "extruder_offset": {
+      "label": "Offset da Extrusora"
+    },
+    "fan_cooling_layer_time": {
+      "label": "Tempo da camada",
+      "tooltip": "O ventilador de resfriamento da peça será ativado para camadas cujo tempo estimado seja menor que esse valor. A velocidade do ventilador é interpolada entre as velocidades mínima e máxima do ventilador de acordo com o tempo de impressão da camada"
+    },
+    "fan_kickstart": {
+      "label": "Tempo de inicialização do ventilador",
+      "tooltip": "Emita um comando de velocidade máxima do ventilador por esta quantidade de segundos antes de reduzir para a velocidade alvo para iniciar o ventilador de resfriamento.\nIsto é útil para ventiladores onde um baixo PWM/potência pode ser insuficiente para fazer o ventilador começar a girar a partir de uma parada, ou para fazer o ventilador alcançar a velocidade mais rapidamente.\nDefina como 0 para desativar."
+    },
+    "fan_max_speed": {
+      "label": "Fan speed",
+      "tooltip": "A velocidade do ventilador de resfriamento da peça pode ser aumentada quando o resfriamento automático está habilitado. Este é o limite máximo de velocidade do ventilador de resfriamento da peça"
+    },
+    "fan_min_speed": {
+      "label": "Fan speed",
+      "tooltip": "Velocidade mínima para o ventilador de resfriamento da peça"
+    },
+    "fan_speedup_overhangs": {
+      "label": "Apenas overhangs",
+      "tooltip": "Levará em conta apenas o atraso para o resfriamento dos s."
+    },
+    "fan_speedup_time": {
+      "tooltip": "Comece o ventilador este número de segundos antes do tempo de início do alvo (você pode usar segundos fracionários). Ele assume aceleração infinita para esta estimativa de tempo e só levará em conta os movimentos G1 e G0 (o ajuste de arco não é suportado).\nNão moverá comandos do ventilador de gcodes personalizados (eles funcionam como uma espécie de 'barreira').\nNão moverá comandos do ventilador para o início do gcode se o 'apenas gcode de início personalizado' estiver ativado.\nUse 0 para desativar."
+    },
+    "filament_adhesiveness_category": {
+      "label": "Categoria de adesividade",
+      "tooltip": "filamento_adesividade_categoria"
+    },
+    "filament_colour": {
+      "label": "Cor",
+      "tooltip": "Usado apenas como ajuda visual na interface do usuário"
+    },
+    "filament_cooling_final_speed": {
+      "label": "Velocidade do último movimento de resfriamento",
+      "tooltip": "Os movimentos de resfriamento estão gradualmente acelerando em direção a esta velocidade."
+    },
+    "filament_cooling_initial_speed": {
+      "label": "Velocidade do primeiro movimento de resfriamento",
+      "tooltip": "Os movimentos de resfriamento estão gradualmente acelerando a partir desta velocidade."
+    },
+    "filament_cooling_moves": {
+      "label": "Número de movimentos de resfriamento",
+      "tooltip": "O filamento é resfriado movendo-se para frente e para trás nos tubos de resfriamento. Especifique o número desejado desses movimentos."
+    },
+    "filament_cost": {
+      "label": "Preço",
+      "tooltip": "Preço do filamento. Apenas para estatísticas"
+    },
+    "filament_density": {
+      "label": "Densidade",
+      "tooltip": "Densidade do filamento. Apenas para estatísticas"
+    },
+    "filament_deretraction_speed": {
+      "label": "Velocidade de desretração",
+      "full_label": "Velocidade de desretração",
+      "tooltip": "Velocidade para recarregar o filamento no extrusor. Zero significa mesma velocidade de retração"
+    },
+    "filament_diameter": {
+      "label": "Diâmetro",
+      "tooltip": "O diâmetro do filamento é usado para calcular a extrusão no gcode, portanto, é importante e deve ser preciso"
+    },
+    "filament_end_gcode": {
+      "label": "G-code de finalização",
+      "tooltip": "G-code de finalização ao terminar a impressão deste filamento"
+    },
+    "filament_flow_ratio": {
+      "label": "Fluxo",
+      "tooltip": "O filamento pode ter mudança volumétrica após a troca entre o estado fundido e o estado cristalino. Esta configuração altera todo o fluxo de extrusão deste filamento no gcode proporcionalmente. A faixa de valores recomendada está entre 0.95 e 1.05. Talvez você possa ajustar esse valor para obter uma superfície plana agradável quando houver um leve transbordamento ou subfluxo"
+    },
+    "filament_is_support": {
+      "label": "Filamento de suporte",
+      "tooltip": "O filamento de suporte é comumente usado para imprimir suporte e interface de suporte"
+    },
+    "filament_load_time": {
+      "label": "Tempo de carga do filamento",
+      "tooltip": "Tempo para o firmware da impressora (ou a Unidade de Filamento Multi 2.0) carregar um novo filamento durante uma troca de ferramenta (ao executar o código T). Este tempo é adicionado ao tempo total de impressão pelo estimador de tempo do G-code."
+    },
+    "filament_loading_speed": {
+      "label": "Velocidade de carregamento",
+      "tooltip": "Velocidade usada para carregar o filamento na Torre Prime."
+    },
+    "filament_loading_speed_start": {
+      "label": "Velocidade de carregamento no início",
+      "tooltip": "Velocidade usada no início da fase de carregamento."
+    },
+    "filament_long_retractions_when_cut": {
+      "label": "Retração longa quando cortado(experimental)",
+      "tooltip": "Recurso experimental. Retrair e cortar o filamento a uma distância mais longa durante mudanças para minimizar a purga. Isto reduz significativamente a purga, pode também aumentar o risco de bolhas no bico ou de outros problemas de impressão."
+    },
+    "filament_max_volumetric_speed": {
+      "label": "Fluxo volumétrico máximo",
+      "tooltip": "Essa configuração representa quanto volume de filamento pode ser derretido e extrudado por segundo. A velocidade de impressão é limitada pela fluxo volumétrico máximo, no caso de configurações de velocidade muito altas e irrazoáveis. Não pode ser zero"
+    },
+    "filament_minimal_purge_on_wipe_tower": {
+      "label": "Purga mínima na Torre Prime",
+      "tooltip": "Após uma troca de filamento, a posição exata do filamento recém-carregado dentro do bico pode não ser conhecida, e a pressão do filamento provavelmente ainda não está estável. Antes de purgar a cabeça de impressão em um preenchimento ou em um objeto de sacrifício, o Creality Print sempre preparará essa quantidade de filamento na Torre Prime para produzir extrusões sucessivas de preenchimento ou de objeto de sacrifício de forma confiável."
+    },
+    "filament_multitool_ramming": {
+      "label": "Habilitar moldeamento para configurações de multi-extrusora",
+      "tooltip": "Realizar moldeamentoao usando impressora multi-extrusora(ou seja, quando a opção 'Único Extrusor Multifilamento' em Configurações de Impressora está desmarcada). Quando ativo, uma pequena quantidade de filamento é rapidamente extrudado na Torre Prime logo antes da troca de extrusora. Esta opção é usada apenas quando a Torre Prime está habilitada."
+    },
+    "filament_multitool_ramming_flow": {
+      "label": "Fluxo de esmagamento multi-extrusora",
+      "tooltip": "Fluxo usado para moldar o filamento antes da troca de extrusora."
+    },
+    "filament_multitool_ramming_volume": {
+      "label": "Volume de moldeamento multi-extrusora",
+      "tooltip": "O volume a ser esmagado antes da troca de ferramenta."
+    },
+    "filament_notes": {
+      "label": "Observações do filamento",
+      "tooltip": "Você pode colocar suas observações sobre o filamento aqui."
+    },
+    "filament_ramming_parameters": {
+      "label": "Parâmetros de moldeamento",
+      "tooltip": "Esta frase é editada pelo RammingDialog e contém parâmetros específicos de moldeamento."
+    },
+    "filament_retract_before_wipe": {
+      "label": "Quantidade de retração antes da limpeza",
+      "tooltip": "O comprimento da retração rápida antes da limpeza, em relação ao comprimento da retração"
+    },
+    "filament_retract_lift_above": {
+      "label": "Elevar Z apenas acima de",
+      "tooltip": "Se você definir isso como um valor positivo, a elevação de Z só ocorrerá acima do Z absoluto especificado."
+    },
+    "filament_retract_lift_below": {
+      "label": "Elevar Z apenas abaixo de",
+      "tooltip": "Se você definir isso como um valor positivo, a elevação de Z só ocorrerá abaixo do Z absoluto especificado."
+    },
+    "filament_retract_lift_enforce": {
+      "label": "Nas superfícies",
+      "tooltip": "Forçar Z Hop. Essa configuração é impactada pelas configurações acima (Somente elevar Z acima/abaixo)",
+      "enum_labels": [
+        "Todas as superfícies",
+        "Somente a parte superior",
+        "Somente a parte inferior",
+        "Parte superior e inferior"
+      ]
+    },
+    "filament_retract_restart_extra": {
+      "label": "Comprimento extra na retração",
+      "tooltip": "Quando a retração é compensada após o movimento de deslocamento, o extrusor empurrará essa quantidade adicional de filamento. Esta configuração é raramente necessária."
+    },
+    "filament_retract_when_changing_layer": {
+      "label": "Retrair ao mudar de camada",
+      "tooltip": "Forçar uma retração ao mudar de camada"
+    },
+    "filament_retraction_distances_when_cut": {
+      "label": "Distância de retração ao cortar",
+      "tooltip": "Funcionalidade experimental. Comprimento de retração antes de cortar durante a mudança de filamento"
+    },
+    "filament_retraction_length": {
+      "label": "Comprimento",
+      "full_label": "Distância de retração",
+      "tooltip": "Alguma quantidade de filamento no extrusor é puxada para trás para evitar oozing durante viagens longas. Defina zero para desativar a retração"
+    },
+    "filament_retraction_minimum_travel": {
+      "label": "Limiar de distância de deslocamento",
+      "tooltip": "Disparar a retração somente quando a distância da deslocamento for maior que este limite"
+    },
+    "filament_retraction_speed": {
+      "label": "Velocidade de retração",
+      "full_label": "Velocidade de retração",
+      "tooltip": "Velocidade das retratações"
+    },
+    "filament_shrink": {
+      "label": "Contração (XY)",
+      "tooltip": "Informe a porcentagem de retração que o filamento terá após o resfriamento (94% se você medir 94mm em vez de 100mm). A peça será escalada em xy para compensar. Apenas o filamento usado para o perímetro é levado em consideração.\nCertifique-se de permitir espaço suficiente entre objetos, pois essa compensação é feita após as verificações."
+    },
+    "filament_shrinkage_compensation_z": {
+      "label": "Contração (Z)",
+      "tooltip": "Digite a porcentagem de encolhimento que o filamento obterá após o resfriamento (94% se medir 94mm em vez de100mm). A parte será dimensionada em Z para compensar."
+    },
+    "filament_soluble": {
+      "label": "Filamento solúvel",
+      "tooltip": "O filamento solúvel é comumente usado para imprimir suporte e interface de suporte"
+    },
+    "filament_stamping_distance": {
+      "label": "Distância de estampagem medida do centro do tubo de refrigeração",
+      "tooltip": "Se definido para valor diferente de zero, o filamento é movido em direção ao bocal entre os movimentos individuaisde resfriamento (\"estampagem\"). Esta opção configura quanto tempo esse movimento deve durar antes que o filamento seja retraído novamente."
+    },
+    "filament_stamping_loading_speed": {
+      "label": "Velocidade de carregamento de estampagem",
+      "tooltip": "Velocidade utilizada para carimbar."
+    },
+    "filament_start_gcode": {
+      "label": "Código de Início",
+      "tooltip": "Código de início ao iniciar a impressão deste filamento"
+    },
+    "filament_toolchange_delay": {
+      "label": "Atraso após o descarregamento",
+      "tooltip": "Tempo de espera após o filamento ser descarregado. Pode ajudar a obter trocas de ferramentas confiáveis com materiais flexíveis que podem precisar de mais tempo para encolher para as dimensões originais."
+    },
+    "filament_type": {
+      "label": "Tipo",
+      "tooltip": "O tipo de filamento do filamento"
+    },
+    "filament_unload_time": {
+      "label": "Tempo de descarga do filamento",
+      "tooltip": "Tempo para o firmware da impressora (ou a Unidade de Filamento Multi 2.0) descarregar um filamento durante uma troca de ferramenta (ao executar o código T). Este tempo é adicionado ao tempo total de impressão pelo estimador de tempo do G-code."
+    },
+    "filament_unloading_speed": {
+      "label": "Velocidade de descarregamento",
+      "tooltip": "Velocidade usada para descarregar o filamento na Torre Prime (não afeta a parte inicial do descarregamento logo após o moldeamento)."
+    },
+    "filament_unloading_speed_start": {
+      "label": "Velocidade de descarregamento no início",
+      "tooltip": "Velocidade usada para descarregar a ponta do filamento imediatamente após o moldeamento."
+    },
+    "filament_vendor": {
+      "label": "Fornecedor",
+      "tooltip": "Fornecedor do filamento. Apenas para mostrar"
+    },
+    "filament_wipe": {
+      "label": "Limpar enquanto retrai",
+      "tooltip": "Movimentar o bico ao longo do último caminho de extrusão ao retrair para limpar o filamento vazado no bico. Isso pode minimizar a formação de blob quando imprimir uma nova peça após o deslocamento"
+    },
+    "filament_wipe_distance": {
+      "label": "Distância de limpeza",
+      "tooltip": "Descreva por quanto tempo o bico se moverá ao longo do último caminho ao retrair. \n\nDependendo de quanto tempo dura a operação de limpeza, quão rápidas e longas são as configurações de retração do extrusor/filamento, pode ser necessário um movimento de retração para recolher o filamento restante. \n\nDefinir um valor na configuração de quantidade de retração antes da limpeza abaixo executará qualquer retração em excesso antes da limpeza, caso contrário, será realizada após."
+    },
+    "filament_z_hop": {
+      "label": "Z hop ao retrair",
+      "tooltip": "Sempre que a retração é feita, o bico é levantado um pouco para criar folga entre o bico e a impressão. Isso evita que o bico atinja a impressão ao se mover. Usar linha espiral para levantar z pode evitar stringing"
+    },
+    "filament_z_hop_types": {
+      "label": "Tipo de Z hop",
+      "tooltip": "Tipo de Z hop",
+      "enum_labels": [
+        "Auto",
+        "Normal",
+        "Declive",
+        "Espiral"
+      ]
+    },
+    "filename_format": {
+      "label": "Formato do nome do arquivo",
+      "tooltip": "O usuário pode auto-definir o nome do arquivo do projeto ao exportar"
+    },
+    "fill_multiline": {
+      "label": "Preencher Multiline",
+      "tooltip": "Usando várias linhas para o padrão de preenchimento, se suportado pelo padrão de preenchimento."
+    },
+    "filter_out_gap_fill": {
+      "label": "Filtrar vazios pequenos",
+      "tooltip": "Filtrar vazios menores que o limite especificado"
+    },
+    "first_layer_print_sequence": {
+      "label": "Sequência de impressão da primeira camada"
+    },
+    "first_layer_sequence_choice": {
+      "label": "Sequência de filamento da primeira camada",
+      "enum_labels": [
+        "Auto",
+        "Personalizar"
+      ]
+    },
+    "flush_box_first_clean_length": {
+      "label": "Comprimento de lavagem (primeiro segmento)",
+      "tooltip": "Primeiro comprimento do segmento usado para dividir flush_length em flush_length_1..N para alterar o código G do filamento."
+    },
+    "flush_box_need_clean_length": {
+      "label": "Comprimento de lavagem (segmento padrão)",
+      "tooltip": "Comprimento padrão do segmento usado para dividir flush_length em flush_length_1..N para alterar o código G do filamento."
+    },
+    "flush_box_need_clean_length_max": {
+      "label": "Comprimento de lavagem (segmento máximo)",
+      "tooltip": "Comprimento máximo do segmento usado para dividir flush_length em flush_length_1..N para alterar o código G do filamento."
+    },
+    "flush_into_infill": {
+      "label": "Purgar no preenchimento dos objetos",
+      "tooltip": "A purga após a troca de filamento será feita dentro do preenchimento dos objetos. Isso pode reduzir a quantidade de resíduos e diminuir o tempo de impressão. Se as paredes forem impressas com filamento transparente, o preenchimento de cor mista será visível do lado de fora. Isso não terá efeito, a menos que a Torre Prime esteja ativa."
+    },
+    "flush_into_objects": {
+      "label": "Purgar neste objeto",
+      "tooltip": "Este objeto será usado para purgar o bico após uma troca de filamento para economizar filamento e diminuir o tempo de impressão. As cores dos objetos serão misturadas como resultado. Isso não terá efeito, a menos que a Torre Prime esteja ativa."
+    },
+    "flush_into_support": {
+      "label": "Purgar nos suportes dos objetos",
+      "tooltip": "A purga após a troca de filamento será feita dentro do suporte dos objetos. Isso pode reduzir a quantidade de resíduos e diminuir o tempo de impressão. Isso não terá efeito, a menos que a Torre Prime esteja ativa."
+    },
+    "flush_multiplier": {
+      "label": "Multiplicador de purga",
+      "tooltip": "Os volumes de purga reais são iguais ao multiplicador de purga multiplicado pelos volumes de purga na tabela."
+    },
+    "flush_volumes_changed": {
+      "label": "Volumes de Fluxo Alterados",
+      "tooltip": "Volumes de Fluxo Alterados"
+    },
+    "flush_volumes_matrix": {
+      "label": "Volumes de purga"
+    },
+    "flush_volumes_vector": {
+      "label": "Volumes de purga - volumes de carga/descarga"
+    },
+    "full_fan_speed_layer": {
+      "label": "Velocidade total do ventilador na camada",
+      "tooltip": "A velocidade do ventilador aumentará linearmente de zero na camada \"close_fan_the_first_x_layers\" para o máximo na camada \"full_fan_speed_layer\". \"full_fan_speed_layer\" será ignorado se for menor que \"close_fan_the_first_x_layers\", caso em que o ventilador funcionará na velocidade máxima permitida na camada \"close_fan_the_first_x_layers\" + 1."
+    },
+    "fuzzy_skin": {
+      "label": "Textura Fuzzy",
+      "tooltip": "Movimento aleatório durante a impressão do perímetro, de modo que a superfície tenha uma aparência áspera. Essa configuração controla a textura fuzzy",
+      "enum_labels": [
+        "Nenhum",
+        "Contorno",
+        "Contorno e furo",
+        "Todas as paredes"
+      ]
+    },
+    "fuzzy_skin_first_layer": {
+      "label": "Aplicar texture fuzzy à primeira camada",
+      "tooltip": "Se deve aplicar textura fuzzy na primeira camada"
+    },
+    "fuzzy_skin_mode": {
+      "label": "Modo gerador de pele fuzzy",
+      "enum_labels": [
+        "Deslocamento",
+        "Extrusão",
+        "Combinado"
+      ]
+    },
+    "fuzzy_skin_noise_type": {
+      "label": "Tipo de ruído da pele borrosa",
+      "tooltip": "Tipo de ruído a usar para geração de pele borrosa:nClássico: ruído aleatório uniforme clássico. Perlin: ruído Perlin, que dáuma textura mais consistente.  nBillow: semelhante ao ruído de perlin, mas mais clumpier.  nRidged Multifractal: ruído ridgedcom características agudas e rebaixadas. Cria texturas semelhantes ao mármore. Voronoi: Divide a superfície em células voronoi, e deslocacada uma por uma quantidade aleatória. Cria uma textura patchwork.",
+      "enum_labels": [
+        "Clássico",
+        "Perlin",
+        "Bilhão",
+        "Multifractal Ridged",
+        "Voronoi"
+      ]
+    },
+    "fuzzy_skin_octaves": {
+      "label": "Octavas de ruído da pele fuzzy",
+      "tooltip": "O número de oitavas de ruído coerente a usar. Valores mais elevados aumentam o detalhe do ruído, mas tambémaumentam o tempo de computação."
+    },
+    "fuzzy_skin_persistence": {
+      "label": "Persistência de ruído da pele borrosa",
+      "tooltip": "A taxa de decadência para oitavas mais altas do ruído coerente. Valores mais baixos resultarão em ruído mais suave."
+    },
+    "fuzzy_skin_point_distance": {
+      "label": "Distância do ponto da textura fuzzy",
+      "tooltip": "A distância média entre os pontos aleatórios introduzidos em cada segmento de linha"
+    },
+    "fuzzy_skin_scale": {
+      "label": "Tamanho da característica da pele fuzzy",
+      "tooltip": "O tamanho base das características de ruído coerente, em mm. Valores mais elevados resultarão em características maiores."
+    },
+    "fuzzy_skin_thickness": {
+      "label": "Espessura da textura fuzzy",
+      "tooltip": "A largura dentro da qual tremer. É desaconselhável que seja menor do que a largura da linha do perímetro externo"
+    },
+    "gap_fill_target": {
+      "label": "Preenchimento de vão",
+      "tooltip": "Ativa o preenchimento de vão para as superfícies selecionadas. O comprimento mínimo do vão que será preenchida pode ser controlado a partir da opção de filtrar pequenas s abaixo.\n\nOpções:\n1. Em todos os lugares: Aplica preenchimento de s às superfícies sólidas superior, inferior e interna\n2. Superfícies superior e inferior: Aplica preenchimento de s apenas às superfícies superior e inferior\n3. Em nenhum lugar: Desativa o preenchimento de s\n",
+      "enum_labels": [
+        "Sempre",
+        "Superfícies superior e inferior",
+        "Nunca"
+      ]
+    },
+    "gap_infill_speed": {
+      "label": "Preenchimento de vão",
+      "tooltip": "Velocidade de preenchimento de vão. Vazios geralmente têm largura de linha irregular e devem ser impressas mais lentamente"
+    },
+    "gcode_add_line_number": {
+      "label": "Adicionar número da linha",
+      "tooltip": "Habilitar isso para adicionar o número da linha (Nx) no início de cada linha do G-Code"
+    },
+    "gcode_comments": {
+      "label": "G-code detalhado",
+      "tooltip": "Ative isso para obter um arquivo G-code comentado, com cada linha explicada por um texto descritivo. Se você imprimir do cartão SD, o peso adicional do arquivo pode fazer com que o firmware fique mais lento."
+    },
+    "gcode_flavor": {
+      "label": "Tipo de G-code",
+      "tooltip": "Com que tipo de G-code a impressora é compatível",
+      "enum_labels": [
+        "Marlin(legacy)",
+        "Klipper",
+        "RepRapFirmware",
+        "Marlin 2"
+      ]
+    },
+    "gcode_label_objects": {
+      "label": "Etiquetar objetos",
+      "tooltip": "Ative isso para adicionar comentários no G-Code etiquetando movimentos de impressão com a qual objeto eles pertencem, o que é útil para o plugin CancelObject do Octoprint. Esta configuração NÃO é compatível com a configuração de Filamento Múltiplo de Extrusora Única e Limpeza no Objeto / Limpeza no Preenchimento."
+    },
+    "high_current_on_filament_swap": {
+      "label": "Corrente da extrusora alta na troca de filamento",
+      "tooltip": "Pode ser benéfico aumentar a corrente do motor da extrusora durante a sequência de troca de filamento para permitir taxas de moldeamento rápidas e para superar a resistência ao carregar um filamento com uma ponta com forma irregular."
+    },
+    "hole_to_polyhole": {
+      "label": "Converter furos em polifuros",
+      "tooltip": "Procura por furos quase circulares que abrangem mais de uma camada e converta a geometria em polifuros. Usa o tamanho do bico e o diâmetro (maior) para calcular o polifuro.\nConsulte http://hydraraptor.blogspot.com/2011/02/polyholes.html"
+    },
+    "hole_to_polyhole_threshold": {
+      "label": "Margem de detecção de polifuros",
+      "tooltip": "Máxima deflexão de um ponto para o raio estimado do círculo.\nComo os cilindros frequentemente são exportados como triângulos de tamanho variável, os pontos podem não estar na circunferência do círculo. Esta configuração permite-lhe alguma margem para alargar a detecção.\nEm milímetros ou em % do raio."
+    },
+    "hole_to_polyhole_twisted": {
+      "label": "Torção de polifuros",
+      "tooltip": "Girar o polifuro a cada camada."
+    },
+    "host_type": {
+      "label": "Tipo de Host",
+      "tooltip": "O Creality Print pode carregar arquivos de G-code para um hospedeiro de impressora. Este campo deve conter o tipo de hospedeiro.",
+      "enum_labels": [
+        "PrusaLink",
+        "PrusaConnect",
+        "Octo/Klipper",
+        "Duet",
+        "FlashAir",
+        "AstroBox",
+        "Repetier",
+        "MKS",
+        "ESP3D",
+        "Obico",
+        "Flashforge",
+        "SimplyPrint",
+        "CrealityPrint"
+      ]
+    },
+    "hot_plate_temp": {
+      "label": "Outras camadas",
+      "tooltip": "Temperatura da mesa para camadas exceto a inicial. O valor 0 significa que o filamento não suporta a impressão no Plate de Alta Temperatura"
+    },
+    "hot_plate_temp_initial_layer": {
+      "label": "Primeira camada",
+      "tooltip": "Temperatura da mesa na primeira camada. O valor 0 significa que o filamento não suporta a impressão no Plate de Alta Temperatura"
+    },
+    "idle_temperature": {
+      "label": "Temperatura de ocio",
+      "tooltip": "Temperatura do bocal quando a ferramenta não é usada atualmente em configurações multi-ferramenta. Isso só é usado quando 'Prevençãode Ooze' está ativo em Configurações de impressão. Definir para 0 para desactivar."
+    },
+    "ignore_inner_color": {
+      "label": "Ignorar a cor interior"
+    },
+    "independent_support_layer_height": {
+      "label": "Altura independente da camada de suporte",
+      "tooltip": "A camada de suporte usa uma altura de camada independente da camada do objeto. Isso é para suportar a personalização do z-gap e economizar tempo de impressão. Esta opção será inválida quando a Torre Prime estiver ativa."
+    },
+    "infill_anchor": {
+      "label": "Comp. da âncora de preenchimento",
+      "tooltip": "Conecte uma linha de preenchimento a um perímetro interno com um segmento curto de um perímetro adicional. Se expresso como porcentagem (exemplo: 15%), é calculado sobre a largura de extrusão do preenchimento. O CrealityPrint Slicer tenta conectar duas linhas de preenchimento próximas a um segmento curto de perímetro. Se nenhum segmento de perímetro mais curto que infill_anchor_max for encontrado, a linha de preenchimento é conectada a um segmento de perímetro em apenas um lado e o comprimento do segmento de perímetro tomado é limitado a este parâmetro, mas não mais do que anchor_length_max. \nDefina este parâmetro como zero para desabilitar os perímetros de ancoragem conectados a uma única linha de preenchimento."
+    },
+    "infill_anchor_max": {
+      "label": "Comp. máx. da âncora de preench",
+      "tooltip": "Conecte uma linha de preenchimento a um perímetro interno com um segmento curto de um perímetro adicional. Se expresso como porcentagem (exemplo: 15%), é calculado sobre a largura de extrusão do preenchimento. O CrealityPrint Slicer tenta conectar duas linhas de preenchimento próximas a um segmento curto de perímetro. Se nenhum segmento de perímetro mais curto que este parâmetro for encontrado, a linha de preenchimento é conectada a um segmento de perímetro em apenas um lado e o comprimento do segmento de perímetro tomado é limitado a infill_anchor, mas não mais do que este parâmetro. \nSe definido como 0, o antigo algoritmo de conexão de preenchimento será usado, ele deve criar o mesmo resultado que com 1000 e 0."
+    },
+    "infill_combination": {
+      "label": "Combinar preenchimento",
+      "tooltip": "Combina automaticamente o preenchimento não sólido de várias camadas para imprimir juntas e reduzir o tempo. O perímetro ainda é impresso com a altura original da camada."
+    },
+    "infill_combination_max_layer_height": {
+      "label": "Combinação de enchimento - Altura máxima da camada",
+      "tooltip": "Altura máxima da camada para o preenchimento esparso combinado. Defina-o para 0 ou 100% para usar o diâmetro dobocal (para a máxima redução do tempo de impressão) ou um valor de ~80% para maximizar a força deenchimento esparsa.  nnO número de camadas sobre as quais o preenchimento é combinado é derivado dividindo este valorpela altura da camada e arredondando para baixo para o decimal mais próximo.  nnUse valores absolutos em mm(por exemplo, 0,32 mm para um boço de 0,4 mm) ou valores em % (por exemplo, 80%). Este valornão deve ser maior do que o diâmetro do bico."
+    },
+    "infill_direction": {
+      "label": "Direção do preenchimento",
+      "tooltip": "Ângulo para o padrão de preenchimento não sólido, que controla o início ou a direção principal da linha"
+    },
+    "infill_jerk": {
+      "label": "Preenchimento",
+      "tooltip": "Jerk no preenchimento"
+    },
+    "infill_lock_depth": {
+      "label": "Profundidade do bloqueio de enchimento",
+      "tooltip": "O parâmetro define a profundidade de sobreposição entre o interior e a pele."
+    },
+    "infill_overhang_angle": {
+      "label": "Ángulo de sobreposição de enchimento",
+      "tooltip": "O ângulo das linhas anguladas de enchimento. 60° resultará em um panal de mel puro."
+    },
+    "infill_rotate_step": {
+      "label": "Passo de rotação de preenchimento",
+      "tooltip": "Este parâmetro adiciona uma pequena rotação a cada camada de preenchimento para criar uma textura cruzada."
+    },
+    "infill_shift_step": {
+      "label": "Passo de mudança de preenchimento",
+      "tooltip": "Este parâmetro adiciona um ligeiro deslocamento a cada camada de preenchimento para criar uma textura cruzada."
+    },
+    "infill_wall_overlap": {
+      "label": "Sobreposição de preenchimento/perímetro",
+      "tooltip": "A área de preenchimento é aumentada ligeiramente para se sobrepor à parede para uma melhor ligação. O valor percentual é relativo à largura da linha do preencimento. Defina este valor como ~10-15% para minimizar uma potencial sobre extrusão e acumulo de filamento resultando em superfícies superiores ásperas."
+    },
+    "initial_layer_acceleration": {
+      "label": "Primeira camada",
+      "tooltip": "Aceleração da primeira camada. Usar um valor menor pode melhorar a adesão à mesa"
+    },
+    "initial_layer_infill_speed": {
+      "label": "Preenchimento da primeira camada",
+      "tooltip": "Velocidade da parte de preenchimento sólido da primeira camada"
+    },
+    "initial_layer_jerk": {
+      "label": "Primeira camada",
+      "tooltip": "Jerk na primeira camada"
+    },
+    "initial_layer_line_width": {
+      "label": "Primeira camada",
+      "tooltip": "Largura da linha da primeira camada. Se expresso como uma %, será calculado sobre o diâmetro do bico."
+    },
+    "initial_layer_min_bead_width": {
+      "label": "Largura mínima do perímetro da primeira camada",
+      "tooltip": "A largura mínima do perímetro que deve ser usada para a primeira camada é recomendada para ser definida com o mesmo tamanho do bico. Este ajuste é esperado para melhorar a aderência."
+    },
+    "initial_layer_print_height": {
+      "label": "Altura da primeira camada",
+      "tooltip": "Altura da primeira camada. Tornar a altura da primeira camada ligeiramente espessa pode melhorar a adesão à mesa"
+    },
+    "initial_layer_speed": {
+      "label": "Primeira camada",
+      "tooltip": "Velocidade da primeira camada, exceto a parte de preenchimento sólido"
+    },
+    "initial_layer_travel_speed": {
+      "label": "Velocidade de deslocamento da primeira camada",
+      "tooltip": "Velocidade de deslocamento da primeira camada"
+    },
+    "inner_wall_acceleration": {
+      "label": "Perímetro interno",
+      "tooltip": "Aceleração das paredes internas"
+    },
+    "inner_wall_jerk": {
+      "label": "Perímetro interno",
+      "tooltip": "Jerk nas paredes internas"
+    },
+    "inner_wall_line_width": {
+      "label": "Perímetro interno",
+      "tooltip": "Largura do perímetro interno. Se expressado como %, será computado de acordo com o diâmetro do bico."
+    },
+    "inner_wall_speed": {
+      "label": "Perímetro interno",
+      "tooltip": "Velocidade do perímetro interno"
+    },
+    "interface_shells": {
+      "label": "Paredes de interface",
+      "tooltip": "Força a geração de perímetros sólidos entre materiais/volumes adjacentes. Útil para impressões com múltiplos extrusores com materiais translúcidos ou suporte solúvel manual"
+    },
+    "interlocking_beam": {
+      "label": "Utilizar o bloqueio do feixe",
+      "tooltip": "Gerar estrutura de feixe entrelaçado nos locais onde diferentes filamentos tocam. Isso melhora a adesão entre filamentos, especialmente modelosimpressos em diferentes materiais."
+    },
+    "interlocking_beam_layer_count": {
+      "label": "Camadas de feixe interligadas",
+      "tooltip": "A altura das vigas da estrutura de bloqueio, medida em número de camadas. Menos camadas é mais forte, masmais propenso a defeitos."
+    },
+    "interlocking_beam_width": {
+      "label": "Largura da viga de bloqueio",
+      "tooltip": "A largura das vigas da estrutura entrelaçada."
+    },
+    "interlocking_boundary_avoidance": {
+      "label": "Evitação de fronteiras interligadas",
+      "tooltip": "A distância do exterior de um modelo onde as estruturas intertravadas não serão geradas, medida em células."
+    },
+    "interlocking_depth": {
+      "label": "Profundidade de bloqueio",
+      "tooltip": "A distância do limite entre filamentos para gerar estrutura de bloqueio, medida em células. Poucas células resultarão em máadesão."
+    },
+    "interlocking_orientation": {
+      "label": "Direção de bloqueio",
+      "tooltip": "Orientação dos feixes de bloqueio."
+    },
+    "internal_bridge_flow": {
+      "label": "Fluxo em ponte interna",
+      "tooltip": "Este valor governa a espessura da camada interna da ponte. Esta é a primeira camada sobre o preenchimento. Diminua ligeiramente este valor (por exemplo, 0.9) para melhorar a qualidade da superfície sobre o preenchimento esparsamente."
+    },
+    "internal_bridge_speed": {
+      "label": "Interno",
+      "tooltip": "Velocidade da ponte interna. Se o valor for expresso como porcentagem, será calculado com base na velocidade da ponte. O valor padrão é 150%."
+    },
+    "internal_solid_infill_acceleration": {
+      "label": "Preenchimento sólido",
+      "tooltip": "Aceleração do preenchimento sólido interno. Se o valor for expresso como uma porcentagem (por exemplo, 100%), será calculado com base na aceleração padrão."
+    },
+    "internal_solid_infill_line_width": {
+      "label": "Preenchimento sólido",
+      "tooltip": "Largura da linha de preenchimento sólido interno. Se expresso como uma %, será calculado sobre o diâmetro do bico."
+    },
+    "internal_solid_infill_pattern": {
+      "label": "Padrão de preenchimento sólido interno",
+      "tooltip": "Padrão de linha do preenchimento sólido interno. Se a detecção de preenchimento sólido interno estreito estiver ativada, o padrão concêntrico será usado para a área pequena.",
+      "enum_labels": [
+        "Concêntrico",
+        "Retilíneo",
+        "Monótono",
+        "Linha monótona",
+        "Retilíneo alinhado",
+        "Curva de Hilbert",
+        "Cordas Arquimedeanas",
+        "Espiral de Octagrama"
+      ]
+    },
+    "internal_solid_infill_speed": {
+      "label": "Preenchimento sólido",
+      "tooltip": "Velocidade de preenchimento sólido interno, não a superfície superior e inferior"
+    },
+    "ironing_angle": {
+      "label": "Ângulo do passar ferro",
+      "tooltip": "O ângulo em que o passar a ferro é feito. Um número negativo desativa essa função e usa o método padrão."
+    },
+    "ironing_flow": {
+      "label": "Fluxo do passar ferro",
+      "tooltip": "A quantidade de filamento a extrudar durante o passar a ferro. Relativo ao fluxo da altura normal da camada. Um valor muito alto resulta em superextrusão na superfície"
+    },
+    "ironing_pattern": {
+      "label": "Padrão do passar ferro",
+      "tooltip": "O padrão que será usado ao passar a ferro",
+      "enum_labels": [
+        "Concêntrico",
+        "Retilíneo"
+      ]
+    },
+    "ironing_spacing": {
+      "label": "Espaçamento de linha do passar ferro",
+      "tooltip": "A distância entre as linhas do passar ferro"
+    },
+    "ironing_speed": {
+      "label": "Velocidade do passar ferro",
+      "tooltip": "Velocidade de impressão das linhas do passar ferro"
+    },
+    "ironing_support_layer": {
+      "label": "Interface de engomar",
+      "tooltip": "Interface de engomar"
+    },
+    "ironing_type": {
+      "label": "Tipo do passar ferro",
+      "tooltip": "Passar a ferro utiliza um pequeno fluxo para imprimir na mesma altura da superfície novamente para deixá-la mais lisa. Esta configuração controla qual camada está sendo passada a ferro",
+      "enum_labels": [
+        "Desativado",
+        "Superfícies superiores",
+        "Superfície superior mais alta",
+        "Todas as camadas sólidas"
+      ]
+    },
+    "is_infill_first": {
+      "label": "Preenchimento primeiro",
+      "tooltip": "Ordem de perímetro/preenchimento. Quando a caixa de seleção não desmarcada, as paredes são impressas primeiro, o que funciona melhor na maioria dos casos.\n\nImprimir as paredes primeiro pode ajudar com overhangs extremos, pois as paredes têm o preenchimento vizinho para aderir. No entanto, o preenchimento empurrará levemente as paredes impressas onde está conectado a elas, resultando em um acabamento de superfície externa pior. Também pode fazer com que o preenchimento apareça através das superfícies externas da peça."
+    },
+    "lateral_lattice_angle_1": {
+      "label": "Ángulo da grade lateral 1",
+      "tooltip": "O ângulo do primeiro conjunto de elementos de grade lateral na direção Z. Zero é vertical."
+    },
+    "lateral_lattice_angle_2": {
+      "label": "Ángulo da grade lateral 2",
+      "tooltip": "O ângulo do segundo conjunto de elementos de grade lateral na direção Z. Zero é vertical."
+    },
+    "layer_change_gcode": {
+      "label": "G-Code de mudança de camada",
+      "tooltip": "Esta parte do gcode é inserida em cada mudança de camada após levantar z"
+    },
+    "layer_height": {
+      "label": "Altura da camada",
+      "tooltip": "Altura de fatiamento para cada camada. Altura de camada menor significa mais precisão e mais tempo de impressão"
+    },
+    "line_width": {
+      "label": "Padrão",
+      "tooltip": "Largura de linha padrão se outras larguras de linha estiverem definidas como 0. Se expresso como %, será calculado sobre o diâmetro do bico."
+    },
+    "locked_skeleton_infill_pattern": {
+      "label": "Padrão de enchimento do esqueleto",
+      "tooltip": "Padrão de linha para esqueleto",
+      "enum_labels": [
+        "Concêntrico",
+        "Retilíneo",
+        "Grade",
+        "Linha",
+        "Cúbico",
+        "Triângulos",
+        "Tri-hexágono",
+        "Giroide",
+        "Honeycomb",
+        "Retilíneo alinhado",
+        "Honeycomb 3D",
+        "Curva de Hilbert",
+        "Cordas Arquimedeanas",
+        "Espiral de Octagrama",
+        "Escotilha Cruzada",
+        "TpmsD",
+        "Zig-Zag2",
+        "Cross-Zag"
+      ]
+    },
+    "locked_skin_infill_pattern": {
+      "label": "Padrão de preenchimento da pele",
+      "tooltip": "Padrão de linha para a pele",
+      "enum_labels": [
+        "Concêntrico",
+        "Retilíneo",
+        "Grade",
+        "Linha",
+        "Cúbico",
+        "Triângulos",
+        "Tri-hexágono",
+        "Giroide",
+        "Honeycomb",
+        "Retilíneo alinhado",
+        "Honeycomb 3D",
+        "Curva de Hilbert",
+        "Cordas Arquimedeanas",
+        "Espiral de Octagrama",
+        "Escotilha Cruzada",
+        "TpmsD",
+        "Zig-Zag2",
+        "Cross-Zag"
+      ]
+    },
+    "long_retractions_when_cut": {
+      "label": "Retração longa quando cortado(experimental)",
+      "tooltip": "Recurso experimental. Retrair e cortar o filamento a uma distância mais longa durante mudanças para minimizar a purga. Isto reduz significativamente a purga, pode também aumentar o risco de bolhas no bico ou de outros problemas de impressão."
+    },
+    "machine_LED_light_exist": {
+      "label": "Existe luz LED da máquina",
+      "tooltip": "Existe luz LED da máquina"
+    },
+    "machine_end_gcode": {
+      "label": "G-code de finalização",
+      "tooltip": "G-code de finalização ao terminar a impressão completa"
+    },
+    "machine_is_belt": {
+      "label": "Máquina de cinto",
+      "tooltip": "Se a estrutura da máquina é cinto."
+    },
+    "machine_load_filament_time": {
+      "label": "Tempo de carga do filamento",
+      "tooltip": "Tempo para carregar novo filamento ao trocar de filamento. Apenas para estatísticas"
+    },
+    "machine_max_acceleration_e": {
+      "full_label": "Aceleração máxima em E",
+      "tooltip": "Aceleração máxima do eixo E"
+    },
+    "machine_max_acceleration_extruding": {
+      "full_label": "Aceleração máxima para extrusão",
+      "tooltip": "Aceleração máxima para extrusão (M204 P)"
+    },
+    "machine_max_acceleration_retracting": {
+      "full_label": "Aceleração máxima para retrair",
+      "tooltip": "Aceleração máxima para retrair (M204 R)"
+    },
+    "machine_max_acceleration_travel": {
+      "full_label": "Aceleração máxima para deslocamento",
+      "tooltip": "Aceleração máxima para deslocamento (M204 T), aplica-se apenas ao Marlin 2"
+    },
+    "machine_max_acceleration_x": {
+      "full_label": "Aceleração máxima em X",
+      "tooltip": "Aceleração máxima do eixo X"
+    },
+    "machine_max_acceleration_y": {
+      "full_label": "Aceleração máxima em Y",
+      "tooltip": "Aceleração máxima do eixo Y"
+    },
+    "machine_max_acceleration_z": {
+      "full_label": "Aceleração máxima em Z",
+      "tooltip": "Aceleração máxima do eixo Z"
+    },
+    "machine_max_jerk_e": {
+      "full_label": "Jerk máximo em E",
+      "tooltip": "Jerk máximo do eixo E"
+    },
+    "machine_max_jerk_x": {
+      "full_label": "Jerk máximo em X",
+      "tooltip": "Jerk máximo do eixo X"
+    },
+    "machine_max_jerk_y": {
+      "full_label": "Jerk máximo em Y",
+      "tooltip": "Jerk máximo do eixo Y"
+    },
+    "machine_max_jerk_z": {
+      "full_label": "Jerk máximo em Z",
+      "tooltip": "Jerk máximo do eixo Z"
+    },
+    "machine_max_speed_e": {
+      "full_label": "Velocidade máxima E"
+    },
+    "machine_max_speed_x": {
+      "full_label": "Velocidade máxima X"
+    },
+    "machine_max_speed_y": {
+      "full_label": "Velocidade máxima Y"
+    },
+    "machine_max_speed_z": {
+      "full_label": "Velocidade máxima Z"
+    },
+    "machine_min_extruding_rate": {
+      "full_label": "Velocidade mínima para extrusão",
+      "tooltip": "Velocidade mínima para extrusão (M205 S)"
+    },
+    "machine_min_travel_rate": {
+      "full_label": "Velocidade mínima de movimento",
+      "tooltip": "Velocidade mínima de movimento (M205 T)"
+    },
+    "machine_pause_gcode": {
+      "label": "G-Code de pausa",
+      "tooltip": "Este G-code será usado como um código para pausar a impressão. O usuário pode inserir o G-code de pausa no visualizador de G-code"
+    },
+    "machine_platform_motion_enable": {
+      "label": "Movimento da plataforma da máquina habilitar",
+      "tooltip": "Movimento da plataforma da máquina habilitar"
+    },
+    "machine_ptc_exist": {
+      "label": "aquecedor ptc câmara",
+      "tooltip": "Aquecedor ptc da câmara existem"
+    },
+    "machine_start_gcode": {
+      "label": "Código de Início",
+      "tooltip": "Código de início ao iniciar a impressão completa"
+    },
+    "machine_tool_change_time": {
+      "label": "Tempo de mudança de ferramenta",
+      "tooltip": "Tempo para trocar de ferramentas. Geralmente é aplicável para trocadores de ferramentas ou máquinas multi-ferramentas. Para máquinas multi-materiais deextrusora única, é tipicamente 0. Apenas para estatísticas"
+    },
+    "machine_unload_filament_time": {
+      "label": "Tempo de descarga do filamento",
+      "tooltip": "Tempo para descarregar o filamento antigo ao trocar de filamento. Apenas para estatísticas"
+    },
+    "make_overhang_printable": {
+      "label": "Overhangs imprimíveis",
+      "tooltip": "Modifica a geometria para imprimir overhangs sem suporte."
+    },
+    "make_overhang_printable_angle": {
+      "label": "Overhangs imprimíveis - ângulo máx",
+      "tooltip": "Ângulo máximo do overhang permitido antes de fazer ângulos mais íngremes imprimíveis. 90° não vai fazer nenhuma mudança no modelo e vai permitir qualquer overhang. 0 vai substituir todos overhangs por uma forma cônica."
+    },
+    "make_overhang_printable_hole_size": {
+      "label": "Overhangs imprimíveis - área do furo",
+      "tooltip": "Área maxima de um furo na base do modelo antes que ele seja preenchido por uma forma cônica. Um valor 0 irá preencher todos os furos do modelo."
+    },
+    "manual_filament_change": {
+      "label": "Troca Manual de Filamento",
+      "tooltip": "Ative esta opção para omitir o G-code de troca de filamento personalizado apenas no início da impressão. O comando de troca de ferramenta (por exemplo, T0) será ignorado durante toda a impressão. Isso é útil para impressão manual de vários materiais, onde usamos M600/PAUSE para acionar a ação de troca manual de filamento."
+    },
+    "material_flow_dependent_temperature": {
+      "label": "Temperatura automática",
+      "tooltip": "Altere a temperatura para cada camada automaticamente com a velocidade média de fluxo dessa camada."
+    },
+    "material_flow_temp_graph": {
+      "label": "Gráfico da Temperatura do Fluxo",
+      "tooltip": "Gráfico da Temperatura do Fluxo"
+    },
+    "max_bridge_length": {
+      "label": "Distância de ponte máxima",
+      "tooltip": "Comprimento máximo de pontes que não precisam de suporte. Defina-o como 0 se desejar que todas as pontes tenham suporte, e defina-o como um valor muito grande se não desejar que nenhuma ponte tenha suporte."
+    },
+    "max_layer_height": {
+      "label": "Máx",
+      "tooltip": "A maior altura de camada imprimível para o extrusor. Usado para limitar a altura máxima da camada quando a altura da camada adaptativa está ativada"
+    },
+    "max_travel_detour_distance": {
+      "label": "Evitar perímetros - Distância máximo do desvio",
+      "tooltip": "Distância máxima de desvio para evitar atravessar o perímetro. Não desviar se a distância de desvio for maior que esse valor. A distancia do desvio pode ser especificada como um valor absoluto ou como porcentagem (por exemplo, 50%) de um caminho de deslocamento direto. Zero para desativar"
+    },
+    "max_volumetric_extrusion_rate_slope": {
+      "label": "Suavização da extrusão",
+      "tooltip": "Este parâmetro suaviza as mudanças súbitas na taxa de extrusão que ocorrem quando a impressora faz a transição de uma extrusão de alto fluxo (alta velocidade/maior largura) para uma extrusão de baixo fluxo (baixa velocidade/menor largura) e vice-versa.\n\nDefine a taxa máxima pela qual o fluxo volumétrico extrudado em mm3/seg pode mudar ao longo do tempo. Valores mais altos significam que mudanças de taxa de extrusão mais altas são permitidas, resultando em transições de velocidade mais rápidas.\n\nUm valor de 0 desativa o recurso.\n\nPara uma impressora de acionamento direto de alta velocidade e alto fluxo (como a CrealityPrint ou Voron), esse valor geralmente não é necessário. No entanto, pode fornecer alguns benefícios marginais em certos casos em que as velocidades das características variam muito. Por exemplo, quando há desacelerações agressivas devido a overhangs. Nesses casos, um valor alto de cerca de 300-350mm3/s2 é recomendado, pois isso permite apenas suavização suficiente para ajudar o Pressure advance a alcançar uma transição de fluxo mais suave.\n\nPara impressoras mais lentas sem Pressure advance, o valor deve ser definido muito mais baixo. Um valor de 10-15mm3/s2 é um bom ponto de partida para extrusoras de acionamento direto e 5-10mm3/s2 para estilo Bowden.\n\nEste recurso é conhecido como Equalizador de Pressão no slicer Prusa.\n\nNota: este parâmetro desativa o ajuste de arco."
+    },
+    "max_volumetric_extrusion_rate_slope_segment_length": {
+      "label": "Distancia do segmento de suavização",
+      "tooltip": "Um valor menor resulta em transições de extrusão mais suaves. No entanto, isso resulta em um arquivo Gcode significativamente maior e mais instruções para a impressora processar.\n\nO valor padrão de 3 funciona bem para a maioria dos casos. Se sua impressora estiver engasgando, aumente este valor para reduzir o número de ajustes feitos.\n\nValores permitidos: 1-5"
+    },
+    "min_bead_width": {
+      "label": "Largura mínima do perímetro",
+      "tooltip": "Largura do perímetro que substituirá elementos finos (de acordo com o tamanho mínimo do elemento) do modelo. Se a Largura mínima do perímetro for mais fina do que a espessura do elemento, o perímetro será tão espesso quanto o próprio elemento. É expresso como uma porcentagem sobre o diâmetro do bico"
+    },
+    "min_feature_size": {
+      "label": "Tamanho mínimo do elemento",
+      "tooltip": "Espessura mínima de elementos finos. Elementos do modelo que são mais finos do que este valor não serão impressos, enquanto elementos mais espessos que o tamanho mínimo do elemento serão alargados até a largura mínima do perímetro. É expresso como uma porcentagem sobre o diâmetro do bico"
+    },
+    "min_layer_height": {
+      "label": "Mín",
+      "tooltip": "A menor altura de camada imprimível para o extrusor. Usado para limitar a altura mínima da camada ao habilitar a altura de camada adaptativa"
+    },
+    "min_length_factor": {
+      "label": "Comprimento mínimo do perímetro",
+      "tooltip": "Ajuste este valor para evitar que perímetros curtos e não fechados sejam impressos, o que poderia aumentar o tempo de impressão. Valores mais altos removem perímetros mais longos.\n\nNOTA: As superfícies inferior e superior não serão afetadas por este valor para evitar lacunas visuais no exterior do modelo. Ajuste o 'Limiar de um perímetro' nas configurações avançadas abaixo para ajustar a sensibilidade do que é considerado uma superfície superior. 'Limiar de um perímetro' só é visível se esta configuração estiver acima do valor padrão de 0,5, ou se superfícies superiores de uma única parede estiverem habilitadas."
+    },
+    "min_skirt_length": {
+      "label": "Comprimento mínimo de extrusão da saia",
+      "full_label": "Comprimento mínimo de extrusão da saia",
+      "tooltip": "Comprimento mínimo de extrusão de filamento em mm ao imprimir a saia. Zero significa que esta característica está desabilitada.\n\nUsar um valor não zero é útil se a impressora estiver configurada para imprimir sem uma linha de limpeza."
+    },
+    "min_width_top_surface": {
+      "label": "Limite de perímetro único",
+      "tooltip": "Se uma superfície superior tiver que ser impressa e estiver parcialmente coberta por outra camada, ela não será considerada em uma camada superior onde sua largura estiver abaixo deste valor. Isso pode ser útil para não permitir que o 'um perímetro no topo' seja ativado em uma superfície que deve ser coberta apenas por perímetros. Este valor pode ser em mm ou % da largura de extrusão do perímetro.\nAviso: Se habilitado, artefatos podem ser criados se você tiver algumas características finas na próxima camada, como letras. Defina esta configuração para 0 para remover esses artefatos."
+    },
+    "minimum_sparse_infill_area": {
+      "label": "Limiar mínimo de preenchimento",
+      "tooltip": "A área de preenchimento não sólido que é menor que o valor de limiar é substituída por preenchimento sólido interno"
+    },
+    "minimum_support_area": {
+      "label": "Pequena área de sobrependência",
+      "tooltip": "Tamanho mínimo da área para os polígonos de suporte. Polígonos que tenham uma área menor que este valor nãoserão gerados."
+    },
+    "mmu_segmented_region_interlocking_depth": {
+      "label": "Profundidade de entrelaçamento de uma região segmentada",
+      "tooltip": "Profundidade de interconexão de uma região segmentada. Será ignorado se \"mmu_segmented_region_max_width\" for zero ou se \"mmu_segmented_region_interlocking_depth\" for maior doque \"mmu_segmented_region_max_width\". Zero desativa esse recurso."
+    },
+    "mmu_segmented_region_max_width": {
+      "label": "Largura máxima de uma região segmentada",
+      "tooltip": "Largura máxima de uma região segmentada. Zero desativa essa funcionalidade."
+    },
+    "msao_recovery_enable": {
+      "label": "Recuperação da escassez de material após o sobresalto (Beta)",
+      "tooltip": "Este parâmetro entra em conflito com o max_volumetric_extrusion_rate_slope e não pode ser ativado ao mesmo tempo. Quando a fatiadoradetecta que um segmento de extrusão contínua de baixa velocidade terminou e o caminho retorna imediatamente à impressão normalde alta velocidade, mudanças súbitas na velocidade e aceleração podem fazer com que a pressão de extrusão fique paratrás. Isso pode levar a sub-extrusão temporária em paredes externas, resultando em linhas finas, branqueamento ou artefatos de aparênciaoca. Depois de ativar esta opção, a fatiadora insere um controle adicional de velocidade durante a fase de recuperação,de modo que a impressora não salte diretamente de “lento” para “rápido”, mas em vez disso transite mais suavementede volta ao movimento normal. Os cenários de uso típicos incluem paredes externas com salientes, chamfers, pequenas seções transversaisou o segmento de recuperação após a ponte. Em comparação com o parâmetro de alisamento da taxa de extrusão,este parâmetro tem um impacto menor no resultado da fatia."
+    },
+    "msao_safe_accel": {
+      "label": "Aceleração segura após a sobreposição (Beta)",
+      "tooltip": "Quando a fatiadora detecta o fim de uma região de extrusão contínua de baixa velocidade, como uma sobreposição, elanão restaurará imediatamente a aceleração normal de impressão. Em vez disso, ele usa primeiro um valor de aceleração menore mais conservador para um curto \"segmento de recuperação seguro\", permitindo que a pressão de extrusão, o fluxo dematerial fundido e a saída do bocal retornem gradualmente a um estado estável."
+    },
+    "msao_safe_velocity": {
+      "label": "Velocidade segura após a sobreposição (Beta)",
+      "tooltip": "Quando a fatiadora detecta o fim de uma região de extrusão contínua de baixa velocidade, como uma sobreposição, elanão restaurará imediatamente a velocidade de impressão normal. Em vez disso, primeiro usa uma velocidade de cruzeiro mais baixae conservadora para um curto “segmento de recuperação seguro”, permitindo que a impressora passe pela transição mais suavemente antesde regressar gradualmente à velocidade de impressão normal."
+    },
+    "multicolor_method": {
+      "label": "Método multicolorido",
+      "tooltip": "Método multicolorido"
+    },
+    "notes": {
+      "label": "Notas de configuração",
+      "tooltip": "Você pode colocar aqui suas notas pessoais. Este texto será adicionado aos comentários do cabeçalho do G-code."
+    },
+    "nozzle_diameter": {
+      "label": "Diâmetro do bico",
+      "tooltip": "Diâmetro do bico"
+    },
+    "nozzle_height": {
+      "label": "Altura do bico",
+      "tooltip": "Altura da ponta do bico."
+    },
+    "nozzle_hrc": {
+      "label": "Bico HRC",
+      "tooltip": "A dureza do bico. Zero significa que não há verificação da dureza do bico durante a fatiamento."
+    },
+    "nozzle_temperature": {
+      "label": "Outras camadas",
+      "full_label": "Temperatura do bico",
+      "tooltip": "Temperatura do bico para camadas após a inicial"
+    },
+    "nozzle_temperature_initial_layer": {
+      "label": "Primeira camada",
+      "full_label": "Temperatura do bico da primeira camada",
+      "tooltip": "Temperatura do bico para imprimir a primeira camada ao usar este filamento"
+    },
+    "nozzle_temperature_range_high": {
+      "label": "Máx"
+    },
+    "nozzle_temperature_range_low": {
+      "label": "Mín"
+    },
+    "nozzle_type": {
+      "label": "Tipo de bico",
+      "tooltip": "O filamento metálico do bico. Isso determina a resistência ao desgaste do bico e que tipo de filamento pode ser impresso",
+      "enum_labels": [
+        "Não definido",
+        "Aço endurecido",
+        "Aço inoxidável",
+        "Latão"
+      ]
+    },
+    "nozzle_volume": {
+      "label": "Volume do bico",
+      "tooltip": "Volume do bico entre o cortador e a extremidade do bico"
+    },
+    "only_one_wall_first_layer": {
+      "label": "Perímetro único na primeira camada",
+      "tooltip": "Use apenas um perímetro na primeira camada, para dar mais espaço ao padrão de preenchimento inferior"
+    },
+    "only_one_wall_top": {
+      "label": "Perímetro único em superfícies superiores",
+      "tooltip": "Use apenas um perímetro em superfície superior, para dar mais espaço ao padrão de preenchimento superior"
+    },
+    "ooze_prevention": {
+      "label": "Ativar",
+      "tooltip": "Esta opção irá baixar a temperatura das extrusoras inativas para evitar o escoamento."
+    },
+    "other_layers_print_sequence": {
+      "label": "Sequência de impressão de outras camadas"
+    },
+    "other_layers_print_sequence_nums": {
+      "label": "O número de sequência de impressão de outras camadas"
+    },
+    "other_layers_sequence_choice": {
+      "label": "Sequência de impressão de outros filamentos",
+      "enum_labels": [
+        "Auto",
+        "Personalizar"
+      ]
+    },
+    "outer_wall_acceleration": {
+      "label": "Perímetro externo",
+      "tooltip": "Aceleração do perímetro externo. Usar um valor menor pode melhorar a qualidade"
+    },
+    "outer_wall_jerk": {
+      "label": "Perímetro externo",
+      "tooltip": "Jerk nas paredes externas"
+    },
+    "outer_wall_line_width": {
+      "label": "Perímetro externo",
+      "tooltip": "Largura da linha do perímetro externo. Se expresso como porcentagem, será calculado sobre o diâmetro do bico."
+    },
+    "outer_wall_speed": {
+      "label": "Perímetro externo",
+      "tooltip": "Velocidade do perímetro externo que é o mais externo e visível. Geralmente é mais lenta que a velocidade do perímetro interno para obter melhor qualidade."
+    },
+    "overhang_fan_speed": {
+      "label": "Velocidade do ventilador para overhangs",
+      "tooltip": "Forçar o ventilador de resfriamento da peça a ser nesta velocidade ao imprimir ponte ou overhang que tenha um grande grau de inclinação. Forçar o resfriamento para overhang e ponte pode obter melhor qualidade para estas partes"
+    },
+    "overhang_fan_threshold": {
+      "label": "Overhang limiar de resfriamento",
+      "tooltip": "Forçar o ventilador de resfriamento a ser uma velocidade específica quando o grau de inclinação da peça impressa excede este valor. Expresso como porcentagem, que indica quanto da largura da linha sem suporte da camada inferior.Zero significa forçar o resfriamento para toda o perímetro externo, não importa quanto seja o grau de inclinação",
+      "enum_labels": [
+        "0%",
+        "10%",
+        "25%",
+        "50%",
+        "75%",
+        "95%"
+      ]
+    },
+    "overhang_optimization": {
+      "label": "Otimização de Overhang (Beta)",
+      "tooltip": "Altura adaptativa e largura de linha para cada camada. "
+    },
+    "overhang_reverse": {
+      "label": "Inverter em ímpares",
+      "full_label": "Reversão de suspensão",
+      "tooltip": "Extruir perímetros, que tenham uma parte sobre um overhang, na direção reversa em camadas ímpares. Este padrão alternado pode melhorar drasticamente perímetros íngremes.\n\nEste ajuste também pode ajudar a reduzir a deformação da peça devido à redução das tensões nas paredes da peça."
+    },
+    "overhang_reverse_internal_only": {
+      "label": "Inverter apenas os perímetros internos",
+      "full_label": "Inverter apenas os perímetros internos",
+      "tooltip": "Aplicar a lógica de perímetros reversos apenas em perímetros internos.\n\nEste ajuste reduz muito as tensões na peça, já que agora são distribuídas em direções alternadas. Isso deve reduzir a deformação da peça, mantendo a qualidade do perímetro externo. Este recurso pode ser muito útil para materiais propensos a deformações, como ABS/ASA, e também para filamentos elásticos, como TPU e Silk PLA. Também pode ajudar a reduzir a deformação em regiões flutuantes sobre suportes.\n\nPara que este ajuste seja mais eficaz, recomenda-se definir o Limiar Reverso como 0 para que todos os perímetros internos sejam impressos em direções alternadas em camadas ímpares, independentemente de seu grau de ."
+    },
+    "overhang_reverse_threshold": {
+      "label": "Limiar de inversão",
+      "full_label": "Limiar de inversão de overhang",
+      "tooltip": "Número de milímetros que o precisa ter para que a reversão seja considerada útil. Pode ser um % da largura do perímetro.\nO valor 0 permite a reversão em todas as camadas ímpares independentemente."
+    },
+    "overhang_speed_classic": {
+      "label": "Modo clássico",
+      "tooltip": "Ative esta opção para usar o modo clássico"
+    },
+    "overhang_totally_speed": {
+      "label": "100%",
+      "full_label": "100%"
+    },
+    "parking_pos_retraction": {
+      "label": "Posição de estacionamento do filamento",
+      "tooltip": "Distância da ponta do extrusor da posição onde o filamento é estacionado quando descarregado. Isso deve corresponder ao valor no firmware da impressora."
+    },
+    "pellet_flow_coefficient": {
+      "label": "Coeficiente de fluxo de pellets",
+      "tooltip": "O coeficiente de fluxo de pellets é empiricamente derivado e permite o cálculo de volume para impressoras de pellets.nnInternamente é convertido em filament_diameter. Todos os outros cálculos de volume permanecem os mesmos.  nnfilament_diameter = sqrt((4* coeficiente de fluxo de pellets) / PI )"
+    },
+    "pellet_modded_printer": {
+      "label": "Pellet Modded Impressora",
+      "tooltip": "Active esta opção se a impressora utilizar pellets em vez de filamentos"
+    },
+    "post_process": {
+      "label": "Scripts de pós-processamento",
+      "tooltip": "Se você deseja processar o G-code de saída por meio de scripts personalizados, basta listar seus caminhos absolutos aqui. Separe vários scripts com um ponto e vírgula. Os scripts receberão o caminho absoluto para o arquivo G-code como primeiro argumento, e eles podem acessar as configurações do Creality Print lendo variáveis de ambiente."
+    },
+    "precise_outer_wall": {
+      "label": "Parede precisa",
+      "tooltip": "Melhore a precisão da parede ajustando o espaçamento do perímetro externo. Isso também melhora a consistência da camada.\nNota: Esta configuração só terá efeito se a sequência do perímetro estiver configurada para Interior-Exterior"
+    },
+    "precise_z_height": {
+      "label": "Altura Z precisa",
+      "tooltip": "Ative isto para obter altura Z precisa do objeto após fatiar. Ele obterá a altura do objeto exata ajustando as alturas da camada das últimas camadas. Observe que este é um parâmetro experimental."
+    },
+    "preferred_orientation": {
+      "label": "Orientação preferida",
+      "tooltip": "Orientar automaticamente os arquivos STL no eixo Z durante a importação inicial"
+    },
+    "preheat_steps": {
+      "label": "Passos de pré-aquecimento",
+      "tooltip": "Inserir vários comandos de pré-aquecimento (por exemplo, M104.1). Apenas útil para Prusa XL. Para outras impressoras, defina-o como 1."
+    },
+    "preheat_time": {
+      "label": "Tempo de pré-aquecimento",
+      "tooltip": "Para reduzir o tempo de espera após a troca da ferramenta, o Creality pode pré-aquecer a próxima ferramenta enquantoa ferramenta atual ainda estiver em uso. Essa configuração especifica o tempo em segundos para pré-aquecer a próxima ferramenta.Creality irá inserir um comando M104 para pré-aquecer a ferramenta com antecedência."
+    },
+    "preset_names": {
+      "label": "Nomes de presets da impressora",
+      "tooltip": "Nomes dos presets relacionados à impressora física"
+    },
+    "pressure_advance": {
+      "label": "Pressure Advance",
+      "tooltip": "Pressure advance(Klipper) também conhecido como Linear advance factor(Marlin)"
+    },
+    "prime_tower_brim_width": {
+      "label": "Largura da borda",
+      "tooltip": "Largura da borda da torre primária, número negativo significa largura calculada automáticamente com base na altura da torre primária."
+    },
+    "prime_tower_enable_framework": {
+      "label": "Costelas internas",
+      "tooltip": "Ative costelas internas para aumentar a estabilidade da torre principal."
+    },
+    "prime_tower_enhance_type": {
+      "label": "Tipo de aprimoramento da torre principal",
+      "tooltip": "Tipo de aprimoramento da torre principal",
+      "enum_labels": [
+        "cone",
+        "chamfer"
+      ]
+    },
+    "prime_tower_position_type": {
+      "label": "Posição da torre",
+      "tooltip": "A posição da Torre Primeira na plataforma.",
+      "enum_labels": [
+        "Left Upper",
+        "Middle Upper",
+        "Right Upper",
+        "Left Center",
+        "Middle Center",
+        "Right Center",
+        "Left Below",
+        "Middle Below",
+        "Right Below"
+      ]
+    },
+    "prime_tower_rib_wall": {
+      "label": "Torre principal quadrada",
+      "tooltip": "Quando esta opção estiver marcada, a torre principal estará o mais próxima possível de um quadrado, o que significaque sua largura será fixa."
+    },
+    "prime_tower_skip_points": {
+      "label": "Pontos de salto",
+      "tooltip": "A parede da torre principal pulará os pontos de início do caminho de limpeza"
+    },
+    "prime_tower_width": {
+      "label": "Largura",
+      "tooltip": "Largura da Torre Prime"
+    },
+    "prime_volume": {
+      "label": "Volume de filamento",
+      "tooltip": "O volume de filamento para preparar a extrusora na torre."
+    },
+    "print_flow_ratio": {
+      "label": "Fluxo",
+      "tooltip": "O filamento pode ter mudança volumétrica após a troca entre o estado fundido e o estado cristalino. Esta configuração altera todo o fluxo de extrusão deste filamento no gcode proporcionalmente. A faixa de valores recomendada está entre 0.95 e 1.05. Talvez você possa ajustar esse valor para obter uma superfície plana agradável quando houver um leve transbordamento ou subfluxo"
+    },
+    "print_host": {
+      "label": "Nome do host, IP ou URL",
+      "tooltip": "O Creality Print pode enviar arquivos G-code para um host de impressora. Este campo deve conter o nome do host, o endereço IP ou a URL da instância do host de impressora. O host de impressão atrás do HAProxy com autenticação básica ativada pode ser acessado colocando o nome de usuário e senha na URL no seguinte formato: https://username:password@your-octopi-address/"
+    },
+    "print_host_webui": {
+      "label": "Interface do dispositivo",
+      "tooltip": "Especifique a URL da interface do usuário do seu dispositivo se não for a mesma do print_host"
+    },
+    "print_order": {
+      "label": "Ordem intra-camada",
+      "tooltip": "Ordem de impressão dentro de uma única camada",
+      "enum_labels": [
+        "Padrão",
+        "Como lista de objetos"
+      ]
+    },
+    "print_sequence": {
+      "label": "Sequência de impressão",
+      "tooltip": "Sequência de impressão, camada por camada ou objeto por objeto",
+      "enum_labels": [
+        "Por camada",
+        "Por objeto"
+      ]
+    },
+    "printable_area": {
+      "label": "Área de impressão"
+    },
+    "printable_height": {
+      "label": "Altura de impressão",
+      "tooltip": "Altura máxima de impressão limitada pelo mecanismo da impressora"
+    },
+    "printer_notes": {
+      "label": "Notas da impressora",
+      "tooltip": "Você pode inserir suas observações sobre a impressora aqui."
+    },
+    "printer_structure": {
+      "label": "Estrutura da impressora",
+      "tooltip": "A disposição física e componentes de um dispositivo de impressão",
+      "enum_labels": [
+        "Não definido",
+        "CoreXY",
+        "I3",
+        "Hbot",
+        "Delta"
+      ]
+    },
+    "printhost_apikey": {
+      "label": "Chave da API / Senha",
+      "tooltip": "O Creality Print pode enviar arquivos G-code para um host de impressora. Este campo deve conter a Chave da API ou a senha necessária para autenticação."
+    },
+    "printhost_authorization_type": {
+      "label": "Tipo de autorização",
+      "enum_labels": [
+        "API Key",
+        "Digest HTTP"
+      ]
+    },
+    "printhost_cafile": {
+      "label": "Arquivo CA HTTPS",
+      "tooltip": "O arquivo de certificado CA personalizado pode ser especificado para conexões HTTPS OctoPrint, no formato crt/pem. Se deixado em branco, o repositório de certificados CA padrão do sistema operacional é usado."
+    },
+    "printhost_password": {
+      "label": "Senha"
+    },
+    "printhost_port": {
+      "label": "Impressora",
+      "tooltip": "Nome da impressora"
+    },
+    "printhost_ssl_ignore_revoke": {
+      "label": "Ignorar verificações de revogação de certificado HTTPS",
+      "tooltip": "Ignorar verificações de revogação de certificado HTTPS em caso de pontos de distribuição ausentes ou offline. Pode-se querer habilitar esta opção para certificados autoassinados se a conexão falhar."
+    },
+    "printhost_user": {
+      "label": "Usuário"
+    },
+    "printing_by_object_gcode": {
+      "label": "G-code entre objetos",
+      "tooltip": "Insira o G-code entre objetos. Este parâmetro só terá efeito quando você imprimir seus modelos objeto por objeto"
+    },
+    "purge_in_prime_tower": {
+      "label": "Purgar na Torre Prime",
+      "tooltip": "Purgar o filamento restante na Torre Prime"
+    },
+    "raft_contact_distance": {
+      "label": "Distância (Z) de contato da Jangada",
+      "tooltip": "Lacuna (Z) entre o objeto e a Jangada. Ignorado para interface solúvel"
+    },
+    "raft_expansion": {
+      "label": "Expansão da Jangada",
+      "tooltip": "Expandir todas as camadas da Jangada no plano XY"
+    },
+    "raft_first_layer_density": {
+      "label": "Densidade da primeira camada",
+      "tooltip": "Densidade da primeira camada da Jangada ou Suporte"
+    },
+    "raft_first_layer_expansion": {
+      "label": "Expansão da primeira camada",
+      "tooltip": "Expanda a primeira camada da Jangada ou Suporte para melhorar a adesão à mesa de impressão"
+    },
+    "raft_layers": {
+      "label": "Camadas da Jangada",
+      "tooltip": "O objeto será elevado por este número de camadas de suporte. Use esta função para evitar o enrugamento ao imprimir ABS"
+    },
+    "reduce_crossing_wall": {
+      "label": "Evitar perímetros",
+      "tooltip": "Desvio e evite viajar através do perímetro que pode causar irregularidade na superfície"
+    },
+    "reduce_fan_stop_start_freq": {
+      "label": "Manter o ventilador sempre ligado",
+      "tooltip": "Se habilitar esta configuração, o ventilador de resfriamento da peça nunca será desligado e funcionará pelo menos na velocidade mínima para reduzir a frequência de início e parada"
+    },
+    "reduce_infill_retraction": {
+      "label": "Reduzir retração durante o preenchimento",
+      "tooltip": "Não retrair quando o movimento está na área de preenchimento completamente. Isso significa que o vazamento não pode ser visto. Isso pode reduzir o número de retratações para modelos complexos e economizar tempo de impressão, mas torna a geração de fatiamento e G-code mais lenta"
+    },
+    "required_nozzle_HRC": {
+      "label": "HRC do bico requerido",
+      "tooltip": "HRC mínimo do bico necessário para imprimir o filamento. Zero significa que não há verificação do HRC do bico."
+    },
+    "resolution": {
+      "label": "Resolução",
+      "tooltip": "O caminho do G-code é gerado após simplificar o contorno do modelo para evitar muitos pontos e linhas de G-code no arquivo de G-code. Um valor menor significa maior resolução e mais tempo para fatiar"
+    },
+    "retract_before_wipe": {
+      "label": "Quantidade de retração antes da limpeza",
+      "tooltip": "O comprimento da retração rápida antes da limpeza, em relação ao comprimento da retração"
+    },
+    "retract_length_toolchange": {
+      "label": "Comprimento"
+    },
+    "retract_lift_above": {
+      "label": "Elevar Z apenas acima de",
+      "tooltip": "Se você definir isso como um valor positivo, a elevação de Z só ocorrerá acima do Z absoluto especificado."
+    },
+    "retract_lift_below": {
+      "label": "Elevar Z apenas abaixo de",
+      "tooltip": "Se você definir isso como um valor positivo, a elevação de Z só ocorrerá abaixo do Z absoluto especificado."
+    },
+    "retract_lift_enforce": {
+      "label": "Nas superfícies",
+      "tooltip": "Forçar Z Hop. Essa configuração é impactada pelas configurações acima (Somente elevar Z acima/abaixo)",
+      "enum_labels": [
+        "Todas as superfícies",
+        "Somente a parte superior",
+        "Somente a parte inferior",
+        "Parte superior e inferior"
+      ]
+    },
+    "retract_restart_extra": {
+      "label": "Comprimento extra na retração",
+      "tooltip": "Quando a retração é compensada após o movimento de deslocamento, o extrusor empurrará essa quantidade adicional de filamento. Esta configuração é raramente necessária."
+    },
+    "retract_restart_extra_toolchange": {
+      "label": "Comprimento extra na retração",
+      "tooltip": "Quando a retração é compensada após a troca de ferramenta, o extrusor empurrará essa quantidade adicional de filamento."
+    },
+    "retract_when_changing_layer": {
+      "label": "Retrair ao mudar de camada",
+      "tooltip": "Forçar uma retração ao mudar de camada"
+    },
+    "retraction_distances_when_cut": {
+      "label": "Distância de retração ao cortar",
+      "tooltip": "Funcionalidade experimental. Comprimento de retração antes de cortar durante a mudança de filamento"
+    },
+    "retraction_length": {
+      "label": "Comprimento",
+      "full_label": "Distância de retração",
+      "tooltip": "Alguma quantidade de filamento no extrusor é puxada para trás para evitar oozing durante viagens longas. Defina zero para desativar a retração"
+    },
+    "retraction_minimum_travel": {
+      "label": "Limiar de distância de deslocamento",
+      "tooltip": "Disparar a retração somente quando a distância da deslocamento for maior que este limite"
+    },
+    "retraction_speed": {
+      "label": "Velocidade de retração",
+      "full_label": "Velocidade de retração",
+      "tooltip": "Velocidade das retratações"
+    },
+    "role_based_wipe_speed": {
+      "label": "Velocidade base de limpeza da função",
+      "tooltip": "A velocidade de limpeza é determinada pela velocidade do tipo de extrusão atual. Por exemplo, se uma ação de limpeza for executada imediatamente após uma extrusão de perímetro externo, a velocidade da extrusão do perímetro externo será utilizada para a ação de limpeza."
+    },
+    "rotate_solid_infill_direction": {
+      "label": "Rotaciona a direção do preenchimento sólido",
+      "tooltip": "Rotaciona a direção do preenchimento em 90° para cada camada."
+    },
+    "scan_first_layer": {
+      "label": "Escanear primeira camada",
+      "tooltip": "Habilitar isso para ativar a câmera na impressora para verificar a qualidade da primeira camada"
+    },
+    "scarf_angle_threshold": {
+      "label": "Ângulo condicional",
+      "tooltip": "Esta opção define o ângulo limite para aplicar uma costura scarf condicional.\nSe o ângulo máximo dentro do loop do perímetro exceder esse valor (indicando a ausência de cantos afiados), será usada uma costura scarf. O valor padrão é 155°."
+    },
+    "scarf_joint_flow_ratio": {
+      "label": "Fluxo da Costura Scarf",
+      "tooltip": "Este fator afeta a quantidade de filamento para as costuras Scarf."
+    },
+    "scarf_joint_speed": {
+      "label": "Velocidade da Costura Scarf",
+      "tooltip": "Esta opção define a velocidade de impressão para as costuras Scarf. É recomendável imprimir as costuras Scarf em uma velocidade baixa (menor que 100 mm/s). Também é aconselhável habilitar 'Suavização da taxa de extrusão' se a velocidade definida variar significativamente da velocidade das paredes externas ou internas. Se a velocidade especificada aqui for maior que a velocidade das paredes externas ou internas, a impressora utilizará a mais lenta das duas velocidades. Quando especificado como uma porcentagem (por exemplo, 80%), a velocidade é calculada com base na velocidade do perímetro externo ou interna respectiva. O valor padrão é definido como 100%."
+    },
+    "scarf_overhang_threshold": {
+      "label": "Overhang condicional",
+      "tooltip": "Esta opção determina o limiar de inclinação para a aplicação de costuras Scarf. Se a parte sem suporte do perímetro for inferior a esse limite, as costuras Scarf serão aplicadas. O limite padrão é definido em 40% da largura do perímetro externo. Devido a considerações de desempenho, o grau de inclinação é estimado."
+    },
+    "seam_gap": {
+      "label": "Espaço entre costuras",
+      "tooltip": "Para reduzir a visibilidade da costura em uma extrusão de loop fechado, o loop é interrompido e encurtado por uma quantidade especificada.\nEsta quantidade pode ser especificada em milímetros ou como uma porcentagem do diâmetro atual do extrusor. O valor padrão para este parâmetro é 10%."
+    },
+    "seam_position": {
+      "label": "Posição da costura",
+      "tooltip": "A posição inicial para imprimir cada parte do perímetro externo",
+      "enum_labels": [
+        "Mais próximo",
+        "Alinhado",
+        "Alinhado para trás",
+        "Atrás",
+        "Aleatório",
+        "Montar o zgap"
+      ]
+    },
+    "seam_slope_conditional": {
+      "label": "Costura Scarf condicional",
+      "tooltip": "Aplique a Costura Scarf apenas em perímetros suaves onde costuras tradicionais não escondem as costuras em cantos agudos de forma eficaz."
+    },
+    "seam_slope_entire_loop": {
+      "label": "Costura Scarf em torno do perímetro",
+      "tooltip": "A junta Scarf se estende por todo o comprimento do perímetro."
+    },
+    "seam_slope_inner_walls": {
+      "label": "Junta Scarf em paredes internas",
+      "tooltip": "Usar costura Scarf em paredes internas também."
+    },
+    "seam_slope_min_length": {
+      "label": "Comprimento da Costura Scarf",
+      "tooltip": "Comprimento da costura Scarf. Definir este parâmetro como zero desabilita a costura Scarf."
+    },
+    "seam_slope_start_height": {
+      "label": "Altura inicial da junta Scarf",
+      "tooltip": "Altura inicial da costura Scarf.\nEsta quantidade pode ser especificada em milímetros ou como uma porcentagem da altura atual da camada. O valor padrão para este parâmetro é 0."
+    },
+    "seam_slope_steps": {
+      "label": "Passos da junta Scarf",
+      "tooltip": "Número mínimo de segmentos de cada costura scarf."
+    },
+    "seam_slope_type": {
+      "label": "Costura Scarf (beta)",
+      "tooltip": "Use a Costura Scarf para minimizar a visibilidade da costura e aumentar a resistência da costura.",
+      "enum_labels": [
+        "Nenhum",
+        "Contorno",
+        "Contorno e furo"
+      ]
+    },
+    "silent_mode": {
+      "label": "Suporta modo silencioso",
+      "tooltip": "Se a máquina suporta o modo silencioso, no qual a máquina usa uma aceleração mais baixa para imprimir"
+    },
+    "single_extruder_multi_material": {
+      "label": "Múltiplos Materiais com um Extrusor",
+      "tooltip": "Use um único bico para imprimir múltiplos filamentos"
+    },
+    "single_extruder_multi_material_priming": {
+      "label": "Primer todos os extrusores de impressão",
+      "tooltip": "Se ativado, todos os extrusores de impressão serão iniciados na borda frontal da mesa de impressão no início da impressão."
+    },
+    "skeleton_infill_density": {
+      "label": "Densidade de enchimento do esqueleto",
+      "tooltip": "A parte restante do contorno do modelo após remover uma certa profundidade da superfície é chamada de esqueleto. Esteparâmetro é usado para ajustar a densidade desta seção. Quando duas regiões têm as mesmas configurações de preenchimento esparsas,mas densidades de esqueleto diferentes, suas áreas de esqueleto desenvolverão secções sobrepostas."
+    },
+    "skeleton_infill_line_width": {
+      "label": "Largura da linha do esqueleto",
+      "tooltip": "Ajuste a largura da linha dos caminhos do esqueleto selecionados."
+    },
+    "skin_infill_density": {
+      "label": "Densidade de preenchimento da pele",
+      "tooltip": "A parte da superfície externa do modelo dentro de um certo intervalo de profundidade é chamada pele. Este parâmetroé usado para ajustar a densidade desta seção. Quando duas regiões têm as mesmas configurações de preenchimento esparsas, masdensidades de pele diferentes, esta área não será dividida em duas regiões separadas."
+    },
+    "skin_infill_depth": {
+      "label": "Profundidade de enchimento da pele",
+      "tooltip": "O parâmetro define a profundidade da pele."
+    },
+    "skin_infill_line_width": {
+      "label": "Largura da linha da pele",
+      "tooltip": "Ajuste a largura da linha dos caminhos da pele selecionados."
+    },
+    "skirt_distance": {
+      "label": "Distância da saia",
+      "tooltip": "Distância da saia para a borda ou objeto"
+    },
+    "skirt_height": {
+      "label": "Altura da saia",
+      "tooltip": "Quantas camadas de saia. Geralmente apenas uma camada"
+    },
+    "skirt_loops": {
+      "label": "Voltas da saia",
+      "full_label": "Voltas da saia",
+      "tooltip": "Número de voltas da saia. Zero significa desativar a saia"
+    },
+    "skirt_speed": {
+      "label": "Velocidade da saia",
+      "full_label": "Velocidade da saia",
+      "tooltip": "Velocidade da saia, em mm/s. Zero significa usar a velocidade padrão de extrusão da camada."
+    },
+    "skirt_type": {
+      "label": "Tipo de saia",
+      "full_label": "Tipo de saia",
+      "tooltip": "Combinado - saia única para todos os objetos, Por objeto - saia de objeto individual.",
+      "enum_labels": [
+        "Combinado",
+        "Por objeto"
+      ]
+    },
+    "slice_closing_radius": {
+      "label": "Tolerância do fatiamento",
+      "tooltip": "Espaços menores que 2x a tolerância de fatiamentoo serão preenchidas durante o fatiamento da malha. Aumentar a tolerância de fatiamento pode reduzir a resolução final da impressão, portanto, é aconselhável manter o valor razoavelmente baixo."
+    },
+    "slicing_mode": {
+      "label": "Modo de Fatiamento",
+      "tooltip": "Use \"Par-impar\" para modelos de avião 3DLabPrint. Use \"Fechar buracos\" para fechar todos os buracos no modelo.",
+      "enum_labels": [
+        "Padrão",
+        "Par-impar",
+        "Fechar buracos"
+      ]
+    },
+    "slow_down_for_layer_cooling": {
+      "label": "Diminuir a velocidade de impressão para melhor resfriamento de camada",
+      "tooltip": "Ative esta opção para diminuir a velocidade de impressão para que o tempo da camada final não seja menor do que o limite de tempo da camada em \"Limiar de velocidade máxima do ventilador\", para que a camada possa ser resfriada por mais tempo. Isso pode melhorar a qualidade de resfriamento para detalhes pequenos"
+    },
+    "slow_down_layer_time": {
+      "label": "Tempo da camada",
+      "tooltip": "A velocidade de impressão no gcode exportado será reduzida quando o tempo estimado da camada for menor que esse valor, para obter uma melhor resfriamento para essas camadas"
+    },
+    "slow_down_layers": {
+      "label": "Número de camadas lentas",
+      "tooltip": "As primeiras camadas são impressas mais lentamente do que o normal. A velocidade é aumentada gradualmente de forma linear sobre o número especificado de camadas."
+    },
+    "slow_down_min_speed": {
+      "label": "Velocidade de impressão mínima",
+      "tooltip": "A velocidade de impressão mínima para a qual a impressora diminuirá a velocidade para tentar manter o tempo mínimo de camada acima, quando a desaceleração para um melhor resfriamento da camada estiver habilitada."
+    },
+    "slowdown_for_curled_perimeters": {
+      "label": "Reduzir vel. para perímetros encurvados",
+      "tooltip": "Ative esta opção para diminuir a velocidade de impressão em áreas onde podem existir potenciais perímetros curvados (warping)"
+    },
+    "small_area_infill_flow_compensation": {
+      "label": "Compensação de fluxo de área pequena (beta)",
+      "tooltip": "Habilitar compensação de fluxo para áreas de preenchimento pequenas"
+    },
+    "small_area_infill_flow_compensation_model": {
+      "label": "Modelo de Compensação de Fluxo",
+      "tooltip": "Modelo de Compensação de Fluxo, usado para ajustar o fluxo para áreas de preenchimento pequenas. O modelo é expresso como um par de valores separados por vírgula para o comprimento de extrusão e os fatores de correção de fluxo, um por linha, no seguinte formato: \"1.234,5.678\""
+    },
+    "small_perimeter_speed": {
+      "label": "Pequenos perímetros",
+      "tooltip": "Essa configuração separada afetará a velocidade dos perímetros com raio <= small_perimeter_threshold (geralmente buracos). Se expresso como porcentagem (por exemplo: 80%), será calculado com base na configuração de velocidade do perímetro externo acima. Defina como zero para automático."
+    },
+    "small_perimeter_threshold": {
+      "label": "Limiar de pequenos perímetros",
+      "tooltip": "Isso define o limite para o comprimento do perímetro pequeno. O limite padrão é 0mm"
+    },
+    "smart_cooling_zones": {
+      "label": "Zonas de resfriamento inteligentes (Beta)",
+      "tooltip": "Se habilitada, esta configuração assegurará que grandes áreas sem salientes não sejam reduzidas para atender ao tempo mínimo decamada. Torna a seleção de áreas mais lentas mais inteligentenn\n"
+    },
+    "smooth_coefficient": {
+      "label": "Coeficiente suave",
+      "tooltip": "Quanto menor o número, mais longo o caminho de transição de velocidade. 0 significa não aplicar."
+    },
+    "smooth_speed_discontinuity_area": {
+      "label": "Área de descontinuidade de velocidade suave (Beta)",
+      "tooltip": "Adicione a transição de velocidade entre a área de descontinuidade."
+    },
+    "solid_infill_direction": {
+      "label": "Direção do preenchimento sólido",
+      "tooltip": "Ângulo para padrão de preenchimento sólido, que controla a direção inicial ou principal da linha"
+    },
+    "solid_infill_filament": {
+      "label": "Preenchimento sólido",
+      "tooltip": "Filamento para imprimir enchimento sólido"
+    },
+    "sparse_infill_acceleration": {
+      "label": "Preenchimento",
+      "tooltip": "Aceleração do preenchimento não sólido. Se o valor for expresso como uma porcentagem (por exemplo, 100%), será calculado com base na aceleração padrão."
+    },
+    "sparse_infill_density": {
+      "label": "Densidade do preenchimento",
+      "tooltip": "Densidade do preenchimento não sólido interno, 100% transforma todo o preenchimento não sólido em preenchimento sólido e será usado o padrão de preenchimento sólido interno"
+    },
+    "sparse_infill_filament": {
+      "label": "Preenchimento",
+      "tooltip": "Filamento para imprimir preenchimento interno não sólido."
+    },
+    "sparse_infill_line_width": {
+      "label": "Preenchimento",
+      "tooltip": "Largura da linha do preenchimento interno não sólido. Se expresso como %, será calculado sobre o diâmetro do bico."
+    },
+    "sparse_infill_pattern": {
+      "label": "Padrão de preenchimento",
+      "tooltip": "Padrão de linha para preenchimento interno",
+      "enum_labels": [
+        "Concêntrico",
+        "Retilíneo",
+        "Grade",
+        "Linha",
+        "Cúbico",
+        "Triângulos",
+        "Tri-hexágono",
+        "Giroide",
+        "Honeycomb",
+        "Cúbico Adaptativo",
+        "Retilíneo alinhado",
+        "Honeycomb 3D",
+        "Curva de Hilbert",
+        "Cordas Arquimedeanas",
+        "Espiral de Octagrama",
+        "Cúbico de Suporte",
+        "Relâmpago",
+        "Escotilha Cruzada",
+        "Cruz",
+        "Cross3d",
+        "Quarto Cúbico",
+        "Tetraedral",
+        "TpmsD",
+        "TPMS-G gradual",
+        "TPMS-D gradual",
+        "TPMS-FK gradual",
+        "TPMS-FK",
+        "Zig-Zag2",
+        "Cross-Zag",
+        "bloqueado-zag",
+        "panho de mel lateral",
+        "Trelha lateral"
+      ]
+    },
+    "sparse_infill_speed": {
+      "label": "Preenchimento",
+      "tooltip": "Velocidade do preenchimento"
+    },
+    "speed_limit_to_height": {
+      "label": "Velocidade limite de altura e aceleração",
+      "tooltip": "Velocidade limite de altura e aceleração"
+    },
+    "speed_limit_to_height_enable": {
+      "label": "Velocidade limite de altura e aceleração",
+      "tooltip": "Velocidade limite de altura e aceleração"
+    },
+    "spiral_mode": {
+      "label": "Vaso espiral",
+      "tooltip": "A espiralização suaviza os movimentos z do contorno externo. E transforma um modelo sólido em uma impressão de perímetro único com camadas inferiores sólidas. O modelo final gerado não tem costura"
+    },
+    "spiral_mode_max_xy_smoothing": {
+      "label": "Suavização Máxima XY",
+      "tooltip": "Distância máxima para mover pontos em XY para tentar obter uma espiral suave. Se expresso como uma %, será calculado sobre o diâmetro do bico"
+    },
+    "spiral_mode_smooth": {
+      "label": "Espiral Suave",
+      "tooltip": "A Espiral Suave suaviza os movimentos X e Y, resultando em nenhuma costura visível, mesmo nas direções XY em paredes que não são verticais"
+    },
+    "staggered_inner_seams": {
+      "label": "Costuras internas escalonadas",
+      "tooltip": "Esta opção faz com que as costuras internas sejam deslocadas para trás com base em sua profundidade, formando um padrão de zigue-zague."
+    },
+    "standby_temperature_delta": {
+      "label": "Variação de temperatura",
+      "tooltip": "Diferença de temperatura a ser aplicada quando uma extrusora não estiver ativa. O valor não é usado quando 'idle_temperature'nas configurações do filamento é definido para um valor diferente de zero."
+    },
+    "start_end_points": {
+      "label": "Pontos de início e fim",
+      "tooltip": "Os pontos de início e fim que vão da área do cortador até a lata de lixo."
+    },
+    "support_air_filtration": {
+      "label": "Ventoinha traseira",
+      "tooltip": "Esta opção está habilitada se a máquina suportar o controle da temperatura da câmara.\nComando G-code: M141 S(0-255)"
+    },
+    "support_angle": {
+      "label": "Ângulo de padrão",
+      "tooltip": "Use esta configuração para girar o padrão de suporte no plano horizontal."
+    },
+    "support_base_pattern": {
+      "label": "Padrão base (Normal)",
+      "tooltip": "Configuração para o padrão principal do suporte normal",
+      "enum_labels": [
+        "Padrão",
+        "Retilíneo",
+        "Grade reticulada",
+        "Honeycomb",
+        "Oco"
+      ]
+    },
+    "support_base_pattern_spacing": {
+      "label": "Espaçamento do padrão de base",
+      "tooltip": "Espaçamento entre as linhas de suporte"
+    },
+    "support_base_pattern_tree": {
+      "label": "Padrão base( Árvore)",
+      "tooltip": "Definição para o padrão principal do suporte da árvore; estilo de suporte de árvore orgânica só suporta o padrãode preenchimento \"oco\".",
+      "enum_labels": [
+        "Padrão",
+        "Retilíneo",
+        "Grade reticulada",
+        "Honeycomb",
+        "Oco"
+      ]
+    },
+    "support_bottom_interface_spacing": {
+      "label": "Espaçamento da interface inferior",
+      "tooltip": "Espaçamento das linhas de interface inferior. Zero significa interface sólida"
+    },
+    "support_bottom_z_distance": {
+      "label": "Distância Z inferior",
+      "tooltip": "A diferença z entre a interface inferior de suporte e o objeto"
+    },
+    "support_chamber_temp_control": {
+      "label": "Controlar a temperatura da câmara de suporte",
+      "tooltip": "Esta opção está habilitada se a máquina suportar o controle da temperatura da câmara.\nComando G-code: M141 S(0-255)"
+    },
+    "support_critical_regions_only": {
+      "label": "Suportar apenas regiões críticas",
+      "tooltip": "Crie suporte apenas para regiões críticas, incluindo cauda afiada, balanço, etc."
+    },
+    "support_expansion": {
+      "label": "Expansão normal de suporte",
+      "tooltip": "Expanda (+) ou contraia (-) a extensão horizontal do suporte normal"
+    },
+    "support_filament": {
+      "label": "Suporte/Jangada",
+      "tooltip": "Filamento para imprimir Jangada e Suporte. \"Padrão\" significa nenhum filamento específico para Suporte e o filamento atual será usado"
+    },
+    "support_interface_bottom_layers": {
+      "label": "Camadas de interface inferior",
+      "tooltip": "Número de camadas de interface inferior"
+    },
+    "support_interface_filament": {
+      "label": "Interface de Suporte/Jangada",
+      "tooltip": "Filamento para imprimir a interface de suporte. \"Padrão\" significa nenhum filamento específico para a interface de suporte e o filamento atual é usado"
+    },
+    "support_interface_loop_pattern": {
+      "label": "Interface usa padrão de loop",
+      "tooltip": "Cubra a camada de contato superior dos suportes com loops. Desativado por padrão."
+    },
+    "support_interface_min_area": {
+      "label": "Área de Contato de Suporte Mínimo",
+      "tooltip": "Valores mais baixos geram mais superfícies de contato de suporte."
+    },
+    "support_interface_not_for_body": {
+      "label": "Evitar o filamento da interface para a base",
+      "tooltip": "Evite usar o filamento da interface de suporte para imprimir a base, se possível."
+    },
+    "support_interface_pattern": {
+      "label": "Padrão de interface",
+      "tooltip": "Padrão de linha de interface de suporte. O padrão padrão para interface de suporte não solúvel é reticulado, enquanto o padrão padrão para interface de suporte solúvel é concêntrico",
+      "enum_labels": [
+        "Padrão",
+        "Retilíneo",
+        "Concêntrico",
+        "Reticulado Interligado",
+        "Grade",
+        "Linha monótona"
+      ]
+    },
+    "support_interface_spacing": {
+      "label": "Espaçamento da interface superior",
+      "tooltip": "Espaçamento das linhas de interface. Zero significa interface sólida"
+    },
+    "support_interface_speed": {
+      "label": "Interface de suporte",
+      "tooltip": "Velocidade da interface de suporte"
+    },
+    "support_interface_top_layers": {
+      "label": "Camadas de interface superior",
+      "tooltip": "Número de camadas de interface superior"
+    },
+    "support_ironing": {
+      "label": "Interface de suporte de engomar",
+      "tooltip": "Ferrar é usar pequeno fluxo para imprimir na mesma altura da interface de suporte novamente para torná-lo mais suave.Esta configuração controla se a interface de suporte está sendo engomada. Quando habilitada, a interface de suporte será extrudidacomo sólida também."
+    },
+    "support_ironing_flow": {
+      "label": "Apoio fluxo de engomar",
+      "tooltip": "A quantidade de material a ser extrudido durante a ferragem. Relativo ao fluxo da altura normal da camada dainterface de suporte. Valor muito alto resulta em sobreextrusão na superfície."
+    },
+    "support_ironing_pattern": {
+      "label": "Suporte padrão de engomar",
+      "tooltip": "O padrão que será usado ao engomar.",
+      "enum_labels": [
+        "Concêntrico",
+        "Retilíneo"
+      ]
+    },
+    "support_ironing_spacing": {
+      "label": "Suporte Espaçamento da linha de engomar",
+      "tooltip": "A distância entre as linhas de engomar."
+    },
+    "support_line_width": {
+      "label": "Suporte",
+      "tooltip": "Largura da linha de suporte. Se expresso como %, será calculado sobre o diâmetro do bico."
+    },
+    "support_material_interface_fan_speed": {
+      "label": "Velocidade do ventilador de interface de suporte",
+      "tooltip": "Esta velocidade do ventilador é aplicada durante todas as interfaces de suporte, para enfraquecer sua ligação com uma alta velocidade do ventilador.\nDefina como -1 para desativar esta substituição.\nSó pode ser substituído por disable_fan_first_layers."
+    },
+    "support_multi_bed_types": {
+      "label": "Suportar vários tipos de mesa",
+      "tooltip": "Ative esta opção se quiser usar vários tipos de mesa"
+    },
+    "support_object_first_layer_gap": {
+      "label": "Intervalo da primeira camada suporte/objecto",
+      "tooltip": "Separação XY entre um objeto e seu suporte na primeira camada."
+    },
+    "support_object_xy_distance": {
+      "label": "Distância xy entre suporte e objeto",
+      "tooltip": "Separação XY entre um objeto e seu suporte"
+    },
+    "support_on_build_plate_only": {
+      "label": "Somente na mesa",
+      "tooltip": "Não criar suporte na superfície do modelo, apenas na mesa"
+    },
+    "support_remove_small_overhang": {
+      "label": "Remover pequenos overhangs",
+      "tooltip": "Remova pequenos balanços que possivelmente não precisam de suporte."
+    },
+    "support_speed": {
+      "label": "Suporte",
+      "tooltip": "Velocidade do suporte"
+    },
+    "support_style": {
+      "label": "Estilo",
+      "tooltip": "Estilo e forma do suporte. Para suporte normal, projetar os suportes em uma grade regular criará suportes mais estáveis (padrão), enquanto torres de suporte ajustadas economizarão filamento e reduzirão a cicatrização do objeto.\nPara suporte de árvore, estilo fino e orgânico mesclarão os galhos de forma mais agressiva e economizarão muito filamento (orgânico padrão), enquanto o estilo híbrido criará uma estrutura semelhante ao suporte normal em grandes overhangs planas.",
+      "enum_labels": [
+        "Padrão",
+        "Grade",
+        "Ajustado",
+        "Árvore Estreita",
+        "Árvore Forte",
+        "Árvore Híbrida",
+        "Orgânico"
+      ]
+    },
+    "support_threshold_angle": {
+      "label": "Ângulo de limite",
+      "tooltip": "O suporte será gerado para overhangs cujo ângulo de inclinação estiver abaixo do limite."
+    },
+    "support_top_z_distance": {
+      "label": "Distância Z superior",
+      "tooltip": "A diferença z entre a interface superior de suporte e o objeto"
+    },
+    "support_type": {
+      "label": "Tipo",
+      "tooltip": "normal(auto) e tree(auto) são usados para gerar suporte automaticamente. Se normal(manual) ou tree(manual) for selecionado, apenas os suportes são gerados",
+      "enum_labels": [
+        "normal(automático)",
+        "árvore(automático)",
+        "normal(manual)",
+        "árvore(manual)"
+      ]
+    },
+    "support_xy_overrides_z": {
+      "label": "Prioridade da Distância de Apoio",
+      "tooltip": "Quando 'X/Y substitui Z' é selecionado, a distância horizontal entre o modelo e a estrutura de suporte permanecerá constante,mas resultará em uma distância Z maior. Quando 'Z substitui X/Y' é selecionado, a distância entre o suporte eo modelo na área de sobreposição permanece constante, enquanto o suporte na direção XY fornece melhor estabilidade para asobreposição.",
+      "enum_labels": [
+        "X/Y substitui Z",
+        "Z substitui X/Y"
+      ]
+    },
+    "symmetric_infill_y_axis": {
+      "label": "Eixo y de preenchimento simétrico",
+      "tooltip": "Se o modelo tiver duas partes que são simétricas em torno do eixo y e você quiser que essaspartes tenham texturas simétricas, clique nesta opção em uma das partes."
+    },
+    "temperature_vitrification": {
+      "label": "Temperatura de amolecimento",
+      "tooltip": "O filamento amolece a esta temperatura, portanto, quando a temperatura da mesa for igual ou maior que ela, é altamente recomendável abrir a porta da frente e/ou remover o vidro superior para evitar entupimentos."
+    },
+    "template_custom_gcode": {
+      "label": "G-Code Personalizado",
+      "tooltip": "Este G-code será usado como um código personalizado"
+    },
+    "textured_plate_temp": {
+      "label": "Outras camadas",
+      "tooltip": "Temperatura da mesa para camadas exceto a inicial. O valor 0 significa que o filamento não suporta a impressão no Plate de PEI Texturizado"
+    },
+    "textured_plate_temp_initial_layer": {
+      "label": "Primeira camada",
+      "tooltip": "Temperatura da mesa na primeira camada. O valor 0 significa que o filamento não suporta a impressão no Plate de PEI Texturizado"
+    },
+    "thick_bridges": {
+      "label": "Ponte grossa",
+      "tooltip": "Se ativado, as pontes são mais confiáveis, podem cobrir distâncias maiores, mas podem parecer piores. Se desativado, as pontes ficam melhores, mas são confiáveis apenas para distâncias de ponte mais curtas."
+    },
+    "thick_internal_bridges": {
+      "label": "Ponte interna grossa",
+      "tooltip": "Se ativado, serão usadas pontes internas grossas. Geralmente é recomendado ter este recurso ativado. No entanto, considere desativá-lo se estiver usando bocais grandes."
+    },
+    "thumbnails": {
+      "label": "Miniaturas de G-code",
+      "tooltip": "Tamanhos das imagens a serem armazenados em arquivos .gcode e .sl1 / .sl1s, no seguinte formato: \"XxY, XxY, ...\""
+    },
+    "thumbnails_format": {
+      "label": "Formato das miniaturas de G-code",
+      "tooltip": "Formato das miniaturas de G-code: PNG para melhor qualidade, JPG para menor tamanho, QOI para firmware de baixa memória",
+      "enum_labels": [
+        "PNG",
+        "JPG",
+        "QOI",
+        "BTT TT",
+        "ColPic",
+        "CR PNG"
+      ]
+    },
+    "time_cost": {
+      "label": "Custo de tempo",
+      "tooltip": "O custo da impressora por hora"
+    },
+    "time_lapse_gcode": {
+      "label": "G-Code de timelapse"
+    },
+    "timelapse_type": {
+      "label": "Timelapse",
+      "tooltip": "Se o modo suave ou tradicional for selecionado, um vídeo em time-lapse será gerado para cada impressão. Após cada camada ser impressa, uma captura de tela é feita com a câmera da câmara. Todas essas capturas de tela são compostas em um vídeo em time-lapse quando a impressão é concluída. Se o modo suave for selecionado, a extrusora se moverá para fora após cada camada ser impressa e então tirará uma captura de tela. Como o filamento derretido pode vazar do bico durante o processo de tirar uma captura de tela, é necessário uma Torre Prime para o modo suave para limpar o bico.",
+      "enum_labels": [
+        "Tradicional",
+        "Suavização",
+        "Fechar"
+      ]
+    },
+    "top_bottom_infill_wall_overlap": {
+      "label": "Sobreposição Superior/Inferior de preenchimento sólido/parede",
+      "tooltip": "A área de preenchimento sólido é ligeiramente alargada para se sobrepor à parede para melhor ligação e para minimizar a aparência de buracos onde o preenchimento encontra as paredes. Um valor de 25-30% é um bom ponto de partida, minimizando a aparência dos buracos. O valor percentual é relativo à largura da linha do preenchimento"
+    },
+    "top_shell_layers": {
+      "label": "Camadas de topo",
+      "full_label": "Camadas sólidas superiores",
+      "tooltip": "Este é o número de camadas sólidas do perímetro superior, incluindo a camada da superfície superior. Quando a espessura calculada por este valor for menor do que a espessura do perímetro superior, as camadas do perímetro superior serão aumentadas"
+    },
+    "top_shell_thickness": {
+      "label": "Espessura da parede de topo",
+      "full_label": "Espessura da parede de topo",
+      "tooltip": "O número de camadas sólidas superiores é aumentado ao fatiar se a espessura calculada pelas camadas da parede superior for menor do que este valor. Isso pode evitar que a parede seja muito fina quando a altura da camada é pequena. 0 significa que esta configuração está desativada e a espessura da parede superior é determinada exclusivamente pelas camadas da parede superior"
+    },
+    "top_solid_infill_flow_ratio": {
+      "label": "Fluxo em superfície superior",
+      "tooltip": "Este fator afeta a quantidade de filamento para o preenchimento sólido superior. Você pode diminuí-lo ligeiramente para ter um acabamento de superfície suave"
+    },
+    "top_surface_acceleration": {
+      "label": "Superfície superior",
+      "tooltip": "Aceleração do preenchimento da superfície superior. Usar um valor menor pode melhorar a qualidade da superfície superior"
+    },
+    "top_surface_jerk": {
+      "label": "Superfície superior",
+      "tooltip": "Jerk na superfície superior"
+    },
+    "top_surface_line_width": {
+      "label": "Superfície superior",
+      "tooltip": "Largura da linha para superfícies superiores. Se expressa em %, será calculada sobre o diâmetro do bico."
+    },
+    "top_surface_pattern": {
+      "label": "Padrão de superfície superior",
+      "tooltip": "Padrão de linha do preenchimento da superfície superior",
+      "enum_labels": [
+        "Concêntrico",
+        "Retilíneo",
+        "Monótono",
+        "Linha monótona",
+        "Retilíneo alinhado",
+        "Curva de Hilbert",
+        "Cordas Arquimedeanas",
+        "Espiral de Octagrama"
+      ]
+    },
+    "top_surface_speed": {
+      "label": "Superfície superior",
+      "tooltip": "Velocidade de preenchimento da superfície superior, que é sólida"
+    },
+    "tpms_end_infill_density": {
+      "label": "Densidade de enchimento esparsa do fim",
+      "tooltip": "Densidade de enchimento esparsa do fim na faixa (1-99)"
+    },
+    "tpms_gradual_direction": {
+      "label": "Direção gradual",
+      "tooltip": "Direção gradual",
+      "enum_labels": [
+        "eixo x",
+        "Eixo y",
+        "Eixo z"
+      ]
+    },
+    "tpms_start_infill_density": {
+      "label": "Iniciar densidade de enchimento esparsa",
+      "tooltip": "Iniciar densidade de enchimento esparsa na faixa (1-99)"
+    },
+    "travel_acceleration": {
+      "label": "Deslocamento",
+      "tooltip": "Aceleração dos movimentos de deslocamento"
+    },
+    "travel_jerk": {
+      "label": "Deslocamento",
+      "tooltip": "Jerk no deslocamento"
+    },
+    "travel_short_distance_acceleration": {
+      "label": "Aceleração de viagem curta distância",
+      "tooltip": "Aceleração usada para movimentos curtos. A curta distância de viagem é determinada pela configuração retract_before_travel."
+    },
+    "travel_short_distance_threshold": {
+      "label": "Limite de viagem curta distância",
+      "tooltip": "Limite de distância de viagem curta para travel_short_distance_acceleration."
+    },
+    "travel_slope": {
+      "label": "Ángulo de viagem",
+      "tooltip": "Ângulo de viagem para inclinação e espiral Z hop tipo. Ajustá-lo para 90° resulta em Normal Lift"
+    },
+    "travel_speed": {
+      "label": "Deslocamento",
+      "tooltip": "Velocidade de deslocamento mais rápida e sem extrusão"
+    },
+    "tree_hybrid_cross_height": {
+      "label": "Limitação da altura do suporte transversal",
+      "tooltip": "Em buracos de superfície baixa e plana do modelo, os suportes cruzados são mais fáceis de remover; Quando definidopara 0, este recurso é desativado."
+    },
+    "tree_support_adaptive_layer_height": {
+      "label": "Altura de camada adaptativa",
+      "tooltip": "Ao ativar essa opção, a altura da camada de suporte de árvore, exceto a primeira, será calculada automaticamente "
+    },
+    "tree_support_angle_slow": {
+      "label": "Ângulo preferido da ramificação",
+      "tooltip": "O ângulo preferido das ramificações, quando eles não precisam evitar o modelo. Use um ângulo mais baixo para torná-los mais verticais e mais estáveis. Use um ângulo mais alto para que as ramificações se fundam mais rápido."
+    },
+    "tree_support_auto_brim": {
+      "label": "Largura de borda automática",
+      "tooltip": "Ao ativar essa opção, a largura da borda para suporte de árvore será calculada automaticamente"
+    },
+    "tree_support_branch_angle": {
+      "label": "Ângulo da ramificação",
+      "tooltip": "Esta configuração determina o ângulo máximo de inclinação que as ramificações de suporte de árvore podem fazer. Se o ângulo for aumentado, as ramificações podem ser impressas de forma mais horizontal, permitindo que alcancem mais longe."
+    },
+    "tree_support_branch_angle_organic": {
+      "label": "Ângulo da ramificação",
+      "tooltip": "Esta configuração determina o ângulo máximo de inclinação que as ramificações de suporte de árvore podem fazer. Se o ângulo for aumentado, as ramificações podem ser impressas de forma mais horizontal, permitindo que alcancem mais longe."
+    },
+    "tree_support_branch_diameter": {
+      "label": "Diâmetro do ramo de suporte de árvore",
+      "tooltip": "Essa configuração determina o diâmetro inicial dos nós de suporte."
+    },
+    "tree_support_branch_diameter_angle": {
+      "label": "Ângulo do diâmetro da ramificação",
+      "tooltip": "O ângulo das ramificações à medida que elas gradualmente se tornam mais espessos em direção à base. Um ângulo de 0 fará com que as ramificações tenham espessura uniforme ao longo de seu comprimento. Um pequeno ângulo pode aumentar a estabilidade do suporte orgânico."
+    },
+    "tree_support_branch_diameter_double_wall": {
+      "label": "Diâmetro da ramificação com perí. duplo",
+      "tooltip": "Ramificações com área maior do que a área de um círculo com este diâmetro serão impressas com paredes duplas para estabilidade. Defina este valor como zero para não ter paredes duplas."
+    },
+    "tree_support_branch_diameter_organic": {
+      "label": "Diâmetro do ramo de suporte de árvore",
+      "tooltip": "Essa configuração determina o diâmetro inicial dos nós de suporte."
+    },
+    "tree_support_branch_distance": {
+      "label": "Distância entre ramificações",
+      "tooltip": "Essa configuração determina a distância entre os nós de suporte de árvore vizinhos."
+    },
+    "tree_support_branch_distance_organic": {
+      "label": "Distância entre ramificações",
+      "tooltip": "Essa configuração determina a distância entre os nós de suporte de árvore vizinhos."
+    },
+    "tree_support_brim_width": {
+      "label": "Largura da borda de suporte de árvore",
+      "tooltip": "Distância do ramo da árvore até a linha de borda mais externa"
+    },
+    "tree_support_tip_diameter": {
+      "label": "Diâmetro da ponta",
+      "tooltip": "Diâmetro da ponta do ramo para suportes orgânicos."
+    },
+    "tree_support_top_rate": {
+      "label": "Densidade da ramificação",
+      "tooltip": "Ajusta a densidade da estrutura de suporte usada para gerar as pontas das ramificações. Um valor mais alto resulta em overhangs melhores, mas os suportes são mais difíceis de remover, portanto, é recomendável ativar as interfaces superiores de suporte em vez de um valor de densidade de ramo alto se forem necessárias interfaces densas."
+    },
+    "tree_support_wall_count": {
+      "label": "Laços de parede de suporte (Normal)",
+      "tooltip": "Definição para o número de camadas de parede externa para suporte normal; 0 significa um número inteligente de camadas"
+    },
+    "tree_support_wall_count_tree": {
+      "label": "Laços de parede de suporte (Árvore)",
+      "tooltip": "Definição para o número de camadas de parede externa para suporte de árvore; 0 significa um número inteligente decamadas."
+    },
+    "tree_support_with_infill": {
+      "label": "Suporte de árvore com preenchimento",
+      "tooltip": "Essa configuração especifica se deve adicionar preenchimento dentro de grandes cavidades do suporte de árvore"
+    },
+    "upward_compatible_machine": {
+      "label": "uáquina compatível ascendente"
+    },
+    "use_firmware_retraction": {
+      "label": "Usar retração de firmware",
+      "tooltip": "Esta configuração experimental usa os comandos G10 e G11 para fazer com que o firmware gerencie a retração. Isso é suportado apenas no Marlin mais recente."
+    },
+    "use_relative_e_distances": {
+      "label": "Usar distâncias E relativas",
+      "tooltip": "A extrusão relativa é recomendada ao usar a opção \"label_objects\". Algumas extrusoras funcionam melhor com esta opção desmarcada (modo de extrusão absoluta). A Torre Prime é compatível apenas com o modo relativo. É recomendado na maioria das impressoras. O padrão é ativado"
+    },
+    "wall_direction": {
+      "label": "Direção da volta do perímetro",
+      "tooltip": "A direção na qual os loops da perímetro são extrudados quando vistos de cima.\n\nPor padrão, todas as paredes são extrudadas no sentido anti-horário, a menos que o Reverso em ímpar esteja ativado. Definir isso como qualquer opção que não seja Automático forçará a direção do perímetro, independentemente do Reverso em ímpar.\n\nEsta opção será desativada se o modo de vaso espiral estiver ativado.",
+      "enum_labels": [
+        "Auto",
+        "Sentido anti-horário",
+        "Sentido horário"
+      ]
+    },
+    "wall_distribution_count": {
+      "label": "Contagem de distribuição de perímetro",
+      "tooltip": "O número de paredes, contadas a partir do centro, sobre as quais a variação precisa ser espalhada. Valores menores significam que as paredes externas não mudam de largura"
+    },
+    "wall_filament": {
+      "label": "Perímetros"
+    },
+    "wall_generator": {
+      "label": "Gerador de perímetros",
+      "tooltip": "O gerador de perímetro clássico produz paredes com largura de extrusão constante e para áreas muito finas é usado preenchimento de vão. O motor Arachne produz perímetros com largura de extrusão variável",
+      "enum_labels": [
+        "Clássico",
+        "Arachne"
+      ]
+    },
+    "wall_loops": {
+      "label": "Perímetros",
+      "tooltip": "Número de perímetros em cada camada"
+    },
+    "wall_sequence": {
+      "label": "Ordem de impressão dos perímetros",
+      "tooltip": "Sequência de impressão das paredes internas (interna) e externas (externa).  nnUse Interior/Outer para melhores sobressalentes. Isso porque asparedes sobresalientes podem aderir a um perímetro vizinho durante a impressão. No entanto, esta opção resulta em uma qualidadede superfície ligeiramente reduzida, pois o perímetro externo é deformado ao ser esmagado no perímetro interno.  nnUse interior/exterior/interiorpara o melhor acabamento de superfície externa e precisão dimensional, pois a parede externa é impressa sem perturbações deum perímetro interno. No entanto, o desempenho da sobreposição diminuirá, pois não há perímetro interno para imprimir a paredeexterna contra. Esta opção requer um mínimo de 3 paredes para ser eficaz, pois imprime as paredes internas apartir do 3º perímetro em diante primeiro, em seguida, o perímetro externo e, finalmente, o primeiro perímetro interno. Estaopção é recomendada contra a opção Exterior / Interior na maioria dos casos.  nnUse Exterior/Interior para a mesmaqualidade de parede externa e benefícios de precisão dimensional da opção Interior/Exterior/Interior. No entanto, as costuras z parecerão menosconsistentes à medida que a primeira extrusão de uma nova camada começa em uma superfície visível.  nnUse AdaptiveOuter/Inner para combinar os pontos fortes das sequências de impressão Outer/Inner e Inner/Outer. Na maioria das situações, este modoimprimirá a parede externa primeiro. No entanto, quando encontrar salientes superiores a 75%% ou durante a ponte, a impressoraimprimirá primeiro a parede interna para garantir uma melhor qualidade de superfície nas áreas salientes. Observe que os artefatosde camada podem aparecer em regiões onde a ordem de impressão de parede muda.   n  n",
+      "enum_labels": [
+        "Interior/Exterior",
+        "Exterior/Interior",
+        "Interior/Exterior/Interior",
+        "Exterior/interior adaptativo (experimental)"
+      ]
+    },
+    "wall_transition_angle": {
+      "label": "Ângulo de limite de transição de perímetro",
+      "tooltip": "Quando criar transições entre números pares e ímpares de paredes. Uma forma de cunha com um ângulo maior do que esta configuração não terá transições e nenhumo perímetro será impresso no centro para preencher o espaço restante. Reduzir esta configuração reduz o número e o comprimento dessas paredes centrais, mas pode deixar vazios ou extrusão excessiva"
+    },
+    "wall_transition_filter_deviation": {
+      "label": "Margem de filtro de transição de perímetro",
+      "tooltip": "Evita a transição de ida e volta entre um perímetro extra e um a menos. Esta margem amplia o intervalo de larguras de extrusão que seguem para [Largura mínima da perímetro - margem, 2 * Largura mínima da perímetro + margem]. Aumentar esta margem reduz o número de transições, o que reduz o número de inícios / paradas de extrusão e o tempo de deslocamento. No entanto, uma grande variação na largura de extrusão pode levar a problemas de subextrusão ou superextrusão. É expresso como uma porcentagem sobre o diâmetro do bico"
+    },
+    "wall_transition_length": {
+      "label": "Comprimento da transição de perímetro",
+      "tooltip": "Ao fazer a transição entre diferentes números de paredes à medida que a peça fica mais fina, uma certa quantidade de espaço é designada para dividir ou unir os segmentos do perímetro. É expresso como uma porcentagem sobre o diâmetro do bico"
+    },
+    "wipe": {
+      "label": "Limpar enquanto retrai",
+      "tooltip": "Movimentar o bico ao longo do último caminho de extrusão ao retrair para limpar o filamento vazado no bico. Isso pode minimizar a formação de blob quando imprimir uma nova peça após o deslocamento"
+    },
+    "wipe_before_external_loop": {
+      "label": "Limpeza antes do loop externo",
+      "tooltip": "Para minimizar a visibilidade de sobreextrusão potencial no início de um perímetro externo ao imprimir com a ordem de impressão de perímetro Externo/Interno ou Interno/Externo/Interno, a desretração é executada ligeiramente no interior a partir do início do perímetro externo. Dessa forma, qualquer sobreextrusão potencial é ocultada da superfície externa. \n\nIsso é útil ao imprimir com a ordem de impressão de perímetro Externa/Interna ou Interna/Externa/Interna, pois nesses modos é mais provável que um perímetro externo seja impresso imediatamente após um movimento de desretração."
+    },
+    "wipe_distance": {
+      "label": "Distância de limpeza",
+      "tooltip": "Descreva por quanto tempo o bico se moverá ao longo do último caminho ao retrair. \n\nDependendo de quanto tempo dura a operação de limpeza, quão rápidas e longas são as configurações de retração do extrusor/filamento, pode ser necessário um movimento de retração para recolher o filamento restante. \n\nDefinir um valor na configuração de quantidade de retração antes da limpeza abaixo executará qualquer retração em excesso antes da limpeza, caso contrário, será realizada após."
+    },
+    "wipe_on_loops": {
+      "label": "Limpeza em loops",
+      "tooltip": "Para minimizar a visibilidade da costura em uma extrusão de loop fechado, é executado um pequeno movimento para dentro antes que o extrusor saia do loop."
+    },
+    "wipe_speed": {
+      "label": "Velocidade de limpeza",
+      "tooltip": "A velocidade de limpeza é determinada pela velocidade especificada nesta configuração. Se o valor for expresso como uma porcentagem (por exemplo, 80%), será calculado com base na configuração de velocidade de deslocamento acima. O valor padrão para este parâmetro é 80%"
+    },
+    "wipe_tower_bridging": {
+      "label": "Distância máxima de ponte",
+      "tooltip": "Distância máxima entre suportes em seções de preenchimento não sólido."
+    },
+    "wipe_tower_cone_angle": {
+      "label": "Ângulo do ápice do cone de estabilização",
+      "tooltip": "Ângulo no ápice do cone usado para estabilizar a Torre Prime. Um ângulo maior significa uma base mais larga."
+    },
+    "wipe_tower_extra_flow": {
+      "label": "Fluxo extra para purga",
+      "tooltip": "Fluxo extra usado para as linhas de purga na torre de limpeza. Isso torna as linhas de purga maisgrossas ou estreitas do que normalmente seriam. O espaçamento é ajustado automaticamente."
+    },
+    "wipe_tower_extra_spacing": {
+      "label": "Espaçamento das linhas de purga da Torre Prime",
+      "tooltip": "Espaçamento das linhas de purga na Torre Prime."
+    },
+    "wipe_tower_filament": {
+      "label": "Torre Prime",
+      "tooltip": "Extrusor a ser usada ao imprimir o perímetro da Torre Prime. Defina como 0 para usar a disponível (não solúvel é preferido)."
+    },
+    "wipe_tower_max_purge_speed": {
+      "label": "Velocidade máxima de impressão da Torre Prime",
+      "tooltip": "A velocidade máxima de impressão ao purgar na Torre Prime e ao imprimir as camadas esparsas da Torre Prime. Ao purgar, se a velocidade do preenchimento ou a velocidade calculada a partir da velocidade volumétrica máxima do filamento for menor, a menor será utilizada.\n\nAo imprimir as camadas esparsas, se a velocidade do perímetro interno ou a velocidade calculada a partir da velocidade volumétrica máxima do filamento for menor, a menor será utilizada.\n\nAumentar essa velocidade pode afetar a estabilidade da torre, bem como aumentar a força com que o bico colide com quaisquer bolhas que possam ter se formado na Torre Prime.\n\nAntes de aumentar esse parâmetro além do padrão de 90mm/s, certifique-se de que sua impressora pode realizar pontes de forma confiável nas velocidades aumentadas e que a extrusão ao trocar a ferramenta está bem controlada.\n\nPara os perímetros externos da Torre Prime, a velocidade do perímetro interno é utilizada independentemente dessa configuração."
+    },
+    "wipe_tower_no_sparse_layers": {
+      "label": "Sem camadas esparsas (beta)",
+      "tooltip": "Se ativado, a Torre Prime não será impressa em camadas sem troca de ferramenta. Em camadas com uma troca de ferramenta, a extrusora viajará para baixo para imprimir a Torre Prime. O usuário é responsável por garantir que não haja colisão com a impressão."
+    },
+    "wipe_tower_rotation_angle": {
+      "label": "Ángulo de rotação da torre principal",
+      "tooltip": "Ángulo de rotação da torre principal em relação ao eixo x."
+    },
+    "wiping_volumes_extruders": {
+      "label": "Volumes de purga - volumes de carga/descarga",
+      "tooltip": "Este vetor salva os volumes necessários para mudar de/para cada ferramenta usada na Torre Prime. Esses valores são usados para simplificar a criação dos volumes de purga completos abaixo."
+    },
+    "xy_contour_compensation": {
+      "label": "Compensação XY de contornos",
+      "tooltip": "O contorno do objeto será expandido ou reduzido no plano XY pelo valor configurado. Valor positivo aumenta o contorno. Valor negativo diminui o contorno. Essa função é usada para ajustar ligeiramente o tamanho quando o objeto tem problemas de montagem"
+    },
+    "xy_hole_compensation": {
+      "label": "Compensação XY de furos",
+      "tooltip": "Os furos do objeto serão aumentados ou reduzidos no plano XY pelo valor configurado. Valor positivo aumenta os furos. Valor negativo reduz os furos. Essa função é usada para ajustar ligeiramente o tamanho quando o objeto tem problema de montagem"
+    },
+    "z_direction_outwall_speed_continuous": {
+      "label": "Velocidade de parede suavizante ao longo de Z (experimental)",
+      "tooltip": "Alisamento da velocidade da parede externa na direção z para obter melhor qualidade da superfície. O tempo de impressãoaumentará. Não funciona no modo vaso espiral."
+    },
+    "z_hop": {
+      "label": "Z hop ao retrair",
+      "tooltip": "Sempre que a retração é feita, o bico é levantado um pouco para criar folga entre o bico e a impressão. Isso evita que o bico atinja a impressão ao se mover. Usar linha espiral para levantar z pode evitar stringing"
+    },
+    "z_hop_types": {
+      "label": "Tipo de Z hop",
+      "tooltip": "Tipo de Z hop",
+      "enum_labels": [
+        "Auto",
+        "Normal",
+        "Declive",
+        "Espiral"
+      ]
+    },
+    "z_offset": {
+      "label": "Deslocamento Z",
+      "tooltip": "Este valor será adicionado (ou subtraído) de todas as coordenadas Z no G-code de saída. É usado para compensar a má posição do fim de curso Z: por exemplo, se o zero do seu fim de curso na verdade deixa o bico 0,3 mm longe da mesa de impressão, ajuste isso para -0,3 (ou corrija o seu fim de curso)."
+    }
+  },
+  "ui": {
+    "Acceleration": "Aceleração",
+    "Acceleration limitation": "Limitação de aceleração",
+    "Accessory": "Acessório",
+    "Adaptive bed mesh": "Bed Mesh adaptativo",
+    "Advanced": "Avançado",
+    "Back Fan": "Ventoinha traseira",
+    "Basic information": "Informações básicas",
+    "Bed temperature": "Temperatura da mesa",
+    "Before layer change G-code": "G-Code antes da mudança de camada",
+    "Bridging": "Ponte",
+    "Brim": "Borda",
+    "Change extrusion role G-code": "G-Code de mudança de tipo de extrusão",
+    "Change filament G-code": "G-Code de mudança de filamento",
+    "Cooling": "Resfriamento",
+    "Cooling Fan": "Ventilador de resfriamento",
+    "Cooling for specific layer": "Resfriamento para camada específica",
+    "Extruder Clearance": "Margem da extrusora",
+    "Filament": "Filamento",
+    "Filament end G-code": "G-code final do filamento",
+    "Filament for Features": "Filamento para características",
+    "Filament start G-code": "G-code de início do filamento",
+    "Flush options": "Opções de purga",
+    "G-code output": "Opções do G-code",
+    "Infill": "Preenchimento",
+    "Initial layer speed": "Velocidade da primeira camada",
+    "Ironing": "Passar ferro",
+    "Jerk limitation": "Limitação de Jerk",
+    "Jerk(XY)": "Jerk(XY)",
+    "Layer change G-code": "G-Code de mudança de camada",
+    "Layer height": "Altura da camada",
+    "Layer height limits": "Limites de altura da camada",
+    "Lift Z Enforcement": "Aplicação do Z hop",
+    "Line width": "Largura da linha",
+    "Machine end G-code": "G-Code final da máquina",
+    "Machine gcode": "G-Code da máquina",
+    "Machine start G-code": "G-Code de início da máquina",
+    "Model fan": "Ventoinha do modelo",
+    "Motion ability": "Movimento",
+    "Multimaterial": "Multifilamento",
+    "Notes": "Notas",
+    "Ooze prevention": "Prevenção do Ooze",
+    "Other layers speed": "Velocidade de outras camadas",
+    "Others": "Outros",
+    "Overhang speed": "Velocidade em overhangs",
+    "Overhangs": "Overhangs",
+    "Pause G-code": "G-Code de pausa",
+    "Position": "Posição",
+    "Post-processing Scripts": "Scripts de pós-processamento",
+    "Precision": "Precisão",
+    "Prime tower": "Torre Prime",
+    "Print chamber temperature": "Temperatura da câmara de impressão",
+    "Print temperature": "Temperatura de impressão",
+    "Printable space": "Espaço de impressão",
+    "Printing by object G-code": "G-Code de impressão por objeto",
+    "Quality": "Qualidade",
+    "Raft": "Jangada",
+    "Retraction": "Retração",
+    "Retraction when switching material": "Retração ao trocar filamento",
+    "Seam": "Costura",
+    "Setting Overrides": "Substituindo Configurações",
+    "Side Fan": "Ventoinha lateral",
+    "Single extruder multimaterial parameters": "Parâmetros de múltiplos materiais com um único extrusor",
+    "Single extruder multimaterial setup": "Configuração de múltiplos materiais com um único extrusor",
+    "Size": "Tamanho",
+    "Skirt": "Saia",
+    "Special mode": "Modo especial",
+    "Speed": "Speed",
+    "Speed limitation": "Limitação de velocidade",
+    "Strength": "Resistência",
+    "Support": "Suporte",
+    "Support filament": "Filamento de suporte",
+    "Support ironing": "Suporte de engomar",
+    "Template Custom G-code": "G-Code personalizado do modelo",
+    "Time lapse G-code": "G-Code de timelapse",
+    "Toolchange parameters with multi extruder MM printers": "Parâmetros de troca de ferramentas com impressoras MM de múltiplas extrusoras",
+    "Toolchange parameters with single extruder MM printers": "Parâmetros de troca de ferramentas com impressoras MM de extrusora única",
+    "Top/bottom shells": "Camadas de topo/base",
+    "Travel speed": "Velocidade de deslocamento",
+    "Tree supports": "Suportes de árvore",
+    "Volumetric speed limitation": "Limitação de fluxo volumétrico",
+    "Wall generator": "Gerador de perímetros",
+    "Walls": "Perímetros",
+    "Walls and surfaces": "Perímetros e superfícies",
+    "Wipe tower": "Torre Prime",
+    "Wipe tower parameters": "Parâmetros da Torre Prime"
+  }
+}
