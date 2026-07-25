@@ -338,7 +338,7 @@ index f7017cb74b..562f14dc89 100644
 +                icon_filename += ".svg";
 +                auto icon_path = Slic3r::var(icon_filename);
 +                if (icon_path != icon_filename) {
-+                    auto& this_icon_pt = icon_data_pt.put_child(page->title().ToStdString(), ptree());
++                    auto& this_icon_pt = icon_data_pt.put_child((is_subset_tab ? page->title() : optgroup->title).ToStdString(), ptree());
 +                    this_icon_pt.put("icon_filename", icon_filename);
 +                    std::ifstream icon_fstream(icon_path);
 +                    if (!icon_fstream.is_open())
