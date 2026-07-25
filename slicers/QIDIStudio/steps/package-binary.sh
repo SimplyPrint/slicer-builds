@@ -6,7 +6,7 @@ strip_args=()
 [[ "${SLICER_STRIP:-1}" == 0 ]] || strip_args+=(--strip)
 
 if [[ -z "${SLICER_RESOURCE_INCLUDES+x}" ]]; then
-  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/Q Series/**\nshaders/**'
+  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/Q Series.json\nprofiles/Q Series/**/*.json\nprofiles/X 3 Series.json\nprofiles/X 3 Series/**/*.json\nprofiles/X 4 Series.json\nprofiles/X 4 Series/**/*.json\nshaders/**'
 fi
 
 python3 tools/stage_bundle.py \

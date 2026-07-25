@@ -3,33 +3,29 @@ set -euo pipefail
 
 bash ./tools/stamp_version_date.sh slicer-src
 source_dir="$(cd -- slicer-src && pwd -P)"
-prefix="$source_dir/deps/build/destdir/usr/local"
-gettext_script=scripts/run_gettext.sh
-[[ -f "$source_dir/$gettext_script" ]] || gettext_script=run_gettext.sh
+prefix="$source_dir/deps/build/OrcaSlicer_dep/usr/local"
 pch=ON
 if [[ "${SLICER_PCH:-ON}" == "OFF" ]]; then
   pch=OFF
 fi
 
 export CMAKE_POLICY_VERSION_MINIMUM=3.5
-read -r -a extra_args <<< "${ORCA_EXTRA_BUILD_ARGS:-}"
+read -r -a extra_args <<< "${FLASHFORGE_EXTRA_BUILD_ARGS:-}"
 extra_args+=(
   -DSLIC3R_GTK=3
   -DBBL_RELEASE_TO_PUBLIC=1
-  -DBBL_INTERNAL_TESTING=0
 )
 if [[ -n "${ORCA_UPDATER_SIG_KEY:-}" ]]; then
   extra_args+=("-DORCA_UPDATER_SIG_KEY=${ORCA_UPDATER_SIG_KEY}")
 fi
 
-# The upstream wrapper names AnycubicSlicerNext here, but the generated Ninja
-# graph exposes the executable output target as orca-slicer.
 bash ./tools/build_cmake_target.sh \
   --source "$source_dir" \
-  --target orca-slicer \
+  --target Orca-Flashforge \
   --generator "Ninja Multi-Config" \
   --config Release \
-  --gettext "$gettext_script" \
+  --gettext scripts/run_gettext.sh \
+  --auto-compiler-cache \
   -- \
   "-DSLIC3R_PCH=$pch" \
   "-DCMAKE_PREFIX_PATH=$prefix" \

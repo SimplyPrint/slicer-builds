@@ -1,0 +1,117 @@
+diff --git a/src/libslic3r/GCode/Thumbnails.hpp b/src/libslic3r/GCode/Thumbnails.hpp
+index 1b69ef19..ad5054e8 100644
+--- a/src/libslic3r/GCode/Thumbnails.hpp
++++ b/src/libslic3r/GCode/Thumbnails.hpp
+@@ -3,6 +3,7 @@
+ 
+ #include "../Point.hpp"
+ #include "../PrintConfig.hpp"
++#include "../enum_bitmask.hpp"
+ #include "ThumbnailData.hpp"
+ 
+ #include <vector>
+diff --git a/src/libslic3r/GCode/Thumbnails.cpp b/src/libslic3r/GCode/Thumbnails.cpp
+--- a/src/libslic3r/GCode/Thumbnails.cpp
++++ b/src/libslic3r/GCode/Thumbnails.cpp
+@@ -1,7 +1,9 @@
+ #include "Thumbnails.hpp"
++#include "../format.hpp"
+ #include "../miniz_extension.hpp"
+ 
++#include <boost/algorithm/string/case_conv.hpp>
+ #include <jpeglib.h>
+ #include <jerror.h>
+ #include <vector>
+ 
+diff --git a/src/slic3r/GUI/Preferences.cpp b/src/slic3r/GUI/Preferences.cpp
+--- a/src/slic3r/GUI/Preferences.cpp
++++ b/src/slic3r/GUI/Preferences.cpp
+@@ -6,6 +6,7 @@
+ #include "MsgDialog.hpp"
+ #include "I18N.hpp"
+ #include "UxProgramTermsDialog.hpp"
+ #include "libslic3r/AppConfig.hpp"
++#include <wx/display.h>
+ #include <wx/notebook.h>
+ #include "Notebook.hpp"
+diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
+index 3f894d79..1cfff1ea 100644
+--- a/src/libslic3r/PrintConfig.cpp
++++ b/src/libslic3r/PrintConfig.cpp
+@@ -2,6 +2,7 @@
+ #include "ClipperUtils.hpp"
+ #include "Config.hpp"
+ #include "Flow.hpp"
++#include "format.hpp"
+ #include "I18N.hpp"
+ #include "FilamentMixer.hpp"
+ 
+diff --git a/src/slic3r/GUI/QDSDeviceManager.cpp b/src/slic3r/GUI/QDSDeviceManager.cpp
+--- a/src/slic3r/GUI/QDSDeviceManager.cpp
++++ b/src/slic3r/GUI/QDSDeviceManager.cpp
+@@ -17,6 +17,7 @@
+ #include <iomanip>
+ #include <sstream>
+ #include <unordered_set>
+ #include <wx/datetime.h>
++#include <wx/mstream.h>
+ 
+ //cj_2
+ #if QDT_RELEASE_TO_PUBLIC
+diff --git a/src/slic3r/GUI/wxMediaCtrl3.h b/src/slic3r/GUI/wxMediaCtrl3.h
+--- a/src/slic3r/GUI/wxMediaCtrl3.h
++++ b/src/slic3r/GUI/wxMediaCtrl3.h
+@@ -9,6 +9,7 @@
+ #define wxMediaCtrl3_h
+ 
+ #include "wx/uri.h"
++#include "wx/panel.h"
+ #include "wx/mediactrl.h"
+ #include "wx/timer.h"
+ #include "../Utils/FrameBuffer.hpp"
+diff --git a/src/slic3r/GUI/DeviceErrorDialog.cpp b/src/slic3r/GUI/DeviceErrorDialog.cpp
+--- a/src/slic3r/GUI/DeviceErrorDialog.cpp
++++ b/src/slic3r/GUI/DeviceErrorDialog.cpp
+@@ -5,6 +5,8 @@
+ #include "MainFrame.hpp"
+ #include "ReleaseNote.hpp"
+ 
++#include <wx/mstream.h>
++
+ namespace Slic3r {
+ namespace GUI
+ {
+diff --git a/src/slic3r/GUI/wxMediaCtrl3.cpp b/src/slic3r/GUI/wxMediaCtrl3.cpp
+--- a/src/slic3r/GUI/wxMediaCtrl3.cpp
++++ b/src/slic3r/GUI/wxMediaCtrl3.cpp
+@@ -4,6 +4,7 @@
+ #include "libslic3r/Utils.hpp"
+ #include <boost/log/trivial.hpp>
+ #include <wx/dcclient.h>
+ #include <wx/dcgraph.h>
++#include <wx/mstream.h>
+ #ifdef __WIN32__
+ #include <versionhelpers.h>
+ #include <wx/msw/registry.h>
+diff --git a/src/slic3r/GUI/SelectMachine.cpp b/src/slic3r/GUI/SelectMachine.cpp
+--- a/src/slic3r/GUI/SelectMachine.cpp
++++ b/src/slic3r/GUI/SelectMachine.cpp
+@@ -42,6 +42,7 @@
+ #include <wx/clipbrd.h>
+ #include <wx/dcgraph.h>
+ #include <wx/mstream.h>
++#include <wx/tooltip.h>
+ #include <miniz.h>
+ #include <algorithm>
+ #include "Plater.hpp"
+diff --git a/src/slic3r/GUI/SendToPrinter.cpp b/src/slic3r/GUI/SendToPrinter.cpp
+--- a/src/slic3r/GUI/SendToPrinter.cpp
++++ b/src/slic3r/GUI/SendToPrinter.cpp
+@@ -16,6 +16,7 @@
+ #include <wx/progdlg.h>
+ #include <wx/clipbrd.h>
+ #include <wx/dcgraph.h>
++#include <wx/tooltip.h>
+ #include <miniz.h>
+ #include <algorithm>
+ #include "BitmapCache.hpp"

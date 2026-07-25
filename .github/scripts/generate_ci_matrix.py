@@ -108,11 +108,11 @@ def _tag(value: str, label: str) -> str:
 
 def _release_policy(value: Any, label: str) -> ReleasePolicy:
     release = _require_string(value, label)
-    if release == "latest":
-        return ReleasePolicy("latest")
+    if release in ("latest", "latest_tag"):
+        return ReleasePolicy(release)
     if release == "none":
         return ReleasePolicy("none")
-    raise MatrixError(f'{label} must be "latest" or "none"')
+    raise MatrixError(f'{label} must be "latest", "latest_tag", or "none"')
 
 
 def _architectures(value: Any, label: str) -> tuple[str, ...]:
@@ -259,6 +259,42 @@ class GitHub:
         )
         published_at = value.get("published_at", "")
         return tag, published_at if isinstance(published_at, str) else ""
+
+    def latest_stable_tag(
+        self, repository: str, override: str = ""
+    ) -> tuple[str, str]:
+        """Resolve a tag-only upstream without mistaking prereleases for stable."""
+
+        if override:
+            return _tag(override, f"release tag of {repository}"), ""
+
+        stable: list[tuple[tuple[int, ...], str]] = []
+        for page in range(1, 101):
+            query = urllib.parse.urlencode(
+                {"per_page": "100", "page": str(page)}
+            )
+            value = self.get(f"repos/{repository}/tags?{query}")
+            if not isinstance(value, list):
+                raise MatrixError(f"GitHub returned invalid tags for {repository}")
+            for item in value:
+                name = item.get("name") if isinstance(item, dict) else None
+                if not isinstance(name, str):
+                    continue
+                try:
+                    parts = _version_parts(name)
+                    safe_name = _tag(name, f"tag of {repository}")
+                except MatrixError:
+                    continue
+                stable.append((parts, safe_name))
+            if len(value) < 100:
+                break
+        else:
+            raise MatrixError(f"too many tags to resolve latest tag of {repository}")
+
+        if not stable:
+            raise MatrixError(f"{repository} has no stable numeric version tag")
+        _parts, tag = max(stable, key=lambda item: (item[0], item[1]))
+        return tag, ""
 
     def commit(self, repository: str, ref: str) -> str:
         encoded = urllib.parse.quote(ref, safe="")
@@ -480,9 +516,14 @@ def generate_matrix(
         latest_published_at = ""
         if policy.release.mode != "none":
             override = release_tag_override
-            latest_tag, latest_published_at = github.release(
-                policy.release_repo_slug, override
-            )
+            if policy.release.mode == "latest_tag":
+                latest_tag, latest_published_at = github.latest_stable_tag(
+                    policy.release_repo_slug, override
+                )
+            else:
+                latest_tag, latest_published_at = github.release(
+                    policy.release_repo_slug, override
+                )
             latest_commit = github.commit(
                 policy.repo_slug, f"refs/tags/{latest_tag}"
             )

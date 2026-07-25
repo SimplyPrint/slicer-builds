@@ -1,0 +1,15 @@
+diff --git a/deps/FFMPEG/FFMPEG.cmake b/deps/FFMPEG/FFMPEG.cmake
+index aa1300be..e7842f13 100644
+--- a/deps/FFMPEG/FFMPEG.cmake
++++ b/deps/FFMPEG/FFMPEG.cmake
+@@ -21,2 +21,3 @@
+ else ()
++    set(_pic_cmd --enable-pic)
+     set(_extra_cmd "--pkg-config-flags=\"--static\"")
+@@ -60,4 +61,6 @@
+             ${_pic_cmd}
+             ${_arch_cmd}
+             ${_cc_cmd}
++            --extra-cflags=-fno-lto
++            --extra-ldflags=-fno-lto
+             --prefix="${DESTDIR}/usr/local"

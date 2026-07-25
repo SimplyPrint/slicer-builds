@@ -101,9 +101,11 @@ jobs:
       SLICER_GUI: ${{ matrix.gui && '1' || '0' }}
       SLICER_RELEASE_TAG: ${{ (matrix.build-type == 'latest_release' || matrix.publish_release) && matrix.release_tag || '' }}
       continue_build: ${{ matrix.skip && 'false' || 'true' }}
-      CFLAGS: -ffunction-sections -fdata-sections
-      CXXFLAGS: -ffunction-sections -fdata-sections
-      LDFLAGS: -Wl,--gc-sections
+      CC: gcc
+      CXX: g++
+      CFLAGS: -O3 -march=x86-64-v3 -mtune=znver4 -flto=auto -ffunction-sections -fdata-sections
+      CXXFLAGS: -O3 -march=x86-64-v3 -mtune=znver4 -flto=auto -ffunction-sections -fdata-sections
+      LDFLAGS: -flto=auto -Wl,-O1,--gc-sections
     steps:
       - name: Checkout repository
         if: env.continue_build == 'true'

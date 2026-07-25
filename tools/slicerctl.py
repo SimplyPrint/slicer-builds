@@ -154,6 +154,13 @@ def validate_manifest(manifest: Manifest) -> None:
             fail(f"{manifest.path}: invalid shared patch-set name")
         if not (ROOT / "patches" / name).is_dir():
             fail(f"{manifest.path}: unknown shared patch set {name!r}")
+    for alias_name in ("common_ref_aliases", "binary_ref_aliases"):
+        aliases = patch_config.get(alias_name, {})
+        if not isinstance(aliases, dict):
+            fail(f"{manifest.path}: patches.{alias_name} must be a table")
+        for source_ref, target_ref in aliases.items():
+            safe_ref(source_ref, f"{manifest.path}: {alias_name} source")
+            safe_ref(target_ref, f"{manifest.path}: {alias_name} target")
 
 
 def manifests() -> dict[str, Manifest]:
@@ -212,11 +219,16 @@ def patch_files(manifest: Manifest, ref: str, mode: str) -> list[Path]:
     aliases = manifest.data.get("patches", {}).get("binary_ref_aliases", {})
     patch_ref = aliases.get(ref, ref) if mode == "binary" else ref
     safe_ref(patch_ref, "patch ref alias")
+    common_aliases = manifest.data.get("patches", {}).get(
+        "common_ref_aliases", {}
+    )
+    common_ref = common_aliases.get(ref, ref)
+    safe_ref(common_ref, "common patch ref alias")
 
     for root in patch_roots(manifest):
         common = root / "common"
         selected.extend(
-            patches_in(common / "all", version_directory(common, ref))
+            patches_in(common / "all", version_directory(common, common_ref))
         )
         if mode == "binary":
             binary = root / "binary"

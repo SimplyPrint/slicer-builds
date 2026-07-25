@@ -6,13 +6,15 @@ strip_args=()
 [[ "${SLICER_STRIP:-1}" == 0 ]] || strip_args+=(--strip)
 
 if [[ -z "${SLICER_RESOURCE_INCLUDES+x}" ]]; then
-  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/BBL/cli_config.json\nprofiles/Snapmaker.json\nprofiles/Snapmaker/**/*.json\nshaders/**'
+  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/Flashforge.json\nprofiles/Flashforge/**/*.json\nshaders/**'
 fi
 
 python3 tools/stage_bundle.py \
-  --executable slicer-src/build/src/Release/snapmaker-orca \
-  --executable slicer-src/build/src/snapmaker-orca \
-  --name snapmaker-orca \
+  --executable slicer-src/build/src/Release/FlashStudio \
+  --executable slicer-src/build/src/FlashStudio \
+  --executable "slicer-src/build/src/Release/Flash Studio" \
+  --executable "slicer-src/build/src/Flash Studio" \
+  --name flash-studio \
   --arch "${ARCH:?ARCH is required}" \
   --output slicer-src/build/slicer_out \
   --resources slicer-src/resources \
