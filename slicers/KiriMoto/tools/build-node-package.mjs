@@ -476,18 +476,36 @@ try {
   engine.setController({ threaded: false });
   let lastProgress = -1;
   engine.setListener((event) => {
-    const raw = event.slice?.update ?? (event.prepare?.update == null ? null : 0.5 + event.prepare.update * 0.5);
+    let raw = null;
+    let start = 0;
+    let end = 0;
+    if (event.slice?.update != null) {
+      raw = event.slice.update;
+      start = 5;
+      end = 70;
+    } else if (event.prepare?.update != null) {
+      raw = event.prepare.update;
+      start = 70;
+      end = 95;
+    }
     if (raw == null) return;
-    const progress = Math.max(0, Math.min(99, Math.floor(raw * 100)));
+    const progress = Math.max(lastProgress, Math.min(end, Math.floor(start + raw * (end - start))));
     if (progress !== lastProgress) {
       lastProgress = progress;
       process.stderr.write(\`progress:\${progress}\\n\`);
     }
   });
+  process.stderr.write('stage:parse\\n');
   await engine.parse(input.buffer.slice(input.byteOffset, input.byteOffset + input.byteLength));
+  process.stderr.write('stage:slice\\n');
   await engine.slice();
+  process.stderr.write('stage:prepare\\n');
   await engine.prepare();
+  process.stderr.write('stage:export\\n');
+  process.stderr.write('progress:96\\n');
   const gcode = await engine.export();
+  process.stderr.write('stage:write\\n');
+  process.stderr.write('progress:99\\n');
   await fs.writeFile(options.output, \`; SimplyPrint Kiri:Moto ${version}\\n\${gcode}\`);
   process.stderr.write('progress:100\\n');
   process.exit(0);
@@ -524,7 +542,10 @@ function fail(message) {
 function launcher() {
   return `#!/usr/bin/env bash
 set -euo pipefail
-script_dir="$(cd -- "$(dirname -- "\${BASH_SOURCE[0]}")" && pwd -P)"
+script_dir="\${BASH_SOURCE[0]%/*}"
+if [[ "$script_dir" != /* ]]; then
+  script_dir="$PWD/$script_dir"
+fi
 node_bin="\${KIRIMOTO_NODE:-node}"
 exec "$node_bin" "$script_dir/../lib/kirimoto/cli.mjs" "$@"
 `;
