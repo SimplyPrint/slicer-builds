@@ -60,7 +60,7 @@ permissions:
 # separate workflow runs in one transaction so the indexed digest cannot race
 # a later run's replacement asset. Matrix jobs within a run remain parallel.
 concurrency:
-  group: slicer-binaries-${{ github.ref }}
+  group: slicer-binaries-${{ github.ref }}-${{ inputs.preview-only && inputs.slicer || 'publish' }}
   cancel-in-progress: false
 
 jobs:
