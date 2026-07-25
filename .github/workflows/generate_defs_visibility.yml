@@ -116,6 +116,7 @@ jobs:
       - name: Generate visibility configuration files
         if: env.continue_generate == 'true'
         env:
+          GH_TOKEN: ${{ github.token }}
           OPENAI_API_KEY: ${{ secrets.SLICER_BUILDS_OPENAI_API_KEY }}
         run: |
           set -euo pipefail
@@ -128,16 +129,16 @@ jobs:
           release_tag_override="${{ inputs.release-tag || '' }}"
           if [[ -n "$release_tag_override" ]]; then
             latest_release_tag="$release_tag_override"
-            latest_release_json=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/releases/tags/${latest_release_tag}" || echo '{}')
+            latest_release_json=$(gh api "repos/${{ matrix.repo }}/releases/tags/${latest_release_tag}" 2>/dev/null || echo '{}')
           else
-            latest_release_json=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/releases/latest")
+            latest_release_json=$(gh api "repos/${{ matrix.repo }}/releases/latest")
             latest_release_tag=$(echo "$latest_release_json" | jq -r '.tag_name')
           fi
-          latest_release_hash=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq -r '.sha')
+          latest_release_hash=$(gh api "repos/${{ matrix.repo }}/commits/refs/tags/${latest_release_tag}" | jq -r '.sha')
           upstream_published_at=$(echo "$latest_release_json" | jq -r '.published_at // empty')
           latest_stored_tag=$(jq -r '.latest // empty' _index.json 2>/dev/null || true)
           release_visibility_present=$(jq -r --arg tag "$latest_release_tag" '(.versions[$tag].visibility? != null)' _index.json 2>/dev/null || echo false)
-          head_hash=$(curl -fsSL "https://api.github.com/repos/${{ matrix.repo }}/commits/HEAD" | jq -r '.sha')
+          head_hash=$(gh api "repos/${{ matrix.repo }}/commits/HEAD" | jq -r '.sha')
 
           echo latest_release_tag=$latest_release_tag
           echo latest_release_hash=$latest_release_hash
