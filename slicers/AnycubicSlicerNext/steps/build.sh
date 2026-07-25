@@ -4,6 +4,8 @@ set -euo pipefail
 bash ./tools/stamp_version_date.sh slicer-src
 source_dir="$(cd -- slicer-src && pwd -P)"
 prefix="$source_dir/deps/build/destdir/usr/local"
+gettext_script=scripts/run_gettext.sh
+[[ -f "$source_dir/$gettext_script" ]] || gettext_script=run_gettext.sh
 pch=ON
 if [[ "${SLICER_PCH:-ON}" == "OFF" ]]; then
   pch=OFF
@@ -27,7 +29,7 @@ bash ./tools/build_cmake_target.sh \
   --target orca-slicer \
   --generator "Ninja Multi-Config" \
   --config Release \
-  --gettext scripts/run_gettext.sh \
+  --gettext "$gettext_script" \
   -- \
   "-DSLIC3R_PCH=$pch" \
   "-DCMAKE_PREFIX_PATH=$prefix" \
