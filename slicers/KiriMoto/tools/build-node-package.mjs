@@ -75,6 +75,15 @@ await patchFile(nodeSourceRoot, 'kiri/core/widget.js', [
 ]);
 
 await patchFile(nodeSourceRoot, 'kiri/run/worker.js', fdmOnlyWorkerPatches());
+await patchFile(nodeSourceRoot, 'kiri/run/worker.js', [
+  [
+    'concurrent = Math.round(Math.max(4, self.Worker && ccvalue > 3 ? ccvalue * 0.75 : 0)),',
+    // The Node package intentionally has one primary worker and no minion
+    // workers. Kiri's normal fallback still reports four-way concurrency when
+    // Worker is unavailable, causing larger models to enqueue work forever.
+    'concurrent = 1,',
+  ],
+]);
 await removeObjectMethods(nodeSourceRoot, 'kiri/run/worker.js', [
   'image2mesh',
   'gerber2mesh',
