@@ -7,7 +7,7 @@ index abaae3692..f7ee0847d 100644
  //Translation
  #include "I18N.hpp"
 -#define _L(s) Slic3r::I18N::translate(s)
-+#define _L(s) s/*Slic3r::I18N::translate(s)*/
++#define _L(s) s /* Slic3r::I18N::translate(s) */
  
  namespace Slic3r {
  
@@ -15,16 +15,12 @@ diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
 index 498678ad2..11dcde189 100644
 --- a/src/libslic3r/PrintConfig.cpp
 +++ b/src/libslic3r/PrintConfig.cpp
-@@ -5,6 +5,9 @@
- #include "format.hpp"
- 
+@@ -7,2 +7,5 @@
  #include "GCode/Thumbnails.hpp"
 +#include "boost/dll/runtime_symbol_info.hpp"
 +#include "boost/property_tree/json_parser.hpp"
 +
  #include <set>
- #include <boost/algorithm/string/replace.hpp>
- #include <boost/algorithm/string/case_conv.hpp>
 @@ -481,6 +484,192 @@ PrintConfigDef::PrintConfigDef()
      assign_printer_technology_to_unknown(this->options, ptFFF);
      this->init_sla_params();
@@ -286,14 +282,9 @@ diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
 index 33f441d2f..bb9fcee41 100644
 --- a/src/slic3r/GUI/Tab.cpp
 +++ b/src/slic3r/GUI/Tab.cpp
-@@ -55,7 +55,7 @@
- #ifdef WIN32
- 	#include <commctrl.h>
- #endif // WIN32
--
+@@ -44,2 +44,3 @@
+ #include "Notebook.hpp"
 +#include "boost/dll/runtime_symbol_info.hpp"
- namespace Slic3r {
- namespace GUI {
  
 @@ -532,6 +532,8 @@ void Tab::create_preset_tab()
      // Initialize the DynamicPrintConfig by default keys/values.

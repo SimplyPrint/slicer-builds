@@ -208,6 +208,10 @@ append_toolchain_inputs() {
         append_literal context.elegoo_extra_build_args "${ELEGOO_EXTRA_BUILD_ARGS:-}"
         append_literal context.orca_updater_sig_key "${ORCA_UPDATER_SIG_KEY:-}"
         ;;
+      OrcaFlashforge)
+        append_literal context.flashforge_extra_build_args "${FLASHFORGE_EXTRA_BUILD_ARGS:-}"
+        append_literal context.orca_updater_sig_key "${ORCA_UPDATER_SIG_KEY:-}"
+        ;;
     esac
   fi
   append_literal context.conan "${CONAN:-default}"
@@ -259,6 +263,8 @@ append_repository_input "build-deps-step" "slicers/$slicer/steps/build-deps.sh"
 append_repository_input "conan-env-step" "slicers/$slicer/steps/conan-env.sh"
 if [[ "$scope" == build ]]; then
   append_repository_input "build-step" "slicers/$slicer/steps/build.sh"
+  append_repository_input "pgo-build-tool" "tools/build_slicer_pgo.sh"
+  append_repository_input "pgo-training-tool" "tools/train_slicer_pgo.py"
   if grep -Fq 'tools/stamp_version_date.sh' "$slicer_dir/steps/build.sh"; then
     append_repository_input "stamp-version-date-tool" "tools/stamp_version_date.sh"
   fi

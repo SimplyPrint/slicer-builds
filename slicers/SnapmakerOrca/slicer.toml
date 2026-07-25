@@ -7,11 +7,14 @@ architectures = ["x86-64"]
 
 [capabilities]
 binary = true
-config_dump = false
+config_dump = true
 thumbnail = true
 
 [patches]
 shared = [
+    "dump-configs-orca-legacy",
+    "glfw-x11-orca-legacy",
+    "glew-glx-orca-legacy",
     "cli-thumbnail-glew-glx",
     "cli-thumbnail-orca-legacy",
 ]
@@ -23,7 +26,7 @@ release = "latest"
 nightly = true
 
 [ci.config]
-enabled = false
-publish = false
-release = "none"
-nightly = false
+enabled = true
+publish = true
+release = "latest"
+nightly = true

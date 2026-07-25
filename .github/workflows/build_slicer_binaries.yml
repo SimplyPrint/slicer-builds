@@ -48,6 +48,11 @@ on:
         default: false
         description: Force rebuild
 
+      preview-only:
+        type: boolean
+        default: false
+        description: Build candidates without replacing releases or indexes
+
 permissions:
   contents: write
 
@@ -117,9 +122,11 @@ jobs:
       SLICER_GUI: '0'
       PLATFORM: linux
       ARCH: ${{ matrix.arch }}
-      CFLAGS: -ffunction-sections -fdata-sections
-      CXXFLAGS: -ffunction-sections -fdata-sections
-      LDFLAGS: -Wl,--gc-sections
+      CC: gcc
+      CXX: g++
+      CFLAGS: ${{ matrix.arch == 'x86-64' && '-O3 -march=x86-64-v3 -mtune=znver4 -flto=auto -ffunction-sections -fdata-sections' || '-O3 -flto=auto -ffunction-sections -fdata-sections' }}
+      CXXFLAGS: ${{ matrix.arch == 'x86-64' && '-O3 -march=x86-64-v3 -mtune=znver4 -flto=auto -ffunction-sections -fdata-sections' || '-O3 -flto=auto -ffunction-sections -fdata-sections' }}
+      LDFLAGS: -flto=auto -Wl,-O1,--gc-sections
       CURA_CONAN_CONFIG_REF: ${{ matrix.cura_conan_config_ref || '' }}
     steps:
       - name: Checkout repository
@@ -226,7 +233,8 @@ jobs:
       - name: Build slicer
         if: env.continue_build == 'true' && (env.FORCE_REBUILD == 'true' || inputs.disable-caching || steps.cache-build-slicer.outputs.cache-hit != 'true')
         run: |
-          ./slicers/${{ matrix.slicer }}/steps/build.sh
+          ./tools/build_slicer_pgo.sh \
+            "${{ matrix.slicer }}" "${{ matrix.family }}"
 
       - name: Package binaries
         if: env.continue_build == 'true'
@@ -261,7 +269,7 @@ jobs:
             slicer-out/KiriMoto-browser-nightly.mjs
 
       - name: Upload latest release
-        if: env.continue_build == 'true' && matrix.publish_release == true
+        if: env.continue_build == 'true' && matrix.publish_release == true && inputs.preview-only != true
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ matrix.slicer }} ${{ env.latest_release_tag }}
@@ -273,7 +281,7 @@ jobs:
           overwrite_files: true
 
       - name: Upload latest Kiri:Moto browser runtime
-        if: env.continue_build == 'true' && matrix.slicer == 'KiriMoto' && env.ARCH == 'x86-64' && matrix.publish_release == true
+        if: env.continue_build == 'true' && matrix.slicer == 'KiriMoto' && env.ARCH == 'x86-64' && matrix.publish_release == true && inputs.preview-only != true
         uses: softprops/action-gh-release@v2
         with:
           files: slicer-out/KiriMoto-${{ env.latest_release_tag }}-browser.mjs
@@ -282,7 +290,7 @@ jobs:
           overwrite_files: true
 
       - name: Upload nightly release
-        if: env.continue_build == 'true' && matrix.publish_nightly == true
+        if: env.continue_build == 'true' && matrix.publish_nightly == true && inputs.preview-only != true
         uses: WebFreak001/deploy-nightly@v3.2.0
         with:
           upload_url: https://uploads.github.com/repos/SimplyPrint/slicer-builds/releases/254161481/assets{?name,label}
@@ -293,7 +301,7 @@ jobs:
           max_releases: 1
 
       - name: Upload nightly Kiri:Moto browser runtime
-        if: env.continue_build == 'true' && matrix.slicer == 'KiriMoto' && env.ARCH == 'x86-64' && matrix.publish_nightly == true
+        if: env.continue_build == 'true' && matrix.slicer == 'KiriMoto' && env.ARCH == 'x86-64' && matrix.publish_nightly == true && inputs.preview-only != true
         uses: softprops/action-gh-release@v2
         with:
           files: slicer-out/KiriMoto-browser-nightly.mjs
@@ -302,7 +310,7 @@ jobs:
           overwrite_files: true
 
       - name: Upload config file
-        if: env.continue_build == 'true' && matrix.publish == true
+        if: env.continue_build == 'true' && matrix.publish == true && inputs.preview-only != true
         uses: actions/upload-artifact@v4
         with:
           name: binary-config-${{ matrix.slicer }}-${{ matrix.artifact_key }}-${{ env.ARCH }}
@@ -311,18 +319,19 @@ jobs:
             slicer-out/slicer-bundle-report.json
 
       - name: Upload unpublished binary preview
-        if: env.continue_build == 'true' && matrix.publish != true
+        if: env.continue_build == 'true' && (matrix.publish != true || inputs.preview-only == true)
         uses: actions/upload-artifact@v4
         with:
           name: preview-binary-${{ matrix.slicer }}-${{ matrix.build-type }}-${{ env.ARCH }}
           path: |
             slicer-out/*.zip
+            slicer-out/*.mjs
             slicer-out/slicer-bundle-report.json
 
   update_index:
     needs: [prepare_matrix, build_slicers]
     runs-on: ubuntu-24.04
-    if: needs.prepare_matrix.outputs.has_publish == 'true' && needs.build_slicers.result == 'success'
+    if: needs.prepare_matrix.outputs.has_publish == 'true' && needs.build_slicers.result == 'success' && inputs.preview-only != true
     outputs:
       nightly_indexed: ${{ steps.update-build-index.outputs.nightly_indexed }}
     steps:
