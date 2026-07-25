@@ -1,0 +1,12 @@
+diff --git a/deps/FFMPEG/FFMPEG.cmake b/deps/FFMPEG/FFMPEG.cmake
+index a6eb31543..5b6a07183 100644
+--- a/deps/FFMPEG/FFMPEG.cmake
++++ b/deps/FFMPEG/FFMPEG.cmake
+@@ -19,6 +19,7 @@ if (MSVC)
+     )
+ 
+ else ()
++    set(_pic_cmd --enable-pic)
+     set(_extra_cmd "--pkg-config-flags=\"--static\"")
+     string(APPEND _extra_cmd "--extra-cflags=\"-I ${DESTDIR}/usr/local/include\"")
+     string(APPEND _extra_cmd "--extra-ldflags=\"-I ${DESTDIR}/usr/local/lib\"")
