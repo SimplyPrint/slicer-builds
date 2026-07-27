@@ -484,7 +484,9 @@ try {
   const engine = newEngine().setMode('FDM').setDevice(device).setProcess(processConfig);
   engine.setController({ threaded: false });
   let lastProgress = -1;
+  let parsedPosition = null;
   engine.setListener((event) => {
+    if (event.vertices) parsedPosition = modelPosition(event.vertices, device);
     let raw = null;
     let start = 0;
     let end = 0;
@@ -506,6 +508,7 @@ try {
   });
   process.stderr.write('stage:parse\\n');
   await engine.parse(input.buffer.slice(input.byteOffset, input.byteOffset + input.byteLength));
+  if (parsedPosition) engine.moveTo(parsedPosition.x, parsedPosition.y, 0);
   process.stderr.write('stage:slice\\n');
   await engine.slice();
   process.stderr.write('stage:prepare\\n');
@@ -534,6 +537,35 @@ function parseArgs(values) {
 
 function workerErrorEvent(error) {
   return { error, message: error?.message ?? String(error), preventDefault() {} };
+}
+
+function modelPosition(vertices, device) {
+  if (vertices.length < 3) return null;
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+  for (let index = 0; index + 2 < vertices.length; index += 3) {
+    const x = Number(vertices[index]);
+    const y = Number(vertices[index + 1]);
+    if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+    minX = Math.min(minX, x);
+    maxX = Math.max(maxX, x);
+    minY = Math.min(minY, y);
+    maxY = Math.max(maxY, y);
+  }
+  if (!Number.isFinite(minX) || !Number.isFinite(minY)) return null;
+
+  const originCenter =
+    device.originCenter === true ||
+    device.originCenter === 1 ||
+    String(device.originCenter).toLowerCase() === 'true';
+  const bedWidth = Number(device.bedWidth);
+  const bedDepth = Number(device.bedDepth);
+  return {
+    x: (minX + maxX) / 2 - (!originCenter && Number.isFinite(bedWidth) ? bedWidth / 2 : 0),
+    y: (minY + maxY) / 2 - (!originCenter && Number.isFinite(bedDepth) ? bedDepth / 2 : 0),
+  };
 }
 
 async function readJson(file) {
