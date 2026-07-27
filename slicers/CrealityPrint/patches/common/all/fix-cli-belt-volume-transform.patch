@@ -1,0 +1,13 @@
+diff --git a/src/libslic3r/ModelObject.cpp b/src/libslic3r/ModelObject.cpp
+--- a/src/libslic3r/ModelObject.cpp
++++ b/src/libslic3r/ModelObject.cpp
+@@ -1374,7 +1374,8 @@ unsigned int ModelObject::update_instances_print_volume_state(const BuildVolume
+                 }
+ 
+                 /*const*/ Transform3d matrix = model_instance->get_matrix() * vol->get_matrix();
+-                if (build_volume.type() == BuildVolume_Type::Belt) {
++                if (build_volume.type() == BuildVolume_Type::Belt &&
++                    model_instance->has_old_transformation()) {
+                     matrix = model_instance->get_old_matrix() * vol->get_matrix();
+                 }
+ 
