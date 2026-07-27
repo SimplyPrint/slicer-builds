@@ -328,7 +328,7 @@ function makeDefinition(key, defaultValue, declaration, role) {
     type,
     default_value: structuredClone(defaultValue),
     label: upperFirst(declaration?.label || humanize(key)),
-    tooltip: declaration?.tooltip || '',
+    tooltip: upperFirst(declaration?.tooltip || ''),
     mode: modeFor(declaration?.group),
     native_type: nativeType(type, defaultValue),
     wire_type: wireType(type, defaultValue),
@@ -588,7 +588,7 @@ async function buildTranslationArtifacts(definitions, declarations, processPanel
           translatedLanguage[declaration.tooltipLanguageKey],
         );
         if (value) {
-          translated.tooltip = value;
+          translated.tooltip = upperFirst(value);
         }
       }
       if (Object.keys(translated).length > 0) settings[key] = translated;
