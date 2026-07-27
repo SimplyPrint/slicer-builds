@@ -248,11 +248,37 @@ function parseMachineMenu(source) {
   ]);
   const parsed = parseMenu(source.slice(start, end));
   const declarations = new Map();
+  const machineSource = source.slice(start, end);
+  const defaults = flattenMachineDefaults(deviceDefaults);
 
   for (const declaration of parsed.declarations.values()) {
     const key = aliases.get(declaration.key) ?? declaration.key;
-    if (!Object.hasOwn(flattenMachineDefaults(deviceDefaults), key)) continue;
+    if (!Object.hasOwn(defaults, key)) continue;
     declarations.set(key, { ...declaration, key });
+  }
+
+  for (const line of machineSource.split(/\r?\n/)) {
+    const match = line.match(
+      /\(ui\.([A-Za-z][A-Za-z0-9_]*)\s*=\s*newGCode\((LANG\.[A-Za-z0-9_]+|["'][^"']*["'])\s*,\s*\{\s*title\s*:\s*(LANG\.[A-Za-z0-9_]+|["'][^"']*["'])/,
+    );
+    if (!match) continue;
+    const [, key, labelToken, titleToken] = match;
+    if (!Object.hasOwn(defaults, key)) continue;
+    declarations.set(key, {
+      key,
+      kind: 'gcode',
+      label: labelFromToken(labelToken) || humanize(key),
+      tooltip: labelFromToken(titleToken),
+      group: 'G-code',
+      labelLanguageKey: languageKeyFromToken(labelToken),
+      tooltipLanguageKey: languageKeyFromToken(titleToken),
+      groupLanguageKey: null,
+      visibility: '',
+      selectList: null,
+      min: null,
+      max: null,
+      convert: null,
+    });
   }
 
   const gcodeKeys = Object.keys(deviceDefaults).filter((key) => key.startsWith('gcode'));
@@ -383,7 +409,7 @@ function settingType(value, declaration) {
       : 'float';
   }
   if (Array.isArray(value)) {
-    if (value.every((item) => typeof item === 'boolean')) return 'bools';
+    if (value.length > 0 && value.every((item) => typeof item === 'boolean')) return 'bools';
     if (value.length > 0 && value.every((item) => Number.isInteger(item))) return 'ints';
     if (value.length > 0 && value.every((item) => typeof item === 'number')) return 'floats';
     return 'strings';
@@ -735,6 +761,20 @@ function validateArtifacts(artifacts) {
       !definition.enum_values.some((value) => value === definition.default_value)
     ) {
       throw new Error(`${key} has a default outside its Kiri:Moto selection list`);
+    }
+  }
+  for (const key of [
+    'gcodeChange',
+    'gcodeFan',
+    'gcodeFeature',
+    'gcodeLayer',
+    'gcodePost',
+    'gcodePre',
+    'gcodeTrack',
+  ]) {
+    const definition = artifacts.definitions[key];
+    if (definition?.type !== 'strings' || definition.editor?.item_type !== 'string') {
+      throw new Error(`${key} must remain an editable list of G-code lines`);
     }
   }
 
