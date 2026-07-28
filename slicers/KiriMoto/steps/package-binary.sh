@@ -30,6 +30,8 @@ for (const relative of [
   'bin/kirimoto',
   'lib/kirimoto/cli.mjs',
   'lib/kirimoto/engine.mjs',
+  'lib/kirimoto/minion-core.mjs',
+  'lib/kirimoto/minion.mjs',
   'lib/kirimoto/worker-core.mjs',
   'lib/kirimoto/worker.mjs',
   'lib/wasm/manifold.wasm',

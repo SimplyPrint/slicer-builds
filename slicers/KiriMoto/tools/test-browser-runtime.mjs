@@ -214,6 +214,9 @@ function testPage(runtime) {
         .setProcess({
           sliceHeight: 0.25,
           sliceAngle: belt ? 45 : 0,
+          sliceSupportType: 'automatic',
+          sliceSupportAngle: 45,
+          sliceSupportDensity: 0.1,
           outputTemp: 210,
           firstLayerNozzleTemp: 215,
         })

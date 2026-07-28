@@ -46,10 +46,6 @@ await patchFile(nodeSourceRoot, 'kiri/run/engine.js', [
     "import { newWidget } from '../app/widget.js';",
     "import { newWidget } from '../core/widget.js';",
   ],
-  [
-    '            client.restart();\n            client.pool.start();',
-    '            client.restart();\n            // Node builds use a single isolated worker.',
-  ],
   ['new load.STL()', 'new STL()', 2],
 ]);
 
@@ -78,16 +74,33 @@ await patchFile(nodeSourceRoot, 'kiri/run/worker.js', fdmOnlyWorkerPatches());
 await patchFile(nodeSourceRoot, 'kiri/run/worker.js', [
   [
     'concurrent = Math.round(Math.max(4, self.Worker && ccvalue > 3 ? ccvalue * 0.75 : 0)),',
-    // The Node package intentionally has one primary worker and no minion
-    // workers. Kiri's normal fallback still reports four-way concurrency when
-    // Worker is unavailable, causing larger models to enqueue work forever.
-    'concurrent = 1,',
+    'concurrent = Math.max(1, Math.min(4, Number.parseInt(process.env.KIRIMOTO_THREADS || "", 10) || ccvalue || 1)),',
   ],
 ]);
 await removeObjectMethods(nodeSourceRoot, 'kiri/run/worker.js', [
   'image2mesh',
   'gerber2mesh',
   'zip',
+]);
+await patchFile(nodeSourceRoot, 'kiri/run/minion.js', [
+  ["import { codec, encode, encodePointArray } from '../core/codec.js';", "import { codec } from '../core/codec.js';"],
+  ["import { sliceZ, sliceConnect } from '../../geo/slicer.js';", "import { sliceZ } from '../../geo/slicer.js';"],
+  ["import { Slicer as cam_slicer } from '../mode/cam/work/slicer-cam.js';\n", ''],
+  ["import { Slicer as topo_slicer } from '../mode/cam/work/slicer-topo.js';\n", ''],
+  ["import { Probe, Trace, raster_slice } from '../mode/cam/work/topo3.js';\n", ''],
+  ["import { Topo as Topo4, rotatePoints } from '../mode/cam/work/topo4.js';\n", ''],
+]);
+await removeObjectMethods(nodeSourceRoot, 'kiri/run/minion.js', [
+  'cam_slice_init',
+  'cam_slice_cleanup',
+  'cam_slice',
+  'topo_raster',
+  'trace_init',
+  'trace_y',
+  'trace_x',
+  'trace_cleanup',
+  'topo4_slice',
+  'topo4_lathe',
 ]);
 
 await patchFile(browserSourceRoot, 'kiri/run/engine.js', [
@@ -276,6 +289,11 @@ await Promise.all([
     path.join(libDir, 'worker-core.mjs'),
     external,
   ),
+  bundle(
+    path.join(nodeSourceRoot, 'kiri', 'run', 'minion.js'),
+    path.join(libDir, 'minion-core.mjs'),
+    external,
+  ),
 ]);
 
 const [browserEngine, browserWorker, browserPool] = await Promise.all([
@@ -302,6 +320,7 @@ export const version = ${JSON.stringify(upstreamPackage.version)};
 );
 
 await fs.writeFile(path.join(libDir, 'worker.mjs'), workerRuntime());
+await fs.writeFile(path.join(libDir, 'minion.mjs'), minionRuntime());
 await fs.writeFile(
   path.join(libDir, 'cli.mjs'),
   cliRuntime(upstreamPackage.version),
@@ -425,6 +444,38 @@ async function bundleBrowser(entryPoint, dependencies) {
 }
 
 function workerRuntime() {
+  return `import { parentPort, Worker as ThreadWorker } from 'node:worker_threads';
+
+globalThis.self = globalThis;
+globalThis.location = { hostname: 'localhost', port: '', protocol: 'file:' };
+globalThis.postMessage = (message, transfer) => parentPort.postMessage(message, transfer);
+globalThis.Worker = class Worker {
+  constructor() {
+    this.worker = new ThreadWorker(new URL('./minion.mjs', import.meta.url));
+    this.worker.on('message', (data) => this.onmessage?.({ data }));
+    this.worker.on('error', (error) => this.onerror?.(workerErrorEvent(error)));
+    this.worker.on('messageerror', (error) => this.onmessageerror?.(workerErrorEvent(error)));
+  }
+  postMessage(message, transfer) { this.worker.postMessage(message, transfer); }
+  terminate() { return this.worker.terminate(); }
+};
+
+const pending = [];
+parentPort.on('message', (data) => {
+  if (typeof globalThis.onmessage === 'function') globalThis.onmessage({ data });
+  else pending.push(data);
+});
+
+await import('./worker-core.mjs');
+for (const data of pending.splice(0)) globalThis.onmessage({ data });
+
+function workerErrorEvent(error) {
+  return { error, message: error?.message ?? String(error), preventDefault() {} };
+}
+`;
+}
+
+function minionRuntime() {
   return `import { parentPort } from 'node:worker_threads';
 
 globalThis.self = globalThis;
@@ -437,7 +488,7 @@ parentPort.on('message', (data) => {
   else pending.push(data);
 });
 
-await import('./worker-core.mjs');
+await import('./minion-core.mjs');
 for (const data of pending.splice(0)) globalThis.onmessage({ data });
 `;
 }
@@ -482,7 +533,7 @@ try {
     fs.readFile(options.model),
   ]);
   const engine = newEngine().setMode('FDM').setDevice(device).setProcess(processConfig);
-  engine.setController({ threaded: false });
+  engine.setController({ threaded: true });
   let lastProgress = -1;
   let parsedPosition = null;
   engine.setListener((event) => {
