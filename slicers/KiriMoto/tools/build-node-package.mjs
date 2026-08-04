@@ -71,10 +71,18 @@ await patchFile(nodeSourceRoot, 'kiri/core/widget.js', [
 ]);
 
 await patchFile(nodeSourceRoot, 'kiri/run/worker.js', fdmOnlyWorkerPatches());
+// The concurrent-worker line differs between nightly and tagged releases
+// (e.g. 4.7.x); exactly one of these two forms must be present.
 await patchFile(nodeSourceRoot, 'kiri/run/worker.js', [
   [
     'concurrent = Math.round(Math.max(4, self.Worker && ccvalue > 3 ? ccvalue * 0.75 : 0)),',
     'concurrent = Math.max(1, Math.min(4, Number.parseInt(process.env.KIRIMOTO_THREADS || "", 10) || ccvalue || 1)),',
+    [0, 1],
+  ],
+  [
+    'concurrent = self.Worker && ccvalue > 3 ? Math.max(4, Math.round(ccvalue * 0.75)) : 0,',
+    'concurrent = Math.max(1, Math.min(4, Number.parseInt(process.env.KIRIMOTO_THREADS || "", 10) || ccvalue || 1)),',
+    [0, 1],
   ],
 ]);
 await removeObjectMethods(nodeSourceRoot, 'kiri/run/worker.js', [

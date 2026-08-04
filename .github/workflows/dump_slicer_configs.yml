@@ -93,7 +93,7 @@ jobs:
       group: slicer-deps-${{ github.ref }}-${{ matrix.slicer }}-${{ matrix.arch }}
       cancel-in-progress: false
 
-    runs-on: ${{ inputs.runner || 'ubicloud-standard-30-ubuntu-2404' }}
+    runs-on: ${{ inputs.runner || (github.event_name == 'schedule' && 'ubuntu-24.04') || 'ubicloud-standard-30-ubuntu-2404' }}
     env:
       DEPS_CACHE_KEY: ''
       SLICER_CACHE_KEY: ''
