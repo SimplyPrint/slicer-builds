@@ -1,0 +1,15 @@
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -3206,3 +3206,11 @@ int CLI::run(int argc, char **argv)
++            // Keep every filament represented in per-variant option arrays. A
++            // profile may omit an inherited option, but skipping it entirely
++            // leaves the assembled array shorter than the filament index.
++            for (const t_config_option_key &opt_key : filament_options_with_variant) {
++                if (config.option(opt_key) == nullptr)
++                    config.option(opt_key, true);
++            }
++
+             //parse the filament value to index th
+             //loop through options and apply them
+             std::set<std::string> different_keys_set(different_keys.begin(), different_keys.end());

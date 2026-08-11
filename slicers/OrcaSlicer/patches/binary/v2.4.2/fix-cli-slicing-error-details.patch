@@ -1,0 +1,30 @@
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -6285,9 +6285,24 @@ int CLI::run(int argc, char **argv)
+                                 sliced_info.sliced_plates.push_back(sliced_plate_info);
+                             } catch (const std::exception &ex) {
+                                 BOOST_LOG_TRIVIAL(error) << "found slicing or export error for partplate "<<index+1 << std::endl;
+-                                boost::nowide::cerr << ex.what() << std::endl;
++                                std::string error_message;
++                                if (const auto *slicing_errors = dynamic_cast<const Slic3r::SlicingErrors *>(&ex)) {
++                                    for (const Slic3r::SlicingError &error : slicing_errors->errors_) {
++                                        if (!error_message.empty())
++                                            error_message += "\n";
++                                        error_message += error.what();
++                                        boost::nowide::cerr << "Slicing error: " << error.what() << std::endl;
++                                    }
++                                } else {
++                                    error_message = ex.what();
++                                    boost::nowide::cerr << "Slicing error: " << error_message << std::endl;
++                                }
++
++                                if (error_message.empty())
++                                    error_message = cli_errors[CLI_SLICING_ERROR];
++
+                                 //continue;
+-                                record_exit_reson(outfile_dir, CLI_SLICING_ERROR, index+1, cli_errors[CLI_SLICING_ERROR], sliced_info);
++                                record_exit_reson(outfile_dir, CLI_SLICING_ERROR, index+1, error_message, sliced_info);
+                                 flush_and_exit(CLI_SLICING_ERROR);
+                             }
+                         }
