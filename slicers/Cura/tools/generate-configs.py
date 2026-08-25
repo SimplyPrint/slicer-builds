@@ -48,6 +48,16 @@ TOOL_REFERENCE_SENTINEL_I18N = "cura.editors.tool_reference.not_overridden"
 PROFILE_METADATA_TRANSPORT = "envelope.v1"
 
 
+def runtime_scope(definition: dict[str, Any]) -> str:
+    """Map Cura's setting placement contract to the cloud runtime scope."""
+
+    return (
+        "global"
+        if definition.get("settable_per_extruder") is False
+        else "extruder.0"
+    )
+
+
 def load_json(path: Path) -> dict[str, Any]:
     with path.open(encoding="utf-8") as source:
         return json.load(source)
@@ -741,6 +751,7 @@ def generate(resources: Path, output: Path) -> None:
     setting_modes, setting_tiers, visibility_tiers = load_visibility_tiers(resources)
 
     definitions: dict[str, Any] = {}
+    runtime_scopes: dict[str, str] = {}
     panels: dict[str, dict[str, dict[str, list[str]]]] = {
         "machine": defaultdict(lambda: defaultdict(list)),
         "filament": defaultdict(lambda: defaultdict(list)),
@@ -808,6 +819,7 @@ def generate(resources: Path, output: Path) -> None:
                 if runtime_only:
                     normalized["runtime_only"] = True
                 definitions[key] = normalized
+                runtime_scopes[key] = runtime_scope(source)
 
                 if not runtime_only:
                     target = ui_target(source_category)
@@ -996,6 +1008,7 @@ def generate(resources: Path, output: Path) -> None:
             "capabilities": {
                 "profile_metadata_transport": PROFILE_METADATA_TRANSPORT,
             },
+            "runtime_setting_scopes": runtime_scopes,
             "conditional_settings": {"false_behavior": "hide"},
             "ui_modes": sorted(modes_by_id.values(), key=lambda mode: mode["order"]),
             "visibility_tiers": tier_metadata,
