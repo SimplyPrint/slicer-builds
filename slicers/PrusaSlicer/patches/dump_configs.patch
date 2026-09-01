@@ -1,5 +1,5 @@
 diff --git a/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp b/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp
-index a17ad93..141a723 100644
+index a17ad93..d5a0a66 100644
 --- a/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp
 +++ b/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp
 @@ -42,6 +42,7 @@
@@ -10,7 +10,7 @@ index a17ad93..141a723 100644
  
  #include <boost/algorithm/string.hpp>
  #include <boost/filesystem.hpp>
-@@ -624,9 +625,176 @@ static bool perform_model_info(CLIRuntime& runtime, const std::vector<SelectionI
+@@ -624,9 +625,187 @@ static bool perform_model_info(CLIRuntime& runtime, const std::vector<SelectionI
  /**
   * @brief Dumps the configuration model (--dump-json-model) into a JSON file.
   */
@@ -68,11 +68,9 @@ index a17ad93..141a723 100644
 +{
 +    std::vector<AccumulatedProfile> machines;
 +    std::vector<AccumulatedProfile> processes;
-+    std::vector<AccumulatedProfile> tool_processes;
 +    std::vector<AccumulatedProfile> filaments;
 +    std::map<std::string, size_t> machine_indices;
 +    std::map<std::string, size_t> process_indices;
-+    std::map<std::string, size_t> tool_process_indices;
 +    std::map<std::string, size_t> filament_indices;
 +
 +    for (const auto& [hardware_id, printer_variants] : bundle.evaluated_presets) {
@@ -85,6 +83,15 @@ index a17ad93..141a723 100644
 +                {"printer_model", printer.hw_config.model.model},
 +                {"printer_base_model", printer.hw_config.model.base_model},
 +                {"tool_count", printer.hw_config.tool_count},
++            };
++            nlohmann::ordered_json machine_preset = Domain::Preset::SelectedPresetMetadata{
++                .hw_config = printer.hw_config,
++                .printer = printer.preset.metadata(),
++            };
++            machine_preset["printer"]["conditions"].clear();
++            machine_context["preset"] = {
++                {"hw_config", machine_preset["hw_config"]},
++                {"printer", machine_preset["printer"]},
 +            };
 +            append_profile(
 +                machines,
@@ -102,7 +109,31 @@ index a17ad93..141a723 100644
 +                nlohmann::ordered_json print_context{
 +                    {"machine_id", hardware_id + ":" + printer.preset.id},
 +                    {"machine_name", printer.hw_config.name},
++                    {"tool_processes", nlohmann::ordered_json::array()},
 +                };
++                nlohmann::ordered_json print_preset = Domain::Preset::SelectedPresetMetadata{
++                    .print = print.preset.metadata(),
++                };
++                print_preset["print"]["conditions"].clear();
++                print_context["preset"] = print_preset["print"];
++
++                for (size_t tool = 0; tool < print.tools.size(); ++tool) {
++                    for (const Domain::Preset::EvaluatedToolPrintPreset& tool_print : print.tools[tool]) {
++                        nlohmann::ordered_json tool_preset = Domain::Preset::SelectedPresetMetadata{
++                            .tools = {tool_print.preset.metadata()},
++                        };
++                        tool_preset["tools"][0]["conditions"].clear();
++                        print_context["tool_processes"].push_back({
++                            {"tool", tool},
++                            {"native_id", tool_print.preset.id},
++                            {"root_id", tool_print.preset.root_id},
++                            {"name", tool_print.preset.name},
++                            {"data", tool_print.preset.config_box()},
++                            {"preset", tool_preset["tools"][0]},
++                        });
++                    }
++                }
++
 +                append_profile(
 +                    processes,
 +                    process_indices,
@@ -115,35 +146,16 @@ index a17ad93..141a723 100644
 +                    std::move(print_context)
 +                );
 +
-+                for (size_t tool = 0; tool < print.tools.size(); ++tool) {
-+                    for (const Domain::Preset::EvaluatedToolPrintPreset& tool_print : print.tools[tool]) {
-+                        nlohmann::ordered_json tool_context{
-+                            {"machine_id", hardware_id + ":" + printer.preset.id},
-+                            {"machine_name", printer.hw_config.name},
-+                            {"process_id", print.preset.id},
-+                            {"tool", tool},
-+                        };
-+                        append_profile(
-+                            tool_processes,
-+                            tool_process_indices,
-+                            printer.hw_config.vendor_id,
-+                            tool_print.preset.id,
-+                            tool_print.preset.root_id,
-+                            tool_print.preset.name,
-+                            technology,
-+                            tool_print.preset.config_box(),
-+                            std::move(tool_context)
-+                        );
-+                    }
-+                }
-+
 +                for (size_t tool = 0; tool < print.materials.size(); ++tool) {
 +                    for (const Domain::Preset::EvaluatedMaterialPreset& material : print.materials[tool]) {
++                        nlohmann::ordered_json material_preset = Domain::Preset::SelectedPresetMetadata{
++                            .materials = {material.preset.metadata()},
++                        };
++                        material_preset["materials"][0]["conditions"].clear();
 +                        nlohmann::ordered_json material_context{
 +                            {"machine_id", hardware_id + ":" + printer.preset.id},
 +                            {"machine_name", printer.hw_config.name},
-+                            {"process_id", print.preset.id},
-+                            {"tool", tool},
++                            {"preset", material_preset["materials"][0]},
 +                        };
 +                        append_profile(
 +                            filaments,
@@ -168,7 +180,6 @@ index a17ad93..141a723 100644
 +        {"slicer_version", Slic3r::VERSION},
 +        {"machine", finish_profiles(machines)},
 +        {"process", finish_profiles(processes)},
-+        {"tool_process", finish_profiles(tool_processes)},
 +        {"filament", finish_profiles(filaments)},
 +    };
 +
@@ -189,7 +200,7 @@ index a17ad93..141a723 100644
  }
  
  /**
-@@ -833,7 +1001,7 @@ bool process_actions(
+@@ -833,7 +1012,7 @@ bool process_actions(
      }
 
      if (action.dump_json_model) {

@@ -94,6 +94,9 @@ class Prusa3ConfigModelTests(unittest.TestCase):
                 (output / "print_config_def.json").read_text(encoding="utf-8")
             )
             process = json.loads((output / "process.json").read_text(encoding="utf-8"))
+            metadata = json.loads(
+                (output / "ui_metadata.json").read_text(encoding="utf-8")
+            )
 
         self.assertEqual(definitions["layer_height"]["sidetext"], "mm")
         self.assertEqual(definitions["filament_type"]["type"], "enum")
@@ -104,6 +107,10 @@ class Prusa3ConfigModelTests(unittest.TestCase):
                 for groups in process.values()
                 for settings in groups.values()
             )
+        )
+        self.assertEqual(metadata["settings_codec"], "prusa-domain-config.v1")
+        self.assertEqual(
+            metadata["capabilities"]["profile_metadata_transport"], "envelope.v1"
         )
 
 
