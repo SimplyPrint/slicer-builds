@@ -13,6 +13,13 @@ Custom SimplyPrint slicer builds and generated slicer configuration artifacts.
   - `<version>/` for release dumped configs.
   - `_index.json` as the single version/build/config index for that slicer.
 
+PrusaSlicer 3.0 config builds additionally publish `config-model.json`, the
+native configuration schema, and `profile-bundle.json`, an evaluated profile
+bundle. The latter keeps native preset IDs and machine/process/tool compatibility
+contexts that cannot be represented safely by the legacy INI profile shape. The
+four legacy configuration artifacts remain available for existing consumers.
+Building the 3.0 dependency stack requires CMake 3.26 or newer.
+
 All slicer step scripts are run from the repository root with `slicer-src` and `slicer-out` available.
 
 ## Licensing

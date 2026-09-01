@@ -108,11 +108,13 @@ def _tag(value: str, label: str) -> str:
 
 def _release_policy(value: Any, label: str) -> ReleasePolicy:
     release = _require_string(value, label)
-    if release in ("latest", "latest_tag"):
+    if release in ("latest", "latest_tag", "latest_prerelease"):
         return ReleasePolicy(release)
     if release == "none":
         return ReleasePolicy("none")
-    raise MatrixError(f'{label} must be "latest", "latest_tag", or "none"')
+    raise MatrixError(
+        f'{label} must be "latest", "latest_tag", "latest_prerelease", or "none"'
+    )
 
 
 def _architectures(value: Any, label: str) -> tuple[str, ...]:
@@ -140,11 +142,26 @@ def _clean_version(ref: str) -> str:
     return ref.removeprefix("v") if ref.startswith("v") else ref
 
 
-def _version_parts(ref: str) -> tuple[int, ...]:
+def _stable_version_parts(ref: str) -> tuple[int, ...]:
     clean = _clean_version(ref)
     if re.fullmatch(r"[0-9]+(?:\.[0-9]+){1,3}", clean) is None:
         raise MatrixError(f"indexed release {ref!r} is not a stable numeric version")
     return tuple(int(part) for part in clean.split("."))
+
+
+def _version_parts(ref: str) -> tuple[int, ...]:
+    clean = _clean_version(ref)
+    match = re.fullmatch(
+        r"([0-9]+(?:\.[0-9]+){1,3})(?:-(alpha|beta|rc)([0-9]+))?", clean
+    )
+    if match is None:
+        raise MatrixError(f"indexed release {ref!r} is not a supported version")
+    core = tuple(int(part) for part in match.group(1).split("."))
+    core = (*core, *(0 for _ in range(4 - len(core))))
+    stage = match.group(2)
+    # Stable releases sort after prereleases for the same numeric core.
+    stage_rank = {None: 4, "rc": 3, "beta": 2, "alpha": 1}[stage]
+    return (*core, stage_rank, int(match.group(3) or 0))
 
 
 def _load_index(root: Path, policy: LanePolicy) -> dict[str, Any]:
@@ -173,8 +190,9 @@ def _consumer_releases(root: Path, policy: LanePolicy) -> list[dict[str, str]]:
         if ref == "nightly":
             continue
         parts = _version_parts(ref)
-        clean_parts = _clean_version(ref).split(".")
-        group = ".".join(clean_parts[:3]) if len(parts) >= 3 else _clean_version(ref)
+        clean_core = _clean_version(ref).split("-", 1)[0]
+        clean_parts = clean_core.split(".")
+        group = ".".join(clean_parts[:3]) if len(clean_parts) >= 3 else clean_core
         previous = grouped.get(group)
         if previous is None or parts > previous[1]:
             grouped[group] = (ref, parts)
@@ -260,6 +278,33 @@ class GitHub:
         published_at = value.get("published_at", "")
         return tag, published_at if isinstance(published_at, str) else ""
 
+    def latest_prerelease(
+        self, repository: str, override: str = ""
+    ) -> tuple[str, str]:
+        if override:
+            return self.release(repository, override)
+        value = self.get(f"repos/{repository}/releases?per_page=100")
+        if not isinstance(value, list):
+            raise MatrixError(f"GitHub returned invalid releases for {repository}")
+        release = next(
+            (
+                item
+                for item in value
+                if isinstance(item, dict)
+                and item.get("prerelease") is True
+                and item.get("draft") is not True
+            ),
+            None,
+        )
+        if release is None:
+            raise MatrixError(f"{repository} has no published prerelease")
+        tag = _tag(
+            _require_string(release.get("tag_name"), f"latest prerelease of {repository}"),
+            f"latest prerelease of {repository}",
+        )
+        published_at = release.get("published_at", "")
+        return tag, published_at if isinstance(published_at, str) else ""
+
     def latest_stable_tag(
         self, repository: str, override: str = ""
     ) -> tuple[str, str]:
@@ -281,7 +326,7 @@ class GitHub:
                 if not isinstance(name, str):
                     continue
                 try:
-                    parts = _version_parts(name)
+                    parts = _stable_version_parts(name)
                     safe_name = _tag(name, f"tag of {repository}")
                 except MatrixError:
                     continue
@@ -518,6 +563,10 @@ def generate_matrix(
             override = release_tag_override
             if policy.release.mode == "latest_tag":
                 latest_tag, latest_published_at = github.latest_stable_tag(
+                    policy.release_repo_slug, override
+                )
+            elif policy.release.mode == "latest_prerelease":
+                latest_tag, latest_published_at = github.latest_prerelease(
                     policy.release_repo_slug, override
                 )
             else:

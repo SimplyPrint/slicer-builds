@@ -30,10 +30,26 @@ def parse_metadata(items: list[str]) -> dict:
 
 def version_sort_key(version: str) -> tuple:
     normalized = version.removeprefix("version_").removeprefix("v")
-    return tuple(
-        (0, int(part)) if part.isdigit() else (1, part)
-        for part in re.split(r"(\d+)", normalized)
-        if part
+    match = re.fullmatch(
+        r"(\d+(?:\.\d+){1,3})(?:-(alpha|beta|rc)(\d+))?", normalized
+    )
+    if match:
+        core = tuple(int(part) for part in match.group(1).split("."))
+        core = (*core, *(0 for _ in range(4 - len(core))))
+        stage = match.group(2)
+        return (
+            1,
+            *core,
+            {None: 4, "rc": 3, "beta": 2, "alpha": 1}[stage],
+            int(match.group(3) or 0),
+        )
+    return (
+        0,
+        tuple(
+            (0, int(part)) if part.isdigit() else (1, part)
+            for part in re.split(r"(\d+)", normalized)
+            if part
+        ),
     )
 
 

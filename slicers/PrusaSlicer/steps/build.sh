@@ -18,21 +18,34 @@ if [[ ! "$jobs" =~ ^[1-9][0-9]*$ ]]; then
   exit 2
 fi
 
-case "${SLICER_GUI:-0}" in
-  1 | true | TRUE | on | ON) gui=ON ;;
-  *) gui=OFF ;;
-esac
+if [[ -d "$source_dir/src/slic3r-app-launcher" ]]; then
+  # PrusaSlicer 3.0 currently ships one GUI-capable launcher, including for CLI use.
+  cmake "${cmake_args[@]}" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_PREFIX_PATH="$prefix" \
+    -DSLIC3R_BUILD_TESTS=OFF \
+    -DSLIC3R_ENABLE_FORMAT_STEP=OFF \
+    -DSLIC3R_GUI=ON \
+    -DSLIC3R_PCH="${SLICER_PCH:-ON}" \
+    -DSLIC3R_STATIC=ON
+  target=slic3r-app-launcher
+else
+  case "${SLICER_GUI:-0}" in
+    1 | true | TRUE | on | ON) gui=ON ;;
+    *) gui=OFF ;;
+  esac
+  cmake "${cmake_args[@]}" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_PREFIX_PATH="$prefix" \
+    -DSLIC3R_BUILD_SANDBOXES=OFF \
+    -DSLIC3R_BUILD_TESTS=OFF \
+    -DSLIC3R_DESKTOP_INTEGRATION=OFF \
+    -DSLIC3R_ENABLE_FORMAT_STEP=OFF \
+    -DSLIC3R_GTK=3 \
+    -DSLIC3R_GUI="$gui" \
+    -DSLIC3R_PCH="${SLICER_PCH:-ON}" \
+    -DSLIC3R_STATIC=ON
+  target=PrusaSlicer
+fi
 
-cmake "${cmake_args[@]}" \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_PREFIX_PATH="$prefix" \
-  -DSLIC3R_BUILD_SANDBOXES=OFF \
-  -DSLIC3R_BUILD_TESTS=OFF \
-  -DSLIC3R_DESKTOP_INTEGRATION=OFF \
-  -DSLIC3R_ENABLE_FORMAT_STEP=OFF \
-  -DSLIC3R_GTK=3 \
-  -DSLIC3R_GUI="$gui" \
-  -DSLIC3R_PCH="${SLICER_PCH:-ON}" \
-  -DSLIC3R_STATIC=ON
-
-cmake --build "$build_dir" --parallel "$jobs" --target PrusaSlicer
+cmake --build "$build_dir" --parallel "$jobs" --target "$target"
