@@ -59,6 +59,7 @@ class ReleasePolicy:
 class LanePolicy:
     slicer: str
     family: str
+    gcode_abi: str
     repo_slug: str
     release_repo_slug: str
     enabled: bool
@@ -395,6 +396,11 @@ def load_policies(root: Path, lane: str) -> list[LanePolicy]:
             raise MatrixError(
                 f"{manifest_label}.family must be a safe lowercase identifier"
             )
+        gcode_abi = _require_string(
+            data.get("gcode_abi"), f"{manifest_label}.gcode_abi"
+        )
+        if re.fullmatch(r"[a-z0-9][a-z0-9._/-]*", gcode_abi) is None:
+            raise MatrixError(f"{manifest_label}.gcode_abi is unsafe")
 
         capabilities = data.get("capabilities")
         if not isinstance(capabilities, dict):
@@ -491,6 +497,7 @@ def load_policies(root: Path, lane: str) -> list[LanePolicy]:
             LanePolicy(
                 slicer=name,
                 family=family,
+                gcode_abi=gcode_abi,
                 repo_slug=repo_slug,
                 release_repo_slug=release_repo_slug,
                 enabled=enabled,
@@ -711,6 +718,7 @@ def generate_matrix(
                     "consumer_rebuild": selected_build_type == "consumer",
                     "cura_conan_config_ref": cura_conan_config_ref,
                     "family": policy.family,
+                    "gcode_abi": policy.gcode_abi,
                     "nightly_enabled": policy.nightly,
                     "publish": policy.publish,
                     "repo": policy.repo_slug,

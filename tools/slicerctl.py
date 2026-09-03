@@ -128,6 +128,11 @@ def validate_manifest(manifest: Manifest) -> None:
         fail(f"{manifest.path}: invalid name")
     if name != manifest.directory.name:
         fail(f"{manifest.path}: name must match its directory")
+    gcode_abi = data.get("gcode_abi")
+    if not isinstance(gcode_abi, str) or not re.fullmatch(
+        r"[a-z0-9][a-z0-9._/-]*", gcode_abi
+    ):
+        fail(f"{manifest.path}: invalid gcode_abi")
     repository = data.get("repository")
     if not isinstance(repository, str) or not repository.startswith(
         "https://github.com/"
