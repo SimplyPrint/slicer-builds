@@ -53,8 +53,17 @@ def version_sort_key(version: str) -> tuple:
     )
 
 
-def should_promote_latest(index: dict, version: str) -> bool:
-    current = index.get("latest")
+def release_channel(version: str) -> str:
+    normalized = version.removeprefix("version_").removeprefix("v")
+    if normalized == "nightly":
+        return "nightly"
+    return "prerelease" if re.search(r"(?:alpha|beta|rc|dev|pre)", normalized, re.I) else "stable"
+
+
+def should_promote(index: dict, pointer: str, version: str) -> bool:
+    current = index.get("channels", {}).get(pointer)
+    if pointer == "stable" and not current:
+        current = index.get("latest")
     if not isinstance(current, str) or not current:
         return True
 
@@ -88,11 +97,19 @@ def main() -> None:
 
     index = load_json(index_path)
     index.setdefault("latest", None)
+    channels = index.setdefault("channels", {})
     versions = index.setdefault("versions", {})
     version = versions.setdefault(args.version, {})
+    channel = release_channel(args.version)
+    version["channel"] = channel
 
-    if args.latest and should_promote_latest(index, args.version):
-        index["latest"] = args.version
+    if channel == "nightly":
+        channels["nightly"] = args.version
+    elif args.latest and should_promote(index, channel, args.version):
+        channels[channel] = args.version
+        if channel == "stable":
+            # `latest` is the backwards-compatible stable pointer.
+            index["latest"] = args.version
 
     metadata = version.setdefault("metadata", {})
     metadata.update(parse_metadata(args.metadata))
