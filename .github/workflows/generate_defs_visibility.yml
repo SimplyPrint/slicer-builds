@@ -130,6 +130,9 @@ jobs:
           if [[ -n "$release_tag_override" ]]; then
             latest_release_tag="$release_tag_override"
             latest_release_json=$(gh api "repos/${{ matrix.repo }}/releases/tags/${latest_release_tag}" 2>/dev/null || echo '{}')
+          elif [[ "${{ matrix.slicer }}" == "PrusaSlicer" ]]; then
+            latest_release_json=$(gh api "repos/${{ matrix.repo }}/releases?per_page=100" --jq '[.[] | select(.prerelease == true and .draft == false)][0]')
+            latest_release_tag=$(echo "$latest_release_json" | jq -r '.tag_name')
           else
             latest_release_json=$(gh api "repos/${{ matrix.repo }}/releases/latest")
             latest_release_tag=$(echo "$latest_release_json" | jq -r '.tag_name')

@@ -1,0 +1,47 @@
+diff --git a/src/slic3r-biz-crypto/include/Slic3r/Biz/Crypto/ContentProvider.hpp b/src/slic3r-biz-crypto/include/Slic3r/Biz/Crypto/ContentProvider.hpp
+index 01b8739..b9ac9c5 100644
+--- a/src/slic3r-biz-crypto/include/Slic3r/Biz/Crypto/ContentProvider.hpp
++++ b/src/slic3r-biz-crypto/include/Slic3r/Biz/Crypto/ContentProvider.hpp
+@@ -12,7 +12,7 @@ class IContentProvider
+ public:
+     constexpr static size_t DEFAULT_BUFFER_SIZE = 256 * 1024;
+ 
+-    using BytesView    = BytesView;
++    using BytesView    = Slic3r::Biz::Crypto::BytesView;
+     using FileList     = std::vector<std::string>;
+     using StreamKernel = std::function<void(BytesView window)>;
+ 
+diff --git a/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp b/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp
+index 81f84e9..aa5993c 100644
+--- a/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp
++++ b/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp
+@@ -1,5 +1,6 @@
+ #pragma once
+ 
++#include <cstddef>
+ #include <vector>
+ 
+ namespace Slic3r::Domain {
+@@ -19,18 +20,18 @@ public:
+     virtual ~IConfigBoxSetter() = default;
+ 
+     virtual const Domain::ConfigValue*
+-    get_override_original_value(const Domain::ConfigItem& item, size_t index = 0) const = 0;
++    get_override_original_value(const Domain::ConfigItem& item, std::size_t index = 0) const = 0;
+ 
+     virtual void set_item_value(
+         const Domain::ConfigItem& item,
+         const Domain::ConfigValue& value,
+-        const std::vector<size_t>& index = {0}
++        const std::vector<std::size_t>& index = {0}
+     ) = 0;
+ 
+     virtual void
+-    set_item_override(const Domain::ConfigItem& item, bool enable, size_t index = 0) = 0;
++    set_item_override(const Domain::ConfigItem& item, bool enable, std::size_t index = 0) = 0;
+ 
+-    virtual void set_from_original_value(const Domain::ConfigItem& item, size_t index = 0) {}
++    virtual void set_from_original_value(const Domain::ConfigItem& item, std::size_t index = 0) {}
+ };
+ 
+ } // namespace Slic3r::Biz
