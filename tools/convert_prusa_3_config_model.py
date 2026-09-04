@@ -18,13 +18,13 @@ SCALAR_TYPES = {
     "Float": "float",
     "String": "string",
     "Vec2d": "point",
-    "FloatOrPercentage": "float_or_percent",
+    "FloatOrPercentage": "floatorpercent",
     "Percentage": "percent",
     "Enum": "enum",
 }
 ARRAY_TYPES = {
     **{key: f"{value}s" for key, value in SCALAR_TYPES.items()},
-    "FloatOrPercentage": "floats_or_percents",
+    "FloatOrPercentage": "floatorpercents",
 }
 
 
@@ -148,6 +148,9 @@ def convert(model_path: Path, output: Path) -> None:
             "schema_version": 1,
             "capabilities": {"profile_metadata_transport": "envelope.v1"},
             "settings_codec": "prusa-domain-config.v1",
+            "runtime_setting_scopes": {
+                name: "global" for name in sorted(definitions)
+            },
         },
     )
 

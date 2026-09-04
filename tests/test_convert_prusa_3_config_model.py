@@ -112,6 +112,10 @@ class Prusa3ConfigModelTests(unittest.TestCase):
         self.assertEqual(
             metadata["capabilities"]["profile_metadata_transport"], "envelope.v1"
         )
+        self.assertEqual(
+            metadata["runtime_setting_scopes"],
+            {name: "global" for name in sorted(definitions)},
+        )
 
 
 if __name__ == "__main__":
