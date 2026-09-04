@@ -257,13 +257,23 @@ index 81f84e9..aa5993c 100644
  
  } // namespace Slic3r::Biz
 diff --git a/src/slic3r-shared/src/Slic3r/App/ConfigModelDump.cpp b/src/slic3r-shared/src/Slic3r/App/ConfigModelDump.cpp
-index ce5074b..68dcbc4 100644
+index ce5074b18..c71aca43e 100644
 --- a/src/slic3r-shared/src/Slic3r/App/ConfigModelDump.cpp
 +++ b/src/slic3r-shared/src/Slic3r/App/ConfigModelDump.cpp
-@@ -59,10 +59,45 @@ void to_json_def(json& j, const ConfigItemDef& cd)
+@@ -5,6 +5,7 @@
+ #include "Slic3r/Domain/ConfigBoxesFDM.hpp"
+ #include "Slic3r/Domain/ConfigBoxesSLA.hpp"
+ #include "Slic3r/Biz/Config/ConfigJson.hpp"
++#include "Slic3r/App/Config/CategoryUtils.hpp"
+-
++
+ #include <nlohmann/json.hpp>
+ #include <boost/nowide/fstream.hpp>
+@@ -59,10 +60,61 @@ void to_json_def(json& j, const ConfigItemDef& cd)
          cd.name,
      }};
-
+-
++
 -    if (cd.max != FLT_MAX)
 -        j["max"] = cd.max;
 -    if (cd.min != -FLT_MAX)
@@ -288,6 +298,22 @@ index ce5074b..68dcbc4 100644
 +    j["category"] = magic_enum::enum_name(cd.category);
 +    j["option_group"] = magic_enum::enum_name(cd.option_group);
 +    j["order"] = cd.order;
++    j["category_order"] = static_cast<uint16_t>(cd.category);
++    j["option_group_order"] = static_cast<uint16_t>(cd.option_group);
++    if (cd.category != ConfigItemDef::Category::Unknown && cd.category != ConfigItemDef::Category::Hidden) {
++        j["category_label"] = ConfigItemDef::translate_category(cd.category, PrinterTechnology::FFF);
++        const uint16_t category = static_cast<uint16_t>(cd.category);
++        const bool has_icon = (category >= 100 && category <= 110)
++            || (category >= 120 && category <= 121)
++            || (category >= 200 && category <= 205)
++            || category == 210
++            || (category >= 300 && category <= 305)
++            || category == 310;
++        if (has_icon)
++            j["category_icon"] = App::CategoryUtils::category_icon_name(cd.category, PrinterTechnology::FFF);
++    }
++    if (cd.option_group != ConfigItemDef::OptionGroup::Unknown)
++        j["option_group_label"] = ConfigItemDef::translate_option_group(cd.option_group);
 +    j["gui_type"] = magic_enum::enum_name(cd.gui_type);
 +    j["multiline"] = cd.multiline;
 +    j["full_width"] = cd.full_width;
@@ -308,5 +334,6 @@ index ce5074b..68dcbc4 100644
 +        }
 +    }
  }
- 
+-
++
  static std::vector<std::string> to_strings(const std::vector<std::string_view>& strings)

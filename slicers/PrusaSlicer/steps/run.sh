@@ -11,7 +11,8 @@ if [[ -x slicer-src/build/src/slic3r-app-launcher/slic3r-app-launcher ]]; then
     --datadir "$data_dir" \
     --export-config-schema "$model"
   popd
-  python3 tools/convert_prusa_3_config_model.py "$model" slicer-out
+  python3 tools/convert_prusa_3_config_model.py "$model" slicer-out \
+    --icons slicer-src/resources/icons
   cp slicer-src/config-model.json slicer-src/profile-bundle.json slicer-out/
 else
   pushd slicer-src

@@ -26,8 +26,6 @@ ARRAY_TYPES = {
     **{key: f"{value}s" for key, value in SCALAR_TYPES.items()},
     "FloatOrPercentage": "floatorpercents",
 }
-
-
 def _words(value: str, prefix: str = "") -> str:
     value = value.removeprefix(f"{prefix}_") if prefix else value
     return (
@@ -83,6 +81,9 @@ def _definition(item: dict) -> dict:
         "tooltip": item.get("tooltip", ""),
         "mode": "simple",
     }
+    if array and type_name == "String":
+        result["native_type"] = "array"
+        result["editor"] = {"kind": "list", "value_type": "string"}
     for key in ("full_label", "gui_type"):
         if item.get(key) not in (None, "", "undefined"):
             result[key] = item[key]
@@ -109,7 +110,7 @@ def _definition(item: dict) -> dict:
             default = labels[values.index(default)]
         except ValueError:
             pass
-    result["default_value"] = _value(default)
+    result["default_value"] = default if array or type_name == "Vec2d" else _value(default)
     return result
 
 
@@ -119,14 +120,39 @@ def _write(path: Path, value: dict) -> None:
     )
 
 
-def convert(model_path: Path, output: Path) -> None:
+def _sort_key(item: dict) -> tuple[int, int, int, str]:
+    return (
+        int(item.get("category_order", 65535)),
+        int(item.get("option_group_order", 65535)),
+        int(item.get("order", 0)),
+        item["name"],
+    )
+
+
+def _icon(icon_dir: Path | None, icon_name: str) -> dict | None:
+    if icon_dir is None or not icon_name:
+        return None
+    path = icon_dir / f"{icon_name}.svg"
+    if not path.is_file():
+        return None
+    return {
+        "source_name": path.name,
+        "svg": path.read_text(encoding="utf-8"),
+    }
+
+
+def convert(model_path: Path, output: Path, icon_dir: Path | None = None) -> None:
     model = json.loads(model_path.read_text(encoding="utf-8"))
     if not isinstance(model, dict):
         raise TypeError("config model root must be an object")
     definitions = {}
+    panels = {}
+    icons = {}
     for artifact, boxes in BOXES.items():
         navigation = {}
-        for item in _items(model, boxes):
+        panel = []
+        categories = {}
+        for item in sorted(_items(model, boxes), key=_sort_key):
             definitions.setdefault(item["name"], _definition(item))
             category_name = str(item.get("category", "Unknown"))
             if category_name == "Hidden":
@@ -135,12 +161,36 @@ def convert(model_path: Path, output: Path) -> None:
             prefix = {"machine": "Printer", "process": "Print", "filament": "Filament"}[
                 role
             ]
-            category = _words(category_name, prefix)
-            group = _words(str(item.get("option_group", "Unknown")), category_name)
+            category = item.get("category_label") or _words(category_name, prefix)
+            group_name = str(item.get("option_group", "Unknown"))
+            group = item.get("option_group_label") or _words(group_name, category_name)
             navigation.setdefault(category, {}).setdefault(group, []).append(
                 item["name"]
             )
+            category_entry = categories.get(category_name)
+            if category_entry is None:
+                icon_name = str(item.get("category_icon", ""))
+                icon_id = f"prusa:{icon_name}" if icon_name else None
+                icon_value = _icon(icon_dir, icon_name)
+                if icon_id and icon_value:
+                    icons.setdefault(icon_id, icon_value)
+                category_entry = {
+                    "id": category_name,
+                    "label": category,
+                    "groups": [],
+                }
+                if icon_id in icons:
+                    category_entry["icon"] = icon_id
+                categories[category_name] = category_entry
+                panel.append(category_entry)
+            groups = category_entry["groups"]
+            group_entry = next((entry for entry in groups if entry["id"] == group_name), None)
+            if group_entry is None:
+                group_entry = {"id": group_name, "label": group, "setting_keys": []}
+                groups.append(group_entry)
+            group_entry["setting_keys"].append(item["name"])
         _write(output / artifact, navigation)
+        panels[role] = panel
     _write(output / "print_config_def.json", definitions)
     _write(
         output / "ui_metadata.json",
@@ -151,6 +201,8 @@ def convert(model_path: Path, output: Path) -> None:
             "runtime_setting_scopes": {
                 name: "global" for name in sorted(definitions)
             },
+            "panels": panels,
+            "icons": icons,
         },
     )
 
@@ -159,9 +211,10 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("model", type=Path)
     parser.add_argument("output", type=Path)
+    parser.add_argument("--icons", type=Path)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
-    convert(args.model, args.output)
+    convert(args.model, args.output, args.icons)
 
 
 if __name__ == "__main__":
