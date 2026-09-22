@@ -1,0 +1,19 @@
+# Editor semantics PrusaSlicer does not publish itself.
+#
+# The Orca/Bambu forks mark a filament chooser with `gui_type = i_enum_open`,
+# which `tools/annotate_editor_semantics.py` derives from directly. Upstream
+# PrusaSlicer sets that only in its GUI layer, so these options reach the dump
+# as plain integers with nothing to tell them apart from a count.
+#
+# Every key here is checked against the dump; a rename fails the config build
+# rather than quietly dropping the semantic.
+
+[tool_reference]
+keys = [
+    "infill_extruder",
+    "perimeter_extruder",
+    "solid_infill_extruder",
+    "support_material_extruder",
+    "support_material_interface_extruder",
+    "wipe_tower_extruder",
+]

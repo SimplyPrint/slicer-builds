@@ -80,6 +80,40 @@ def validate_translation_index(index_path: Path, output_path: Path) -> None:
             fail(f"Translation catalog escapes output directory: {catalog_path}")
 
 
+def validate_editor_semantics(config_path: Path) -> None:
+    """Every engine must say which of its settings pick a filament.
+
+    Consumers that cannot read it off the config have to spell slicer setting
+    keys themselves, which goes stale silently — OrcaSlicer renamed its region
+    choosers to ``*_filament_id`` and nothing noticed.
+    """
+
+    defs = load_json(config_path)
+    if not isinstance(defs, dict):
+        fail(f"{config_path} must contain an object")
+
+    tool_references = [
+        key
+        for key, definition in defs.items()
+        if isinstance(definition, dict)
+        and isinstance(definition.get("editor"), dict)
+        and definition["editor"].get("kind") == "tool_reference"
+    ]
+    if not tool_references:
+        fail(
+            f"{config_path} declares no editor.kind=tool_reference. Run "
+            "tools/annotate_editor_semantics.py, and check the derivation rule "
+            "against this slicer's dump."
+        )
+
+    for key in tool_references:
+        editor = defs[key]["editor"]
+        if not isinstance(editor.get("index_base"), int):
+            fail(f"{config_path}: {key} tool reference has no integer index_base")
+        if editor.get("selection") not in {"required", "optional"}:
+            fail(f"{config_path}: {key} tool reference has an invalid selection")
+
+
 def main() -> None:
     if len(sys.argv) != 3:
         fail("Usage: validate_config_artifacts.py <slicer.toml> <output-directory>")
@@ -93,6 +127,8 @@ def main() -> None:
         load_json(path)
         if path.name == "_index.json" and path.parent.name == "translations":
             validate_translation_index(path, output_path)
+        if path.name == "print_config_def.json":
+            validate_editor_semantics(path)
 
     for path in output_path.rglob("*.json"):
         load_json(path)

@@ -99,6 +99,13 @@ for previous_json in "$output_dir"/*.json; do
 done
 cp -- "${json_files[@]}" "$output_dir/"
 
+# The Orca-family dumps mark filament choosers themselves, so this derives
+# them with no key list. A fork that stops marking them fails here rather than
+# shipping a config every consumer would have to guess at.
+python3 ./tools/annotate_editor_semantics.py \
+  --output "$output_dir" \
+  --require-tool-reference
+
 if [[ -n "$translation_domain" ]]; then
   python3 ./tools/generate_gettext_translations.py \
     --source "$source_dir" \
