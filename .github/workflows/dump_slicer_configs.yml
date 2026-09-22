@@ -206,6 +206,11 @@ jobs:
         run: |
           ./slicers/${{ matrix.slicer }}/steps/build.sh
 
+      - name: Test editor-semantics annotator
+        if: env.continue_build == 'true'
+        run: |
+          python3 ./tools/test_annotate_editor_semantics.py
+
       - name: Run slicer
         if: env.continue_build == 'true'
         run: |
