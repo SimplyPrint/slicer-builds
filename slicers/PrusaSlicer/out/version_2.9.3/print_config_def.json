@@ -633,7 +633,19 @@
         "tooltip": "The extruder to use (unless more specific extruder settings are specified). This value overrides perimeter and infill extruders, but not the support extruders.",
         "min": "0",
         "gui_type": "i_enum_open",
-        "mode": "simple"
+        "mode": "simple",
+        "editor": {
+            "kind": "tool_reference",
+            "index_base": 1,
+            "display_index_base": 1,
+            "selection": "optional",
+            "sentinels": [
+                {
+                    "value": 0,
+                    "semantic": "inherit"
+                }
+            ]
+        }
     },
     "extruder_clearance_height": {
         "type": "float",
@@ -1521,7 +1533,13 @@
         "tooltip": "The extruder to use when printing infill.",
         "min": "1",
         "mode": "advanced",
-        "default_value": "1"
+        "default_value": "1",
+        "editor": {
+            "kind": "tool_reference",
+            "index_base": 1,
+            "display_index_base": 1,
+            "selection": "required"
+        }
     },
     "infill_extrusion_width": {
         "type": "floatorpercent",
@@ -2214,7 +2232,13 @@
         "tooltip": "The extruder to use when printing perimeters and brim. First extruder is 1.",
         "min": "1",
         "mode": "advanced",
-        "default_value": "1"
+        "default_value": "1",
+        "editor": {
+            "kind": "tool_reference",
+            "index_base": 1,
+            "display_index_base": 1,
+            "selection": "required"
+        }
     },
     "perimeter_extrusion_width": {
         "type": "floatorpercent",
@@ -2824,7 +2848,13 @@
         "tooltip": "The extruder to use when printing solid infill.",
         "min": "1",
         "mode": "advanced",
-        "default_value": "1"
+        "default_value": "1",
+        "editor": {
+            "kind": "tool_reference",
+            "index_base": 1,
+            "display_index_base": 1,
+            "selection": "required"
+        }
     },
     "solid_infill_extrusion_width": {
         "type": "floatorpercent",
@@ -2986,7 +3016,19 @@
         "tooltip": "The extruder to use when printing support material, raft and skirt (1+, 0 to use the current extruder to minimize tool changes).",
         "min": "0",
         "mode": "advanced",
-        "default_value": "1"
+        "default_value": "1",
+        "editor": {
+            "kind": "tool_reference",
+            "index_base": 1,
+            "display_index_base": 1,
+            "selection": "optional",
+            "sentinels": [
+                {
+                    "value": 0,
+                    "semantic": "inherit"
+                }
+            ]
+        }
     },
     "support_material_extrusion_width": {
         "type": "floatorpercent",
@@ -3010,7 +3052,19 @@
         "tooltip": "The extruder to use when printing support material interface (1+, 0 to use the current extruder to minimize tool changes). This affects raft too.",
         "min": "0",
         "mode": "advanced",
-        "default_value": "1"
+        "default_value": "1",
+        "editor": {
+            "kind": "tool_reference",
+            "index_base": 1,
+            "display_index_base": 1,
+            "selection": "optional",
+            "sentinels": [
+                {
+                    "value": 0,
+                    "semantic": "inherit"
+                }
+            ]
+        }
     },
     "support_material_interface_layers": {
         "type": "int",
@@ -3601,7 +3655,19 @@
         "tooltip": "The extruder to use when printing perimeter of the wipe tower. Set to 0 to use the one that is available (non-soluble would be preferred).",
         "min": "0",
         "mode": "advanced",
-        "default_value": "0"
+        "default_value": "0",
+        "editor": {
+            "kind": "tool_reference",
+            "index_base": 1,
+            "display_index_base": 1,
+            "selection": "optional",
+            "sentinels": [
+                {
+                    "value": 0,
+                    "semantic": "inherit"
+                }
+            ]
+        }
     },
     "wipe_tower_no_sparse_layers": {
         "type": "bool",
