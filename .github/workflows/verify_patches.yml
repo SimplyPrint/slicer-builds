@@ -75,6 +75,12 @@ jobs:
         run: |
           set -euo pipefail
           for lane in binary config; do
+            # A disabled lane builds nothing, so it has no stacks to verify.
+            if [[ "$(python3 -c 'import sys, tomllib; print(tomllib.load(open(sys.argv[1], "rb"))["ci"].get(sys.argv[2], {}).get("enabled", False))' \
+              "slicers/${{ matrix.slicer }}/slicer.toml" "$lane")" != True ]]; then
+              echo '{"include": []}' > "$RUNNER_TEMP/$lane-matrix.json"
+              continue
+            fi
             python3 .github/scripts/generate_ci_matrix.py \
               --lane "$lane" \
               --slicer "${{ matrix.slicer }}" \
