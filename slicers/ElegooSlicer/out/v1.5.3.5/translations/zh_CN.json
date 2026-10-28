@@ -1,0 +1,2999 @@
+{
+  "schema_version": 1,
+  "locale": "zh_CN",
+  "source_locale": "en",
+  "messages": {},
+  "settings": {
+    "accel_to_decel_enable": {
+      "label": "启用制动速度",
+      "tooltip": "Klipper的max_accel_to_decel将被自动调整"
+    },
+    "accel_to_decel_factor": {
+      "label": "制动速度",
+      "tooltip": "Klipper的max_accel_to_decel将被调整为该加速度的百分比"
+    },
+    "activate_air_filtration": {
+      "label": "启用空气过滤/排气",
+      "tooltip": "启用空气过滤/排气风扇。G-code命令：M106 P3 S(0-255)"
+    },
+    "activate_air_filtration_during_print": {
+      "full_label": "打印中",
+      "tooltip": "启用此项以覆盖打印过程中在自定义 G-code 中设置的风扇速度。"
+    },
+    "activate_air_filtration_on_completion": {
+      "full_label": "完成时",
+      "tooltip": "启用此项以覆盖打印完成后在自定义 G-code 中设置的风扇速度。"
+    },
+    "activate_chamber_temp_control": {
+      "label": "激活温度控制"
+    },
+    "adaptive_bed_mesh_margin": {
+      "label": "网床边缘外扩",
+      "tooltip": "此选项决定了自适应网床网格区域在XY方向上应扩展的额外距离。"
+    },
+    "adaptive_pressure_advance": {
+      "label": "启用自适应压力提前（试验）",
+      "tooltip": "With increasing print speeds (and hence increasing volumetric flow through the nozzle) and increasing accelerations, it has been observed that the effective PA value typically decreases.这意味着单个 PA 值并不总是对所有特征都是 100% 最佳的，并且通常使用折衷值，该折衷值不会在具有较低流速和加速度的特征上造成过多的凸出，同时也不会在较快的特征上造成间隙。 此功能旨在通过根据打印时的体积流速和加速度对打印机挤出系统的响应进行建模来解决此限制。在内部，它生成一个拟合模型，可以推断出任何给定体积流速和加速度所需的压力提前，然后根据当前的打印条件将其发送到打印机。 启用后，上面的压力提前值将被覆盖。然而，强烈建议使用上述合理的默认值作为后备以及更换工具时的选择。\n"
+    },
+    "adaptive_pressure_advance_bridges": {
+      "label": "为搭桥启用压力提前",
+      "tooltip": "桥梁的压力提前值。设置为 0 以禁用。 打印桥接时较低的 PA 值有助于减少桥接后立即出现的轻微挤压不足现象。这是由在空气中打印时喷嘴中的压力下降引起的，较低的 PA 有助于抵消这种情况。"
+    },
+    "adaptive_pressure_advance_model": {
+      "label": "自适应压力提前参数（试验）",
+      "tooltip": "添加压力提前 (PA) 值组、测量时的体积流速和加速度，并用逗号分隔。每行一组值。例如\n0.04,3.96,3000\n0.033,3.96,10000\n0.029,7.91,3000\n0.026,7.91,10000 如何校准：\n1. 每个加速度值至少以 3 个速度运行压力提前测试。建议至少针对外部周边的速度、内部周边的速度以及配置文件中的最快特征打印速度（通常是稀疏或实心填充）运行测试。然后以相同的速度运行它们，以获得最慢和最快的打印加速度，并且不超过 Klipper 输入整形器给出的建议最大加速度\n2. 记下每个体积流速和加速度的最佳 PA 值。您可以通过从配色方案下拉列表中选择流量并将水平滑块移动到 PA 图案线上来找到流量编号。该数字应该在页面底部可见。理想的 PA 值应该随着体积流量的增加而减小。如果不是，请确认您的挤出机运行正常。打印速度越慢且加速度越小，可接受的 PA 值范围就越大。如果没有明显差异，请使用更快测试中的 PA 值\n3. 在此处的文本框中输入 PA 值、流量和加速度的三元组并保存耗材丝配置文件"
+    },
+    "adaptive_pressure_advance_overhangs": {
+      "label": "为悬垂启用自适应压力提前（试验）",
+      "tooltip": "针对悬垂以及同一特征内的流量变化启用自适应 PA。这是一个实验性选项，如果 PA 轮廓设置不准确，则会导致悬垂前后外表面的均匀性问题。\n"
+    },
+    "additional_cooling_fan_speed": {
+      "label": "风扇速度",
+      "tooltip": "辅助部件冷却风扇的转速。辅助部件冷却风扇将一直运行在该速度，除了设置的无需冷却的前若干层\n请在打印机设置中启用辅助风扇以使用此功能。G-code指令：M106 P2 S(0-255)"
+    },
+    "additional_fan_full_speed_layer": {
+      "label": "满速风扇在",
+      "tooltip": "辅助风扇速度将从“在最初的”层数线性提升，到“满速风扇在”所指定的层时达到最大值。\n如果“满速风扇在”低于“在最初的”，则会被忽略，此时风扇将在“在最初的” + 1 层处以允许的最大速度运行。"
+    },
+    "align_infill_direction_to_model": {
+      "label": "对齐填充方向到模型",
+      "tooltip": "使填充、桥接、熨烫和表面填充的方向跟随模型在打印板上的朝向。\n启用后，这些方向会随模型一起旋转，以保持最佳的强度特性。"
+    },
+    "alternate_extra_wall": {
+      "label": "交替添加额外内墙",
+      "tooltip": "此设置在每隔一层添加一层额外的内墙。这样，填充物就会垂直地夹在墙壁之间，从而产生更牢固的打印件。\n\n启用此选项时，需要禁用确保垂直壳厚度选项。\n\n不建议将闪电填充与此选项一起使用，因为填充物有限，无法将额外的壁厚固定在填充物上。"
+    },
+    "auxiliary_fan": {
+      "label": "辅助部件冷却风扇",
+      "tooltip": "如果打印机有辅助风扇，可以开启此选项。G-code指令：M106 P2 S(0-255)"
+    },
+    "bbl_calib_mark_logo": {
+      "label": "显示雷达标定线"
+    },
+    "bbl_use_printhost": {
+      "label": "启用第三方网络连接",
+      "tooltip": "允许通过第三方网络连接控制BambuLab的打印机"
+    },
+    "bed_custom_model": {
+      "label": "自定义热床模型"
+    },
+    "bed_custom_texture": {
+      "label": "自定义热床纹理"
+    },
+    "bed_exclude_area": {
+      "label": "不可打印区域",
+      "tooltip": "XY平面上的不可打印区域。这个多边形区域由以下格式的点表示：“XxY，XxY，…”"
+    },
+    "bed_mesh_max": {
+      "label": "网床最大点",
+      "tooltip": "此选项设置了允许的网床探测区域的最大点。由于探针的XY偏移，大多数打印机无法探测整个打印床。为了确保探针不会超出床的范围，应适当设置网床的最小和最大点。逆戟鲸切片确保adaptive_bed_mesh_min/adaptive_bed_mesh_max值不超过这些最小/最大点。这些信息通常可以从您的打印机制造商那里获得。默认设置为(99999, 99999)，这意味着没有限制，因此允许在整个床上进行探测。"
+    },
+    "bed_mesh_min": {
+      "label": "网床最小点",
+      "tooltip": "此选项设置了允许的网床探测区域的最小点。由于探针的XY偏移，大多数打印机无法探测整个打印床。为了确保探针不会超出床的范围，应适当设置网床的最小和最大点。逆戟鲸切片确保adaptive_bed_mesh_min/adaptive_bed_mesh_max值不超过这些最小/最大点。这些信息通常可以从您的打印机制造商那里获得。默认设置为(-99999, -99999)，这意味着没有限制，因此允许在整个床上进行探测。"
+    },
+    "bed_mesh_probe_distance": {
+      "label": "网格点间距离",
+      "tooltip": "此选项设置了X和Y方向的探针点（网格大小）之间的首选距离，其默认值为X和Y方向均为50mm。"
+    },
+    "bed_temperature_formula": {
+      "label": "热床温度类型",
+      "tooltip": "此选项用以设置切片时的热床温度确定方式。\n可选择“根据初始打印耗材”或“根据最高打印温度”。",
+      "enum_labels": [
+        "根据初始打印耗材",
+        "根据最高打印温度"
+      ]
+    },
+    "bed_texture_area": {
+      "label": "热床纹理区域"
+    },
+    "before_layer_change_gcode": {
+      "label": "换层前G-code",
+      "tooltip": "在每次换层抬升z高度之前插入这段G-code"
+    },
+    "best_object_pos": {
+      "label": "最佳对象位置",
+      "tooltip": "最佳自动排列位置在[0,1]范围内，相对于打印床形状。"
+    },
+    "bottom_shell_layers": {
+      "label": "底部壳体层数",
+      "full_label": "底部壳体层数",
+      "tooltip": "底部壳体实心层层数，包括底面。当由该层数计算的厚度小于底部壳体厚度，切片时会增加底部壳体的层数"
+    },
+    "bottom_shell_thickness": {
+      "label": "底部壳体厚度",
+      "full_label": "底部壳体厚度",
+      "tooltip": "如果由底部壳体层数算出的厚度小于这个数值，那么切片时将自动增加底部壳体层数。这能够避免当层高很小时，底部壳体过薄。0表示关闭这个设置，同时底部壳体的厚度完全由底部壳体层数决定"
+    },
+    "bottom_solid_infill_flow_ratio": {
+      "label": "底部表面流量比例",
+      "tooltip": "这个值影响底部实心填充的材料量。\n\n实际使用的底部实心填充流量是通过将此值与耗材流量比例以及（如果设置）对象的流量比例相乘来计算的。"
+    },
+    "bottom_surface_density": {
+      "label": "底面密度",
+      "tooltip": "底层表面的密度\n此功能是为了美观或功能性目的，而是为了解决过量挤出等问题。\n警告：降低此值会对热床粘接力产生负面影响。"
+    },
+    "bottom_surface_filament_id": {
+      "label": "底面",
+      "tooltip": "用于打印底面的耗材。\n“默认”使用当前对象/零件的耗材。"
+    },
+    "bottom_surface_pattern": {
+      "label": "底面图案",
+      "tooltip": "除了桥接外的底面填充的走线图案",
+      "enum_labels": [
+        "单调",
+        "单调线",
+        "直线",
+        "直线排列",
+        "同心",
+        "希尔伯特曲线",
+        "阿基米德和弦",
+        "八角螺旋"
+      ]
+    },
+    "bridge_acceleration": {
+      "label": "桥接",
+      "tooltip": "桥接加速度。如果该值以百分比（例如50%）表示，则将根据外墙加速度进行计算。"
+    },
+    "bridge_angle": {
+      "label": "外部桥接填充方向",
+      "tooltip": "外部桥接角度覆盖。\n如果保持为零，每个具体桥接的桥接角度都会自动计算。\n否则将按以下方式使用所提供的角度：\n - 绝对坐标\n - 绝对坐标 + 模型旋转：如果启用了“对齐填充方向到模型”\n - 最佳自动角度 + 此值：如果启用了“相对桥接角度”\n\n使用 180° 表示绝对角度为零。"
+    },
+    "bridge_density": {
+      "label": "外部桥接密度"
+    },
+    "bridge_flow": {
+      "label": "桥接流量",
+      "tooltip": "此值控制外部（可见）桥接层的厚度。\n大于 1.0 的值：在保持线间距的同时增加材料用量。这可以改善线之间的接触和强度。\n小于 1.0 的值：在调整线间距以保持接触的同时减少材料用量。这可以改善下垂。\n\n实际使用的桥接流量是将此值乘以耗材流量比，以及（如已设置）对象的流量比计算得出的。"
+    },
+    "bridge_line_width": {
+      "label": "桥接",
+      "tooltip": "桥接线的线宽。如果以百分比表示，将根据喷嘴直径计算。\n建议与较高的桥接密度或桥接流量比配合使用。\n\n最大值为 100% 或喷嘴直径。\n如果设置为 0，线宽将与内部实心填充宽度一致。"
+    },
+    "bridge_no_support": {
+      "label": "不支撑桥接",
+      "tooltip": "不对整个桥接面进行支撑，否则支撑体会很大。不是很长的桥接通常可以无支撑直接打印。"
+    },
+    "bridge_speed": {
+      "label": "外部",
+      "tooltip": "外部可见桥接挤出的速度。\n\n此外，如果禁用翘曲周长减速或启用经典悬垂模式，它将是支撑少于13%的悬垂墙的打印速度，无论它们是桥接还是悬垂的一部分。"
+    },
+    "brim_ears": {
+      "label": "圆盘",
+      "tooltip": "仅在模型尖锐边缘启用brim。"
+    },
+    "brim_ears_detection_length": {
+      "label": "圆盘检测半径",
+      "tooltip": "在检测尖锐角度之前，几何形状将被简化。此参数表示简化的最小偏差长度。\n设为0以停用"
+    },
+    "brim_ears_max_angle": {
+      "label": "圆盘最大角度",
+      "tooltip": "让圆盘出现的最大角度。\n如果设置为0，则不会创建圆盘。\n如果设置为约180，除直线部分外，其他部分都会创建圆盘。"
+    },
+    "brim_flow_ratio": {
+      "label": "Brim流量比",
+      "tooltip": "此系数影响Brim的材料用量。\n\n实际使用的Brim流量是将此值乘以耗材流量比，以及（如已设置）对象的流量比计算得出的。\n\n注意：所得的值不会受首层流量比的影响。"
+    },
+    "brim_object_gap": {
+      "label": "Brim与模型的间隙",
+      "tooltip": "在brim和模型之间设置间隙，能够让brim更容易剥离"
+    },
+    "brim_type": {
+      "label": "Brim类型",
+      "tooltip": "该参数控制在模型的外侧和/或内侧生成brim。自动是指自动分析和计算边框的宽度。",
+      "enum_labels": [
+        "自动",
+        "圆盘",
+        "绘制",
+        "仅外侧",
+        "仅内侧",
+        "内侧和外侧",
+        "无brim"
+      ]
+    },
+    "brim_use_efc_outline": {
+      "label": "Brim遵循补偿轮廓",
+      "tooltip": "启用后，Brim 与第一层周边几何体对齐 应用象脚补偿后。\n此选项适用于象脚补偿的情况 显着改变第一层足迹。\n\n如果您当前的设置已经运行良好，则可能没有必要启用它，并且 可以导致 Brim 与上层融合。"
+    },
+    "brim_width": {
+      "label": "Brim宽度",
+      "tooltip": "从模型到最外圈brim走线的距离"
+    },
+    "chamber_temperature": {
+      "label": "机箱温度",
+      "full_label": "机箱温度",
+      "tooltip": "对于 ABS、ASA、PC 和 PA 等高温材料，较高的腔室温度有助于抑制或减少翘曲，并有可能提高层间粘合强度。但同时，较高的腔室温度会降低 ABS 和 ASA 的空气过滤效率。 对于 PLA、PETG、TPU、PVA 等低温材料，应禁用此选项（设置为 0），因为腔室温度应较低，以避免热断时材料软化导致挤出机堵塞。 如果启用，此参数还会设置一个名为 chamber_temple 的 G-code 变量，该变量可用于将所需的腔室温度传递给打印启动宏，或热浸宏，如下所示：PRINT_START（其他变量）CHAMBER_TEMP=[cham​​ber_Temperature]。如果您的打印机不支持 M141/M191 命令，或者如果您希望在未安装活动室加热器的情况下在打印启动宏中处理热浸，则这可能很有用。"
+    },
+    "change_extrusion_role_gcode": {
+      "label": "挤出类型更换G-code",
+      "tooltip": "当挤出类型改变时会插入此G-code"
+    },
+    "change_filament_gcode": {
+      "label": "耗材丝更换G-code",
+      "tooltip": "换料时插入的G-code，包括T命令。"
+    },
+    "close_additional_fan_first_x_layers": {
+      "label": "在最初的",
+      "tooltip": "为起始几层设置特殊的辅助冷却风扇速度。"
+    },
+    "close_fan_the_first_x_layers": {
+      "label": "关闭冷却对前",
+      "tooltip": "对开始的一些层关闭所有的部件冷却风扇。通常关闭首层冷却用来获得更好的热床粘接"
+    },
+    "combine_brims": {
+      "label": "合并Brim",
+      "tooltip": "当多个Brim彼此靠近时，将它们合并为一个。这可以改善Brim附着力。"
+    },
+    "compatible_printers": {
+      "label": "选择打印机"
+    },
+    "compatible_printers_condition": {
+      "label": "条件",
+      "tooltip": "使用活动打印机配置文件的配置值的布尔表达式。如果此表达式计算为 true,则此配置文件将被视为与活动打印机配置文件兼容。"
+    },
+    "compatible_prints": {
+      "label": "选择配置文件"
+    },
+    "compatible_prints_condition": {
+      "label": "条件",
+      "tooltip": "使用活动打印配置文件的配置值的布尔表达式。如果此表达式计算为 true,则此配置文件将被视为与活动打印配置文件兼容。"
+    },
+    "complete_print_exhaust_fan_speed": {
+      "label": "风扇速度",
+      "tooltip": "打印完成后排气风扇的速度"
+    },
+    "cool_plate_temp": {
+      "label": "其它层",
+      "full_label": "床温",
+      "tooltip": "非首层热床温度。0值表示这个耗材丝不支持低温打印板"
+    },
+    "cool_plate_temp_initial_layer": {
+      "label": "首层",
+      "full_label": "首层床温",
+      "tooltip": "首层热床温度。0值表示这个耗材丝不支持低温打印板"
+    },
+    "cooling_tube_length": {
+      "label": "喉管长度",
+      "tooltip": "喉管的长度，用于限制冷却内部移动的空间。"
+    },
+    "cooling_tube_retraction": {
+      "label": "喉管位置",
+      "tooltip": "喉管的中心点与挤出机齿尖的距离。"
+    },
+    "counterbore_hole_bridging": {
+      "label": "沉孔搭桥",
+      "tooltip": "此选项为沉孔创建搭桥，使其可以在无支撑的情况下打印。可用的模式包括：\n1. 无：不创建搭桥。\n2. 部分搭桥：仅部分不支撑的区域将被搭桥。\n3. 牺牲层：创建一个完整的牺牲层。",
+      "enum_labels": [
+        "无",
+        "部分搭桥",
+        "牺牲层"
+      ]
+    },
+    "curr_bed_type": {
+      "label": "热床类型",
+      "tooltip": "打印机所支持的热床类型",
+      "enum_labels": [
+        "光滑低温打印板",
+        "工程耗材打印板",
+        "光滑PEI打印板/高温打印板",
+        "纹理PEI打印板",
+        "纹理低温打印板",
+        "低温打印板（超强粘附）"
+      ]
+    },
+    "default_acceleration": {
+      "label": "普通打印",
+      "tooltip": "除首层之外的默认的打印和空驶的加速度"
+    },
+    "default_bed_type": {
+      "label": "默认热床类型",
+      "tooltip": "打印机的默认热床类型（支持数字和字符串格式）。"
+    },
+    "default_filament_colour": {
+      "label": "缺省颜色",
+      "tooltip": "默认耗材颜色。\n右键单击以将值重置为系统默认值。"
+    },
+    "default_filament_profile": {
+      "label": "默认耗材配置",
+      "tooltip": "该机器配置的默认耗材配置"
+    },
+    "default_jerk": {
+      "label": "缺省",
+      "tooltip": "默认抖动"
+    },
+    "default_junction_deviation": {
+      "label": "结点偏差",
+      "tooltip": "Marlin 固件连接偏差（取代传统的 XY Jerk 设置）。"
+    },
+    "default_nozzle_volume_type": {
+      "enum_labels": [
+        "标准",
+        "高流量"
+      ]
+    },
+    "default_print_profile": {
+      "label": "默认切片配置",
+      "tooltip": "该机器的默认切片配置"
+    },
+    "deretraction_speed": {
+      "label": "装填速度",
+      "full_label": "装填速度",
+      "tooltip": "向喷嘴重新装填耗材的速度。\n设为 0 则使用与回抽相同的速度。"
+    },
+    "detect_narrow_internal_solid_infill": {
+      "label": "识别狭窄的内部实心填充",
+      "tooltip": "此选项用于自动识别内部狭窄的实心填充。开启后，将对狭窄实心区域使用同心填充加快打印速度。否则使用默认的直线填充。"
+    },
+    "detect_overhang_wall": {
+      "label": "识别悬垂外墙",
+      "tooltip": "检测悬空相对于线宽的百分比，并应用不同的速度打印。100%%的悬空将使用桥接速度。"
+    },
+    "detect_thin_wall": {
+      "label": "检查薄壁",
+      "tooltip": "检查无法容纳两条走线的薄壁。使用单条走线打印。可能会打地不是很好，因为走线不再闭合。"
+    },
+    "disable_m73": {
+      "label": "禁用M73剩余打印时间",
+      "tooltip": "在最终生成的G-code中禁用M73命令：设置剩余打印时间"
+    },
+    "dont_filter_internal_bridges": {
+      "label": "过滤掉小的内部桥接",
+      "tooltip": "此选项可以帮助减少严重倾斜或弯曲模型顶面的枕化效应。\n默认情况下，小的内部桥接被过滤掉，内部实心填充直接打印在稀疏填充上。这在大多数情况下效果良好，可以加快打印速度而不会过分影响顶面质量。\n然而，在严重倾斜或弯曲的模型中，特别是当使用的稀疏填充密度过低时，这可能导致未支撑的实心填充翘曲，引起枕化效应。\n启用有限过滤或不过滤将在轻微未支撑的内部实心填充上打印内部桥接层。以下选项控制过滤的灵敏度，即它们控制在哪里创建内部桥接：\n1. 过滤 - 启用此选项。这是默认行为，在大多数情况下效果良好\n2. 有限过滤 - 在严重倾斜的表面上创建内部桥接，同时避免不必要的桥接。这对大多数困难的模型效果良好\n3. 不过滤 - 在每个潜在的内部悬垂上创建内部桥接。此选项对严重倾斜的顶面模型有用；但是，在大多数情况下，它会创建太多不必要的桥接",
+      "enum_labels": [
+        "过滤",
+        "有限保留",
+        "保留全部"
+      ]
+    },
+    "dont_slow_down_outer_wall": {
+      "label": "不减速外墙",
+      "tooltip": "如果启用，此设置将确保外墙不会为了满足最小层时间而减速。这在以下情况下特别有帮助：\n1. 避免在打印光滑耗材时改变光泽\n2. 避免改变外墙速度，可能会产生轻微的墙壁伪影，看起来像z条纹\n3. 避免以会在外墙上产生VFAs（细微伪影）的速度打印"
+    },
+    "draft_shield": {
+      "label": "风挡",
+      "tooltip": "风挡对于保护ABS或ASA打印件免受风力的影响，防止翘曲和从打印床上脱落是非常有用的。通常只有在没有封箱的开放式打印机上才需要。\n\n启用 = skirt的高度与最高的打印对象一样高。否则的话会使用'skirt高度'。\n注意：启用风挡后，skirt将会在距离模型'skirt距离'的地方打印。因此，如果brim启用，可能会与其相交。为了避免这种情况，增加skirt距离值。\n",
+      "enum_labels": [
+        "禁用",
+        "启用"
+      ]
+    },
+    "during_print_exhaust_fan_speed": {
+      "label": "风扇速度",
+      "tooltip": "打印过程中排气风扇的速度。此速度将覆盖耗材丝自定义G-code中的速度。"
+    },
+    "elefant_foot_compensation": {
+      "label": "象脚补偿",
+      "tooltip": "将首层收缩用于补偿象脚效应"
+    },
+    "elefant_foot_compensation_layers": {
+      "label": "象脚补偿层数",
+      "tooltip": "象脚补偿将生效的层数。第一层将被象脚补偿值收缩，接下来的层将线性地逐渐减少收缩，直到这个值所指示的层数。"
+    },
+    "elefant_foot_layers_density": {
+      "label": "象脚补偿层密度",
+      "tooltip": "用于象脚补偿层的内部实心填充密度。\n此处设置的是第二层的初始值。\n后续各层会按 elefant_foot_compensation_layers 中指定的高度线性增密。"
+    },
+    "emit_machine_limits_to_gcode": {
+      "label": "写入限制到G-code",
+      "tooltip": "如果启用，机器限制将写入到G-code文件。\n如果G-code风格设置为Klipper，则此选项将被忽略。"
+    },
+    "enable_arc_fitting": {
+      "label": "圆弧拟合",
+      "tooltip": "启用此设置，导出的G-code将包含G2 G3指令。圆弧拟合的容许值和精度相同。\n\n请注意：对于使用Klipper的打印机，建议禁用此选项。\nKlipper打印机并不会从圆弧拟合中受益，因为这些命令会被固件\n重新分割为线段。由于切片软件将线段转换为圆弧后再次被转换为\n线段进行打印，这样操作会导致打印件表面质量下降。"
+    },
+    "enable_extra_bridge_layer": {
+      "label": "额外桥层（测试版）",
+      "tooltip": "此选项启用在内部和/或外部桥接上生成额外桥接层。\n\n额外桥接层有助于改善桥接的外观和可靠性，因为实心填充得到了更好的支撑。这对于快速打印机特别有用，因为桥接和实心填充的速度差异很大。额外的桥接层可以减少顶面的枕化效应，同时减少外部桥接层与其周围周长的分离。\n\n通常建议将此设置为至少'仅外部桥接'，除非发现切片模型存在特定问题。\n\n选项：\n1. 禁用 - 不生成第二桥接层。这是默认设置，出于兼容性目的而设置\n2. 仅外部桥接 - 仅为面向外部的桥接生成第二桥接层。请注意，比设置的周长数更短或更窄的小桥接将被跳过，因为它们不会从第二桥接层中受益。如果生成，第二桥接层将与第一桥接层平行挤出，以增强桥接强度\n3. 仅内部桥接 - 仅为稀疏填充上的内部桥接生成第二桥接层。请注意，内部桥接计入模型的顶部外壳层数。第二内部桥接层将尽可能垂直于第一层挤出。如果在同一岛屿中存在多个具有不同桥接角度的区域，则该岛屿的最后一个区域将被选为角度参考\n4. 全部应用 - 为内部和面向外部的桥接生成第二桥接层\n",
+      "enum_labels": [
+        "禁用",
+        "仅外部桥接",
+        "仅内部桥接",
+        "全部应用"
+      ]
+    },
+    "enable_filament_dynamic_map": {
+      "label": "启用耗材动态映射",
+      "tooltip": "在打印期间启用动态耗材映射。"
+    },
+    "enable_filament_ramming": {
+      "label": "启用耗材尖端成型",
+      "tooltip": "启用耗材尖端成型"
+    },
+    "enable_overhang_bridge_fan": {
+      "label": "悬垂/桥接强制冷却",
+      "tooltip": "启用此选项以允许单独针对悬垂、内部桥接和外部桥接调整部件冷却风扇的速度。针对这些特性设置风扇速度可以提高整体打印质量并减少翘曲。"
+    },
+    "enable_overhang_speed": {
+      "label": "悬垂降速",
+      "tooltip": "启用此选项将降低不同悬垂程度的走线的打印速度"
+    },
+    "enable_power_loss_recovery": {
+      "label": "断电恢复",
+      "tooltip": "选择如何控制断电恢复。当设置为打印机配置时，切片机不会发出断电恢复 G-code，并且打印机的配置保持不变。适用于基于 Bambu Lab 或 Marlin 2 固件的打印机。",
+      "enum_labels": [
+        "打印机配置",
+        "开启",
+        "禁用"
+      ]
+    },
+    "enable_pressure_advance": {
+      "label": "启用压力提前",
+      "tooltip": "启用压力提前，一旦启用会覆盖自动检测的结果"
+    },
+    "enable_prime_tower": {
+      "label": "开启",
+      "tooltip": "擦拭塔可以用来清理喷嘴上的残留料和让喷嘴内部的腔压达到稳定状态，以避免打印物体时出现外观瑕疵。"
+    },
+    "enable_support": {
+      "label": "开启支撑",
+      "tooltip": "开启支撑生成。"
+    },
+    "enable_tower_interface_cooldown_during_tower": {
+      "label": "擦拭塔期间从接触层加速状态冷却",
+      "tooltip": "当接触层温度提升处于活动状态时，在擦拭塔开始时将喷嘴温度恢复到打印温度，以便在打印塔期间降温。"
+    },
+    "enable_tower_interface_features": {
+      "label": "启用擦拭塔接触层功能",
+      "tooltip": "启用优化后的擦拭塔接触层行为，用于不同耗材丝相遇时。"
+    },
+    "enable_wrapping_detection": {
+      "label": "启用结块检测",
+      "tooltip": "启用结块检测"
+    },
+    "eng_plate_temp": {
+      "label": "其它层",
+      "full_label": "床温",
+      "tooltip": "非首层热床温度。0值表示这个耗材丝不支持工程材料打印板"
+    },
+    "eng_plate_temp_initial_layer": {
+      "label": "首层",
+      "full_label": "首层床温",
+      "tooltip": "首层热床温度。0值表示这个耗材丝不支持工程材料打印板"
+    },
+    "ensure_vertical_shell_thickness": {
+      "label": "确保垂直外壳厚度",
+      "tooltip": "在倾斜表面附近添加实心填充，以保证垂直外壳的厚度（顶部+底部实心层）\n无：任何地方都不会添加实心填充。注意：如果您的模型有倾斜表面，请谨慎使用此选项\n仅关键区域：避免为墙壁添加实心填充\n适量：仅为严重倾斜的表面添加实心填充\n全部：为所有适当的倾斜表面添加实心填充\n默认值为全部。",
+      "enum_labels": [
+        "无",
+        "仅关键区域",
+        "适量",
+        "所有"
+      ]
+    },
+    "exclude_object": {
+      "label": "对象排除",
+      "tooltip": "启用此选项以在G-code中添加EXCLUDE OBJECT命令。"
+    },
+    "extra_loading_move": {
+      "label": "额外加载距离",
+      "tooltip": "当设置为零时，耗材的加载移动与卸载移动的距离相同。如果为正，加载比卸载长。如果为负，加载比卸载短。"
+    },
+    "extra_perimeters_on_overhangs": {
+      "label": "悬垂上的额外周长",
+      "tooltip": "在陡峭的悬垂和无法固定桥接的区域上创建额外的周长路径。"
+    },
+    "extra_solid_infills": {
+      "label": "插入实心层",
+      "tooltip": "在特定层插入实心填充。使用N表示每N层插入一次，N#K表示每N层插入K个连续的实心层（K是可选的，例如'5#'等于'5#1'），或使用逗号分隔的列表（例如1,7,9）在指定层插入。层数从1开始。"
+    },
+    "extruder": {
+      "label": "挤出机"
+    },
+    "extruder_clearance_height_to_lid": {
+      "label": "到顶盖高度",
+      "tooltip": "喷嘴尖端到顶盖的距离。用于在逐件打印中避免碰撞。"
+    },
+    "extruder_clearance_height_to_rod": {
+      "label": "到横杆高度",
+      "tooltip": "喷嘴尖端到下方滑杆的距离。用于在逐件打印中避免碰撞。"
+    },
+    "extruder_clearance_radius": {
+      "label": "半径",
+      "tooltip": "挤出机四周的避让半径。用于在逐件打印中避免碰撞。"
+    },
+    "extruder_colour": {
+      "label": "挤出机颜色",
+      "tooltip": "只作为界面上的可视化辅助"
+    },
+    "extruder_offset": {
+      "label": "挤出机偏移"
+    },
+    "extruder_printable_area": {
+      "label": "挤出机可打印区域"
+    },
+    "extruder_printable_height": {
+      "label": "挤出机可打印高度",
+      "tooltip": "该挤出机的最大可打印高度受打印机机构的限制。"
+    },
+    "extruder_type": {
+      "label": "类型",
+      "enum_labels": [
+        "直驱（近程）",
+        "远程挤出机"
+      ]
+    },
+    "extrusion_rate_smoothing_external_perimeter_only": {
+      "label": "仅应用于外部特征",
+      "tooltip": "仅对外周和悬伸应用挤出速率平滑。这有助于减少由于外部可见突出部分上的急剧速度过渡而导致的伪影，而不会影响用户不可见的特征的打印速度。"
+    },
+    "fan_cooling_layer_time": {
+      "label": "层时间",
+      "tooltip": "当层预估打印时间小于该数值时，部件冷却风扇将会被开启。风扇转速将根据层打印时间在最大和最小风扇转速之间插值获得"
+    },
+    "fan_kickstart": {
+      "label": "风扇",
+      "tooltip": "让风扇满速运行指定时间以帮助风扇顺利启动\n设为0禁用此选项"
+    },
+    "fan_max_speed": {
+      "label": "风扇速度",
+      "tooltip": "启用自动冷却时，可能会提高部件冷却风扇的转速。这是部件冷却风扇的最大速度限制"
+    },
+    "fan_min_speed": {
+      "label": "风扇速度",
+      "tooltip": "部件冷却风扇的最小转速"
+    },
+    "fan_speedup_overhangs": {
+      "label": "仅悬垂",
+      "tooltip": "仅对悬垂有效"
+    },
+    "fan_speedup_time": {
+      "tooltip": "提前一定秒数启动风扇（可使用小数），且不考虑加速度，仅考虑 G1 和 G0 移动命令（不支持弧线拟合）。\n此功能不会移动自定义命令中的G-code，而是以屏蔽方式工作，就算启用了“仅自定义启动 G-code”，它也不会将风扇命令移动至启动G-code中。\n设为 0 以禁用。"
+    },
+    "filament_adaptive_volumetric_speed": {
+      "label": "自适应体积流量",
+      "tooltip": "启用后，挤出流量受到拟合值（根据线宽和层高计算）和用户定义的最大流量中较小者的限制。禁用时，仅应用用户定义的最大流量。\n\n注意：从 BBS 导入的实验性和不完整功能。对于某些已保存该变量的配置文件有效。"
+    },
+    "filament_adhesiveness_category": {
+      "label": "粘性分类",
+      "tooltip": "耗材分类"
+    },
+    "filament_change_extrusion_role_gcode": {
+      "label": "挤出类型更换 G-code（耗材）",
+      "tooltip": "当当前耗材的挤出类型发生变化时插入此 G-code。"
+    },
+    "filament_change_length": {
+      "label": "耗材冲击长度",
+      "tooltip": "在切换挤出机时，使原先挤出机额外挤出一段耗材，有助耗材末端抽出完整，并减少待命时的喷嘴渗料。"
+    },
+    "filament_colour": {
+      "label": "颜色",
+      "tooltip": "只作为界面上的可视化辅助"
+    },
+    "filament_cooling_before_tower": {
+      "label": "擦料塔冷却",
+      "tooltip": "进入擦料塔前的降温量"
+    },
+    "filament_cooling_final_speed": {
+      "label": "最后一次冷却移动的速度",
+      "tooltip": "冷却移动向这个速度逐渐加速。"
+    },
+    "filament_cooling_initial_speed": {
+      "label": "第一次冷却移动的速度",
+      "tooltip": "从这个速度开始冷却移动逐渐加速"
+    },
+    "filament_cooling_moves": {
+      "label": "冷却移动次数",
+      "tooltip": "耗材丝通过在喉管中来回移动来冷却。指定所需的移动次数。"
+    },
+    "filament_cost": {
+      "label": "价格",
+      "tooltip": "耗材丝的价格。只用于统计信息。"
+    },
+    "filament_density": {
+      "label": "密度",
+      "tooltip": "耗材丝的密度。只用于统计信息。"
+    },
+    "filament_deretraction_speed": {
+      "label": "装填速度",
+      "full_label": "装填速度",
+      "tooltip": "向喷嘴重新装填耗材的速度。\n设为 0 则使用与回抽相同的速度。"
+    },
+    "filament_diameter": {
+      "label": "直径",
+      "tooltip": "耗材丝直径被用于计算G-code文件中的挤出量。因此很重要，应尽可能精确。"
+    },
+    "filament_end_gcode": {
+      "label": "结尾G-code",
+      "tooltip": "结束使用该耗材打印时的结尾G-code"
+    },
+    "filament_flow_ratio": {
+      "label": "流量比例",
+      "tooltip": "材料经过融化后凝固可能会产生体积差异。这个设置会等比例改变所有挤出走线的挤出量。推荐的范围为0.95到1.05。发现大平层模型的顶面有轻微的缺料或多料时，或许可以尝试微调这个参数。"
+    },
+    "filament_flush_temp": {
+      "label": "冲洗温度",
+      "tooltip": "冲洗耗材丝时的温度。 0 表示推荐喷嘴温度范围的上限。"
+    },
+    "filament_flush_volumetric_speed": {
+      "label": "冲洗体积流量",
+      "tooltip": "冲洗耗材丝时的体积流量。 0 表示最大体积流量。"
+    },
+    "filament_ironing_flow": {
+      "label": "熨烫流量",
+      "tooltip": "针对熨烫流程的耗材特定覆盖。这使您可以为每种耗材类型定制熨烫流程。值太高会导致表面过度挤压。"
+    },
+    "filament_ironing_inset": {
+      "label": "熨烫内缩",
+      "tooltip": "用于熨烫插入的耗材丝特定覆盖。这使您可以自定义熨烫每种耗材丝类型时与边缘保持的距离。"
+    },
+    "filament_ironing_spacing": {
+      "label": "熨烫间距",
+      "tooltip": "针对熨烫线间距的耗材特定覆盖。这使您可以自定义每种耗材类型的熨烫线之间的间距。"
+    },
+    "filament_ironing_speed": {
+      "label": "熨烫速度",
+      "tooltip": "特定于耗材的熨烫速度优先。这允许您自定义每种耗材丝类型的熨烫线的打印速度。"
+    },
+    "filament_is_support": {
+      "label": "支撑耗材",
+      "tooltip": "支撑材料通常用于打印支撑体和支撑接触面"
+    },
+    "filament_loading_speed": {
+      "label": "加载速度",
+      "tooltip": "用于擦拭塔加载耗材的速度。"
+    },
+    "filament_loading_speed_start": {
+      "label": "加载初始速度",
+      "tooltip": "最开始加载阶段的速度"
+    },
+    "filament_long_retractions_when_cut": {
+      "label": "切料时回抽（实验）",
+      "tooltip": "实验性选项。在更换耗材丝时，将耗材丝回抽一段距离后再切断以最小化冲刷。虽然这大大减少了冲刷，但也可能增加喷嘴堵塞或其他打印问题的风险。"
+    },
+    "filament_map": {
+      "label": "耗材映射到挤出机",
+      "tooltip": "耗材映射到挤出机。"
+    },
+    "filament_map_mode": {
+      "enum_labels": [
+        "自动冲洗",
+        "自动匹配",
+        "手动",
+        "缺省"
+      ]
+    },
+    "filament_max_volumetric_speed": {
+      "label": "最大体积速度",
+      "tooltip": "这个设置表示在1秒内能够融化和挤出的耗材丝体积。打印速度会受到最大体积速度的限制，防止设置过高和不合理的速度。不允许设置为0。"
+    },
+    "filament_minimal_purge_on_wipe_tower": {
+      "label": "擦拭塔上的最小清理量",
+      "tooltip": "换色后，新加载的耗材在喷嘴内的确切位置可能未知，耗材压力可能还不稳定。在冲刷打印头到填充或作为挤出废料之前，ElegooSlicer将始终将这些的耗材丝冲刷到擦拭塔中以产生连续的填充或稳定的挤出废料。"
+    },
+    "filament_multitool_ramming": {
+      "label": "启用多色尖端成型设置",
+      "tooltip": "多色打印机执行尖端成型时（即，当打印机设置中的单挤出机多材料未选中时）。选中时，在换色之前，会迅速挤出少量耗材丝到擦拭塔上。此选项仅在启用擦拭塔时使用。"
+    },
+    "filament_multitool_ramming_flow": {
+      "label": "多色尖端成型流量",
+      "tooltip": "换色前耗材尖端成型的流量"
+    },
+    "filament_multitool_ramming_volume": {
+      "label": "多色尖端成型体积",
+      "tooltip": "换色前尖端成型的体积"
+    },
+    "filament_notes": {
+      "label": "耗材注释",
+      "tooltip": "你可以把关于耗材的注释放在这里。"
+    },
+    "filament_printable": {
+      "label": "可打印耗材",
+      "tooltip": "此耗材可通过挤出机打印"
+    },
+    "filament_ramming_parameters": {
+      "label": "尖端成型参数",
+      "tooltip": "此内容由尖端成型窗口编辑，包含尖端成型的特定参数。"
+    },
+    "filament_retract_before_wipe": {
+      "label": "擦拭前的回抽量",
+      "tooltip": "擦拭之前的回抽长度，用总回抽长度的百分比表示。"
+    },
+    "filament_retract_lift_above": {
+      "label": "仅在高度以上抬Z",
+      "tooltip": "如果将其设置为正值，则Z抬升仅在指定的绝对Z之上发生"
+    },
+    "filament_retract_lift_below": {
+      "label": "仅在高度以下抬Z",
+      "tooltip": "如果将其设置为正值，则Z抬升仅在指定的绝对Z以下发生。"
+    },
+    "filament_retract_lift_enforce": {
+      "label": "仅表面抬Z",
+      "tooltip": "强制Z抬升行为。此设置受上述设置的影响（仅在高度以下抬Z/仅在高度以上抬Z）。",
+      "enum_labels": [
+        "所有表面",
+        "仅顶面",
+        "仅底面",
+        "顶面和地面"
+      ]
+    },
+    "filament_retract_restart_extra": {
+      "label": "额外回填长度",
+      "tooltip": "每当空驶后回抽被补偿时，挤出机将推入额外数量的耗材丝。很少需要此设置。"
+    },
+    "filament_retract_when_changing_layer": {
+      "label": "换层时回抽",
+      "tooltip": "强制在换层时回抽。"
+    },
+    "filament_retraction_distances_when_cut": {
+      "label": "切料回抽距离",
+      "tooltip": "实验性选项。在更换耗材丝时，切断前的回抽长度"
+    },
+    "filament_retraction_length": {
+      "label": "长度",
+      "full_label": "回抽长度",
+      "tooltip": "挤出机中的一些材料被拉回，以避免在长行程期间渗出。设置为零以禁用回缩。"
+    },
+    "filament_retraction_minimum_travel": {
+      "label": "空驶距离阈值",
+      "tooltip": "只在空驶距离大于该数值时触发回抽。"
+    },
+    "filament_retraction_speed": {
+      "label": "回抽速度",
+      "full_label": "回抽速度",
+      "tooltip": "从喷嘴回抽耗材的速度"
+    },
+    "filament_shrink": {
+      "label": "收缩率（XY）",
+      "tooltip": "冷却后耗材会收缩的百分比(如果测量的长度是94mm而不是100mm，则为是收缩率为94%)\n补偿将按比例缩放xy轴该补偿仅考虑墙壁所使用的耗材\n请确保物体之间有足够的间距，因为补偿是在边界检查之后进行"
+    },
+    "filament_shrinkage_compensation_z": {
+      "label": "收缩率（Z）",
+      "tooltip": "冷却后耗材会收缩的百分比(如果测量的长度是94mm而不是100mm，则为是收缩率为94%)\n补偿将按比例缩放Z轴"
+    },
+    "filament_soluble": {
+      "label": "可溶性耗材",
+      "tooltip": "可溶性材料通常用于打印支撑和支撑面"
+    },
+    "filament_stamping_distance": {
+      "label": "从冷却管中心测量的尖端成型距离",
+      "tooltip": "如果设置为非零值，则在各个冷却移动之间耗材会向喷嘴方向移动（“印模”）。该选项用于配置耗材在重新回抽前应移动多长时间。"
+    },
+    "filament_stamping_loading_speed": {
+      "label": "尖端成型加载速度",
+      "tooltip": "用于尖端成型的速度"
+    },
+    "filament_start_gcode": {
+      "label": "起始G-code",
+      "tooltip": "开始使用这个耗材丝打印的起始G-code"
+    },
+    "filament_toolchange_delay": {
+      "label": "卸载后延迟",
+      "tooltip": "耗材丝卸载后等待的时间。有助于柔性材料（收缩到原始尺寸需更多的时间）以获得可靠的换色。"
+    },
+    "filament_tower_interface_pre_extrusion_dist": {
+      "label": "接触层预挤出距离",
+      "tooltip": "擦拭塔接触层（不同耗材丝相遇处）的预挤出距离。"
+    },
+    "filament_tower_interface_pre_extrusion_length": {
+      "label": "接触层预挤出长度",
+      "tooltip": "擦拭塔接触层（不同耗材丝相遇处）的预挤出长度。"
+    },
+    "filament_tower_interface_print_temp": {
+      "label": "接触层打印温度",
+      "tooltip": "擦拭塔接触层（不同耗材丝相遇处）的打印温度。如果设置为 -1，则使用最大推荐喷嘴温度。"
+    },
+    "filament_tower_interface_purge_volume": {
+      "label": "接触层冲刷长度",
+      "tooltip": "擦拭塔接触层（不同耗材丝相遇处）的冲刷长度。"
+    },
+    "filament_tower_ironing_area": {
+      "label": "擦拭塔熨烫区域",
+      "tooltip": "擦拭塔接触层（不同耗材丝相遇处）的熨烫区域。"
+    },
+    "filament_type": {
+      "label": "类型",
+      "tooltip": "耗材丝的材料类型"
+    },
+    "filament_unloading_speed": {
+      "label": "卸载速度",
+      "tooltip": "用于擦拭塔卸载耗材的速度（不影响尖端成型之后初始部分的速度）。"
+    },
+    "filament_unloading_speed_start": {
+      "label": "卸载初始速度",
+      "tooltip": "耗材尖端成型后立即卸载的速度"
+    },
+    "filament_vendor": {
+      "label": "供应商",
+      "tooltip": "打印耗材的供应商。仅用于展示。"
+    },
+    "filament_wipe": {
+      "label": "回抽时擦拭",
+      "tooltip": "当回抽时，让喷嘴沿着前面的走线方向继续移动，清除掉喷嘴上的漏料。这能够避免空驶结束打印新的区域时产生斑点。"
+    },
+    "filament_wipe_distance": {
+      "label": "擦拭距离",
+      "tooltip": "喷嘴在回抽时将沿着最后路径移动的距离\n\n根据擦拭操作的距离以及挤出机/耗材丝回抽的速度和长度，可能需要执行额外的回抽动作以收回剩余的丝材。\n\n在下方的擦拭前回抽量设置中输入一个数值，将在擦拭动作之前执行任何超出部分的回抽，否则超出部分的回抽将在擦拭之后执行。"
+    },
+    "filament_z_hop": {
+      "label": "Z抬升高度",
+      "tooltip": "回抽完成之后，喷嘴轻微抬升，和打印件之间产生一定间隙。这能够避免空驶时喷嘴和打印件剐蹭和碰撞。使用螺旋线抬升z能够减少拉丝。"
+    },
+    "filament_z_hop_types": {
+      "label": "Z抬升类型",
+      "tooltip": "Z轴抬升类型。",
+      "enum_labels": [
+        "自动",
+        "普通",
+        "梯形",
+        "螺旋"
+      ]
+    },
+    "file_start_gcode": {
+      "label": "文件头 G-code",
+      "tooltip": "G-code 写在输出文件的最顶部，位于任何其他内容之前。对于添加打印机固件从文件第一行读取的元数据（例如估计打印时间、耗材使用情况）很有用。支持 {print_time_sec} 和 {used_filament_length} 等占位符。"
+    },
+    "filename_format": {
+      "label": "文件名格式",
+      "tooltip": "用户可以自定义导出项目文件的名称。"
+    },
+    "fill_multiline": {
+      "label": "填充多线",
+      "tooltip": "如果填充图案支持，使用多线进行填充。"
+    },
+    "filter_out_gap_fill": {
+      "label": "忽略微小间隙",
+      "tooltip": "不要打印长度小于指定阈值（以毫米为单位）的间隙填充。此设置适用于顶部、底部和实体填充，如果使用经典周长生成器，则适用于墙壁间隙填充。"
+    },
+    "first_layer_flow_ratio": {
+      "label": "第一层流量比",
+      "tooltip": "此因素会影响本节中列出的挤出路径角色的第一层上的材料量。 对于第一层，每个路径角色的实际流量比（不影响Brim和​裙边）将乘以该值。"
+    },
+    "first_layer_print_sequence": {
+      "label": "第一层打印顺序"
+    },
+    "first_layer_sequence_choice": {
+      "label": "首层耗材打印顺序",
+      "enum_labels": [
+        "自动",
+        "自定义"
+      ]
+    },
+    "first_x_layer_fan_speed": {
+      "label": "风扇速度",
+      "tooltip": "特殊辅助冷却风扇速度，仅对前 x 层有效。"
+    },
+    "flashforge_serial_number": {
+      "label": "序列号",
+      "tooltip": "Flashforge 本地 API 需要打印机序列号。"
+    },
+    "flush_into_infill": {
+      "label": "冲刷到对象的填充",
+      "tooltip": "换料后的过渡料会被用来打印对象的填充。这样可以减少耗材浪费和缩短打印时间，但是如果对象的内外墙是采用透明耗材打印的，则可以从模型外观上看到内部的混色过渡料。该功能只有在启用料塔的时候才生效。"
+    },
+    "flush_into_objects": {
+      "label": "冲刷到这个对象",
+      "tooltip": "换料后的过渡料会被用来打印这个对象。这样可以减少材料浪费和缩短打印时间，但是这个对象的外观会是混色的。该功能只有在启用料塔的时候才生效。"
+    },
+    "flush_into_support": {
+      "label": "冲刷到对象的支撑",
+      "tooltip": "换料后的过渡料会被用来打印对象的支撑。这样可以减少耗材浪费以及缩短打印时间。该功能只有在启用料塔的时候才生效。"
+    },
+    "flush_multiplier": {
+      "label": "冲刷量乘数",
+      "tooltip": "实际冲刷量等于冲刷量乘数乘以表格单元中的冲刷量"
+    },
+    "flush_volumes_matrix": {
+      "label": "冲刷体积"
+    },
+    "flush_volumes_vector": {
+      "label": "清理量 - 加载/卸载量"
+    },
+    "full_fan_speed_layer": {
+      "label": "满速风扇在",
+      "tooltip": "风扇速度将从“禁用第一层”的零线性上升到“全风扇速度层”的最大。如果低于“禁用风扇第一层”，则“全风扇速度第一层”将被忽略，在这种情况下，风扇将在“禁用风扇第一层”+1层以最大允许速度运行。"
+    },
+    "fuzzy_skin": {
+      "label": "绒毛表面",
+      "tooltip": "打印外墙时随机抖动，使外表面产生绒效果。这个设置决定适用的位置。",
+      "enum_labels": [
+        "仅涂漆",
+        "轮廓",
+        "孔",
+        "轮廓和孔",
+        "所有墙",
+        "禁用"
+      ]
+    },
+    "fuzzy_skin_first_layer": {
+      "label": "绒毛表面应用至首层",
+      "tooltip": "是否在第一层应用绒毛效果"
+    },
+    "fuzzy_skin_layers_between_ripple_offset": {
+      "label": "波纹偏移之间的层数",
+      "tooltip": "指定在应用偏移之前，有多少连续的层共享相同的波纹相位。\n例如：\n- 1 = 第 1 层以基础波纹图案打印，然后第 2 层按配置的偏移移动，然后第 3 层回到基础图案，依此类推。\n- 3 = 第 1 至 3 层以基础波纹图案打印，然后第 4 至 6 层按配置的偏移移动，然后第 7 至 9 层回到基础图案，依此类推。"
+    },
+    "fuzzy_skin_mode": {
+      "label": "绒毛表面生成器模式",
+      "tooltip": "模糊皮肤生成模式。仅适用于Arachne！\n位移：经典模式，通过将喷嘴从原始路径向侧面移动来形成图案。\n挤出：通过挤出塑料量而形成图案的模式。这是一种快速而直接的算法，没有不必要的喷嘴抖动，可以产生平滑的图案。但它对于在整个阵列中形成松散的墙壁更有用。\n组合：联合模式【位移】+【挤压】。墙壁的外观与 [位移] 模式类似，但周边之间不留孔隙。注意！[挤出] 和 [组合] 模式仅适用于 fuzzy_skin_thickness 参数不大于打印环厚度的情况。同时，特定层的挤出宽度也不应低于一定水平。它通常等于层高的 15-25%%。因此，周宽为 0.4 mm、层高为 0.2 mm 时，最大绒毛表面厚度为 0.4-(0.2*0.25)=±0.35 mm！如果输入参数高于此值，将显示 Flow::spacing() 错误，且模型不会被切片。您可以调整该数值，直到不再重复出现该错误。",
+      "enum_labels": [
+        "位移",
+        "挤出",
+        "合并"
+      ]
+    },
+    "fuzzy_skin_noise_type": {
+      "label": "绒毛噪声类型",
+      "tooltip": "用于生成绒毛表面的噪声类型：\nClassic：经典的均匀随机噪声。\nPerlin：柏林噪声，可产生更一致的纹理。\nBillow：类似柏林噪声，但更成团块状。\nRidged Multifractal：具有尖锐、锯齿状特征的脊状噪声。可生成大理石般的纹理。\nVoronoi：将表面划分为 Voronoi 单元，并将每个单元随机位移一定量。可生成拼接状纹理。\nRipple：在原始路径左右起伏的均匀波纹图案。重复图案，呈编织外观。",
+      "enum_labels": [
+        "经典",
+        "柏林噪声",
+        "云状噪声",
+        "脊状多重分形",
+        "维诺图",
+        "波纹"
+      ]
+    },
+    "fuzzy_skin_octaves": {
+      "label": "绒毛噪声倍频",
+      "tooltip": "使用的相干噪声倍频数。较高的数值会增加噪声细节，但也会增加计算时间。"
+    },
+    "fuzzy_skin_persistence": {
+      "label": "绒毛噪声持续性",
+      "tooltip": "相干噪声高倍频的衰减速率。较低的数值会产生更平滑的噪声。"
+    },
+    "fuzzy_skin_point_distance": {
+      "label": "绒毛表面点间距",
+      "tooltip": "产生绒毛表面时，插入的随机点之间的平均距离"
+    },
+    "fuzzy_skin_ripple_offset": {
+      "label": "波纹偏移",
+      "tooltip": "每个层周期沿打印路径将波纹相位向前移动指定百分比的波长。\n- 0% 使每一层都保持相同。\n- 50% 将图案移动半个波长，相当于反转相位。\n- 100% 将图案移动一个完整波长，回到原始相位。\n\n该偏移每隔“波纹偏移之间的层数”所设置的层数应用一次，因此同一组内的各层会以相同方式打印。"
+    },
+    "fuzzy_skin_ripples_per_layer": {
+      "label": "每层的波纹数量",
+      "tooltip": "控制每层添加多少个完整周期的波纹。"
+    },
+    "fuzzy_skin_scale": {
+      "label": "绒毛表面特征尺寸",
+      "tooltip": "相干噪声特征的基础尺寸（单位：毫米）。较高的数值会产生更大的特征。"
+    },
+    "fuzzy_skin_thickness": {
+      "label": "绒毛表面厚度",
+      "tooltip": "产生绒毛的抖动的宽度。建议小于外圈墙的线宽。"
+    },
+    "gap_fill_flow_ratio": {
+      "label": "间隙填充流量比",
+      "tooltip": "该因素影响填充间隙的材料量。 实际使用的间隙填充流量是通过将该值乘以耗材流量比以及对象的流量比（如果已设置）来计算的。"
+    },
+    "gap_fill_target": {
+      "label": "启用间隙填充",
+      "tooltip": "为选定的实体曲面启用间隙填充。可以通过下面的过滤掉微小间隙选项来控制要填充的最小间隙长度。 选项：\n1. 无处不在：对顶部、底部和内部固体表面进行间隙填充，以获得最大强度\n2. 顶部和底部表面：仅对顶部和底部表面应用间隙填充，平衡打印速度，减少固体填充中过度挤出的可能性，并确保顶部和底部表面没有针孔间隙\n3. 无处：禁用所有实体填充区域的间隙填充 请注意，如果使用经典的周长生成器，如果全宽线无法容纳在周长之间，则也可能在周长之间生成间隙填充。周边间隙填充不受此设置控制。 如果您希望删除所有间隙填充（包括生成的经典周长），请将过滤掉微小间隙的值设置为一个较大的数字，例如 999999。 然而，不建议这样做，因为周边之间的间隙填充有助于提高模型的强度。对于在周边之间生成过多间隙填充的模型，更好的选择是切换到蜘蛛壁生成器并使用此选项来控制是否生成装饰性顶部和底部表面间隙填充。",
+      "enum_labels": [
+        "所有地方",
+        "仅顶层和底层",
+        "不填充"
+      ]
+    },
+    "gap_infill_speed": {
+      "label": "填缝",
+      "tooltip": "填缝的速度。缝隙通常有不一致的线宽，应改用较慢速度打印。"
+    },
+    "gcode_add_line_number": {
+      "label": "标注行号",
+      "tooltip": "启用该设置，G-code的每一行的开头会增加Nx标注行号。"
+    },
+    "gcode_comments": {
+      "label": "注释G-code",
+      "tooltip": "启用此选项，将获得带有注释的G-code文件，每行都有描述性文本解释。如果您从SD卡打印，文件的额外重量可能会使您的固件变慢。"
+    },
+    "gcode_flavor": {
+      "label": "G-code风格",
+      "tooltip": "打印机兼容的G-code风格'",
+      "enum_labels": [
+        "Marlin(legacy)",
+        "Klipper固件",
+        "RepRapFirmware",
+        "Repetier",
+        "Marlin 2"
+      ]
+    },
+    "gcode_label_objects": {
+      "label": "标注模型",
+      "tooltip": "启用此选项，将在G-code中添加注释，标记打印移动属于哪个对象，这对Octoprint CancelObject插件非常有用。此设置与单挤出机多材料设置和擦拭到对象/擦拭到填充不兼容。"
+    },
+    "grab_length": {
+      "label": "抓斗长度"
+    },
+    "gyroid_optimized": {
+      "label": "Z 轴屈曲偏置优化（实验性）"
+    },
+    "has_filament_switcher": {
+      "label": "具有耗材切换器",
+      "tooltip": "打印机具有耗材切换器硬件（例如 AMS）。"
+    },
+    "high_current_on_filament_swap": {
+      "label": "更换耗材挤出机大电流",
+      "tooltip": "可能有益于换耗材过程中增加挤出机电流，克服加载耗材时的阻力以加快尖端成型进料速率从而避免产生难看形状的尖端。"
+    },
+    "hole_to_polyhole": {
+      "label": "将圆孔转换为多边型孔",
+      "tooltip": "搜索跨越多层的近似圆形孔，并将几何形状转换为多边形孔。使用喷嘴尺寸和（最大）直径来计算多边形孔。\n参见http://hydraraptor.blogspot.com/2011/02/polyholes.html"
+    },
+    "hole_to_polyhole_threshold": {
+      "label": "多边型孔检测边缘",
+      "tooltip": "点到圆半径的最大偏差。\n由于圆柱体通常被导出为大小不同的三角形，因此点可能不在圆周上。\n此设置允许您有一些余地来扩大检测范围。\n以毫米或半径的百分比表示。"
+    },
+    "hole_to_polyhole_twisted": {
+      "label": "扭曲多边型孔",
+      "tooltip": "按层旋转多边形孔。"
+    },
+    "host_type": {
+      "label": "主机类型",
+      "tooltip": "ElegooSlicer可以将G-code文件上传到打印机主机。此字段必须包含主机类型。",
+      "enum_labels": [
+        "PrusaLink",
+        "PrusaConnect",
+        "OctoPrint",
+        "Duet",
+        "FlashAir",
+        "AstroBox",
+        "Repetier",
+        "MKS",
+        "ESP3D",
+        "CrealityPrint",
+        "Obico",
+        "Flashforge",
+        "SimplyPrint",
+        "Elegoo Link",
+        "3DPrinterOS",
+        "Moonraker (Klipper)"
+      ]
+    },
+    "hot_plate_temp": {
+      "label": "其它层",
+      "full_label": "床温",
+      "tooltip": "非首层热床温度。0值表示这个耗材丝不支持高温打印板"
+    },
+    "hot_plate_temp_initial_layer": {
+      "label": "首层",
+      "full_label": "首层床温",
+      "tooltip": "首层热床温度。0值表示这个耗材丝不支持高温打印板"
+    },
+    "idle_temperature": {
+      "label": "待机温度",
+      "tooltip": "在多工具设置中，当前未使用的工具的喷嘴温度。这仅在打印设置中启用'防滴漏'时使用。设置为0以禁用。"
+    },
+    "independent_support_layer_height": {
+      "label": "支撑独立层高",
+      "tooltip": "支撑层使用与对象层独立的层高。这是为了支持自定义z-gap并且节省打印时间。当擦料塔被启用时，这个选项将无效。"
+    },
+    "infill_anchor": {
+      "label": "稀疏填充锚线长度",
+      "tooltip": "用一小段额外轮廓将填充线连接到内轮廓。如果以百分比表示（例如 15%），则按填充挤出宽度计算。ElegooSlicer 会尝试将两条相近的填充线连接到一小段轮廓。如果找不到短于 infill_anchor_max 的轮廓段，填充线只会在一侧连接到轮廓段，且所采用的轮廓段长度受此参数限制，但不会超过 anchor_length_max。\n将此参数设为 0 可禁用连接到单条填充线的锚定轮廓。"
+    },
+    "infill_anchor_max": {
+      "label": "填充锚线的最大长度",
+      "tooltip": "用一小段额外轮廓将填充线连接到内轮廓。如果以百分比表示（例如 15%），则按填充挤出宽度计算。ElegooSlicer 会尝试将两条相近的填充线连接到一小段轮廓。如果找不到短于此参数的轮廓段，填充线只会在一侧连接到轮廓段，且所采用的轮廓段长度受 infill_anchor 限制，但不会超过此参数。\n如果设为 0，将使用旧的填充连接算法，其结果应与 1000 & 0 相同。"
+    },
+    "infill_combination": {
+      "label": "合并填充",
+      "tooltip": "自动合并若干层稀疏填充一起打印以可缩短时间。内外墙依然保持原始层高打印。"
+    },
+    "infill_combination_max_layer_height": {
+      "label": "填充组合 - 最大层高",
+      "tooltip": "组合稀疏填充的最大层高。\n\n设置为 0 或 100% 使用喷嘴直径（以最大程度减少打印时间），或设置为约 80% 以最大化稀疏填充强度。\n\n填充组合的层数是通过将此值除以层高并向下取整得出的。\n\n可以使用绝对 mm 值（例如 0.4mm 喷嘴使用 0.32mm）或百分比值（例如 80%）。此值不得大于喷嘴直径。"
+    },
+    "infill_direction": {
+      "label": "稀疏填充方向",
+      "tooltip": "稀疏填充图案的角度，决定走线的开始或整体方向。"
+    },
+    "infill_jerk": {
+      "label": "填充",
+      "tooltip": "填充抖动"
+    },
+    "infill_lock_depth": {
+      "label": "填充锁定深度",
+      "tooltip": "该参数设置内部与外壳之间的重叠深度"
+    },
+    "infill_overhang_angle": {
+      "label": "填充悬空角度",
+      "tooltip": "填充倾斜线的角度。60°将产生纯蜂窝结构。"
+    },
+    "infill_shift_step": {
+      "label": "填充偏移步长",
+      "tooltip": "此参数为每层填充添加轻微的位移以创建十字纹理。"
+    },
+    "infill_wall_overlap": {
+      "label": "填充/墙 重叠",
+      "tooltip": "填充区域略微扩大以与墙壁重叠，以获得更好的粘合。百分比值相对于稀疏填充的线宽。将此值设置为约10-15%，以最小化潜在的过挤出和材料积累，从而导致顶部表面粗糙。"
+    },
+    "inherits": {
+      "label": "继承配置文件",
+      "tooltip": "父配置名称"
+    },
+    "initial_layer_acceleration": {
+      "label": "首层",
+      "tooltip": "首层加速度。使用较低值可以改善和打印板的粘接。"
+    },
+    "initial_layer_infill_speed": {
+      "label": "首层填充",
+      "tooltip": "首层实心填充的打印速度"
+    },
+    "initial_layer_jerk": {
+      "label": "首层",
+      "tooltip": "首层抖动值"
+    },
+    "initial_layer_line_width": {
+      "label": "首层",
+      "tooltip": "首层的线宽。若以百分比表示（例如120%），它将基于喷嘴直径来计算。"
+    },
+    "initial_layer_min_bead_width": {
+      "label": "首层墙最小线宽",
+      "tooltip": "应用于首层的墙最小线宽，建议设置与喷嘴尺寸相同。这种调整有助于增强附着力。"
+    },
+    "initial_layer_print_height": {
+      "label": "首层层高",
+      "tooltip": "首层层高。\n若少许加厚首层层高，将有助增加部件与热床间的粘接力。"
+    },
+    "initial_layer_speed": {
+      "label": "首层",
+      "tooltip": "首层除实心填充之外的其他部分的打印速度"
+    },
+    "initial_layer_travel_acceleration": {
+      "label": "首层空驶",
+      "tooltip": "首层的空驶加速度。\n百分比值相对于空驶加速度。"
+    },
+    "initial_layer_travel_jerk": {
+      "label": "首层空驶",
+      "tooltip": "首层的空驶抖动。\n百分比值相对于空驶抖动。"
+    },
+    "initial_layer_travel_speed": {
+      "label": "首层空驶速度",
+      "tooltip": "首层空驶速度"
+    },
+    "inner_wall_acceleration": {
+      "label": "内墙",
+      "tooltip": "内圈墙加速度，使用较低值可以改善质量。"
+    },
+    "inner_wall_filament_id": {
+      "label": "内墙",
+      "tooltip": "用于打印内墙的耗材。\n“默认”使用当前对象/零件的耗材。"
+    },
+    "inner_wall_flow_ratio": {
+      "label": "内壁流量比",
+      "tooltip": "该因素影响内壁材料的用量。 实际使用的内壁流量是通过将该值乘以耗材流量比以及对象的流量比（如果已设置）来计算的。"
+    },
+    "inner_wall_jerk": {
+      "label": "内墙",
+      "tooltip": "内墙抖动值"
+    },
+    "inner_wall_line_width": {
+      "label": "内墙",
+      "tooltip": "内墙的线宽。如果以%表示，它将基于喷嘴直径来计算。"
+    },
+    "inner_wall_speed": {
+      "label": "内墙",
+      "tooltip": "内圈墙打印速度"
+    },
+    "input_shaping_damp_x": {
+      "label": "X",
+      "tooltip": "X 轴输入整形器的阻尼比。\n为零时将使用固件阻尼比。\n要禁用输入整形，请使用“禁用”类型。\nRRF：X 和 Y 的值相等。"
+    },
+    "input_shaping_damp_y": {
+      "label": "Y",
+      "tooltip": "Y 轴输入整形器的阻尼比。\n为零时将使用固件阻尼比。\n要禁用输入整形，请使用“禁用”类型。"
+    },
+    "input_shaping_emit": {
+      "label": "输出输入整形",
+      "tooltip": "覆盖固件的输入整形设置。\n如果禁用，则使用固件设置。"
+    },
+    "input_shaping_freq_x": {
+      "label": "X",
+      "tooltip": "X 轴输入整形器的谐振频率。\n为零时将使用固件频率。\n要禁用输入整形，请使用“禁用”类型。\nRRF：X 和 Y 的值相等。"
+    },
+    "input_shaping_freq_y": {
+      "label": "Y",
+      "tooltip": "Y 轴输入整形器的谐振频率。\n为零时将使用固件频率。\n要禁用输入整形，请使用“禁用”类型。"
+    },
+    "input_shaping_type": {
+      "label": "输入整形器类型",
+      "tooltip": "选择输入整形器算法。\n“默认”使用固件的默认设置。\n“禁用”将关闭固件中的输入整形。",
+      "enum_labels": [
+        "缺省",
+        "MZV",
+        "ZV",
+        "ZVD",
+        "ZVDD",
+        "ZVDDD",
+        "EI",
+        "EI2",
+        "2HUMP_EI",
+        "EI3",
+        "3HUMP_EI",
+        "DAA",
+        "禁用"
+      ]
+    },
+    "interface_shells": {
+      "label": "接触面外壳",
+      "tooltip": "强制在相邻材料/体积之间生成实心壳。适用于使用半透明材料或手动可溶性支撑材料的多挤出机打印"
+    },
+    "interlocking_beam": {
+      "label": "启用互锁梁",
+      "tooltip": "在不同灯丝接触的位置产生联锁梁结构。这提高了细丝之间的附着力，特别是用不同材料印刷的模型。"
+    },
+    "interlocking_beam_layer_count": {
+      "label": "互锁梁层数",
+      "tooltip": "互锁结构梁的高度，用层数来衡量。层数越少越坚固，但更容易产生缺陷。"
+    },
+    "interlocking_beam_width": {
+      "label": "互锁梁宽度",
+      "tooltip": "互锁梁的宽度"
+    },
+    "interlocking_boundary_avoidance": {
+      "label": "互锁与边界的留白量",
+      "tooltip": "模型边框与互锁结构的距离，以单元格为单位。"
+    },
+    "interlocking_depth": {
+      "label": "联锁深度",
+      "tooltip": "从细丝之间的边界到产生连锁结构的距离，以cells为单位测量。cells过少会导致粘连不良。"
+    },
+    "interlocking_orientation": {
+      "label": "互锁方向",
+      "tooltip": "互锁梁的方向"
+    },
+    "internal_bridge_angle": {
+      "label": "内部桥接填充方向",
+      "tooltip": "内部桥接角度覆盖。\n如果保持为零，每个具体桥接的桥接角度都会自动计算。\n否则将按以下方式使用所提供的角度：\n - 绝对坐标\n - 绝对坐标 + 模型旋转：如果启用了“对齐填充方向到模型”\n - 最佳自动角度 + 此值：如果启用了“相对桥接角度”\n\n使用 180° 表示绝对角度为零。"
+    },
+    "internal_bridge_density": {
+      "label": "内部桥接密度"
+    },
+    "internal_bridge_fan_speed": {
+      "label": "内部桥接风扇速度",
+      "tooltip": "用于所有内部桥接的部件冷却风扇转速。设置为 -1 时，将采用悬垂风扇转速设置。\n\n与常规风扇转速相比，降低内部桥接风扇转速可以帮助减少因长时间在大面积区域施加过度冷却而引起的零件变形。"
+    },
+    "internal_bridge_flow": {
+      "label": "内部搭桥流量比例",
+      "tooltip": "此值控制内部桥接层的厚度。这是稀疏填充上方的第一层，因此增大它可能会提升强度和上层质量。\n大于 1.0 的值：在保持线间距的同时增加材料用量。这可以改善线之间的接触和强度。\n小于 1.0 的值：在调整线间距以保持接触的同时减少材料用量。这可以改善下垂。\n\n实际使用的桥接流量是将此值乘以耗材流量比，以及（如已设置）对象的流量比计算得出的。"
+    },
+    "internal_bridge_speed": {
+      "label": "内部",
+      "tooltip": "内部桥接的速度。如果该值以百分比表示，将基于桥接速度计算。默认值为150%。"
+    },
+    "internal_solid_filament_id": {
+      "label": "内部实心填充",
+      "tooltip": "用于打印内部实心填充的耗材。\n“默认”使用当前对象/零件的耗材。"
+    },
+    "internal_solid_infill_acceleration": {
+      "label": "内部实心填充",
+      "tooltip": "内部实心填充的加速度。如果该值以百分比表示（例如100%），则将根据默认加速度进行计算。"
+    },
+    "internal_solid_infill_flow_ratio": {
+      "label": "内部固体填充流动比",
+      "tooltip": "该因素影响内部固体填充材料的数量。 实际使用的内部固体填充流量是通过将该值乘以耗材流量比以及对象的流量比（如果已设置）来计算的。"
+    },
+    "internal_solid_infill_line_width": {
+      "label": "内部实心填充",
+      "tooltip": "内部实心填充的线宽。如果以%表示，它将基于喷嘴直径来计算。"
+    },
+    "internal_solid_infill_pattern": {
+      "label": "内部实心填充图案",
+      "tooltip": "内部实心填充的线型图案。如果启用了检测狭窄的内部实心填充，将使用同心圆图案来填充小区域。",
+      "enum_labels": [
+        "单调",
+        "单调线",
+        "直线",
+        "直线排列",
+        "同心",
+        "希尔伯特曲线",
+        "阿基米德和弦",
+        "八角螺旋"
+      ]
+    },
+    "internal_solid_infill_speed": {
+      "label": "内部实心填充",
+      "tooltip": "内部实心填充的速度，不是顶面和底面。"
+    },
+    "ironing_angle": {
+      "label": "熨烫角度偏移",
+      "tooltip": "顶面熨烫纹路的偏移角度。"
+    },
+    "ironing_angle_fixed": {
+      "label": "固定角度熨烫",
+      "tooltip": "使用一个固定的、绝对的角度进行熨烫。"
+    },
+    "ironing_expansion": {
+      "label": "熨烫扩展",
+      "tooltip": "扩大或缩小熨烫区域。"
+    },
+    "ironing_fan_speed": {
+      "label": "熨烫风扇速度",
+      "tooltip": "熨烫时的部件风扇转速。\n设为低于平常的转速，将有助缓解长时间低流量打印的堵头问题。设置为 -1 以停用此功能。"
+    },
+    "ironing_flow": {
+      "label": "熨烫流量",
+      "tooltip": "熨烫时相对正常层高流量的材料量。过高的数值将会导致表面材料过挤出。"
+    },
+    "ironing_inset": {
+      "label": "熨烫内缩",
+      "tooltip": "与边缘保持的距离。0值将其设置为喷嘴直径的一半。"
+    },
+    "ironing_pattern": {
+      "label": "熨烫模式",
+      "tooltip": "熨烫时将使用的图案",
+      "enum_labels": [
+        "直线",
+        "同心"
+      ]
+    },
+    "ironing_spacing": {
+      "label": "熨烫间距",
+      "tooltip": "熨烫走线的间距"
+    },
+    "ironing_speed": {
+      "label": "熨烫速度",
+      "tooltip": "熨烫的打印速度"
+    },
+    "ironing_type": {
+      "label": "熨烫类型",
+      "tooltip": "熨烫指的是使用小流量在表面的同高度打印，进而是的平面更加光滑。这个设置用于设置哪些层进行熨烫。",
+      "enum_labels": [
+        "不熨烫",
+        "顶面",
+        "最顶面",
+        "所有实心层"
+      ]
+    },
+    "is_infill_first": {
+      "label": "首先打印填充",
+      "tooltip": "墙/填充的顺序。当未启用时，首先打印墙壁，这在大多数情况下都是最好的。\n\n首先打印填充可能有助于极端悬垂，因为墙壁有相邻的填充物可以粘附。但是，填充物会在附着在墙壁上的地方轻微地挤出打印的墙壁，导致外部表面质量更差。它还会导致填充物透过零件的外部表面。"
+    },
+    "lateral_lattice_angle_1": {
+      "label": "侧向晶格角度1",
+      "tooltip": "第一组二维晶格单元在Z方向的角度。零表示垂直。"
+    },
+    "lateral_lattice_angle_2": {
+      "label": "侧向晶格角度2",
+      "tooltip": "第二组二维晶格单元在Z方向的角度。零表示垂直。"
+    },
+    "layer_change_gcode": {
+      "label": "换层G-code",
+      "tooltip": "在每次换层抬升Z高度之后插入这段G-code。"
+    },
+    "layer_height": {
+      "label": "层高",
+      "tooltip": "每一层的切片高度。越小的层高意味着更高的精度和更长的打印时间。"
+    },
+    "lightning_overhang_angle": {
+      "label": "闪电悬垂角度",
+      "tooltip": "闪电填充支撑扩展的最大悬垂角度。"
+    },
+    "lightning_prune_angle": {
+      "label": "修剪角度",
+      "tooltip": "控制对短的或无支撑的闪电分支进行修剪的力度。\n此角度在内部会被转换为每层的距离。"
+    },
+    "lightning_straightening_angle": {
+      "label": "拉直角度",
+      "tooltip": "用于简化闪电分支的最大拉直角度。"
+    },
+    "line_width": {
+      "label": "缺省",
+      "tooltip": "当线宽设置为0时走线的默认线宽。如果以%表示，它将基于喷嘴直径来计算。"
+    },
+    "long_retractions_when_cut": {
+      "label": "切料时回抽（实验）",
+      "tooltip": "实验性选项。在更换耗材丝时，将耗材丝回抽一段距离后再切断以最小化冲刷。虽然这大大减少了冲刷，但也可能增加喷嘴堵塞或其他打印问题的风险。"
+    },
+    "long_retractions_when_ec": {
+      "label": "更换挤出机时长回缩"
+    },
+    "machine_end_gcode": {
+      "label": "结尾G-code",
+      "tooltip": "所有打印结束时的结尾G-code"
+    },
+    "machine_load_filament_time": {
+      "label": "加载耗材丝的时间",
+      "tooltip": "换料时加载新耗材所需的时间。通常适用于单挤出机多材料机器。对于换工具器或多工具机器，此值通常为0。仅用于统计。"
+    },
+    "machine_max_acceleration_e": {
+      "full_label": "E最大加速度",
+      "tooltip": "E轴的最大加速度"
+    },
+    "machine_max_acceleration_extruding": {
+      "full_label": "挤出最大加速度",
+      "tooltip": "挤出时的最大加速度(M204 P)"
+    },
+    "machine_max_acceleration_retracting": {
+      "full_label": "回抽最大加速度",
+      "tooltip": "回抽最大加速度(M204 R)"
+    },
+    "machine_max_acceleration_travel": {
+      "full_label": "空驶最大加速度",
+      "tooltip": "最大空驶加速度（M204 T），仅适用于Marlin 2"
+    },
+    "machine_max_acceleration_x": {
+      "full_label": "X最大加速度",
+      "tooltip": "X轴的最大加速度"
+    },
+    "machine_max_acceleration_y": {
+      "full_label": "Y最大加速度",
+      "tooltip": "Y轴的最大加速度"
+    },
+    "machine_max_acceleration_z": {
+      "full_label": "Z最大加速度",
+      "tooltip": "Z轴的最大加速度"
+    },
+    "machine_max_jerk_e": {
+      "full_label": "E最大抖动",
+      "tooltip": "E轴最大抖动"
+    },
+    "machine_max_jerk_x": {
+      "full_label": "X最大抖动",
+      "tooltip": "X轴最大抖动"
+    },
+    "machine_max_jerk_y": {
+      "full_label": "Y最大抖动",
+      "tooltip": "Y轴最大抖动"
+    },
+    "machine_max_jerk_z": {
+      "full_label": "Z最大抖动",
+      "tooltip": "Z轴最大抖动"
+    },
+    "machine_max_junction_deviation": {
+      "full_label": "最大结点偏差",
+      "tooltip": "最大连接偏差（M205 J，仅当 JD > 0 对于 Marlin 固件时适用\n如果您的 Marlin 2 打印机使用 Classic Jerk，请将此值设置为 0。）"
+    },
+    "machine_max_speed_e": {
+      "full_label": "E最大速度"
+    },
+    "machine_max_speed_x": {
+      "full_label": "X最大速度"
+    },
+    "machine_max_speed_y": {
+      "full_label": "Y最大速度"
+    },
+    "machine_max_speed_z": {
+      "full_label": "Z最大速度"
+    },
+    "machine_min_extruding_rate": {
+      "full_label": "最小挤出速度",
+      "tooltip": "最小挤出速度(M205 S)"
+    },
+    "machine_min_travel_rate": {
+      "full_label": "最小空驶速度",
+      "tooltip": "最小空驶速度(M205 T)"
+    },
+    "machine_pause_gcode": {
+      "label": "暂停 G-code",
+      "tooltip": "该G-code用于暂停打印。您可以在gcode预览中插入暂停G-code"
+    },
+    "machine_start_gcode": {
+      "label": "起始G-code",
+      "tooltip": "整个打印开始前的起始G-code"
+    },
+    "machine_tool_change_time": {
+      "label": "换工具头所需时间",
+      "tooltip": "换工具所需的时间。通常适用于换工具器或多工具机器。对于单挤出机多材料机器，此值通常为0。仅用于统计。"
+    },
+    "machine_unload_filament_time": {
+      "label": "卸载耗材丝的时间",
+      "tooltip": "换料时卸载旧耗材所需的时间。通常适用于单挤出机多材料机器。对于换工具器或多工具机器，此值通常为0。仅用于统计。"
+    },
+    "make_overhang_printable": {
+      "label": "悬垂可打印化",
+      "tooltip": "修改几何形状使得悬垂部分无需支撑耗材或者搭桥打印。"
+    },
+    "make_overhang_printable_angle": {
+      "label": "悬垂可打印化的最大角度",
+      "tooltip": "在使悬垂可打印化后，允许的悬垂最大角度。90°将完全不改变模型并允许任何悬垂，而0°将用圆锥形耗材替换所有悬垂部分。"
+    },
+    "make_overhang_printable_hole_size": {
+      "label": "最大孔洞面积",
+      "tooltip": "模型底部的孔洞在被圆锥形材料填充前所允许的最大面积。值为0将填充模型底部的所有孔洞。"
+    },
+    "manual_filament_change": {
+      "label": "手动更换丝材",
+      "tooltip": "启用该选项可以在打印开始时省略自定义更换耗材丝的 G-code。整个打印过程中的工具头指令（如 T0）将会被跳过。这对于手动多耗材打印十分有用，其将会使用 M600/PAUSE 指令来使您可以进行手动对耗材丝进行更换。"
+    },
+    "max_bridge_length": {
+      "label": "最大桥接长度",
+      "tooltip": "不需要支撑的桥接的最大长度。如果希望支持所有桥接，请将其设置为0；如果不希望支持任何桥接，请将其设置为非常大的值。"
+    },
+    "max_layer_height": {
+      "label": "最大",
+      "tooltip": "挤出机的最高可打印层高度。用于限制启用自适应层高时的最大层高。"
+    },
+    "max_resonance_avoidance_speed": {
+      "label": "最大",
+      "tooltip": "共振规避的最大速度"
+    },
+    "max_travel_detour_distance": {
+      "label": "避免跨越外墙-最大绕行长度",
+      "tooltip": "避免跨越外墙时的最大绕行距离。当绕行距离比这个数值大时，此次空驶不绕行。绕行距离可表达为绝对值，或者相对直线空驶长度的百分比(例如50%)。0表示禁用"
+    },
+    "max_volumetric_extrusion_rate_slope": {
+      "label": "平滑挤出率",
+      "tooltip": "此参数是打印机从打印高流量挤出（高速/较大宽度）向低流量挤出（低速/较小宽度）时用于突然变化挤出速率的平滑，反之亦然。\n它定义了挤出体积流量（mm³/s）随时间变化的最大速率。更高的值意味着允许更高的挤出速率变化，从而产生更快速的过渡。\n\n值为0将禁用该功能。\n\n对于高速、高流量的近程挤出机（如Bambu或Voron）通常不需要该值。但是，在特征速度变化很大的某些情况下，它可以提供一些边际收益。例如，当由于悬垂而出现严重的减速时。在这些情况下，建议使用一个大的值大约300-350 mm³/s²的，因为这刚好允许足够的平滑，以帮助压力提前实现更平滑的流量过渡。\n\n对于没有压力提前的较慢打印机，该值应该设置得非常低。对于近程挤出机来说10-15 mm³/s²是一个很好值的起点，而对于远程挤出机来说是5-10 mm³/s²。\n\n这个功能在Prusa切片机中被称为压力均衡器。\n\n注意：此参数禁用圆弧拟合。"
+    },
+    "max_volumetric_extrusion_rate_slope_segment_length": {
+      "label": "平滑段长度",
+      "tooltip": "值越低，挤出速率过渡越平滑。然而，这会导致 G-code 文件变得更大，并且打印机需要处理更多指令。 默认值 3 适用于大多数情况。如果您的打印机出现卡顿，请增加该值以减少调整次数。 允许值：0.5-5"
+    },
+    "min_bead_width": {
+      "label": "墙最小线宽",
+      "tooltip": "用于替换模型细小特征（根据最小特征尺寸）的墙线宽。如果墙最小线宽小于最小特征的厚度，则墙将变得和特征本身一样厚。参数值表示为相对喷嘴直径的百分比"
+    },
+    "min_feature_size": {
+      "label": "最小特征尺寸",
+      "tooltip": "薄特征的最小厚度。\n比此值更薄的模型特征将不会被打印，而比此值更厚的特征将被加宽到最小墙宽。\n本设置以喷嘴直径的百分比表示。"
+    },
+    "min_layer_height": {
+      "label": "最小",
+      "tooltip": "挤出机的最低可打印层高度。用于限制启用自适应层高时的最小层高。"
+    },
+    "min_length_factor": {
+      "label": "最小允许的墙长度",
+      "tooltip": "调整这个值以省略打印短的、未闭合的墙，这些可能会增加打印时间。设置较高的值将移除更多和更长的墙。\n\n注意：底部和顶部表面不会受到这个值的影响，以防止模型外部出现肉眼可见间隙。调整下面的高级设置中的“单层墙阈值”来调整什么被认为是顶部表面的敏感度。只有当这个设置高于默认值0.5，或者启用了单层顶部表面时，“单层墙阈值”才会显示。"
+    },
+    "min_resonance_avoidance_speed": {
+      "label": "最小",
+      "tooltip": "共振规避的最小速度"
+    },
+    "min_skirt_length": {
+      "label": "Skirt最小挤出长度",
+      "full_label": "Skirt最小挤出长度",
+      "tooltip": "打印裙边时的最小耗材挤出长度，单位为毫米。0表示禁用此功能。\n\n如果打印机设置为不打印起始擦嘴线，建议使用非零值。\n在排列或验证物体距离时，最终的圈数不会被纳入计算。在这种情况下请增加圈数。"
+    },
+    "min_width_top_surface": {
+      "label": "单层墙阈值",
+      "tooltip": "如果顶面需要打印，但是它的一部分被其它层覆盖，那么当它的宽度小于这个值时，它不会被认为是顶层。这个设置可以用于避免在狭窄顶面上触发“顶面单层墙”。这个值可以是毫米或线宽的百分比。\n警告：如果启用，可能会在下一层上产生一些薄的特征，比如字母。将此设置设置为0可以消除这些伪影。"
+    },
+    "minimum_sparse_infill_area": {
+      "label": "稀疏填充最小阈值",
+      "tooltip": "小于这个阈值的稀疏填充区域将会被内部实心填充替代。"
+    },
+    "mmu_segmented_region_interlocking_depth": {
+      "label": "分割区域的交错深度",
+      "tooltip": "分割区域的交错深度。如果\"mmu_segmented_region_max_width\"为零或\"mmu_segmented_region_interlocking_depth\"大于\"mmu_segmented_region_max_width\"，则将被忽略。零将禁用此功能。"
+    },
+    "mmu_segmented_region_max_width": {
+      "label": "分段区域的最大宽度",
+      "tooltip": "分段区域的最大宽度。将其设置为零会禁用此功能。"
+    },
+    "notes": {
+      "label": "配置注释",
+      "tooltip": "你可以把你的个人注释放在这里。该文本将添加到G-code首部注释中。"
+    },
+    "nozzle_diameter": {
+      "label": "喷嘴直径",
+      "tooltip": "喷嘴直径"
+    },
+    "nozzle_height": {
+      "label": "喷嘴高度",
+      "tooltip": "喷嘴尖端的高度。"
+    },
+    "nozzle_hrc": {
+      "label": "喷嘴洛氏硬度",
+      "tooltip": "喷嘴硬度。零值表示在切片时不检查喷嘴硬度。"
+    },
+    "nozzle_temperature": {
+      "label": "其它层",
+      "full_label": "喷嘴温度",
+      "tooltip": "除首层外的其它层的喷嘴温度"
+    },
+    "nozzle_temperature_initial_layer": {
+      "label": "首层",
+      "full_label": "首层打印温度",
+      "tooltip": "使用此耗材时的首层打印温度。"
+    },
+    "nozzle_temperature_range_high": {
+      "label": "最大"
+    },
+    "nozzle_temperature_range_low": {
+      "label": "最小"
+    },
+    "nozzle_type": {
+      "label": "喷嘴类型",
+      "tooltip": "喷嘴的金属材料。这将决定喷嘴的耐磨性，以及可打印材料的种类",
+      "enum_labels": [
+        "未定义",
+        "硬化钢",
+        "不锈钢",
+        "碳化钨",
+        "黄铜"
+      ]
+    },
+    "nozzle_volume": {
+      "label": "喷嘴内腔体积",
+      "tooltip": "从切刀位置到喷嘴尖端的内腔体积"
+    },
+    "nozzle_volume_type": {
+      "enum_labels": [
+        "标准",
+        "高流量"
+      ]
+    },
+    "only_one_wall_first_layer": {
+      "label": "首层仅单层墙",
+      "tooltip": "首层只使用单层墙，从而更多的空间能够使用底部填充图案"
+    },
+    "only_one_wall_top": {
+      "label": "顶面单层墙",
+      "tooltip": "顶面只使用单层墙，从而更多的空间能够使用顶部填充图案"
+    },
+    "ooze_prevention": {
+      "label": "开启",
+      "tooltip": "此选项将降低非活动挤出机的温度，以防止渗出。"
+    },
+    "other_layers_print_sequence": {
+      "label": "其他层打印顺序"
+    },
+    "other_layers_print_sequence_nums": {
+      "label": "其他层的打印顺序数量"
+    },
+    "other_layers_sequence_choice": {
+      "label": "其他层的耗材打印顺序",
+      "enum_labels": [
+        "自动",
+        "自定义"
+      ]
+    },
+    "outer_wall_acceleration": {
+      "label": "外墙",
+      "tooltip": "外墙加速度。使用较小的值可以提高质量。"
+    },
+    "outer_wall_filament_id": {
+      "label": "外墙",
+      "tooltip": "用于打印外墙的耗材。\n“默认”使用当前对象/零件的耗材。"
+    },
+    "outer_wall_flow_ratio": {
+      "label": "外壁流量比",
+      "tooltip": "该因素影响外墙材料的用量。 实际使用的外壁流量是通过将该值乘以耗材流量比以及对象的流量比（如果已设置）来计算的。"
+    },
+    "outer_wall_jerk": {
+      "label": "外墙",
+      "tooltip": "外墙抖动值"
+    },
+    "outer_wall_line_width": {
+      "label": "外墙",
+      "tooltip": "外墙的线宽。如果以%表示，它将基于喷嘴直径来计算"
+    },
+    "outer_wall_speed": {
+      "label": "外墙",
+      "tooltip": "外墙的打印速度。它通常使用比内壁速度慢的速度，以获得更好的质量。"
+    },
+    "overhang_fan_speed": {
+      "label": "悬垂和外部桥接风扇速度",
+      "tooltip": "当打印桥接结构或悬垂墙体时，如果悬垂程度超过上述“悬垂冷却阈值”所设定的值，则使用此部件冷却风扇速度。专门针对悬垂和桥接加大冷却力度，有助于提升这些特征整体的打印质量。\n\n请注意，此风扇速度的下限受前面设置的最小风扇速度阈值限制；当打印层时间未达到最小层时间阈值时，会相应上调至最大风扇速度阈值。"
+    },
+    "overhang_fan_threshold": {
+      "label": "悬垂冷却激活阈值",
+      "tooltip": "当悬垂超过此指定阈值时，强制部件冷却风扇按照下方设置的“悬垂风扇速度”运转。该阈值以百分比表示，指示每条走线宽度中未被下层支撑的部分。将此值设置为0%即使在任何悬垂条件下也会使风扇运转于所有外壁。",
+      "enum_labels": [
+        "0%",
+        "10%",
+        "25%",
+        "50%",
+        "75%",
+        "95%"
+      ]
+    },
+    "overhang_flow_ratio": {
+      "label": "悬垂流量比",
+      "tooltip": "该因素影响悬垂材料的数量。 实际使用的悬垂流量是通过将该值乘以耗材流量比以及对象的流量比（如果已设置）来计算的。"
+    },
+    "overhang_reverse": {
+      "label": "反转偶数层悬垂方向",
+      "full_label": "悬垂反转",
+      "tooltip": "在偶数层上，将悬垂部分的走线反转。这种交替的走线模式可以大大改善陡峭的悬垂。\n\n这个设置也可以帮助减少零件变形，因为零件墙壁的应力减少了。"
+    },
+    "overhang_reverse_internal_only": {
+      "label": "仅反转内部墙壁",
+      "full_label": "仅反转内部墙壁",
+      "tooltip": "仅在内墙上应用反转墙壁逻辑。\n\n这个设置大大减少了零件的应力，因为它们现在是交替方向分布的。这应该减少零件变形，同时保持外墙的质量。这个功能对于易变形的材料非常有用，比如ABS/ASA，也对于弹性耗材，比如TPU和丝光PLA。它还可以帮助减少支撑上的悬空区域的变形。\n\n为了使这个设置最有效，建议将反转阈值设置为0，这样所有的内墙都会在偶数层交替打印。"
+    },
+    "overhang_reverse_threshold": {
+      "label": "反转阈值",
+      "full_label": "悬垂反转阈值",
+      "tooltip": "判定悬垂反转需要的值（毫米），可以是线宽的百分比。\n值0表示在每个偶数层上都启用反转。\n当未启用检测悬垂时，此选项将被忽略，反转将在每个偶数层上发生。"
+    },
+    "parallel_printheads_bed_exclude_areas": {
+      "label": "并联打印头的热床排除区域",
+      "tooltip": "按并联打印头数量排列的热床排除区域有序列表。第 1 项适用于一个打印头，第 2 项适用于两个打印头，依此类推。将某项留空表示无排除区域。"
+    },
+    "parallel_printheads_count": {
+      "label": "并联打印头数量",
+      "tooltip": "设置并联打印头的数量，适用于 OrangeStorm Giga 等打印机。"
+    },
+    "parking_pos_retraction": {
+      "label": "耗材停靠位置",
+      "tooltip": "卸载时，挤出机齿尖与耗材停放位置的距离。这应该与打印机固件中的值相匹配。"
+    },
+    "part_cooling_fan_min_pwm": {
+      "label": "最小非零部件冷却风扇速度",
+      "tooltip": "某些部件冷却风扇在收到低于某一 PWM 占空比的指令时无法启动旋转。当设置为大于 0 时，任何非零的部件冷却风扇指令都会被提升到至少此百分比，以使风扇可靠启动。指令为 0（风扇关闭）时始终精确执行。此限制在所有其他风扇计算之后应用（首层渐变、层时间插值、悬垂/桥接/支撑面/熨烫覆盖），因此缩放仍在 [此值, 100%] 范围内进行。\n如果您的固件已经在低于某阈值时禁用风扇（例如 Klipper 的 [fan] off_below: 0.10 会在指令占空比低于 10% 时关闭风扇），那么此选项与固件阈值最好设置为相同的值。使二者匹配（例如 Klipper 中 off_below: 0.10、此处为 10%）可确保切片软件绝不会发出会被固件悄然丢弃的非零值，且风扇绝不会收到低于其实际可启动转速的值。\n设置为 0 以停用。"
+    },
+    "pellet_flow_coefficient": {
+      "label": "颗粒流动系数",
+      "tooltip": "颗粒流动系数是基于经验得出的数据，可用于为颗粒耗材打印机开展体积计算。\n在软件内部计算时，它其实会被转换为“耗材丝直径”，其他体积的计算保持不变：耗材丝直径 = 开平方( (4 * 颗粒流动系数) / 圆周率 )"
+    },
+    "pellet_modded_printer": {
+      "label": "颗粒改装打印机"
+    },
+    "post_process": {
+      "label": "后处理脚本",
+      "tooltip": "如果您希望使用自定义脚本来处理输出的 G-code，只需要在此列出这些脚本的绝对路径，使用分号来分割多个脚本。脚本执行的第一个参数将会被设置为 G-code 文件的绝对路径，并支持脚本通过全局变量来读取 Orca Slicer 的设置。"
+    },
+    "precise_outer_wall": {
+      "label": "精准外墙尺寸",
+      "tooltip": "通过调整墙壁间距来提高外墙精度，同时改善层间一致性。注意：当壁序列为外内或内外内时，此选项将被忽略。"
+    },
+    "precise_z_height": {
+      "label": "精准Z高度",
+      "tooltip": "开启这个设置，对象在切片后将得到精准的 Z 高度。此命令将微调对象最终数层的层高，以确保对象 Z 高度精准。请注意：此选项尚为实验性参数。"
+    },
+    "preferred_orientation": {
+      "label": "零件朝向偏好",
+      "tooltip": "导入模型时自动旋转到指定的朝向"
+    },
+    "preheat_steps": {
+      "label": "预热步骤",
+      "tooltip": "插入多个预热命令（例如 M104.1）。仅适用于 Prusa XL。对于其他打印机，请将其设置为 1。"
+    },
+    "preheat_time": {
+      "label": "预热时间",
+      "tooltip": "为了减少换刀后的等待时间，Orca 可以在当前刀具仍在使用时预热下一个刀具。此设置指定预热下一个工具的时间（以秒为单位）。 Orca 会插入 M104 指令提前预热刀具。"
+    },
+    "preset_names": {
+      "label": "打印机预设名",
+      "tooltip": "与物理打印机相关的预设名称"
+    },
+    "pressure_advance": {
+      "label": "压力提前",
+      "tooltip": "压力提前(Klipper)或者线性提前(Marlin)"
+    },
+    "prime_tower_brim_width": {
+      "label": "Brim宽度",
+      "tooltip": "擦拭塔的Brim宽度，设为负数将根据塔高自动计算宽度。"
+    },
+    "prime_tower_enable_framework": {
+      "label": "内部加强筋",
+      "tooltip": "启用内部加强筋，有助于增加擦拭塔的稳定性。"
+    },
+    "prime_tower_infill_gap": {
+      "label": "填补空白",
+      "tooltip": "填补空白。"
+    },
+    "prime_tower_skip_points": {
+      "label": "跳过点",
+      "tooltip": "Prime 塔的墙壁将跳过擦拭路径的起点。"
+    },
+    "prime_tower_width": {
+      "label": "宽度",
+      "tooltip": "擦拭塔宽度"
+    },
+    "prime_volume": {
+      "label": "清理量",
+      "tooltip": "擦拭塔上的清理量"
+    },
+    "print_flow_ratio": {
+      "label": "流量比例",
+      "tooltip": "材料在熔融和结晶状态之间切换后可能会发生体积变化。此设置会等比例改变此耗材在G-code中的所有挤出流量。推荐值范围在0.95到1.05之间。如果存在轻微的溢出或欠流，您可以调整此值以获得平整的表面。\n\n最终的对象流量比率是此值乘以耗材流量比率。"
+    },
+    "print_host": {
+      "label": "主机名，IP或者URL",
+      "tooltip": "ElegooSlicer可以将G-code文件上传到打印机主机。此字段应包含打印机主机实例的主机名、IP地址或URL。启用基本身份验证的Print host可以通过将用户名和密码放入以下格式的URL中来访问：https://username:password@your-octopi-address/"
+    },
+    "print_host_webui": {
+      "label": "设备用户界面",
+      "tooltip": "如果打印机的设备用户界面的URL不同，请在此指定。"
+    },
+    "print_order": {
+      "label": "层内打印顺序",
+      "tooltip": "同一层内的打印顺序",
+      "enum_labels": [
+        "缺省",
+        "按对象列表中的顺序"
+      ]
+    },
+    "print_sequence": {
+      "label": "打印顺序",
+      "tooltip": "打印顺序，逐层打印或者逐件打印",
+      "enum_labels": [
+        "逐层",
+        "逐件"
+      ]
+    },
+    "printable_area": {
+      "label": "可打印区域"
+    },
+    "printable_height": {
+      "label": "可打印高度",
+      "tooltip": "由打印机结构约束的最大可打印高度"
+    },
+    "printer_agent": {
+      "label": "打印机代理",
+      "tooltip": "选择打印机通信的网络代理实施。"
+    },
+    "printer_model": {
+      "label": "打印机类型",
+      "tooltip": "打印机类型"
+    },
+    "printer_notes": {
+      "label": "打印机注释",
+      "tooltip": "你可以把你关于打印机的注释放在这里。"
+    },
+    "printer_structure": {
+      "label": "打印机结构",
+      "tooltip": "打印设备的物理结构和组件",
+      "enum_labels": [
+        "未定义",
+        "CoreXY",
+        "I3",
+        "Hbot",
+        "Delta（三角洲）"
+      ]
+    },
+    "printer_technology": {
+      "label": "打印机类型"
+    },
+    "printer_variant": {
+      "label": "打印机变种"
+    },
+    "printhost_apikey": {
+      "label": "API秘钥/密码",
+      "tooltip": "ElegooSlicer可以将G-code文件上传到打印机主机。此字段应包含用于身份验证的API密钥或密码。"
+    },
+    "printhost_authorization_type": {
+      "label": "授权类型",
+      "enum_labels": [
+        "API秘钥",
+        "HTTP摘要"
+      ]
+    },
+    "printhost_cafile": {
+      "label": "HTTPS CA文件",
+      "tooltip": "可以为HTTPS OctoPrint连接指定自定义CA证书文件，格式为crt/pem。如果留空，则使用默认的操作系统CA证书存储库。"
+    },
+    "printhost_password": {
+      "label": "密码"
+    },
+    "printhost_port": {
+      "label": "打印机",
+      "tooltip": "打印机名称"
+    },
+    "printhost_ssl_ignore_revoke": {
+      "label": "忽略HTTPS证书吊销检查",
+      "tooltip": "在缺少或离线分发点的情况下忽略HTTPS证书吊销检查。如果连接失败，可以启用此选项来处理自签名证书。"
+    },
+    "printhost_user": {
+      "label": "用户名"
+    },
+    "printing_by_object_gcode": {
+      "label": "对象之间Gcode",
+      "tooltip": "在对象之间插入 G-code。此参数仅在逐个打印模型物体时生效。"
+    },
+    "process_change_extrusion_role_gcode": {
+      "label": "挤出类型更换 G-code（工艺）",
+      "tooltip": "当挤出类型发生变化时插入此 G-code。它在机器和耗材的挤出类型更换 G-code 之后运行。"
+    },
+    "purge_in_prime_tower": {
+      "label": "冲刷进擦拭塔",
+      "tooltip": "冲刷剩余的耗材丝进入擦拭塔"
+    },
+    "raft_contact_distance": {
+      "label": "筏层Z间距",
+      "tooltip": "筏层与模型之间的Z间隙。如果支撑顶部Z距离为0，则忽略该值，模型与筏层直接接触打印（无间隙）。"
+    },
+    "raft_expansion": {
+      "label": "筏层扩展",
+      "tooltip": "在XY平面扩展所有筏层"
+    },
+    "raft_first_layer_density": {
+      "label": "首层密度",
+      "tooltip": "筏和支撑的首层密度"
+    },
+    "raft_first_layer_expansion": {
+      "label": "首层扩展",
+      "tooltip": "扩展筏和支撑的首层可以改善和热床的粘接。"
+    },
+    "raft_layers": {
+      "label": "筏层",
+      "tooltip": "模型会在相应层数的支撑上抬高进行打印。使用该功能通常用于打印ABS时翘曲。"
+    },
+    "reduce_crossing_wall": {
+      "label": "避免跨越外墙",
+      "tooltip": "空驶时绕过外墙以避免在模型外观面产生斑点"
+    },
+    "reduce_fan_stop_start_freq": {
+      "label": "保持风扇常开",
+      "tooltip": "如果勾选这个选项，部件冷却风扇将永远不会停止，并且会至少运行在最小风扇转速值以减少风扇的启停频次"
+    },
+    "reduce_infill_retraction": {
+      "label": "减小填充回抽",
+      "tooltip": "当空驶完全在填充区域内时不触发回抽。这意味着即使漏料也是不可见的。对于复杂模型，该设置能够减少回抽次数以及打印时长，但是会造成G-code生成变慢"
+    },
+    "relative_bridge_angle": {
+      "label": "相对桥接角度",
+      "tooltip": "启用后，桥接角度值将被加到自动计算出的桥接方向上，而不是覆盖它。"
+    },
+    "required_nozzle_HRC": {
+      "label": "喷嘴硬度要求",
+      "tooltip": "打印此耗材的所需的最小喷嘴硬度。零值表示不检查喷嘴硬度。"
+    },
+    "resolution": {
+      "label": "分辨率",
+      "tooltip": "为了避免G-code文件中过密集的点和走线，G-code走线通常是在简化模型的外轮廓之后生成。越小的数值代表更高的分辨率，同时需要更长的切片时间。"
+    },
+    "resonance_avoidance": {
+      "label": "共振规避",
+      "tooltip": "通过降低外壁的速度以避开打印机的共振区，可以避免模型表面产生振稳。\n在测试振稳时，请关闭此选项。"
+    },
+    "retract_before_wipe": {
+      "label": "擦拭前的回抽量",
+      "tooltip": "擦拭之前的回抽长度，用总回抽长度的百分比表示。"
+    },
+    "retract_length_toolchange": {
+      "label": "长度"
+    },
+    "retract_lift_above": {
+      "label": "仅在高度以上抬Z",
+      "tooltip": "如果将其设置为正值，则Z抬升仅在指定的绝对Z之上发生"
+    },
+    "retract_lift_below": {
+      "label": "仅在高度以下抬Z",
+      "tooltip": "如果将其设置为正值，则Z抬升仅在指定的绝对Z以下发生。"
+    },
+    "retract_lift_enforce": {
+      "label": "仅表面抬Z",
+      "tooltip": "强制Z抬升行为。此设置受上述设置的影响（仅在高度以下抬Z/仅在高度以上抬Z）。",
+      "enum_labels": [
+        "所有表面",
+        "仅顶面",
+        "仅底面",
+        "顶面和地面"
+      ]
+    },
+    "retract_restart_extra": {
+      "label": "额外回填长度",
+      "tooltip": "每当空驶后回抽被补偿时，挤出机将推入额外数量的耗材丝。很少需要此设置。"
+    },
+    "retract_restart_extra_toolchange": {
+      "label": "额外回填长度",
+      "tooltip": "当换色后回抽被补偿时，挤出机将推入额外数量的耗材丝。"
+    },
+    "retract_when_changing_layer": {
+      "label": "换层时回抽",
+      "tooltip": "强制在换层时回抽。"
+    },
+    "retraction_distances_when_cut": {
+      "label": "切料回抽距离",
+      "tooltip": "实验性选项。在更换耗材丝时，切断前的回抽长度"
+    },
+    "retraction_distances_when_ec": {
+      "label": "更换挤出机时的回缩距离"
+    },
+    "retraction_length": {
+      "label": "长度",
+      "full_label": "回抽长度",
+      "tooltip": "挤出机中的一些材料被拉回，以避免在长行程期间渗出。设置为零以禁用回缩。"
+    },
+    "retraction_minimum_travel": {
+      "label": "空驶距离阈值",
+      "tooltip": "只在空驶距离大于该数值时触发回抽。"
+    },
+    "retraction_speed": {
+      "label": "回抽速度",
+      "full_label": "回抽速度",
+      "tooltip": "从喷嘴回抽耗材的速度"
+    },
+    "role_based_wipe_speed": {
+      "label": "自动擦拭速度",
+      "tooltip": "擦拭速度由当前挤出类型的速度决定。例如，如果擦拭动作紧随外墙，擦拭速度将使用外墙的速度。"
+    },
+    "scan_first_layer": {
+      "label": "首层扫描",
+      "tooltip": "开启这个设置将打开打印机上的摄像头用于检查首层打印质量。"
+    },
+    "scarf_angle_threshold": {
+      "label": "角度阈值",
+      "tooltip": "此选项设置判断是否应用斜拼接缝的角度阈值。\n如果围墙环内的最大角度超过了这个值（表示没有足够锐的角），则使用斜拼接缝接缝。默认值为155°。"
+    },
+    "scarf_joint_flow_ratio": {
+      "label": "斜拼接缝流量",
+      "tooltip": "这个参数影响斜拼接缝的耗材用量。"
+    },
+    "scarf_joint_speed": {
+      "label": "斜拼接缝速度",
+      "tooltip": "这个选项设置斜拼接缝的打印速度。建议以较慢的速度（小于100mm/s）打印斜拼接缝。如果设置的速度与外墙或内墙的速度相差较大，建议启用“平滑挤出率”。如果此处指定的速度高于外墙或内墙的速度，则打印机将默认使用两者中较慢的速度。当以百分比（例如80%）指定时，速度将基于外墙或内墙的速度进行计算。默认值为100%。"
+    },
+    "scarf_overhang_threshold": {
+      "label": "悬垂阈值",
+      "tooltip": "此选项设置斜拼接缝应用的悬垂阈值。如果围墙的未支撑部分小于此阈值，则应用斜拼接缝接缝。默认阈值设置为外墙宽度的40%。由于性能考虑，悬垂程度是粗略估算。"
+    },
+    "seam_gap": {
+      "label": "接缝间隔",
+      "tooltip": "为了减少环形中接缝的可见性，环会被打断并按指定数量缩短。数值可用毫米指定，也可以使用当前挤出机直径的百分比来指定。\n默认值为 10%"
+    },
+    "seam_position": {
+      "label": "接缝位置",
+      "tooltip": "开始打印外墙的位置",
+      "enum_labels": [
+        "最近",
+        "对齐",
+        "背部对齐",
+        "背面",
+        "随机"
+      ]
+    },
+    "seam_slope_conditional": {
+      "label": "选择性应用斜拼接缝",
+      "tooltip": "当墙壁没有合适的锐角以至于传统接缝无法有效隐藏的时候使用斜拼接缝。"
+    },
+    "seam_slope_entire_loop": {
+      "label": "围绕整个围墙",
+      "tooltip": "将斜拼接缝延伸到整个围墙"
+    },
+    "seam_slope_inner_walls": {
+      "label": "应用斜拼于内墙",
+      "tooltip": "同时应用斜拼接缝于内墙"
+    },
+    "seam_slope_min_length": {
+      "label": "斜拼接缝长度",
+      "tooltip": "斜拼接缝的长度。长度为0时会禁用斜拼接缝"
+    },
+    "seam_slope_start_height": {
+      "label": "斜拼接缝起始高度",
+      "tooltip": "斜拼接缝的起始高度。\n这个数值可以用毫米或者当前层高的百分比表示。默认值为0。"
+    },
+    "seam_slope_steps": {
+      "label": "斜拼段数",
+      "tooltip": "斜拼接缝所需的最少段数"
+    },
+    "seam_slope_type": {
+      "label": "斜拼接缝（试验）",
+      "tooltip": "使用斜拼接缝来最小化接缝的可见性并增加接缝的强度。",
+      "enum_labels": [
+        "无",
+        "轮廓",
+        "轮廓和孔"
+      ]
+    },
+    "set_other_flow_ratios": {
+      "label": "设置其他流量比",
+      "tooltip": "更改其他挤出路径类型的流量比。"
+    },
+    "silent_mode": {
+      "label": "支持静音模式",
+      "tooltip": "机器是否支持使用低加速度打印的静音模式。"
+    },
+    "single_extruder_multi_material": {
+      "label": "单挤出机多耗材",
+      "tooltip": "使用单喷嘴打印多耗材"
+    },
+    "single_extruder_multi_material_priming": {
+      "label": "所有挤出机画线",
+      "tooltip": "如果启用，所有挤出机将在打印开始时在床前画线"
+    },
+    "single_loop_draft_shield": {
+      "label": "首层后单圈",
+      "tooltip": "在首层之后，将环形裙边或隔风罩限制为单层墙。这在某些情况下有助于节省耗材，但可能导致隔风罩或裙边翘曲或开裂。"
+    },
+    "skeleton_infill_density": {
+      "label": "骨架填充密度",
+      "tooltip": "模型轮廓从表面去除一定深度后剩余的部分称为骨架。该参数用于调整该部分的密度。当两个区域具有相同的稀疏填充设置但不同的骨架密度时，它们的骨架区域将产生重叠部分。默认值与填充密度相同。"
+    },
+    "skeleton_infill_line_width": {
+      "label": "骨架线宽",
+      "tooltip": "调整选中骨架路径的线宽"
+    },
+    "skin_infill_density": {
+      "label": "外壳填充密度",
+      "tooltip": "模型外表面在一定深度范围内的部分称为蒙皮。该参数用于调整该部分的密度。当两个区域具有相同的稀疏填充设置但不同的蒙皮密度时，该区域不会被分割为两个单独的区域。默认值与填充密度相同。"
+    },
+    "skin_infill_depth": {
+      "label": "外壳填充深度",
+      "tooltip": "该参数设置外壳深度"
+    },
+    "skin_infill_line_width": {
+      "label": "外壳线宽",
+      "tooltip": "调整选中外壳路径的线宽"
+    },
+    "skirt_distance": {
+      "label": "Skirt距离",
+      "tooltip": "从skirt到模型或者brim的距离"
+    },
+    "skirt_height": {
+      "label": "Skirt高度",
+      "tooltip": "skirt有多少层。通常只有一层"
+    },
+    "skirt_loops": {
+      "label": "Skirt圈数",
+      "full_label": "Skirt圈数",
+      "tooltip": "skirt的圈数。0表示关闭skirt。"
+    },
+    "skirt_speed": {
+      "label": "Skirt速度",
+      "full_label": "Skirt速度",
+      "tooltip": "skirt速度，单位为mm/s。0表示使用默认的层挤出速度。"
+    },
+    "skirt_start_angle": {
+      "label": "Skirt起始点",
+      "tooltip": "从模型中心到skirt起始点的角度。0是最右边的位置，逆时针是正角度。"
+    },
+    "skirt_type": {
+      "label": "Skirt类型",
+      "full_label": "Skirt类型",
+      "tooltip": "合并 - 所有对象共用一个skirt，Per object - 每个对象单独的skirt。",
+      "enum_labels": [
+        "合并",
+        "按对象"
+      ]
+    },
+    "slice_closing_radius": {
+      "label": "切片间隙闭合半径",
+      "tooltip": "在三角形网格切片过程中，小于2倍间隙闭合半径的裂纹将被填充。间隙闭合操作可能会降低最终打印分辨率，因此建议降值保持在合理的较低水平"
+    },
+    "slicing_mode": {
+      "label": "切片模式",
+      "tooltip": "对3DLabPrint的飞机模型使用 \"奇偶\"。使用 \"闭孔 \"来关闭模型上的所有孔。",
+      "enum_labels": [
+        "常规",
+        "奇偶",
+        "闭孔"
+      ]
+    },
+    "slow_down_for_layer_cooling": {
+      "label": "降低打印速度 以得到更好的冷却",
+      "tooltip": "勾选这个选项，将降低打印速度，使得最终的层打印时间不小于\"最大风扇速度阈值\"里的层时间阈值，从而使得该层获得更久的冷却。这能够改善尖顶和小细节的冷却效果"
+    },
+    "slow_down_layer_time": {
+      "label": "层时间",
+      "tooltip": "当层预估打印时间小于这个数值时，打印速度将会降低，从而获得更好的冷却效果。"
+    },
+    "slow_down_layers": {
+      "label": "慢速打印层数",
+      "tooltip": "减慢前几层的打印速度。打印速度会逐渐加速到满速"
+    },
+    "slow_down_min_speed": {
+      "label": "最小打印速度",
+      "tooltip": "当启用减速以实现更好的层冷却时，打印机为了维持上面定义的最小层时间而减速的最小打印速度。"
+    },
+    "slowdown_for_curled_perimeters": {
+      "label": "翘边降速",
+      "tooltip": "启用此选项可在墙壁可能向上翘曲的区域降低打印速度。\n例如，在打印诸如 Benchy 船头这类尖角处的悬垂时，会施加额外的减速，从而减少在多层中逐渐累积的翘曲。\n\n通常建议开启此选项，除非您的打印机冷却足够强劲，或打印速度足够慢，以至于不会发生墙壁翘曲。\n如果以较高的外墙速度打印，此参数在减速时可能会引入墙面瑕疵，因为打印速度的差异可能过大，导致挤出机无法跟上所需的流量变化。\n这些瑕疵的根本原因很可能是压力提前 (PA) 调校略有偏差，尤其是在搭配较长的 PA 平滑时间时。\n\n启用此选项时的建议：\n1. 将压力提前的平滑时间降低到 0.015 - 0.02，使挤出机能够快速响应速度变化。\n2. 提高最低打印速度，以限制减速的幅度并减小快慢段之间的差异。\n3. 如果仍出现瑕疵，启用挤出速率平滑 (ERS) 以进一步平滑流量过渡。\n\n注意：启用此选项后，悬垂墙壁会被当作悬垂处理，这意味着即使悬垂墙壁是桥接的一部分，也会应用悬垂速度。\n例如，当墙壁 100% 悬垂、下方没有墙壁支撑时，将应用 100% 悬垂速度。"
+    },
+    "small_area_infill_flow_compensation": {
+      "label": "小区域填充流量补偿（试验）",
+      "tooltip": "启用小区域填充的流量补偿"
+    },
+    "small_area_infill_flow_compensation_model": {
+      "label": "流量补偿模型",
+      "tooltip": "流量补偿模型，用于调整小填充区域的流量。该模型表示为挤出长度和流量校正因子的逗号分隔值对。每对位于单独的行上，后跟分号，格式如下：\"1.234, 5.678;\""
+    },
+    "small_perimeter_speed": {
+      "label": "微小部位",
+      "tooltip": "此设置将影响半径小于等于small_perimeter_threshold（通常是孔洞）的围墙的速度。如果以百分比表示（例如：80%），则将根据上面的外壁速度设置进行计算。设置为零时为自动。"
+    },
+    "small_perimeter_threshold": {
+      "label": "微小部位周长阈值",
+      "tooltip": "这将设置微小部位周长的阈值。默认阈值为0mm"
+    },
+    "solid_infill_direction": {
+      "label": "实心填充方向",
+      "tooltip": "实心填充图案的角度，决定走线的开始或整体方向。"
+    },
+    "solid_infill_rotate_template": {
+      "label": "实心填充旋转模板",
+      "tooltip": "该参数根据指定的模板为每个图层添加实体填充方向的旋转。该模板是一个以逗号分隔的角度列表，以度为单位，例如'0,90'。第一个角度应用于第一层，第二个角度应用于第二层，依此类推。如果层数多于角度，则角度将重复。请注意，并非所有实心填充图案都支持旋转。"
+    },
+    "sparse_infill_acceleration": {
+      "label": "稀疏填充",
+      "tooltip": "稀疏填充的加速度。如果该值表示为百分比（例如100%），则将根据默认加速度进行计算。"
+    },
+    "sparse_infill_density": {
+      "label": "稀疏填充密度",
+      "tooltip": "内部稀疏填充的密度，100%会将所有稀疏填充变为实心填充，并将使用内部实心填充图案。"
+    },
+    "sparse_infill_filament_id": {
+      "label": "填充",
+      "tooltip": "用于打印内部稀疏填充的耗材。\n“默认”使用当前对象/零件的耗材。"
+    },
+    "sparse_infill_flow_ratio": {
+      "label": "稀疏填充流量比",
+      "tooltip": "该因素影响稀疏填充的材料量。 实际使用的稀疏填充流量是通过将该值乘以耗材流量比以及对象的流量比（如果已设置）来计算的。"
+    },
+    "sparse_infill_line_width": {
+      "label": "稀疏填充",
+      "tooltip": "内部稀疏填充的线宽。如果以%表示，它将基于喷嘴直径来计算。"
+    },
+    "sparse_infill_pattern": {
+      "label": "稀疏填充图案",
+      "tooltip": "内部稀疏填充的走线图案",
+      "enum_labels": [
+        "直线",
+        "直线排列",
+        "之字形",
+        "交叉之字",
+        "限定之字",
+        "线",
+        "网格",
+        "三角形",
+        "内六边形",
+        "立方体",
+        "自适应立方体",
+        "四分之一立方体",
+        "支撑立方体",
+        "闪电",
+        "蜂窝",
+        "3D 蜂窝",
+        "侧向蜂窝",
+        "侧向向晶格",
+        "交叉层叠",
+        "TPMS-D结构",
+        "TPMS-FK结构",
+        "螺旋体",
+        "同心",
+        "希尔伯特曲线",
+        "阿基米德和弦",
+        "八角螺旋"
+      ]
+    },
+    "sparse_infill_rotate_template": {
+      "label": "稀疏填充旋转模板",
+      "tooltip": "使用角度模板旋转每层的稀疏填充方向。输入以逗号分隔的度数（例如“0,30,60,90”）。角度按层顺序应用，并在列表结束时重复。支持高级语法：“+5”每层旋转+5°； ‘+5#5’每 5 层旋转+5°。详细信息请参阅维基百科。设置模板后，将忽略标准填充方向设置。注意：一些填充图案（例如 Gyroid）本身控制旋转；小心使用。"
+    },
+    "sparse_infill_speed": {
+      "label": "稀疏填充",
+      "tooltip": "内部稀疏填充的打印速度"
+    },
+    "spiral_finishing_flow_ratio": {
+      "label": "螺旋结束流量比",
+      "tooltip": "设置结束螺旋时的精加工流量比。通常，螺旋过渡在最后一个循环期间将流量比从 100% 缩放到 0%，这在某些情况下可能会导致螺旋末端挤出不足。"
+    },
+    "spiral_mode": {
+      "label": "旋转花瓶",
+      "tooltip": "沿着对象的外轮廓螺旋上升，将实体模型转变为只有底面实心层和侧面单层墙壁的打印。最后生成的打印件没有接缝。"
+    },
+    "spiral_mode_max_xy_smoothing": {
+      "label": "最大XY平滑阈值",
+      "tooltip": "在XY平面上移动点的最大距离，以尝试实现平滑的螺旋。如果以%表示，它将基于喷嘴直径来计算。"
+    },
+    "spiral_mode_smooth": {
+      "label": "光滑螺旋模式",
+      "tooltip": "光滑螺旋模式平滑X和Y轴移动，从而在所有方向上都没有可见的接缝，即使在不垂直的墙壁上也是如此。"
+    },
+    "spiral_starting_flow_ratio": {
+      "label": "螺旋开始流量比",
+      "tooltip": "设置从最后一个底层过渡到螺旋时的起始流量比。通常，螺旋过渡在第一个循环期间将流量比从 0% 调整到 100%，这在某些情况下可能导致螺旋开始时挤出不足。"
+    },
+    "staggered_inner_seams": {
+      "label": "交错的内墙接缝",
+      "tooltip": "此选项会根据内墙深度使接缝向后移动，形成锯齿形模式。"
+    },
+    "standby_temperature_delta": {
+      "label": "软化温度",
+      "tooltip": "挤出机未启动时施加的温差。当耗材丝设置中的“idle_Temperature”设置为非零值时，不使用该值。"
+    },
+    "start_end_points": {
+      "label": "起始终止点",
+      "tooltip": "从切割区域到垃圾桶的起始和结束点。"
+    },
+    "supertack_plate_temp": {
+      "label": "其它层",
+      "full_label": "床温",
+      "tooltip": "除首层外的其他层的热床温度。0值表示该耗材丝不支持在Cool Plate SuperTack上打印。"
+    },
+    "supertack_plate_temp_initial_layer": {
+      "label": "首层",
+      "full_label": "首层床温",
+      "tooltip": "初始层的床温。值 0 表示耗材不支持在 Cool Plate SuperTack 上打印。"
+    },
+    "support_air_filtration": {
+      "label": "支持空气过滤",
+      "tooltip": "如果打印机支持空气过滤/排气风扇，可以开启此选项\nG-code指令：M106 P3 S(0-255)"
+    },
+    "support_angle": {
+      "label": "模式角度",
+      "tooltip": "设置支撑图案在水平面的旋转角度。"
+    },
+    "support_base_pattern": {
+      "label": "支撑主体图案",
+      "tooltip": "支撑走线图案。\n\n树状支撑的默认选项为空心，即无主体图案。其他支撑类型的默认选项为直线图案。\n\n注意：对于有机支撑，仅在空心/默认主体图案下支持双墙。闪电主体图案仅树状精简/坚固/混合支撑支持。对于其他支撑类型，将改用直线图案替代闪电图案。",
+      "enum_labels": [
+        "缺省",
+        "直线",
+        "直线网格",
+        "蜂窝",
+        "闪电",
+        "空心"
+      ]
+    },
+    "support_base_pattern_spacing": {
+      "label": "主体图案线距",
+      "tooltip": "支撑线距"
+    },
+    "support_bottom_interface_spacing": {
+      "label": "底部接触面线距",
+      "tooltip": "底部接触面走线的线距。0表示实心接触面。"
+    },
+    "support_bottom_z_distance": {
+      "label": "底部Z距离",
+      "tooltip": "模型与支撑底部之间的Z间隙。如果支撑顶部Z距离为0且底部有界面层，则忽略该值，支撑与模型直接接触打印（无间隙）。"
+    },
+    "support_chamber_temp_control": {
+      "label": "支持仓温控制",
+      "tooltip": "此选项会开启打印机的打印室温度控制（若有的话）。G-code命令：M141 S(0-255)"
+    },
+    "support_critical_regions_only": {
+      "label": "仅支撑关键区域",
+      "tooltip": "仅对关键区域生成支撑，包括尖尾、悬臂等。"
+    },
+    "support_expansion": {
+      "label": "普通支撑拓展",
+      "tooltip": "在水平方向对普通支撑进行拓展（+）或收缩（-）"
+    },
+    "support_filament": {
+      "label": "支撑/筏层主体",
+      "tooltip": "用于打印支撑基底和筏层的耗材。\n“默认”表示不为支撑指定特定耗材，使用当前耗材。"
+    },
+    "support_flow_ratio": {
+      "label": "支撑流量比",
+      "tooltip": "该因素影响支撑材料的数量。 实际使用的支撑流量是通过将该值乘以耗材流量比以及对象的流量比（如果已设置）来计算的。"
+    },
+    "support_interface_bottom_layers": {
+      "label": "底部接触面层数",
+      "tooltip": "底部界面层的数量"
+    },
+    "support_interface_filament": {
+      "label": "支撑/筏层界面",
+      "tooltip": "用于打印支撑面的耗材。\n“默认”表示不为支撑面指定特定耗材，使用当前耗材。"
+    },
+    "support_interface_flow_ratio": {
+      "label": "支撑面流量比例",
+      "tooltip": "该因素影响支撑界面的材料量。 实际使用的支撑界面流量是通过将该值乘以耗材流量比以及对象的流量比（如果已设置）来计算的。"
+    },
+    "support_interface_loop_pattern": {
+      "label": "接触面采用圈形走线。",
+      "tooltip": "使用圈形走线覆盖顶部接触面。默认关闭。"
+    },
+    "support_interface_not_for_body": {
+      "label": "界面耗材不用于主体",
+      "tooltip": "避免使用支撑界面耗材打印支撑主体。"
+    },
+    "support_interface_pattern": {
+      "label": "支撑面图案",
+      "tooltip": "支撑接触面的走线图案。非可溶支撑接触面的缺省图案为直线，可溶支撑接触面的缺省图案为同心。",
+      "enum_labels": [
+        "缺省",
+        "直线",
+        "同心",
+        "交叠的直线",
+        "网格"
+      ]
+    },
+    "support_interface_spacing": {
+      "label": "顶部接触面线距",
+      "tooltip": "顶部接触面走线的线距。0 表示实心接触面。\n若启用了支撑熨烫，则此选项将强制使用实心接触面设置。"
+    },
+    "support_interface_speed": {
+      "label": "支撑面",
+      "tooltip": "支撑面速度"
+    },
+    "support_interface_top_layers": {
+      "label": "顶部接触面层数",
+      "tooltip": "顶部接触面层数"
+    },
+    "support_ironing": {
+      "label": "支撑界面熨烫",
+      "tooltip": "此设置控制是否对支撑面进行熨烫。熨烫是使用小流量再次在支撑面的相同高度上打印，使其更加平滑。\n启用时，支撑面也会被挤出为实心。"
+    },
+    "support_ironing_flow": {
+      "label": "支撑熨烫流量",
+      "tooltip": "在熨烫过程中需要挤出的材料流量。此设置与普通支撑面层流量设置之间相关。\n值过高会导致表面过量挤出。"
+    },
+    "support_ironing_pattern": {
+      "label": "支撑熨烫图案",
+      "tooltip": "熨烫时将使用的图案",
+      "enum_labels": [
+        "直线",
+        "同心"
+      ]
+    },
+    "support_ironing_spacing": {
+      "label": "支撑熨烫线间距",
+      "tooltip": "熨烫走线的间距"
+    },
+    "support_line_width": {
+      "label": "支撑",
+      "tooltip": "支撑的线宽。如果以%表示，它将基于喷嘴直径来计算。"
+    },
+    "support_material_interface_fan_speed": {
+      "label": "支撐接触面风扇",
+      "tooltip": "在打印支撑接触面时使用此部件冷却风扇的转速。将此参数设置为高于正常速度可以降低支撑与被支撑零件之间的层粘结强度，使它们更易分离。\n设置为 -1 表示禁用该功能。\n该设置会被 disable_fan_first_layers 选项覆盖。"
+    },
+    "support_multi_bed_types": {
+      "label": "支持多种打印床类型",
+      "tooltip": "如果要使用多种打印床类型，请启用此选项"
+    },
+    "support_object_first_layer_gap": {
+      "label": "支撑/对象首层间距",
+      "tooltip": "物体与其首层支撑之间的 XY 间隔。"
+    },
+    "support_object_xy_distance": {
+      "label": "支撑/模型xy间距",
+      "tooltip": "模型和支撑之间XY分离距离"
+    },
+    "support_on_build_plate_only": {
+      "label": "仅在构建板生成",
+      "tooltip": "不在模型表面上生成支撑，只在热床上生成。"
+    },
+    "support_parallel_printheads": {
+      "label": "支持并联打印头",
+      "tooltip": "为可并联使用多个打印头的机器启用打印机设置。"
+    },
+    "support_remove_small_overhang": {
+      "label": "忽略微小悬垂",
+      "tooltip": "将几乎不需要支撑的微小悬垂忽略掉。"
+    },
+    "support_speed": {
+      "label": "支撑",
+      "tooltip": "支撑打印速度"
+    },
+    "support_style": {
+      "label": "样式",
+      "tooltip": "支撑物的样式和形状。对于普通支撑，将支撑投射到一个规则的网格中，将创建更稳定的支撑（默认），而紧贴的支撑塔将节省耗材并减少物体的瑕疵。\n对于树形支撑，苗条树将更激进地合并树枝，并节省大量的耗材；粗壮树会产生更大更强壮的支撑结构，但用料更多；而混合树是苗条树和普通支撑的结合，它会在大的平面悬垂下创建与正常支撑类似的结构（默认）。",
+      "enum_labels": [
+        "默认 (网格/有机)",
+        "网格",
+        "紧贴",
+        "有机树",
+        "苗条树",
+        "粗壮树",
+        "混合树"
+      ]
+    },
+    "support_threshold_angle": {
+      "label": "阈值角度",
+      "tooltip": "将会为倾斜角度低于阈值的悬垂生成支撑。该值越小，可在不使用支撑的情况下打印的悬垂就越陡。\n注意：若设置为 0，普通支撑将改用阈值支撑比例，而树状支撑将回退到默认值 30。"
+    },
+    "support_threshold_overlap": {
+      "label": "阈值支撑比例",
+      "tooltip": "如果阈值角为零，将会为重叠度低于阈值的悬垂部分生成支撑。若该值越小，则可打印而无需支撑的悬垂角度就越陡。"
+    },
+    "support_top_z_distance": {
+      "label": "顶部Z距离",
+      "tooltip": "支撑顶部与模型之间的Z间隙。"
+    },
+    "support_type": {
+      "label": "类型",
+      "tooltip": "普通（自动）和树状（自动）用于自动生成支撑。如果选择普通（手动）或树状（手动），则仅在支撑强制面上生成支撑。",
+      "enum_labels": [
+        "普通(自动)",
+        "树状(自动)",
+        "普通(手动)",
+        "树状(手动)"
+      ]
+    },
+    "symmetric_infill_y_axis": {
+      "label": "对称填充Y轴",
+      "tooltip": "若模型有两个在Y轴上对称的部分，并且您想对其使用对称的纹理，就请在对应的模型部分上应用此设置。"
+    },
+    "temperature_vitrification": {
+      "label": "软化温度",
+      "tooltip": "材料在这个温度下会软化，因此当热床温度等于或高于这个温度时，强烈建议打开前门和/或去除上玻璃以避免堵塞。"
+    },
+    "template_custom_gcode": {
+      "label": "自定义 G-code",
+      "tooltip": "该G-code是定制化指令"
+    },
+    "textured_cool_plate_temp": {
+      "label": "其它层",
+      "full_label": "床温",
+      "tooltip": "非首层热床温度。0值表示这个耗材丝不支持纹理低温打印板"
+    },
+    "textured_cool_plate_temp_initial_layer": {
+      "label": "首层",
+      "full_label": "首层床温",
+      "tooltip": "首层热床温度。0值表示这个耗材丝不支持纹理低温打印板"
+    },
+    "textured_plate_temp": {
+      "label": "其它层",
+      "full_label": "床温",
+      "tooltip": "非首层热床温度。0值表示这个耗材丝不支持纹理PEI打印板"
+    },
+    "textured_plate_temp_initial_layer": {
+      "label": "首层",
+      "full_label": "首层床温",
+      "tooltip": "首层热床温度。0值表示这个耗材丝不支持纹理PEI打印板"
+    },
+    "thick_bridges": {
+      "label": "外部搭桥用厚桥",
+      "tooltip": "如果启用，桥接挤出将使用等于喷嘴直径的线高。\n这会增加桥接的强度和可靠性，允许更长的跨度，但可能使外观变差。\n如果禁用，桥接可能看起来更好，但通常只在较短的跨度上才可靠。"
+    },
+    "thick_internal_bridges": {
+      "label": "内部搭桥用厚桥",
+      "tooltip": "如果启用，内部桥接挤出将使用等于喷嘴直径的线高。\n这会在稀疏填充上方打印时增加内部桥接的强度和可靠性，但可能使外观变差。\n如果禁用，内部桥接可能看起来更好，但在稀疏填充上方的可靠性可能较低。"
+    },
+    "thumbnails": {
+      "label": "G-code缩略图尺寸",
+      "tooltip": "将被存储到.gcode和.sl1/.sl1s文件中的图片尺寸，格式如下：\"XxY, XxY, ...\""
+    },
+    "thumbnails_format": {
+      "label": "G-code缩略图的格式",
+      "tooltip": "G-Code 缩略图格式: PNG 质量最佳，JPG 尺寸最小，QOI 用于低内存固件",
+      "enum_labels": [
+        "PNG",
+        "JPG",
+        "QOI",
+        "BTT TT",
+        "ColPic"
+      ]
+    },
+    "time_cost": {
+      "label": "时间花费",
+      "tooltip": "打印机每小时的成本"
+    },
+    "time_lapse_gcode": {
+      "label": "延时摄影G-code"
+    },
+    "timelapse_type": {
+      "label": "延时摄影",
+      "tooltip": "如果启用平滑模式或者传统模式，将在每次打印时生成延时摄影视频。打印完每层后，将用内置相机拍摄快照。打印完成后，所有这些快照会组合成一个延时视频。如果启用平滑模式，打印完每层后，工具头将移动到吐料槽，然后拍摄快照。由于平滑模式在拍摄快照的过程中熔丝可能会从喷嘴中泄漏，因此需要使用擦拭塔进行喷嘴擦拭。",
+      "enum_labels": [
+        "传统模式",
+        "平滑模式"
+      ]
+    },
+    "tool_change_on_wipe_tower": {
+      "label": "在擦拭塔上换头",
+      "tooltip": "在发出换头命令 (Tx) 之前，强制打印头先移动到擦拭塔。仅与使用第 2 类擦拭塔的多挤出机（多打印头）打印机相关。默认情况下，Orca 会在多打印头机器上跳过此移动，因为固件会处理换头，这可能导致 Tx 命令在打印件上方发出。如果您希望换头命令始终在擦拭塔上方发出，请启用此选项。"
+    },
+    "top_bottom_infill_wall_overlap": {
+      "label": "顶/底部实心填充/墙重叠率",
+      "tooltip": "顶部实心填充区域略微扩大，以便与墙壁重叠，以获得更好的粘合，并减少顶部填充与墙壁相接处的小孔出现。25-30%的值是一个很好的起点，可以减少小孔的出现。百分比值相对于稀疏填充的线宽"
+    },
+    "top_shell_layers": {
+      "label": "顶部壳体层数",
+      "full_label": "顶部壳体层数",
+      "tooltip": "顶部壳体实心层层数，包括顶面。当由该层数计算的厚度小于顶部壳体厚度，切片时会增加顶部壳体的层数"
+    },
+    "top_shell_thickness": {
+      "label": "顶部壳体厚度",
+      "full_label": "顶部壳体厚度",
+      "tooltip": "如果由顶部壳体层数算出的厚度小于这个数值，那么切片时将自动增加顶部壳体层数。这能够避免当层高很小时，顶部壳体过薄。0表示关闭这个设置，同时顶部壳体的厚度完全由顶部壳体层数决定"
+    },
+    "top_solid_infill_flow_ratio": {
+      "label": "顶部表面流量比例",
+      "tooltip": "这个值影响顶部实心填充的材料量。稍微降低它可以获得更平滑的表面。\n\n实际使用的顶部表面流量是通过将此值与耗材流量比例以及（如果设置）对象的流量比例相乘来计算的。"
+    },
+    "top_surface_acceleration": {
+      "label": "顶面",
+      "tooltip": "顶面填充的加速度。使用较低值可能会改善顶面质量"
+    },
+    "top_surface_density": {
+      "label": "顶面密度",
+      "tooltip": "顶层表面的密度。\n100% 的值会创建一个完全实心、平滑的顶面。降低此值会根据所选的顶面图案生成有纹理的顶面。0% 的值将只生成顶层的墙。\n此选项仅为美观或功能性目的，而不是为了解决过量挤出等问题。"
+    },
+    "top_surface_filament_id": {
+      "label": "顶面",
+      "tooltip": "用于打印顶面的耗材。\n“默认”使用当前对象/零件的耗材。"
+    },
+    "top_surface_jerk": {
+      "label": "顶面",
+      "tooltip": "顶面抖动值"
+    },
+    "top_surface_line_width": {
+      "label": "顶面",
+      "tooltip": "顶面的线宽。如果以%表示，它将基于喷嘴直径来计算。"
+    },
+    "top_surface_pattern": {
+      "label": "顶面图案",
+      "tooltip": "顶面填充的走线图案",
+      "enum_labels": [
+        "单调",
+        "单调线",
+        "直线",
+        "直线排列",
+        "同心",
+        "希尔伯特曲线",
+        "阿基米德和弦",
+        "八角螺旋"
+      ]
+    },
+    "top_surface_speed": {
+      "label": "顶面",
+      "tooltip": "顶面实心填充的速度"
+    },
+    "travel_acceleration": {
+      "label": "空驶",
+      "tooltip": "空驶加速度"
+    },
+    "travel_jerk": {
+      "label": "空驶",
+      "tooltip": "空驶抖动值"
+    },
+    "travel_slope": {
+      "label": "空驶抬高角度",
+      "tooltip": "斜坡和螺旋 Z 跳类型的行进角度。将其设置为 90° 会产生正常升力。"
+    },
+    "travel_speed": {
+      "label": "空驶",
+      "tooltip": "空驶的速度。空驶是无挤出量的快速移动。"
+    },
+    "tree_support_angle_slow": {
+      "label": "首选分支角度",
+      "tooltip": "分支的首选角度，每当它们不必避开模型之时。使用小的角度使之更垂直、更稳定。使用大的角度使之更快地合并。"
+    },
+    "tree_support_auto_brim": {
+      "label": "自动裙边宽度",
+      "tooltip": "启用此选项意味着树状支撑的裙边宽度将自动计算自动计算"
+    },
+    "tree_support_branch_angle": {
+      "label": "树状支撑分支角度",
+      "tooltip": "此设置确定了允许树状支撑的最大悬垂角度。如果角度增加，可以更水平地打印分支，使它们可以到达更远的地方。"
+    },
+    "tree_support_branch_angle_organic": {
+      "label": "树状支撑分支角度",
+      "tooltip": "此设置确定了允许树状支撑的最大悬垂角度。如果角度增加，可以更水平地打印分支，使它们可以到达更远的地方。"
+    },
+    "tree_support_branch_diameter": {
+      "label": "树状支撑分支直径",
+      "tooltip": "此设置确定了树状支撑节点的初始直径。"
+    },
+    "tree_support_branch_diameter_angle": {
+      "label": "分支直径的角度",
+      "tooltip": "分支直径的角度，随着分支向底部逐渐变厚。如果角度为0，分支将在其长度上拥有均匀的厚度。一点角度可以增加organic的稳定性。"
+    },
+    "tree_support_branch_diameter_organic": {
+      "label": "树状支撑分支直径",
+      "tooltip": "此设置确定了树状支撑节点的初始直径。"
+    },
+    "tree_support_branch_distance": {
+      "label": "树状支撑分支距离",
+      "tooltip": "此设置确定了树状支撑的相邻节点之间的距离。"
+    },
+    "tree_support_branch_distance_organic": {
+      "label": "树状支撑分支距离",
+      "tooltip": "此设置确定了树状支撑的相邻节点之间的距离。"
+    },
+    "tree_support_brim_width": {
+      "label": "树状支撑裙边宽度",
+      "tooltip": "从树状支撑分支到最外层裙边线的距离"
+    },
+    "tree_support_tip_diameter": {
+      "label": "尖端直径",
+      "tooltip": "Organic支撑分支的尖端直径"
+    },
+    "tree_support_top_rate": {
+      "label": "分支密度",
+      "tooltip": "用于调整分支尖端所生成的支撑结构的密度。值越大悬垂越好，但更难拆支撑，因此，如果需要密集的接触面，建议启用顶部接触面相关参数，而不是较高的分支密度。"
+    },
+    "tree_support_wall_count": {
+      "label": "支撑外墙层数",
+      "tooltip": "此设置指定[0,2]范围内的支撑墙层数。0表示自动。"
+    },
+    "tree_support_with_infill": {
+      "label": "树状支撑生成填充",
+      "tooltip": "这个设置决定是否为树状支撑内部的空腔生成填充。"
+    },
+    "upward_compatible_machine": {
+      "label": "向上兼容的机器"
+    },
+    "use_3mf": {
+      "label": "使用 3MF 代替 G-code",
+      "tooltip": "如果打印机接受 3MF 文件作为打印任务，请启用此项。启用后，ElegooSlicer 会发送 .gcode.3mf 格式的切片文件，而不是普通的 .gcode 文件。"
+    },
+    "use_firmware_retraction": {
+      "label": "使用固件回抽",
+      "tooltip": "（实验设置）使用G10和G11命令让固件处理回抽。该功能仅支持最近版本的Marlin固件。"
+    },
+    "use_relative_e_distances": {
+      "label": "使用相对E距离",
+      "tooltip": "相对挤出建议在使用\"label_objects\"选项时使用。某些挤出机在未选中此选项（绝对挤出模式）时工作得更好。擦拭塔仅与相对模式兼容。建议在大多数打印机上使用。默认为选中状态。"
+    },
+    "volumetric_speed_coefficients": {
+      "label": "最大体积流量多项式系数"
+    },
+    "wall_direction": {
+      "label": "围墙打印方向",
+      "tooltip": "从上往下看时，轮廓墙环的挤出方向。\n孔洞以与轮廓相反的方向打印，以便与那些轮廓多边形不完整、会改变方向（同时也部分构成孔洞轮廓）的层保持对齐。\n\n如果启用了螺旋花瓶模式，此选项将被禁用。",
+      "enum_labels": [
+        "逆时针",
+        "顺时针"
+      ]
+    },
+    "wall_distribution_count": {
+      "label": "墙分布计数",
+      "tooltip": "从中心开始计算的墙层数，线宽变化需要分布在这些墙走线上。较低的数值意味着外墙宽度更不易被改变"
+    },
+    "wall_generator": {
+      "label": "墙生成器",
+      "tooltip": "经典墙生成器产生的墙走线具有一致的挤出宽度，对狭窄区域使用填缝。Arachne引擎则产生变线宽的墙走线",
+      "enum_labels": [
+        "经典",
+        "Arachne"
+      ]
+    },
+    "wall_loops": {
+      "label": "墙层数",
+      "tooltip": "每一层的外墙"
+    },
+    "wall_maximum_deviation": {
+      "label": "最大墙体偏差",
+      "tooltip": "在为“最大墙体分辨率”设置降低分辨率时所允许的最大偏差。如果增大此值，打印精度会降低，但 G-code 会更小。“最大墙体偏差”会限制“最大墙体分辨率”，因此当两者冲突时，以“最大墙体偏差”为准。"
+    },
+    "wall_maximum_resolution": {
+      "label": "最大墙体分辨率",
+      "tooltip": "此值决定墙体线段的最小长度（毫米）。此值设置得越小，墙体就越精确。"
+    },
+    "wall_sequence": {
+      "label": "墙顺序",
+      "tooltip": "内墙和外墙的打印顺序。\n\n使用内墙/外墙以获得最佳悬垂效果。这是因为在打印时，悬垂的墙可以粘附到相邻的围墙上。但是，这个选项会导致外墙的表面质量稍微降低，因为外墙被内墙挤压。\n\n使用内墙/外墙/内墙以获得最佳的外部表面质量和尺寸精度，因为外墙不会受内墙的影响但是，悬垂性能会降低，因为没有内墙来支撑打印外墙。此选项要求至少3层墙壁才能生效，因为它首先从第3个墙壁开始打印内墙，然后是外墙，最后是第一个内墙。在大多数情况下，此选项建议使用而不是外/内选项。\n\n使用外/内以获得与内/外/内选项相同的外部墙质量和尺寸精度优势。但是，由于新层的第一次挤出是在可见表面上开始的，因此z缝隙看起来不那么一致。",
+      "enum_labels": [
+        "内墙/外墙",
+        "外墙/内墙",
+        "内墙/外墙/内墙"
+      ]
+    },
+    "wall_transition_angle": {
+      "label": "墙过渡阈值角度",
+      "tooltip": "何时在偶数和奇数墙层数之间创建过渡段。角度大于这个阈值的楔形将不创建过渡段，并且不会在楔形中心打印墙走线以填补剩余空间。减小这个数值能减少中心墙走线的数量和长度，但可能会导致间隙或者过挤出"
+    },
+    "wall_transition_filter_deviation": {
+      "label": "墙过渡过滤间距",
+      "tooltip": "防止特定厚度变化规律的局部在多一层墙和少一层墙之间来回转换。这个参数将挤压宽度的范围扩大到[墙最小宽度-参数值, 2*墙最小宽度+参数值]。增大参数可以减少转换的次数，从而减少挤出开始/停止和空驶的时间。然而，大的挤出宽度变化会导致过挤出或欠挤出的问题。参数值表示为相对于喷嘴直径的百分比"
+    },
+    "wall_transition_length": {
+      "label": "墙过渡长度",
+      "tooltip": "当零件逐渐变薄导致墙的层数发生变化时，需要在过渡段分配一定的空间来分割和连接墙走线。参数值表示为相对于喷嘴直径的百分比"
+    },
+    "wipe": {
+      "label": "回抽时擦拭",
+      "tooltip": "当回抽时，让喷嘴沿着前面的走线方向继续移动，清除掉喷嘴上的漏料。这能够避免空驶结束打印新的区域时产生斑点。"
+    },
+    "wipe_before_external_loop": {
+      "label": "额外的外墙打印前擦拭",
+      "tooltip": "为了最大限度地减少在使用外/内或内/外/内墙打印顺序时，外墙起始处的潜在过挤出，在外墙起始处外略微向内执行回填。这样，任何潜在的过挤都会隐藏在外表面之下。\n\n当使用外/内或内/外/内墙打印顺序时，这是有用的，因为在这些模式中，外墙可能会在回填移动之后立即打印。"
+    },
+    "wipe_distance": {
+      "label": "擦拭距离",
+      "tooltip": "喷嘴在回抽时将沿着最后路径移动的距离\n\n根据擦拭操作的距离以及挤出机/耗材丝回抽的速度和长度，可能需要执行额外的回抽动作以收回剩余的丝材。\n\n在下方的擦拭前回抽量设置中输入一个数值，将在擦拭动作之前执行任何超出部分的回抽，否则超出部分的回抽将在擦拭之后执行。"
+    },
+    "wipe_on_loops": {
+      "label": "闭环擦拭",
+      "tooltip": "为了最大限度地减少闭环挤出中接缝的可见性，在挤出机离开环之前，会向内执行一个小小的移动。"
+    },
+    "wipe_speed": {
+      "label": "擦拭速度",
+      "tooltip": "擦拭速度是根据此配置中指定的速度设置确定的。如果该值以百分比形式表示（例如80%），则将根据上方的移动速度设置进行计算。该参数的默认值为80%。"
+    },
+    "wipe_tower_bridging": {
+      "label": "最大桥接距离",
+      "tooltip": "稀疏填充剖面上支撑之间的最大距离。"
+    },
+    "wipe_tower_cone_angle": {
+      "label": "稳定锥体顶角",
+      "tooltip": "塔锥体顶角的角度，用于稳定擦拭塔。角度越大，底座越宽。"
+    },
+    "wipe_tower_extra_flow": {
+      "label": "额外冲刷量",
+      "tooltip": "用于擦拭塔冲刷线的额外流量。这使冲刷线比正常情况下更厚或更窄。间距会自动调整。"
+    },
+    "wipe_tower_extra_rib_length": {
+      "label": "斜肋额外的长度",
+      "tooltip": "正值增大斜肋外墙的大小，负值则减小。斜肋外墙的大小不能小于由清理量确定的最小值。"
+    },
+    "wipe_tower_extra_spacing": {
+      "label": "擦拭塔冲刷线间距",
+      "tooltip": "擦拭塔上冲刷线的间距"
+    },
+    "wipe_tower_filament": {
+      "label": "色塔",
+      "tooltip": "打印擦拭塔周长时使用的挤出机。设置为0将使用唯一的挤出机（尽量使用不可溶的材料）。"
+    },
+    "wipe_tower_fillet_wall": {
+      "label": "外墙倒圆角",
+      "tooltip": "擦拭塔外墙倒圆角"
+    },
+    "wipe_tower_max_purge_speed": {
+      "label": "擦拭塔最大打印速度",
+      "tooltip": "擦拭塔冲刷和稀疏层的最大打印速度。当冲刷时，如果稀疏填充速度或从耗材最大体积速度计算出的速度较低，则使用最低速度。\n\n当打印稀疏层时，如果内墙速度或从耗材最大体积速度计算出的速度较低，则使用最低速度。\n\n增加此速度可能会影响塔的稳定性，同时增加喷嘴与擦拭塔上可能形成的任何斑点碰撞的力。\n\n在将此参数增加到默认值90mm/sec之外之前，请确保您的打印机可以可靠地在增加的速度下桥接，并且换料时的滴漏得到了很好的控制。\n\n对于擦拭塔外墙，无论此设置如何，都使用内墙速度。"
+    },
+    "wipe_tower_no_sparse_layers": {
+      "label": "无稀疏层 （实验）",
+      "tooltip": "如果启用，将不会在没有换色的层打印擦拭塔。存在换色的层时，挤出机将降低高度打印擦拭塔。用户应该确保不会与打印内容发生冲突。"
+    },
+    "wipe_tower_rib_width": {
+      "label": "斜肋宽度",
+      "tooltip": "肋宽度始终小于主塔边长的一半。"
+    },
+    "wipe_tower_rotation_angle": {
+      "label": "擦拭塔旋转角度",
+      "tooltip": "擦拭塔相对于x轴的旋转角度"
+    },
+    "wipe_tower_type": {
+      "label": "擦拭塔类型",
+      "tooltip": "选择多材料打印的擦拭塔实现方式。类型 1 推荐用于带有耗材切刀的 Bambu 和 Qidi 打印机。类型 2 提供与多工具头和 MMU 打印机更好的兼容性，并提供更好的整体兼容性。",
+      "enum_labels": [
+        "类型 1",
+        "类型 2"
+      ]
+    },
+    "wipe_tower_wall_type": {
+      "label": "外墙类型",
+      "tooltip": "擦拭塔外墙类型。\n1. 矩形：默认的墙类型，具有固定宽度的矩形高度。\n2. 锥体：底部带有圆角的锥体，有助于稳定擦拭塔。\n3. 肋条：在塔壁上增加四条肋条，以增强稳定性。",
+      "enum_labels": [
+        "矩形",
+        "锥体",
+        "肋条"
+      ]
+    },
+    "wiping_volumes_extruders": {
+      "label": "清理量 - 加载/卸载量",
+      "tooltip": "此矢量可保存所需的体积，用于更改每个擦拭塔上工具所使用的from/to体积 。这些值用于简化完全冲刷体积的创建。"
+    },
+    "wrapping_detection_gcode": {
+      "label": "结块检测 G-code"
+    },
+    "wrapping_detection_layers": {
+      "label": "结块监测层数",
+      "tooltip": "结块监测层数"
+    },
+    "wrapping_exclude_area": {
+      "label": "结块检测排除区域",
+      "tooltip": "结块检测排除区域"
+    },
+    "xy_contour_compensation": {
+      "label": "X-Y 外轮廓尺寸补偿",
+      "tooltip": "物体的外轮廓将在XY平面内根据配置值进行扩展或收缩。正值使轮廓变大，负值使轮廓变小。此功能用于在物体出现装配问题时微调尺寸。"
+    },
+    "xy_hole_compensation": {
+      "label": "X-Y 孔洞尺寸补偿",
+      "tooltip": "物体中的孔洞将在XY平面内根据配置值进行扩展或收缩。正值使孔洞变大，负值使孔洞变小。此功能用于在物体出现装配问题时微调尺寸。"
+    },
+    "z_hop": {
+      "label": "Z抬升高度",
+      "tooltip": "回抽完成之后，喷嘴轻微抬升，和打印件之间产生一定间隙。这能够避免空驶时喷嘴和打印件剐蹭和碰撞。使用螺旋线抬升z能够减少拉丝。"
+    },
+    "z_hop_types": {
+      "label": "Z抬升类型",
+      "tooltip": "Z轴抬升类型。",
+      "enum_labels": [
+        "自动",
+        "普通",
+        "梯形",
+        "螺旋"
+      ]
+    },
+    "z_offset": {
+      "label": "Z偏移",
+      "tooltip": "此值将从输出 G-Code 中的所有 Z 坐标中添加(或减去)。它用于补偿损坏的 Z 端限位器置：例如，如果限位器零实际离开喷嘴 0.3mm 远离构建板(打印床)，将其设置为 -0.3（或调整限位器）。"
+    },
+    "zaa_dont_alternate_fill_direction": {
+      "label": "不交替填充方向",
+      "tooltip": "在使用 Z 层抗锯齿时禁用交替填充方向。"
+    },
+    "zaa_enabled": {
+      "label": "启用 Z 层抗锯齿",
+      "tooltip": "启用 Z 层轮廓（也称 Z 层抗锯齿）。"
+    },
+    "zaa_min_z": {
+      "label": "最小 Z 高度",
+      "tooltip": "最小 Z 层高。\n同时控制切片平面。"
+    },
+    "zaa_minimize_perimeter_height": {
+      "label": "最小化墙高角度",
+      "tooltip": "降低顶面墙壁的高度，使其与模型边缘高度相匹配。\n影响坡度小于此角度（度）的墙壁。\n合理的取值为 35。设置为 0 以禁用。"
+    }
+  },
+  "ui": {
+    "Acceleration": "加速度",
+    "Acceleration limitation": "加速度限制",
+    "Accessory": "配件",
+    "Adaptive bed mesh": "自适应网床",
+    "Advanced": "高级",
+    "Auxiliary part cooling fan": "辅助部件冷却风扇",
+    "Basic information": "基础信息",
+    "Bed temperature": "床温",
+    "Before layer change G-code": "换层前G-code",
+    "Bridging": "搭桥",
+    "Brim": "Brim",
+    "Change extrusion role G-code": "挤出类型更换G-code",
+    "Change filament G-code": "耗材丝更换G-code",
+    "Clumping Detection G-code": "结块检测 G-code",
+    "Compatible printers": "兼容打印机",
+    "Compatible process profiles": "兼容的切片配置",
+    "Cooling": "冷却",
+    "Cooling Fan": "冷却风扇",
+    "Cooling for specific layer": "特定层冷却",
+    "Dependencies": "依赖",
+    "Exhaust fan": "排气风扇",
+    "Extruder": "挤出机",
+    "Extruder Clearance": "挤出机避让空间",
+    "Filament": "耗材丝",
+    "Filament end G-code": "耗材丝结束G-code",
+    "Filament for Features": "特征用耗材",
+    "Filament start G-code": "耗材丝起始G-code",
+    "File header G-code": "文件头 G-code",
+    "First layer speed": "首层速度",
+    "Flow ratio and Pressure Advance": "流量和压力提前",
+    "Flush options": "换料冲刷选项",
+    "Fuzzy Skin": "绒毛表面",
+    "G-code output": "G-code 输出",
+    "Infill": "填充",
+    "Ironing": "熨烫",
+    "Jerk limitation": "抖动限制",
+    "Jerk(XY)": "抖动（XY轴）",
+    "Junction Deviation": "结点偏差",
+    "Layer change G-code": "换层G-code",
+    "Layer height": "层高",
+    "Layer height limits": "层高限制",
+    "Line width": "线宽",
+    "Machine G-code": "打印机G-code",
+    "Machine end G-code": "打印机结束G-code",
+    "Machine start G-code": "打印机起始G-code",
+    "Motion ability": "移动能力",
+    "Multi Filament": "复丝",
+    "Multimaterial": "耗材",
+    "Notes": "注释",
+    "Ooze prevention": "Ooze 预防",
+    "Other layers speed": "其他层速度",
+    "Others": "其他",
+    "Overhang speed": "悬垂速度",
+    "Overhangs": "悬垂",
+    "Part cooling fan": "部件冷却风扇",
+    "Pause G-code": "暂停 G-code",
+    "Position": "位置",
+    "Post-processing Scripts": "后处理脚本",
+    "Precision": "精度",
+    "Prime tower": "擦拭塔",
+    "Print chamber temperature": "打印仓温度",
+    "Print temperature": "打印温度",
+    "Printable space": "可打印区域",
+    "Printing by object G-code": "逐件打印G-code",
+    "Quality": "质量",
+    "Raft": "筏层",
+    "Resonance Compensation": "共振补偿",
+    "Retraction": "回抽",
+    "Retraction when switching material": "切换耗材时的回抽量",
+    "Seam": "接缝",
+    "Setting Overrides": "参数覆盖",
+    "Single extruder multi-material parameters": "单挤出机多耗材参数",
+    "Single extruder multi-material setup": "设置单挤出机多耗材",
+    "Skirt": "裙边",
+    "Special mode": "特殊模式",
+    "Speed": "速度",
+    "Speed limitation": "速度限制",
+    "Strength": "强度",
+    "Support": "支撑",
+    "Support filament": "支撑耗材",
+    "Support ironing": "支撑熨烫",
+    "Template Custom G-code": "模板自定义G-code",
+    "Timelapse G-code": "延时摄影G-code",
+    "Tool change parameters with multi extruder MM printers": "多挤出机多材料打印机的换色参数",
+    "Tool change parameters with single extruder MM printers": "单挤出机多材料打印机的换色参数",
+    "Top/bottom shells": "顶部/底部外壳",
+    "Travel speed": "空驶速度",
+    "Tree supports": "树状支撑",
+    "Volumetric speed limitation": "体积速度限制",
+    "Wall generator": "墙生成器",
+    "Walls": "墙",
+    "Walls and surfaces": "墙壁和表面",
+    "Wipe tower": "色塔",
+    "Wipe tower parameters": "色塔参数",
+    "Z contouring": "Z 层抗锯齿",
+    "Z-Hop": "Z轴抬升"
+  }
+}
