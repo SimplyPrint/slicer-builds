@@ -42,8 +42,8 @@
       "tooltip": "Velocidad del ventilador de ventilación de la parte auxiliar. El ventilador auxiliar funcionará a esta velocidad durante la impresión, excepto en las primeras capas, que se define como sin capas de refrigeración.\nPor favor, active auxiliary_fan en la configuración de la impresora para utilizar esta función. Comando G-code: M106 P2 S(0-255)"
     },
     "ai_infill": {
-      "label": "AI infill",
-      "tooltip": "Sobre la base del relleno escaso original, se activa el relleno ai."
+      "label": "Relleno inteligente",
+      "tooltip": "Activa el relleno inteligente basado en el relleno disperso original."
     },
     "align_infill_direction_to_model": {
       "label": "Alinear la dirección de relleno al modelo",
@@ -56,6 +56,10 @@
     "arc_tolerance": {
       "label": "Tolerancia del arco",
       "tooltip": "Tolerancia del arco"
+    },
+    "automatic_extrusion_widths": {
+      "label": "Cálculo automático del ancho de extrusión",
+      "tooltip": "Calcula automáticamente los anchos de extrusión basándose en el diámetro de la boquilla del extrusor utilizado en ese momento. Este ajuste es esencial para imprimir con diferentes diámetros de boquilla."
     },
     "auxiliary_fan": {
       "label": "Ventilador lateral",
@@ -90,6 +94,14 @@
       "label": "Distancia de punto de sonda",
       "tooltip": "Esta opción establece la distancia preferida entre puntos de medición (tamaño de cuadrícula) para las direcciones X e Y, siendo el valor predeterminado 50mm tanto para X como para Y."
     },
+    "bed_temperature_mode": {
+      "label": "Modo de temperatura de la cama",
+      "tooltip": "Elija cómo determinar la temperatura de la cama para impresiones multifilamento.",
+      "enum_labels": [
+        "Utilice la temperatura más alta del lecho de filamentos",
+        "Utilice la temperatura del primer lecho de filamentos."
+      ]
+    },
     "before_layer_change_gcode": {
       "label": "G-Code para antes del cambio de capa",
       "tooltip": "Este G-Code se inserta en cada cambio de capa antes de levantar z"
@@ -101,6 +113,10 @@
     "best_object_pos": {
       "label": "Mejor posición de los objetos",
       "tooltip": "Mejor auto posicionamiento de los objetos en el intervalo [0,1] con respecto a la forma de la cama."
+    },
+    "bottom_fill_flush_layers": {
+      "label": "Capas inferiores con purga antes del relleno",
+      "tooltip": "Cuando se activa la purga en el esqueleto de los objetos, se fuerza una purga en la torre de purga en las N capas inferiores del objeto antes de imprimir el relleno o el esqueleto, y después la superficie y las paredes. Esto no cambia el número de capas de la carcasa inferior."
     },
     "bottom_shell_layers": {
       "label": "Cubiertas inferiores de cubierta",
@@ -186,6 +202,15 @@
     "brim_width": {
       "label": "Ancho del borde de adherencia",
       "tooltip": "Distancia del modelo a la línea más externa del borde de adherencia"
+    },
+    "cell_type": {
+      "label": "Tipo de celda",
+      "tooltip": "Selecciona la forma básica de la celda utilizada por el relleno de campo.",
+      "enum_labels": [
+        "Celda TPMS-D",
+        "Giroide",
+        "TPMS-FK"
+      ]
     },
     "chamber_temperature": {
       "label": "Temperatura de cámara",
@@ -340,6 +365,18 @@
       "label": "Desactivar tiempo de impresión restante",
       "tooltip": "Deshabilitar la generación del M73: Ajustar el tiempo de impresión restante en el G-Code final"
     },
+    "dithering_local_z_mode": {
+      "label": "Modo de tramado Z local",
+      "tooltip": "Utilice capas variables para mezclar colores."
+    },
+    "dithering_step_painted_zones_only": {
+      "label": "Utilice el tamaño del paso únicamente en zonas pintadas.",
+      "tooltip": "Cuando está habilitado, el tamaño del paso Z del difuminado se aplica solo cuando se pinta filamento mixto."
+    },
+    "dithering_z_step_size": {
+      "label": "Tamaño del paso Z del difuminado",
+      "tooltip": "Altura de capa utilizada en zonas Z pintadas con tramado."
+    },
     "dont_filter_internal_bridges": {
       "label": "No filtrar los pequeños puentes internos (beta)",
       "tooltip": "Esta opción puede ayudar a reducir el acolchado en las superficies superiores en modelos muy inclinados o curvos.\n\nDe forma predeterminada, los pequeños puentes internos se filtran y el relleno sólido interno se imprime directamente sobre el relleno escaso. Esto funciona bien en la mayoría de los casos, ya que acelera la impresión sin comprometer demasiado la calidad superior de la superficie. \n\nSin embargo, en modelos muy inclinados o curvos, especialmente cuando se utiliza una densidad de relleno demasiado baja, esto puede provocar que el relleno sólido sin soporte se doble, lo que provoca un acolchonamiento.\n\nAl habilitar esta opción se imprimirá la capa de puente interna sobre un relleno sólido interno ligeramente sin soporte. Las opciones siguientes controlan la cantidad de filtrado, es decir, la cantidad de puentes internos creados.\n\nDesactivado: desactiva esta opción. Este es el comportamiento predeterminado y funciona bien en la mayoría de los casos.\n\nFiltrado limitado: crea puentes internos en superficies muy inclinadas, evitando al mismo tiempo la creación de puentes internos innecesarios. Esto funciona bien para los modelos más difíciles.\n\nSin filtrado: crea puentes internos en cada posible saliente interno. Esta opción es útil para modelos con superficie superior muy inclinada. Sin embargo, en la mayoría de los casos crea demasiados puentes innecesarios.",
@@ -366,6 +403,9 @@
       "label": "Fan speed",
       "tooltip": "Velocidad del extractor de aire durante la impresión. Esta velocidad anulará la velocidad en el código G personalizado del filamento."
     },
+    "e_step_dist": {
+      "label": "Distancia de paso E"
+    },
     "elefant_foot_compensation": {
       "label": "Compensación del pata de elefante",
       "tooltip": "Contraer la primera capa en la bandeja de impresión para compensar el efecto de la pata de elefante"
@@ -389,6 +429,10 @@
     "enable_filament_ramming": {
       "label": "Activar el moldeado de extremo del filamento",
       "tooltip": "Activar el moldeado de extremo del filamento"
+    },
+    "enable_mixed_color_sublayer": {
+      "label": "Subcapa de colores mixtos",
+      "tooltip": "Permite dividir cada capa de filamento mezclado en subcapas para la mezcla física de colores. Requiere al menos una fila de filamento mezclado habilitada."
     },
     "enable_overhang_bridge_fan": {
       "label": "Refrigeración forzada para el voladizo y el puente",
@@ -505,6 +549,10 @@
       "label": "Categoría de adhesividad",
       "tooltip": "filamento_adhesividad_categoría"
     },
+    "filament_can_change": {
+      "label": "El filamento se puede cambiar.",
+      "tooltip": "El filamento se puede cambiar."
+    },
     "filament_colour": {
       "label": "Color",
       "tooltip": "Sólo se utiliza como ayuda visual en la interfaz de usuario"
@@ -566,6 +614,23 @@
       "label": "Retracción larga al cortar (experimental)",
       "tooltip": "Característica experimental. Retraer y cortar el filamento a mayor distancia durante los cambios para minimizar la purga. Si bien esto reduce significativamente la purga, también puede aumentar el riesgo de atascos de boquillas u otros problemas de impresión."
     },
+    "filament_map": {
+      "label": "Mapa de filamento a boquilla",
+      "tooltip": "Asigna cada filamento del proyecto a un número de boquilla física basado en 1."
+    },
+    "filament_map_2": {
+      "label": "Índice de boquilla de filamento interno",
+      "tooltip": "Índice de boquilla interna de base cero generado a partir de filament_map."
+    },
+    "filament_map_mode": {
+      "label": "Modo de mapeo de filamentos",
+      "tooltip": "Selecciona si los filamentos del proyecto se asignan a las boquillas de forma automática o manual.",
+      "enum_labels": [
+        "Automático",
+        "Coincidencia automática",
+        "Personalizado"
+      ]
+    },
     "filament_max_volumetric_speed": {
       "label": "Velocidad volumétrica máxima",
       "tooltip": "Este ajuste representa la cantidad de volumen de filamento puede ser derretido extruido por segundo. La velocidad de impresión está limitado por cuanta velocidad, en caso de velocidad demasiado alta o no razonable. No puede ser cero"
@@ -598,6 +663,9 @@
       "label": "Retrae cantidad antes de limpiar",
       "tooltip": "La longitud de la retracción rápida antes de la limpieza, en relación con la longitud de la retracción"
     },
+    "filament_retract_length_toolchange": {
+      "label": "Largo"
+    },
     "filament_retract_lift_above": {
       "label": "Solo elevar Z por encima",
       "tooltip": "Si lo ajusta a un valor positivo, la elevación de Z sólo tendrá lugar por encima de la Z absoluta especificada."
@@ -619,6 +687,10 @@
     "filament_retract_restart_extra": {
       "label": "Longitud extra de reinicio",
       "tooltip": "Cuando la retracción se compensa después de un desplazamiento, el extrusor expulsará esta cantidad adicional de filamento. Esta función no suele ser necesaria."
+    },
+    "filament_retract_restart_extra_toolchange": {
+      "label": "Longitud extra de reinicio",
+      "tooltip": "Cuando se compensa la retracción después de cambiar de herramienta, el extrusor empujará esta cantidad adicional de filamento."
     },
     "filament_retract_when_changing_layer": {
       "label": "Retracción al cambiar de capa",
@@ -753,6 +825,14 @@
     "flush_into_objects": {
       "label": "Purgar en este objeto",
       "tooltip": "Este objeto se utilizará para purgar la boquilla después de un cambio de filamento para ahorrar filamento y disminuir el tiempo de impresión. Los colores de los objetos se mezclarán como resultado. No tendrá efecto, a menos que la torre de purga esté activada."
+    },
+    "flush_into_skeleton": {
+      "label": "Purgar en el esqueleto de objetos (experimental)",
+      "tooltip": "La purga después del cambio de filamento se realizará dentro del área del esqueleto de los objetos. Esto puede reducir la cantidad de residuos y disminuir el tiempo de impresión. Solo tendrá efecto si la torre de purga está activada."
+    },
+    "flush_into_solid_skeleton": {
+      "label": "Imprimir el volumen de cebado en un esqueleto sólido",
+      "tooltip": "Elimina el Torre de Purga separado cuando el volumen de cebado está por debajo del 10 mm³ y el volumen mínimo de purga en la torre es cero para cada filamento. El material correspondiente al volumen de cebado está impreso como un esqueleto sólido dentro del modelo. El volumen de este esqueleto coincide con el volumen de cebado."
     },
     "flush_into_support": {
       "label": "Purgar en los soportes de objetos",
@@ -1019,6 +1099,10 @@
     "interface_shells": {
       "label": "Perímetros de interfaz",
       "tooltip": "Fuerza la generación de perímetro sólidos entre filamentoes/volúmenes adyacentes. Útil para impresiones con varios extrusores, con filamentoes translúcidos o filamento de soporte soluble manualmente"
+    },
+    "interior_coefficient": {
+      "label": "Coeficiente interior (beta)",
+      "tooltip": "Controla la densidad del relleno de campo dentro del modelo. Los valores más altos producen una retícula interna más densa."
     },
     "interlocking_beam": {
       "label": "Uso de entrelazamiento de vigas",
@@ -1340,6 +1424,9 @@
       "label": "Longitud del segmento de suavizado",
       "tooltip": "Un valor más bajo da como resultado transiciones de velocidad de extrusión más suaves. Sin embargo, esto da como resultado un archivo gcode significativamente más grande y más instrucciones para que las procese la impresora. \n\nEl valor predeterminado de 3 funciona bien en la mayoría de los casos. Si su impresora tartamudea, aumente este valor para reducir la cantidad de ajustes realizados\n\nValores permitidos: 0,5-5"
     },
+    "mcu_pool_total": {
+      "label": "Capacidad total del pool de memoria de la MCU"
+    },
     "min_bead_width": {
       "label": "Ancho mínimo del perímetro",
       "tooltip": "Anchura del perímetro que sustituirá a los elementos finos (según el tamaño mínimo del elemento) del modelo. Si la anchura mínima del perímetro es menor que el grosor de la característica, el perímetro será tan grueso como la propia característica. Se expresa en porcentaje sobre el diámetro de la boquilla"
@@ -1372,6 +1459,46 @@
     "minimum_support_area": {
       "label": "El área de suspensión es pequeña.",
       "tooltip": "El área mínima que soporta el polígono. Los polígonos con un área inferior a este valor no se generarán."
+    },
+    "mixed_color_layer_height_a": {
+      "label": "Altura de cadencia de difuminado A",
+      "tooltip": "Contribución de la altura de la capa del componente A para el tramado de filamentos virtuales."
+    },
+    "mixed_color_layer_height_b": {
+      "label": "Altura de cadencia de difuminado B",
+      "tooltip": "Contribución de la altura de la capa del componente B para el tramado de filamentos virtuales."
+    },
+    "mixed_filament_advanced_dithering": {
+      "label": "Tramado avanzado",
+      "tooltip": "Distribuya la cadencia del ciclo de capas de filamentos mixtos utilizando un patrón de tramado ordenado avanzado."
+    },
+    "mixed_filament_definitions": {
+      "label": "Definiciones personalizadas de filamentos mixtos",
+      "tooltip": "Filas de filamentos mixtos personalizados serializados."
+    },
+    "mixed_filament_gradient_mode": {
+      "label": "Cadencia ponderada en altura",
+      "tooltip": "Habilite la cadencia ponderada en altura para filamentos mixtos."
+    },
+    "mixed_filament_height_lower_bound": {
+      "label": "Filamento mixto encuadernado en altura inferior.",
+      "tooltip": "Límite inferior utilizado por el modo de gradiente de filamentos mixtos ponderado en altura."
+    },
+    "mixed_filament_height_upper_bound": {
+      "label": "Encuadernado en altura superior con filamento mixto.",
+      "tooltip": "Límite superior utilizado por el modo de gradiente de filamentos mixtos ponderado en altura."
+    },
+    "mixed_filament_pointillism_line_gap": {
+      "label": "Brecha de línea de puntillismo",
+      "tooltip": "Espaciado opcional no extruido entre segmentos de puntillismo adyacentes."
+    },
+    "mixed_filament_pointillism_pixel_size": {
+      "label": "Tamaño de píxel del puntillismo",
+      "tooltip": "Longitud de un segmento de puntillismo a lo largo de una trayectoria de extrusión."
+    },
+    "mixed_filament_surface_indentation": {
+      "label": "Expansión/contracción selectiva",
+      "tooltip": "Desplazamiento XY aplicado a regiones pintadas con filamentos mixtos antes de la asignación de regiones."
     },
     "mmu_segmented_region_interlocking_depth": {
       "label": "Profundidad de entrelazado de una región segmentada",
@@ -1412,6 +1539,9 @@
     "nozzle_hrc": {
       "label": "HRC Boquilla",
       "tooltip": "La dureza de la boquilla. Cero significa no comprobará la dureza de la boquilla durante el laminado."
+    },
+    "nozzle_pool_total": {
+      "label": "Capacidad total del pool de memoria de la MCU de la boquilla"
     },
     "nozzle_temperature": {
       "label": "Otras capas",
@@ -1531,6 +1661,10 @@
       "label": "Posición de parada de filamento",
       "tooltip": "Distancia de la punta del extrusor desde la posición donde el filamento se detiene cuando se descarga. Debería coincidir con el valor del firmware de la impresora."
     },
+    "pathological_segment_protection_enable": {
+      "label": "Protección de aceleración de segmento anómalo",
+      "tooltip": "Cuando está habilitado, la laminador detecta secuencias densas de segmentos cortos (como patrones de zigzag con movimientos submilimétricos) que pueden hacer que el firmware Klipper acumule una cola de movimientos excesiva, lo que podría provocar bloqueos de comunicación de MCU y fallas de la impresora.\n\nLa laminador inserta comandos SET_VELOCITY_LIMIT para reducir temporalmente la aceleración antes de estas regiones anómalas y restaurarla después."
+    },
     "pellet_flow_coefficient": {
       "label": "Coeficiente de flujo de partículas",
       "tooltip": "El coeficiente de flujo de pellets se obtiene de forma empírica y permite calcular el volumen para impresoras de pellets.\n\nInternamente se convierte a filament_diameter. Todos los demás cálculos de volumen siguen siendo los mismos.\n\nfilament_diameter = sqrt( (4 * coeficiente_flujo_pellets) / PI )"
@@ -1559,6 +1693,10 @@
       "label": "Pasos de precalentamiento",
       "tooltip": "Inserte varias órdenes de calentamiento (por ejemplo, m104.1). Solo para prusa xl. Para otras impresoras, establezca a 1."
     },
+    "preheat_temperature_delta": {
+      "label": "Temperatura de precalentamiento",
+      "tooltip": "Diferencia de temperatura aplicada antes de que se active una boquilla. La temperatura de precalentamiento avanzado se calcula como la temperatura de impresión más este valor."
+    },
     "preheat_time": {
       "label": "Tiempo de calentamiento",
       "tooltip": "Para reducir el tiempo de espera después del cambio de herramienta, Creality puede precalentar la siguiente herramienta mientras la herramienta actual todavía está en uso. Esta configuración especifica el tiempo en segundos para precalentar la siguiente herramienta. Creality insertará un comando M104 para precalentar la herramienta por adelantado."
@@ -1575,6 +1713,10 @@
       "label": "Ancho del borde de adherencia",
       "tooltip": "Anchura del borde de la torre principal, número negativo significa anchura calculada automáticamente en función de la altura dela torre principal."
     },
+    "prime_tower_corner_rib_length": {
+      "label": "Longitud de la nervadura de la esquina inferior",
+      "tooltip": "Longitud del lado inferior de las nervaduras de las esquinas cuadradas de la torre de purga cuadrada. La nervadura mantiene su longitud de contacto con el área de limpieza y se estrecha hacia afuera hasta los bordes de los bloques en la parte superior de la torre. Establezca en 0 para utilizar el espaciado entre líneas del perímetro."
+    },
     "prime_tower_enable_framework": {
       "label": "Costillas internas",
       "tooltip": "Permitir nervios internos para aumentar la estabilidad de la torre principal."
@@ -1584,7 +1726,8 @@
       "tooltip": "Prime Tower Enhanced",
       "enum_labels": [
         "Cono",
-        "Achaflanar"
+        "Achaflanar",
+        "nervadura de esquina"
       ]
     },
     "prime_tower_position_type": {
@@ -1609,6 +1752,18 @@
     "prime_tower_skip_points": {
       "label": "Saltar puntos",
       "tooltip": "La pared de la torre principal saltará los puntos de partida de la ruta de limpieza"
+    },
+    "prime_tower_start_ironing": {
+      "label": "Alisado del área inicial de la torre de purga",
+      "tooltip": "Planchar el área de inicio de la purga reduce el riesgo de que la boquilla raspe la torre de purga durante la impresión posterior.",
+      "enum_labels": [
+        "Desactivado",
+        "Planchado alternativo"
+      ]
+    },
+    "prime_tower_start_offset": {
+      "label": "Desplazamiento inicial de la torre de purga",
+      "tooltip": "Mueve el inicio de la ruta de purga de la torre de purga hacia adentro a lo largo de la primera línea de purga. Esto mantiene los blobs de inicio dentro de la torre."
     },
     "prime_tower_width": {
       "label": "Ancho",
@@ -1889,6 +2044,10 @@
       "label": "Purgar todos los extrusores",
       "tooltip": "Sí está activada, todos los extrusores serán purgados en el lado delantero de la cama de impresión al inicio de la impresión."
     },
+    "skeleton_flush_slowdown_speed": {
+      "label": "Velocidad de limpieza del esqueleto",
+      "tooltip": "Cuando la opción \"Purgar en el esqueleto de objetos\" esté habilitada, establezca la velocidad para rutas de esqueleto más lentas después de un cambio de material. Los valores porcentuales se calculan a partir de la velocidad que normalmente utilizaría cada ruta de esqueleto."
+    },
     "skeleton_infill_density": {
       "label": "Densidad de relleno de esqueleto",
       "tooltip": "La parte restante del contorno del modelo después de eliminar una cierta profundidad de la superficie se llama esqueleto. Este parámetro se utiliza para ajustar la densidad de esta sección. Cuando dos regiones tienen la misma configuración de relleno disperso pero diferentes densidades de esqueleto, sus áreas de esqueleto desarrollarán secciones superpuestas. El valor predeterminado es el mismo que la densidad de relleno."
@@ -1896,6 +2055,10 @@
     "skeleton_infill_line_width": {
       "label": "Anchura de la línea del esqueleto",
       "tooltip": "Ajuste el ancho de línea de las rutas de esqueleto seleccionadas."
+    },
+    "skeleton_wipe_line_width": {
+      "label": "Ancho de línea de limpieza del esqueleto",
+      "tooltip": "Ajuste el ancho de las líneas del esqueleto utilizadas para limpiar a velocidad reducida después de un cambio de material, en el modo sin Torre de Purga."
     },
     "skin_infill_density": {
       "label": "Densidad de relleno de piel",
@@ -2056,7 +2219,8 @@
         "Cross-Zag",
         "Cerrado-Zag",
         "Panal de miel lateral",
-        "Red lateral"
+        "Red lateral",
+        "TPMS adaptativo"
       ]
     },
     "sparse_infill_speed": {
@@ -2152,6 +2316,10 @@
     "support_filament": {
       "label": "Capa base/balsa",
       "tooltip": "Filamento para imprimir la base de soporte y la balsa de impresión. \"Por defecto\" significa que no hay filamento específico para el soporte y se utiliza el filamento actual"
+    },
+    "support_filament_nozzle_mapping": {
+      "label": "Soporte para mapeo de boquillas de filamento",
+      "tooltip": "Muestra los controles de agrupación de filamento a boquilla del proyecto para esta impresora."
     },
     "support_interface_bottom_layers": {
       "label": "Capas de la interfaz inferior",
@@ -2288,6 +2456,10 @@
         "Z cubre X / y"
       ]
     },
+    "surface_coefficient": {
+      "label": "Coeficiente de superficie (beta)",
+      "tooltip": "Controla la densidad del relleno de campo cerca de las superficies. Los valores más altos producen una retícula más densa junto a las superficies."
+    },
     "symmetric_infill_y_axis": {
       "label": "Eje y de relleno simétrico",
       "tooltip": "Si el modelo tiene dos partes que son simétricas con respecto al eje y y desea que estas partes tengan texturas simétricas, haga clic en esta opción en una de las partes."
@@ -2352,6 +2524,10 @@
       "label": "Relleno sólido superior/inferior/solapamiento de paredes",
       "tooltip": "El área de relleno sólido superior se amplía ligeramente para superponerse con la pared para una mejor unión y minimizar la aparición de poros donde el relleno superior se une a las paredes. Un valor del 25 al 30 por ciento es un buen punto de partida, ya que minimiza la aparición de poros. El valor porcentual es relativo al ancho de línea del relleno escaso"
     },
+    "top_fill_flush_layers": {
+      "label": "Capas superiores con purga antes del relleno",
+      "tooltip": "Cuando se activa la purga en el esqueleto de los objetos, se fuerza una purga en la torre de purga en las N capas superiores del objeto antes de imprimir el relleno o el esqueleto, y después la superficie y las paredes. Esto no cambia el número de capas de la carcasa superior."
+    },
     "top_shell_layers": {
       "label": "Capas de la cubierta superior",
       "full_label": "Capas solidas arriba",
@@ -2412,6 +2588,10 @@
     "tpms_start_infill_density": {
       "label": "Iniciar densidad de llenado escaso",
       "tooltip": "Densidad de llenado de inicio escaso en el rango (1-99)"
+    },
+    "transmittance_matrix": {
+      "label": "Matriz de piel de purga del esqueleto",
+      "tooltip": "Matriz de espesor de piel utilizada solo cuando la purga en el esqueleto de objetos está activada."
     },
     "travel_acceleration": {
       "label": "Recorrido",
@@ -2488,6 +2668,10 @@
     "tree_support_brim_width": {
       "label": "Anchura del borde de adherencia",
       "tooltip": "Distancia desde la rama del árbol hasta la línea más externa del borde de adherencia"
+    },
+    "tree_support_organic_validate_repair": {
+      "label": "Validación y reparación de soportes",
+      "tooltip": "Después de generar la región de soporte base, valida la continuidad de los contornos de soporte de árbol orgánico. Cuando está activado, se utilizan rutas de soporte adicionales para reparar segmentos de contorno no soportados. Cuando está desactivado, los soportes de árbol orgánico se generan utilizando el proceso de generación de ruta de extrusión original."
     },
     "tree_support_tip_diameter": {
       "label": "Tamaño de la punta",
@@ -2634,6 +2818,9 @@
       "label": "Compensación de huecos X-Y",
       "tooltip": "Los huecos del objeto crecerán o se reducirán en el plano XY según el valor configurado. Un valor positivo hace que los huecos sean más grandes. Un valor negativo hace que los huecos sean más pequeños. Esta función se utiliza para ajustar el tamaño ligeramente cuando el objeto tiene problemas de ensamblaje"
     },
+    "xy_step_dist": {
+      "label": "Distancia de paso XY"
+    },
     "z_direction_outwall_speed_continuous": {
       "label": "Velocidad de la pared de alisamiento a lo largo de Z (experimental)",
       "tooltip": "Alisamiento de la velocidad de la pared exterior en la dirección z para obtener una mejor calidad de superficie.El tiempo de impresión aumentará. No funciona en modo vaso en espiral."
@@ -2655,6 +2842,20 @@
     "z_offset": {
       "label": "Desplazamiento de Z",
       "tooltip": "Este valor se sumará (o restará) de todas las coordenadas Z en el G-Code de salida. Se utiliza para compensar el desfase de Z del “Endstop Z”.\nPor ejemplo, si tu “Endstop cero” deja la boquilla a distancia 0.3mm de la cama de impresión, establecer este valor a -0,3 compensará este desfase."
+    },
+    "zaa_enabled": {
+      "label": "Habilitar suavizado de capa Z",
+      "tooltip": "Considere habilitar el suavizado de capa Z para modelos con superficies grandes y suavemente inclinadas para reducir los escalones visibles. Para obtener el mejor acabado superficial posible, considere utilizar un relleno concéntrico en la superficie superior.\nCuando está habilitado, los recorridos elegibles de la superficie superior y de la pared ajustan su altura Z para seguir la superficie del modelo. El suavizado de capa Z es mutuamente excluyente con Vaso en espiral, Costura de unión de bufanda y Subcapa de colores mixtos. El suavizado de capa Z no se puede habilitar junto con ninguna de estas funciones. Los objetos que utilizan un Balsa/capa base de impresión o Alisado, o que contienen partes negativas, recurren al corte de plano medio convencional y muestran una advertencia. Cuando esta función está habilitada, los comandos de arco en rutas elegibles se convierten en movimientos lineales G1."
+    },
+    "zaa_lock_top_surface_fill_direction": {
+      "label": "Bloquear la dirección de llenado de la superficie superior",
+      "tooltip": "Mantiene la dirección de los patrones de relleno de superficie superior basados ​​en líneas y sin puentes (como Rectilíneo y Monotónico) sin cambios entre capas cuando el suavizado de capas Z está activo para el objeto actual. La dirección de relleno del puente y otros tipos de relleno no se ven afectados."
+    },
+    "zaa_slice_plane_offset": {
+      "label": "Desplazamiento del plano de corte ZAA"
+    },
+    "zaa_wall_lowering_min_slope": {
+      "label": "Pendiente mínima de la superficie para descenso de muros"
     }
   },
   "ui": {
@@ -2680,6 +2881,7 @@
     "Filament for Features": "Filamentos funcionales",
     "Filament start G-code": "G-Code de inicio de filamento",
     "Flush options": "Opciones de caudal",
+    "Fuzzy Skin": "Piel Difusa",
     "G-code output": "G-Code de salida",
     "Infill": "Relleno",
     "Initial layer speed": "Velocidad de la primera capa",
@@ -2742,6 +2944,7 @@
     "Walls": "Perímetros",
     "Walls and surfaces": "Perímetros y superficies",
     "Wipe tower": "Torre de purga",
-    "Wipe tower parameters": "Parámetros de torre de purga"
+    "Wipe tower parameters": "Parámetros de torre de purga",
+    "Z contouring": "Contorno Z"
   }
 }

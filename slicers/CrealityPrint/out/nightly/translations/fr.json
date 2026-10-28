@@ -42,8 +42,8 @@
       "tooltip": "Vitesse du ventilateur de refroidissement auxiliaire. Le ventilateur auxiliaire fonctionnera à cette vitesse pendant l'impression, à l'exception des premières couches définies sans refroidissement.\nVeuillez activer auxiliaire_fan dans les paramètres de l’imprimante pour utiliser cette fonctionnalité. Commande G-code : M106 P2 S(0-255)"
     },
     "ai_infill": {
-      "label": "AI infill",
-      "tooltip": "Sur la base du remplissage épais original, le remplissage ai est activé."
+      "label": "Remplissage intelligent",
+      "tooltip": "Active le remplissage intelligent basé sur le remplissage clairsemé initial."
     },
     "align_infill_direction_to_model": {
       "label": "Aligner la direction de remplissage au modèle",
@@ -56,6 +56,10 @@
     "arc_tolerance": {
       "label": "Tolérance d'arc électrique",
       "tooltip": "Tolérance d'arc électrique"
+    },
+    "automatic_extrusion_widths": {
+      "label": "Calcul automatique des largeurs d'extrusion",
+      "tooltip": "Calcule automatiquement les largeurs d'extrusion en fonction du diamètre de la buse de l'extrudeur actuellement utilisée. Ce paramètre est essentiel pour imprimer avec différents diamètres de buses."
     },
     "auxiliary_fan": {
       "label": "Ventilateur latéral",
@@ -90,6 +94,14 @@
       "label": "Distance entre les points de mesure",
       "tooltip": "Cette option définit la distance préférée entre les points de mesure (taille de la grille) pour les directions X et Y, la valeur par défaut étant de 50 mm pour les deux directions."
     },
+    "bed_temperature_mode": {
+      "label": "Mode température du lit",
+      "tooltip": "Choisissez comment déterminer la température du lit pour les impressions multifilaments.",
+      "enum_labels": [
+        "Utiliser la température de lit de filament la plus élevée",
+        "Utiliser la température du premier lit de filament"
+      ]
+    },
     "before_layer_change_gcode": {
       "label": "G-Code avant changement de couche",
       "tooltip": "Ce G-code est inséré à chaque changement de couche avant le levage du Z"
@@ -101,6 +113,10 @@
     "best_object_pos": {
       "label": "Meilleure position d’organisation automatique",
       "tooltip": "Meilleure position d’organisation automatique dans la plage [0,1] par rapport à forme du plateau."
+    },
+    "bottom_fill_flush_layers": {
+      "label": "Couches inférieures avec purge avant le remplissage",
+      "tooltip": "Lorsque le rinçage dans le squelette des objets est activé, une purge sur la tour de purge est imposée dans les N couches inférieures de l’objet avant l’impression du remplissage ou du squelette, puis de la peau et des parois. Cela ne modifie pas le nombre de couches de la coque inférieure."
     },
     "bottom_shell_layers": {
       "label": "Couches inférieures de la coque",
@@ -186,6 +202,15 @@
     "brim_width": {
       "label": "Largeur de la bordure",
       "tooltip": "Distance du modèle à la ligne de bord la plus externe"
+    },
+    "cell_type": {
+      "label": "Type de cellule",
+      "tooltip": "Sélectionne la forme de base des cellules utilisées par le remplissage par champ.",
+      "enum_labels": [
+        "Cellule TPMS-D",
+        "Gyroïde",
+        "TPMS-FK"
+      ]
     },
     "chamber_temperature": {
       "label": "Température du caisson",
@@ -340,6 +365,18 @@
       "label": "Désactiver le réglage du temps d’impression restant",
       "tooltip": "Désactiver la génération du M73 : Définir le temps d’impression restant dans le gcode final"
     },
+    "dithering_local_z_mode": {
+      "label": "Mode de tramage Z local",
+      "tooltip": "Utilisez des calques variables pour le mélange des couleurs."
+    },
+    "dithering_step_painted_zones_only": {
+      "label": "Utiliser la taille de pas dans les zones peintes uniquement",
+      "tooltip": "Lorsqu'elle est activée, la taille du pas de tramage Z est appliquée uniquement là où le filament mélangé est peint."
+    },
+    "dithering_z_step_size": {
+      "label": "Taille du pas de tramage Z",
+      "tooltip": "Hauteur de couche utilisée dans les zones Z peintes avec tramage."
+    },
     "dont_filter_internal_bridges": {
       "label": "Ne pas filtrer les petits ponts internes (expérimental)",
       "tooltip": "Cette option peut contribuer à réduire le coussinage sur les surfaces supérieures des modèles fortement inclinés ou courbés.\n\nPar défaut, les petits ponts internes sont filtrés et le remplissage interne solide est imprimé directement sur le remplissage clairsemé. Cela fonctionne bien dans la plupart des cas, accélérant l’impression sans trop de compromis sur la qualité de surface supérieure. \n\nCependant, dans les modèles fortement inclinés ou incurvés, en particulier lorsqu'une densité de remplissage trop faible est utilisée, cela peut entraîner un enroulement du remplissage solide non soutenu, provoquant un coussinage.\n\nL'activation de cette option imprimera la couche de pont interne sur un remplissage solide interne légèrement non pris en charge. Les options ci-dessous contrôlent la quantité de filtrage, c'est-à-dire la quantité de ponts internes créés.\n\nDésactivé - Désactive cette option. Il s'agit du comportement par défaut et fonctionne bien dans la plupart des cas.\n\nFiltrage limité - Crée des ponts internes sur des surfaces fortement inclinées, tout en évitant de créer des ponts internes inutiles. Cela fonctionne bien pour les modèles les plus difficiles.\n\nAucun filtrage : crée des ponts internes sur chaque surplomb interne potentiel. Cette option est utile pour les modèles à surface supérieure fortement inclinés. Cependant, dans la plupart des cas, cela crée trop de ponts inutiles.",
@@ -366,6 +403,9 @@
       "label": "Vitesse du ventilateur",
       "tooltip": "Vitesse du ventilateur d'extraction pendant l'impression. Cette vitesse remplacera la vitesse dans le g-code personnalisé du filament"
     },
+    "e_step_dist": {
+      "label": "Distance de pas E"
+    },
     "elefant_foot_compensation": {
       "label": "Compensation de l'effet patte d'éléphant",
       "tooltip": "Rétrécissez la couche initiale sur le plateau pour compenser l'effet de patte d'éléphant"
@@ -389,6 +429,10 @@
     "enable_filament_ramming": {
       "label": "Activer le pilonnage du filament",
       "tooltip": "Activer le pilonnage du filament"
+    },
+    "enable_mixed_color_sublayer": {
+      "label": "Sous-couche de couleurs mélangées",
+      "tooltip": "Permet de diviser chaque couche de filament mélangé en sous-couches afin de mélanger physiquement les couleurs. Nécessite au moins une ligne de filament mélangé activée."
     },
     "enable_overhang_bridge_fan": {
       "label": "Forcer la ventilation pour les surplombs et ponts",
@@ -505,6 +549,10 @@
       "label": "Catégorie d'adhésivité",
       "tooltip": "filament_adhésivité_catégorie"
     },
+    "filament_can_change": {
+      "label": "Le filament peut être changé",
+      "tooltip": "Le filament peut être changé"
+    },
     "filament_colour": {
       "label": "Couleur",
       "tooltip": "Utilisé uniquement comme aide visuelle sur l'interface utilisateur"
@@ -566,6 +614,23 @@
       "label": "Longue rétraction lors de la coupe (expérimental)",
       "tooltip": "Fonction expérimentale : rétracter et couper le filament à une plus grande distance pendant les changements pour minimiser la purge. Bien que cela réduise considérablement la purge, cela peut également augmenter le risque de bouchage des buses ou d’autres problèmes d’impression."
     },
+    "filament_map": {
+      "label": "Mappage du filament vers la buse",
+      "tooltip": "Mappe chaque filament du projet sur un numéro de buse physique basé sur 1."
+    },
+    "filament_map_2": {
+      "label": "Index des buses à filament interne",
+      "tooltip": "Indice de buse interne de base zéro généré à partir de filament_map."
+    },
+    "filament_map_mode": {
+      "label": "Mode de mappage de filament",
+      "tooltip": "Sélectionne si les filaments du projet sont attribués aux buses automatiquement ou manuellement.",
+      "enum_labels": [
+        "Automatique",
+        "Correspondance automatique",
+        "Personnalisé"
+      ]
+    },
     "filament_max_volumetric_speed": {
       "label": "Vitesse volumétrique maximale",
       "tooltip": "Ce paramètre correspond au volume de filament qui peut être fondu et extrudé par seconde. La vitesse d'impression sera limitée par la vitesse volumétrique maximale en cas de réglage de vitesse déraisonnablement trop élevé. Cette valeur ne peut pas être nulle."
@@ -598,6 +663,9 @@
       "label": "Quantité de rétraction avant essuyage",
       "tooltip": "La longueur de la rétraction rapide avant l’essuyage, par rapport à la longueur de la rétraction"
     },
+    "filament_retract_length_toolchange": {
+      "label": "Longueur"
+    },
     "filament_retract_lift_above": {
       "label": "Décalage en Z au-dessus uniquement",
       "tooltip": "Si définie sur une valeur positive, l’élévation Z n’aura lieu qu’au-dessus du Z absolu spécifié."
@@ -619,6 +687,10 @@
     "filament_retract_restart_extra": {
       "label": "Longueur supplémentaire",
       "tooltip": "Lorsque la rétraction est compensée après le mouvement de déplacement, l’extrudeuse poussera cette quantité supplémentaire de filament. Ce paramètre est rarement nécessaire."
+    },
+    "filament_retract_restart_extra_toolchange": {
+      "label": "Longueur supplémentaire",
+      "tooltip": "Lorsque la rétraction est compensée après le changement d’outil, l’extrudeur poussera cette quantité supplémentaire de filament."
     },
     "filament_retract_when_changing_layer": {
       "label": "Rétracter lors de changement de couche",
@@ -753,6 +825,14 @@
     "flush_into_objects": {
       "label": "Purger dans cet objet",
       "tooltip": "Cet objet sera utilisé pour purger la buse après un changement de filament afin d'économiser du filament et de réduire le temps d'impression. Les couleurs des objets seront mélangées en conséquence. Cela ne prendra effet que si la tour de purge est activée."
+    },
+    "flush_into_skeleton": {
+      "label": "Rincer dans le squelette des objets (expérimental)",
+      "tooltip": "La purge après changement de filament sera effectuée dans la zone du squelette des objets. Cela peut réduire la quantité de déchets et diminuer le temps d'impression. Cela ne prendra effet que si la tour de purge est activée."
+    },
+    "flush_into_solid_skeleton": {
+      "label": "Imprimer le volume d’amorçage dans un squelette plein",
+      "tooltip": "Élimine la tour de purge séparée lorsque le volume d’amorçage est inférieur à 10 mm³ et que le volume de purge minimum sur la tour est nul pour chaque filament. Le matériau correspondant au volume d’amorçage est imprimé sous forme de squelette solide à l'intérieur du modèle. Le volume de ce squelette correspond au volume d’amorçage."
     },
     "flush_into_support": {
       "label": "Purger dans les supports de l'objet",
@@ -1019,6 +1099,10 @@
     "interface_shells": {
       "label": "Coque des interfaces",
       "tooltip": "Forcer la génération de coques solides entre filament/volumes adjacents. Utile pour les impressions multi-extrudeuses avec des filament translucides ou un matériau de support soluble"
+    },
+    "interior_coefficient": {
+      "label": "Coefficient intérieur (bêta)",
+      "tooltip": "Contrôle la densité du remplissage par champ à l'intérieur du modèle. Des valeurs plus élevées rendent le réseau interne plus dense."
     },
     "interlocking_beam": {
       "label": "Utiliser le verrouillage de poutre",
@@ -1340,6 +1424,9 @@
       "label": "Longueur du segment de lissage",
       "tooltip": "Une valeur inférieure entraîne des transitions de taux d’extrusion plus douces. Cependant, cela entraîne un fichier gcode beaucoup plus volumineux et davantage d'instructions à traiter par l'imprimante. \n\nLa valeur par défaut de 3 fonctionne bien dans la plupart des cas. Si votre imprimante bégaie, augmentez cette valeur pour réduire le nombre de réglages effectués\n\nValeurs autorisées : 0,5-5"
     },
+    "mcu_pool_total": {
+      "label": "Capacité totale du pool mémoire du MCU"
+    },
     "min_bead_width": {
       "label": "Largeur minimale de la paroi",
       "tooltip": "Largeur de la paroi qui remplacera les éléments fins (selon la taille minimale des éléments) du modèle. Si la largeur minimale de la paroi est inférieure à l'épaisseur de l'élément, la paroi deviendra aussi épaisse que l'élément lui-même. Elle est exprimée en pourcentage par rapport au diamètre de la buse"
@@ -1372,6 +1459,46 @@
     "minimum_support_area": {
       "label": "Petite zone de surplomb",
       "tooltip": "Surface minimale du polygone de support. Les polygones dont l'aire est inférieure à cette valeur ne seront pas générés."
+    },
+    "mixed_color_layer_height_a": {
+      "label": "Hauteur de cadence de tramage A",
+      "tooltip": "Contribution à la hauteur de couche du composant A pour le tramage des filaments virtuels."
+    },
+    "mixed_color_layer_height_b": {
+      "label": "Hauteur de cadence de tramage B",
+      "tooltip": "Contribution à la hauteur de couche du composant B pour le tramage des filaments virtuels."
+    },
+    "mixed_filament_advanced_dithering": {
+      "label": "Tramage avancé",
+      "tooltip": "Distribuez la cadence de cycle de couches de filaments mixtes à l'aide d'un modèle de tramage ordonné avancé."
+    },
+    "mixed_filament_definitions": {
+      "label": "Définitions personnalisées de filaments mixtes",
+      "tooltip": "Rangées de filaments mixtes personnalisées et sérialisées."
+    },
+    "mixed_filament_gradient_mode": {
+      "label": "Cadence pondérée en fonction de la taille",
+      "tooltip": "Activer la cadence pondérée en hauteur pour les filaments mixtes."
+    },
+    "mixed_filament_height_lower_bound": {
+      "label": "Limite de hauteur inférieure à filament mixte",
+      "tooltip": "Limite inférieure utilisée par le mode dégradé à filaments mixtes pondéré en hauteur."
+    },
+    "mixed_filament_height_upper_bound": {
+      "label": "Limite de hauteur supérieure à filament mixte",
+      "tooltip": "Limite supérieure utilisée par le mode dégradé à filaments mixtes pondéré en hauteur."
+    },
+    "mixed_filament_pointillism_line_gap": {
+      "label": "Écart de ligne de pointillisme",
+      "tooltip": "Espacement non extrudé en option entre les segments de pointillisme adjacents."
+    },
+    "mixed_filament_pointillism_pixel_size": {
+      "label": "Taille des pixels du pointillisme",
+      "tooltip": "Longueur d'un segment de pointillisme le long d'un chemin d'extrusion."
+    },
+    "mixed_filament_surface_indentation": {
+      "label": "Expansion/contraction sélective",
+      "tooltip": "Décalage XY appliqué aux régions peintes à filaments mixtes avant l'affectation des régions."
     },
     "mmu_segmented_region_interlocking_depth": {
       "label": "Profondeur d’emboîtement d’une région segmentée",
@@ -1412,6 +1539,9 @@
     "nozzle_hrc": {
       "label": "Dureté HRC buse",
       "tooltip": "La dureté de la buse. Zéro signifie qu'il n'est pas nécessaire de vérifier la dureté de la buse pendant la découpe."
+    },
+    "nozzle_pool_total": {
+      "label": "Capacité totale du pool mémoire du MCU de la buse"
     },
     "nozzle_temperature": {
       "label": "Autres couches",
@@ -1490,6 +1620,7 @@
     },
     "overhang_fan_threshold": {
       "label": "Seuil de dépassement de refroidissement",
+      "tooltip": "Force le ventilateur de refroidissement à atteindre une vitesse spécifique lorsque le degré de surplomb de la pièce imprimée dépasse cette valeur. Exprimé en pourcentage qui indique la largeur de la ligne sans le support de la couche inférieure. 0 % signifie forcer le refroidissement de tous les murs extérieurs, quel que soit le degré de surplomb",
       "enum_labels": [
         "0%",
         "10%",
@@ -1530,6 +1661,10 @@
       "label": "Position de stationnement du filament",
       "tooltip": "Distance entre la pointe de l’extrudeur et la position où le filament est parqué une fois déchargé. Cela doit correspondre à la valeur du firmware de l’imprimante."
     },
+    "pathological_segment_protection_enable": {
+      "label": "Protection contre l'accélération du segment pathologique",
+      "tooltip": "Lorsqu'il est activé, le slicer détecte les séquences denses de segments courts (telles que les motifs en zigzag avec des mouvements inférieurs au millimètre) qui peuvent provoquer une accumulation excessive de file d'attente de mouvements du micrologiciel Klipper, conduisant potentiellement à des blocages de communication du MCU et à des pannes d'imprimante.\n\nLe slicer insère des commandes SET_VELOCITY_LIMIT pour réduire temporairement l'accélération avant ces régions pathologiques et la restaurer par la suite."
+    },
     "pellet_flow_coefficient": {
       "label": "Coefficient de débit de particules",
       "tooltip": "Le coefficient d’écoulement des pellets est dérivé de manière empirique et permet de calculer le volume des imprimantes à pellets.\n\nEn interne, il est converti en diamètre de filament. Tous les autres calculs de volume restent inchangés.\n\nfilament_diameter = sqrt( (4 * pellet_flow_coefficient) / PI )"
@@ -1558,6 +1693,10 @@
       "label": "Étapes de préchauffage",
       "tooltip": "Insérer plusieurs commandes de préchauffage (par exemple m104.1). Disponible uniquement avec prusa XL. Pour les autres imprimantes, réglez -la sur 1."
     },
+    "preheat_temperature_delta": {
+      "label": "Température de préchauffage",
+      "tooltip": "Différence de température appliquée avant l'activation d'une buse. La température de préchauffage anticipé est calculée comme la température d'impression plus cette valeur."
+    },
     "preheat_time": {
       "label": "Temps de préchauffage",
       "tooltip": "Pour réduire le temps d'attente après le changement d'outil, Creality peut préchauffer l'outil suivant pendant que l'outil actuel est toujours utilisé. Ce paramètre spécifie le temps en secondes pour préchauffer l'outil suivant. Creality insérera une commande M104 pour préchauffer l'outil à l'avance."
@@ -1574,6 +1713,10 @@
       "label": "Largeur de la bordure",
       "tooltip": "Largeur du bord de la tour principale, nombre négatif signifie largeur calculée automatiquement en fonction de la hauteur dela tour principale."
     },
+    "prime_tower_corner_rib_length": {
+      "label": "Longueur de nervure de coin inférieur",
+      "tooltip": "Longueur du côté inférieur des nervures d'angle carrées de la tour de purge carrée. La nervure conserve sa longueur de contact avec la zone de nettoyage et se rétrécit vers l'extérieur jusqu'aux bords des blocs au sommet de la tour. Réglez-le sur 0 pour utiliser l’espacement des lignes de périmètre."
+    },
     "prime_tower_enable_framework": {
       "label": "Côtes internes",
       "tooltip": "Permettez aux nervures internes d'augmenter la stabilité de la tour principale."
@@ -1583,7 +1726,8 @@
       "tooltip": "Prime Tower amélioré",
       "enum_labels": [
         "Cône",
-        "Chanfrein"
+        "Chanfrein",
+        "nervure d'angle"
       ]
     },
     "prime_tower_position_type": {
@@ -1608,6 +1752,18 @@
     "prime_tower_skip_points": {
       "label": "Passer des points",
       "tooltip": "Le mur de la tour principale sautera les points de départ du chemin d'essuyement"
+    },
+    "prime_tower_start_ironing": {
+      "label": "Lissage de la zone initiale de la tour de purge",
+      "tooltip": "Le repassage de la zone de début de purge réduit le risque que la buse gratte la tour de purge lors de l'impression ultérieure.",
+      "enum_labels": [
+        "Désactivé",
+        "Repassage alternatif"
+      ]
+    },
+    "prime_tower_start_offset": {
+      "label": "Décalage de départ de la tour de purge",
+      "tooltip": "Déplace le début du chemin de purge de la tour de purge vers l'intérieur le long de la première ligne de purge. Cela maintient les blobs de démarrage à l’intérieur de la tour."
     },
     "prime_tower_width": {
       "label": "Largeur",
@@ -1888,6 +2044,10 @@
       "label": "Amorcer tous les extrudeurs d’impression",
       "tooltip": "Si cette option est activée, tous les extrudeurs d’impression seront amorcés sur le bord avant du plateau au début de l’impression."
     },
+    "skeleton_flush_slowdown_speed": {
+      "label": "Vitesse d’essuyage du squelette",
+      "tooltip": "Lorsque l'option \"Rincer dans le squelette des objets\" est activée, définissez la vitesse des chemins squelettes ralentis après un changement de matériau. Les valeurs en pourcentage sont calculées à partir de la vitesse que chaque chemin squelette utiliserait normalement."
+    },
     "skeleton_infill_density": {
       "label": "Densité de remplissage du squelette",
       "tooltip": "La partie restante du contour du modèle après avoir retiré une certaine profondeur de la surface est appelée le squelette. Ce paramètre permet d'ajuster la densité de cette section. Lorsque deux régions ont les mêmes paramètres de remplissage clairsemés mais des densités de squelette différentes, leurs zones de squelette développeront des sections qui se chevauchent. La valeur par défaut est la même que la densité de remplissage."
@@ -1895,6 +2055,10 @@
     "skeleton_infill_line_width": {
       "label": "Largeur de la ligne du squelette",
       "tooltip": "Ajustez la largeur de ligne des trajets du squelette sélectionnés."
+    },
+    "skeleton_wipe_line_width": {
+      "label": "Largeur de ligne d’essuyage du squelette",
+      "tooltip": "Ajustez la largeur des lignes de squelette utilisées pour l'essuyage à vitesse réduite après un changement de matière, en mode sans Tour de purge."
     },
     "skin_infill_density": {
       "label": "Densité de remplissage de la peau",
@@ -2055,7 +2219,8 @@
         "Croix-Zag",
         "verrouillé-zag",
         "Pein d'miel latéral",
-        "Réseau latéral"
+        "Réseau latéral",
+        "TPMS adaptatif"
       ]
     },
     "sparse_infill_speed": {
@@ -2151,6 +2316,10 @@
     "support_filament": {
       "label": "Support/base du radeau",
       "tooltip": "Filament pour imprimer les supports et radeaux. « Par défaut » signifie qu'aucun filament spécifique n'est utilisé comme support et que le filament actuel est utilisé"
+    },
+    "support_filament_nozzle_mapping": {
+      "label": "Prise en charge du mappage des buses de filament",
+      "tooltip": "Affiche les commandes de regroupement des filaments et des buses du projet pour cette imprimante."
     },
     "support_interface_bottom_layers": {
       "label": "Couches d'interface inférieures",
@@ -2287,6 +2456,10 @@
         "Z couvre X / y"
       ]
     },
+    "surface_coefficient": {
+      "label": "Coefficient de surface (bêta)",
+      "tooltip": "Contrôle la densité du remplissage par champ près des surfaces. Des valeurs plus élevées rendent le réseau proche des surfaces plus dense."
+    },
     "symmetric_infill_y_axis": {
       "label": "Axe de remplissage symétrique y",
       "tooltip": "Si le modèle comporte deux parties symétriques par rapport à l'axe y et que vous souhaitez que ces parties aient des textures symétriques, veuillez cliquer sur cette option sur l'une des parties."
@@ -2351,6 +2524,10 @@
       "label": "Chevauchement du remplissage ou de la paroi supérieur(e)/inférieur(e)",
       "tooltip": "La zone de remplissage supérieure solide est légèrement agrandie pour chevaucher le mur pour une meilleure liaison et pour minimiser l'apparence des trous d'épingle là où le remplissage supérieur rencontre les murs. Une valeur de 25 à 30 pour cent est un bon point de départ, minimisant l'apparence des trous d'épingle. La valeur en pourcentage est relative à la largeur de ligne du remplissage clairsemé."
     },
+    "top_fill_flush_layers": {
+      "label": "Couches supérieures avec purge avant le remplissage",
+      "tooltip": "Lorsque le rinçage dans le squelette des objets est activé, une purge sur la tour de purge est imposée dans les N couches supérieures de l’objet avant l’impression du remplissage ou du squelette, puis de la peau et des parois. Cela ne modifie pas le nombre de couches de la coque supérieure."
+    },
     "top_shell_layers": {
       "label": "Couches de coque supérieures",
       "full_label": "Couches solides supérieures",
@@ -2411,6 +2588,10 @@
     "tpms_start_infill_density": {
       "label": "Démarrer la densité de remplissage rare",
       "tooltip": "Démarrer la densité de remplissage rare dans la gamme (1-99)"
+    },
+    "transmittance_matrix": {
+      "label": "Matrice de peau de rinçage du squelette",
+      "tooltip": "Matrice d'épaisseur de peau utilisée uniquement lorsque le rinçage dans le squelette des objets est activé."
     },
     "travel_acceleration": {
       "label": "Déplacement",
@@ -2487,6 +2668,10 @@
     "tree_support_brim_width": {
       "label": "Largeur de bordure du support arborescent",
       "tooltip": "Distance entre la branche du support arborescent et la ligne la plus externe de la bordure"
+    },
+    "tree_support_organic_validate_repair": {
+      "label": "Validation et réparation des supports",
+      "tooltip": "Après la génération de la zone de support de base, validez la continuité des contours des supports arborescents organiques. Lorsque activé, des chemins de support supplémentaires sont utilisés pour réparer les segments de contour non supportés. Lorsque désactivé, les supports arborescents organiques sont générés en utilisant le processus de génération de chemin d'extrusion original."
     },
     "tree_support_tip_diameter": {
       "label": "Diamètre de la pointe",
@@ -2633,6 +2818,9 @@
       "label": "Compensation de trou X-Y",
       "tooltip": "Les trous de l'objet seront agrandis ou rétrécis dans le plan XY par la valeur configurée. Une valeur positive agrandit les trous. Une valeur négative rend les trous plus petits. Cette fonction est utilisée pour ajuster légèrement la taille lorsque l'objet a un problème d'assemblage"
     },
+    "xy_step_dist": {
+      "label": "Distance de pas XY"
+    },
     "z_direction_outwall_speed_continuous": {
       "label": "Vitesse de lissage de la paroi le long de Z (expérimental)",
       "tooltip": "Liser la vitesse de la paroi extérieure dans la direction z pour obtenir une meilleure qualité de surface. Letemps d'impression augmentera. Il ne fonctionne pas en mode vase en spirale."
@@ -2654,6 +2842,20 @@
     "z_offset": {
       "label": "Décalage Z",
       "tooltip": "Cette valeur sera ajoutée (ou soustraite) de toutes les coordonnées Z dans le G-code de sortie. Il est utilisé pour compenser une mauvaise position de la butée Z : par exemple, si votre zéro de butée laisse réellement la buse à 0,3 mm du plateau, réglez-le sur -0,3 (ou corrigez votre butée)."
+    },
+    "zaa_enabled": {
+      "label": "Activer l'anticrénelage de la couche Z",
+      "tooltip": "Envisagez d'activer l'anticrénelage de couche Z pour les modèles dotés de grandes surfaces légèrement inclinées afin de réduire les marches d'escalier visibles. Pour obtenir la meilleure finition de surface possible, envisagez d’utiliser un remplissage concentrique de la surface supérieure.\nLorsque cette option est activée, les trajectoires de surface supérieure et de mur éligibles ajustent leur hauteur Z pour suivre la surface du modèle. L'anticrénelage de couche Z s'exclut mutuellement avec Vase spirale, Couture en biseau et Sous-couche de couleurs mélangées. L'anticrénelage de la couche Z ne peut être activé en même temps que l’une de ces fonctionnalités. Les objets utilisant un Radeau ou un Lissage, ou contenant des pièces négatives, reviennent au découpage conventionnel du plan médian et affichent un avertissement. Lorsque cette fonctionnalité est activée, les commandes d'arc dans les chemins éligibles sont converties en mouvements linéaires G1."
+    },
+    "zaa_lock_top_surface_fill_direction": {
+      "label": "Verrouiller la direction de remplissage de la surface supérieure",
+      "tooltip": "Conserve la direction des motifs de remplissage de surface supérieure sans pont et basés sur des lignes (tels que Rectiligne et Monotone) inchangée entre les couches lorsque l'anticrénelage de couche Z est actif pour l'objet actuel. La direction du remplissage du pont et les autres types de remplissage ne sont pas affectés."
+    },
+    "zaa_slice_plane_offset": {
+      "label": "Décalage du plan de tranche ZAA"
+    },
+    "zaa_wall_lowering_min_slope": {
+      "label": "Pente minimale de surface pour abaissement de mur"
     }
   },
   "ui": {
@@ -2679,6 +2881,7 @@
     "Filament for Features": "Filament fonctionnel",
     "Filament start G-code": "G-code de démarrage du filament",
     "Flush options": "Options de purge",
+    "Fuzzy Skin": "Surface Irrégulière",
     "G-code output": "Sortie G-code",
     "Infill": "Remplissage",
     "Initial layer speed": "Vitesse de couche initiale",
@@ -2741,6 +2944,7 @@
     "Walls": "Parois",
     "Walls and surfaces": "Parois et surfaces",
     "Wipe tower": "Tour d’essuyage",
-    "Wipe tower parameters": "Paramètres de la tour d’essuyage"
+    "Wipe tower parameters": "Paramètres de la tour d’essuyage",
+    "Z contouring": "Contournage Z"
   }
 }

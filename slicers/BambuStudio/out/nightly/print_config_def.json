@@ -46,7 +46,61 @@
         "type": "bool",
         "label": "Alternate extra wall",
         "tooltip": "Add an extra wall on alternating layers to improve layer bonding and part strength without the full cost of a permanent extra wall.",
-        "mode": "simple",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "ams_filament_load_time_ams": {
+        "type": "float",
+        "label": "AMS filament load time",
+        "tooltip": "Filament load time when printing with an AMS. For statistics only",
+        "sidetext": "s",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "ams_filament_load_time_ams_lite": {
+        "type": "float",
+        "label": "AMS Lite filament load time",
+        "tooltip": "Filament load time when printing with an AMS Lite. For statistics only",
+        "sidetext": "s",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "ams_filament_load_time_n3f_s": {
+        "type": "float",
+        "label": "N3F\/N3S filament load time",
+        "tooltip": "Filament load time when printing with an N3F or N3S. For statistics only",
+        "sidetext": "s",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "ams_filament_unload_time_ams": {
+        "type": "float",
+        "label": "AMS filament unload time",
+        "tooltip": "Filament unload time when printing with an AMS. For statistics only",
+        "sidetext": "s",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "ams_filament_unload_time_ams_lite": {
+        "type": "float",
+        "label": "AMS Lite filament unload time",
+        "tooltip": "Filament unload time when printing with an AMS Lite. For statistics only",
+        "sidetext": "s",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "ams_filament_unload_time_n3f_s": {
+        "type": "float",
+        "label": "N3F\/N3S filament unload time",
+        "tooltip": "Filament unload time when printing with an N3F or N3S. For statistics only",
+        "sidetext": "s",
+        "min": "0",
+        "mode": "advanced",
         "default_value": "0"
     },
     "apply_scarf_seam_on_circles": {
@@ -93,6 +147,13 @@
         "gui_type": "one_string",
         "mode": "advanced",
         "default_value": "0x0"
+    },
+    "bed_heat_soak_area": {
+        "type": "points",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": ""
     },
     "bed_temperature_formula": {
         "type": "enum",
@@ -172,6 +233,7 @@
             "zig-zag",
             "monotonic",
             "monotonicline",
+            "globalmonotonicline",
             "alignedrectilinear",
             "hilbertcurve",
             "archimedeanchords",
@@ -182,6 +244,7 @@
             "Rectilinear",
             "Monotonic",
             "Monotonic line",
+            "Global monotonic line",
             "Aligned Rectilinear",
             "Hilbert Curve",
             "Archimedean Chords",
@@ -202,6 +265,10 @@
             },
             {
                 "icon_filename": "param_monotonicline.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8991_35043)\">\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M0.872559 0.918608L9.08702 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.872559 3.73519L6.27013 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.87207 6.43369L3.57086 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 6.19391L3.80848 0.796919\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 3.49542L6.50727 0.796921\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8991_35043\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_globalmonotonicline.svg",
                 "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8991_35043)\">\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M0.872559 0.918608L9.08702 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.872559 3.73519L6.27013 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.87207 6.43369L3.57086 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 6.19391L3.80848 0.796919\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 3.49542L6.50727 0.796921\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8991_35043\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
             },
             {
@@ -417,6 +484,86 @@
         "mode": "simple",
         "default_value": "80"
     },
+    "conformal_hub_radius": {
+        "type": "float",
+        "label": "Center region radius",
+        "tooltip": "Radius of the center region that uses ordinary rectilinear infill; outside this circle the infill stays radial. 0 chooses the radius automatically. A positive value is in millimeters.",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "200",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "conformal_infill": {
+        "type": "bool",
+        "label": "Conformal infill",
+        "tooltip": "Make sparse infill follow each layer's outline instead of using one set of parallel lines. On elongated or curved shapes, lines radiate from a center. Applies to Zig Zag, Cross Zag, Rectilinear, Aligned Rectilinear, and Locked Zag skin.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "conformal_link_flip_layers": {
+        "type": "int",
+        "label": "Reverse layers",
+        "full_label": "Conformal reverse layers",
+        "tooltip": "Number of consecutive layers that reverse the zigzag (start from the opposite rim). 0 disables reversing. Forward 1 and Reverse 1 reverses every other layer.",
+        "sidetext": "layers",
+        "min": "0",
+        "max": "1000",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "conformal_link_keep_layers": {
+        "type": "int",
+        "label": "Forward layers",
+        "full_label": "Conformal forward layers",
+        "tooltip": "Number of consecutive layers that keep the forward zigzag. Together with Reverse layers this repeats: N forward, then M reversed. 0 means reverse from the first layer.",
+        "sidetext": "layers",
+        "min": "0",
+        "max": "1000",
+        "mode": "advanced",
+        "default_value": "1"
+    },
+    "conformal_pole": {
+        "type": "enum",
+        "label": "Radial center",
+        "tooltip": "Where the radial center comes from. Each layer picks a center on that slice. Axis fits one 3D line through those centers. Smooth curve fits a curve so the center does not jump between layers.",
+        "enum_values": [
+            "layer",
+            "axis",
+            "bezier"
+        ],
+        "enum_labels": [
+            "Each layer",
+            "Axis",
+            "Smooth curve"
+        ],
+        "mode": "advanced",
+        "default_value": "layer"
+    },
+    "conformal_ray_count": {
+        "type": "int",
+        "label": "Radial line count",
+        "tooltip": "How many radial lines around the center. 0 uses the count from sparse infill density. A positive value is the radial line count, rounded up to an even number of at least 4.",
+        "min": "0",
+        "max": "1000",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "conformal_stagger": {
+        "type": "enum",
+        "label": "Layer stagger",
+        "tooltip": "How neighboring layers are offset. Off stacks the same layout. Alternate keeps the same line directions but connects each line to the neighboring one on the opposite side, which improves interlayer bonding.",
+        "enum_values": [
+            "none",
+            "alternate"
+        ],
+        "enum_labels": [
+            "Off",
+            "Alternate"
+        ],
+        "mode": "advanced",
+        "default_value": "none"
+    },
     "cool_plate_temp": {
         "type": "ints",
         "label": "Other layers",
@@ -555,6 +702,14 @@
         "min": "0",
         "mode": "advanced",
         "default_value": "500"
+    },
+    "default_ams_type": {
+        "type": "int",
+        "label": "Default AMS type",
+        "tooltip": "The default AMS type used to estimate filament load\/unload time, stored as the AMS timing type enum value. It comes from the printer preset and does not reflect the AMS currently attached to the machine.",
+        "gui_type": "i_enum_open",
+        "mode": "advanced",
+        "default_value": "-1"
     },
     "default_filament_colour": {
         "type": "strings",
@@ -703,7 +858,7 @@
         "type": "bool",
         "label": "Embedding the wall into the infill",
         "tooltip": "Embedding the wall into parts where the wall loops are absent ensures that the wall connects seamlessly to the infill.",
-        "mode": "simple",
+        "mode": "advanced",
         "default_value": "0"
     },
     "enable_arc_fitting": {
@@ -954,6 +1109,13 @@
         "mode": "simple",
         "default_value": ""
     },
+    "extruder_nozzle_stats_new": {
+        "type": "strings",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": ""
+    },
     "extruder_nozzle_volume_type": {
         "type": "enums",
         "label": "extruder nozzle volume type",
@@ -1076,7 +1238,7 @@
     "farthest_point_timelapse": {
         "type": "bool",
         "label": "Farthest point timelapse",
-        "tooltip": "When enabled, the timelapse snapshot is taken at the farthest point from camera instead of traveling to the wipe tower or excess chute. Only effective in traditional timelapse mode on non-I3 printers.",
+        "tooltip": "When enabled, the timelapse snapshot is taken at the farthest point from camera instead of traveling to the wipe tower or excess chute. Only effective in instant timelapse mode on non-I3 printers.",
         "mode": "simple",
         "default_value": "0"
     },
@@ -1283,7 +1445,7 @@
         "tooltip": "temperature when flushing filament. 0 indicates the upper bound of the recommended nozzle temperature range",
         "sidetext": "°C",
         "min": "0",
-        "max": "1500",
+        "max": "360",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -1293,7 +1455,7 @@
         "tooltip": "Flush temperature used in fast purge mode.",
         "sidetext": "°C",
         "min": "0",
-        "max": "1500",
+        "max": "360",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -1519,7 +1681,7 @@
         "type": "floats",
         "label": "100%",
         "full_label": "100%",
-        "tooltip": "Speed of 100%% overhang wall which has 0 overlap with the lower layer.",
+        "tooltip": "Speed of 100% overhang wall which has 0 overlap with the lower layer.",
         "sidetext": "mm\/s",
         "min": "0",
         "mode": "advanced",
@@ -2433,6 +2595,15 @@
         "mode": "develop",
         "default_value": "1"
     },
+    "initial_layer_infill_line_width": {
+        "type": "float",
+        "label": "Initial layer infill",
+        "tooltip": "Line width of the infill of initial layer, including sparse infill, solid infill and top surface. Walls, support and everything else of the initial layer are not affected and keep using the line width of initial layer. Zero means to use the line width of initial layer.",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "initial_layer_infill_speed": {
         "type": "floats",
         "label": "Initial layer infill",
@@ -2608,6 +2779,7 @@
             "zig-zag",
             "monotonic",
             "monotonicline",
+            "globalmonotonicline",
             "alignedrectilinear",
             "hilbertcurve",
             "archimedeanchords",
@@ -2618,6 +2790,7 @@
             "Rectilinear",
             "Monotonic",
             "Monotonic line",
+            "Global monotonic line",
             "Aligned Rectilinear",
             "Hilbert Curve",
             "Archimedean Chords",
@@ -2638,6 +2811,10 @@
             },
             {
                 "icon_filename": "param_monotonicline.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8991_35043)\">\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M0.872559 0.918608L9.08702 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.872559 3.73519L6.27013 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.87207 6.43369L3.57086 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 6.19391L3.80848 0.796919\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 3.49542L6.50727 0.796921\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8991_35043\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_globalmonotonicline.svg",
                 "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8991_35043)\">\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M0.872559 0.918608L9.08702 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.872559 3.73519L6.27013 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.87207 6.43369L3.57086 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 6.19391L3.80848 0.796919\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 3.49542L6.50727 0.796921\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8991_35043\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
             },
             {
@@ -2715,11 +2892,13 @@
         "tooltip": "",
         "enum_values": [
             "concentric",
-            "zig-zag"
+            "zig-zag",
+            "ironingarchimedeanspiral"
         ],
         "enum_labels": [
             "Concentric",
-            "Rectilinear"
+            "Rectilinear",
+            "Archimedean Chords"
         ],
         "enum_icons": [
             {
@@ -2729,6 +2908,10 @@
             {
                 "icon_filename": "param_zig-zag.svg",
                 "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8962_33369)\">\n<path d=\"M9.23437 3.88749L6.0555 0.708771\" stroke=\"#909090\" stroke-width=\"0.5\"\/>\n<path d=\"M3.92969 9.21854L0.750809 6.03983\" stroke=\"#909090\" stroke-width=\"0.5\"\/>\n<path d=\"M9.26807 6.39629L3.62372 0.752228\" stroke=\"#909090\" stroke-width=\"0.5\"\/>\n<path d=\"M6.39551 9.21855L0.75116 3.57449\" stroke=\"#909090\" stroke-width=\"0.5\"\/>\n<path d=\"M9.12012 9.07742L0.751035 0.70877\" stroke=\"#909090\" stroke-width=\"0.5\"\/>\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M3.93311 0.738602L0.754395 3.91748\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M9.26416 6.04335L6.08545 9.22223\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M6.44191 0.705093L0.797852 6.34944\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M9.26417 3.57788L3.62012 9.22223\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M9.12305 0.853149L0.754395 9.22223\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8962_33369\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_ironingarchimedeanspiral.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8986_34986)\">\n<rect x=\"0.906738\" y=\"0.75\" width=\"8.18652\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M 8.4438 9.1539 H 8.7012 C 8.9773 9.1539 9.2012 8.93 9.2012 8.6539 V 7.7713 C 9.0119 8.272 8.7555 8.7368 8.4438 9.1539 Z M 9.2012 3.8288 C 8.5065 2.1598 6.93 1.034 5.083 1.017 C 2.782 1.027 1.06 2.838 1.055 4.949 C 1.093 7.012 2.315 8.449 4.443 8.472 C 6.229 8.469 7.388 7.067 7.388 5.597 C 7.375 4.094 6.057 3.257 5.137 3.255 C 4.05 3.261 3.288 3.912 3.282 4.997 C 3.286 5.783 3.937 6.291 4.447 6.291 C 5.047 6.277 5.255 5.872 5.259 5.666 C 5.261 5.432 5.065 5.307 4.866 5.481 C 4.53 5.663 4.244 5.057 4.942 4.827 C 5.359 4.73 5.766 5.095 5.77 5.568 C 5.759 6.389 5.152 6.798 4.434 6.814 C 3.429 6.803 2.728 5.942 2.732 4.984 C 2.737 3.612 3.784 2.734 5.14 2.73 C 6.549 2.743 7.93 3.946 7.939 5.584 C 7.922 7.596 6.442 9.017 4.474 9.021 C 2.65 8.999 1.659 8.176 0.848 6.941 C 0.842 6.291 0.848 5.943 0.841 4.933 C 0.842 4.454 0.837 3.979 0.842 3.234 C 1.231 2.331 2.398 0.508 5.0796 0.5 C 6.7957 0.5 8.303 1.4002 9.2012 2.7677 V 3.8288 Z\" fill=\"#262E30\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8986_34986\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
             }
         ],
         "mode": "advanced",
@@ -3414,6 +3597,14 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "modifier_ignore_infill": {
+        "type": "bool",
+        "label": "Ignore infill settings",
+        "full_label": "Modifier ignore infill settings",
+        "tooltip": "Do not apply this modifier's infill settings (pattern, density, conformal infill, and related options). Walls and other overrides still apply. Infill is taken from the parent region.",
+        "mode": "simple",
+        "default_value": "0"
+    },
     "monotonic_travel_into_wall": {
         "type": "percent",
         "label": "Monotonic line travel extend",
@@ -3463,7 +3654,7 @@
         "tooltip": "Nozzle temperature for layers after the initial one",
         "sidetext": "°C",
         "min": "0",
-        "max": "1500",
+        "max": "360",
         "mode": "simple",
         "default_value": "200"
     },
@@ -3474,7 +3665,7 @@
         "tooltip": "Nozzle temperature to print initial layer when using this filament",
         "sidetext": "°C",
         "min": "0",
-        "max": "1500",
+        "max": "360",
         "mode": "simple",
         "default_value": "200"
     },
@@ -3484,7 +3675,7 @@
         "tooltip": "",
         "sidetext": "°C",
         "min": "0",
-        "max": "1500",
+        "max": "360",
         "mode": "simple",
         "default_value": "240"
     },
@@ -3494,29 +3685,9 @@
         "tooltip": "",
         "sidetext": "°C",
         "min": "0",
-        "max": "1500",
+        "max": "360",
         "mode": "simple",
         "default_value": "190"
-    },
-    "nozzle_type": {
-        "type": "enums",
-        "label": "Nozzle type",
-        "tooltip": "The metallic material of nozzle. This determines the abrasive resistance of nozzle, and what kind of filament can be printed",
-        "enum_values": [
-            "undefine",
-            "hardened_steel",
-            "stainless_steel",
-            "tungsten_carbide",
-            "brass"
-        ],
-        "enum_labels": [
-            "Undefine",
-            "Hardened steel",
-            "Stainless steel",
-            "Tungsten carbide",
-            "Brass"
-        ],
-        "mode": "develop"
     },
     "nozzle_volume": {
         "type": "floats",
@@ -3729,7 +3900,7 @@
         "type": "floats",
         "label": "100%",
         "full_label": "100%",
-        "tooltip": "Speed of 100%% overhang wall which has 0 overlap with the lower layer.",
+        "tooltip": "Speed of 100% overhang wall which has 0 overlap with the lower layer.",
         "sidetext": "mm\/s",
         "min": "0",
         "mode": "advanced",
@@ -3748,6 +3919,35 @@
         "tooltip": "Override the overhang speed in process page",
         "mode": "advanced",
         "default_value": "0"
+    },
+    "periodic_modifier": {
+        "type": "bool",
+        "label": "Periodic modifier",
+        "tooltip": "Apply this modifier on a repeating layer cycle. On skipped layers it is ignored, as if this modifier were not there.",
+        "mode": "simple",
+        "default_value": "0"
+    },
+    "periodic_modifier_apply_layers": {
+        "type": "int",
+        "label": "Apply for",
+        "full_label": "Periodic modifier apply layers",
+        "tooltip": "Number of consecutive layers in each cycle on which this modifier is fully applied. The cycle starts at layer 0: first Apply for, then Skip for.",
+        "sidetext": "layers",
+        "min": "1",
+        "max": "1000",
+        "mode": "simple",
+        "default_value": "1"
+    },
+    "periodic_modifier_skip_layers": {
+        "type": "int",
+        "label": "Skip for",
+        "full_label": "Periodic modifier skip layers",
+        "tooltip": "Number of consecutive layers on which this modifier is not applied. 0 means the modifier is applied on every layer.",
+        "sidetext": "layers",
+        "min": "0",
+        "max": "1000",
+        "mode": "simple",
+        "default_value": "1"
     },
     "physical_extruder_map": {
         "type": "ints",
@@ -3888,7 +4088,7 @@
         "type": "bool",
         "label": "Rib wall",
         "tooltip": "The wall of prime tower will add four ribs and make its cross-section as close to a square as possible, so the width will be fixed.",
-        "mode": "simple",
+        "mode": "advanced",
         "default_value": "1"
     },
     "prime_tower_rib_width": {
@@ -5030,8 +5230,8 @@
         "label": "Temperature variation",
         "tooltip": "",
         "sidetext": "∆°C",
-        "min": "-1500",
-        "max": "1500",
+        "min": "-360",
+        "max": "360",
         "mode": "develop",
         "default_value": "-5"
     },
@@ -5042,6 +5242,73 @@
         "readonly": "true",
         "mode": "develop",
         "default_value": "30x-3,54x245"
+    },
+    "sub_top_surface_pattern": {
+        "type": "enum",
+        "label": "Sub-top surface pattern",
+        "tooltip": "Line pattern of the solid layer that supports a visible top surface. Its lines can print through and mark the top, so a monotonic pattern gives the smoothest result. The whole solid area that a top surface reaches uses this pattern, not only the part directly beneath it.",
+        "enum_values": [
+            "concentric",
+            "zig-zag",
+            "monotonic",
+            "monotonicline",
+            "globalmonotonicline",
+            "alignedrectilinear",
+            "hilbertcurve",
+            "archimedeanchords",
+            "octagramspiral"
+        ],
+        "enum_labels": [
+            "Concentric",
+            "Rectilinear",
+            "Monotonic",
+            "Monotonic line",
+            "Global monotonic line",
+            "Aligned Rectilinear",
+            "Hilbert Curve",
+            "Archimedean Chords",
+            "Octagram Spiral"
+        ],
+        "enum_icons": [
+            {
+                "icon_filename": "param_concentric.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8962_33364)\">\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<rect x=\"2.10107\" y=\"2.10107\" width=\"5.79785\" height=\"5.79785\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<rect x=\"3.57422\" y=\"3.57446\" width=\"2.85107\" height=\"2.85107\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8962_33364\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_zig-zag.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8962_33369)\">\n<path d=\"M9.23437 3.88749L6.0555 0.708771\" stroke=\"#909090\" stroke-width=\"0.5\"\/>\n<path d=\"M3.92969 9.21854L0.750809 6.03983\" stroke=\"#909090\" stroke-width=\"0.5\"\/>\n<path d=\"M9.26807 6.39629L3.62372 0.752228\" stroke=\"#909090\" stroke-width=\"0.5\"\/>\n<path d=\"M6.39551 9.21855L0.75116 3.57449\" stroke=\"#909090\" stroke-width=\"0.5\"\/>\n<path d=\"M9.12012 9.07742L0.751035 0.70877\" stroke=\"#909090\" stroke-width=\"0.5\"\/>\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M3.93311 0.738602L0.754395 3.91748\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M9.26416 6.04335L6.08545 9.22223\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M6.44191 0.705093L0.797852 6.34944\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M9.26417 3.57788L3.62012 9.22223\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M9.12305 0.853149L0.754395 9.22223\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8962_33369\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_monotonic.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_9014_35114)\">\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M0.872559 0.918608L9.08702 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.872559 3.73519L6.27013 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.87207 6.43369L3.57086 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M1.22949 8.63704L1.22949 6.94164\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\/>\n<path d=\"M8.75781 2.99386L8.75781 1.29847\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\/>\n<path d=\"M8.75781 8.63063L8.75781 5.91498\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\/>\n<path d=\"M1.22949 3.90187L1.22949 1.43156\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\/>\n<path d=\"M3.3291 8.76787H5.76221\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\/>\n<path d=\"M4.38428 1.22756L6.81738 1.22756\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\/>\n<path d=\"M9.20605 6.19391L3.80848 0.796919\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 3.49542L6.50727 0.79692\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_9014_35114\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_monotonicline.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8991_35043)\">\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M0.872559 0.918608L9.08702 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.872559 3.73519L6.27013 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.87207 6.43369L3.57086 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 6.19391L3.80848 0.796919\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 3.49542L6.50727 0.796921\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8991_35043\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_globalmonotonicline.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8991_35043)\">\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M0.872559 0.918608L9.08702 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.872559 3.73519L6.27013 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.87207 6.43369L3.57086 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 6.19391L3.80848 0.796919\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 3.49542L6.50727 0.796921\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8991_35043\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_alignedrectilinear.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8962_33656)\">\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M0.759277 7.5434L2.45215 9.23609\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M7.37939 0.805344L9.07227 2.49803\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.872559 4.27128L5.73399 9.13219\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M4.33887 0.805344L9.2003 5.66625\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.872559 0.805344L9.2003 9.13219\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8962_33656\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_hilbertcurve.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8986_35001)\">\n<rect x=\"0.906738\" y=\"0.75\" width=\"8.18652\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M4.5593 9.0991L4.88645 8.77173L3.67755 7.56283L2.46865 8.77173L1.25975 7.56283L2.46865 6.35393L1.25975 5.14503L1.0459 5.35888\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\/>\n<path d=\"M9.09251 3.07954L8.72727 2.71445L7.40518 4.03655L8.61429 5.24566L6.1461 7.71384L4.8491 6.41684L6.1461 5.11984L4.96227 3.93601L3.77845 5.11984L2.48142 3.82281L4.96227 1.34196L6.33477 2.71445L7.53133 1.51788L6.8388 0.825348M1.91485 0.825348L2.48142 1.39192L3.04799 0.825348M0.907227 2.12245L1.36058 2.5758L0.907227 3.02916\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\/>\n<path d=\"M7.65723 9.17465L7.33008 8.84731L8.9294 7.24799\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8986_35001\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_archimedeanchords.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8986_34986)\">\n<rect x=\"0.906738\" y=\"0.75\" width=\"8.18652\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M 8.4438 9.1539 H 8.7012 C 8.9773 9.1539 9.2012 8.93 9.2012 8.6539 V 7.7713 C 9.0119 8.272 8.7555 8.7368 8.4438 9.1539 Z M 9.2012 3.8288 C 8.5065 2.1598 6.93 1.034 5.083 1.017 C 2.782 1.027 1.06 2.838 1.055 4.949 C 1.093 7.012 2.315 8.449 4.443 8.472 C 6.229 8.469 7.388 7.067 7.388 5.597 C 7.375 4.094 6.057 3.257 5.137 3.255 C 4.05 3.261 3.288 3.912 3.282 4.997 C 3.286 5.783 3.937 6.291 4.447 6.291 C 5.047 6.277 5.255 5.872 5.259 5.666 C 5.261 5.432 5.065 5.307 4.866 5.481 C 4.53 5.663 4.244 5.057 4.942 4.827 C 5.359 4.73 5.766 5.095 5.77 5.568 C 5.759 6.389 5.152 6.798 4.434 6.814 C 3.429 6.803 2.728 5.942 2.732 4.984 C 2.737 3.612 3.784 2.734 5.14 2.73 C 6.549 2.743 7.93 3.946 7.939 5.584 C 7.922 7.596 6.442 9.017 4.474 9.021 C 2.65 8.999 1.659 8.176 0.848 6.941 C 0.842 6.291 0.848 5.943 0.841 4.933 C 0.842 4.454 0.837 3.979 0.842 3.234 C 1.231 2.331 2.398 0.508 5.0796 0.5 C 6.7957 0.5 8.303 1.4002 9.2012 2.7677 V 3.8288 Z\" fill=\"#262E30\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8986_34986\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_octagramspiral.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8988_35027)\">\n<rect x=\"0.906738\" y=\"0.75\" width=\"8.18652\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M4.9637 5.02569L3.88802 3.94978H2.35885L3.43476 5.02569L2.47619 5.98426H3.88802V7.61449L4.9637 6.5388L5.95471 7.52982V6.22301H7.55276L6.42825 5.0985L7.57696 3.94978H6.08038V2.51779L4.9637 3.63447L2.8603 1.53108V2.84139H1.03223V3.94978L2.03942 4.95697L1.12934 5.86705V7.11291H2.73116V9.08687H3.76668L4.77793 8.07562L5.78917 9.08687H6.98649V7.27471H8.94427V5.98426L7.91699 4.95697L8.92418 3.94978V3.05173H7.18065V0.786538H6.33929L5.1177 2.00813L3.88802 0.778439\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\/>\n<path d=\"M1.93858 0.818897V1.7088H1M1 8.09989H1.71182V9.07069M8.05437 9.07069V8.37495H8.94427M8.94427 1.96768H8.31325V0.818897\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8988_35027\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            }
+        ],
+        "mode": "advanced",
+        "default_value": "monotonic"
     },
     "supertack_plate_temp": {
         "type": "ints",
@@ -5581,13 +5848,13 @@
     "timelapse_type": {
         "type": "enum",
         "label": "Timelapse",
-        "tooltip": "If smooth or traditional mode is selected, a timelapse video will be generated for each print. After each layer is printed, a snapshot is taken with the chamber camera. All of these snapshots are composed into a timelapse video when printing completes. If smooth mode is selected, the toolhead will move to the excess chute after each layer is printed and then take a snapshot. Since the melt filament may leak from the nozzle during the process of taking a snapshot, prime tower is required for smooth mode to wipe nozzle.",
+        "tooltip": "If smooth or instant mode is selected, a timelapse video will be generated for each print. After each layer is printed, a snapshot is taken with the chamber camera. All of these snapshots are composed into a timelapse video when printing completes. If smooth mode is selected, the toolhead will move to the excess chute after each layer is printed and then take a snapshot. Since the melt filament may leak from the nozzle during the process of taking a snapshot, prime tower is required for smooth mode to wipe nozzle.",
         "enum_values": [
             "0",
             "1"
         ],
         "enum_labels": [
-            "Traditional",
+            "Instant",
             "Smooth"
         ],
         "mode": "simple",
@@ -5703,6 +5970,7 @@
             "zig-zag",
             "monotonic",
             "monotonicline",
+            "globalmonotonicline",
             "alignedrectilinear",
             "hilbertcurve",
             "archimedeanchords",
@@ -5713,6 +5981,7 @@
             "Rectilinear",
             "Monotonic",
             "Monotonic line",
+            "Global monotonic line",
             "Aligned Rectilinear",
             "Hilbert Curve",
             "Archimedean Chords",
@@ -5733,6 +6002,10 @@
             },
             {
                 "icon_filename": "param_monotonicline.svg",
+                "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8991_35043)\">\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M0.872559 0.918608L9.08702 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.872559 3.73519L6.27013 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.87207 6.43369L3.57086 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 6.19391L3.80848 0.796919\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 3.49542L6.50727 0.796921\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8991_35043\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
+            },
+            {
+                "icon_filename": "param_globalmonotonicline.svg",
                 "icon_svg_data": "<svg width=\"10\" height=\"10\" viewBox=\"0 0 10 10\" fill=\"none\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n<g clip-path=\"url(#clip0_8991_35043)\">\n<rect x=\"0.75\" y=\"0.75\" width=\"8.5\" height=\"8.5\" rx=\"0.25\" stroke=\"#262E30\" stroke-width=\"0.5\"\/>\n<path d=\"M0.872559 0.918608L9.08702 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.872559 3.73519L6.27013 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M0.87207 6.43369L3.57086 9.13218\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 6.19391L3.80848 0.796919\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<path d=\"M9.20605 3.49542L6.50727 0.796921\" stroke=\"#262E30\" stroke-width=\"0.5\" stroke-linecap=\"round\"\/>\n<\/g>\n<defs>\n<clipPath id=\"clip0_8991_35043\">\n<rect width=\"10\" height=\"10\" fill=\"white\"\/>\n<\/clipPath>\n<\/defs>\n<\/svg>\n"
             },
             {
@@ -6015,8 +6288,8 @@
     },
     "wipe_tower_no_sparse_layers": {
         "type": "bool",
-        "label": "",
-        "tooltip": "",
+        "label": "No sparse layers (experimental)",
+        "tooltip": "If enabled, the wipe tower will not be printed on layers with no toolchanges. On layers with a toolchange, extruder will travel downward to print the wipe tower. User is responsible for ensuring there is no collision with the print.",
         "mode": "develop",
         "default_value": "0"
     },

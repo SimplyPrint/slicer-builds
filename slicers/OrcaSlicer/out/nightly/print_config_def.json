@@ -9,7 +9,7 @@
     "accel_to_decel_factor": {
         "type": "percent",
         "label": "accel_to_decel",
-        "tooltip": "Klipper's max_accel_to_decel will be adjusted to this %% of acceleration.",
+        "tooltip": "Klipper's max_accel_to_decel will be adjusted to this % of acceleration.",
         "sidetext": "%",
         "min": "1",
         "max": "100",
@@ -54,6 +54,60 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "adaptive_infill_gradient": {
+        "type": "enum",
+        "label": "Adaptive gradient",
+        "tooltip": "How the density changes from the surface to the center of the object.\nLinear: the density changes at a constant rate.\nQuadratic: the density stays close to the sparse infill density near the surface and changes faster towards the center.\nExponential: the density changes quickly just below the surface and levels off towards the center.",
+        "enum_values": [
+            "linear",
+            "quadratic",
+            "exponential"
+        ],
+        "enum_labels": [
+            "Linear",
+            "Quadratic",
+            "Exponential"
+        ],
+        "mode": "advanced",
+        "default_value": "linear"
+    },
+    "adaptive_infill_interior_density": {
+        "type": "percent",
+        "label": "Interior density",
+        "tooltip": "Density of the adaptive infill at the center of the object.",
+        "sidetext": "%",
+        "min": "1",
+        "max": "100",
+        "mode": "advanced",
+        "default_value": "5%"
+    },
+    "adaptive_infill_mode": {
+        "type": "enum",
+        "label": "Adaptive density (experimental)",
+        "tooltip": "Grades the Gyroid and TPMS infill inside the object: its cells grow from the surface of the object towards its center. The sparse infill density is used at the surface and the interior density at the center.\nDistance warp, Smooth blend and Stepped shells follow the distance to the nearest surface, including the top and bottom, with the interior density at the point farthest from it:\n - Distance warp: one continuous pattern, stretched and sheared where the distance changes across directions, as in plates and long parts.\n - Smooth blend: the patterns of neighbouring densities blended into each other, with small loops where they meet.\n - Stepped shells: shells of the regular pattern at densities about 1.5 times apart, their lines joined along the shell boundaries.\n - Lobes: follows the 3D shape of the object, including its top and bottom. Every lobe, a part joined to the rest by a narrower neck, is graded towards its own center.\n - Normal Z, Y or X: follows the sections of the object normal to that axis, so the density does not change along it.",
+        "enum_values": [
+            "disabled",
+            "distance_warp",
+            "smooth_blend",
+            "stepped_shells",
+            "lobes",
+            "normal_z",
+            "normal_y",
+            "normal_x"
+        ],
+        "enum_labels": [
+            "Disabled",
+            "Distance warp",
+            "Smooth blend",
+            "Stepped shells",
+            "Lobes",
+            "Normal Z",
+            "Normal Y",
+            "Normal X"
+        ],
+        "mode": "advanced",
+        "default_value": "disabled"
+    },
     "adaptive_pressure_advance": {
         "type": "bools",
         "label": "Enable adaptive pressure advance (beta)",
@@ -63,8 +117,8 @@
     },
     "adaptive_pressure_advance_bridges": {
         "type": "floats",
-        "label": "Pressure advance for bridges",
-        "tooltip": "Pressure advance value for bridges. Set to 0 to disable.\n\nA lower PA value when printing bridges helps reduce the appearance of slight under extrusion immediately after bridges. This is caused by the pressure drop in the nozzle when printing in the air and a lower PA helps counteract this.",
+        "label": "Static pressure advance for bridges",
+        "tooltip": "Static pressure advance value for bridges. Set to 0 to apply the same pressure advance as \nequivalent walls (using adaptive settings if enabled).\n\nA lower PA value when printing bridges helps reduce the appearance of slight under-extrusion immediately after bridges. This is caused by the pressure drop in the nozzle when printing in the air and a lower PA helps counteract this.",
         "max": "2",
         "mode": "advanced",
         "default_value": "0"
@@ -81,8 +135,8 @@
     },
     "adaptive_pressure_advance_overhangs": {
         "type": "bools",
-        "label": "Enable adaptive pressure advance for overhangs (beta)",
-        "tooltip": "Enable adaptive PA for overhangs as well as when flow changes within the same feature. This is an experimental option, as if the PA profile is not set accurately, it will cause uniformity issues on the external surfaces before and after overhangs.\nNot compatible with Prusa printers as they pause to process PA changes, which causes delays and defects.",
+        "label": "Enable adaptive pressure advance within features (beta)",
+        "tooltip": "Enable adaptive PA whenever there are flow changes in a feature, such as line width changes in a corner or overhangs.\n\nNot compatible with Prusa printers as they pause to process PA changes, which causes delays and defects.\n\nThis is an experimental option, as if the PA profile is not set accurately, it will cause uniformity issues.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -107,8 +161,8 @@
     },
     "align_infill_direction_to_model": {
         "type": "bool",
-        "label": "Align infill direction to model",
-        "tooltip": "Aligns infill, bridge, ironing and surface fill directions to follow the model's orientation on the build plate.\nWhen enabled, directions rotate with the model to maintain optimal strength characteristics.",
+        "label": "Align directions to model",
+        "tooltip": "Aligns infill, bridge, ironing, and top\/bottom surface directions to follow the model's orientation on the build plate.\nWhen enabled, these directions rotate together with the model so the printed features keep their intended orientation relative to the part, preserving optimal strength and surface characteristics regardless of how the model is placed.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -160,10 +214,35 @@
     "bed_exclude_area": {
         "type": "points",
         "label": "Excluded bed area",
-        "tooltip": "Unprintable area in XY plane. For example, X1 Series printers use the front left corner to cut filament during filament change. The area is expressed as polygon by points in following format: \"XxY, XxY, ...\"",
+        "tooltip": "Unprintable area in XY plane. For example, X1 Series printers use the front left corner to cut filament during filament change. The area is expressed as a polygon in the format \"XxY, XxY, ...\". It constrains material and model placement, but allows machine travel. Configure toolhead collision volumes separately for G-code checking and travel avoidance.",
         "gui_type": "one_string",
         "mode": "advanced",
         "default_value": "0x0"
+    },
+    "bed_exclude_volume_mode": {
+        "type": "enum",
+        "label": "Collision volume behavior",
+        "tooltip": "Choose whether all nozzles use the same collision volumes, derive toolhead-relative volumes from each nozzle's XY offset, or configure independent volumes for every extruder. In individual mode, select each extruder on the Extruder page to configure its volumes.",
+        "enum_values": [
+            "shared",
+            "toolhead_offset",
+            "per_extruder"
+        ],
+        "enum_labels": [
+            "Shared by all nozzles",
+            "Toolhead-relative (nozzle offsets)",
+            "Individual per extruder"
+        ],
+        "mode": "advanced",
+        "default_value": "shared"
+    },
+    "bed_exclude_volumes": {
+        "type": "string",
+        "label": "Toolhead collision volumes",
+        "tooltip": "Collision volumes used for model and generated-material exclusion, G-code checking, and travel avoidance. Use \"XxY, XxY, ...\" for a full-height polygon or \"ZMIN..ZMAX;XxY, XxY, ...\" for a Z-limited volume. Separate multiple volumes with \"|\". These volumes are additional to the excluded bed area. Automatic arrangement conservatively uses the bounding box of a non-convex volume.",
+        "gui_type": "one_string",
+        "mode": "advanced",
+        "default_value": ""
     },
     "bed_mesh_max": {
         "type": "point",
@@ -215,12 +294,117 @@
         "mode": "advanced",
         "default_value": ""
     },
+    "belt_frame_tilt_angle": {
+        "type": "float",
+        "label": "Machine-frame tilt angle",
+        "tooltip": "Tilt angle (degrees) used to derive the machine-frame shear (cot) and scale (1\/|sin|) applied to G-code. Only used when 'Decouple machine-frame tilt' is enabled; otherwise the belt tilt angle is used.",
+        "sidetext": "°",
+        "min": "-89.9000015",
+        "max": "89.9000015",
+        "mode": "",
+        "default_value": "45"
+    },
+    "belt_frame_tilt_decouple": {
+        "type": "bool",
+        "label": "Decouple machine-frame tilt",
+        "tooltip": "Expert override: set the machine-frame (G-code shear\/scale) tilt angle independently of the pre-slice rotation angle. When disabled, the machine-frame transform is derived from the belt tilt angle, so a single angle drives both stages. Enable only to compensate for a machine whose physical gantry tilt differs from the slicing rotation.",
+        "mode": "",
+        "default_value": "0"
+    },
+    "belt_printer": {
+        "type": "bool",
+        "label": "Enable belt printing",
+        "tooltip": "Enable belt printer mode. Belt printers use a conveyor belt as the build surface, tilted at an angle (typically 45 degrees). The slicer will rotate the slicing plane and transform G-code coordinates for the tilted build surface.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "belt_printer_infinite_y": {
+        "type": "bool",
+        "label": "Infinite Y axis",
+        "tooltip": "Enable infinite Y axis for belt printers. When enabled, the Y axis build volume limit is effectively removed, allowing objects of any length to be printed along the belt direction.",
+        "mode": "advanced",
+        "default_value": "1"
+    },
+    "belt_purge_tower_object": {
+        "type": "bool",
+        "label": "Belt purge tower object",
+        "tooltip": "Marks the auto-generated belt purge prism. Managed automatically; do not set manually.",
+        "mode": "develop",
+        "default_value": "0"
+    },
+    "belt_purge_tower_width": {
+        "type": "float",
+        "label": "Belt purge tower width",
+        "tooltip": "Width (machine X, across the belt) of the purge prism that is automatically generated on belt printers when the belt purge tower is enabled and multiple filaments are used. Filament-change purging is routed into this prism's extrusions instead of a classic wipe tower. Its height is computed automatically from the worst-case purge volume per layer: a wider prism results in a shorter one.",
+        "sidetext": "mm",
+        "min": "1",
+        "mode": "advanced",
+        "default_value": "35"
+    },
+    "belt_slice_rotation": {
+        "type": "enum",
+        "label": "Belt tilt axis",
+        "tooltip": "Axis the mesh is rotated about before slicing. This is the belt printer's tilt: an isometric (no distortion) rotation that also drives bed rendering and support gravity tilt, and that the G-code back-transform inverts before the machine-frame shear\/scale and remap. X is the typical gantry tilt (belt travels along Y).",
+        "enum_values": [
+            "none",
+            "x",
+            "y",
+            "z"
+        ],
+        "enum_labels": [
+            "None",
+            "X",
+            "Y",
+            "Z"
+        ],
+        "mode": "develop",
+        "default_value": "x"
+    },
+    "belt_slice_rotation_angle": {
+        "type": "float",
+        "label": "Belt tilt angle",
+        "tooltip": "Tilt angle of the belt surface, in degrees. Most belt printers use 45°. Positive values rotate counter-clockwise looking down the positive tilt axis; the magnitude is also the physical belt tilt used for bed rendering and support gravity.",
+        "sidetext": "°",
+        "min": "-180",
+        "max": "180",
+        "mode": "advanced",
+        "default_value": "45"
+    },
+    "belt_support_floor_offset": {
+        "type": "float",
+        "label": "Support Floor Z offset",
+        "tooltip": "Shifts the computed belt floor up or down (mm). Negative values lower the floor, allowing more supports to survive. Use this to diagnose belt floor formula issues.",
+        "sidetext": "mm",
+        "min": "-500",
+        "max": "500",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "best_object_pos": {
         "type": "point",
         "label": "Best object position",
         "tooltip": "Best auto arranging position in range [0,1] w.r.t. bed shape.",
         "mode": "advanced",
         "default_value": "0.5,0.5"
+    },
+    "bottom_color_penetration_layers": {
+        "type": "int",
+        "label": "Bottom paint penetration layers",
+        "tooltip": "The number of layers, including the bottom surface layer, that take the color painted on a bottom surface. Set to 0 to use the bottom shell layers. A value larger than the bottom shell also colors the sparse infill above the painted area.",
+        "sidetext": "layers",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "bottom_layer_direction": {
+        "type": "float",
+        "label": "Bottom layer direction",
+        "tooltip": "Fixed angle for the bottom solid infill lines.\nSet to -1 to follow the default solid infill direction.",
+        "sidetext": "°",
+        "min": "-1",
+        "max": "360",
+        "mode": "simple",
+        "default_value": "-1"
     },
     "bottom_shell_layers": {
         "type": "int",
@@ -270,6 +454,23 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "bottom_surface_fill_order": {
+        "type": "enum",
+        "label": "Bottom surface fill order",
+        "tooltip": "Direction in which bottom surfaces are filled when using a center-based pattern (Concentric, Spiral Inset, Archimedean Chords, Octagram Spiral).\nInward starts each surface with the wider outer curves, which improves first layer adhesion on build plates where the tight curves at the center may not stick. Outward starts at the center, pushing any excess material towards the edge.\nDefault uses shortest-path ordering, which may run in either direction.",
+        "enum_values": [
+            "default",
+            "outward",
+            "inward"
+        ],
+        "enum_labels": [
+            "Default",
+            "Outward",
+            "Inward"
+        ],
+        "mode": "advanced",
+        "default_value": "default"
+    },
     "bottom_surface_pattern": {
         "type": "enum",
         "label": "Bottom surface pattern",
@@ -280,6 +481,7 @@
             "rectilinear",
             "alignedrectilinear",
             "concentric",
+            "spiralinset",
             "hilbertcurve",
             "archimedeanchords",
             "octagramspiral"
@@ -290,6 +492,7 @@
             "Rectilinear",
             "Aligned Rectilinear",
             "Concentric",
+            "Spiral Inset",
             "Hilbert Curve",
             "Archimedean Chords",
             "Octagram Spiral"
@@ -316,6 +519,10 @@
                 "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M19.5,22.459a7.562,7.562,0,0,0-.075-1l.007,0c-.012-.084-.03-.167-.044-.251s-.027-.164-.044-.245c-.033-.163-.074-.324-.118-.485-.015-.052-.025-.1-.041-.156-.062-.208-.135-.414-.216-.617-.026-.064-.056-.126-.083-.189-.062-.142-.126-.284-.2-.423-.037-.074-.078-.147-.119-.22-.07-.128-.145-.253-.223-.377-.046-.072-.091-.143-.14-.213-.088-.129-.182-.254-.279-.378-.046-.059-.089-.119-.137-.176-.148-.178-.3-.353-.472-.52s-.333-.312-.506-.455c-.047-.039-.094-.077-.142-.114q-.225-.178-.461-.338l-.086-.059c-.183-.119-.37-.227-.56-.329-.051-.027-.1-.052-.154-.077-.155-.079-.313-.151-.472-.218-.047-.019-.093-.041-.141-.059-.2-.078-.395-.146-.6-.207l-.148-.04c-.092-.025-.183-.053-.275-.075A8.562,8.562,0,0,0,12.4,13.47a8.741,8.741,0,0,0-3.1-1.955.239.239,0,0,0-.284.352A5.061,5.061,0,0,1,9.8,15.376c-.18.056-.358.121-.535.191l-.143.059c-.2.081-.387.168-.575.267-.022.011-.043.024-.065.036-.176.094-.35.2-.52.307-.037.023-.074.046-.11.07-.179.119-.353.248-.524.384l-.105.087c-.175.146-.347.3-.512.461s-.315.333-.46.506c-.043.052-.085.105-.126.157q-.158.2-.3.4c-.036.052-.074.1-.108.156-.113.174-.221.35-.319.53h0a7.469,7.469,0,0,0-.9,3.51\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M12.52,19.027c.154-.486,1.165-.669,2.259-.408s1.855.867,1.7,1.354-1.165.669-2.259.408S12.366,19.514,12.52,19.027Z\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M16.117,1.5A20.427,20.427,0,0,1,20.81,4.912q.213.21.422.428c.475.254.876.492,1.268.74m0,3.7-.021-.017-.241-.194c-.337-.265-.679-.515-.944-.692l-.26-.176c-.409-.266-.828-.511-1.309-.765l-.332-.17c-.222-.245-.452-.484-.687-.715a17.857,17.857,0,0,0-6.421-4.026L12.2,3a9.224,9.224,0,0,0-2.986-.5h0A9.209,9.209,0,0,0,1.5,6.7M22.406,21.073c-.014-.114-.034-.229-.066-.4-.017-.1-.035-.208-.056-.309-.047-.232-.1-.463-.159-.658l-.065-.243c-.088-.3-.191-.584-.3-.858-.036-.091-.075-.18-.119-.277-.087-.2-.18-.4-.284-.605l-.164-.3c-.1-.182-.208-.363-.33-.555-.063-.1-.126-.2-.178-.271-.126-.185-.261-.366-.42-.569-.054-.071-.109-.142-.167-.212-.209-.251-.428-.5-.664-.731s-.465-.436-.716-.644l-.192-.154c-.21-.165-.422-.322-.619-.453l-.144-.1c-.259-.168-.525-.322-.779-.457l-.226-.116c-.221-.112-.445-.214-.664-.3l-.2-.081c-.073-.029-.146-.058-.219-.084A11.593,11.593,0,0,0,10.342,8.7l-.589-.2H9.217a3.238,3.238,0,0,0-2.71,5.009l.044.07c-.077.048-.361.23-.361.23-.251.167-.494.345-.732.535l-.158.13c-.241.2-.477.411-.707.64s-.438.461-.651.714l-.16.2c-.149.187-.291.379-.463.628l-.113.165c-.158.242-.308.49-.441.741a10.5,10.5,0,0,0-1.16,3.549m20.8-7.215c-.269-.324-.551-.637-.859-.944-.292-.29-.593-.558-.945-.849l-.221-.178c-.271-.213-.546-.414-.776-.569l-.2-.139c-.336-.218-.679-.418-1.045-.612l-.245-.126c-.187-.094-.377-.184-.563-.267q-.447-.533-.942-1.02a14.728,14.728,0,0,0-5.291-3.328l-.275-.094A5,5,0,0,0,9.422,5.5h0A6.444,6.444,0,0,0,5.055,7.085a6.3,6.3,0,0,0-2.04,5.4c-.182.161-.361.328-.539.5-.289.288-.559.587-.872.961l-.1.129\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
             {
+                "icon_filename": "param_spiralinset.svg",
+                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M12.00,12.00 L12.00,11.96 L12.01,11.92 L12.03,11.89 L12.05,11.85 L12.08,11.82 L12.12,11.80 L12.16,11.78 L12.20,11.76 L12.25,11.75 L12.30,11.75 L12.35,11.75 L12.40,11.77 L12.46,11.79 L12.51,11.81 L12.56,11.85 L12.61,11.89 L12.66,11.94 L12.70,12.00 L12.74,12.06 L12.77,12.14 L12.79,12.21 L12.80,12.29 L12.81,12.38 L12.81,12.47 L12.80,12.56 L12.77,12.65 L12.74,12.74 L12.70,12.83 L12.65,12.92 L12.58,13.01 L12.51,13.09 L12.43,13.17 L12.33,13.24 L12.23,13.30 L12.12,13.36 L12.00,13.40 L11.87,13.43 L11.74,13.46 L11.61,13.46 L11.47,13.46 L11.33,13.45 L11.18,13.41 L11.04,13.37 L10.90,13.31 L10.76,13.24 L10.63,13.15 L10.50,13.05 L10.38,12.93 L10.27,12.81 L10.17,12.67 L10.08,12.51 L10.01,12.35 L9.95,12.18 L9.90,12.00 L9.87,11.81 L9.86,11.62 L9.86,11.43 L9.88,11.23 L9.92,11.03 L9.98,10.83 L10.06,10.64 L10.15,10.45 L10.27,10.27 L10.40,10.09 L10.55,9.93 L10.72,9.78 L10.90,9.64 L11.10,9.52 L11.31,9.41 L11.53,9.32 L11.76,9.25 L12.00,9.20 L12.25,9.17 L12.50,9.17 L12.75,9.18 L13.01,9.22 L13.27,9.29 L13.52,9.37 L13.76,9.48 L14.00,9.62 L14.23,9.77 L14.44,9.95 L14.64,10.15 L14.83,10.37 L15.00,10.60 L15.14,10.86 L15.27,11.12 L15.37,11.41 L15.45,11.70 L15.50,12.00 L15.53,12.31 L15.52,12.62 L15.49,12.94 L15.44,13.25 L15.35,13.56 L15.23,13.87 L15.09,14.16 L14.92,14.45 L14.72,14.72 L14.50,14.98 L14.25,15.22 L13.98,15.44 L13.69,15.63 L13.38,15.80 L13.06,15.94 L12.72,16.06 L12.36,16.15 L12.00,16.20 L11.63,16.22 L11.26,16.21 L10.88,16.17 L10.51,16.09 L10.14,15.98 L9.78,15.84 L9.43,15.66 L9.10,15.46 L8.78,15.22 L8.48,14.95 L8.21,14.65 L7.96,14.33 L7.74,13.99 L7.54,13.62 L7.38,13.24 L7.25,12.84 L7.16,12.42 L7.10,12.00 L7.08,11.57 L7.10,11.14 L7.15,10.70 L7.25,10.27 L7.38,9.85 L7.55,9.43 L7.76,9.03 L8.01,8.65 L8.29,8.29 L8.60,7.95 L8.94,7.64 L9.32,7.35 L9.72,7.10 L10.14,6.88 L10.58,6.70 L11.04,6.56 L11.52,6.46 L12.00,6.40 L12.49,6.38 L12.99,6.41 L13.48,6.48 L13.97,6.59 L14.45,6.75 L14.92,6.95 L15.37,7.19 L15.80,7.47 L16.21,7.79 L16.59,8.15 L16.94,8.54 L17.25,8.97 L17.53,9.42 L17.77,9.90 L17.97,10.40 L18.13,10.92 L18.24,11.45 L18.30,12.00 L18.31,12.55 L18.28,13.11 L18.20,13.66 L18.07,14.21 L17.89,14.74 L17.66,15.27 L17.38,15.77 L17.06,16.25 L16.70,16.70 L16.30,17.12 L15.86,17.51 L15.38,17.86 L14.88,18.17 L14.34,18.43 L13.78,18.65 L13.20,18.82 L12.61,18.93 L12.00,19.00 L11.39,19.01 L10.77,18.97 L10.16,18.87 L9.55,18.72 L8.96,18.52 L8.38,18.26 L7.83,17.96 L7.30,17.60 L6.80,17.20 L6.34,16.75 L5.92,16.26 L5.53,15.73 L5.20,15.17 L4.91,14.58 L4.68,13.96 L4.49,13.32 L4.37,12.67 L4.30,12.00 L4.29,11.33 L4.34,10.65 L4.45,9.98 L4.62,9.31 L4.85,8.66 L5.13,8.03 L5.47,7.43 L5.86,6.85 L6.31,6.31 L6.80,5.80 L7.34,5.34 L7.92,4.93 L8.53,4.56 L9.18,4.25 L9.86,4.00 L10.55,3.80 L11.27,3.67 L12.00,3.60\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+            },
+            {
                 "icon_filename": "param_hilbertcurve.svg",
                 "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M22.5,19.672l-2.808-2.808L22.5,14.056v-.041M19.672,22.5l-2.808-2.808L14.056,22.5h-.041M22.5,14.015,16.157,7.672,13.328,10.5l3.536,3.536-2.828,2.828L10.5,13.328,7.672,16.157,14.015,22.5m1.627-21,6.172,6.172.686-.687M6.985,22.5l.687-.686L1.5,15.642M1.5,9.9l3.49,3.39S7.555,10.5,7.672,10.5,4.136,6.964,4.136,6.964L6.964,4.136,10.5,7.672l2.828-2.829L9.985,1.5\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
@@ -332,18 +539,17 @@
         "default_value": "monotonic"
     },
     "bridge_acceleration": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "Bridge",
         "tooltip": "Acceleration of bridges. If the value is expressed as a percentage (e.g. 50%), it will be calculated based on the outer wall acceleration.",
         "sidetext": "mm\/s² or %",
         "min": "0",
-        "mode": "advanced",
-        "default_value": "50%"
+        "mode": "advanced"
     },
     "bridge_angle": {
         "type": "float",
         "label": "External bridge infill direction",
-        "tooltip": "External Bridging angle override.\nIf left to zero, the bridging angle will be calculated automatically for each specific bridge.\nOtherwise the provided angle will be used according to:\n - The absolute coordinates\n - The absolute coordinates + Model rotation: If Align infill direction to model is enabled\n - The optimal automatic angle + this value: If 'Relative Bridge Angle' is enabled\n\nUse 180° for zero absolute angle.",
+        "tooltip": "External Bridging angle override.\nIf left to zero, the bridging angle will be calculated automatically for each specific bridge.\nOtherwise the provided angle will be used according to:\n - The absolute coordinates\n - The absolute coordinates + Model rotation: If Align directions to model is enabled\n - The optimal automatic angle + this value: If 'Relative Bridge Angle' is enabled\n\nUse 180° for zero absolute angle.",
         "sidetext": "°",
         "min": "0",
         "max": "180",
@@ -372,7 +578,7 @@
     "bridge_line_width": {
         "type": "floatorpercent",
         "label": "Bridge",
-        "tooltip": "Line width of the Bridge. If expressed as a %, it will be computed over the nozzle diameter.\nRecommended to use with a higher Bridge density or Bridge flow ratio.\n\nThe maximum value is 100% or the nozzle diameter.\nIf set to 0, the line width will match the Internal solid infill width.",
+        "tooltip": "Line width of the Bridge. If expressed as a %, it will be computed over the nozzle diameter.\nRecommended to use with a higher Bridge density or Bridge flow ratio.\n\nThe maximum value is 100% or the nozzle diameter.\nIf set to 0, the line width will match the Internal solid infill width, or the nozzle diameter for thick bridges.",
         "sidetext": "mm or %",
         "min": "0",
         "max": "100",
@@ -387,9 +593,9 @@
         "default_value": "0"
     },
     "bridge_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "External",
-        "tooltip": "Speed of the externally visible bridge extrusions.\n\nIn addition, if Slow down for curled perimeters is disabled or Classic overhang mode is enabled, it will be the print speed of overhang walls that are supported by less than 13%, whether they are part of a bridge or an overhang.",
+        "tooltip": "Speed of the externally visible bridge extrusions.\n\nIn addition, if Slow down for curled perimeters is disabled, it will be the print speed of overhang walls that are supported by less than 13%, whether they are part of a bridge or an overhang.",
         "sidetext": "mm\/s",
         "min": "1",
         "mode": "advanced",
@@ -421,6 +627,13 @@
         "mode": "advanced",
         "default_value": "125"
     },
+    "brim_ears_outer_only": {
+        "type": "bool",
+        "label": "Brim ears outer only",
+        "tooltip": "Generate mouse ears only on the outer contour of the model, excluding holes and enclosed sections.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "brim_flow_ratio": {
         "type": "float",
         "label": "Brim flow ratio",
@@ -451,7 +664,8 @@
             "outer_only",
             "inner_only",
             "outer_and_inner",
-            "no_brim"
+            "no_brim",
+            "leading_edge_only"
         ],
         "enum_labels": [
             "Auto",
@@ -460,7 +674,8 @@
             "Outer brim only",
             "Inner brim only",
             "Outer and inner brim",
-            "No-brim"
+            "No-brim",
+            "Leading edge only"
         ],
         "mode": "simple",
         "default_value": "auto_brim"
@@ -482,6 +697,26 @@
         "mode": "simple",
         "default_value": "0"
     },
+    "build_plate_tilt_x": {
+        "type": "float",
+        "label": "Build plate tilt X",
+        "tooltip": "Tilt angle of the build plate along the X axis. A positive value tilts the plate so the +X side is higher, shifting gravity toward -X and increasing overhangs on the +X side. A negative value tilts the -X side higher. Set to 0 for no X-axis tilt. In belt printer mode, this is automatically synced to the belt angle.",
+        "sidetext": "°",
+        "min": "-89",
+        "max": "89",
+        "mode": "",
+        "default_value": "0"
+    },
+    "build_plate_tilt_y": {
+        "type": "float",
+        "label": "Build plate tilt Y",
+        "tooltip": "Tilt angle of the build plate along the Y axis. A positive value tilts the plate so the +Y side is higher, shifting gravity toward -Y and increasing overhangs on the +Y side. A negative value tilts the -Y side higher. Set to 0 for no Y-axis tilt.",
+        "sidetext": "°",
+        "min": "-89",
+        "max": "89",
+        "mode": "",
+        "default_value": "0"
+    },
     "calib_flowrate_topinfill_special_order": {
         "type": "bool",
         "label": "",
@@ -489,11 +724,28 @@
         "mode": "develop",
         "default_value": "0"
     },
+    "center_of_surface_pattern": {
+        "type": "enum",
+        "label": "Center surface pattern on",
+        "tooltip": "Chooses where the centering point of centered top\/bottom surface patterns (Archimedean Chords, Octagram Spiral) is placed.\n - Each Surface: centers the pattern on every individual surface region, so each island is symmetric on its own.\n - Each Model: centers the pattern on each connected body. Parts that touch or overlap share one center; parts detached from the rest each get their own.\n - Each Assembly: uses a single shared center for the whole object or assembly.",
+        "enum_values": [
+            "each_surface",
+            "each_model",
+            "each_assembly"
+        ],
+        "enum_labels": [
+            "Each Surface",
+            "Each Model",
+            "Each Assembly"
+        ],
+        "mode": "",
+        "default_value": "each_surface"
+    },
     "chamber_minimal_temperature": {
         "type": "ints",
         "label": "Minimal",
         "full_label": "Chamber minimal temperature",
-        "tooltip": "This is the chamber temperature at which printing should start, while the chamber continues heating toward the \"Target\" chamber temperature. For example, set the Target to 60 and the Minimal to 50 to begin printing once the chamber reaches 50°C, without waiting for the full 60°C.\n\nIt sets a G-code variable named chamber_minimal_temperature, which can be passed to your print start macro or a heat soak macro, like this: PRINT_START (other variables) CHAMBER_MIN_TEMP=[chamber_minimal_temperature].\n\nUnlike the \"Target\" chamber temperature, this option does not emit any M141\/M191 commands; it only exposes the value to your custom G-code. It should not exceed the \"Target\" chamber temperature.",
+        "tooltip": "This is the chamber temperature at which printing should start, while the chamber continues heating toward the \"Target\" chamber temperature. For example, set the Target to 60 and the Minimal to 50 to begin printing once the chamber reaches 50℃, without waiting for the full 60℃.\n\nIt sets a G-code variable named chamber_minimal_temperature, which can be passed to your print start macro or a heat soak macro, like this: PRINT_START (other variables) CHAMBER_MIN_TEMP=[chamber_minimal_temperature].\n\nUnlike the \"Target\" chamber temperature, this option does not emit any M141\/M191 commands; it only exposes the value to your custom G-code. It should not exceed the \"Target\" chamber temperature.",
         "sidetext": "℃",
         "min": "0",
         "max": "1500",
@@ -638,6 +890,13 @@
         "mode": "simple",
         "default_value": "35"
     },
+    "cooling_filter_enabled": {
+        "type": "bool",
+        "label": "Use cooling filter",
+        "tooltip": "Enable this if the printer supports a cooling filter",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "cooling_tube_length": {
         "type": "float",
         "label": "Cooling tube length",
@@ -697,7 +956,7 @@
         "default_value": "Cool Plate"
     },
     "default_acceleration": {
-        "type": "float",
+        "type": "floats",
         "label": "Normal printing",
         "tooltip": "This is the default acceleration for both normal printing and travel after the first layer.",
         "sidetext": "mm\/s²",
@@ -729,7 +988,7 @@
         "default_value": ""
     },
     "default_jerk": {
-        "type": "float",
+        "type": "floats",
         "label": "Default",
         "tooltip": "Default jerk.",
         "sidetext": "mm\/s",
@@ -738,7 +997,7 @@
         "default_value": "0"
     },
     "default_junction_deviation": {
-        "type": "float",
+        "type": "floats",
         "label": "Junction Deviation",
         "tooltip": "Marlin Firmware Junction Deviation (replaces the traditional XY Jerk setting).",
         "sidetext": "mm",
@@ -753,11 +1012,19 @@
         "tooltip": "Default Nozzle volume type for extruders in this printer.",
         "enum_values": [
             "Standard",
-            "High Flow"
+            "High Flow",
+            "Hybrid",
+            "TPU High Flow",
+            "E3D High Flow",
+            "Extra High Flow"
         ],
         "enum_labels": [
             "Standard",
-            "High Flow"
+            "High Flow",
+            "Hybrid",
+            "TPU High Flow",
+            "E3D High Flow",
+            "Extra High Flow"
         ],
         "mode": "develop",
         "default_value": "Standard"
@@ -769,6 +1036,14 @@
         "mode": "simple",
         "nocli": "true",
         "default_value": ""
+    },
+    "deretract_speed_extruder_change": {
+        "type": "floats",
+        "label": "Deretraction speed (extruder change)",
+        "tooltip": "Speed for reloading filament into the nozzle when switching extruder.",
+        "sidetext": "mm\/s",
+        "mode": "develop",
+        "default_value": "0"
     },
     "deretraction_speed": {
         "type": "floats",
@@ -789,7 +1064,7 @@
     "detect_overhang_wall": {
         "type": "bool",
         "label": "Detect overhang walls",
-        "tooltip": "This detects the overhang percentage relative to line width and uses a different speed to print. For 100%% overhang, bridging speed is used.",
+        "tooltip": "This detects the overhang percentage relative to line width and uses a different speed to print. For 100% overhang, bridging speed is used.",
         "mode": "advanced",
         "default_value": "1"
     },
@@ -842,7 +1117,7 @@
     "draft_shield": {
         "type": "enum",
         "label": "Draft shield",
-        "tooltip": "A draft shield is useful to protect an ABS or ASA print from warping and detaching from print bed due to wind draft. It is usually needed only with open frame printers, i.e. without an enclosure.\n\nEnabled = skirt is as tall as the highest printed object. Otherwise 'Skirt height' is used.\nNote: With the draft shield active, the skirt will be printed at skirt distance from the object. Therefore, if brims are active it may intersect with them. To avoid this, increase the skirt distance value.\n",
+        "tooltip": "A draft shield is useful to protect an ABS or ASA print from warping and detaching from print bed due to wind draft. It is usually needed only with open frame printers, i.e. without an enclosure.\n\nEnabled = skirt is as tall as the highest printed object. Otherwise 'Skirt height' is used.",
         "enum_values": [
             "disabled",
             "enabled"
@@ -900,9 +1175,26 @@
         "default_value": "1"
     },
     "enable_arc_fitting": {
-        "type": "bool",
+        "type": "enum",
         "label": "Arc fitting",
-        "tooltip": "Enable this to get a G-code file which has G2 and G3 moves. The fitting tolerance is same as the resolution.\n\nNote: For Klipper machines, this option is recommended to be disabled. Klipper does not benefit from arc commands as these are split again into line segments by the firmware. This results in a reduction in surface quality as line segments are converted to arcs by the slicer and then back to line segments by the firmware.",
+        "tooltip": "Fit G2 and G3 arc moves to the toolpaths. Walls and surfaces are fitted within the resolution, while sparse infill, supports and the wipe tower use fixed tolerances.\n - Disabled: only straight G1 moves are used.\n - Enabled: arcs are fitted to all toolpaths.\n - Sparse infill only: arcs are fitted to the sparse infill only, which shortens the G-code of curved infill patterns without affecting the walls and surfaces.\n\nNote: For Klipper machines, Disabled is recommended. Klipper splits arcs back into line segments, which lowers the surface quality and can increase the print time.",
+        "enum_values": [
+            "disabled",
+            "enabled",
+            "sparse_infill"
+        ],
+        "enum_labels": [
+            "Disabled",
+            "Enabled",
+            "Sparse infill only"
+        ],
+        "mode": "advanced",
+        "default_value": "disabled"
+    },
+    "enable_belt_purge_tower": {
+        "type": "bool",
+        "label": "Enable belt purge tower",
+        "tooltip": "Belt-printer replacement for the wipe\/prime tower. When enabled on a belt printer, a purge prism is automatically generated next to the printed parts and filament-change purging is routed into it (the classic wipe tower cannot be used on belt printers because its G-code bypasses the belt transform). Only available on belt printers.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -946,6 +1238,13 @@
         "mode": "develop",
         "default_value": "0"
     },
+    "enable_mixed_color_sublayer": {
+        "type": "bool",
+        "label": "Mixed color sublayer",
+        "tooltip": "Enable mixed color sublayer splitting. When enabled, layers containing mixed color filaments will be split into sub-layers to achieve color mixing effects.",
+        "mode": "simple",
+        "default_value": "0"
+    },
     "enable_overhang_bridge_fan": {
         "type": "bools",
         "label": "Force cooling for overhangs and bridges",
@@ -954,7 +1253,7 @@
         "default_value": "1"
     },
     "enable_overhang_speed": {
-        "type": "bool",
+        "type": "bools",
         "label": "Slow down for overhangs",
         "tooltip": "Enable this option to slow down when printing overhangs. The speeds for different overhang percentages are set below.",
         "mode": "advanced",
@@ -976,6 +1275,13 @@
         ],
         "mode": "advanced",
         "default_value": "printer_configuration"
+    },
+    "enable_pre_heating": {
+        "type": "bool",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "0"
     },
     "enable_pressure_advance": {
         "type": "bools",
@@ -1077,6 +1383,26 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "exclude_object_tolerance": {
+        "type": "float",
+        "label": "Outline tolerance",
+        "tooltip": "Maximum deviation of the object outline written to EXCLUDE_OBJECT_DEFINE from the original outline. Larger values give fewer points, which helps firmware that stalls while parsing G-code with many objects. 0 keeps every point.",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "5",
+        "mode": "",
+        "default_value": "0.1"
+    },
+    "extra_brim_width": {
+        "type": "float",
+        "label": "Extra brim width",
+        "tooltip": "Belt printers only. Widens the brim SIDEWAYS, across the belt, without extending it further ahead of or behind the object. Use it when a part needs more grip along its length than Brim width alone gives.\n\nMeasured on the belt surface, and added on top of Brim width: the brim reaches Brim-object gap + Brim width + Extra brim width to either side of the object. To extend the brim ahead of the object instead, use Leading brim length.\n\nSet to 0 to disable.",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "100",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "extra_loading_move": {
         "type": "float",
         "label": "Extra loading distance",
@@ -1114,6 +1440,23 @@
         "mode": "simple",
         "default_value": ""
     },
+    "extruder_bed_exclude_volumes": {
+        "type": "strings",
+        "label": "Extruder collision volumes",
+        "tooltip": "Collision volumes used only by this extruder in individual mode. Use the same polygon and optional Z-range format as the shared collision volumes. Leave empty for no collision volumes on this extruder. Automatic arrangement conservatively uses the bounding box of a non-convex volume.",
+        "gui_type": "one_string",
+        "mode": "advanced",
+        "default_value": "\"\""
+    },
+    "extruder_clearance_dist_to_rod": {
+        "type": "float",
+        "label": "Distance to rod",
+        "tooltip": "Horizontal distance of the nozzle tip to the rod's farther edge. Used for collision avoidance in by-object printing.",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "40"
+    },
     "extruder_clearance_height_to_lid": {
         "type": "float",
         "label": "Height to lid",
@@ -1148,6 +1491,48 @@
         "gui_type": "color",
         "mode": "advanced",
         "default_value": "\"\""
+    },
+    "extruder_max_nozzle_count": {
+        "type": "ints",
+        "label": "",
+        "tooltip": "",
+        "mode": "develop",
+        "default_value": "1"
+    },
+    "extruder_nozzle_count": {
+        "type": "ints",
+        "label": "extruder nozzle count",
+        "tooltip": "extruder nozzle count",
+        "mode": "develop",
+        "default_value": "1"
+    },
+    "extruder_nozzle_stats": {
+        "type": "strings",
+        "label": "Extruder nozzle stats",
+        "tooltip": "Physical nozzle counts per extruder, keyed by nozzle volume type.",
+        "mode": "simple",
+        "default_value": ""
+    },
+    "extruder_nozzle_volume_type": {
+        "type": "enums",
+        "label": "Extruder nozzle volume type",
+        "tooltip": "Nozzle volume type per physical nozzle of an extruder.",
+        "enum_values": [
+            "Standard",
+            "High Flow",
+            "TPU High Flow",
+            "E3D High Flow",
+            "Extra High Flow"
+        ],
+        "enum_labels": [
+            "Standard",
+            "High Flow",
+            "TPU High Flow",
+            "E3D High Flow",
+            "Extra High Flow"
+        ],
+        "mode": "develop",
+        "default_value": "Standard"
     },
     "extruder_offset": {
         "type": "points",
@@ -1214,6 +1599,25 @@
         "mode": "simple",
         "default_value": "60"
     },
+    "fan_direction": {
+        "type": "enum",
+        "label": "Fan direction",
+        "tooltip": "Cooling fan direction of the printer",
+        "enum_values": [
+            "undefine",
+            "left",
+            "right",
+            "both"
+        ],
+        "enum_labels": [
+            "Undefined",
+            "Left",
+            "Right",
+            "Both"
+        ],
+        "mode": "develop",
+        "default_value": "undefine"
+    },
     "fan_kickstart": {
         "type": "float",
         "label": "Fan kick-start time",
@@ -1258,6 +1662,13 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "farthest_point_timelapse": {
+        "type": "bool",
+        "label": "Farthest point timelapse",
+        "tooltip": "When enabled, the timelapse snapshot is taken at the farthest point from camera instead of traveling to the wipe tower or excess chute. Only effective in traditional timelapse mode on non-I3 printers.",
+        "mode": "simple",
+        "default_value": "0"
+    },
     "filament_adaptive_volumetric_speed": {
         "type": "bools",
         "label": "Adaptive volumetric speed",
@@ -1292,6 +1703,15 @@
         "mode": "advanced",
         "default_value": "10"
     },
+    "filament_change_length_nc": {
+        "type": "floats",
+        "label": "Hotend change",
+        "tooltip": "When changing the hotend, it is recommended to extrude a certain length of filament from the original nozzle. This helps minimize nozzle oozing.",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "10"
+    },
     "filament_colour": {
         "type": "strings",
         "label": "Color",
@@ -1310,7 +1730,7 @@
     "filament_cooling_before_tower": {
         "type": "floats",
         "label": "Wipe tower cooling",
-        "tooltip": "Temperature drop before entering filament tower",
+        "tooltip": "Temperature drop before entering the wipe tower.",
         "sidetext": "℃",
         "mode": "develop",
         "default_value": "10"
@@ -1369,6 +1789,62 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "filament_dev_ams_drying_ams_limitations": {
+        "type": "strings",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "\"\""
+    },
+    "filament_dev_ams_drying_heat_distortion_temperature": {
+        "type": "floats",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "0"
+    },
+    "filament_dev_ams_drying_temperature": {
+        "type": "floats",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "0"
+    },
+    "filament_dev_ams_drying_time": {
+        "type": "floats",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "0"
+    },
+    "filament_dev_chamber_drying_bed_temperature": {
+        "type": "floats",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "0"
+    },
+    "filament_dev_chamber_drying_time": {
+        "type": "floats",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "0"
+    },
+    "filament_dev_drying_cooling_temperature": {
+        "type": "floats",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "0"
+    },
+    "filament_dev_drying_softening_temperature": {
+        "type": "floats",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "0"
+    },
     "filament_diameter": {
         "type": "floats",
         "label": "Diameter",
@@ -1387,6 +1863,13 @@
         "height": "120",
         "mode": "advanced",
         "default_value": "\" \""
+    },
+    "filament_extruder_compatibility": {
+        "type": "ints",
+        "label": "Filament-extruder compatibility",
+        "tooltip": "A single 32-bit int encoding the compatibility level of a filament across all extruders (up to 10). Every 3 bits represent one extruder (bits [3*i, 3*i+2] for extruder i). 0: printable, 1: error, 2: critical warning, 3: warning, 4-7: reserved.",
+        "mode": "develop",
+        "default_value": "0"
     },
     "filament_extruder_variant": {
         "type": "strings",
@@ -1409,6 +1892,16 @@
         "type": "ints",
         "label": "Flush temperature",
         "tooltip": "Temperature when flushing filament. 0 indicates the upper bound of the recommended nozzle temperature range.",
+        "sidetext": "℃",
+        "min": "0",
+        "max": "1500",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "filament_flush_temp_fast": {
+        "type": "ints",
+        "label": "Flush temperature",
+        "tooltip": "Flush temperature used in fast purge mode.",
         "sidetext": "℃",
         "min": "0",
         "max": "1500",
@@ -1472,6 +1965,13 @@
         "mode": "advanced",
         "default_value": "nil"
     },
+    "filament_is_mixed": {
+        "type": "bools",
+        "label": "Is mixed filament",
+        "tooltip": "Whether this filament slot is a mixed filament composed of multiple physical filaments",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "filament_is_support": {
         "type": "bools",
         "label": "Support material",
@@ -1511,6 +2011,13 @@
         "mode": "develop",
         "default_value": "1"
     },
+    "filament_map_2": {
+        "type": "ints",
+        "label": "Filament map plus for multi nozzle",
+        "tooltip": "Filament map to the index identified by extruder and nozzle_volume_type",
+        "mode": "develop",
+        "default_value": "1"
+    },
     "filament_map_mode": {
         "type": "enum",
         "label": "filament mapping mode",
@@ -1519,16 +2026,25 @@
             "Auto For Flush",
             "Auto For Match",
             "Manual",
+            "Nozzle Manual",
             "Default"
         ],
         "enum_labels": [
             "Auto For Flush",
             "Auto For Match",
             "Manual",
+            "Nozzle Manual",
             "Default"
         ],
         "mode": "advanced",
         "default_value": "Auto For Flush"
+    },
+    "filament_max_temperature_drop_when_ec": {
+        "type": "floats",
+        "label": "",
+        "tooltip": "",
+        "mode": "develop",
+        "default_value": "0"
     },
     "filament_max_volumetric_speed": {
         "type": "floats",
@@ -1547,6 +2063,48 @@
         "min": "0",
         "mode": "advanced",
         "default_value": "15"
+    },
+    "filament_mixed_components": {
+        "type": "strings",
+        "label": "Mixed filament components",
+        "tooltip": "Comma-separated 1-based indices of component filaments, e.g. \"1,3\"",
+        "mode": "develop",
+        "default_value": "\"\""
+    },
+    "filament_mixed_gradient": {
+        "type": "bools",
+        "label": "Mixed filament gradient",
+        "tooltip": "Enable Z-direction gradient mode for mixed filament sub-layers. When enabled, the sub-layer ratios vary linearly across layers.",
+        "mode": "develop",
+        "default_value": "0"
+    },
+    "filament_mixed_gradient_curve": {
+        "type": "strings",
+        "label": "Mixed filament gradient curve",
+        "tooltip": "Optional Photoshop-style custom curve mapping Z progress to the first component ratio. Encoded as pipe-separated control points, either \"x,y\" (legacy) or \"x,y,m_in,m_out\" when a tangent override is needed (empty token or \"nan\" means use PCHIP default). x in [0,1]; y is clamped to the configured ratio range, e.g. \"0,0.15|0.5,0.50|1,0.85\". When empty, the linear gradient_range is used instead.",
+        "mode": "develop",
+        "default_value": "\"\""
+    },
+    "filament_mixed_gradient_per_part": {
+        "type": "bools",
+        "label": "Mixed filament per-part gradient",
+        "tooltip": "When gradient mode is enabled, apply the gradient to each part of an assembly independently rather than treating the whole assembly as one Z range.",
+        "mode": "develop",
+        "default_value": "0"
+    },
+    "filament_mixed_gradient_range": {
+        "type": "strings",
+        "label": "Mixed filament gradient range",
+        "tooltip": "Start and end ratios for the first component in gradient mode. Comma-separated pair, e.g. \"0.10,0.90\" means 10% to 90%.",
+        "mode": "develop",
+        "default_value": "\"\""
+    },
+    "filament_mixed_sublayer_ratios": {
+        "type": "strings",
+        "label": "Mixed filament sublayer ratios",
+        "tooltip": "Comma-separated ratio values summing to 1.0, e.g. \"0.7,0.3\"",
+        "mode": "develop",
+        "default_value": "\"\""
     },
     "filament_multi_colour": {
         "type": "strings",
@@ -1590,6 +2148,66 @@
         "mode": "advanced",
         "default_value": "\"\""
     },
+    "filament_nozzle_map": {
+        "type": "ints",
+        "label": "",
+        "tooltip": "",
+        "mode": "develop",
+        "default_value": "1"
+    },
+    "filament_plugin_config_overrides": {
+        "type": "string",
+        "label": "Capabilities",
+        "tooltip": "Configuration for the plugin capabilities this preset uses, overriding the global Capabilities configuration. Stored as a raw JSON array and edited through the dialog behind the button, never typed in directly.",
+        "gui_type": "",
+        "mode": "advanced",
+        "nocli": "true",
+        "default_value": ""
+    },
+    "filament_pre_cooling_temperature": {
+        "type": "ints",
+        "label": "Extruder change",
+        "tooltip": "To prevent oozing, the nozzle temperature will be cooled during ramming. Therefore, the ramming time must be greater than the cooldown time. 0 means disabled.",
+        "sidetext": "℃",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "filament_pre_cooling_temperature_nc": {
+        "type": "ints",
+        "label": "Hotend change",
+        "tooltip": "To prevent oozing, the nozzle temperature will be cooled during ramming. Note: only a cooldown command and fan activation are triggered, reaching the target temperature is not guaranteed. 0 means disabled.",
+        "sidetext": "℃",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "filament_preheat_temperature_delta": {
+        "type": "floats",
+        "label": "Preheat temperature delta",
+        "tooltip": "Temperature delta applied during pre-heating before tool change.",
+        "sidetext": "℃",
+        "mode": "develop",
+        "default_value": "0"
+    },
+    "filament_prime_volume": {
+        "type": "floats",
+        "label": "Filament change",
+        "tooltip": "The volume of material required to prime the extruder on the tower, excluding a hotend change.",
+        "sidetext": "mm³",
+        "min": "1",
+        "mode": "simple",
+        "default_value": "45"
+    },
+    "filament_prime_volume_nc": {
+        "type": "floats",
+        "label": "Hotend change",
+        "tooltip": "The volume of material required to prime the extruder for a hotend change on the tower.",
+        "sidetext": "mm³",
+        "min": "1",
+        "mode": "simple",
+        "default_value": "60"
+    },
     "filament_printable": {
         "type": "ints",
         "label": "Filament printable",
@@ -1604,6 +2222,52 @@
         "mode": "advanced",
         "default_value": "\"120 100 6.6 6.8 7.2 7.6 7.9 8.2 8.7 9.4 9.9 10.0| 0.05 6.6 0.45 6.8 0.95 7.8 1.45 8.3 1.95 9.7 2.45 10 2.95 7.6 3.45 7.6 3.95 7.6 4.45 7.6 4.95 7.6\""
     },
+    "filament_ramming_travel_time": {
+        "type": "floats",
+        "label": "Extruder change",
+        "tooltip": "To prevent oozing, the nozzle will perform a reverse travel movement for a certain period after the ramming is complete. The setting define the travel time.",
+        "sidetext": "s",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "filament_ramming_travel_time_nc": {
+        "type": "floats",
+        "label": "Hotend change",
+        "tooltip": "To prevent oozing, the nozzle will perform a reverse travel movement for a certain period after the ramming is complete. The setting define the travel time.",
+        "sidetext": "s",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "filament_ramming_volumetric_speed": {
+        "type": "floats",
+        "label": "Extruder change",
+        "tooltip": "The maximum volumetric speed for ramming before extruder change, where -1 means using the maximum volumetric speed.",
+        "sidetext": "mm³\/s",
+        "min": "-1",
+        "max": "200",
+        "mode": "advanced",
+        "default_value": "-1"
+    },
+    "filament_ramming_volumetric_speed_nc": {
+        "type": "floats",
+        "label": "Hotend change",
+        "tooltip": "The maximum volumetric speed for ramming before a hotend change, where -1 means using the maximum volumetric speed.",
+        "sidetext": "mm³\/s",
+        "min": "-1",
+        "max": "200",
+        "mode": "advanced",
+        "default_value": "-1"
+    },
+    "filament_retract_after_wipe": {
+        "type": "percents",
+        "label": "Retract amount after wipe",
+        "tooltip": "This is the length of fast retraction after wipe, relative to retraction length.\nThe value will be clamped by 100% minus the retract amount before the wipe value.",
+        "sidetext": "%",
+        "mode": "advanced",
+        "default_value": "0%"
+    },
     "filament_retract_before_wipe": {
         "type": "percents",
         "label": "Retract amount before wipe",
@@ -1611,6 +2275,24 @@
         "sidetext": "%",
         "mode": "advanced",
         "default_value": "100%"
+    },
+    "filament_retract_length_nc": {
+        "type": "floats",
+        "label": "length when change hotend",
+        "tooltip": "When this retraction value is modified, it will be used as the amount of filament retracted inside the hotend before changing hotends.",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "18",
+        "mode": "develop",
+        "default_value": "10"
+    },
+    "filament_retract_length_toolchange": {
+        "type": "floats",
+        "label": "Retraction Length (Toolchange)",
+        "tooltip": "When retraction is triggered before changing tool, filament is pulled back by the specified amount (the length is measured on raw filament, before it enters the extruder).",
+        "sidetext": "mm",
+        "mode": "advanced",
+        "default_value": "10"
     },
     "filament_retract_lift_above": {
         "type": "floats",
@@ -1652,6 +2334,14 @@
         "type": "floats",
         "label": "Extra length on restart",
         "tooltip": "When the retraction is compensated after the travel move, the extruder will push this additional amount of filament. This setting is rarely needed.",
+        "sidetext": "mm",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "filament_retract_restart_extra_toolchange": {
+        "type": "floats",
+        "label": "Extra length on restart (Toolchange)",
+        "tooltip": "When the retraction is compensated after changing tool, the extruder will push this additional amount of filament.",
         "sidetext": "mm",
         "mode": "advanced",
         "default_value": "0"
@@ -1716,7 +2406,7 @@
     "filament_shrink": {
         "type": "percents",
         "label": "Shrinkage (XY)",
-        "tooltip": "Enter the shrinkage percentage that the filament will get after cooling (94% if you measure 94mm instead of 100mm). The part will be scaled in XY to compensate. For multi-material prints, ensure filament shrinkage matches across all used filaments\nBe sure to allow enough space between objects, as this compensation is done after the checks.",
+        "tooltip": "Enter the shrinkage percentage that the filament will get after cooling (94% if you measure 94mm instead of 100mm). The part will be scaled in XY to compensate. For multi-material prints, ensure filament shrinkage matches across all used filaments.\nBe sure to allow enough space between objects, as this compensation is done after the checks.",
         "sidetext": "%",
         "min": "50",
         "max": "150",
@@ -1854,6 +2544,13 @@
         "nocli": "true",
         "default_value": "(Undefined)"
     },
+    "filament_volume_map": {
+        "type": "ints",
+        "label": "",
+        "tooltip": "",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "filament_wipe": {
         "type": "bools",
         "label": "Wipe while retracting",
@@ -1873,7 +2570,7 @@
     "filament_z_hop": {
         "type": "floats",
         "label": "Z-hop height",
-        "tooltip": "Whenever there is a retraction, the nozzle is lifted a little to create clearance between the nozzle and the print. This prevents the nozzle from hitting the print when traveling more. Using spiral lines to lift z can prevent stringing.",
+        "tooltip": "Whenever there is a retraction, the nozzle is lifted a little to create clearance between the nozzle and the print. This prevents the nozzle from hitting the print when traveling more. Using spiral lines to lift Z can prevent stringing.",
         "sidetext": "mm",
         "min": "0",
         "max": "5",
@@ -1901,7 +2598,7 @@
     "file_start_gcode": {
         "type": "string",
         "label": "File header G-code",
-        "tooltip": "G-code written at the very top of the output file, before any other content. Useful for adding metadata that printer firmware reads from the first lines of the file (e.g. estimated print time, filament usage). Supports placeholders like {print_time_sec} and {used_filament_length}.",
+        "tooltip": "G-code written at the very top of the output file, before any other content. Useful for adding metadata that printer firmware reads from the first lines of the file (e.g. estimated print time, filament usage). Supports placeholders like {print_time_total_sec}, {print_time_day}, {print_time_hour}, {print_time_minute}, {print_time_sec} and {used_filament_length}.",
         "full_width": "true",
         "multiline": "true",
         "height": "8",
@@ -2012,6 +2709,13 @@
         "mode": "simple",
         "default_value": "0.3"
     },
+    "flush_multiplier_fast": {
+        "type": "floats",
+        "label": "Flush multiplier (Fast mode)",
+        "tooltip": "The flush multiplier used in fast purge mode.",
+        "mode": "simple",
+        "default_value": "1.2"
+    },
     "flush_volumes_matrix": {
         "type": "floats",
         "label": "Purging volumes",
@@ -2077,7 +2781,7 @@
     "fuzzy_skin_mode": {
         "type": "enum",
         "label": "Fuzzy skin generator mode",
-        "tooltip": "Fuzzy skin generation mode. Works only with Arachne!\nDisplacement: Сlassic mode when the pattern is formed by shifting the nozzle sideways from the original path.\nExtrusion: The mode when the pattern formed by the amount of extruded plastic. This is the fast and straight algorithm without unnecessary nozzle shake that gives a smooth pattern. But it is more useful for forming loose walls in the entire they array.\nCombined: Joint mode [Displacement] + [Extrusion]. The appearance of the walls is similar to [Displacement] Mode, but it leaves no pores between the perimeters.\n\nAttention! The [Extrusion] and [Combined] modes works only the fuzzy_skin_thickness parameter not more than the thickness of printed loop. At the same time, the width of the extrusion for a particular layer should also not be below a certain level. It is usually equal 15-25%% of a layer height. Therefore, the maximum fuzzy skin thickness with a perimeter width of 0.4 mm and a layer height of 0.2 mm will be 0.4-(0.2*0.25)=±0.35mm! If you enter a higher parameter than this, the error Flow::spacing() will displayed, and the model will not be sliced. You can choose this number until this error is repeated.",
+        "tooltip": "Fuzzy skin generation mode. Works only with Arachne!\nDisplacement: Сlassic mode when the pattern is formed by shifting the nozzle sideways from the original path.\nExtrusion: The mode when the pattern formed by the amount of extruded plastic. This is the fast and straight algorithm without unnecessary nozzle shake that gives a smooth pattern. But it is more useful for forming loose walls in the entire they array.\nCombined: Joint mode [Displacement] + [Extrusion]. The appearance of the walls is similar to [Displacement] Mode, but it leaves no pores between the perimeters.\n\nAttention! The [Extrusion] and [Combined] modes works only the fuzzy_skin_thickness parameter not more than the thickness of printed loop. At the same time, the width of the extrusion for a particular layer should also not be below a certain level. It is usually equal 15-25% of a layer height. Therefore, the maximum fuzzy skin thickness with a perimeter width of 0.4 mm and a layer height of 0.2 mm will be 0.4-(0.2*0.25)=±0.35mm! If you enter a higher parameter than this, the error Flow::spacing() will displayed, and the model will not be sliced. You can choose this number until this error is repeated.",
         "enum_values": [
             "displacement",
             "extrusion",
@@ -2207,7 +2911,7 @@
         "default_value": "nowhere"
     },
     "gap_infill_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "Gap infill",
         "tooltip": "This is the speed for gap infill. Gaps usually have irregular line width and should be printed more slowly.",
         "sidetext": "mm\/s",
@@ -2241,7 +2945,7 @@
             "marlin2"
         ],
         "enum_labels": [
-            "Marlin(legacy)",
+            "Marlin (legacy)",
             "Klipper",
             "RepRapFirmware",
             "Repetier",
@@ -2257,6 +2961,100 @@
         "mode": "advanced",
         "default_value": "1"
     },
+    "gcode_remap_x": {
+        "type": "enum",
+        "label": "G-code remap X",
+        "tooltip": "Which slicing axis maps to machine X in G-code output. Applied AFTER slicing, during G-code generation.",
+        "enum_values": [
+            "pos_x",
+            "pos_y",
+            "pos_z",
+            "neg_x",
+            "neg_y",
+            "neg_z",
+            "rev_x",
+            "rev_y",
+            "rev_z"
+        ],
+        "enum_labels": [
+            "+X",
+            "+Y",
+            "+Z",
+            "-X",
+            "-Y",
+            "-Z",
+            "Rev X",
+            "Rev Y",
+            "Rev Z"
+        ],
+        "mode": "develop",
+        "default_value": "pos_x"
+    },
+    "gcode_remap_y": {
+        "type": "enum",
+        "label": "G-code remap Y",
+        "tooltip": "Which slicing axis maps to machine Y in G-code output. Applied AFTER slicing, during G-code generation.",
+        "enum_values": [
+            "pos_x",
+            "pos_y",
+            "pos_z",
+            "neg_x",
+            "neg_y",
+            "neg_z",
+            "rev_x",
+            "rev_y",
+            "rev_z"
+        ],
+        "enum_labels": [
+            "+X",
+            "+Y",
+            "+Z",
+            "-X",
+            "-Y",
+            "-Z",
+            "Rev X",
+            "Rev Y",
+            "Rev Z"
+        ],
+        "mode": "develop",
+        "default_value": "pos_y"
+    },
+    "gcode_remap_z": {
+        "type": "enum",
+        "label": "G-code remap Z",
+        "tooltip": "Which slicing axis maps to machine Z in G-code output. Applied AFTER slicing, during G-code generation.",
+        "enum_values": [
+            "pos_x",
+            "pos_y",
+            "pos_z",
+            "neg_x",
+            "neg_y",
+            "neg_z",
+            "rev_x",
+            "rev_y",
+            "rev_z"
+        ],
+        "enum_labels": [
+            "+X",
+            "+Y",
+            "+Z",
+            "-X",
+            "-Y",
+            "-Z",
+            "Rev X",
+            "Rev Y",
+            "Rev Z"
+        ],
+        "mode": "develop",
+        "default_value": "pos_z"
+    },
+    "gcode_skip_config_block": {
+        "type": "bool",
+        "label": "Skip G-code config block",
+        "tooltip": "Do not write the CONFIG_BLOCK (slicer configuration key\/value pairs) into the G-code file. This can help with printers whose firmware crashes when parsing these comment lines (e.g. Anycubic go-klipper). Note: the G-code file will no longer contain slicer settings, so importing it back into OrcaSlicer will not restore the configuration.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "grab_length": {
         "type": "floats",
         "label": "Grab length",
@@ -2266,11 +3064,25 @@
         "mode": "develop",
         "default_value": "0"
     },
+    "group_algo_with_time": {
+        "type": "bool",
+        "label": "",
+        "tooltip": "",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "gyroid_optimized": {
         "type": "bool",
         "label": "Z-buckling bias optimization (experimental)",
         "tooltip": "Tightens the gyroid wave along the Z (vertical) axis at low infill density to shorten the effective vertical column length and improve Z-axis compression buckling resistance. Filament use is preserved. No effect at ~30% sparse infill density and above. Only applies when Sparse infill pattern is set to Gyroid.",
         "mode": "simple",
+        "default_value": "0"
+    },
+    "handle_hotend_as_extruder": {
+        "type": "bool",
+        "label": "",
+        "tooltip": "",
+        "mode": "develop",
         "default_value": "0"
     },
     "has_filament_switcher": {
@@ -2301,12 +3113,27 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "high_precision_gcode": {
+        "type": "bool",
+        "label": "High precision G-code (experimental)",
+        "tooltip": "Write X, Y, Z, I and J with 4 decimal places instead of 3, and E with 6 instead of 5, to reduce rounding errors in the G-code. With relative E distances, the rounding error of each move is also carried over to the next one. Supports are removed after printing, so they keep the standard precision. This may help stabilize extrusion with small nozzles (e.g. 0.2 mm) and thin layers (e.g. 0.08 mm or less), where each move extrudes so little material that rounding errors matter most. The effect depends strongly on how well the rest of the settings are tuned and may be hard to notice unless the print profile is well calibrated. The G-code file becomes about 10 percent larger, which may slow down printers that parse G-code slowly.",
+        "mode": "",
+        "default_value": "0"
+    },
     "hole_to_polyhole": {
         "type": "bool",
         "label": "Convert holes to polyholes",
         "tooltip": "Search for almost-circular holes that span more than one layer and convert the geometry to polyholes. Use the nozzle size and the (biggest) diameter to compute the polyhole.\nSee http:\/\/hydraraptor.blogspot.com\/2011\/02\/polyholes.html",
         "mode": "advanced",
         "default_value": "0"
+    },
+    "hole_to_polyhole_max_edges": {
+        "type": "int",
+        "label": "Maximum Polyhole edge count",
+        "tooltip": "Maximum number of polyhole edges\nThis setting limits the amount of edges a polyhole can have",
+        "min": "3",
+        "mode": "",
+        "default_value": "50"
     },
     "hole_to_polyhole_threshold": {
         "type": "floatorpercent",
@@ -2332,6 +3159,7 @@
             "prusaconnect",
             "octoprint",
             "duet",
+            "ultimaker",
             "flashair",
             "astrobox",
             "repetier",
@@ -2350,6 +3178,7 @@
             "PrusaConnect",
             "Octo\/Klipper",
             "Duet",
+            "UltiMaker",
             "FlashAir",
             "AstroBox",
             "Repetier",
@@ -2388,6 +3217,20 @@
         "mode": "simple",
         "default_value": "45"
     },
+    "hotend_cooling_rate": {
+        "type": "floats",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "2"
+    },
+    "hotend_heating_rate": {
+        "type": "floats",
+        "label": "",
+        "tooltip": "",
+        "mode": "simple",
+        "default_value": "2"
+    },
     "idle_temperature": {
         "type": "ints",
         "label": "Idle temperature",
@@ -2397,6 +3240,132 @@
         "max": "1500",
         "mode": "simple",
         "default_value": "0"
+    },
+    "imex_carriage_margin": {
+        "type": "float",
+        "label": "Safety Margin",
+        "tooltip": "Non-blocking advisory clearance strip (mm) drawn inside the primary zone at each carriage boundary. Parts placed within this strip will still slice; it is a visual reminder to leave extra clearance near the zone edge.",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "200",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "imex_firmware_managed_zones": {
+        "type": "bool",
+        "label": "Firmware-managed zones",
+        "tooltip": "When enabled, the slicer emits G-code with the primary zone's contents centered on bed origin (0,0). The printer firmware is responsible for placing copies\/mirrors at each physical zone position. Enable only on printers whose firmware applies its own zone offsets in copy\/mirror mode (e.g. RepRapFirmware IDEX duplication mode). Has no effect in Primary mode.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "imex_gantry_count": {
+        "type": "int",
+        "label": "Gantry Count",
+        "tooltip": "Number of independent Y-axis gantries. 1 for IDEX\/single-rail IQEX. 2 for dual-gantry systems (divides bed into rows).",
+        "min": "1",
+        "max": "2",
+        "mode": "advanced",
+        "default_value": "1"
+    },
+    "imex_head_filament_map": {
+        "type": "string",
+        "label": "IDEX\/IQEX head filament map",
+        "tooltip": "Per-plate override mapping physical heads to filament slots (1-based). Empty means each head uses the first filament that the printer's physical extruder map routes to it.",
+        "mode": "develop",
+        "default_value": ""
+    },
+    "imex_mode_active_tools": {
+        "type": "strings",
+        "label": "IDEX\/IQEX Mode Active Tools",
+        "tooltip": "Tool role assignments for each mode. Format: \"idx:P,idx:C,idx:M\" where P=Primary, C=Copy, M=Mirror (e.g. \"0:P,1:C,2:M,3:M\"). Managed by the IDEX\/IQEX Modes editor in the Printer preset.",
+        "mode": "advanced",
+        "default_value": ""
+    },
+    "imex_mode_gcodes": {
+        "type": "strings",
+        "label": "IDEX\/IQEX Mode G-codes",
+        "tooltip": "G-code or macro call to inject at print start for each mode.",
+        "mode": "advanced",
+        "default_value": ""
+    },
+    "imex_mode_names": {
+        "type": "strings",
+        "label": "IDEX\/IQEX Mode Names",
+        "tooltip": "Display names for each user-defined IDEX\/IQEX parallel print mode.",
+        "mode": "advanced",
+        "default_value": ""
+    },
+    "imex_nozzle_clearance_x": {
+        "type": "float",
+        "label": "Nozzle Clearance X",
+        "tooltip": "Distance (mm) from the nozzle to the collision-side carriage edge in X. Used to calculate the width of the collision exclusion strip at each X boundary.",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "30"
+    },
+    "imex_nozzle_clearance_y": {
+        "type": "float",
+        "label": "Nozzle Clearance Y",
+        "tooltip": "Distance (mm) from the nozzle to the collision-side carriage edge in Y. Used to calculate the width of the collision exclusion strip at each Y boundary.",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "30"
+    },
+    "imex_parallel_mode": {
+        "type": "string",
+        "label": "IDEX\/IQEX Print Mode",
+        "tooltip": "Name of the active IDEX\/IQEX parallel print mode, or \"primary\" for single-carriage printing. Requires IDEX\/IQEX Printer enabled in the Printer preset (Printer → Multimaterial → IDEX\/IQEX Configuration).",
+        "mode": "advanced",
+        "default_value": "primary"
+    },
+    "imex_tool_layout": {
+        "type": "enum",
+        "label": "Tool 0 Position",
+        "tooltip": "Physical position on the bed where tool T0 (index 0) is located. Determines how tool indices map to bed zones. For single-gantry setups (IDEX) only left\/right matters; for dual-gantry setups (IQEX) all four corners are selectable (front = lower Y \/ near the operator, rear = higher Y \/ back of machine).",
+        "enum_values": [
+            "front-left",
+            "front-right",
+            "rear-left",
+            "rear-right"
+        ],
+        "enum_labels": [
+            "Front-left",
+            "Front-right",
+            "Rear-left",
+            "Rear-right"
+        ],
+        "mode": "advanced",
+        "default_value": "front-left"
+    },
+    "imex_tools_per_gantry": {
+        "type": "int",
+        "label": "Tools per Gantry",
+        "tooltip": "Number of independent toolheads per gantry along X. 2 for IDEX-style.",
+        "min": "1",
+        "max": "4",
+        "mode": "advanced",
+        "default_value": "2"
+    },
+    "imex_viz_theme": {
+        "type": "enum",
+        "label": "Visualization Theme",
+        "tooltip": "Color theme for IDEX\/IQEX bed zone visualization. Choose a colorblind-friendly theme if needed.",
+        "enum_values": [
+            "standard",
+            "deuteranopia",
+            "tritanopia",
+            "high_contrast"
+        ],
+        "enum_labels": [
+            "Standard",
+            "Deuteranopia \/ Protanopia (red-green)",
+            "Tritanopia (blue-yellow)",
+            "High Contrast"
+        ],
+        "mode": "advanced",
+        "default_value": "standard"
     },
     "independent_support_layer_height": {
         "type": "bool",
@@ -2439,6 +3408,13 @@
         "mode": "advanced",
         "default_value": "100%"
     },
+    "infill_complete_top": {
+        "type": "bool",
+        "label": "Fill pattern tops",
+        "tooltip": "Choose this option if you want to completely fill in the tops of the infill pattern",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "infill_direction": {
         "type": "float",
         "label": "Sparse infill direction",
@@ -2450,7 +3426,7 @@
         "default_value": "45"
     },
     "infill_jerk": {
-        "type": "float",
+        "type": "floats",
         "label": "Infill",
         "tooltip": "Jerk for infill.",
         "sidetext": "mm\/s",
@@ -2491,7 +3467,7 @@
     "infill_wall_overlap": {
         "type": "percent",
         "label": "Infill\/wall overlap",
-        "tooltip": "This allows the infill area to be enlarged slightly to overlap with walls for better bonding. The percentage value is relative to line width of sparse infill. Set this value to ~10-15% to minimize potential over extrusion and accumulation of material resulting in rough top surfaces.",
+        "tooltip": "This allows the infill area to be enlarged slightly to overlap with walls for better bonding. The percentage value is relative to the inner wall line width. Set this value to ~10-15% to minimize potential over extrusion and accumulation of material resulting in rough top surfaces.",
         "sidetext": "%",
         "mode": "advanced",
         "default_value": "15%"
@@ -2515,7 +3491,7 @@
         "default_value": ""
     },
     "initial_layer_acceleration": {
-        "type": "float",
+        "type": "floats",
         "label": "First layer",
         "tooltip": "This is the printing acceleration for the first layer. Using limited acceleration can improve build plate adhesion.",
         "sidetext": "mm\/s²",
@@ -2523,17 +3499,27 @@
         "mode": "advanced",
         "default_value": "300"
     },
+    "initial_layer_fan_speed": {
+        "type": "ints",
+        "label": "First layer fan speed",
+        "tooltip": "Sets an exact fan speed for the first layer, overriding all other cooling settings. Useful for protecting 3D-printed toolhead parts (e.g. Voron-style ABS\/ASA ducts) from a hot bed. A small amount of airflow cools the ducts down, without using full cooling that may in certain conditions hurt first-layer adhesion.\nFrom the second layer onwards, normal cooling resumes.\nIf \"Full fan speed at layer\" is also set, the fan ramps smoothly from this value on the first layer up to your target by the chosen layer.\nOnly available when \"No cooling for the first\" is 0.\nSet to -1 to disable it.",
+        "sidetext": "%",
+        "min": "-1",
+        "max": "100",
+        "mode": "advanced",
+        "default_value": "-1"
+    },
     "initial_layer_infill_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "First layer infill",
-        "tooltip": "This is the speed for solid infill parts of the first layer.",
+        "tooltip": "This is the speed for the first layer except for walls and brim, such as infill, gap fill and support.",
         "sidetext": "mm\/s",
         "min": "1",
         "mode": "advanced",
         "default_value": "60"
     },
     "initial_layer_jerk": {
-        "type": "float",
+        "type": "floats",
         "label": "First layer",
         "tooltip": "Jerk for the first layer.",
         "sidetext": "mm\/s",
@@ -2570,43 +3556,40 @@
         "default_value": "0.2"
     },
     "initial_layer_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "First layer",
-        "tooltip": "This is the speed for the first layer except for solid infill sections.",
+        "tooltip": "This is the speed for the walls and brim of the first layer.",
         "sidetext": "mm\/s",
         "min": "1",
         "mode": "advanced",
         "default_value": "30"
     },
     "initial_layer_travel_acceleration": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "First layer travel",
         "tooltip": "Travel acceleration of first layer.\nThe percentage value is relative to Travel Acceleration.",
         "sidetext": "mm\/s² or %",
         "min": "0",
-        "mode": "advanced",
-        "default_value": "100%"
+        "mode": "advanced"
     },
     "initial_layer_travel_jerk": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "First layer travel",
         "tooltip": "Travel jerk of first layer.\nThe percentage value is relative to Travel Jerk.",
         "sidetext": "mm\/s or %",
         "min": "0",
-        "mode": "advanced",
-        "default_value": "100%"
+        "mode": "advanced"
     },
     "initial_layer_travel_speed": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "First layer travel speed",
         "tooltip": "Travel speed of the first layer.",
         "sidetext": "mm\/s or %",
         "min": "1",
-        "mode": "advanced",
-        "default_value": "100%"
+        "mode": "advanced"
     },
     "inner_wall_acceleration": {
-        "type": "float",
+        "type": "floats",
         "label": "Inner wall",
         "tooltip": "Acceleration of inner walls.",
         "sidetext": "mm\/s²",
@@ -2633,7 +3616,7 @@
         "default_value": "1"
     },
     "inner_wall_jerk": {
-        "type": "float",
+        "type": "floats",
         "label": "Inner wall",
         "tooltip": "Jerk of inner walls.",
         "sidetext": "mm\/s",
@@ -2652,7 +3635,7 @@
         "default_value": "0"
     },
     "inner_wall_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "Inner wall",
         "tooltip": "This is the speed for inner walls.",
         "sidetext": "mm\/s",
@@ -2802,7 +3785,7 @@
     "internal_bridge_angle": {
         "type": "float",
         "label": "Internal bridge infill direction",
-        "tooltip": "Internal Bridging angle override.\nIf left to zero, the bridging angle will be calculated automatically for each specific bridge.\nOtherwise the provided angle will be used according to:\n - The absolute coordinates\n - The absolute coordinates + Model rotation: If Align infill direction to model is enabled\n - The optimal automatic angle + this value: If 'Relative Bridge Angle' is enabled\n\nUse 180° for zero absolute angle.",
+        "tooltip": "Internal Bridging angle override.\nIf left to zero, the bridging angle will be calculated automatically for each specific bridge.\nOtherwise the provided angle will be used according to:\n - The absolute coordinates\n - The absolute coordinates + Model rotation: If Align directions to model is enabled\n - The optimal automatic angle + this value: If 'Relative Bridge Angle' is enabled\n\nUse 180° for zero absolute angle.",
         "sidetext": "°",
         "min": "0",
         "max": "180",
@@ -2839,13 +3822,12 @@
         "default_value": "1"
     },
     "internal_bridge_speed": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "Internal",
         "tooltip": "Speed of internal bridges. If the value is expressed as a percentage, it will be calculated based on the bridge_speed. Default value is 150%.",
         "sidetext": "mm\/s or %",
         "min": "1",
-        "mode": "advanced",
-        "default_value": "150%"
+        "mode": "advanced"
     },
     "internal_solid_filament_id": {
         "type": "int",
@@ -2857,13 +3839,12 @@
         "default_value": "0"
     },
     "internal_solid_infill_acceleration": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "Internal solid infill",
         "tooltip": "Acceleration of internal solid infill. If the value is expressed as a percentage (e.g. 100%), it will be calculated based on the default acceleration.",
         "sidetext": "mm\/s² or %",
         "min": "0",
-        "mode": "advanced",
-        "default_value": "100%"
+        "mode": "advanced"
     },
     "internal_solid_infill_flow_ratio": {
         "type": "float",
@@ -2894,6 +3875,7 @@
             "rectilinear",
             "alignedrectilinear",
             "concentric",
+            "spiralinset",
             "hilbertcurve",
             "archimedeanchords",
             "octagramspiral"
@@ -2904,6 +3886,7 @@
             "Rectilinear",
             "Aligned Rectilinear",
             "Concentric",
+            "Spiral Inset",
             "Hilbert Curve",
             "Archimedean Chords",
             "Octagram Spiral"
@@ -2930,6 +3913,10 @@
                 "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M19.5,22.459a7.562,7.562,0,0,0-.075-1l.007,0c-.012-.084-.03-.167-.044-.251s-.027-.164-.044-.245c-.033-.163-.074-.324-.118-.485-.015-.052-.025-.1-.041-.156-.062-.208-.135-.414-.216-.617-.026-.064-.056-.126-.083-.189-.062-.142-.126-.284-.2-.423-.037-.074-.078-.147-.119-.22-.07-.128-.145-.253-.223-.377-.046-.072-.091-.143-.14-.213-.088-.129-.182-.254-.279-.378-.046-.059-.089-.119-.137-.176-.148-.178-.3-.353-.472-.52s-.333-.312-.506-.455c-.047-.039-.094-.077-.142-.114q-.225-.178-.461-.338l-.086-.059c-.183-.119-.37-.227-.56-.329-.051-.027-.1-.052-.154-.077-.155-.079-.313-.151-.472-.218-.047-.019-.093-.041-.141-.059-.2-.078-.395-.146-.6-.207l-.148-.04c-.092-.025-.183-.053-.275-.075A8.562,8.562,0,0,0,12.4,13.47a8.741,8.741,0,0,0-3.1-1.955.239.239,0,0,0-.284.352A5.061,5.061,0,0,1,9.8,15.376c-.18.056-.358.121-.535.191l-.143.059c-.2.081-.387.168-.575.267-.022.011-.043.024-.065.036-.176.094-.35.2-.52.307-.037.023-.074.046-.11.07-.179.119-.353.248-.524.384l-.105.087c-.175.146-.347.3-.512.461s-.315.333-.46.506c-.043.052-.085.105-.126.157q-.158.2-.3.4c-.036.052-.074.1-.108.156-.113.174-.221.35-.319.53h0a7.469,7.469,0,0,0-.9,3.51\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M12.52,19.027c.154-.486,1.165-.669,2.259-.408s1.855.867,1.7,1.354-1.165.669-2.259.408S12.366,19.514,12.52,19.027Z\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M16.117,1.5A20.427,20.427,0,0,1,20.81,4.912q.213.21.422.428c.475.254.876.492,1.268.74m0,3.7-.021-.017-.241-.194c-.337-.265-.679-.515-.944-.692l-.26-.176c-.409-.266-.828-.511-1.309-.765l-.332-.17c-.222-.245-.452-.484-.687-.715a17.857,17.857,0,0,0-6.421-4.026L12.2,3a9.224,9.224,0,0,0-2.986-.5h0A9.209,9.209,0,0,0,1.5,6.7M22.406,21.073c-.014-.114-.034-.229-.066-.4-.017-.1-.035-.208-.056-.309-.047-.232-.1-.463-.159-.658l-.065-.243c-.088-.3-.191-.584-.3-.858-.036-.091-.075-.18-.119-.277-.087-.2-.18-.4-.284-.605l-.164-.3c-.1-.182-.208-.363-.33-.555-.063-.1-.126-.2-.178-.271-.126-.185-.261-.366-.42-.569-.054-.071-.109-.142-.167-.212-.209-.251-.428-.5-.664-.731s-.465-.436-.716-.644l-.192-.154c-.21-.165-.422-.322-.619-.453l-.144-.1c-.259-.168-.525-.322-.779-.457l-.226-.116c-.221-.112-.445-.214-.664-.3l-.2-.081c-.073-.029-.146-.058-.219-.084A11.593,11.593,0,0,0,10.342,8.7l-.589-.2H9.217a3.238,3.238,0,0,0-2.71,5.009l.044.07c-.077.048-.361.23-.361.23-.251.167-.494.345-.732.535l-.158.13c-.241.2-.477.411-.707.64s-.438.461-.651.714l-.16.2c-.149.187-.291.379-.463.628l-.113.165c-.158.242-.308.49-.441.741a10.5,10.5,0,0,0-1.16,3.549m20.8-7.215c-.269-.324-.551-.637-.859-.944-.292-.29-.593-.558-.945-.849l-.221-.178c-.271-.213-.546-.414-.776-.569l-.2-.139c-.336-.218-.679-.418-1.045-.612l-.245-.126c-.187-.094-.377-.184-.563-.267q-.447-.533-.942-1.02a14.728,14.728,0,0,0-5.291-3.328l-.275-.094A5,5,0,0,0,9.422,5.5h0A6.444,6.444,0,0,0,5.055,7.085a6.3,6.3,0,0,0-2.04,5.4c-.182.161-.361.328-.539.5-.289.288-.559.587-.872.961l-.1.129\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
             {
+                "icon_filename": "param_spiralinset.svg",
+                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M12.00,12.00 L12.00,11.96 L12.01,11.92 L12.03,11.89 L12.05,11.85 L12.08,11.82 L12.12,11.80 L12.16,11.78 L12.20,11.76 L12.25,11.75 L12.30,11.75 L12.35,11.75 L12.40,11.77 L12.46,11.79 L12.51,11.81 L12.56,11.85 L12.61,11.89 L12.66,11.94 L12.70,12.00 L12.74,12.06 L12.77,12.14 L12.79,12.21 L12.80,12.29 L12.81,12.38 L12.81,12.47 L12.80,12.56 L12.77,12.65 L12.74,12.74 L12.70,12.83 L12.65,12.92 L12.58,13.01 L12.51,13.09 L12.43,13.17 L12.33,13.24 L12.23,13.30 L12.12,13.36 L12.00,13.40 L11.87,13.43 L11.74,13.46 L11.61,13.46 L11.47,13.46 L11.33,13.45 L11.18,13.41 L11.04,13.37 L10.90,13.31 L10.76,13.24 L10.63,13.15 L10.50,13.05 L10.38,12.93 L10.27,12.81 L10.17,12.67 L10.08,12.51 L10.01,12.35 L9.95,12.18 L9.90,12.00 L9.87,11.81 L9.86,11.62 L9.86,11.43 L9.88,11.23 L9.92,11.03 L9.98,10.83 L10.06,10.64 L10.15,10.45 L10.27,10.27 L10.40,10.09 L10.55,9.93 L10.72,9.78 L10.90,9.64 L11.10,9.52 L11.31,9.41 L11.53,9.32 L11.76,9.25 L12.00,9.20 L12.25,9.17 L12.50,9.17 L12.75,9.18 L13.01,9.22 L13.27,9.29 L13.52,9.37 L13.76,9.48 L14.00,9.62 L14.23,9.77 L14.44,9.95 L14.64,10.15 L14.83,10.37 L15.00,10.60 L15.14,10.86 L15.27,11.12 L15.37,11.41 L15.45,11.70 L15.50,12.00 L15.53,12.31 L15.52,12.62 L15.49,12.94 L15.44,13.25 L15.35,13.56 L15.23,13.87 L15.09,14.16 L14.92,14.45 L14.72,14.72 L14.50,14.98 L14.25,15.22 L13.98,15.44 L13.69,15.63 L13.38,15.80 L13.06,15.94 L12.72,16.06 L12.36,16.15 L12.00,16.20 L11.63,16.22 L11.26,16.21 L10.88,16.17 L10.51,16.09 L10.14,15.98 L9.78,15.84 L9.43,15.66 L9.10,15.46 L8.78,15.22 L8.48,14.95 L8.21,14.65 L7.96,14.33 L7.74,13.99 L7.54,13.62 L7.38,13.24 L7.25,12.84 L7.16,12.42 L7.10,12.00 L7.08,11.57 L7.10,11.14 L7.15,10.70 L7.25,10.27 L7.38,9.85 L7.55,9.43 L7.76,9.03 L8.01,8.65 L8.29,8.29 L8.60,7.95 L8.94,7.64 L9.32,7.35 L9.72,7.10 L10.14,6.88 L10.58,6.70 L11.04,6.56 L11.52,6.46 L12.00,6.40 L12.49,6.38 L12.99,6.41 L13.48,6.48 L13.97,6.59 L14.45,6.75 L14.92,6.95 L15.37,7.19 L15.80,7.47 L16.21,7.79 L16.59,8.15 L16.94,8.54 L17.25,8.97 L17.53,9.42 L17.77,9.90 L17.97,10.40 L18.13,10.92 L18.24,11.45 L18.30,12.00 L18.31,12.55 L18.28,13.11 L18.20,13.66 L18.07,14.21 L17.89,14.74 L17.66,15.27 L17.38,15.77 L17.06,16.25 L16.70,16.70 L16.30,17.12 L15.86,17.51 L15.38,17.86 L14.88,18.17 L14.34,18.43 L13.78,18.65 L13.20,18.82 L12.61,18.93 L12.00,19.00 L11.39,19.01 L10.77,18.97 L10.16,18.87 L9.55,18.72 L8.96,18.52 L8.38,18.26 L7.83,17.96 L7.30,17.60 L6.80,17.20 L6.34,16.75 L5.92,16.26 L5.53,15.73 L5.20,15.17 L4.91,14.58 L4.68,13.96 L4.49,13.32 L4.37,12.67 L4.30,12.00 L4.29,11.33 L4.34,10.65 L4.45,9.98 L4.62,9.31 L4.85,8.66 L5.13,8.03 L5.47,7.43 L5.86,6.85 L6.31,6.31 L6.80,5.80 L7.34,5.34 L7.92,4.93 L8.53,4.56 L9.18,4.25 L9.86,4.00 L10.55,3.80 L11.27,3.67 L12.00,3.60\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+            },
+            {
                 "icon_filename": "param_hilbertcurve.svg",
                 "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M22.5,19.672l-2.808-2.808L22.5,14.056v-.041M19.672,22.5l-2.808-2.808L14.056,22.5h-.041M22.5,14.015,16.157,7.672,13.328,10.5l3.536,3.536-2.828,2.828L10.5,13.328,7.672,16.157,14.015,22.5m1.627-21,6.172,6.172.686-.687M6.985,22.5l.687-.686L1.5,15.642M1.5,9.9l3.49,3.39S7.555,10.5,7.672,10.5,4.136,6.964,4.136,6.964L6.964,4.136,10.5,7.672l2.828-2.829L9.985,1.5\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
@@ -2946,7 +3933,7 @@
         "default_value": "monotonic"
     },
     "internal_solid_infill_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "Internal solid infill",
         "tooltip": "This is the speed for internal solid infill, not including the top or bottom surface.",
         "sidetext": "mm\/s",
@@ -3074,6 +4061,13 @@
         "mode": "advanced",
         "default_value": "no ironing"
     },
+    "is_imex": {
+        "type": "bool",
+        "label": "IDEX\/IQEX Printer",
+        "tooltip": "Enable parallel printing for printers with multiple independent carriages (IDEX, IQEX, and similar).",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "is_infill_first": {
         "type": "bool",
         "label": "Print infill first",
@@ -3119,6 +4113,16 @@
         "min": "0",
         "mode": "simple",
         "default_value": "0.2"
+    },
+    "leading_brim_length": {
+        "type": "float",
+        "label": "Leading brim length",
+        "tooltip": "Belt printers only. Extends the brim AHEAD of the object along the belt, on every downhill-facing edge of its contact area - both the object's first contact with the belt and any island that lands later. This apron is laid onto the belt before the object reaches it, so the leading edge has something already stuck down to hold on to.\n\nMeasured on the belt surface, and added on top of Brim width: the brim reaches Brim-object gap + Leading brim length + Brim width ahead of the object. Set Brim-object gap to 0, or the apron will not touch the object it is meant to anchor.\n\nOn a tilted belt each layer lays one strip of the brim, so the thickness of the resulting brim sheet is set by flow rather than by layer height. Use Brim flow ratio to tune it.\n\nSet to 0 to disable.",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "100",
+        "mode": "advanced",
+        "default_value": "0"
     },
     "lightning_overhang_angle": {
         "type": "float",
@@ -3174,15 +4178,34 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "machine_bed_mass_Y": {
+        "type": "float",
+        "label": "",
+        "full_label": "Bed mass of the Y axis",
+        "tooltip": "The machine bed mass load of Y axis",
+        "sidetext": "g",
+        "min": "0",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "machine_end_gcode": {
         "type": "string",
         "label": "End G-code",
-        "tooltip": "Add end G-Code when finishing the entire print.",
+        "tooltip": "Add end G-code when finishing the entire print.",
         "full_width": "true",
         "multiline": "true",
         "height": "12",
         "mode": "advanced",
         "default_value": "M104 S0 ; turn off temperature\\nG28 X0  ; home X axis\\nM84     ; disable motors\\n"
+    },
+    "machine_hotend_change_time": {
+        "type": "float",
+        "label": "Hotend change time",
+        "tooltip": "Time to change hotend.",
+        "sidetext": "s",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
     },
     "machine_load_filament_time": {
         "type": "float",
@@ -3263,6 +4286,16 @@
         "mode": "simple",
         "default_value": "500,200"
     },
+    "machine_max_force_Y": {
+        "type": "float",
+        "label": "",
+        "full_label": "Maximum force of the Y axis",
+        "tooltip": "The allowed maximum output force of Y axis",
+        "sidetext": "N",
+        "min": "0",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "machine_max_jerk_e": {
         "type": "floats",
         "label": "",
@@ -3314,11 +4347,21 @@
         "mode": "advanced",
         "default_value": "0.01"
     },
+    "machine_max_printed_mass": {
+        "type": "float",
+        "label": "",
+        "full_label": "The allowed max printed mass",
+        "tooltip": "The allowed max printed mass on a plate",
+        "sidetext": "g",
+        "min": "0",
+        "mode": "develop",
+        "default_value": "0"
+    },
     "machine_max_speed_e": {
         "type": "floats",
         "label": "",
         "full_label": "Maximum speed E",
-        "tooltip": "Maximum speed of E axis",
+        "tooltip": "Maximum speed of the E axis",
         "sidetext": "mm\/s",
         "min": "0",
         "mode": "simple",
@@ -3328,7 +4371,7 @@
         "type": "floats",
         "label": "",
         "full_label": "Maximum speed X",
-        "tooltip": "Maximum speed of X axis",
+        "tooltip": "Maximum speed of the X axis",
         "sidetext": "mm\/s",
         "min": "0",
         "mode": "simple",
@@ -3338,7 +4381,7 @@
         "type": "floats",
         "label": "",
         "full_label": "Maximum speed Y",
-        "tooltip": "Maximum speed of Y axis",
+        "tooltip": "Maximum speed of the Y axis",
         "sidetext": "mm\/s",
         "min": "0",
         "mode": "simple",
@@ -3348,7 +4391,7 @@
         "type": "floats",
         "label": "",
         "full_label": "Maximum speed Z",
-        "tooltip": "Maximum speed of Z axis",
+        "tooltip": "Maximum speed of the Z axis",
         "sidetext": "mm\/s",
         "min": "0",
         "mode": "simple",
@@ -3383,6 +4426,13 @@
         "height": "12",
         "mode": "advanced",
         "default_value": ""
+    },
+    "machine_prepare_compensation_time": {
+        "type": "float",
+        "label": "",
+        "tooltip": "",
+        "mode": "develop",
+        "default_value": "260"
     },
     "machine_start_gcode": {
         "type": "string",
@@ -3537,8 +4587,7 @@
     "min_length_factor": {
         "type": "float",
         "label": "Minimum wall length",
-        "tooltip": "Adjust this value to prevent short, unclosed walls from being printed, which could increase print time. Higher values remove more and longer walls.\n\nNOTE: Bottom and top surfaces will not be affected by this value to prevent visual gaps on the outside of the model. Adjust 'One wall threshold' in the Advanced settings below to adjust the sensitivity of what is considered a top-surface. 'One wall threshold' is only visible if this setting is set above the default value of 0.5, or if single-wall top surfaces is enabled.",
-        "sidetext": "mm",
+        "tooltip": "Adjust this value to prevent short, unclosed walls from being printed, which could increase print time. The value is a multiple of the wall width. Higher values remove more and longer walls.\n\nNOTE: Bottom and top surfaces will not be affected by this value to prevent visual gaps on the outside of the model. Adjust 'One wall threshold' in the 'Walls and surfaces' settings below to adjust the sensitivity of what is considered a top-surface. 'One wall threshold' is only visible if this setting is set above the default value of 0.5, or if single-wall top surfaces is enabled.",
         "min": "0",
         "max": "25",
         "mode": "advanced",
@@ -3584,7 +4633,7 @@
     "mmu_segmented_region_interlocking_depth": {
         "type": "float",
         "label": "Interlocking depth of a segmented region",
-        "tooltip": "Interlocking depth of a segmented region. It will be ignored if \"mmu_segmented_region_max_width\" is zero or if \"mmu_segmented_region_interlocking_depth\" is bigger than \"mmu_segmented_region_max_width\". Zero disables this feature.",
+        "tooltip": "Interlocking depth of a segmented region. On every other layer, the segmented region is limited to this depth. It will be ignored if \"interlocking_beam\" is enabled. Zero disables this feature.",
         "sidetext": "mm",
         "min": "0",
         "mode": "advanced",
@@ -3720,11 +4769,19 @@
         "tooltip": "Nozzle volume type for extruders.",
         "enum_values": [
             "Standard",
-            "High Flow"
+            "High Flow",
+            "Hybrid",
+            "TPU High Flow",
+            "E3D High Flow",
+            "Extra High Flow"
         ],
         "enum_labels": [
             "Standard",
-            "High Flow"
+            "High Flow",
+            "Hybrid",
+            "TPU High Flow",
+            "E3D High Flow",
+            "Extra High Flow"
         ],
         "mode": "simple",
         "default_value": "Standard"
@@ -3782,7 +4839,7 @@
         "default_value": "Auto"
     },
     "outer_wall_acceleration": {
-        "type": "float",
+        "type": "floats",
         "label": "Outer wall",
         "tooltip": "Acceleration of outer wall: using a lower value can improve quality.",
         "sidetext": "mm\/s²",
@@ -3809,7 +4866,7 @@
         "default_value": "1"
     },
     "outer_wall_jerk": {
-        "type": "float",
+        "type": "floats",
         "label": "Outer wall",
         "tooltip": "Jerk of outer walls.",
         "sidetext": "mm\/s",
@@ -3828,7 +4885,7 @@
         "default_value": "0"
     },
     "outer_wall_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "Outer wall",
         "tooltip": "This is the printing speed for the outer walls of parts. These are generally printed slower than inner walls for higher quality.",
         "sidetext": "mm\/s",
@@ -3837,44 +4894,40 @@
         "default_value": "60"
     },
     "overhang_1_4_speed": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "10%",
         "full_label": "10%",
         "tooltip": "",
         "sidetext": "mm\/s or %",
         "min": "0",
-        "mode": "advanced",
-        "default_value": "0"
+        "mode": "advanced"
     },
     "overhang_2_4_speed": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "25%",
         "full_label": "25%",
         "tooltip": "",
         "sidetext": "mm\/s or %",
         "min": "0",
-        "mode": "advanced",
-        "default_value": "0"
+        "mode": "advanced"
     },
     "overhang_3_4_speed": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "50%",
         "full_label": "50%",
         "tooltip": "",
         "sidetext": "mm\/s or %",
         "min": "0",
-        "mode": "advanced",
-        "default_value": "0"
+        "mode": "advanced"
     },
     "overhang_4_4_speed": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "75%",
         "full_label": "75%",
         "tooltip": "",
         "sidetext": "mm\/s or %",
         "min": "0",
-        "mode": "advanced",
-        "default_value": "0"
+        "mode": "advanced"
     },
     "overhang_fan_speed": {
         "type": "ints",
@@ -4000,6 +5053,13 @@
         "tooltip": "Map the logical extruder to physical extruder.",
         "mode": "develop",
         "default_value": "0"
+    },
+    "plugins": {
+        "type": "strings",
+        "label": "Plugins Used",
+        "tooltip": "Plugin capabilities referenced by this preset, stored as name;uuid;capability.",
+        "mode": "develop",
+        "default_value": ""
     },
     "post_process": {
         "type": "strings",
@@ -4134,6 +5194,23 @@
         "mode": "simple",
         "default_value": "45"
     },
+    "prime_volume_mode": {
+        "type": "enum",
+        "label": "Prime volume mode",
+        "tooltip": "Selects how the wipe-tower prime and flush volumes are computed on multi-extruder printers.",
+        "enum_values": [
+            "Default",
+            "Saving",
+            "Fast"
+        ],
+        "enum_labels": [
+            "Default",
+            "Saving",
+            "Fast"
+        ],
+        "mode": "develop",
+        "default_value": "Default"
+    },
     "print_compatible_printers": {
         "type": "strings",
         "label": "",
@@ -4186,17 +5263,30 @@
     "print_order": {
         "type": "enum",
         "label": "Intra-layer order",
-        "tooltip": "Print order within a single layer.",
+        "tooltip": "Order in which object instances are visited within a single layer, which controls how much travel is spent moving between them.\n\nDefault: nearest-neighbor chaining, refined with 2-opt and crossing removal. A good general choice.\nAs object list: instances are printed in the same order as the object list, without any path optimization. Use it when you need a predictable, manually controlled order.\nBest of all (shortest path): every strategy is evaluated and the shortest one is used. The object instance order is decided once for the whole print, while the ordering of individual islands is decided per layer, so different layers may end up using different strategies. Slightly slower to slice.\nSnake: serpentine row-by-row traversal, refined with 2-opt. Well suited to regular grids of many small parts.\n\nWith multiple filaments or tools in the same layer, minimizing tool changes takes priority: objects are grouped by filament first and this setting only orders the instances within each filament group, so the overall sequence may not look like the shortest path across the plate.",
         "enum_values": [
             "default",
-            "as_obj_list"
+            "as_obj_list",
+            "best_of",
+            "snake"
         ],
         "enum_labels": [
             "Default",
-            "As object list"
+            "As object list",
+            "Best of all (shortest path)",
+            "Snake"
         ],
         "mode": "advanced",
         "default_value": "default"
+    },
+    "print_plugin_config_overrides": {
+        "type": "string",
+        "label": "Capabilities",
+        "tooltip": "Configuration for the plugin capabilities this preset uses, overriding the global Capabilities configuration. Stored as a raw JSON array and edited through the dialog behind the button, never typed in directly.",
+        "gui_type": "",
+        "mode": "advanced",
+        "nocli": "true",
+        "default_value": ""
     },
     "print_sequence": {
         "type": "enum",
@@ -4277,6 +5367,15 @@
         "multiline": "true",
         "height": "13",
         "mode": "advanced",
+        "default_value": ""
+    },
+    "printer_plugin_config_overrides": {
+        "type": "string",
+        "label": "Capabilities",
+        "tooltip": "Configuration for the plugin capabilities this preset uses, overriding the global Capabilities configuration. Stored as a raw JSON array and edited through the dialog behind the button, never typed in directly.",
+        "gui_type": "",
+        "mode": "advanced",
+        "nocli": "true",
         "default_value": ""
     },
     "printer_settings_id": {
@@ -4483,7 +5582,7 @@
     "reduce_infill_retraction": {
         "type": "bool",
         "label": "Reduce infill retraction",
-        "tooltip": "Don't retract when the travel is entirely within an infill area. That means the oozing can't been seen. This can reduce times of retraction for complex model and save printing time, but make slicing and G-code generating slower. Note that z-hop is also not performed in areas where retraction is skipped.",
+        "tooltip": "Don't retract when the travel is entirely within an infill area. That means the oozing can't been seen. This can reduce times of retraction for complex model and save printing time, but make slicing and G-code generating slower. Note that Z-hop is also not performed in areas where retraction is skipped.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -4519,6 +5618,14 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "retract_after_wipe": {
+        "type": "percents",
+        "label": "Retract amount after wipe",
+        "tooltip": "This is the length of fast retraction after wipe, relative to retraction length.\nThe value will be clamped by 100% minus the retract amount before the wipe value.",
+        "sidetext": "%",
+        "mode": "",
+        "default_value": "0%"
+    },
     "retract_before_wipe": {
         "type": "percents",
         "label": "Retract amount before wipe",
@@ -4529,9 +5636,8 @@
     },
     "retract_length_toolchange": {
         "type": "floats",
-        "label": "Length",
-        "full_label": "Retraction Length (Toolchange)",
-        "tooltip": "",
+        "label": "Retraction Length (Toolchange)",
+        "tooltip": "When retraction is triggered before changing tool, filament is pulled back by the specified amount (the length is measured on raw filament, before it enters the extruder).",
         "sidetext": "mm",
         "mode": "advanced",
         "default_value": "10"
@@ -4583,7 +5689,7 @@
     },
     "retract_restart_extra_toolchange": {
         "type": "floats",
-        "label": "Extra length on restart",
+        "label": "Extra length on restart (Toolchange)",
         "tooltip": "When the retraction is compensated after changing tool, the extruder will push this additional amount of filament.",
         "sidetext": "mm",
         "mode": "advanced",
@@ -4643,7 +5749,7 @@
     },
     "role_based_wipe_speed": {
         "type": "bool",
-        "label": "Role base wipe speed",
+        "label": "Role based wipe speed",
         "tooltip": "The wipe speed is determined by the speed of the current extrusion role. e.g. if a wipe action is executed immediately following an outer wall extrusion, the speed of the outer wall extrusion will be utilized for the wipe action.",
         "mode": "advanced",
         "default_value": "1"
@@ -4695,7 +5801,7 @@
     "seam_gap": {
         "type": "floatorpercent",
         "label": "Seam gap",
-        "tooltip": "In order to reduce the visibility of the seam in a closed loop extrusion, the loop is interrupted and shortened by a specified amount.\nThis amount can be specified in millimeters or as a percentage of the current extruder diameter. The default value for this parameter is 10%.",
+        "tooltip": "In order to reduce the visibility of the seam in a closed loop extrusion, the loop is interrupted and shortened by a specified amount.\nThis amount can be specified in millimeters or as a percentage of the nozzle diameter. The default value for this parameter is 10%.",
         "sidetext": "mm or %",
         "min": "0",
         "mode": "advanced",
@@ -4786,18 +5892,18 @@
         "mode": "advanced",
         "default_value": "none"
     },
+    "separated_infills": {
+        "type": "bool",
+        "label": "Separated infills",
+        "tooltip": "Centers the internal infill of each part on itself, as if it were sliced on its own, instead of on the whole assembly. Parts that touch or overlap are treated as one body and share a center; separate parts (or distinct 3D objects) each get their own.\nUseful when an assembly groups several objects that should each keep a consistent, self-centered infill.\nAdaptive Cubic and Support Cubic always center each part on itself, and Lightning infill is generated for the whole object and is unaffected.",
+        "mode": "",
+        "default_value": "0"
+    },
     "set_other_flow_ratios": {
         "type": "bool",
         "label": "Set other flow ratios",
         "tooltip": "Change flow ratios for other extrusion path types.",
         "mode": "advanced",
-        "default_value": "0"
-    },
-    "silent_mode": {
-        "type": "bool",
-        "label": "Silent Mode",
-        "tooltip": "Whether the machine supports silent mode in which machine uses lower acceleration to print more quietly",
-        "mode": "develop",
         "default_value": "0"
     },
     "single_extruder_multi_material": {
@@ -4960,6 +6066,15 @@
         "mode": "advanced",
         "default_value": "regular"
     },
+    "slicing_pipeline_plugin": {
+        "type": "strings",
+        "label": "Slicing Pipeline Plugin",
+        "tooltip": "Python plugins invoked at each slicing pipeline step to read and modify intermediate slicing data, including a final G-code post-processing step. Research\/experimental.",
+        "full_width": "true",
+        "gui_type": "",
+        "mode": "advanced",
+        "default_value": ""
+    },
     "slow_down_for_layer_cooling": {
         "type": "bools",
         "label": "Slow printing down for better layer cooling",
@@ -4996,9 +6111,9 @@
         "default_value": "10"
     },
     "slowdown_for_curled_perimeters": {
-        "type": "bool",
+        "type": "bools",
         "label": "Slow down for curled perimeters",
-        "tooltip": "Enable this option to slow down printing in areas where perimeters may have curled upwards.\nFor example, additional slowdown will be applied when printing overhangs on sharp corners like the front of the Benchy hull, reducing curling which compounds over multiple layers.\n\nIt is generally recommended to have this option switched on unless your printer cooling is powerful enough or the print speed is slow enough that perimeter curling does not happen. \nIf printing with a high external perimeter speed, this parameter may introduce wall artifacts when slowing down, due to the potentially large variance in print speeds causing the extruder to be unable to keep up with the requested flow change.\nRoot cause of these artifacts is most likely PA tuning being slightly off, especially when combined with a high PA smooth time.\n\nRecommendations when enabling this option:\n1. Reduce Pressure Advance smooth time to 0.015 - 0.02 so the extruder reacts quickly to the speed changes.\n2. Increase the minimum print speeds to limit the magnitude of the slowdown and reduce the variance between fast and slow segments.\n3. If artifacts still appear, enable Extrusion Rate Smoothing (ERS) to further smooth the flow transitions.\n\nNote: When this option is enabled, overhang perimeters are treated like overhangs, meaning the overhang speed is applied even if the overhanging perimeter is part of a bridge.\nFor example, when the perimeters are 100% overhanging, with no wall supporting them from underneath, the 100% overhang speed will be applied.",
+        "tooltip": "Enable this option to slow down printing in areas where perimeters may have curled upwards.\nFor example, additional slowdown will be applied when printing overhangs on sharp corners like the front of the Benchy hull, reducing curling which compounds over multiple layers.\n\nIt is generally recommended to have this option switched on unless your printer cooling is powerful enough or the print speed is slow enough that perimeter curling does not happen. \nIf printing with a high external perimeter speed, this parameter may introduce wall artifacts when slowing down, due to the potentially large variance in print speeds causing the extruder to be unable to keep up with the requested flow change.\nRoot cause of these artifacts is most likely PA tuning being slightly off, especially when combined with a high PA smooth time.\n\nRecommendations when enabling this option:\n1. Reduce Pressure Advance smooth time to 0.015 - 0.02 so the extruder reacts quickly to the speed changes.\n2. Increase the minimum print speeds to limit the magnitude of the slowdown and reduce the variance between fast and slow segments.\n3. If artifacts still appear, enable Extrusion Rate Smoothing (ERS) to further smooth the flow transitions.\n\nNote: When this option is enabled, overhang perimeters are treated like overhangs, meaning the overhang speed is applied even if the overhanging perimeter is part of a bridge.\nFor example, when the perimeters are 100% overhanging, with no wall supporting them from underneath, the 75% overhang speed will be applied, limited by the bridge speed.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -5020,18 +6135,34 @@
         "default_value": "0,0;\"\\n0.2,0.4444\";\"\\n0.4,0.6145\";\"\\n0.6,0.7059\";\"\\n0.8,0.7619\";\"\\n1.5,0.8571\";\"\\n2,0.8889\";\"\\n3,0.9231\";\"\\n5,0.9520\";\"\\n10,1\""
     },
     "small_perimeter_speed": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "Small perimeters",
-        "tooltip": "This separate setting will affect the speed of perimeters having radius <= small_perimeter_threshold (usually holes). If expressed as percentage (for example: 80%) it will be calculated on the outer wall speed setting above. Set to zero for auto.",
+        "tooltip": "This separate setting will affect the speed of perimeters having radius <= small_perimeter_threshold (usually holes). If expressed as percentage (for example: 80%) it will be calculated on the outer wall speed setting above.",
         "sidetext": "mm\/s or %",
         "min": "1",
-        "mode": "advanced",
-        "default_value": "50%"
+        "mode": "advanced"
     },
     "small_perimeter_threshold": {
-        "type": "float",
+        "type": "floats",
         "label": "Small perimeters threshold",
         "tooltip": "This sets the threshold for small perimeter length. Default threshold is 0mm.",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "small_support_perimeter_speed": {
+        "type": "floatorpercents",
+        "label": "Small support perimeters",
+        "tooltip": "Same as \"Small perimeters\", but for supports. This separate setting will affect the speed of support for areas <= `small_support_perimeter_threshold`. If expressed as a percentage (for example: 80%), it will be calculated on the support or support interface speed setting above.",
+        "sidetext": "mm\/s or %",
+        "min": "1",
+        "mode": "advanced"
+    },
+    "small_support_perimeter_threshold": {
+        "type": "floats",
+        "label": "Small support perimeters threshold",
+        "tooltip": "This sets the threshold for small support perimeter length. The default threshold is 0mm.",
         "sidetext": "mm",
         "min": "0",
         "mode": "advanced",
@@ -5056,13 +6187,12 @@
         "default_value": ""
     },
     "sparse_infill_acceleration": {
-        "type": "floatorpercent",
+        "type": "floatorpercents",
         "label": "Sparse infill",
         "tooltip": "Acceleration of sparse infill. If the value is expressed as a percentage (e.g. 100%), it will be calculated based on the default acceleration.",
         "sidetext": "mm\/s² or %",
         "min": "0",
-        "mode": "advanced",
-        "default_value": "100%"
+        "mode": "advanced"
     },
     "sparse_infill_density": {
         "type": "percent",
@@ -5279,8 +6409,18 @@
         "mode": "advanced",
         "default_value": ""
     },
+    "sparse_infill_smooth_factor": {
+        "type": "percent",
+        "label": "Sparse infill smooth factor",
+        "tooltip": "Controls how strongly sparse infill corners are rounded. 0% keeps the original sharp path, while 100% produces the largest possible curves between adjacent infill lines.",
+        "sidetext": "%",
+        "min": "0",
+        "max": "100",
+        "mode": "advanced",
+        "default_value": "0%"
+    },
     "sparse_infill_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "Sparse infill",
         "tooltip": "This is the speed for internal sparse infill.",
         "sidetext": "mm\/s",
@@ -5359,7 +6499,7 @@
         "type": "ints",
         "label": "Other layers",
         "full_label": "Bed temperature",
-        "tooltip": "Bed temperature for layers except the initial one. A value of 0 means the filament does not support printing on the Cool Plate SuperTack.",
+        "tooltip": "This is the bed temperature for layers except for the first one. A value of 0 means the filament does not support printing on the Cool Plate SuperTack.",
         "sidetext": "℃",
         "min": "0",
         "max": "120",
@@ -5380,7 +6520,7 @@
     "support_air_filtration": {
         "type": "bool",
         "label": "Support air filtration",
-        "tooltip": "Enable this if printer support air filtration\nG-code command: M106 P3 S(0-255)",
+        "tooltip": "Enable this if the printer supports air filtration\nG-code command: M106 P3 S(0-255)",
         "mode": "develop",
         "default_value": "1"
     },
@@ -5470,9 +6610,16 @@
     "support_chamber_temp_control": {
         "type": "bool",
         "label": "Support controlling chamber temperature",
-        "tooltip": "This option is enabled if machine support controlling chamber temperature\nG-code command: M141 S(0-255)",
+        "tooltip": "This option is enabled if the machine supports controlling the chamber temperature\nG-code command: M141 S(0-255)",
         "mode": "advanced",
         "default_value": "1"
+    },
+    "support_cooling_filter": {
+        "type": "bool",
+        "label": "",
+        "tooltip": "",
+        "mode": "advanced",
+        "default_value": "0"
     },
     "support_critical_regions_only": {
         "type": "bool",
@@ -5487,6 +6634,13 @@
         "tooltip": "Expand (+) or shrink (-) the horizontal span of normal support.",
         "sidetext": "mm",
         "mode": "advanced",
+        "default_value": "0"
+    },
+    "support_fast_purge_mode": {
+        "type": "bool",
+        "label": "Support fast purge mode",
+        "tooltip": "Whether this printer supports fast purge mode with optimized temperature and multiplier.",
+        "mode": "develop",
         "default_value": "0"
     },
     "support_filament": {
@@ -5557,6 +6711,7 @@
             "auto",
             "rectilinear",
             "concentric",
+            "spiralinset",
             "rectilinear_interlaced",
             "grid"
         ],
@@ -5564,6 +6719,7 @@
             "Default",
             "Rectilinear",
             "Concentric",
+            "Spiral Inset",
             "Rectilinear Interlaced",
             "Grid"
         ],
@@ -5576,6 +6732,10 @@
             {
                 "icon_filename": "param_concentric.svg",
                 "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M19.5,22.459a7.562,7.562,0,0,0-.075-1l.007,0c-.012-.084-.03-.167-.044-.251s-.027-.164-.044-.245c-.033-.163-.074-.324-.118-.485-.015-.052-.025-.1-.041-.156-.062-.208-.135-.414-.216-.617-.026-.064-.056-.126-.083-.189-.062-.142-.126-.284-.2-.423-.037-.074-.078-.147-.119-.22-.07-.128-.145-.253-.223-.377-.046-.072-.091-.143-.14-.213-.088-.129-.182-.254-.279-.378-.046-.059-.089-.119-.137-.176-.148-.178-.3-.353-.472-.52s-.333-.312-.506-.455c-.047-.039-.094-.077-.142-.114q-.225-.178-.461-.338l-.086-.059c-.183-.119-.37-.227-.56-.329-.051-.027-.1-.052-.154-.077-.155-.079-.313-.151-.472-.218-.047-.019-.093-.041-.141-.059-.2-.078-.395-.146-.6-.207l-.148-.04c-.092-.025-.183-.053-.275-.075A8.562,8.562,0,0,0,12.4,13.47a8.741,8.741,0,0,0-3.1-1.955.239.239,0,0,0-.284.352A5.061,5.061,0,0,1,9.8,15.376c-.18.056-.358.121-.535.191l-.143.059c-.2.081-.387.168-.575.267-.022.011-.043.024-.065.036-.176.094-.35.2-.52.307-.037.023-.074.046-.11.07-.179.119-.353.248-.524.384l-.105.087c-.175.146-.347.3-.512.461s-.315.333-.46.506c-.043.052-.085.105-.126.157q-.158.2-.3.4c-.036.052-.074.1-.108.156-.113.174-.221.35-.319.53h0a7.469,7.469,0,0,0-.9,3.51\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M12.52,19.027c.154-.486,1.165-.669,2.259-.408s1.855.867,1.7,1.354-1.165.669-2.259.408S12.366,19.514,12.52,19.027Z\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M16.117,1.5A20.427,20.427,0,0,1,20.81,4.912q.213.21.422.428c.475.254.876.492,1.268.74m0,3.7-.021-.017-.241-.194c-.337-.265-.679-.515-.944-.692l-.26-.176c-.409-.266-.828-.511-1.309-.765l-.332-.17c-.222-.245-.452-.484-.687-.715a17.857,17.857,0,0,0-6.421-4.026L12.2,3a9.224,9.224,0,0,0-2.986-.5h0A9.209,9.209,0,0,0,1.5,6.7M22.406,21.073c-.014-.114-.034-.229-.066-.4-.017-.1-.035-.208-.056-.309-.047-.232-.1-.463-.159-.658l-.065-.243c-.088-.3-.191-.584-.3-.858-.036-.091-.075-.18-.119-.277-.087-.2-.18-.4-.284-.605l-.164-.3c-.1-.182-.208-.363-.33-.555-.063-.1-.126-.2-.178-.271-.126-.185-.261-.366-.42-.569-.054-.071-.109-.142-.167-.212-.209-.251-.428-.5-.664-.731s-.465-.436-.716-.644l-.192-.154c-.21-.165-.422-.322-.619-.453l-.144-.1c-.259-.168-.525-.322-.779-.457l-.226-.116c-.221-.112-.445-.214-.664-.3l-.2-.081c-.073-.029-.146-.058-.219-.084A11.593,11.593,0,0,0,10.342,8.7l-.589-.2H9.217a3.238,3.238,0,0,0-2.71,5.009l.044.07c-.077.048-.361.23-.361.23-.251.167-.494.345-.732.535l-.158.13c-.241.2-.477.411-.707.64s-.438.461-.651.714l-.16.2c-.149.187-.291.379-.463.628l-.113.165c-.158.242-.308.49-.441.741a10.5,10.5,0,0,0-1.16,3.549m20.8-7.215c-.269-.324-.551-.637-.859-.944-.292-.29-.593-.558-.945-.849l-.221-.178c-.271-.213-.546-.414-.776-.569l-.2-.139c-.336-.218-.679-.418-1.045-.612l-.245-.126c-.187-.094-.377-.184-.563-.267q-.447-.533-.942-1.02a14.728,14.728,0,0,0-5.291-3.328l-.275-.094A5,5,0,0,0,9.422,5.5h0A6.444,6.444,0,0,0,5.055,7.085a6.3,6.3,0,0,0-2.04,5.4c-.182.161-.361.328-.539.5-.289.288-.559.587-.872.961l-.1.129\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+            },
+            {
+                "icon_filename": "param_spiralinset.svg",
+                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M12.00,12.00 L12.00,11.96 L12.01,11.92 L12.03,11.89 L12.05,11.85 L12.08,11.82 L12.12,11.80 L12.16,11.78 L12.20,11.76 L12.25,11.75 L12.30,11.75 L12.35,11.75 L12.40,11.77 L12.46,11.79 L12.51,11.81 L12.56,11.85 L12.61,11.89 L12.66,11.94 L12.70,12.00 L12.74,12.06 L12.77,12.14 L12.79,12.21 L12.80,12.29 L12.81,12.38 L12.81,12.47 L12.80,12.56 L12.77,12.65 L12.74,12.74 L12.70,12.83 L12.65,12.92 L12.58,13.01 L12.51,13.09 L12.43,13.17 L12.33,13.24 L12.23,13.30 L12.12,13.36 L12.00,13.40 L11.87,13.43 L11.74,13.46 L11.61,13.46 L11.47,13.46 L11.33,13.45 L11.18,13.41 L11.04,13.37 L10.90,13.31 L10.76,13.24 L10.63,13.15 L10.50,13.05 L10.38,12.93 L10.27,12.81 L10.17,12.67 L10.08,12.51 L10.01,12.35 L9.95,12.18 L9.90,12.00 L9.87,11.81 L9.86,11.62 L9.86,11.43 L9.88,11.23 L9.92,11.03 L9.98,10.83 L10.06,10.64 L10.15,10.45 L10.27,10.27 L10.40,10.09 L10.55,9.93 L10.72,9.78 L10.90,9.64 L11.10,9.52 L11.31,9.41 L11.53,9.32 L11.76,9.25 L12.00,9.20 L12.25,9.17 L12.50,9.17 L12.75,9.18 L13.01,9.22 L13.27,9.29 L13.52,9.37 L13.76,9.48 L14.00,9.62 L14.23,9.77 L14.44,9.95 L14.64,10.15 L14.83,10.37 L15.00,10.60 L15.14,10.86 L15.27,11.12 L15.37,11.41 L15.45,11.70 L15.50,12.00 L15.53,12.31 L15.52,12.62 L15.49,12.94 L15.44,13.25 L15.35,13.56 L15.23,13.87 L15.09,14.16 L14.92,14.45 L14.72,14.72 L14.50,14.98 L14.25,15.22 L13.98,15.44 L13.69,15.63 L13.38,15.80 L13.06,15.94 L12.72,16.06 L12.36,16.15 L12.00,16.20 L11.63,16.22 L11.26,16.21 L10.88,16.17 L10.51,16.09 L10.14,15.98 L9.78,15.84 L9.43,15.66 L9.10,15.46 L8.78,15.22 L8.48,14.95 L8.21,14.65 L7.96,14.33 L7.74,13.99 L7.54,13.62 L7.38,13.24 L7.25,12.84 L7.16,12.42 L7.10,12.00 L7.08,11.57 L7.10,11.14 L7.15,10.70 L7.25,10.27 L7.38,9.85 L7.55,9.43 L7.76,9.03 L8.01,8.65 L8.29,8.29 L8.60,7.95 L8.94,7.64 L9.32,7.35 L9.72,7.10 L10.14,6.88 L10.58,6.70 L11.04,6.56 L11.52,6.46 L12.00,6.40 L12.49,6.38 L12.99,6.41 L13.48,6.48 L13.97,6.59 L14.45,6.75 L14.92,6.95 L15.37,7.19 L15.80,7.47 L16.21,7.79 L16.59,8.15 L16.94,8.54 L17.25,8.97 L17.53,9.42 L17.77,9.90 L17.97,10.40 L18.13,10.92 L18.24,11.45 L18.30,12.00 L18.31,12.55 L18.28,13.11 L18.20,13.66 L18.07,14.21 L17.89,14.74 L17.66,15.27 L17.38,15.77 L17.06,16.25 L16.70,16.70 L16.30,17.12 L15.86,17.51 L15.38,17.86 L14.88,18.17 L14.34,18.43 L13.78,18.65 L13.20,18.82 L12.61,18.93 L12.00,19.00 L11.39,19.01 L10.77,18.97 L10.16,18.87 L9.55,18.72 L8.96,18.52 L8.38,18.26 L7.83,17.96 L7.30,17.60 L6.80,17.20 L6.34,16.75 L5.92,16.26 L5.53,15.73 L5.20,15.17 L4.91,14.58 L4.68,13.96 L4.49,13.32 L4.37,12.67 L4.30,12.00 L4.29,11.33 L4.34,10.65 L4.45,9.98 L4.62,9.31 L4.85,8.66 L5.13,8.03 L5.47,7.43 L5.86,6.85 L6.31,6.31 L6.80,5.80 L7.34,5.34 L7.92,4.93 L8.53,4.56 L9.18,4.25 L9.86,4.00 L10.55,3.80 L11.27,3.67 L12.00,3.60\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
             {
                 "icon_filename": "param_rectilinear_interlaced.svg",
@@ -5599,7 +6759,7 @@
         "default_value": "0.5"
     },
     "support_interface_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "Support interface",
         "tooltip": "This is the speed for support interfaces.",
         "sidetext": "mm\/s",
@@ -5745,7 +6905,7 @@
         "default_value": "1"
     },
     "support_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "Support",
         "tooltip": "This is the speed for support.",
         "sidetext": "mm\/s",
@@ -5991,13 +7151,61 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "toolchange_cyclic_first_layer": {
+        "type": "bool",
+        "label": "Apply cyclic order to first layer",
+        "tooltip": "Applies the cyclic toolchange order to the first layer as well.\nBy default this is disabled, because the first layer is instead ordered for the best bed adhesion: filaments that print small, fragile first-layer features are printed last, so the following tool changes and travel moves are less likely to knock those weakly anchored parts loose. This first-layer order also honors a custom first layer filament sequence when one is set. The cyclic order's benefit (extra tool changes give each layer more time to cool) does not apply to the first layer, which is printed slowly and hot for adhesion.\nEnable this only if you need the exact same tool sequence on every layer, including the first, at the cost of that adhesion optimization.",
+        "mode": "",
+        "default_value": "0"
+    },
+    "toolchange_cyclic_order": {
+        "type": "string",
+        "label": "Cyclic order",
+        "tooltip": "Custom filament sequence used by the cyclic toolchange ordering, as filament numbers separated by commas (e.g. \"3,2,1,4\").\nEach layer prints its filaments following this sequence; filaments not listed are printed last, in ascending order.\nLeave empty to cycle through the filaments in ascending order.",
+        "mode": "",
+        "default_value": ""
+    },
+    "toolchange_ordering": {
+        "type": "enum",
+        "label": "Toolchange ordering",
+        "tooltip": "Determines the order of tool changes on each layer.\n- Default: Starts with the last used extruder to minimize tool changes.\n- Cyclic: Uses a fixed tool sequence each layer. This sacrifices speed for better surface quality, as the extra toolchanges allow layers more time to cool.",
+        "enum_values": [
+            "default",
+            "cyclic"
+        ],
+        "enum_labels": [
+            "Default",
+            "Cyclic"
+        ],
+        "mode": "advanced",
+        "default_value": "default"
+    },
     "top_bottom_infill_wall_overlap": {
         "type": "percent",
         "label": "Top\/Bottom solid infill\/wall overlap",
-        "tooltip": "Top solid infill area is enlarged slightly to overlap with wall for better bonding and to minimize the appearance of pinholes where the top infill meets the walls. A value of 25-30% is a good starting point, minimizing the appearance of pinholes. The percentage value is relative to line width of sparse infill.",
+        "tooltip": "Top solid infill area is enlarged slightly to overlap with wall for better bonding and to minimize the appearance of pinholes where the top infill meets the walls. A value of 25-30% is a good starting point, minimizing the appearance of pinholes. The percentage value is relative to the inner wall line width.",
         "sidetext": "%",
         "mode": "advanced",
         "default_value": "25%"
+    },
+    "top_color_penetration_layers": {
+        "type": "int",
+        "label": "Top paint penetration layers",
+        "tooltip": "The number of layers, including the top surface layer, that take the color painted on a top surface. Set to 0 to use the top shell layers. A value larger than the top shell also colors the sparse infill below the painted area.",
+        "sidetext": "layers",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "top_layer_direction": {
+        "type": "float",
+        "label": "Top layer direction",
+        "tooltip": "Fixed angle for the top solid infill and ironing lines.\nSet to -1 to follow the default solid infill direction.",
+        "sidetext": "°",
+        "min": "-1",
+        "max": "360",
+        "mode": "simple",
+        "default_value": "-1"
     },
     "top_shell_layers": {
         "type": "int",
@@ -6020,7 +7228,7 @@
         "default_value": "0.6"
     },
     "top_solid_infill_flow_ratio": {
-        "type": "float",
+        "type": "floats",
         "label": "Top surface flow ratio",
         "tooltip": "This factor affects the amount of material for top solid infill. You can decrease it slightly to have smooth surface finish.\n\nThe actual top surface flow used is calculated by multiplying this value with the filament flow ratio, and if set, the object's flow ratio.",
         "min": "0",
@@ -6029,7 +7237,7 @@
         "default_value": "1"
     },
     "top_surface_acceleration": {
-        "type": "float",
+        "type": "floats",
         "label": "Top surface",
         "tooltip": "This is the acceleration of top surface infill. Using a lower value may improve top surface quality.",
         "sidetext": "mm\/s²",
@@ -6047,6 +7255,42 @@
         "mode": "simple",
         "default_value": "100%"
     },
+    "top_surface_expansion": {
+        "type": "float",
+        "label": "Top surface expansion",
+        "tooltip": "Expands the top surfaces by this distance to connect distinct top surfaces and fill gaps.\nUseful for cases where the top surface is interrupted by a raised feature, such as text on a plane. Expanding it removes the holes beneath these features and creates a continuous path with a better finish for printing on top. The expansion is applied to the original top surface, before any other processing such as bridging or overhang detection.",
+        "sidetext": "mm",
+        "min": "0",
+        "mode": "advanced",
+        "default_value": "0"
+    },
+    "top_surface_expansion_direction": {
+        "type": "enum",
+        "label": "Top expansion direction",
+        "tooltip": "Direction in which the top surface expansion grows.\n - Inward grows into the holes and gaps left by features rising from the middle of a top surface.\n - Outward grows the outer edge of the surface, connecting surfaces separated by features that can divide a surface, such as a lattice pattern.\n - Inward and Outward does both.",
+        "enum_values": [
+            "inward_and_outward",
+            "inward",
+            "outward"
+        ],
+        "enum_labels": [
+            "Inward and Outward",
+            "Inward",
+            "Outward"
+        ],
+        "mode": "advanced",
+        "default_value": "inward_and_outward"
+    },
+    "top_surface_expansion_margin": {
+        "type": "float",
+        "label": "Top expansion wall margin",
+        "tooltip": "Using “Top surface expansion” may cause a surface that did not previously touch the model's outer walls to now do so.\nThis can cause contraction marks (such as the hull line) on the outer walls.\nBy adding a small margin, this contraction will not occur directly on the walls, thereby preventing a visible mark.",
+        "sidetext": "mm",
+        "min": "0",
+        "max": "10",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "top_surface_filament_id": {
         "type": "int",
         "label": "Top surface",
@@ -6056,8 +7300,25 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "top_surface_fill_order": {
+        "type": "enum",
+        "label": "Top surface fill order",
+        "tooltip": "Direction in which top surfaces are filled when using a center-based pattern (Concentric, Spiral Inset, Archimedean Chords, Octagram Spiral).\nOutward starts at the center of the surface, so any excess material is pushed towards the edge where it is least visible. Inward starts at the edge and ends with the tight curves at the center.\nDefault uses shortest-path ordering, which may run in either direction.",
+        "enum_values": [
+            "default",
+            "outward",
+            "inward"
+        ],
+        "enum_labels": [
+            "Default",
+            "Outward",
+            "Inward"
+        ],
+        "mode": "advanced",
+        "default_value": "default"
+    },
     "top_surface_jerk": {
-        "type": "float",
+        "type": "floats",
         "label": "Top surface",
         "tooltip": "Jerk for top surface.",
         "sidetext": "mm\/s",
@@ -6085,6 +7346,7 @@
             "rectilinear",
             "alignedrectilinear",
             "concentric",
+            "spiralinset",
             "hilbertcurve",
             "archimedeanchords",
             "octagramspiral"
@@ -6095,6 +7357,7 @@
             "Rectilinear",
             "Aligned Rectilinear",
             "Concentric",
+            "Spiral Inset",
             "Hilbert Curve",
             "Archimedean Chords",
             "Octagram Spiral"
@@ -6121,6 +7384,10 @@
                 "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M19.5,22.459a7.562,7.562,0,0,0-.075-1l.007,0c-.012-.084-.03-.167-.044-.251s-.027-.164-.044-.245c-.033-.163-.074-.324-.118-.485-.015-.052-.025-.1-.041-.156-.062-.208-.135-.414-.216-.617-.026-.064-.056-.126-.083-.189-.062-.142-.126-.284-.2-.423-.037-.074-.078-.147-.119-.22-.07-.128-.145-.253-.223-.377-.046-.072-.091-.143-.14-.213-.088-.129-.182-.254-.279-.378-.046-.059-.089-.119-.137-.176-.148-.178-.3-.353-.472-.52s-.333-.312-.506-.455c-.047-.039-.094-.077-.142-.114q-.225-.178-.461-.338l-.086-.059c-.183-.119-.37-.227-.56-.329-.051-.027-.1-.052-.154-.077-.155-.079-.313-.151-.472-.218-.047-.019-.093-.041-.141-.059-.2-.078-.395-.146-.6-.207l-.148-.04c-.092-.025-.183-.053-.275-.075A8.562,8.562,0,0,0,12.4,13.47a8.741,8.741,0,0,0-3.1-1.955.239.239,0,0,0-.284.352A5.061,5.061,0,0,1,9.8,15.376c-.18.056-.358.121-.535.191l-.143.059c-.2.081-.387.168-.575.267-.022.011-.043.024-.065.036-.176.094-.35.2-.52.307-.037.023-.074.046-.11.07-.179.119-.353.248-.524.384l-.105.087c-.175.146-.347.3-.512.461s-.315.333-.46.506c-.043.052-.085.105-.126.157q-.158.2-.3.4c-.036.052-.074.1-.108.156-.113.174-.221.35-.319.53h0a7.469,7.469,0,0,0-.9,3.51\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M12.52,19.027c.154-.486,1.165-.669,2.259-.408s1.855.867,1.7,1.354-1.165.669-2.259.408S12.366,19.514,12.52,19.027Z\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><path d=\"M16.117,1.5A20.427,20.427,0,0,1,20.81,4.912q.213.21.422.428c.475.254.876.492,1.268.74m0,3.7-.021-.017-.241-.194c-.337-.265-.679-.515-.944-.692l-.26-.176c-.409-.266-.828-.511-1.309-.765l-.332-.17c-.222-.245-.452-.484-.687-.715a17.857,17.857,0,0,0-6.421-4.026L12.2,3a9.224,9.224,0,0,0-2.986-.5h0A9.209,9.209,0,0,0,1.5,6.7M22.406,21.073c-.014-.114-.034-.229-.066-.4-.017-.1-.035-.208-.056-.309-.047-.232-.1-.463-.159-.658l-.065-.243c-.088-.3-.191-.584-.3-.858-.036-.091-.075-.18-.119-.277-.087-.2-.18-.4-.284-.605l-.164-.3c-.1-.182-.208-.363-.33-.555-.063-.1-.126-.2-.178-.271-.126-.185-.261-.366-.42-.569-.054-.071-.109-.142-.167-.212-.209-.251-.428-.5-.664-.731s-.465-.436-.716-.644l-.192-.154c-.21-.165-.422-.322-.619-.453l-.144-.1c-.259-.168-.525-.322-.779-.457l-.226-.116c-.221-.112-.445-.214-.664-.3l-.2-.081c-.073-.029-.146-.058-.219-.084A11.593,11.593,0,0,0,10.342,8.7l-.589-.2H9.217a3.238,3.238,0,0,0-2.71,5.009l.044.07c-.077.048-.361.23-.361.23-.251.167-.494.345-.732.535l-.158.13c-.241.2-.477.411-.707.64s-.438.461-.651.714l-.16.2c-.149.187-.291.379-.463.628l-.113.165c-.158.242-.308.49-.441.741a10.5,10.5,0,0,0-1.16,3.549m20.8-7.215c-.269-.324-.551-.637-.859-.944-.292-.29-.593-.558-.945-.849l-.221-.178c-.271-.213-.546-.414-.776-.569l-.2-.139c-.336-.218-.679-.418-1.045-.612l-.245-.126c-.187-.094-.377-.184-.563-.267q-.447-.533-.942-1.02a14.728,14.728,0,0,0-5.291-3.328l-.275-.094A5,5,0,0,0,9.422,5.5h0A6.444,6.444,0,0,0,5.055,7.085a6.3,6.3,0,0,0-2.04,5.4c-.182.161-.361.328-.539.5-.289.288-.559.587-.872.961l-.1.129\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
             {
+                "icon_filename": "param_spiralinset.svg",
+                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M12.00,12.00 L12.00,11.96 L12.01,11.92 L12.03,11.89 L12.05,11.85 L12.08,11.82 L12.12,11.80 L12.16,11.78 L12.20,11.76 L12.25,11.75 L12.30,11.75 L12.35,11.75 L12.40,11.77 L12.46,11.79 L12.51,11.81 L12.56,11.85 L12.61,11.89 L12.66,11.94 L12.70,12.00 L12.74,12.06 L12.77,12.14 L12.79,12.21 L12.80,12.29 L12.81,12.38 L12.81,12.47 L12.80,12.56 L12.77,12.65 L12.74,12.74 L12.70,12.83 L12.65,12.92 L12.58,13.01 L12.51,13.09 L12.43,13.17 L12.33,13.24 L12.23,13.30 L12.12,13.36 L12.00,13.40 L11.87,13.43 L11.74,13.46 L11.61,13.46 L11.47,13.46 L11.33,13.45 L11.18,13.41 L11.04,13.37 L10.90,13.31 L10.76,13.24 L10.63,13.15 L10.50,13.05 L10.38,12.93 L10.27,12.81 L10.17,12.67 L10.08,12.51 L10.01,12.35 L9.95,12.18 L9.90,12.00 L9.87,11.81 L9.86,11.62 L9.86,11.43 L9.88,11.23 L9.92,11.03 L9.98,10.83 L10.06,10.64 L10.15,10.45 L10.27,10.27 L10.40,10.09 L10.55,9.93 L10.72,9.78 L10.90,9.64 L11.10,9.52 L11.31,9.41 L11.53,9.32 L11.76,9.25 L12.00,9.20 L12.25,9.17 L12.50,9.17 L12.75,9.18 L13.01,9.22 L13.27,9.29 L13.52,9.37 L13.76,9.48 L14.00,9.62 L14.23,9.77 L14.44,9.95 L14.64,10.15 L14.83,10.37 L15.00,10.60 L15.14,10.86 L15.27,11.12 L15.37,11.41 L15.45,11.70 L15.50,12.00 L15.53,12.31 L15.52,12.62 L15.49,12.94 L15.44,13.25 L15.35,13.56 L15.23,13.87 L15.09,14.16 L14.92,14.45 L14.72,14.72 L14.50,14.98 L14.25,15.22 L13.98,15.44 L13.69,15.63 L13.38,15.80 L13.06,15.94 L12.72,16.06 L12.36,16.15 L12.00,16.20 L11.63,16.22 L11.26,16.21 L10.88,16.17 L10.51,16.09 L10.14,15.98 L9.78,15.84 L9.43,15.66 L9.10,15.46 L8.78,15.22 L8.48,14.95 L8.21,14.65 L7.96,14.33 L7.74,13.99 L7.54,13.62 L7.38,13.24 L7.25,12.84 L7.16,12.42 L7.10,12.00 L7.08,11.57 L7.10,11.14 L7.15,10.70 L7.25,10.27 L7.38,9.85 L7.55,9.43 L7.76,9.03 L8.01,8.65 L8.29,8.29 L8.60,7.95 L8.94,7.64 L9.32,7.35 L9.72,7.10 L10.14,6.88 L10.58,6.70 L11.04,6.56 L11.52,6.46 L12.00,6.40 L12.49,6.38 L12.99,6.41 L13.48,6.48 L13.97,6.59 L14.45,6.75 L14.92,6.95 L15.37,7.19 L15.80,7.47 L16.21,7.79 L16.59,8.15 L16.94,8.54 L17.25,8.97 L17.53,9.42 L17.77,9.90 L17.97,10.40 L18.13,10.92 L18.24,11.45 L18.30,12.00 L18.31,12.55 L18.28,13.11 L18.20,13.66 L18.07,14.21 L17.89,14.74 L17.66,15.27 L17.38,15.77 L17.06,16.25 L16.70,16.70 L16.30,17.12 L15.86,17.51 L15.38,17.86 L14.88,18.17 L14.34,18.43 L13.78,18.65 L13.20,18.82 L12.61,18.93 L12.00,19.00 L11.39,19.01 L10.77,18.97 L10.16,18.87 L9.55,18.72 L8.96,18.52 L8.38,18.26 L7.83,17.96 L7.30,17.60 L6.80,17.20 L6.34,16.75 L5.92,16.26 L5.53,15.73 L5.20,15.17 L4.91,14.58 L4.68,13.96 L4.49,13.32 L4.37,12.67 L4.30,12.00 L4.29,11.33 L4.34,10.65 L4.45,9.98 L4.62,9.31 L4.85,8.66 L5.13,8.03 L5.47,7.43 L5.86,6.85 L6.31,6.31 L6.80,5.80 L7.34,5.34 L7.92,4.93 L8.53,4.56 L9.18,4.25 L9.86,4.00 L10.55,3.80 L11.27,3.67 L12.00,3.60\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+            },
+            {
                 "icon_filename": "param_hilbertcurve.svg",
                 "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M22.5,19.672l-2.808-2.808L22.5,14.056v-.041M19.672,22.5l-2.808-2.808L14.056,22.5h-.041M22.5,14.015,16.157,7.672,13.328,10.5l3.536,3.536-2.828,2.828L10.5,13.328,7.672,16.157,14.015,22.5m1.627-21,6.172,6.172.686-.687M6.985,22.5l.687-.686L1.5,15.642M1.5,9.9l3.49,3.39S7.555,10.5,7.672,10.5,4.136,6.964,4.136,6.964L6.964,4.136,10.5,7.672l2.828-2.829L9.985,1.5\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
@@ -6137,7 +7404,7 @@
         "default_value": "monotonicline"
     },
     "top_surface_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "Top surface",
         "tooltip": "This is the speed for solid top surface infill.",
         "sidetext": "mm\/s",
@@ -6146,7 +7413,7 @@
         "default_value": "100"
     },
     "travel_acceleration": {
-        "type": "float",
+        "type": "floats",
         "label": "Travel",
         "tooltip": "Acceleration of travel moves.",
         "sidetext": "mm\/s²",
@@ -6155,7 +7422,7 @@
         "default_value": "10000"
     },
     "travel_jerk": {
-        "type": "float",
+        "type": "floats",
         "label": "Travel",
         "tooltip": "Jerk for travel.",
         "sidetext": "mm\/s",
@@ -6174,7 +7441,7 @@
         "default_value": "3"
     },
     "travel_speed": {
-        "type": "float",
+        "type": "floats",
         "label": "Travel",
         "tooltip": "This is the speed at which traveling is done.",
         "sidetext": "mm\/s",
@@ -6183,7 +7450,7 @@
         "default_value": "120"
     },
     "travel_speed_z": {
-        "type": "float",
+        "type": "floats",
         "label": "",
         "tooltip": "",
         "sidetext": "mm\/s",
@@ -6321,6 +7588,13 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "unsupported_wall_last": {
+        "type": "bool",
+        "label": "Print unsupported walls last",
+        "tooltip": "Wall loops that lie entirely in mid air are printed once something can hold them:\nthey are extruded after the other walls of their island, innermost first, whatever the wall order is.\nA loop that only the bridges of this layer can anchor waits until those bridges are printed, while a loop running alongside a supported wall keeps its place before the infill, which needs it as an anchor.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "upward_compatible_machine": {
         "type": "strings",
         "label": "upward compatible machine",
@@ -6357,6 +7631,13 @@
         "tooltip": "",
         "mode": "simple",
         "default_value": "\"\""
+    },
+    "wait_for_temp_on_wipe_tower": {
+        "type": "bool",
+        "label": "Wait for temperature on wipe tower",
+        "tooltip": "Pick up the new tool without waiting for it to reach printing temperature, travel to the wipe tower, and wait for the temperature there, right before purging. Ooze from the heat-up lands on the tower instead of the model, and the travel overlaps with the heating. Only relevant for multi-extruder (multi-toolhead) printers using a Type 2 wipe tower. The firmware or tool change macro must not wait for the temperature itself. When disabled, the temperature wait is issued right after the tool change command.",
+        "mode": "advanced",
+        "default_value": "0"
     },
     "wall_direction": {
         "type": "enum",
@@ -6408,7 +7689,7 @@
     "wall_maximum_deviation": {
         "type": "float",
         "label": "Maximum wall deviation",
-        "tooltip": "The maximum deviation allowed when reducing the resolution for the 'Maximum wall resolution' setting. If you increase this, the print will be less accurate, but the G-Code will be smaller. 'Maximum wall deviation' limits 'Maximum wall resolution', so if the two conflict, 'Maximum wall deviation' takes precedence.",
+        "tooltip": "The maximum deviation allowed when reducing the resolution for the 'Maximum wall resolution' setting. If you increase this, the print will be less accurate, but the G-code will be smaller. 'Maximum wall deviation' limits 'Maximum wall resolution', so if the two conflict, 'Maximum wall deviation' takes precedence.",
         "sidetext": "mm",
         "min": "0.00499999989",
         "max": "0.0500000007",
@@ -6428,7 +7709,7 @@
     "wall_sequence": {
         "type": "enum",
         "label": "Walls printing order",
-        "tooltip": "Print sequence of the internal (inner) and external (outer) walls.\n\nUse Inner\/Outer for best overhangs. This is because the overhanging walls can adhere to a neighbouring perimeter while printing. However, this option results in slightly reduced surface quality as the external perimeter is deformed by being squashed to the internal perimeter.\n\nUse Inner\/Outer\/Inner for the best external surface finish and dimensional accuracy as the external wall is printed undisturbed from an internal perimeter. However, overhang performance will reduce as there is no internal perimeter to print the external wall against. This option requires a minimum of 3 walls to be effective as it prints the internal walls from the 3rd perimeter onwards first, then the external perimeter and, finally, the first internal perimeter. This option is recommended against the Outer\/Inner option in most cases.\n\nUse Outer\/Inner for the same external wall quality and dimensional accuracy benefits of Inner\/Outer\/Inner option. However, the Z seams will appear less consistent as the first extrusion of a new layer starts on a visible surface.",
+        "tooltip": "Print sequence of the internal (inner) and external (outer) walls.\n\nUse Inner\/Outer for best overhangs. This is because the overhanging walls can adhere to a neighbouring perimeter while printing. However, this option results in slightly reduced surface quality as the external perimeter is deformed by being squashed to the internal perimeter.\n\nUse Inner\/Outer\/Inner for the best external surface finish and dimensional accuracy as the external wall is printed undisturbed from an internal perimeter. However, overhang performance will reduce as there is no internal perimeter to print the external wall against. This option requires a minimum of 3 walls to be effective as it prints the internal walls from the 3rd perimeter onwards first, then the external perimeter and, finally, the first internal perimeter. This option is recommended over the Outer\/Inner option in most cases.\n\nUse Outer\/Inner for the same external wall quality and dimensional accuracy benefits of Inner\/Outer\/Inner option. However, the Z seams will appear less consistent as the first extrusion of a new layer starts on a visible surface.",
         "enum_values": [
             "inner wall\/outer wall",
             "outer wall\/inner wall",
@@ -6493,6 +7774,23 @@
         "mode": "advanced",
         "default_value": "1"
     },
+    "wipe_inward": {
+        "type": "bool",
+        "label": "Wipe inward",
+        "tooltip": "Applies only to external walls, including hole boundaries. Moves the hot nozzle toward printed inner walls during wiping to reduce reheating of freshly printed plastic and seam marks.\n\nEspecially useful at layer heights below 0.1 mm, where wipe marks are more visible.\n\nUses the regular wipe if no adjacent inner wall is already printed (single-wall areas or Outer\/Inner wall order), or if no supported inward path can be found, for example at tight corners or seam gaps.",
+        "mode": "",
+        "default_value": "0"
+    },
+    "wipe_inward_distance": {
+        "type": "floatorpercent",
+        "label": "Wipe inward distance",
+        "tooltip": "The distance the wipe path is shifted away from the external perimeter, specified in millimeters or as a percentage of the actual outer-wall extrusion width.\n\nFor example, 50% shifts the path by half of the outer-wall width. The effective offset is limited by both the actual outer-wall width and the available spacing to the adjacent wall, so values above 100% or an equivalent absolute distance have no additional effect. Set to 0 to disable the offset.",
+        "sidetext": "mm or %",
+        "min": "0",
+        "max": "100",
+        "mode": "",
+        "default_value": "50%"
+    },
     "wipe_on_loops": {
         "type": "bool",
         "label": "Wipe on loops",
@@ -6530,7 +7828,7 @@
     "wipe_tower_extra_flow": {
         "type": "percent",
         "label": "Extra flow for purging",
-        "tooltip": "Extra flow used for the purging lines on the wipe tower. This makes the purging lines thicker or narrower than they normally would be. The spacing is adjusted automatically.",
+        "tooltip": "Extra flow used for the purging lines on the wipe tower. This makes the purging lines thicker than they normally would be. The spacing is adjusted automatically.",
         "sidetext": "%",
         "min": "100",
         "max": "300",
@@ -6575,7 +7873,7 @@
     "wipe_tower_max_purge_speed": {
         "type": "float",
         "label": "Maximum wipe tower print speed",
-        "tooltip": "The maximum print speed when purging in the wipe tower and printing the wipe tower sparse layers. When purging, if the sparse infill speed or calculated speed from the filament max volumetric speed is lower, the lowest will be used instead.\n\nWhen printing the sparse layers, if the internal perimeter speed or calculated speed from the filament max volumetric speed is lower, the lowest will be used instead.\n\nIncreasing this speed may affect the tower's stability as well as increase the force with which the nozzle collides with any blobs that may have formed on the wipe tower.\n\nBefore increasing this parameter beyond the default of 90 mm\/s, make sure your printer can reliably bridge at the increased speeds and that ooze when tool changing is well controlled.\n\nFor the wipe tower external perimeters the internal perimeter speed is used regardless of this setting.",
+        "tooltip": "The maximum print speed when purging in the wipe tower and printing the wipe tower sparse layers. When purging, if the sparse infill speed or calculated speed from the filament max volumetric speed is lower, the lowest will be used instead.\n\nWhen printing the sparse layers, if the sparse infill speed or calculated speed from the filament max volumetric speed is lower, the lowest will be used instead.\n\nIncreasing this speed may affect the tower's stability as well as increase the force with which the nozzle collides with any blobs that may have formed on the wipe tower.\n\nBefore increasing this parameter beyond the default of 90 mm\/s, make sure your printer can reliably bridge at the increased speeds and that ooze when tool changing is well controlled.\n\nFor the wipe tower external perimeters the internal perimeter speed is used, also limited by this setting.",
         "sidetext": "mm\/s",
         "min": "10",
         "mode": "advanced",
@@ -6584,7 +7882,7 @@
     "wipe_tower_no_sparse_layers": {
         "type": "bool",
         "label": "No sparse layers (beta)",
-        "tooltip": "If enabled, the wipe tower will not be printed on layers with no tool changes. On layers with a tool change, extruder will travel downward to print the wipe tower. User is responsible for ensuring there is no collision with the print.",
+        "tooltip": "If enabled, the wipe tower will not be printed on layers with no tool changes. On layers with a tool change, extruder will travel downward to print the wipe tower, so the tower ends up below the model and the toolhead has to reach down to it. Layouts where that would collide with an already printed object are rejected. Has no effect with smooth timelapse or clumping detection, which need a tower on every layer.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -6606,6 +7904,13 @@
         "mode": "advanced",
         "default_value": "0"
     },
+    "wipe_tower_sparse_layers_combination": {
+        "type": "bool",
+        "label": "Combine sparse layers",
+        "tooltip": "If enabled, consecutive layers on which the prime tower has no filament change are printed as a single thicker tower layer instead of one thin layer each, the same way infill combination merges sparse infill. The merged layer is printed at the top of the run, at the height of everything it covers.\n\nOnly whole layers are merged, and never past the maximum layer height of the nozzle printing the tower (three quarters of the nozzle diameter when that is left at 0). Two or more layers therefore have to fit under that limit before anything changes at all: at a 0.2 mm layer height under a 0.3 mm maximum nothing is merged, while at 0.1 mm three layers become one.\n\nUnlike \"No sparse layers\" the tower keeps following the model, so the toolhead never has to reach down to it. Has no effect with \"No sparse layers\", smooth timelapse or clumping detection, which need a tower on every layer.",
+        "mode": "advanced",
+        "default_value": "0"
+    },
     "wipe_tower_type": {
         "type": "enum",
         "label": "Wipe tower type",
@@ -6624,7 +7929,7 @@
     "wipe_tower_wall_type": {
         "type": "enum",
         "label": "Wall type",
-        "tooltip": "Wipe tower outer wall type.\n1. Rectangle: The default wall type, a rectangle with fixed width and height.\n2. Cone: A cone with a fillet at the bottom to help stabilize the wipe tower.\n3. Rib: Adds four ribs to the tower wall for enhanced stability.",
+        "tooltip": "Wipe tower outer wall type.\n1. Rectangle: A rectangle with fixed width and height.\n2. Cone: A cone with a fillet at the bottom to help stabilize the wipe tower.\n3. Rib: The default wall type, which adds four ribs to the tower wall for enhanced stability.",
         "enum_values": [
             "rectangle",
             "cone",
@@ -6704,7 +8009,7 @@
     "z_hop": {
         "type": "floats",
         "label": "Z-hop height",
-        "tooltip": "Whenever there is a retraction, the nozzle is lifted a little to create clearance between the nozzle and the print. This prevents the nozzle from hitting the print when traveling more. Using spiral lines to lift z can prevent stringing.",
+        "tooltip": "Whenever there is a retraction, the nozzle is lifted a little to create clearance between the nozzle and the print. This prevents the nozzle from hitting the print when traveling more. Using spiral lines to lift Z can prevent stringing.",
         "sidetext": "mm",
         "min": "0",
         "max": "5",
@@ -6765,7 +8070,7 @@
     "zaa_minimize_perimeter_height": {
         "type": "float",
         "label": "Minimize wall height angle",
-        "tooltip": "Reduce the height of top-surface perimeters to match the model edge height.\nAffects perimeters with a slope less than this angle (degrees).\nA reasonable value is 35. Set to 0 to disable.",
+        "tooltip": "Reduce the height of top-surface perimeters to match the model edge height.\nAffects perimeters with a slope greater than this angle (degrees).\nA reasonable value is 35. Set to 0 to disable.",
         "sidetext": "°",
         "min": "0",
         "max": "90",
