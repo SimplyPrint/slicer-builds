@@ -13,8 +13,17 @@ if [[ ! -f "$build_dir/CMakeCache.txt" ]]; then
   cmake_args+=(-G "$generator")
 fi
 
-case "${SLICER_GUI:-0}" in
-  1 | true | TRUE | on | ON)
+if [[ -d "$source_dir/src/slic3r-app-launcher" ]]; then
+  gui=1
+else
+  case "${SLICER_GUI:-0}" in
+    1 | true | TRUE | on | ON) gui=1 ;;
+    *) gui=0 ;;
+  esac
+fi
+
+case "$gui" in
+  1)
     package_excludes="Catch2|OCCT|OpenCSG"
     ;;
   *)

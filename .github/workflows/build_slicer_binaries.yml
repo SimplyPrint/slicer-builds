@@ -155,6 +155,7 @@ jobs:
           publish_release=${{ matrix.publish_release && 'true' || 'false' }}
           tag=${{ matrix.release_tag }}
           slicer=${{ matrix.slicer }}
+          gcode_abi=${{ matrix.gcode_abi }}
           repo=${{ matrix.repo }}
           upstream_ref=$build_ref_hash
           upstream_published_at=${{ matrix.release_published_at }}
@@ -372,6 +373,7 @@ jobs:
                 --upstream-ref "$upstream_ref" \
                 --upstream-published-at "$upstream_published_at" \
                 --source-repo "$repo" \
+                --metadata "gcode_abi=$gcode_abi" \
                 --workflow-run-url "$workflow_run_url"
               echo "nightly_indexed=true" >> "$GITHUB_OUTPUT"
             fi
@@ -392,6 +394,7 @@ jobs:
                 --upstream-ref "$upstream_ref" \
                 --upstream-published-at "$upstream_published_at" \
                 --source-repo "$repo" \
+                --metadata "gcode_abi=$gcode_abi" \
                 --workflow-run-url "$workflow_run_url" \
                 "${latest_args[@]}"
             fi

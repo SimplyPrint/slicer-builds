@@ -72,9 +72,15 @@ def ref_specs(manifest: Manifest) -> list[dict[str, str | None]]:
 
     def version_parts(ref: str) -> tuple[int, ...]:
         clean = ref.removeprefix("version_").removeprefix("v")
-        if re.fullmatch(r"[0-9]+(?:\.[0-9]+){1,3}", clean) is None:
+        match = re.fullmatch(
+            r"([0-9]+(?:\.[0-9]+){1,3})(?:-(alpha|beta|rc)([0-9]+))?", clean
+        )
+        if match is None:
             fail(f"{index_path}: unsupported release version {ref!r}")
-        return tuple(int(part) for part in clean.split("."))
+        core = tuple(int(part) for part in match.group(1).split("."))
+        core = (*core, *(0 for _ in range(4 - len(core))))
+        stage = match.group(2)
+        return (*core, {None: 4, "rc": 3, "beta": 2, "alpha": 1}[stage], int(match.group(3) or 0))
 
     grouped: dict[str, tuple[str, tuple[int, ...]]] = {}
     for ref in versions:
@@ -82,8 +88,9 @@ def ref_specs(manifest: Manifest) -> list[dict[str, str | None]]:
             continue
         parts = version_parts(ref)
         clean = ref.removeprefix("version_").removeprefix("v")
-        clean_parts = clean.split(".")
-        group = ".".join(clean_parts[:3]) if len(parts) >= 3 else clean
+        clean_core = clean.split("-", 1)[0]
+        clean_parts = clean_core.split(".")
+        group = ".".join(clean_parts[:3]) if len(clean_parts) >= 3 else clean_core
         previous = grouped.get(group)
         if previous is None or parts > previous[1]:
             grouped[group] = (ref, parts)
@@ -121,6 +128,11 @@ def validate_manifest(manifest: Manifest) -> None:
         fail(f"{manifest.path}: invalid name")
     if name != manifest.directory.name:
         fail(f"{manifest.path}: name must match its directory")
+    gcode_abi = data.get("gcode_abi")
+    if not isinstance(gcode_abi, str) or not re.fullmatch(
+        r"[a-z0-9][a-z0-9._/-]*", gcode_abi
+    ):
+        fail(f"{manifest.path}: invalid gcode_abi")
     repository = data.get("repository")
     if not isinstance(repository, str) or not repository.startswith(
         "https://github.com/"
@@ -154,7 +166,7 @@ def validate_manifest(manifest: Manifest) -> None:
             fail(f"{manifest.path}: invalid shared patch-set name")
         if not (ROOT / "patches" / name).is_dir():
             fail(f"{manifest.path}: unknown shared patch set {name!r}")
-    for alias_name in ("common_ref_aliases", "binary_ref_aliases"):
+    for alias_name in ("common_ref_aliases", "binary_ref_aliases", "dump_ref_aliases"):
         aliases = patch_config.get(alias_name, {})
         if not isinstance(aliases, dict):
             fail(f"{manifest.path}: patches.{alias_name} must be a table")
@@ -216,8 +228,9 @@ def patch_files(manifest: Manifest, ref: str, mode: str) -> list[Path]:
     if mode not in {"binary", "dump"}:
         fail(f"Unknown patch mode: {mode}")
     selected: list[Path] = []
-    aliases = manifest.data.get("patches", {}).get("binary_ref_aliases", {})
-    patch_ref = aliases.get(ref, ref) if mode == "binary" else ref
+    alias_name = "binary_ref_aliases" if mode == "binary" else "dump_ref_aliases"
+    aliases = manifest.data.get("patches", {}).get(alias_name, {})
+    patch_ref = aliases.get(ref, ref)
     safe_ref(patch_ref, "patch ref alias")
     common_aliases = manifest.data.get("patches", {}).get(
         "common_ref_aliases", {}
@@ -237,7 +250,7 @@ def patch_files(manifest: Manifest, ref: str, mode: str) -> list[Path]:
             )
             continue
 
-        version = version_directory(root, ref)
+        version = version_directory(root, patch_ref)
         selected.extend(patches_in(root / "all", version))
         if not (version / "dump_configs.patch").is_file():
             fallback = root / "dump_configs.patch"

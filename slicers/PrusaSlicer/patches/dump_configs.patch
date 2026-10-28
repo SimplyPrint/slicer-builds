@@ -1,333 +1,323 @@
-diff --git a/deps/+Eigen/Eigen.cmake b/deps/+Eigen/Eigen.cmake
-index e14b0f8fa..f472eca57 100644
---- a/deps/+Eigen/Eigen.cmake
-+++ b/deps/+Eigen/Eigen.cmake
-@@ -1,4 +1,4 @@
- add_cmake_project(Eigen
--    URL "https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip"
--    URL_HASH SHA256=4815118c085ff1d5a21f62218a3b2ac62555e9b8d7bacd5093892398e7a92c4b
-+    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-+    GIT_TAG 3.3.7
- )
-diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
-index f141107..d9bf2d2 100644
---- a/src/libslic3r/PrintConfig.cpp
-+++ b/src/libslic3r/PrintConfig.cpp
-@@ -34,6 +34,9 @@
- #include <cmath>
- #include <optional>
- #include <string_view>
-+#include <boost/dll/runtime_symbol_info.hpp>
-+#include <boost/property_tree/json_parser.hpp>
-+
+diff --git a/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp b/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp
+index a17ad9390..2a5904532 100644
+--- a/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp
++++ b/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp
+@@ -42,6 +42,7 @@
+ #include <string>
+ #include <future>
+ #include <atomic>
++#include <map>
  
- #include "Config.hpp"
- #include "I18N.hpp"
-@@ -344,6 +347,158 @@ PrintConfigDef::PrintConfigDef()
-     this->init_sla_tilt_params();
-     assign_printer_technology_to_unknown(this->options, ptSLA);
-     this->finalize();
-+    this->dump_to_json();
-+}
+ #include <boost/algorithm/string.hpp>
+ #include <boost/filesystem.hpp>
+@@ -624,9 +625,187 @@ static bool perform_model_info(CLIRuntime& runtime, const std::vector<SelectionI
+ /**
+  * @brief Dumps the configuration model (--dump-json-model) into a JSON file.
+  */
+-static void perform_config_model_dump(const MiscParams& misc)
++struct AccumulatedProfile
+ {
+-    dump_config_model(misc.config_model_json_file.value_or("config-model.json"));
++    nlohmann::ordered_json profile;
++    std::set<std::string> context_keys;
++};
 +
-+namespace {
-+template<typename T>
-+void put_array(boost::property_tree::ptree& pt, const std::string& key, const std::vector<T>& values)
++static void append_profile(
++    std::vector<AccumulatedProfile>& profiles,
++    std::map<std::string, size_t>& indices,
++    const std::string& vendor_id,
++    const std::string& native_id,
++    const std::string& root_id,
++    const std::string& name,
++    const std::string& technology,
++    const Domain::ConfigBox& config,
++    nlohmann::ordered_json context
++)
 +{
-+    auto& arr_pt = pt.put_child(key, boost::property_tree::ptree());
-+    for (auto val : values)
-+        arr_pt.add("", val);
-+}
++    nlohmann::ordered_json data = config;
++    const std::string key = vendor_id + "\n" + native_id + "\n" + data.dump();
++    auto [it, inserted] = indices.emplace(key, profiles.size());
++    if (inserted) {
++        profiles.push_back({
++            .profile = {
++                {"vendor_id", vendor_id},
++                {"native_id", native_id},
++                {"root_id", root_id},
++                {"name", name},
++                {"technology", technology},
++                {"data", std::move(data)},
++                {"contexts", nlohmann::ordered_json::array()},
++            },
++        });
++    }
++
++    AccumulatedProfile& profile = profiles[it->second];
++    if (profile.context_keys.insert(context.dump()).second)
++        profile.profile["contexts"].push_back(std::move(context));
 +}
 +
-+void PrintConfigDef::dump_to_json()
++static nlohmann::ordered_json finish_profiles(std::vector<AccumulatedProfile>& profiles)
 +{
-+    using boost::property_tree::ptree;
++    nlohmann::ordered_json result = nlohmann::ordered_json::array();
++    for (AccumulatedProfile& profile : profiles)
++        result.push_back(std::move(profile.profile));
++    return result;
++}
 +
-+    static std::map<ConfigOptionType, std::string> type_map = {
-+        { coFloat, "float" },
-+        { coFloats, "floats" },
-+        { coInt, "int" },
-+        { coInts, "ints" },
-+        { coString, "string" },
-+        { coStrings, "strings" },
-+        { coPercent, "percent" },
-+        { coPercents, "percents" },
-+        { coFloatOrPercent, "floatorpercent" },
-+        { coFloatsOrPercents, "floatorpercents" },
-+        { coPoint, "point" },
-+        { coPoints, "points" },
-+        { coPoint3, "point3" },
-+        { coBool, "bool" },
-+        { coBools, "bools" },
-+        { coEnum, "enum" },
-+        { coEnums, "enums" },
-+    };
++static void dump_profile_bundle(const Bundle& bundle, const fs::path& output_path)
++{
++    std::vector<AccumulatedProfile> machines;
++    std::vector<AccumulatedProfile> processes;
++    std::vector<AccumulatedProfile> filaments;
++    std::map<std::string, size_t> machine_indices;
++    std::map<std::string, size_t> process_indices;
++    std::map<std::string, size_t> filament_indices;
 +
-+    static std::map<ConfigOptionMode, std::string> mode_map = {
-+        { comSimple, "simple" },
-+        { comAdvanced, "advanced" },
-+        { comExpert, "expert" },
-+        { comUndef, "undef" }
-+    };
++    for (const auto& [hardware_id, printer_variants] : bundle.evaluated_presets) {
++        for (const Domain::Preset::EvaluatedPrinterPreset& printer : printer_variants) {
++            const std::string technology =
++                printer.technology() == PrinterTechnology::FFF ? "FFF" : "SLA";
++            nlohmann::ordered_json machine_context{
++                {"hardware_id", hardware_id},
++                {"printer_preset_id", printer.preset.id},
++                {"printer_model", printer.hw_config.model.model},
++                {"printer_base_model", printer.hw_config.model.base_model},
++                {"tool_count", printer.hw_config.tool_count},
++            };
++            nlohmann::ordered_json machine_preset = Domain::Preset::SelectedPresetMetadata{
++                .hw_config = printer.hw_config,
++                .printer = printer.preset.metadata(),
++            };
++            machine_preset["printer"]["conditions"].clear();
++            machine_context["preset"] = {
++                {"hw_config", machine_preset["hw_config"]},
++                {"printer", machine_preset["printer"]},
++            };
++            append_profile(
++                machines,
++                machine_indices,
++                printer.hw_config.vendor_id,
++                hardware_id + ":" + printer.preset.id,
++                printer.preset.root_id,
++                printer.hw_config.name,
++                technology,
++                printer.preset.config_box(),
++                std::move(machine_context)
++            );
 +
-+    static std::map<ConfigOptionDef::GUIType, std::string> gui_type_map = {
-+        { ConfigOptionDef::GUIType::i_enum_open, "i_enum_open" },
-+        { ConfigOptionDef::GUIType::f_enum_open, "f_enum_open" },
-+        { ConfigOptionDef::GUIType::color, "color" },
-+        { ConfigOptionDef::GUIType::select_open, "select_open" },
-+        { ConfigOptionDef::GUIType::slider, "slider" },
-+        { ConfigOptionDef::GUIType::legend, "legend" },
-+        { ConfigOptionDef::GUIType::one_string, "one_string" },
-+        { ConfigOptionDef::GUIType::select_close, "select_close" },
-+        { ConfigOptionDef::GUIType::password, "password" }
-+    };
++            for (const Domain::Preset::EvaluatedPrintPreset& print : printer.prints) {
++                nlohmann::ordered_json print_context{
++                    {"machine_id", hardware_id + ":" + printer.preset.id},
++                    {"machine_name", printer.hw_config.name},
++                    {"tool_processes", nlohmann::ordered_json::array()},
++                };
++                nlohmann::ordered_json print_preset = Domain::Preset::SelectedPresetMetadata{
++                    .print = print.preset.metadata(),
++                };
++                print_preset["print"]["conditions"].clear();
++                print_context["preset"] = print_preset["print"];
 +
-+    auto get_default_value = [&](ConfigOptionDef& opt, ptree& tree) {
-+#define SET_VALUE(val) tree.put("default_value", val->serialize())
-+
-+        if (opt.default_value.get() == nullptr) return;
-+        ptree arr_pt;
-+        if (opt.nullable) {
-+            switch (opt.type) {
-+            case coFloats:      SET_VALUE(opt.get_default_value<ConfigOptionFloatsNullable>()); break;
-+            case coInts:        SET_VALUE(opt.get_default_value<ConfigOptionIntsNullable>()); break;
-+            case coPercents:    SET_VALUE(opt.get_default_value<ConfigOptionPercentsNullable>()); break;
-+            case coBools:       SET_VALUE(opt.get_default_value<ConfigOptionBoolsNullable>()); break;
-+            default: break;
-+            }
-+        } else {
-+
-+            auto get_enum_name = [](ConfigOptionDef& def) {
-+                const ConfigOption* option = def.default_value.get();
-+                int idx = 0;
-+                if (def.type == coEnums) {
-+                    const auto vals = option->getInts();
-+                    if (vals.size() == 1)
-+                        idx = vals[0];
-+                    else
-+                        throw ConfigurationError("More than one enum values");
-+                } else if (auto* enum_opt = dynamic_cast<const ConfigOptionEnumGeneric*>(option)) {
-+                    idx = enum_opt->getInt();
-+                } else {
-+                    idx = option->getInt();
++                for (size_t tool = 0; tool < print.tools.size(); ++tool) {
++                    for (const Domain::Preset::EvaluatedToolPrintPreset& tool_print : print.tools[tool]) {
++                        nlohmann::ordered_json tool_preset = Domain::Preset::SelectedPresetMetadata{
++                            .tools = {tool_print.preset.metadata()},
++                        };
++                        tool_preset["tools"][0]["conditions"].clear();
++                        print_context["tool_processes"].push_back({
++                            {"tool", tool},
++                            {"native_id", tool_print.preset.id},
++                            {"root_id", tool_print.preset.root_id},
++                            {"name", tool_print.preset.name},
++                            {"data", tool_print.preset.config_box()},
++                            {"preset", tool_preset["tools"][0]},
++                        });
++                    }
 +                }
 +
-+                return def.enum_def->label(idx);
-+            };
++                append_profile(
++                    processes,
++                    process_indices,
++                    printer.hw_config.vendor_id,
++                    print.preset.id,
++                    print.preset.root_id,
++                    print.preset.name,
++                    technology,
++                    print.preset.config_box(),
++                    std::move(print_context)
++                );
 +
-+            switch (opt.type) {
-+            case coFloat:           SET_VALUE(opt.get_default_value<ConfigOptionFloat>()); break;
-+            case coFloats:          SET_VALUE(opt.get_default_value<ConfigOptionFloats>()); break;
-+            case coInt:             SET_VALUE(opt.get_default_value<ConfigOptionInt>()); break;
-+            case coInts:            SET_VALUE(opt.get_default_value<ConfigOptionInts>()); break;
-+            case coString:          SET_VALUE(opt.get_default_value<ConfigOptionString>()); break;
-+            case coStrings:         SET_VALUE(opt.get_default_value<ConfigOptionStrings>()); break;
-+            case coPercent:         SET_VALUE(opt.get_default_value<ConfigOptionPercent>()); break;
-+            case coPercents:        SET_VALUE(opt.get_default_value<ConfigOptionPercents>()); break;
-+            case coFloatOrPercent:  SET_VALUE(opt.get_default_value<ConfigOptionFloatOrPercent>()); break;
-+            case coPoint:           SET_VALUE(opt.get_default_value<ConfigOptionPoint>()); break;
-+            case coPoints:          SET_VALUE(opt.get_default_value<ConfigOptionPoints>()); break;
-+            case coPoint3:          SET_VALUE(opt.get_default_value<ConfigOptionPoint3>()); break;
-+            case coBool:            SET_VALUE(opt.get_default_value<ConfigOptionBool>()); break;
-+            case coBools:           SET_VALUE(opt.get_default_value<ConfigOptionBools>()); break;
-+            case coEnum:            tree.put("default_value", get_enum_name(opt)); break;
-+            case coEnums:           tree.put("default_value", get_enum_name(opt)); break;
-+            default: break;
++                for (size_t tool = 0; tool < print.materials.size(); ++tool) {
++                    for (const Domain::Preset::EvaluatedMaterialPreset& material : print.materials[tool]) {
++                        nlohmann::ordered_json material_preset = Domain::Preset::SelectedPresetMetadata{
++                            .materials = {material.preset.metadata()},
++                        };
++                        material_preset["materials"][0]["conditions"].clear();
++                        nlohmann::ordered_json material_context{
++                            {"machine_id", hardware_id + ":" + printer.preset.id},
++                            {"machine_name", printer.hw_config.name},
++                            {"preset", material_preset["materials"][0]},
++                        };
++                        append_profile(
++                            filaments,
++                            filament_indices,
++                            printer.hw_config.vendor_id,
++                            material.preset.id,
++                            material.preset.root_id,
++                            material.preset.name,
++                            technology,
++                            material.preset.config_box(),
++                            std::move(material_context)
++                        );
++                    }
++                }
 +            }
-+		}
-+#undef SET_VALUE
++        }
++    }
++
++    nlohmann::ordered_json output{
++        {"schema_version", 1},
++        {"format", "prusa-evaluated-profiles"},
++        {"slicer_version", Slic3r::VERSION},
++        {"machine", finish_profiles(machines)},
++        {"process", finish_profiles(processes)},
++        {"filament", finish_profiles(filaments)},
 +    };
 +
-+    ptree pt;
-+    for (auto& [opt_key, opt] : this->options) {
-+        if (opt.printer_technology == ptSLA) continue;
++    boost::nowide::ofstream output_file(output_path.string());
++    if (!output_file.is_open())
++        throw std::runtime_error("Cannot open profile bundle output: " + output_path.string());
++    output_file << output.dump(2) << std::endl;
++}
 +
-+        auto& opt_pt = pt.put_child(opt_key, ptree());
-+
-+        opt_pt.put("type", type_map[opt.type]);
-+        opt_pt.put("label", opt.label);
-+        if (!opt.full_label.empty())
-+            opt_pt.put("full_label", opt.full_label);
-+        opt_pt.put("tooltip", opt.tooltip);
-+        if (!opt.sidetext.empty())
-+            opt_pt.put("sidetext", opt.sidetext);
-+        if (opt.type == coEnum || opt.type == coEnums) {
-+            put_array(opt_pt, "enum_values", opt.enum_def->values());
-+            put_array(opt_pt, "enum_labels", opt.enum_def->labels());
-+        }
-+        if (opt.min != -FLT_MAX)
-+            opt_pt.put("min", opt.min);
-+        if (opt.max != FLT_MAX)
-+            opt_pt.put("max", opt.max);
-+        if (opt.full_width)
-+            opt_pt.put("full_width", opt.full_width);
-+        if (opt.multiline)
-+            opt_pt.put("multiline", opt.multiline);
-+        if (opt.height != -1)
-+            opt_pt.put("height", opt.height);
-+        if (opt.width != -1)
-+            opt_pt.put("width", opt.width);
-+        if (opt.readonly)
-+            opt_pt.put("readonly", opt.readonly);
-+        if (opt.gui_type != ConfigOptionDef::GUIType::undefined)
-+            opt_pt.put("gui_type", gui_type_map[opt.gui_type]);
-+        opt_pt.put("mode", mode_map[opt.mode]);
-+        if (opt.cli == ConfigOptionDef::nocli)
-+            opt_pt.put("nocli", true);
-+        get_default_value(opt, opt_pt);
-+    }
-+    auto path = boost::dll::program_location().parent_path() / "print_config_def.json";
-+    write_json(path.string(), pt);
++static void perform_config_model_dump(CLIRuntime& runtime, const MiscParams& misc)
++{
++    const fs::path model_path = misc.config_model_json_file.value_or("config-model.json");
++    dump_config_model(model_path.string());
++    dump_profile_bundle(
++        runtime.project_interactor().workbench().preset_bundle(),
++        model_path.parent_path() / "profile-bundle.json"
++    );
  }
  
- void PrintConfigDef::init_common_params()
-diff --git a/src/libslic3r/PrintConfig.hpp b/src/libslic3r/PrintConfig.hpp
-index 3106819..c9f4c8b 100644
---- a/src/libslic3r/PrintConfig.hpp
-+++ b/src/libslic3r/PrintConfig.hpp
-@@ -280,6 +280,8 @@ class PrintConfigDef : public ConfigDef
- public:
-     PrintConfigDef();
- 
-+    void dump_to_json();
-+
-     static void handle_legacy(t_config_option_key &opt_key, std::string &value);
-     static void handle_legacy_composite(DynamicPrintConfig &config);
- 
-diff --git a/src/slic3r/GUI/I18N.hpp b/src/slic3r/GUI/I18N.hpp
-index c39e274..b0eca52 100644
---- a/src/slic3r/GUI/I18N.hpp
-+++ b/src/slic3r/GUI/I18N.hpp
-@@ -39,11 +39,11 @@
- namespace Slic3r { namespace GUI { 
- 
- namespace I18N {
--	inline wxString translate(const char         *s) { return wxGetTranslation(wxString(s, wxConvUTF8)); }
--	inline wxString translate(const wchar_t      *s) { return wxGetTranslation(s); }
--	inline wxString translate(const std::string  &s) { return wxGetTranslation(wxString(s.c_str(), wxConvUTF8)); }
--	inline wxString translate(const std::wstring &s) { return wxGetTranslation(s.c_str()); }
--	inline wxString translate(const wxString     &s) { return wxGetTranslation(s); }
-+	inline wxString translate(const char         *s) { return wxString(s, wxConvUTF8); }
-+	inline wxString translate(const wchar_t      *s) { return wxString(s); }
-+	inline wxString translate(const std::string  &s) { return wxString(s.c_str(), wxConvUTF8); }
-+	inline wxString translate(const std::wstring &s) { return wxString(s.c_str()); }
-+	inline wxString translate(const wxString     &s) { return s; }
- 
- 	inline wxString translate(const char         *s, const char 	    *plural, unsigned int n) { return wxGetTranslation(wxString(s, wxConvUTF8), wxString(plural, wxConvUTF8), n); }
- 	inline wxString translate(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return wxGetTranslation(s, plural, n); }
-@@ -51,11 +51,11 @@ namespace I18N {
- 	inline wxString translate(const std::wstring &s, const std::wstring &plural, unsigned int n) { return wxGetTranslation(s.c_str(), plural.c_str(), n); }
- 	inline wxString translate(const wxString     &s, const wxString     &plural, unsigned int n) { return wxGetTranslation(s, plural, n); }
- 
--	inline std::string translate_utf8(const char         *s) { return wxGetTranslation(wxString(s, wxConvUTF8)).ToUTF8().data(); }
--	inline std::string translate_utf8(const wchar_t      *s) { return wxGetTranslation(s).ToUTF8().data(); }
--	inline std::string translate_utf8(const std::string  &s) { return wxGetTranslation(wxString(s.c_str(), wxConvUTF8)).ToUTF8().data(); }
--	inline std::string translate_utf8(const std::wstring &s) { return wxGetTranslation(s.c_str()).ToUTF8().data(); }
--	inline std::string translate_utf8(const wxString     &s) { return wxGetTranslation(s).ToUTF8().data(); }
-+	inline std::string translate_utf8(const char         *s) { return wxString(s, wxConvUTF8).ToUTF8().data(); }
-+	inline std::string translate_utf8(const wchar_t      *s) { return wxString(s).ToUTF8().data(); }
-+	inline std::string translate_utf8(const std::string  &s) { return wxString(s.c_str(), wxConvUTF8).ToUTF8().data(); }
-+	inline std::string translate_utf8(const std::wstring &s) { return wxString(s.c_str()).ToUTF8().data(); }
-+	inline std::string translate_utf8(const wxString     &s) { return s.ToUTF8().data(); }
- 
- 	inline std::string translate_utf8(const char         *s, const char 	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
- 	inline std::string translate_utf8(const wchar_t      *s, const wchar_t	    *plural, unsigned int n) { return translate(s, plural, n).ToUTF8().data(); }
-diff --git a/src/slic3r/GUI/MainFrame.cpp b/src/slic3r/GUI/MainFrame.cpp
-index aa19984..72409fa 100644
---- a/src/slic3r/GUI/MainFrame.cpp
-+++ b/src/slic3r/GUI/MainFrame.cpp
-@@ -805,6 +805,8 @@ void MainFrame::create_preset_tabs()
-     add_created_tab(new TabSLAMaterial(m_tabpanel), "resin");
-     add_created_tab(new TabPrinter(m_tabpanel), wxGetApp().preset_bundle->printers.get_edited_preset().printer_technology() == ptFFF ? "printer" : "sla_printer");
-     
-+    exit(0);
-+
-     m_printables_webview = new PrintablesWebViewPanel(m_tabpanel);
-     add_printables_webview_tab();
-    
-diff --git a/src/slic3r/GUI/Tab.cpp b/src/slic3r/GUI/Tab.cpp
-index 5a95888..b83a59e 100644
---- a/src/slic3r/GUI/Tab.cpp
-+++ b/src/slic3r/GUI/Tab.cpp
-@@ -55,6 +55,8 @@
- #include <boost/algorithm/string/replace.hpp>
- #include <boost/filesystem.hpp>
- #include <boost/exception/diagnostic_information.hpp>
-+#include <boost/dll/runtime_symbol_info.hpp>
-+#include <boost/property_tree/json_parser.hpp>
- 
- #include "wxExtensions.hpp"
- #include "PresetComboBoxes.hpp"
-@@ -357,6 +359,8 @@ void Tab::create_preset_tab()
-         m_treectrl->SetImages(img_bundles);
+ /**
+@@ -833,7 +1012,7 @@ bool process_actions(
      }
  
-+    dump_to_json();
-+
-     // ys_FIXME: Following should not be needed, the function will be called later
-     // (update_mode->update_visibility->rebuild_page_tree). This does not work, during the
-     // second call of rebuild_page_tree m_treectrl->GetFirstVisibleItem(); returns zero
-@@ -366,6 +370,50 @@ void Tab::create_preset_tab()
-     m_completed = true;
- }
+     if (action.dump_json_model) {
+-        perform_config_model_dump(misc);
++        perform_config_model_dump(runtime, misc);
+     }
  
-+void Tab::dump_to_json()
-+{
-+    using boost::property_tree::ptree;
+     if (action.generate_preset_cache) {
+diff --git a/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp b/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp
+index 94d1874d0..9e4e0e0a5 100644
+--- a/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp
++++ b/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp
+@@ -1,5 +1,6 @@
+ #pragma once
+ 
++#include <cstddef>
+ #include <vector>
+ 
+ namespace Slic3r::Domain {
+@@ -19,18 +20,18 @@ public:
+     virtual ~IConfigBoxSetter() = default;
+ 
+     virtual const Domain::ConfigValue*
+-    get_override_original_value(const Domain::ConfigItem& item, size_t index = 0) const = 0;
++    get_override_original_value(const Domain::ConfigItem& item, std::size_t index = 0) const = 0;
+ 
+     virtual void set_item_value(
+         const Domain::ConfigItem& item,
+         const Domain::ConfigValue& value,
+-        const std::vector<size_t>& index = {0}
++        const std::vector<std::size_t>& index = {0}
+     ) = 0;
+ 
+     virtual void
+-    set_item_override(const Domain::ConfigItem& item, bool enable, size_t index = 0) = 0;
++    set_item_override(const Domain::ConfigItem& item, bool enable, std::size_t index = 0) = 0;
+ 
+-    virtual void discard_item_changes(const Domain::ConfigItem& item, size_t index = 0) {}
++    virtual void discard_item_changes(const Domain::ConfigItem& item, std::size_t index = 0) {}
+ };
+ 
+ } // namespace Slic3r::Biz
+diff --git a/src/slic3r-shared/src/Slic3r/App/ConfigModelDump.cpp b/src/slic3r-shared/src/Slic3r/App/ConfigModelDump.cpp
+index ce5074b18..c71aca43e 100644
+--- a/src/slic3r-shared/src/Slic3r/App/ConfigModelDump.cpp
++++ b/src/slic3r-shared/src/Slic3r/App/ConfigModelDump.cpp
+@@ -5,6 +5,7 @@
+ #include "Slic3r/Domain/ConfigBoxesFDM.hpp"
+ #include "Slic3r/Domain/ConfigBoxesSLA.hpp"
+ #include "Slic3r/Biz/Config/ConfigJson.hpp"
++#include "Slic3r/App/Config/CategoryUtils.hpp"
+ 
+ #include <nlohmann/json.hpp>
+ #include <boost/nowide/fstream.hpp>
+@@ -59,10 +60,61 @@ void to_json_def(json& j, const ConfigItemDef& cd)
+         cd.name,
+     }};
+ 
+-    if (cd.max != FLT_MAX)
+-        j["max"] = cd.max;
+-    if (cd.min != -FLT_MAX)
+-        j["min"] = cd.min;
++    if (!cd.label.empty())
++        j["label"] = cd.label;
++    if (!cd.full_label.empty())
++        j["full_label"] = cd.full_label;
++    if (!cd.tooltip.empty())
++        j["tooltip"] = cd.tooltip;
++    if (!cd.i18n_context.empty())
++        j["i18n_context"] = cd.i18n_context;
++    if (!cd.ratio_over.empty())
++        j["ratio_over"] = cd.ratio_over;
++    if (!cd.row_group.empty())
++        j["row_group"] = cd.row_group;
++    if (!cd.units.empty())
++        j["units"] = cd.units;
++    if (!cd.cli.empty())
++        j["cli"] = cd.cli;
 +
-+    auto& this_type = typeid(*this);
-+    auto& filament_type = typeid(TabFilament);
-+    auto& printer_type  = typeid(TabPrinter);
-+    auto& print_type = typeid(TabPrint);
-+    if (this_type != filament_type && this_type != printer_type && this_type != print_type)
-+        return;
++    j["category"] = magic_enum::enum_name(cd.category);
++    j["option_group"] = magic_enum::enum_name(cd.option_group);
++    j["order"] = cd.order;
++    j["category_order"] = static_cast<uint16_t>(cd.category);
++    j["option_group_order"] = static_cast<uint16_t>(cd.option_group);
++    if (cd.category != ConfigItemDef::Category::Unknown && cd.category != ConfigItemDef::Category::Hidden) {
++        j["category_label"] = ConfigItemDef::translate_category(cd.category, PrinterTechnology::FFF);
++        const uint16_t category = static_cast<uint16_t>(cd.category);
++        const bool has_icon = (category >= 100 && category <= 110)
++            || (category >= 120 && category <= 121)
++            || (category >= 200 && category <= 205)
++            || category == 210
++            || (category >= 300 && category <= 305)
++            || category == 310;
++        if (has_icon)
++            j["category_icon"] = App::CategoryUtils::category_icon_name(cd.category, PrinterTechnology::FFF);
++    }
++    if (cd.option_group != ConfigItemDef::OptionGroup::Unknown)
++        j["option_group_label"] = ConfigItemDef::translate_option_group(cd.option_group);
++    j["gui_type"] = magic_enum::enum_name(cd.gui_type);
++    j["multiline"] = cd.multiline;
++    j["full_width"] = cd.full_width;
++    j["height"] = cd.height;
++    j["require_tool_parity"] = cd.require_tool_parity;
 +
-+    ptree pt;
-+    for (const auto& page : m_pages) {
-+        auto& page_pt = pt.put_child(page->title().ToStdString(), ptree());
-+        for (const auto& optgroup : page->m_optgroups) {
-+            auto& optgroup_pt = page_pt.put_child(optgroup->title.ToStdString(), ptree());
-+            for (auto& line : optgroup->get_lines()) {
-+                std::vector<std::string> option_ids;
-+                for (auto& option : line.get_options())
-+                    option_ids.emplace_back(option.opt_id);
-+                if (option_ids.size() == 1)
-+                    optgroup_pt.add("", option_ids[0]);
-+                else if (option_ids.size() > 1) {
-+                    auto& line_pt = optgroup_pt.add_child("", ptree());
-+                    line_pt.put("label", line.label.ToStdString());
-+                    line_pt.put("tooltip", line.label_tooltip.ToStdString());
-+                    auto& options_pt = line_pt.put_child("options", ptree());
-+                    for (auto& id : option_ids)
-+                        options_pt.add("", id);
-+                }
-+            }
++    if (cd.max.has_value())
++        j["max"] = cd.max.value();
++    if (cd.min.has_value())
++        j["min"] = cd.min.value();
++
++    if (!cd.choices.empty()) {
++        j["choice_values"] = json::array();
++        j["choice_labels"] = json::array();
++        for (const auto& [value, label] : cd.choices) {
++            j["choice_values"].push_back(std::visit([](const auto& item) { return json(item); }, value));
++            j["choice_labels"].push_back(label);
 +        }
 +    }
-+
-+    std::map<std::string, std::string> title_to_filename = {
-+        {"filaments", "filament"},
-+        {"print settings", "process"},
-+        {"printers", "machine"},
-+    };
-+
-+    auto path = boost::dll::program_location().parent_path() / (title_to_filename[this->m_title.Lower().ToStdString()] + ".json");
-+    boost::property_tree::write_json(path.string(), pt);
-+}
-+
- void Tab::add_scaled_button(wxWindow* parent,
-                             ScalableButton** btn,
-                             const std::string& icon_name,
-diff --git a/src/slic3r/GUI/Tab.hpp b/src/slic3r/GUI/Tab.hpp
-index 1d0dd6b..dc5aadc 100644
---- a/src/slic3r/GUI/Tab.hpp
-+++ b/src/slic3r/GUI/Tab.hpp
-@@ -321,6 +321,7 @@ public:
- 	virtual bool supports_printer_technology(const PrinterTechnology tech) const = 0;
+ }
  
- 	void		create_preset_tab();
-+    void        dump_to_json();
-     void        add_scaled_button(wxWindow* parent, ScalableButton** btn, const std::string& icon_name, 
-                                   const wxString& label = wxEmptyString, 
-                                   long style = wxBU_EXACTFIT | wxNO_BORDER);
+ static std::vector<std::string> to_strings(const std::vector<std::string_view>& strings)
