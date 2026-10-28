@@ -2,7 +2,8 @@
     "Quality": {
         "Layer height": [
             "layer_height",
-            "initial_layer_print_height"
+            "initial_layer_print_height",
+            "enable_mixed_color_sublayer"
         ],
         "Line width": [
             "line_width",
@@ -47,6 +48,12 @@
             "hole_to_polyhole_threshold",
             "hole_to_polyhole_twisted",
             "precise_z_height"
+        ],
+        "Z contouring": [
+            "zaa_enabled",
+            "zaa_wall_lowering_min_slope",
+            "zaa_slice_plane_offset",
+            "zaa_lock_top_surface_fill_direction"
         ],
         "Ironing": [
             "ironing_type",
@@ -125,6 +132,9 @@
             "tpms_start_infill_density",
             "tpms_end_infill_density",
             "tpms_gradual_direction",
+            "interior_coefficient",
+            "surface_coefficient",
+            "cell_type",
             "ai_infill",
             "sparse_infill_pattern",
             "infill_anchor",
@@ -143,6 +153,7 @@
             "skin_infill_depth",
             "skin_infill_line_width",
             "skeleton_infill_line_width",
+            "skeleton_wipe_line_width",
             "infill_rotate_step",
             "symmetric_infill_y_axis",
             "infill_shift_step",
@@ -184,25 +195,13 @@
             "enable_overhang_speed",
             "overhang_speed_classic",
             "slowdown_for_curled_perimeters",
-            {
-                "label": "Overhang speed",
-                "tooltip": "This is the speed for various overhang degrees. Overhang degrees are expressed as a percentage of line width. 0 speed means no slowing down for the overhang degree range and wall speed is used",
-                "options": [
-                    "overhang_1_4_speed",
-                    "overhang_2_4_speed",
-                    "overhang_3_4_speed",
-                    "overhang_4_4_speed",
-                    "overhang_totally_speed"
-                ]
-            },
-            {
-                "label": "Bridge",
-                "tooltip": "Set speed for external and internal bridges",
-                "options": [
-                    "bridge_speed",
-                    "internal_bridge_speed"
-                ]
-            },
+            "overhang_1_4_speed",
+            "overhang_2_4_speed",
+            "overhang_3_4_speed",
+            "overhang_4_4_speed",
+            "overhang_totally_speed",
+            "bridge_speed",
+            "internal_bridge_speed",
             "smooth_speed_discontinuity_area",
             "smooth_coefficient"
         ],
@@ -292,6 +291,7 @@
             "bridge_no_support",
             "max_bridge_length",
             "independent_support_layer_height",
+            "tree_support_organic_validate_repair",
             "tree_hybrid_cross_height"
         ],
         "Tree supports": [
@@ -306,19 +306,25 @@
     "Multimaterial": {
         "Prime tower": [
             "enable_prime_tower",
+            "prime_tower_enhance_type",
             "prime_tower_width",
             "prime_tower_rib_wall",
             "prime_tower_skip_points",
             "prime_tower_enable_framework",
             "prime_volume",
+            "bottom_fill_flush_layers",
+            "top_fill_flush_layers",
+            "skeleton_flush_slowdown_speed",
             "prime_tower_brim_width",
             "wipe_tower_rotation_angle",
             "wipe_tower_bridging",
-            "prime_tower_enhance_type",
             "wipe_tower_cone_angle",
             "wipe_tower_extra_spacing",
-            "wipe_tower_extra_flow",
             "wipe_tower_max_purge_speed",
+            "prime_tower_start_ironing",
+            "prime_tower_start_offset",
+            "prime_tower_corner_rib_length",
+            "wipe_tower_extra_flow",
             "wipe_tower_no_sparse_layers"
         ],
         "Filament for Features": [
@@ -330,17 +336,19 @@
         "Ooze prevention": [
             "ooze_prevention",
             "standby_temperature_delta",
+            "preheat_temperature_delta",
             "preheat_time",
             "preheat_steps"
         ],
         "Flush options": [
             "flush_into_infill",
             "flush_into_objects",
-            "flush_into_support"
+            "flush_into_support",
+            "flush_into_skeleton"
         ],
         "Advanced": [
             "interlocking_beam",
-            "mmu_segmented_region_max_width",
+            "interface_shells",
             "mmu_segmented_region_interlocking_depth",
             "interlocking_beam_width",
             "interlocking_orientation",
@@ -374,7 +382,9 @@
             "ignore_inner_color",
             "spiral_mode_smooth",
             "spiral_mode_max_xy_smoothing",
-            "timelapse_type",
+            "timelapse_type"
+        ],
+        "Fuzzy Skin": [
             "fuzzy_skin",
             "fuzzy_skin_mode",
             "fuzzy_skin_noise_type",

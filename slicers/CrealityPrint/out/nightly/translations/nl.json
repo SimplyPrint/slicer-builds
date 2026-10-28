@@ -42,8 +42,8 @@
       "tooltip": "Snelheid van de koelventilator voor hulponderdelen. De hulpventilator zal tijdens het printen met deze snelheid draaien, behalve de eerstelagen die worden gedefinieerd door geen koellagen. \nSchakel hulpventilator in in printerinstellingen om deze functie te gebruiken. G-code commando:M106 P2 S(0-255)"
     },
     "ai_infill": {
-      "label": "AI infill",
-      "tooltip": "Activeer de AI-invulling op basis van de oorspronkelijke schaars vullen."
+      "label": "Intelligente vulling",
+      "tooltip": "Schakelt intelligente vulling in op basis van de oorspronkelijke dunne vulling."
     },
     "align_infill_direction_to_model": {
       "label": "Aflijnen van invullingsrichting op model",
@@ -56,6 +56,10 @@
     "arc_tolerance": {
       "label": "Boogtolerantie",
       "tooltip": "Boogtolerantie"
+    },
+    "automatic_extrusion_widths": {
+      "label": "Automatische berekening van de extrusiebreedte",
+      "tooltip": "Berekent automatisch de extrusiebreedte op basis van de mondstukdiameter van de huidige extruder. Deze instelling is essentieel bij het printen met verschillende spuitmonddiameters."
     },
     "auxiliary_fan": {
       "label": "Extra koel ventilator",
@@ -90,6 +94,14 @@
       "label": "Probepuntafstand",
       "tooltip": "Met deze optie stelt u de voorkeursafstand tussen tastpunten (rastergrootte) in voor de X- en Y-richtingen, waarbij de standaardwaarde 50 mm is voor zowel X als Y."
     },
+    "bed_temperature_mode": {
+      "label": "Bedtemperatuurmodus",
+      "tooltip": "Kies hoe u de bedtemperatuur bepaalt voor afdrukken met meerdere filamenten.",
+      "enum_labels": [
+        "Gebruik de hoogste filamentbedtemperatuur",
+        "Gebruik de eerste filamentbedtemperatuur"
+      ]
+    },
     "before_layer_change_gcode": {
       "label": "G-Code voor de laag wijziging",
       "tooltip": "De G-code wordt bij iedere laagwisseling toegevoegd voor het optillen van Z"
@@ -101,6 +113,10 @@
     "best_object_pos": {
       "label": "Beste objectpositie",
       "tooltip": "Beste automatisch schikkende positie in het bereik [0,1] met betrekking tot de bedvorm."
+    },
+    "bottom_fill_flush_layers": {
+      "label": "Onderste lagen met spoeling vóór de vulling",
+      "tooltip": "Wanneer spoelen in het objectskelet is ingeschakeld, wordt in de onderste N lagen van het object eerst op de prime toren gespoeld, voordat de vulling of het skelet wordt geprint, gevolgd door de huid en de wanden. Dit verandert het aantal lagen van de onderste schil niet."
     },
     "bottom_shell_layers": {
       "label": "Aantal bodemlagen",
@@ -186,6 +202,15 @@
     "brim_width": {
       "label": "Rand breedte",
       "tooltip": "Dit is de afstand van het model tot de buitenste randlijn."
+    },
+    "cell_type": {
+      "label": "Celtype",
+      "tooltip": "Selecteert de basisvorm van de cel die voor de veldvulling wordt gebruikt.",
+      "enum_labels": [
+        "TPMS-D-cel",
+        "Gyroide",
+        "TPMS-FK"
+      ]
     },
     "chamber_temperature": {
       "label": "Kamertemperatuur",
@@ -340,6 +365,18 @@
       "label": "Resterende afdruktijd uitschakelen",
       "tooltip": "Genereren van de M73 uitschakelen: Resterende afdruktijd instellen in de uiteindelijke gcode"
     },
+    "dithering_local_z_mode": {
+      "label": "Lokale Z-ditheringmodus",
+      "tooltip": "Gebruik variabele lagen voor het mengen van kleuren."
+    },
+    "dithering_step_painted_zones_only": {
+      "label": "Gebruik de stapgrootte alleen in geschilderde zones",
+      "tooltip": "Indien ingeschakeld, wordt de dithering Z-stapgrootte alleen toegepast wanneer gemengd filament wordt geverfd."
+    },
+    "dithering_z_step_size": {
+      "label": "Dithering Z-stapgrootte",
+      "tooltip": "Laaghoogte gebruikt in Z-zones geschilderd met dithering."
+    },
     "dont_filter_internal_bridges": {
       "label": "Kleine interne bruggen niet filteren (bèta)",
       "tooltip": "Deze optie kan helpen bij het verminderen van kussenvorming op de bovenoppervlakken bij sterk schuine of gebogen modellen.\n\nStandaard worden kleine interne bruggen eruit gefilterd en wordt de interne effen vulling direct over de dunne vulling gedrukt. Dit werkt in de meeste gevallen goed en versnelt het afdrukken zonder al te veel concessies te doen aan de kwaliteit van het bovenoppervlak. \n\nBij sterk schuine of gebogen modellen, vooral waar een te lage dunne vullingsdichtheid wordt gebruikt, kan dit echter resulteren in het opkrullen van de niet-ondersteunde massieve vulling, waardoor kussenvorming ontstaat.\n\nAls u deze optie inschakelt, wordt de interne bruglaag afgedrukt over enigszins niet-ondersteunde interne effen opvulling. De onderstaande opties bepalen de hoeveelheid filtering, d.w.z. de hoeveelheid interne bruggen die worden gemaakt.\n\nUitgeschakeld - Schakelt deze optie uit. Dit is het standaardgedrag en werkt in de meeste gevallen goed.\n\nBeperkte filtering - Creëert interne bruggen op sterk hellende oppervlakken, terwijl het creëren van onnodige interne bruggen wordt vermeden. Dit werkt goed voor de moeilijkste modellen.\n\nGeen filtering - Creëert interne bruggen op elke potentiële interne overhang. Deze optie is handig voor modellen met een sterk schuin bovenoppervlak. In de meeste gevallen worden er echter te veel onnodige bruggen gecreëerd.",
@@ -366,6 +403,9 @@
       "label": "Ventilator snelheid",
       "tooltip": "Snelheid van de afzuigventilator tijdens het afdrukken. Deze snelheid overschrijft de snelheid in de aangepaste g-code van filament"
     },
+    "e_step_dist": {
+      "label": "E-stapafstand"
+    },
     "elefant_foot_compensation": {
       "label": "\"Elephant foot\" compensatie",
       "tooltip": "Hierdoor krimpt de eerste laag op de bouwplaat om het \"elephant foot\" effect te compenseren."
@@ -389,6 +429,10 @@
     "enable_filament_ramming": {
       "label": "Filament rammen inschakelen",
       "tooltip": "Filament rammen inschakelen"
+    },
+    "enable_mixed_color_sublayer": {
+      "label": "Sublaag met gemengde kleuren",
+      "tooltip": "Schakelt het opsplitsen van elke laag met gemengd filament in sublagen in voor fysieke kleurmenging. Hiervoor moet minstens één rij met gemengd filament zijn ingeschakeld."
     },
     "enable_overhang_bridge_fan": {
       "label": "Forceer koeling voor overhangende delen en bruggen (bridge)",
@@ -505,6 +549,10 @@
       "label": "Categorie kleefvermogen",
       "tooltip": "filament_adhesiviteit_categorie"
     },
+    "filament_can_change": {
+      "label": "Filament kan worden vervangen",
+      "tooltip": "Filament kan worden vervangen"
+    },
     "filament_colour": {
       "label": "Kleur",
       "tooltip": "Wordt alleen gebruikt als een visuele weergave op de UI"
@@ -566,6 +614,23 @@
       "label": "Long retraction when cut (experimental)",
       "tooltip": "Experimental feature: Retracting and cutting off the filament at a longer distance during changes to minimize purge.While this reduces flush significantly, it may also raise the risk of nozzle clogs or other printing problems."
     },
+    "filament_map": {
+      "label": "Filamentkaart naar mondstuk",
+      "tooltip": "Wijst elk projectfilament toe aan een op 1 gebaseerd fysiek mondstuknummer."
+    },
+    "filament_map_2": {
+      "label": "Index van interne filamentmondstukken",
+      "tooltip": "Op nul gebaseerde interne spuitdopindex gegenereerd op basis van filament_map."
+    },
+    "filament_map_mode": {
+      "label": "Filamenttoewijzingsmodus",
+      "tooltip": "Selecteert of projectfilamenten automatisch of handmatig aan spuitmonden worden toegewezen.",
+      "enum_labels": [
+        "Automatisch",
+        "Automatische matching",
+        "Aangepast"
+      ]
+    },
     "filament_max_volumetric_speed": {
       "label": "Maximale volumetrische snelheid",
       "tooltip": "Deze instelling is het volume filament dat per seconde kan worden gesmolten en geëxtrudeerd. De afdruksnelheid wordt beperkt door de maximale volumetrische snelheid, in geval van een te hoge en onredelijke snelheidsinstelling. Deze waarde kan niet nul zijn."
@@ -598,6 +663,9 @@
       "label": "Terugtrek (retract) hoeveelheid voor schoonvegen",
       "tooltip": "Dit is de lengte van snel intrekken (retraction) vóór een wipe, in verhouding tot de retraction lengte."
     },
+    "filament_retract_length_toolchange": {
+      "label": "Lengte"
+    },
     "filament_retract_lift_above": {
       "label": "Beweeg Z alleen omhoog boven",
       "tooltip": "Als u dit instelt op een positieve waarde, zal Z lift alleen plaatsvinden boven de opgegeven absolute Z."
@@ -619,6 +687,10 @@
     "filament_retract_restart_extra": {
       "label": "Extra lengte bij herstart",
       "tooltip": "Als retracten wordt gecompenseerd na een beweging, wordt deze extra hoeveelheid filament geëxtrudeerd. Deze instelling is zelden van toepassing."
+    },
+    "filament_retract_restart_extra_toolchange": {
+      "label": "Extra lengte bij herstart",
+      "tooltip": "Als retracten wordt gecompenseerd na een toolwisseling, wordt deze extra hoeveelheid filament geëxtrudeerd."
     },
     "filament_retract_when_changing_layer": {
       "label": "Terugtrekken (retract) bij wisselen van laag",
@@ -753,6 +825,14 @@
     "flush_into_objects": {
       "label": "Uitspoelen in dit object",
       "tooltip": "Dit object wordt gebruikt om de nozzle te reinigen nadat het filament is vervangen om filament te besparen en de printtijd te verkorten. Als resultaat worden de kleuren van de objecten gemengd. Het wordt niet van kracht tenzij de prime tower is ingeschakeld."
+    },
+    "flush_into_skeleton": {
+      "label": "Spoelen in objectskelet (experimenteel)",
+      "tooltip": "Het spoelen na filamentwissel wordt uitgevoerd in het skeletgebied van objecten. Dit kan de hoeveelheid afval verminderen en de printtijd verkorten. Het werkt alleen als de prime-toren is ingeschakeld."
+    },
+    "flush_into_solid_skeleton": {
+      "label": "Voorvulvolume in een massief skelet printen",
+      "tooltip": "Elimineert de afzonderlijke Prime toren wanneer de voorvulvolume lager is dan 10 mm³ en het minimale spoelvolume op de toren nul is voor elk filament. Het materiaal dat overeenkomt met de voorvulvolume wordt als een stevig skelet in het model afgedrukt. Het volume van dit skelet komt overeen met de voorvulvolume."
     },
     "flush_into_support": {
       "label": "Uitspoelen in de ondersteuning van objecten",
@@ -1019,6 +1099,10 @@
     "interface_shells": {
       "label": "Interface shells",
       "tooltip": "Force the generation of solid shells between adjacent filaments/volumes. Useful for multi-extruder prints with translucent filaments or manual soluble support filament"
+    },
+    "interior_coefficient": {
+      "label": "Binnenste coëfficiënt (bèta)",
+      "tooltip": "Regelt de dichtheid van de veldvulling binnen het model. Hogere waarden maken het interne rooster dichter."
     },
     "interlocking_beam": {
       "label": "Beam interlocking gebruiken",
@@ -1340,6 +1424,9 @@
       "label": "Segmentlengte gladstrijken",
       "tooltip": "Een lagere waarde resulteert in vloeiendere overgangen van de extrusiesnelheid. Dit resulteert echter in een aanzienlijk groter gcode-bestand en meer instructies die de printer moet verwerken. \n\nDe standaardwaarde 3 werkt in de meeste gevallen goed. Als uw printer hapert, verhoogt u deze waarde om het aantal gemaakte aanpassingen te verminderen\n\nToegestane waarden: 0,5-5"
     },
+    "mcu_pool_total": {
+      "label": "Totale capaciteit van de MCU-geheugenpool"
+    },
     "min_bead_width": {
       "label": "Minimale wandbreedte",
       "tooltip": "Breedte van de muur die dunne delen (volgens de minimale functiegrootte) van het model zal vervangen. Als de minimale wandbreedte dunner is dan de dikte van het element, wordt de muur net zo dik als het object zelf. Dit wordt uitgedrukt als een percentage ten opzichte van de diameter van de nozzle"
@@ -1372,6 +1459,46 @@
     "minimum_support_area": {
       "label": "Klein overlappend gebied",
       "tooltip": "Minimumoppervlakte voor steunpolygonen. Veelhoeken met een oppervlakte kleiner dan deze waarde worden niet gegenereerd."
+    },
+    "mixed_color_layer_height_a": {
+      "label": "Dithering-cadanshoogte A",
+      "tooltip": "Laaghoogtebijdrage van component A voor het ditheren van virtuele filamenten."
+    },
+    "mixed_color_layer_height_b": {
+      "label": "Dithering-cadanshoogte B",
+      "tooltip": "Laaghoogtebijdrage van component B voor het ditheren van virtuele filamenten."
+    },
+    "mixed_filament_advanced_dithering": {
+      "label": "Geavanceerde dithering",
+      "tooltip": "Verdeel de cycluscadans van gemengde filamenten met behulp van een geavanceerd geordend ditheringpatroon."
+    },
+    "mixed_filament_definitions": {
+      "label": "Aangepaste definities van gemengde filamenten",
+      "tooltip": "Geserialiseerde aangepaste gemengde filamentrijen."
+    },
+    "mixed_filament_gradient_mode": {
+      "label": "Hoogtegewogen cadans",
+      "tooltip": "Schakel hoogtegewogen cadans in voor gemengde filamenten."
+    },
+    "mixed_filament_height_lower_bound": {
+      "label": "Gemengde filament onderhoogte gebonden",
+      "tooltip": "Ondergrens gebruikt door de hoogtegewogen gradiëntmodus met gemengd filament."
+    },
+    "mixed_filament_height_upper_bound": {
+      "label": "Gemengde filament bovenhoogte gebonden",
+      "tooltip": "Bovengrens gebruikt door de hoogtegewogen gradiëntmodus met gemengd filament."
+    },
+    "mixed_filament_pointillism_line_gap": {
+      "label": "Pointillisme lijnafstand",
+      "tooltip": "Optionele niet-geëxtrudeerde afstand tussen aangrenzende pointillismesegmenten."
+    },
+    "mixed_filament_pointillism_pixel_size": {
+      "label": "Pixelgrootte van pointillisme",
+      "tooltip": "Lengte van één pointillismesegment langs een extrusiepad."
+    },
+    "mixed_filament_surface_indentation": {
+      "label": "Selectieve uitzetting/krimp",
+      "tooltip": "XY-offset toegepast op geverfde gebieden met gemengde filamenten vóór toewijzing van gebieden."
     },
     "mmu_segmented_region_interlocking_depth": {
       "label": "Insluitdiepte van een gesegmenteerde regio",
@@ -1412,6 +1539,9 @@
     "nozzle_hrc": {
       "label": "Nozzle HRC",
       "tooltip": "De hardheid van de nozzle. Nul betekent geen controle op de hardheid van het mondstuk tijdens het slicen."
+    },
+    "nozzle_pool_total": {
+      "label": "Totale capaciteit van de MCU-geheugenpool van de nozzle"
     },
     "nozzle_temperature": {
       "label": "Andere lagen",
@@ -1531,6 +1661,10 @@
       "label": "Filament parkeerpositie",
       "tooltip": "Afstand van de nozzlepunt tot de positie waar het filament wordt geparkeerd wanneer dat niet geladen is. Deze moet overeenkomen met de waarde in de firmware."
     },
+    "pathological_segment_protection_enable": {
+      "label": "Bescherming tegen problematische segmentversnelling",
+      "tooltip": "Indien ingeschakeld, detecteert de slicer compacte reeksen van korte segmenten (zoals zigzagpatronen met bewegingen van minder dan een millimeter) die ervoor kunnen zorgen dat de Klipper-firmware een overmatige wachtrij voor verplaatsingen ophoopt, wat mogelijk kan leiden tot MCU-communicatieblokkeringen en printercrashes.\n\nDe slicer voegt SET_VELOCITY_LIMIT-opdrachten in om de versnelling vóór deze problematische gebieden tijdelijk te verminderen en deze daarna te herstellen."
+    },
     "pellet_flow_coefficient": {
       "label": "Pelletsstroomcoëfficiënt",
       "tooltip": "De pelletstroomcoëfficiënt is empirisch afgeleid en maakt volumeberekening voor pelletprinters mogelijk.\n\nIntern wordt het omgezet naar filament_diameter. Alle andere volumeberekeningen blijven hetzelfde.\n\nfilament_diameter = sqrt( (4 * pellet_flow_coëfficiënt) / PI )"
@@ -1559,6 +1693,10 @@
       "label": "Voorverwarmingsstappen",
       "tooltip": "Voer meerdere voorverwarmingscommando's in (bijv. M104.1). Alleen nuttig voor Prusa XL. Voor andere printers, stel het in op 1."
     },
+    "preheat_temperature_delta": {
+      "label": "Temperatuur voorverwarmen",
+      "tooltip": "Temperatuurverschil toegepast voordat een spuitdop wordt geactiveerd. De voorverwarmtemperatuur wordt berekend als de afdruktemperatuur plus deze waarde."
+    },
     "preheat_time": {
       "label": "Voorverwarmingstijd",
       "tooltip": "Om de wachttijd na het wisselen van gereedschap te verkorten, kan Creality het volgende gereedschap voorverwarmen terwijl het huidige gereedschap nog in gebruik is. Deze instelling specificeert de tijd in seconden voor het voorverwarmen van het volgende gereedschap. Creality zal een M104-opdracht invoegen om het gereedschap vooraf voor te verwarmen."
@@ -1575,6 +1713,10 @@
       "label": "Rand breedte",
       "tooltip": "Randbreedte van de primaire toren, negatief getal betekent automatisch berekende breedte gebaseerd op de hoogte van de primaire toren."
     },
+    "prime_tower_corner_rib_length": {
+      "label": "Lengte ribbe onderhoek",
+      "tooltip": "Onderzijdelengte van de vierkante hoekribben op de vierkante hoofdtoren. De ribbe behoudt zijn contactlengte met het veeggebied en loopt taps toe naar de blokkenranden aan de bovenkant van de toren. Stel deze in op 0 om de afstand tussen de omtreklijnen te gebruiken."
+    },
     "prime_tower_enable_framework": {
       "label": "Interne ribben",
       "tooltip": "Schakel interne ribben toe om de stabiliteit van de hoofdtoren te verhogen."
@@ -1584,7 +1726,8 @@
       "tooltip": "Prime toren verbeter type",
       "enum_labels": [
         "kegel",
-        "afschuining"
+        "afschuining",
+        "hoekrib"
       ]
     },
     "prime_tower_position_type": {
@@ -1609,6 +1752,18 @@
     "prime_tower_skip_points": {
       "label": "Punten overslaan",
       "tooltip": "De muur van de eerste toren zal de startpunten van veegpad overslaan"
+    },
+    "prime_tower_start_ironing": {
+      "label": "Strijken van het startgebied van de prime toren",
+      "tooltip": "Door het spoelstartgebied te strijken, vermindert u het risico dat de spuitmond tijdens het daaropvolgende afdrukken over de vultoren schraapt.",
+      "enum_labels": [
+        "Uit",
+        "Heen en weer strijken"
+      ]
+    },
+    "prime_tower_start_offset": {
+      "label": "Startoffset van de prime toren",
+      "tooltip": "Verplaatst het begin van het spoelpad van de primaire toren naar binnen langs de eerste spoellijn. Hierdoor blijven opstartblobs binnen de toren."
     },
     "prime_tower_width": {
       "label": "Breedte",
@@ -1889,6 +2044,10 @@
       "label": "Veeg alle printextruders af",
       "tooltip": "Alle extruders worden afgeveegd aan de voorzijde van het printbed aan het begin van de print als dit is ingeschakeld."
     },
+    "skeleton_flush_slowdown_speed": {
+      "label": "Afveegsnelheid in het skelet",
+      "tooltip": "Wanneer de optie \"Spoelen in objectskelet\" is ingeschakeld, stelt u de snelheid in voor vertraagde skeletpaden na een materiaalwissel. Percentagewaarden worden berekend op basis van de snelheid die elk skeletpad normaal gesproken zou gebruiken."
+    },
     "skeleton_infill_density": {
       "label": "Skelet invulling dichtheid",
       "tooltip": "Het resterende deel van de modelcontour na het verwijderen van een bepaalde diepte van het oppervlak wordt het skelet genoemd. Deze parameter wordt gebruikt om de dichtheid van deze sectie aan te passen. Wanneer twee regio's dezelfde beperkte infill-instellingen hebben maar een verschillende skeletdichtheid, zullen hun skeletgebieden overlappende secties ontwikkelen. De standaardinstelling is hetzelfde als de infill-dichtheid."
@@ -1896,6 +2055,10 @@
     "skeleton_infill_line_width": {
       "label": "Scheletlijnbreedte",
       "tooltip": "Pas de lijnbreedte van de geselecteerde skeletpaden aan."
+    },
+    "skeleton_wipe_line_width": {
+      "label": "Lijnbreedte voor afvegen in het skelet",
+      "tooltip": "Pas de breedte aan van de skeletlijnen die worden gebruikt voor het wissen met lagere snelheid na een materiaalwissel, in de modus zonder Prime toren."
     },
     "skin_infill_density": {
       "label": "Huidvuldigheid",
@@ -2056,7 +2219,8 @@
         "Cross-Zag",
         "Gesloten-Zag",
         "Lateraal Honeycomb",
-        "Lateraal Lattice"
+        "Lateraal Lattice",
+        "Adaptieve TPMS"
       ]
     },
     "sparse_infill_speed": {
@@ -2152,6 +2316,10 @@
     "support_filament": {
       "label": "Support/raft base",
       "tooltip": "Filament voor het printen van ondersteuning (support) en raft. \"Standaard\" betekent geen specifiek filament voor  ondersteuning (support) en het huidige filament wordt gebruikt."
+    },
+    "support_filament_nozzle_mapping": {
+      "label": "Ondersteuning van het in kaart brengen van filamentmondstukken",
+      "tooltip": "Toont de projectfilament-naar-spuitmondgroeperingsknoppen voor deze printer."
     },
     "support_interface_bottom_layers": {
       "label": "Onderste interfacelagen",
@@ -2288,6 +2456,10 @@
         "Z overschrijft X/Y"
       ]
     },
+    "surface_coefficient": {
+      "label": "Oppervlaktecoëfficiënt (bèta)",
+      "tooltip": "Regelt de dichtheid van de veldvulling nabij oppervlakken. Hogere waarden maken het rooster nabij de oppervlakken dichter."
+    },
     "symmetric_infill_y_axis": {
       "label": "Symmetrische invulling y-as",
       "tooltip": "Als het model twee delen heeft die symmetrisch zijn rond de y-as, en u wilt dat deze delen een symmetrische textuur hebben, klik dan op deze optie op een van de delen."
@@ -2352,6 +2524,10 @@
       "label": "Top/Bottom vaste invulling/muur overlapping",
       "tooltip": "Het bovenste massieve infill gebied is iets vergroot om te overlappen met de muur voor een betere hechting enom het uiterlijk van pingaten te minimaliseren waar de bovenste infill de muren ontmoet. Een waarde van 25-30% iseen goed uitgangspunt, waardoor het ontstaan van pingaten tot een minimum wordt beperkt. De procentuele waarde is relatief tenopzichte van de lijnbreedte van sparse infill"
     },
+    "top_fill_flush_layers": {
+      "label": "Bovenste lagen met spoeling vóór de vulling",
+      "tooltip": "Wanneer spoelen in het objectskelet is ingeschakeld, wordt in de bovenste N lagen van het object eerst op de prime toren gespoeld, voordat de vulling of het skelet wordt geprint, gevolgd door de huid en de wanden. Dit verandert het aantal lagen van de bovenste schil niet."
+    },
     "top_shell_layers": {
       "label": "Aantal lagen bovenkant",
       "full_label": "Aantal bovenste solide lagen",
@@ -2412,6 +2588,10 @@
     "tpms_start_infill_density": {
       "label": "Start sparse fill dichtheid",
       "tooltip": "Begin schaars vuldichtheid in bereik (1-99)"
+    },
+    "transmittance_matrix": {
+      "label": "Skelet spoel buitenwand matrix",
+      "tooltip": "Buitenwanddikte-matrix die alleen wordt gebruikt wanneer spoelen in het objectskelet is ingeschakeld."
     },
     "travel_acceleration": {
       "label": "Verplaatsen",
@@ -2488,6 +2668,10 @@
     "tree_support_brim_width": {
       "label": "Tree support brim width",
       "tooltip": "Afstand van boomtak tot de buitenste rand"
+    },
+    "tree_support_organic_validate_repair": {
+      "label": "Validatie en reparatie van supports",
+      "tooltip": "Nadat het basis-supportgebied is gegenereerd, wordt de continuïteit van de organische boomstructuurcontouren gevalideerd. Wanneer ingeschakeld, worden extra supportpaden gebruikt om niet-ondersteunde contoursegmenten te repareren. Wanneer uitgeschakeld, worden organische boomstructuren gegenereerd met het oorspronkelijke extrusiepadgeneratieproces."
     },
     "tree_support_tip_diameter": {
       "label": "Tipdiameter",
@@ -2634,6 +2818,9 @@
       "label": "X-Y-gaten compensatie",
       "tooltip": "Gaten in objecten worden met de ingestelde waarde groter of kleiner in het XY-vlak. Positieve waarden maken de gaten groter en negatieve waarden maken de gaten kleiner. Deze functie wordt gebruikt om de grootte enigszins aan te passen wanneer objecten montageproblemen hebben."
     },
+    "xy_step_dist": {
+      "label": "XY stapafstand"
+    },
     "z_direction_outwall_speed_continuous": {
       "label": "Glattende wandsnelheid langs Z (experimenteel)",
       "tooltip": "Het gladmaken van de buitenwandsnelheid in z-richting om een betere oppervlaktekwaliteit te krijgen. De printtijd zal toenemen. Het werktniet op spiraal vaas modus."
@@ -2655,6 +2842,20 @@
     "z_offset": {
       "label": "Z-hoogte",
       "tooltip": "Deze waarde wordt toegevoegd (of afgetrokken) van alle Z-coördinaten in de G-code. Het wordt gebruikt voor een slechte Z-eindstop positie. Als de Z-eindstop bijvoorbeeld een waarde gebruikt die 0.3mm van het printbed is, kan dit ingesteld worden op -0.3mm."
+    },
+    "zaa_enabled": {
+      "label": "Schakel Z-layer anti-aliasing in",
+      "tooltip": "Overweeg om Z-laag anti-aliasing in te schakelen voor modellen met grote, licht hellende oppervlakken om het zichtbare traplopen te verminderen. Voor de best mogelijke oppervlakteafwerking kunt u overwegen om een concentrische bovenvlakvulling te gebruiken.\nIndien ingeschakeld, passen geschikte bovenoppervlak- en muurpaden hun Z-hoogte aan om het modeloppervlak te volgen. Anti-aliasing op de Z-laag sluit elkaar uit met Spiraalvaas, Sjaalnaad en Sublaag met gemengde kleuren. Z-laag anti-aliasing kan niet samen met deze functies worden ingeschakeld. Objecten die een Vlot of Strijken gebruiken of negatieve delen bevatten, vallen terug op conventionele midplane-slicing en geven een waarschuwing weer. Wanneer deze functie is ingeschakeld, worden boogopdrachten in geschikte paden omgezet in lineaire G1-bewegingen."
+    },
+    "zaa_lock_top_surface_fill_direction": {
+      "label": "Vulrichting bovenoppervlak vergrendelen",
+      "tooltip": "Houdt de richting van niet-brugvormige, op lijnen gebaseerde vulpatronen van het bovenoppervlak (zoals Rechtlijning en Monotoon) ongewijzigd tussen lagen wanneer anti-aliasing van de Z-laag actief is voor het huidige object. De vulrichting van de brug en andere vultypen worden niet beïnvloed."
+    },
+    "zaa_slice_plane_offset": {
+      "label": "ZAA-verschuiving in segmentvlak"
+    },
+    "zaa_wall_lowering_min_slope": {
+      "label": "Minimale helling van het oppervlak voor het verlagen van de muur"
     }
   },
   "ui": {
@@ -2680,6 +2881,7 @@
     "Filament for Features": "Filament voor functies",
     "Filament start G-code": "Filament start G-code",
     "Flush options": "Uitspoel-opties",
+    "Fuzzy Skin": "Vage buitenkant",
     "G-code output": "G-code uitvoer",
     "Infill": "Vulling",
     "Initial layer speed": "Printsnelheid van de eerste laag",
@@ -2742,6 +2944,7 @@
     "Walls": "Wanden",
     "Walls and surfaces": "Muren en oppervlakken",
     "Wipe tower": "Afveegblok",
-    "Wipe tower parameters": "Afveegblokparameters"
+    "Wipe tower parameters": "Afveegblokparameters",
+    "Z contouring": "Z-contouren"
   }
 }

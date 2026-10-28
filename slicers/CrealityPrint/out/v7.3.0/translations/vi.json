@@ -1,0 +1,2950 @@
+{
+  "schema_version": 1,
+  "locale": "vi",
+  "source_locale": "en",
+  "messages": {},
+  "settings": {
+    "accel_to_decel_enable": {
+      "label": "Bật accel_to_decel",
+      "tooltip": "max_accel_to_decel của Klipper sẽ được điều chỉnh tự động"
+    },
+    "accel_to_decel_factor": {
+      "label": "accel_to_decel",
+      "tooltip": "max_accel_to_decel của Klipper sẽ được điều chỉnh theo %% gia tốc này"
+    },
+    "acceleration_limit_mess": {
+      "label": "Tốc độ và gia tốc giới hạn theo trọng lượng",
+      "tooltip": "Tốc độ và gia tốc giới hạn theo trọng lượng"
+    },
+    "acceleration_limit_mess_enable": {
+      "label": "Tốc độ và gia tốc giới hạn theo trọng lượng",
+      "tooltip": "Tốc độ và gia tốc giới hạn theo trọng lượng"
+    },
+    "activate_air_filtration": {
+      "label": "Kích hoạt lọc không khí",
+      "tooltip": "Kích hoạt để lọc gió tốt hơn."
+    },
+    "activate_chamber_layer": {
+      "label": "Kích hoạt lớp buồng in",
+      "full_label": "Kích hoạt lớp buồng in",
+      "tooltip": "Số lớp để bắt đầu điều khiển nhiệt độ khoang"
+    },
+    "activate_chamber_temp_control": {
+      "label": "Kích hoạt điều khiển nhiệt độ",
+      "tooltip": "Bật tùy chọn này để điều khiển nhiệt độ buồng in. Một lệnh M191 sẽ được thêm trước \"machine_start_gcode\"\nLệnh G-code: M141/M191 S(0-255)"
+    },
+    "adaptive_bed_mesh_margin": {
+      "label": "Lề lát",
+      "tooltip": "Tùy chọn này xác định khoảng cách bổ sung mà vùng lưới bàn in tự thích ứng cần được mở rộng theo hướng XY."
+    },
+    "additional_cooling_fan_speed": {
+      "label": "Tốc độ",
+      "tooltip": "Speed of auxiliary part cooling fan. Auxiliary fan will run at this speed during printing except the first severallayers which is defined by no cooling layers.\nPlease enable auxiliary_fan in printer settings to use this feature. G-code command:M106 P2 S(0-255)"
+    },
+    "ai_infill": {
+      "label": "Infill thông minh",
+      "tooltip": "Bật Infill thông minh dựa trên phần infill thưa ban đầu."
+    },
+    "align_infill_direction_to_model": {
+      "label": "Canh lề",
+      "tooltip": "Aligns infill and surface fill directions to follow the model's orientation on the build plate. When enabled, fill directionsrotate with the model to maintain optimal strength characteristics."
+    },
+    "alternate_extra_wall": {
+      "label": "Thành bổ sung xen kẽ",
+      "tooltip": "Thiết lập này thêm một thành bổ sung vào mỗi lớp xen kẽ. Bằng cách này, phần lấp đầy được chèn thẳng đứng giữa các thành, cho ra bản in chắc hơn. \n\nKhi bật tùy chọn này, tùy chọn đảm bảo độ dày vỏ thẳng đứng cần được tắt. \n\nKhông khuyến nghị dùng lấp đầy dạng tia sét (lightning) cùng với tùy chọn này vì có ít phần lấp đầy để neo các chu vi bổ sung."
+    },
+    "arc_tolerance": {
+      "label": "Cho phép cung",
+      "tooltip": "Cho phép cung"
+    },
+    "automatic_extrusion_widths": {
+      "label": "Automatic extrusion width calculation",
+      "tooltip": "Tự động tính toán độ rộng độ rộng độ mở rộng dựa trên đường kính vòi của bộ Extruder được dùng hiện thời. Thiết lập này cần thiết để in với đường kính khác nhau của vòi."
+    },
+    "auxiliary_fan": {
+      "label": "Mở theo chiều ngang",
+      "tooltip": "Bật tùy chọn này nếu máy có quạt làm mát chi tiết phụ trợ. Lệnh G-code: M106 P2 S(0-255)."
+    },
+    "bbl_calib_mark_logo": {
+      "label": "Hiện đánh giá tự động"
+    },
+    "bbl_use_printhost": {
+      "label": "Dùng máy in thứ ba",
+      "tooltip": "Cho phép điều khiển máy in của Creality Print thông qua máy chủ in của bên thứ ba"
+    },
+    "bed_custom_model": {
+      "label": "Mô hình bàn in tùy chỉnh"
+    },
+    "bed_custom_texture": {
+      "label": "Kết cấu bàn in tùy chỉnh"
+    },
+    "bed_exclude_area": {
+      "label": "Excluded bed area",
+      "tooltip": "Vùng không thể in trên mặt phẳng XY. Ví dụ, máy in dòng X1 dùng góc trước bên trái để cắt sợi nhựa khi thay sợi. Vùng này được biểu diễn dưới dạng đa giác bằng các điểm theo định dạng sau: \"XxY, XxY, ...\""
+    },
+    "bed_mesh_max": {
+      "label": "Giường tối đa",
+      "tooltip": "This option sets the max point for the allowed bed mesh area. Due to the probe's XY offset, most printers are unable to probe the entire bed. To ensure the probe point does not go outside the bed area, the minimum and maximum points of the bed mesh should be set appropriately. CrealityPrint ensures that adaptive_bed_mesh_min/adaptive_bed_mesh_max values do not exceed these min/max points. This information can usually be obtained from your printer manufacturer. The default settingis (99999, 99999), which means there are no limits, thus allowing probing across the entire bed."
+    },
+    "bed_mesh_min": {
+      "label": "Giường",
+      "tooltip": "This option sets the min point for the allowed bed mesh area. Due to the probe's XY offset, most printers are unable to probe the entire bed. To ensure the probe point does not go outside the bed area, the minimum and maximum points of the bed mesh should be set appropriately. CrealityPrint ensures that adaptive_bed_mesh_min/adaptive_bed_mesh_max values do not exceed these min/max points. This information can usually be obtained from your printer manufacturer. The default settingis (-99999, -99999), which means there are no limits, thus allowing probing across the entire bed."
+    },
+    "bed_mesh_probe_distance": {
+      "label": "Khoảng cách điểm Probe",
+      "tooltip": "Tùy chọn này đặt khoảng cách ưu tiên giữa các điểm dò (kích thước lưới) theo hướng X và Y, mặc định là 50mm cho cả X và Y."
+    },
+    "bed_temperature_mode": {
+      "label": "Bed temperature mode",
+      "tooltip": "Chọn cách chọn nhiệt độ giường để in nhiều vật liệu.",
+      "enum_labels": [
+        "Dùng tối đa các tài liệu",
+        "Dùng tài liệu đầu"
+      ]
+    },
+    "before_layer_change_gcode": {
+      "label": "G-code trước khi đổi lớp",
+      "tooltip": "This G-code is inserted at every layer change before lifting z."
+    },
+    "belt_Z_offset": {
+      "label": "Khoảng cách vành đai máy Z",
+      "tooltip": "Độ lệch Z-axis của máy thắt lưng."
+    },
+    "best_object_pos": {
+      "label": "Vị trí đối tượng tốt nhất",
+      "tooltip": "Vị trí sắp xếp tự động tốt nhất trong khoảng [0,1] so với hình dạng bàn in."
+    },
+    "bottom_fill_flush_layers": {
+      "label": "Số lớp đáy xả nhựa trước khi in phần lấp đầy",
+      "tooltip": "Khi bật xả nhựa vào khung của đối tượng, bắt buộc xả nhựa trên tháp mồi tại N lớp dưới cùng của đối tượng trước khi in phần lấp đầy hoặc khung, rồi đến bề mặt và thành. Thiết lập này không thay đổi số lớp vỏ đáy."
+    },
+    "bottom_shell_layers": {
+      "label": "Số lớp vỏ đáy",
+      "full_label": "Số lớp vỏ đáy",
+      "tooltip": "Đây là số lớp đặc của vỏ đáy, bao gồm cả lớp bề mặt đáy. Khi độ dày tính theo giá trị này mỏng hơn độ dày vỏ đáy, số lớp vỏ đáy sẽ được tăng lên"
+    },
+    "bottom_shell_thickness": {
+      "label": "Độ dày vỏ đáy",
+      "full_label": "Độ dày vỏ đáy",
+      "tooltip": "The number of bottom solid layers is increased when slicing if the thickness calculated by bottom shell layers is thinner than this value. This can avoid having too thin a shell when layer height is small. 0 means that this setting is disabled and the thickness of the bottom shell is determined simply by the number of bottom shell layers."
+    },
+    "bottom_solid_infill_flow_ratio": {
+      "label": "Tỷ lệ dòng chảy bề mặt dưới",
+      "tooltip": "Yếu tố này ảnh hưởng đến số lượng vật liệu cho chất đặc dưới cùng"
+    },
+    "bottom_surface_pattern": {
+      "label": "Dưới mẫu bề mặt",
+      "tooltip": "This is the line pattern of bottom surface infill, not including bridge infill.",
+      "enum_labels": [
+        "Tâm",
+        "Đường thẳng",
+        "Đơn âm",
+        "Dòng đơn âm",
+        "Được sắp xếp lại",
+        "Đường cong Hilbert",
+        "Dây cung Archimedes",
+        "Xoắn ốc bát giác"
+      ]
+    },
+    "bridge_acceleration": {
+      "label": "Cầu nối",
+      "tooltip": "Gia tốc của cầu. Nếu giá trị nhập dạng phần trăm (ví dụ 50%), nó sẽ được tính dựa trên gia tốc tường ngoài."
+    },
+    "bridge_angle": {
+      "label": "Hướng infill cầu",
+      "tooltip": "Bridging angle override. 0 means the bridging angle will be calculated automatically. Otherwise the provided angle will be used for external bridges. Use 180° for zero angle."
+    },
+    "bridge_density": {
+      "label": "Mật độ cầu",
+      "tooltip": "Mật độ của cầu bên ngoài. 100% nghĩa là cầu đặc. Mặc định là 100%."
+    },
+    "bridge_flow": {
+      "label": "Tỷ lệ dòng chảy cầu",
+      "tooltip": "Giảm giá trị này một chút (chẳng hạn 0, 9) để giảm lượng vật liệu cho cầu, để cải thiện sag"
+    },
+    "bridge_no_support": {
+      "label": "Không được dùng cầu.",
+      "tooltip": "This disables supporting bridges, which decreases the amount of support required. Bridges can usually be printed directly without support over a reasonable distance."
+    },
+    "bridge_speed": {
+      "label": "Bên ngoài",
+      "tooltip": "This is the speed for bridges and 100% overhang walls."
+    },
+    "brim_ears": {
+      "label": "Tai hối lộ",
+      "tooltip": "Chỉ tạo viền (brim) trên các cạnh sắc của mô hình."
+    },
+    "brim_ears_detection_length": {
+      "label": "Bán kính phát hiện tai hối lộ",
+      "tooltip": "Hình học sẽ được đơn giản hóa trước khi phát hiện các góc sắc. Tham số này biểu thị chiều dài sai lệch tối thiểu cho việc đơn giản hóa.\n0 để tắt"
+    },
+    "brim_ears_max_angle": {
+      "label": "Góc tối đa tai Bem",
+      "tooltip": "Góc tối đa để tai viền (brim ear) xuất hiện. \nNếu đặt là 0, sẽ không tạo viền. \nNếu đặt khoảng ~180, viền sẽ được tạo ở mọi nơi ngoại trừ các đoạn thẳng."
+    },
+    "brim_object_gap": {
+      "label": "Khoảng cách truy vấn Bem",
+      "tooltip": "This creates a gap between the innermost brim line and the object and can make the brim easier to remove."
+    },
+    "brim_type": {
+      "label": "Kiểu hối lộ",
+      "tooltip": "This controls the generation of the brim at outer and/or inner side of models. Auto means the brim width is analyzed and calculated automatically.",
+      "enum_labels": [
+        "Tự động",
+        "Tai chuột",
+        "Sơn",
+        "Chỉ mở rộng",
+        "Chỉ bề trong",
+        "Bề ngoài và bề trong",
+        "Nobrim"
+      ]
+    },
+    "brim_width": {
+      "label": "Độ rộng Bem",
+      "tooltip": "This is the distance from the model to the outermost brim line."
+    },
+    "cell_type": {
+      "label": "Loại ô",
+      "tooltip": "Chọn hình dạng ô cơ bản được phần điền đầy theo trường sử dụng.",
+      "enum_labels": [
+        "Ô TPMS-D",
+        "Gyroid",
+        "TPMS-FK"
+      ]
+    },
+    "chamber_temperature": {
+      "label": "Nhiệt độ phòng",
+      "full_label": "Nhiệt độ phòng",
+      "tooltip": "Nhiệt độ buồng cao hơn có thể giúp hạn chế hoặc giảm cong vênh và có thể tăng độ bám dính giữa các lớp đối với vật liệu nhiệt độ cao như ABS, ASA, PC, PA, v.v. Đồng thời, hiệu quả lọc khí của ABS và ASA sẽ kém hơn. Với PLA, PETG, TPU, PVA và các vật liệu nhiệt độ thấp khác, nhiệt độ buồng thực tế không nên quá cao để tránh tắc nghẽn, vì vậy khuyến nghị đặt 0, tức là tắt."
+    },
+    "change_extrusion_role_gcode": {
+      "label": "G-code thay đổi vai trò đùn",
+      "tooltip": "G-code này được chèn khi vai trò đùn thay đổi"
+    },
+    "change_filament_gcode": {
+      "label": "G-code thay sợi nhựa",
+      "tooltip": "This G-code is inserted when filament is changed, including T commands to trigger tool change."
+    },
+    "close_fan_the_first_x_layers": {
+      "label": "Không làm mát cho người đầu tiên",
+      "tooltip": "Turn off all cooling fans for the first few layers. This can be used to improve bed adhesion."
+    },
+    "color_bed_exclude_area": {
+      "label": "Vùng loại trừ màu trên bàn in",
+      "tooltip": "Vùng loại trừ màu trên bàn in"
+    },
+    "compatible_printers": {
+      "label": "Máy tương thích"
+    },
+    "compatible_printers_condition": {
+      "label": "Điều kiện máy tính tương thích"
+    },
+    "compatible_prints": {
+      "label": "Hồ sơ quy trình tương thích"
+    },
+    "compatible_prints_condition": {
+      "label": "Trạng thái hồ sơ tiến trình tương thích"
+    },
+    "complete_print_exhaust_fan_speed": {
+      "label": "Tốc độ",
+      "tooltip": "Tốc độ quạt xả sau khi in xong"
+    },
+    "cool_cds_fan_start_at_height": {
+      "label": "Chiều cao bật quạt phụ",
+      "tooltip": "Chiều cao bật quạt phụ"
+    },
+    "cool_plate_temp": {
+      "label": "Các lớp khác",
+      "tooltip": "Nhiệt độ giường cho các lớp trừ lớp đầu tiên. Giá trị 0 có nghĩa là các sợi không hỗ trợ in trên đĩa mát"
+    },
+    "cool_plate_temp_initial_layer": {
+      "label": "First layer",
+      "tooltip": "Nhiệt độ giường ngủ của lớp ban đầu. Giá trị 0 có nghĩa là các sợi không hỗ trợ in trên đĩa mát"
+    },
+    "cool_special_cds_fan_speed": {
+      "label": "Tốc độ quạt làm mát bổ sung cho vùng đặc biệt",
+      "tooltip": "Tốc độ quạt làm mát bổ sung cho vùng đặc biệt"
+    },
+    "cooling_perimeter_transition_distance": {
+      "label": "Khoảng cách chuyển tiếp bao quanh",
+      "tooltip": "Distance in millimeters before non-slowed perimeters where the original unslowed print speed is restored. This reduces print quality issueswhen transitioning from heavily slowed feature to fast perimeter printing."
+    },
+    "cooling_slowdown_logic": {
+      "label": "Logic giảm tốc làm mát",
+      "tooltip": "Determines how the printer slows down layer printing when the minimum layer time isn't reached. 'Consistent surface' first triesto preserve the print speeds of the first two perimeters by slowing all other features. Only if this isn'tsufficient, it also slows down those first two perimeters. 'Uniform cooling' slows down all print features, including the firsttwo perimeters.",
+      "enum_labels": [
+        "Làm mát đồng dạng",
+        "Bề mặt song song",
+        "Đừng chạy chậm lại ngoài bức tường",
+        "Vùng làm mát thông minh (Beta)"
+      ]
+    },
+    "cooling_tube_length": {
+      "label": "Chiều dài ống làm mát",
+      "tooltip": "Chiều dài của ống làm mát giới hạn không gian để làm mát di chuyển bên trong."
+    },
+    "cooling_tube_retraction": {
+      "label": "Vị trí ống làm mát",
+      "tooltip": "Khoảng cách giữa điểm trung tâm của ống làm mát từ đầu ống xả."
+    },
+    "counterbore_hole_bridging": {
+      "label": "Lỗ khoét bậc khi bắc cầu",
+      "tooltip": "Tùy chọn này tạo cầu nối cho các lỗ khoét bậc, cho phép in chúng mà không cần hỗ trợ. Các chế độ có sẵn bao gồm:\n1. Không: Không tạo cầu nối.\n2. Bắc cầu một phần: Chỉ một phần vùng không được hỗ trợ sẽ được bắc cầu.\n3. Lớp hy sinh: Tạo một lớp cầu nối hy sinh hoàn chỉnh.",
+      "enum_labels": [
+        "Không",
+        "Cầu nối một phần",
+        "Lớp hy sinh"
+      ]
+    },
+    "creality_flush_time": {
+      "label": "Thời gian trôi",
+      "tooltip": "Thời gian trôi"
+    },
+    "curr_bed_type": {
+      "label": "Loại bàn in",
+      "tooltip": "Máy in hỗ trợ kiểu giường",
+      "enum_labels": [
+        "Tấm in mát",
+        "Tấm kỹ thuật",
+        "Tấm PEI nhẵn / tấm nhiệt độ cao",
+        "Tấm PEI nhám",
+        "Tấm tùy chỉnh",
+        "Tấm nhựa epoxy"
+      ]
+    },
+    "customized_plate_temp": {
+      "label": "Các lớp khác",
+      "tooltip": "Nhiệt độ bàn in cho các lớp ngoại trừ lớp đầu tiên. Giá trị 0 nghĩa là sợi nhựa không hỗ trợ in trên Tấm tùy chỉnh"
+    },
+    "customized_plate_temp_initial_layer": {
+      "label": "First layer",
+      "tooltip": "Nhiệt độ bàn in của lớp đầu tiên. Giá trị 0 nghĩa là sợi nhựa không hỗ trợ in trên Tấm tùy chỉnh"
+    },
+    "default_acceleration": {
+      "label": "In thường",
+      "tooltip": "This is the default acceleration for both normal printing and travel after the first layer."
+    },
+    "default_filament_colour": {
+      "label": "Mặc định",
+      "tooltip": "Màu sợi mặc định"
+    },
+    "default_filament_profile": {
+      "label": "Hồ sơ sợi mặc định",
+      "tooltip": "Hồ sơ sợi mặc định khi chuyển sang hồ sơ máy này"
+    },
+    "default_filament_type": {
+      "label": "Kiểu mặc định",
+      "tooltip": "Kiểu sợi mặc định"
+    },
+    "default_jerk": {
+      "label": "Mặc định",
+      "tooltip": "Mặc định"
+    },
+    "default_print_profile": {
+      "label": "Hồ sơ quy trình mặc định",
+      "tooltip": "Default process profile when switching to this machine profile"
+    },
+    "deretraction_speed": {
+      "label": "Deretraction speed",
+      "full_label": "Deretraction speed",
+      "tooltip": "Tốc độ nạp lại sợi dây thành chất kích thích. Zero có nghĩa là cùng tốc độ với rút lại"
+    },
+    "detect_narrow_internal_solid_infill": {
+      "label": "Phát hiện lấp đầy đặc bên trong hẹp",
+      "tooltip": "This option will auto-detect narrow internal solid infill areas. If enabled, the concentric pattern will be used for the area to speed up printing. Otherwise, the rectilinear pattern will be used by default."
+    },
+    "detect_overhang_wall": {
+      "label": "Detect overhang walls",
+      "tooltip": "Detect the overhang percentage relative to line width and use different speed to print. For 100%% overhang, bridge speed is used.This detects the overhang percentage relative to line width and uses a different speed to print. For 100%% overhang, bridging speed is used."
+    },
+    "detect_thin_wall": {
+      "label": "Detect thin walls",
+      "tooltip": "This detects thin walls which can’t contain two lines and uses a single line to print. It may not print as well because it’s not a closed loop."
+    },
+    "disable_m73": {
+      "label": "Tắt thiết lập thời gian in còn lại",
+      "tooltip": "Tắt việc tạo lệnh M73: Đặt thời gian in còn lại trong G-code cuối cùng"
+    },
+    "dithering_local_z_mode": {
+      "label": "Chế độ rung động Z cục bộ",
+      "tooltip": "Use variable layers for color blending."
+    },
+    "dithering_step_painted_zones_only": {
+      "label": "Chỉ dùng kích cỡ bước trong vùng sơn",
+      "tooltip": "Khi bật, kích cỡ bước Z rung động chỉ được áp dụng khi vẽ các sợi hỗn hợp."
+    },
+    "dithering_z_step_size": {
+      "label": "Kích thước bước dithering Z",
+      "tooltip": "Chiều cao lớp dùng trong các vùng Z được tô bằng phối trộn (dithering)."
+    },
+    "dont_filter_internal_bridges": {
+      "label": "Không lọc ra cầu nội bộ nhỏ (beta)",
+      "tooltip": "This option can help reducing pillowing on top surfaces in heavily slanted or curved models.\n\nBy default, small internal bridges are filtered out and the internal solid infill is printed directly over the sparse infill. This works well in most cases, speeding up printing without too much compromise on top surface quality. \n\nHowever, in heavily slanted or curved models especially where too low sparse infill density is used, this may result in curling of the unsupported solid infill, causing pillowing.\n\nEnabling this option will print internal bridge layer over slightly unsupported internal solid infill. The options below control the amount of filtering, i.e. the amount of internal bridges created.\n\nDisabled - Disables this option. This is the default behaviour and works well in most cases.\n\nLimited filtering - Creates internal bridges on heavily slanted surfaces, while avoiding creating unnecessary internal bridges. This works well for most difficult models.\n\nNo filtering - Creates internal bridges on every potential internal overhang. This option is useful for heavily slanted top surface models. However, in most cases it creates too many unnecessary bridges.",
+      "enum_labels": [
+        "Tắt",
+        "Hạn chế lọc",
+        "Không lọc"
+      ]
+    },
+    "dont_slow_down_outer_wall": {
+      "label": "Đừng chạy chậm lại ngoài bức tường",
+      "tooltip": "Nếu bật, thiết lập này sẽ đảm bảo chu vi bên ngoài không bị chậm lại để đáp ứng thời gian lớp tối thiểu. Điều này đặc biệt hữu ích trong những trường hợp sau:\n\n1. Để tránh những thay đổi trong bóng loáng khi in những sợi tơ bóng loáng\n2. Để tránh những thay đổi trong tốc độ bức tường bên ngoài mà có thể tạo ra những món đồ họa nhẹ giống như z banring\n3. Để tránh in ở tốc độ gây ra VFAs (các sản phẩm tốt) trên các bức tường bên ngoài\n"
+    },
+    "draft_shield": {
+      "label": "Lớp nháp",
+      "tooltip": "A draft shield is useful to protect an ABS or ASA print from warping and detaching from print beddue to wind draft. It is usually needed only with open frame printers, i.e. without an enclosure. \n\nOptions:\nEnabled =skirt is as tall as the highest printed object.\nLimited = skirt is as tall as specified by skirt height.\n\nNote:With the draft shield active, the skirt will be printed at skirt distance from the object. Therefore, if brimsare active it may intersect with them. To avoid this, increase the skirt distance value.\n",
+      "enum_labels": [
+        "Tắt",
+        "Giới hạn",
+        "Bật"
+      ]
+    },
+    "during_print_exhaust_fan_speed": {
+      "label": "Tốc độ",
+      "tooltip": "Tốc độ fan hâm mộ khi in ấn. Tốc độ này sẽ ghi đè tốc độ theo định dạng sợi"
+    },
+    "e_step_dist": {
+      "label": "Khoảng cách bước E"
+    },
+    "elefant_foot_compensation": {
+      "label": "Bù chân voi",
+      "tooltip": "This shrinks the first layer on the build plate to compensate for elephant foot effect."
+    },
+    "elefant_foot_compensation_layers": {
+      "label": "Số lớp bù chân voi",
+      "tooltip": "The number of layers on which the elephant foot compensation will be active. The first layer will be shrunkby the elephant foot compensation value, then the next layers will be linearly shrunk less, up to the layerindicated by this value."
+    },
+    "embedding_wall_into_infill": {
+      "label": "Nhúng thành vào phần lấp đầy",
+      "tooltip": "Nhúng thành vào những phần không có vòng thành đảm bảo thành kết nối liền mạch với phần lấp đầy."
+    },
+    "emit_machine_limits_to_gcode": {
+      "label": "Ghi các giới hạn vào G-code",
+      "tooltip": "If enabled, the machine limits will be emitted to G-code file.\nThis option will be ignored if the g-code flavoris set to Klipper."
+    },
+    "enable_arc_fitting": {
+      "label": "Hợp cung",
+      "tooltip": "Bật tùy chọn này để có tệp G-code chứa các lệnh di chuyển G2 và G3. Dung sai khớp bằng với độ phân giải. \n\n"
+    },
+    "enable_filament_ramming": {
+      "label": "Bật nén sợi nhựa (ramming)",
+      "tooltip": "Bật nén sợi nhựa (ramming)"
+    },
+    "enable_mixed_color_sublayer": {
+      "label": "Lớp con màu hỗn hợp",
+      "tooltip": "Bật chia từng lớp vật liệu in hỗn hợp thành các lớp phụ để pha màu vật lý. Yêu cầu ít nhất một hàng vật liệu in hỗn hợp được bật."
+    },
+    "enable_overhang_bridge_fan": {
+      "label": "Force cooling for overhangs and bridges",
+      "tooltip": "Enable this option to optimize the part cooling fan speed for overhangs and bridges to get better cooling"
+    },
+    "enable_overhang_speed": {
+      "label": "Slow down for overhangs",
+      "tooltip": "Enable this option to slow down when printing overhangs. The speeds for different overhang percentages are set below."
+    },
+    "enable_pressure_advance": {
+      "label": "Bật áp lực trước",
+      "tooltip": "Bật bù áp suất (pressure advance); kết quả hiệu chỉnh tự động sẽ bị ghi đè khi bật."
+    },
+    "enable_prime_tower": {
+      "label": "Bật",
+      "tooltip": "Tháp lau có thể được dùng để làm sạch phần còn lại trên vòi và ổn định áp suất phòng bên trong vòi, để tránh bị lỗi khi in đồ vật."
+    },
+    "enable_special_area_additional_cooling_fan": {
+      "label": "Bật quạt làm mát thêm khu vực đặc biệt",
+      "tooltip": "Bật quạt làm mát thêm khu vực đặc biệt"
+    },
+    "enable_support": {
+      "label": "Bật hỗ trợ",
+      "tooltip": "This enables support generation."
+    },
+    "eng_plate_temp": {
+      "label": "Các lớp khác",
+      "tooltip": "Nhiệt độ giường cho các lớp trừ lớp đầu tiên. Giá trị 0 nghĩa là sợi tơ không hỗ trợ in trên đĩa kỹ thuật"
+    },
+    "eng_plate_temp_initial_layer": {
+      "label": "First layer",
+      "tooltip": "Nhiệt độ giường ngủ của lớp ban đầu. Giá trị 0 nghĩa là sợi tơ không hỗ trợ in trên đĩa kỹ thuật"
+    },
+    "ensure_vertical_shell_thickness": {
+      "label": "Kiểm tra độ dày vỏ dọc",
+      "tooltip": "Add solid infill near sloping surfaces to guarantee the vertical shell thickness (top+bottom solid layers)\nNone: No solid infill will be added anywhere. Caution: Use this option carefully if your model has sloped surfaces\nCritical Only: Avoid adding solid infill for walls\nModerate: Add solid infill for heavily sloping surfaces only\nAll: Add solid infill for all suitable sloping surfaces\nDefault valueis All.",
+      "enum_labels": [
+        "Không",
+        "Chỉ nghiêm trọng",
+        "Điều hòa",
+        "Tất cả"
+      ]
+    },
+    "epoxy_resin_plate_temp": {
+      "label": "Các lớp khác",
+      "tooltip": "Nhiệt độ bàn in cho các lớp ngoại trừ lớp đầu tiên. Giá trị 0 nghĩa là sợi nhựa không hỗ trợ in trên Tấm nhựa Epoxy"
+    },
+    "epoxy_resin_plate_temp_initial_layer": {
+      "label": "First layer",
+      "tooltip": "Nhiệt độ bàn in của lớp đầu tiên. Giá trị 0 nghĩa là sợi nhựa không hỗ trợ in trên Tấm nhựa Epoxy"
+    },
+    "exclude_object": {
+      "label": "Siêu dữ liệu",
+      "tooltip": "Bật tùy chọn này để thêm lệnh EXCLUDE OBJECT vào G-code"
+    },
+    "external_infill_margin": {
+      "label": "Neo lấp đầy đặc thêm X mm",
+      "tooltip": "This parameter grows the top/bottom/solid layers by the specified mm to anchor them into the sparse infill and support the perimeters above. Put 0 to deactivate it. Can be a %% of the width of the perimeters.This parameter grows the top/bottom/solid layers by the specified mm toanchor them into the sparse infill and support the perimeters above. Put 0to deactivate it. Can be a %% of the width of the perimeters."
+    },
+    "extra_loading_move": {
+      "label": "Khoảng cách nạp thêm",
+      "tooltip": "Khi được đặt là số không, khoảng cách mà sợi dây được di chuyển từ vị trí đỗ xe trong khi tải là chính xác như khi nó được di chuyển trở lại trong quá trình dỡ hàng. Khi dương tính, nó được nạp nhiều hơn, nếu tiêu cực, việc nạp đạn sẽ ngắn hơn việc dỡ hàng."
+    },
+    "extra_perimeters_on_overhangs": {
+      "label": "Chu vi bổ sung ở phần nhô",
+      "tooltip": "Tạo thêm các đường chu vi trên các phần nhô dốc và những khu vực mà cầu nối không thể neo được. "
+    },
+    "extruder": {
+      "label": "Extruder"
+    },
+    "extruder_clearance_height_to_lid": {
+      "label": "Chiều cao để nắp",
+      "tooltip": "Khoảng cách của mũi vòi đến nắp. Dùng để tránh va chạm trong việc in tùy ý."
+    },
+    "extruder_clearance_height_to_rod": {
+      "label": "Đến từ bên phải",
+      "tooltip": "Khoảng cách của mũi vòi tới đầu dưới. Dùng để tránh va chạm trong việc in tùy ý."
+    },
+    "extruder_clearance_radius": {
+      "label": "Bán kính",
+      "tooltip": "Clearance radius around extruder: used for collision avoidance in by-object printing."
+    },
+    "extruder_colour": {
+      "label": "Màu mở rộng",
+      "tooltip": "Chỉ được sử dụng để giúp đỡ bằng hình ảnh trên UI"
+    },
+    "extruder_offset": {
+      "label": "Hiệu số cực đại"
+    },
+    "fan_cooling_layer_time": {
+      "label": "Thời gian Lớp",
+      "tooltip": "The part cooling fan will be enabled for layers where the estimated time is shorter than this value. Fan speed is interpolated between the minimum and maximum fan speeds according to layer printing time."
+    },
+    "fan_kickstart": {
+      "label": "Thời gian khởi động quạt",
+      "tooltip": "Phát lệnh tốc độ quạt tối đa trong số giây này trước khi giảm về tốc độ mục tiêu để khởi động quạt làm mát.\nĐiều này hữu ích với các quạt mà mức PWM/công suất thấp có thể không đủ để quạt bắt đầu quay từ trạng thái dừng, hoặc để quạt đạt tốc độ nhanh hơn.\nĐặt là 0 để tắt."
+    },
+    "fan_max_speed": {
+      "label": "Tốc độ",
+      "tooltip": "The part cooling fan speed may be increased when auto cooling is enabled. This is the maximum speed for the part cooling fan."
+    },
+    "fan_min_speed": {
+      "label": "Tốc độ",
+      "tooltip": "Tốc độ tối thiểu của quạt làm mát chi tiết"
+    },
+    "fan_speedup_overhangs": {
+      "label": "Chỉ là vượt quá giới hạn",
+      "tooltip": "Sẽ chỉ tính đến sự chậm trễ cho sự mát mẻ quá mức."
+    },
+    "fan_speedup_time": {
+      "tooltip": "Start the fan this number of seconds earlier than its target start time (you can use fractional seconds). It assumes infinite acceleration for this time estimation, and will only take into account G1 and G0 moves (arc fitting is unsupported).\nIt won't move fan commands from custom gcodes (they act as a sort of 'barrier').\nIt won't move fan commands into the start gcode if the 'only custom start gcode' is activated.\nUse 0 to deactivate."
+    },
+    "filament_adhesiveness_category": {
+      "label": "Sắp hàng",
+      "tooltip": "Loại độ bám dính của sợi nhựa"
+    },
+    "filament_can_change": {
+      "label": "Dây có thể thay đổi",
+      "tooltip": "Dây có thể thay đổi"
+    },
+    "filament_colour": {
+      "label": "Màu",
+      "tooltip": "Chỉ được sử dụng để giúp đỡ bằng hình ảnh trên UI"
+    },
+    "filament_cooling_final_speed": {
+      "label": "Tốc độ làm mát cuối cùng",
+      "tooltip": "Các chuyển động làm mát tăng tốc dần hướng tới tốc độ này."
+    },
+    "filament_cooling_initial_speed": {
+      "label": "Tốc độ làm mát đầu tiên",
+      "tooltip": "Các chuyển động làm mát tăng tốc dần bắt đầu từ tốc độ này."
+    },
+    "filament_cooling_moves": {
+      "label": "Số lần thử lại:",
+      "tooltip": "Sợi nhựa được làm mát bằng cách di chuyển tới lui trong các ống làm mát. Chỉ định số lần di chuyển mong muốn."
+    },
+    "filament_cost": {
+      "label": "Giá",
+      "tooltip": "Giá rẻ. Chỉ cho thống kê"
+    },
+    "filament_density": {
+      "label": "Mật độ",
+      "tooltip": "Mật độ ô nhiễm. Chỉ cho thống kê"
+    },
+    "filament_deretraction_speed": {
+      "label": "Deretraction speed",
+      "full_label": "Deretraction speed",
+      "tooltip": "Tốc độ nạp lại sợi dây thành chất kích thích. Zero có nghĩa là cùng tốc độ với rút lại"
+    },
+    "filament_diameter": {
+      "label": "Diameter",
+      "tooltip": "Filament diameter is used to calculate extrusion variables in G-code, so it is important that this is accurate and precise."
+    },
+    "filament_end_gcode": {
+      "label": "Kết thúc G- code",
+      "tooltip": "Add end G-code when finishing the printing of this filament."
+    },
+    "filament_flow_ratio": {
+      "label": "Tỷ lệ chảy",
+      "tooltip": "The filament may have volumetric change after switching between molten and crystalline states. This setting changes all extrusion flow of this filament in G-code proportionally. The recommended value range is between 0.95 and 1.05. You may be able to tune this value to get a nice flat surface if there is slight overflow or underflow."
+    },
+    "filament_is_support": {
+      "label": "Hỗ trợ vật liệu",
+      "tooltip": "Hỗ trợ vật liệu thường được dùng để in hỗ trợ và hỗ trợ giao diện"
+    },
+    "filament_load_time": {
+      "label": "Thời gian nạp phụ",
+      "tooltip": "Time for the printer firmware (or the Multi Filament Unit 2.0) to load a new filament during a toolchange (when executing the T code). This time is added to the total print time by the G-code timeestimator."
+    },
+    "filament_loading_speed": {
+      "label": "Tốc độ",
+      "tooltip": "Tốc độ dùng để nạp sợi nhựa trên tháp lau (wipe tower)."
+    },
+    "filament_loading_speed_start": {
+      "label": "Tốc độ nạp bắt đầu",
+      "tooltip": "Tốc độ dùng ở giai đoạn bắt đầu của quá trình nạp."
+    },
+    "filament_long_retractions_when_cut": {
+      "label": "Long retraction when cut (experimental)",
+      "tooltip": "Đặc điểm thử nghiệm. Rút lui và cắt bỏ sợi dây ở một khoảng cách xa hơn trong khi thay đổi để giảm thiểu việc thanh trừng. Dù chất này làm giảm đáng kể, nhưng nó cũng có thể làm tăng nguy cơ mắc phải tiếng vòi hay những vấn đề in khác."
+    },
+    "filament_map": {
+      "label": "Bản đồ vật liệu in tới đầu phun",
+      "tooltip": "Ánh xạ từng vật liệu in dự án tới số đầu phun vật lý dựa trên 1."
+    },
+    "filament_map_2": {
+      "label": "Chỉ số đầu phun vật liệu in bên trong",
+      "tooltip": "Chỉ số đầu phun bên trong dựa trên 0 được tạo từ filament_map."
+    },
+    "filament_map_mode": {
+      "label": "Chế độ ánh xạ sợi",
+      "tooltip": "Chọn xem các sợi dự án được gán cho đầu phun tự động hay thủ công.",
+      "enum_labels": [
+        "Tự động",
+        "Tự động khớp",
+        "Tự chọn"
+      ]
+    },
+    "filament_max_volumetric_speed": {
+      "label": "Tốc độ âm lượng tối đa",
+      "tooltip": "Thiết lập này tượng trưng cho số lượng sợi có thể tan chảy và thải ra mỗi giây. Tốc độ in ấn bị hạn chế bởi tốc độ tối đa, trong trường hợp quá cao và tốc độ không hợp lý. Không thể là zero"
+    },
+    "filament_minimal_purge_on_wipe_tower": {
+      "label": "Thanh lọc tối thiểu trên tháp lau chùi",
+      "tooltip": "After a tool change, the exact position of the newly loaded filament inside the nozzle may not be known,and the filament pressure is likely not yet stable. Before purging the print head into an infill or asacrificial object, Creality Print will always prime this amount of filament into the wipe tower to produce successive infillor sacrificial object extrusions reliably."
+    },
+    "filament_multitool_ramming": {
+      "label": "Bật chạy bộ cho nhiều công cụ cài đặt",
+      "tooltip": "Thực hiện việc khởi chạy khi dùng máy in đa công cụ (v. d. khi tùy chọn « Thiết lập đa nguyên » trong Thiết lập máy in không kiểm soát. Khi được kiểm tra, một lượng nhỏ sợi dây được bơm ra trên tháp lau sạch ngay trước khi thay đổi công cụ. Tùy chọn này chỉ được dùng khi hiệu lực tháp quét."
+    },
+    "filament_multitool_ramming_flow": {
+      "label": "Lưu lượng nén (ramming) nhiều đầu công cụ",
+      "tooltip": "Lưu lượng dùng để nén sợi nhựa trước khi đổi đầu công cụ."
+    },
+    "filament_multitool_ramming_volume": {
+      "label": "Thể tích ramming đa công cụ",
+      "tooltip": "Số lượng cần được đẩy ra trước khi thay đổi công cụ."
+    },
+    "filament_notes": {
+      "label": "Ghi chú lỗi",
+      "tooltip": "Bạn có thể ghi chú về sợi nhựa tại đây."
+    },
+    "filament_ramming_parameters": {
+      "label": "Tham số chạy nhanh",
+      "tooltip": "Chuỗi này được biên dịch bởi RammingDialog và chứa các thông số cụ thể."
+    },
+    "filament_retract_before_wipe": {
+      "label": "Lượng rút sợi trước khi lau",
+      "tooltip": "This is the length of fast retraction before a wipe, relative to retraction length."
+    },
+    "filament_retract_length_toolchange": {
+      "label": "Chiều dài"
+    },
+    "filament_retract_lift_above": {
+      "label": "Chỉ nâng Z lên trên",
+      "tooltip": "Nếu bạn đặt giá trị dương, nâng Z chỉ diễn ra trên giá trị Z tuyệt đối đã chỉ định."
+    },
+    "filament_retract_lift_below": {
+      "label": "Chỉ nâng Z xuống dưới",
+      "tooltip": "Nếu bạn đặt giá trị dương, nâng Z chỉ diễn ra dưới giá trị Z tuyệt đối đã chỉ định."
+    },
+    "filament_retract_lift_enforce": {
+      "label": "Trên bề mặt",
+      "tooltip": "Bắt buộc hành vi nâng Z. Thiết lập này chịu ảnh hưởng bởi các thiết lập ở trên (Chỉ nâng Z trên/dưới).",
+      "enum_labels": [
+        "Mọi mặt",
+        "Chỉ trên",
+        "Chỉ dưới",
+        "Trên và dưới"
+      ]
+    },
+    "filament_retract_restart_extra": {
+      "label": "Chiều dài thêm khi khởi chạy lại",
+      "tooltip": "Khi việc rút lại được bồi thường sau khi di chuyển, người rút lui sẽ đẩy thêm một số sợi dây. Trường hợp này hiếm khi cần thiết."
+    },
+    "filament_retract_restart_extra_toolchange": {
+      "label": "Chiều dài thêm khi khởi chạy lại",
+      "tooltip": "Khi việc rút sợi được bù sau khi đổi đầu công cụ, đầu đùn sẽ đẩy thêm lượng sợi nhựa này."
+    },
+    "filament_retract_when_changing_layer": {
+      "label": "Retract on layer change",
+      "tooltip": "This forces a retraction on layer changes."
+    },
+    "filament_retraction_distances_when_cut": {
+      "label": "Vòng lại khoảng cách khi cắt",
+      "tooltip": "Đặc điểm thử nghiệm. Quay lại chiều dài trước khi cắt khi sợi dây thay đổi"
+    },
+    "filament_retraction_length": {
+      "label": "Chiều dài",
+      "full_label": "Vòng lặp lại",
+      "tooltip": "Người ta rút lại một số tài liệu về chất thải để tránh chất lỏng trong chuyến hành trình dài. Đặt 0 để tắt rút lui"
+    },
+    "filament_retraction_minimum_travel": {
+      "label": "Ngưỡng đi đường",
+      "tooltip": "Only trigger retraction when the travel distance is longer than this threshold."
+    },
+    "filament_retraction_speed": {
+      "label": "Retraction speed",
+      "full_label": "Retraction speed",
+      "tooltip": "This is the speed for retraction."
+    },
+    "filament_shrink": {
+      "label": "Thu nhỏ (XY)",
+      "tooltip": "Enter the shrinkage percentage that the filament will get after cooling (94% if you measure 94mm instead of 100mm). The part will be scaled in xy to compensate. Only the filament used for the perimeter is taken into account.\nBe sure to allow enough space between objects, as this compensation is done after the checks.Nhập tỷ lệ co ngót mà sợi nhựa sẽ có sau khi nguội (94% nếu bạn đo được 94mm thay vì 100mm). Chi tiết sẽ được co giãn theo XY để bù. Chỉ tính đến sợi nhựa dùng cho chu vi.\nHãy chắc chắn để đủ khoảng cách giữa các đối tượng, vì việc bù này được thực hiện sau khi kiểm tra."
+    },
+    "filament_shrinkage_compensation_z": {
+      "label": "Thu nhỏ (Z)",
+      "tooltip": "Nhập phần trăm co ngót của filament sau khi nguội (94% nếu bạn đo được 94mm thay vì 100mm). Chi tiết sẽ được co giãn theo trục Z để bù."
+    },
+    "filament_soluble": {
+      "label": "Vật liệu hòa tan",
+      "tooltip": "Vật liệu soluble thường được dùng để in hỗ trợ và hỗ trợ giao diện"
+    },
+    "filament_stamping_distance": {
+      "label": "Khoảng cách tính từ trung tâm của ống làm mát",
+      "tooltip": "Nếu thiết lập giá trị không bằng không, sợi tơ được di chuyển về phía cái vòi giữa các nước làm mát cá nhân. Tùy chọn này cấu hình tiến trình này sẽ kéo dài bao lâu trước khi sợi tóc được rút lại."
+    },
+    "filament_stamping_loading_speed": {
+      "label": "Tốc độ nạp khi dập (stamping)",
+      "tooltip": "Tốc độ dùng để dập (stamping)."
+    },
+    "filament_start_gcode": {
+      "label": "Khởi động G- code",
+      "tooltip": "G-code added when the printer starts using this filament"
+    },
+    "filament_toolchange_delay": {
+      "label": "Trễ sau khi dỡ hàng",
+      "tooltip": "Đã đến lúc chờ sau khi sợi dây được gỡ xuống. Có thể giúp thay đổi công cụ một cách đáng tin cậy với vật liệu linh hoạt cần nhiều thời gian hơn để thu nhỏ theo chiều không gian ban đầu."
+    },
+    "filament_type": {
+      "label": "Loại",
+      "tooltip": "Kiểu sợi dây"
+    },
+    "filament_unload_time": {
+      "label": "Thời gian rút filament",
+      "tooltip": "Time for the printer firmware (or the Multi Filament Unit 2.0) to unload a filament during a tool change(when executing the T code). This time is added to the total print time by the G-code time estimator."
+    },
+    "filament_unloading_speed": {
+      "label": "Tốc độ gỡ tải",
+      "tooltip": "Tốc độ được dùng để dỡ sợi tơ lên tháp lau (không ảnh hưởng đến phần đầu của việc dỡ hàng ngay sau khi khởi động)."
+    },
+    "filament_unloading_speed_start": {
+      "label": "Tốc độ tải xuống lúc đầu",
+      "tooltip": "Tốc độ dùng để rút đầu sợi nhựa ngay sau khi nén (ramming)."
+    },
+    "filament_vendor": {
+      "label": "Nhà cung cấp",
+      "tooltip": "Nhà cung cấp sợi nhựa. Chỉ để hiển thị"
+    },
+    "filament_wipe": {
+      "label": "Lau trong khi rút sợi",
+      "tooltip": "Di chuyển cái vòi dọc theo con đường dẫn nước cuối cùng khi rút lại tài liệu bị rò rỉ trên vòi. Điều này có thể giảm thiểu khi in phần mới sau khi du lịch"
+    },
+    "filament_wipe_distance": {
+      "label": "Wipe distance",
+      "tooltip": "Đánh dấu xem cái vòi sẽ di chuyển bao lâu trên con đường cuối cùng khi rút lại.\n\nTùy thuộc vào hoạt động lau chùi kéo dài bao lâu, cần phải rút lại những sợi tơ còn lại nhanh và dài bao lâu.\n\nĐặt giá trị trong số tiền rút lại trước khi xoá bên dưới sẽ thực hiện việc thu hồi dư trước khi xóa, thì nó sẽ được thực hiện sau."
+    },
+    "filament_z_hop": {
+      "label": "Z hop when retracting",
+      "tooltip": "Bất cứ khi nào việc rút lại được thực hiện, cái vòi được nâng lên một chút để tạo ra giấy phép giữa miệng và in. Nó ngăn ngừa tiếng vòi đâm vào bản in khi di chuyển. Sử dụng đường xoắn ốc để nâng z có thể ngăn chặn chuỗi"
+    },
+    "filament_z_hop_types": {
+      "label": "Kiểu nâng Z",
+      "tooltip": "Kiểu nâng Z",
+      "enum_labels": [
+        "Tự động",
+        "Chuẩn",
+        "Trượt",
+        "Hình xoắn ốc"
+      ]
+    },
+    "filename_format": {
+      "label": "Định dạng",
+      "tooltip": "Users can decide project file names when exporting."
+    },
+    "fill_multiline": {
+      "label": "Điền đa dòng",
+      "tooltip": "Sử dụng nhiều đường cho mẫu lấp đầy, nếu mẫu lấp đầy hỗ trợ."
+    },
+    "filter_out_gap_fill": {
+      "label": "Bỏ đi những khoảng trống nhỏ",
+      "tooltip": "Lọc ra khoảng trống nhỏ hơn ngưỡng được xác định"
+    },
+    "first_layer_print_sequence": {
+      "label": "Thứ tự in lớp đầu tiên"
+    },
+    "first_layer_sequence_choice": {
+      "label": "Thứ tự vật liệu lớp đầu tiên",
+      "enum_labels": [
+        "Tự động",
+        "Tùy chỉnh"
+      ]
+    },
+    "flush_box_first_clean_length": {
+      "label": "Chiều dài Ban đầu",
+      "tooltip": "Chiều dài đoạn đầu tiên dùng để chia flush_length thành flush_length_1..N cho G-code thay sợi nhựa."
+    },
+    "flush_box_need_clean_length": {
+      "label": "Chiều dài luồng (phần chuẩn)",
+      "tooltip": "Chiều dài đoạn tiêu chuẩn dùng để chia flush_length thành flush_length_1..N cho G-code thay sợi nhựa."
+    },
+    "flush_box_need_clean_length_max": {
+      "label": "Chiều dài luồng (phần cung)",
+      "tooltip": "Chiều dài đoạn tối đa dùng để chia flush_length thành flush_length_1..N cho G-code thay sợi nhựa."
+    },
+    "flush_into_infill": {
+      "label": "Xả vào phần lấp đầy của đối tượng",
+      "tooltip": "Thanh lọc sau khi thay đổi sợi sẽ được thực hiện bên trong các đối tượng. Việc này có thể làm giảm lượng rác thải và giảm thời gian in. Nếu người ta in những bức tường với các sợi dây trong suốt, người ta sẽ thấy những chất màu pha trộn ở bên ngoài. Nó sẽ không có hiệu quả, trừ khi tháp nguyên tố được kích hoạt."
+    },
+    "flush_into_objects": {
+      "label": "Chảy vào đối tượng này",
+      "tooltip": "Vật thể này sẽ được dùng để làm sạch lỗ mũi sau khi một sợi dây thay đổi để tiết kiệm sợi và giảm thời gian in. Màu sắc của các vật thể sẽ được trộn với nhau. Nó sẽ không có hiệu quả, trừ khi tháp nguyên tố được kích hoạt."
+    },
+    "flush_into_skeleton": {
+      "label": "Flush into objects' skeleton (experimental)",
+      "tooltip": "Việc xả sau khi thay sợi nhựa sẽ được thực hiện bên trong vùng khung xương của đối tượng. Điều này có thể giảm lượng phế thải và giảm thời gian in. Nó sẽ không có hiệu lực trừ khi bật tháp mồi."
+    },
+    "flush_into_solid_skeleton": {
+      "label": "In thể tích mồi nhựa vào khung đặc",
+      "tooltip": "Loại bỏ Tháp chính riêng biệt khi thể tích mồi nhựa ở dưới 10 mm³ và khối lượng thanh lọc tối thiểu trên tháp bằng 0 đối với mỗi dây tóc. Vật liệu tương ứng với thể tích mồi nhựa được in dưới dạng bộ khung vững chắc bên trong mô hình. Khối lượng của bộ xương này phù hợp với thể tích mồi nhựa."
+    },
+    "flush_into_support": {
+      "label": "Xả vào phần hỗ trợ của đối tượng",
+      "tooltip": "Thanh lọc sau khi thay đổi sợi sẽ được thực hiện bên trong vật thể hỗ trợ. Việc này có thể làm giảm lượng rác thải và giảm thời gian in. Nó sẽ không có hiệu quả, trừ khi tháp nguyên tố được kích hoạt."
+    },
+    "flush_multiplier": {
+      "label": "Trình nhân luồng",
+      "tooltip": "The actual flushing volumes is equal to the flush multiplier value multiplied by the flushing volumes in the table."
+    },
+    "flush_volumes_changed": {
+      "label": "Thể tích xả đã thay đổi",
+      "tooltip": "Thể tích xả đã thay đổi"
+    },
+    "flush_volumes_matrix": {
+      "label": "Làm sạch âm lượng"
+    },
+    "flush_volumes_vector": {
+      "label": "Thể tích xả - thể tích nạp/rút"
+    },
+    "full_fan_speed_layer": {
+      "label": "Tốc độ quạt mô hình tại lớp",
+      "tooltip": "Fan speed will be ramped up linearly from zero at layer\"close_fan_the_first_x_layers\" to maximum at layer \"full_fan_speed_layer\".\"full_fan_speed_layer\" will be ignored if lower than\"close_fan_the_first_x_layers\", in which case the fan will be running atmaximum allowed speed atlayer \"close_fan_the_first_x_layers\" + 1."
+    },
+    "fuzzy_skin": {
+      "label": "Fuzzy skin",
+      "tooltip": "This setting makes the toolhead randomly jitter while printing walls so that the surface has a rough textured look. This setting controls the fuzzy position.",
+      "enum_labels": [
+        "Không",
+        "Contour",
+        "Đường bao và lỗ",
+        "Mọi bức tường"
+      ]
+    },
+    "fuzzy_skin_first_layer": {
+      "label": "Áp dụng bề mặt xù (fuzzy skin) cho lớp đầu tiên",
+      "tooltip": "Có áp dụng bề mặt xù (fuzzy skin) trên lớp đầu tiên hay không"
+    },
+    "fuzzy_skin_mode": {
+      "label": "Chế độ tạo da mờ nhạt",
+      "tooltip": "Fuzzy skin generation mode. Works only with Arachne!\nDisplacement: Сlassic mode when the pattern is formed by shifting the nozzle sideways from the original path.\nExtrusion: The mode when the pattern formed by the amount of extruded plastic. This is the fast and straight algorithm without unnecessary nozzle shake that gives a smooth pattern. But it is more useful for forming loose walls in the entire they array.\nCombined: Joint mode [Displacement] + [Extrusion]. The appearance of the walls is similar to [Displacement] Mode, but it leaves no pores between the perimeters.\n\nAttention! The [Extrusion] and [Combined] modes works only the fuzzy_skin_thickness parameter not more than the thickness of printed loop. At the same time, the width of the extrusion for a particular layer should also not be below a certain level. It is usually equal 15-25%% of a layer height. Therefore, the maximum fuzzy skin thickness with a perimeter width of 0.4 mm and a layer height of 0.2 mm will be 0.4-(0.2*0.25)=±0.35mm! If you enter a higher parameter than this, the error Flow::spacing() will displayed, and the model will not be sliced. You can choose this number until this error is repeated.Chế độ tạo bề mặt xù (fuzzy skin). Chỉ hoạt động với Arachne!\nDịch chuyển (Displacement): Chế độ cổ điển khi hoa văn được tạo bằng cách dịch chuyển đầu phun sang ngang khỏi đường đi ban đầu.\nĐùn (Extrusion): Chế độ khi hoa văn được tạo bởi lượng nhựa đùn ra. Đây là thuật toán nhanh và thẳng, không có rung lắc đầu phun không cần thiết, cho hoa văn mượt mà. Nhưng nó hữu ích hơn để tạo các thành lỏng trong toàn bộ mảng.\nKết hợp (Combined): Chế độ phối hợp [Dịch chuyển] + [Đùn]. Hình dạng của các thành tương tự chế độ [Dịch chuyển], nhưng không để lại lỗ rỗng giữa các chu vi.\n\nChú ý! Các chế độ [Đùn] và [Kết hợp] chỉ hoạt động khi tham số fuzzy_skin_thickness không lớn hơn độ dày của vòng in. Đồng thời, chiều rộng đùn cho một lớp cụ thể cũng không được thấp hơn một mức nhất định. Nó thường bằng 15-25%% chiều cao lớp. Do đó, độ dày bề mặt xù tối đa với chiều rộng chu vi 0.4 mm và chiều cao lớp 0.2 mm sẽ là 0.4-(0.2*0.25)=±0.35mm! Nếu bạn nhập tham số cao hơn giá trị này, lỗi Flow::spacing() sẽ hiển thị và mô hình sẽ không được cắt lớp. Bạn có thể chọn giá trị này cho đến khi lỗi này không còn lặp lại.",
+      "enum_labels": [
+        "Bỏ định vị",
+        "Nhô ra",
+        "Kết hợp"
+      ]
+    },
+    "fuzzy_skin_noise_type": {
+      "label": "Kiểu nhiễu da mờ nhạt",
+      "tooltip": "Noise type to use for fuzzy skin generation:\nClassic: Classic uniform random noise.\nPerlin: Perlin noise, which gives a more consistent texture.\nBillow: Similar to perlin noise, but clumpier.\nRidged Multifractal: Ridged noise with sharp, jagged features. Creates marble-like textures.\nVoronoi: Divides the surface into voronoi cells, and displaces each one by a random amount. Creates a patchwork texture.\nSquare Wave: Alternates between +thickness and -thickness at regular intervals. Creates uniform zigzag ridges similar to wipe tower fill endpoints.",
+      "enum_labels": [
+        "Cổ điển",
+        "Perlin",
+        "Billow",
+        "Đa sắc màu",
+        "Voronoi"
+      ]
+    },
+    "fuzzy_skin_octaves": {
+      "label": "Số octave nhiễu Fuzzy Skin",
+      "tooltip": "Số quãng tám (octave) của nhiễu kết hợp cần dùng. Giá trị cao hơn làm tăng chi tiết của nhiễu, nhưng cũng tăng thời gian tính toán."
+    },
+    "fuzzy_skin_persistence": {
+      "label": "Tính kiên trì của tiếng ồn mờ nhạt",
+      "tooltip": "Tốc độ suy giảm cho các quãng tám cao hơn của nhiễu kết hợp. Giá trị thấp hơn sẽ cho nhiễu mượt hơn."
+    },
+    "fuzzy_skin_point_distance": {
+      "label": "Khoảng cách điểm da mờ",
+      "tooltip": "The average distance between the random points introduced on each line segment"
+    },
+    "fuzzy_skin_scale": {
+      "label": "Đặc điểm che mờ",
+      "tooltip": "Kích thước cơ bản của các đặc trưng nhiễu kết hợp (coherent noise), tính bằng mm. Giá trị cao hơn sẽ tạo ra các đặc trưng lớn hơn."
+    },
+    "fuzzy_skin_thickness": {
+      "label": "Độ dày lớp da nhạt",
+      "tooltip": "The width of jittering: it’s recommended to keep this lower than the outer wall line width."
+    },
+    "gap_fill_target": {
+      "label": "Áp dụng lấp khe",
+      "tooltip": "Bật lấp khe hở cho các bề mặt đã chọn. Chiều dài khe hở tối thiểu sẽ được lấp có thể được điều chỉnh bằng tùy chọn lọc bỏ khe hở nhỏ bên dưới.\n\nTùy chọn:\n1. Mọi nơi: Áp dụng lấp khe hở cho bề mặt đặc trên, dưới và bên trong\n2. Bề mặt trên và dưới: Chỉ áp dụng lấp khe hở cho bề mặt trên và dưới\n3. Không nơi nào: Tắt lấp khe hở\n",
+      "enum_labels": [
+        "Mọi nơi",
+        "Bề mặt trên và dưới",
+        "Không nơi nào"
+      ]
+    },
+    "gap_infill_speed": {
+      "label": "Khoảng trống",
+      "tooltip": "This is the speed for gap infill. Gaps usually have irregular line width and should be printed more slowly."
+    },
+    "gcode_add_line_number": {
+      "label": "Thêm số dòng",
+      "tooltip": "Enable this to add line number(Nx) at the beginning of each G-code line."
+    },
+    "gcode_comments": {
+      "label": "G-code chi tiết",
+      "tooltip": "Enable this to get a commented G-code file, with each line explained by adescriptive text. If you print from SD card, the additional weight of thefile could make your firmware slow down."
+    },
+    "gcode_flavor": {
+      "label": "G- code hương vị",
+      "tooltip": "What kind of G-code the printer is compatible with.",
+      "enum_labels": [
+        "Marlin(legacy)",
+        "Xoá",
+        "RepRapFirmware",
+        "Marlin 2"
+      ]
+    },
+    "gcode_label_objects": {
+      "label": "Nhãn",
+      "tooltip": "Enable this to add comments into the G-code labeling print moves with what object they belong to, which is useful for the Octoprint CancelObject plugin. This settings is NOT compatible with Single Extruder Multi Filament setup and Wipe into Object / Wipe into Infill."
+    },
+    "high_current_on_filament_swap": {
+      "label": "Dòng điện đầu đùn cao khi thay sợi nhựa",
+      "tooltip": "Có thể hữu ích nếu tăng lượng động cơ phụ trong quá trình trao đổi sợi dây để cho phép tốc độ cung cấp thức ăn nhanh và vượt qua sức kháng cự khi nạp một sợi dây có hình dạng xấu."
+    },
+    "hole_to_polyhole": {
+      "label": "Chuyển các lỗ thành lỗ đa lỗ",
+      "tooltip": "Tìm các lỗ gần tròn kéo dài qua nhiều lớp và chuyển đổi hình học thành lỗ đa giác (polyhole). Dùng kích thước đầu phun và đường kính (lớn nhất) để tính lỗ đa giác.\nXem http://hydraraptor.blogspot.com/2011/02/polyholes.html"
+    },
+    "hole_to_polyhole_threshold": {
+      "label": "Lề phát hiện đa lỗ",
+      "tooltip": "Maximum defection of a point to the estimated radius of the circle.\nAs cylinders are often exported as triangles of varying size, points may not be on the circle circumference. This setting allows you some leway to broaden the detection.\nIn mm or in % of the radius.Maximum defection of a point to the estimated radius of the circle.\nAs cylinders are often exported as triangles ofvarying size, points may not be on the circle circumference. This setting allows you some leway to broaden thedetection.\nIn mm or in % of the radius."
+    },
+    "hole_to_polyhole_twisted": {
+      "label": "Vi phạm bản quyền",
+      "tooltip": "Xoay lỗ đa giác (polyhole) mỗi lớp."
+    },
+    "host_type": {
+      "label": "Kiểu máy",
+      "tooltip": "Creality Print có thể tải các tệp G-code lên máy chủ in. Trường này phải chứa loại máy chủ.",
+      "enum_labels": [
+        "PrusaLink",
+        "PrusaConnect",
+        "Octo/Klipper",
+        "Duet",
+        "FlashAir",
+        "AstroBox",
+        "Repetier",
+        "MKS",
+        "ESP3D",
+        "Obico",
+        "Flashforge",
+        "SimplyPrint",
+        "CrealityPrint"
+      ]
+    },
+    "hot_plate_temp": {
+      "label": "Các lớp khác",
+      "tooltip": "Nhiệt độ giường cho các lớp trừ lớp đầu tiên. Giá trị 0 có nghĩa là các sợi không hỗ trợ để in trên cao nguyên nhiễu"
+    },
+    "hot_plate_temp_initial_layer": {
+      "label": "First layer",
+      "tooltip": "Nhiệt độ giường ngủ của lớp ban đầu. Giá trị 0 có nghĩa là các sợi không hỗ trợ để in trên cao nguyên nhiễu"
+    },
+    "idle_temperature": {
+      "label": "Nhiệt độ nhàn rỗi",
+      "tooltip": "Nhiệt độ mờ nhạt khi công cụ hiện không được dùng trong các thiết lập đa công cụ. Tùy chọn này chỉ được dùng khi chạy « Ngăn chặn tập tin ». Đặt thành 0 để tắt."
+    },
+    "ignore_inner_color": {
+      "label": "Bỏ qua màu bên trong",
+      "tooltip": "Trong một số trường hợp mà thay đổi màu không cần thiết trong mô hình, hãy bật tùy chọn này để bỏ qua tiến trình thay đổi màu. Điều này cải thiện hiệu quả in ấn và làm giảm chất thải sợi."
+    },
+    "independent_support_layer_height": {
+      "label": "Chiều cao lớp hỗ trợ độc lập",
+      "tooltip": "Lớp hỗ trợ dùng chiều cao lớp độc lập với lớp đối tượng. Điều này để hỗ trợ tùy chỉnh khe hở Z và tiết kiệm thời gian in. Tùy chọn này sẽ không có hiệu lực khi bật tháp mồi."
+    },
+    "infill_anchor": {
+      "label": "Chiều dài neo lấp đầy hộp",
+      "tooltip": "Connect an infill line to an internal perimeter with a short segment of an additional perimeter. If expressed as percentage (example: 15%) it is calculated over infill extrusion width. Creality Print tries to connect two close infill lines to a short perimeter segment. If no such perimeter segment shorter than infill_anchor_max is found, the infill line is connected to a perimeter segment at just one side and the length of the perimeter segment taken is limited to this parameter, but no longer than anchor_length_max. \nSet this parameter to zero to disable anchoring perimeters connected to a single infill line.Connect an infill line to an internal perimeter with a short segment of an additional perimeter. If expressed aspercentage (example: 15%) it is calculated over infill extrusion width. Creality Print tries to connect two close infill linesto a short perimeter segment. If no such perimeter segment shorter than infill_anchor_max is found, the infill line isconnected to a perimeter segment at just one side and the length of the perimeter segment taken is limitedto this parameter, but no longer than anchor_length_max. \nSet this parameter to zero to disable anchoring perimeters connected toa single infill line."
+    },
+    "infill_anchor_max": {
+      "label": "Chiều dài tối đa của neo điền đầy đủ",
+      "tooltip": "Connect an infill line to an internal perimeter with a short segment of an additional perimeter. If expressed as percentage (example: 15%) it is calculated over infill extrusion width. Creality Print tries to connect two close infill lines to a short perimeter segment. If no such perimeter segment shorter than this parameter is found, the infill line is connected to a perimeter segment at just one side and the length of the perimeter segment taken is limited to infill_anchor, but no longer than this parameter. \nIf set to 0, the old algorithm for infill connection will be used, it should create the same result as with 1000 & 0.Connect an infill line to an internal perimeter with a short segment of an additional perimeter. If expressed aspercentage (example: 15%) it is calculated over infill extrusion width. Creality Print tries to connect two close infill linesto a short perimeter segment. If no such perimeter segment shorter than this parameter is found, the infill lineis connected to a perimeter segment at just one side and the length of the perimeter segment taken islimited to infill_anchor, but no longer than this parameter. \nIf set to 0, the old algorithm for infill connectionwill be used, it should create the same result as with 1000 & 0."
+    },
+    "infill_combination": {
+      "label": "Kết hợp infill",
+      "tooltip": "Automatically combine sparse infill of several layers to print together in order to reduce time. Walls are still printed with original layer height."
+    },
+    "infill_combination_max_layer_height": {
+      "label": "Kết hợp lấp đầy - Chiều cao lớp tối đa",
+      "tooltip": "Maximum layer height for the combined sparse infill.\n\nSet it to 0 or 100% to use the nozzle diameter (for maximum reduction in print time) or a value of ~80% to maximize sparse infill strength.\n\nThe number of layers over which infill is combined is derived by dividing this value with the layer height and rounded down to the nearest decimal.\n\nUse either absolute mm values (eg. 0.32mm for a 0.4mm nozzle) or % values (eg 80%). This value must not be larger than the nozzle diameter.Chiều cao lớp tối đa cho lấp đầy thưa được kết hợp.\n\nĐặt là 0 hoặc 100% để dùng đường kính đầu phun (giảm thời gian in tối đa) hoặc giá trị khoảng ~80% để tối đa hóa độ bền lấp đầy thưa.\n\nSố lớp được kết hợp lấp đầy được tính bằng cách chia giá trị này cho chiều cao lớp và làm tròn xuống số thập phân gần nhất.\n\nDùng giá trị tuyệt đối tính bằng mm (ví dụ 0.32mm cho đầu phun 0.4mm) hoặc giá trị % (ví dụ 80%). Giá trị này không được lớn hơn đường kính đầu phun."
+    },
+    "infill_direction": {
+      "label": "Hướng infill thưa",
+      "tooltip": "This is the angle for sparse infill pattern, which controls the start or main direction of lines."
+    },
+    "infill_jerk": {
+      "label": "Không đầy",
+      "tooltip": "Giật (jerk) cho lấp đầy"
+    },
+    "infill_lock_depth": {
+      "label": "Độ sâu khóa lấp đầy",
+      "tooltip": "Tham số đặt độ sâu chồng chéo giữa nội thất và da."
+    },
+    "infill_overhang_angle": {
+      "label": "Góc bao phủ",
+      "tooltip": "Góc của các đường xiên trong lấp đầy. 60° sẽ tạo ra tổ ong thuần túy."
+    },
+    "infill_rotate_step": {
+      "label": "Bước xoay lấp đầy",
+      "tooltip": "Tham số này thêm một độ xoay nhỏ vào mỗi lớp lấp đầy để tạo kết cấu đan chéo."
+    },
+    "infill_shift_step": {
+      "label": "Bước dịch chuyển lấp đầy",
+      "tooltip": "Tham số này thêm một độ dịch chuyển nhỏ vào mỗi lớp lấp đầy để tạo kết cấu đan chéo."
+    },
+    "infill_wall_overlap": {
+      "label": "Infill/wall overlap",
+      "tooltip": "Vùng infill được mở rộng nhẹ để chồng lên tường nhằm tăng độ bám. Giá trị phần trăm tương ứng với chiều rộng đường của infill thưa. Đặt khoảng ~10-15% để giảm nguy cơ đùn thừa và tích tụ vật liệu gây bề mặt trên thô."
+    },
+    "initial_layer_acceleration": {
+      "label": "First layer",
+      "tooltip": "This is the printing acceleration for the first layer. Using limited acceleration can improve build plate adhesion."
+    },
+    "initial_layer_infill_speed": {
+      "label": "First layer infill",
+      "tooltip": "This is the speed for solid infill parts of the first layer."
+    },
+    "initial_layer_jerk": {
+      "label": "First layer",
+      "tooltip": "Giật (jerk) cho lớp đầu tiên"
+    },
+    "initial_layer_line_width": {
+      "label": "First layer",
+      "tooltip": "Chiều rộng đường của lớp đầu tiên. Nếu nhập dạng %, giá trị sẽ được tính theo đường kính đầu phun."
+    },
+    "initial_layer_min_bead_width": {
+      "label": "Chiều rộng thành tối thiểu của lớp đầu tiên",
+      "tooltip": "Độ rộng tối thiểu của tường nên được dùng cho lớp thứ nhất được đặt cùng kích cỡ với cái vòi. Sự điều chỉnh này được mong đợi để gia tăng sự chú ý."
+    },
+    "initial_layer_print_height": {
+      "label": "First layer height",
+      "tooltip": "This is the height of the first layer. Making the first layer height thicker can improve build plate adhesion."
+    },
+    "initial_layer_speed": {
+      "label": "First layer",
+      "tooltip": "This is the speed for the first layer except for solid infill sections."
+    },
+    "initial_layer_travel_acceleration": {
+      "label": "Đầu tiên lớp di chuyển",
+      "tooltip": "Gia tốc di chuyển của lớp đầu tiên"
+    },
+    "initial_layer_travel_speed": {
+      "label": "Tốc độ Lớp Ban đầu",
+      "tooltip": "Tốc độ di chuyển của lớp đầu tiên"
+    },
+    "inner_wall_acceleration": {
+      "label": "Nội dung",
+      "tooltip": "Gia tốc tường bên trong"
+    },
+    "inner_wall_jerk": {
+      "label": "Nội dung",
+      "tooltip": "Đồ khốn kiếp!"
+    },
+    "inner_wall_line_width": {
+      "label": "Nội dung",
+      "tooltip": "Chiều rộng đường của tường trong. Nếu nhập dạng %, giá trị sẽ được tính theo đường kính đầu phun."
+    },
+    "inner_wall_speed": {
+      "label": "Nội dung",
+      "tooltip": "This is the speed for inner walls."
+    },
+    "interface_shells": {
+      "label": "Vỏ bề mặt tiếp xúc",
+      "tooltip": "Ép buộc thế hệ vỏ rắn nằm giữa các vật liệu bên cạnh / vôn. Có ích cho việc in nhiều hướng dẫn với vật liệu trong suốt hay tài liệu hỗ trợ bằng tay có thể in được"
+    },
+    "interior_coefficient": {
+      "label": "Hệ số bên trong (beta)",
+      "tooltip": "Điều khiển mật độ phần điền đầy theo trường bên trong mô hình. Giá trị cao hơn làm cho cấu trúc lưới bên trong dày đặc hơn."
+    },
+    "interlocking_beam": {
+      "label": "Dùng tia chớp kết nối",
+      "tooltip": "Tạo ra cấu trúc chùm tia nối nhau tại những địa điểm mà các sợi khác nhau chạm vào. Điều này cải thiện sự gắn kết giữa các sợi tơ, đặc biệt là những mô hình được in trong các vật liệu khác nhau."
+    },
+    "interlocking_beam_layer_count": {
+      "label": "Số lớp dầm khóa liên kết",
+      "tooltip": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, butmore prone to defects."
+    },
+    "interlocking_beam_width": {
+      "label": "Chiều rộng chùm tia song song",
+      "tooltip": "Chiều rộng của những chùm xà liên kết."
+    },
+    "interlocking_boundary_avoidance": {
+      "label": "Ngăn chặn ranh giới",
+      "tooltip": "Khoảng cách từ bên ngoài mô hình mà tại đó cấu trúc đan xen sẽ không được tạo, đo bằng ô (cell)."
+    },
+    "interlocking_depth": {
+      "label": "Độ sâu song song",
+      "tooltip": "Khoảng cách từ ranh giới giữa các sợi để tạo ra cấu trúc liên kết, đo bằng tế bào. Quá ít tế bào sẽ gây chú ý."
+    },
+    "interlocking_orientation": {
+      "label": "Hướng song song",
+      "tooltip": "Hướng của chùm tia liên kết."
+    },
+    "internal_bridge_flow": {
+      "label": "Tỷ lệ dòng chảy cầu nội bộ",
+      "tooltip": "This value governs the thickness of the internal bridge layer. This is the first layer over sparse infill. Decreasethis value slightly (for example 0.9) to improve surface quality over sparse infill."
+    },
+    "internal_bridge_speed": {
+      "label": "Nội bộ",
+      "tooltip": "Speed of internal bridge. If the value is expressed as a percentage, it will be calculated based on the bridge_speed. Default value is 150%.Speed of internal bridge. If the value is expressed as a percentage, it will be calculated based on thebridge_speed. Default value is 150%."
+    },
+    "internal_solid_infill_acceleration": {
+      "label": "Chất nổ đặc nội bộ",
+      "tooltip": "Acceleration of internal solid infill. If the value is expressed as a percentage (e.g. 100%), it will be calculated based on the default acceleration.Acceleration of internal solid infill. If the value is expressed as a percentage (e.g. 100%), it will be calculatedbased on the default acceleration."
+    },
+    "internal_solid_infill_line_width": {
+      "label": "Chất nổ đặc nội bộ",
+      "tooltip": "Chiều rộng đường của infill đặc bên trong. Nếu nhập dạng %, giá trị sẽ được tính theo đường kính đầu phun."
+    },
+    "internal_solid_infill_pattern": {
+      "label": "Mẫu infill đặc bên trong",
+      "tooltip": "Mẫu đường của lấp đầy đặc bên trong. Nếu bật phát hiện lấp đầy đặc bên trong hẹp, mẫu đồng tâm sẽ được dùng cho vùng nhỏ.",
+      "enum_labels": [
+        "Tâm",
+        "Đường thẳng",
+        "Đơn âm",
+        "Dòng đơn âm",
+        "Được sắp xếp lại",
+        "Đường cong Hilbert",
+        "Dây cung Archimedes",
+        "Xoắn ốc bát giác"
+      ]
+    },
+    "internal_solid_infill_speed": {
+      "label": "Chất nổ đặc nội bộ",
+      "tooltip": "This is the speed for internal solid infill, not including the top or bottom surface."
+    },
+    "ironing_angle": {
+      "label": "Góc phẳng",
+      "tooltip": "Góc thực hiện ủi (ironing). Số âm sẽ tắt chức năng này và dùng phương pháp mặc định."
+    },
+    "ironing_flow": {
+      "label": "Lưu lượng là phẳng",
+      "tooltip": "Số lượng tài liệu để dẫn đường trong quá trình ủi đồ. Tương đương với dòng chảy của lớp bình thường chiều cao. Giá trị quá cao kết quả là quá hướng về bề mặt"
+    },
+    "ironing_pattern": {
+      "label": "Làm gương sáng",
+      "tooltip": "Các kiểu mẫu sẽ được dùng khi ủi",
+      "enum_labels": [
+        "Tâm",
+        "Đường thẳng"
+      ]
+    },
+    "ironing_spacing": {
+      "label": "Khoảng cách dòng kim loại",
+      "tooltip": "This is the distance between the lines used for ironing."
+    },
+    "ironing_speed": {
+      "label": "Tốc độ",
+      "tooltip": "This is the print speed for ironing lines."
+    },
+    "ironing_support_layer": {
+      "label": "Là phẳng bề mặt tiếp xúc",
+      "tooltip": "Là phẳng bề mặt tiếp xúc"
+    },
+    "ironing_type": {
+      "label": "Ironing type",
+      "tooltip": "Ironing uses a small flow to print at the same height of a surface to make flat surfaces smoother. This setting controls which layers are being ironed.",
+      "enum_labels": [
+        "Không ủi",
+        "All top surfaces",
+        "Topmost surface only",
+        "All solid layers"
+      ]
+    },
+    "is_infill_first": {
+      "label": "In vào mục trước",
+      "tooltip": "Order of wall/infill. When the tickbox is unchecked the walls are printed first, which works best in most cases.\n\nPrinting infill first may help with extreme overhangs as the walls have the neighbouring infill to adhere to. However, the infill will slightly push out the printed walls where it is attached to them, resulting in a worse external surface finish. It can also cause the infill to shine through the external surfaces of the part."
+    },
+    "lateral_lattice_angle_1": {
+      "label": "Góc lưới 1",
+      "tooltip": "Góc của tập hợp phần tử mạng bên (lateral lattice) thứ nhất theo hướng Z. Không (0) là thẳng đứng."
+    },
+    "lateral_lattice_angle_2": {
+      "label": "Góc lưới 2",
+      "tooltip": "Góc của tập hợp phần tử mạng bên (lateral lattice) thứ hai theo hướng Z. Không (0) là thẳng đứng."
+    },
+    "layer_change_gcode": {
+      "label": "G-code đổi lớp",
+      "tooltip": "This G-code is inserted at every layer change after the z lift."
+    },
+    "layer_height": {
+      "label": "Chiều cao lớp",
+      "tooltip": "This is the height for each layer. Smaller layer heights give greater accuracy but longer printing time."
+    },
+    "line_width": {
+      "label": "Mặc định",
+      "tooltip": "Chiều rộng đường mặc định khi các chiều rộng đường khác đặt là 0. Nếu nhập dạng %, giá trị sẽ được tính theo đường kính đầu phun."
+    },
+    "locked_skeleton_infill_pattern": {
+      "label": "Mẫu infill khung",
+      "tooltip": "Cấu hình dòng cho bộ xương",
+      "enum_labels": [
+        "Tâm",
+        "Đường thẳng",
+        "Lưới",
+        "Đường",
+        "Bậc ba",
+        "Tam giác",
+        "Tam giác",
+        "Gyroid",
+        "Tổ ong",
+        "Được sắp xếp lại",
+        "Tổ ong 3D",
+        "Đường cong Hilbert",
+        "Dây cung Archimedes",
+        "Xoắn ốc bát giác",
+        "Hình chữ thập",
+        "TPMS-D Cell",
+        "Zig-Zag",
+        "Cross-Zag"
+      ]
+    },
+    "locked_skin_infill_pattern": {
+      "label": "Mẫu infill lớp da",
+      "tooltip": "Mẫu đường thẳng cho da",
+      "enum_labels": [
+        "Tâm",
+        "Đường thẳng",
+        "Lưới",
+        "Đường",
+        "Bậc ba",
+        "Tam giác",
+        "Tam giác",
+        "Gyroid",
+        "Tổ ong",
+        "Được sắp xếp lại",
+        "Tổ ong 3D",
+        "Đường cong Hilbert",
+        "Dây cung Archimedes",
+        "Xoắn ốc bát giác",
+        "Hình chữ thập",
+        "TPMS-D Cell",
+        "Zig-Zag",
+        "Cross-Zag"
+      ]
+    },
+    "long_retractions_when_cut": {
+      "label": "Long retraction when cut (experimental)",
+      "tooltip": "Đặc điểm thử nghiệm. Rút lui và cắt bỏ sợi dây ở một khoảng cách xa hơn trong khi thay đổi để giảm thiểu việc thanh trừng. Dù chất này làm giảm đáng kể, nhưng nó cũng có thể làm tăng nguy cơ mắc phải tiếng vòi hay những vấn đề in khác."
+    },
+    "machine_LED_light_exist": {
+      "label": "Đèn LED của máy tồn tại",
+      "tooltip": "Đèn LED của máy tồn tại"
+    },
+    "machine_end_gcode": {
+      "label": "Kết thúc G- code",
+      "tooltip": "Add end G-code when finishing the entire print."
+    },
+    "machine_is_belt": {
+      "label": "Thắt lưng",
+      "tooltip": "Cấu trúc của máy là thắt lưng."
+    },
+    "machine_load_filament_time": {
+      "label": "Thời gian nạp phụ",
+      "tooltip": "Thời gian để nạp sợi tơ mới khi chuyển dây. Chỉ cho thống kê"
+    },
+    "machine_max_acceleration_e": {
+      "full_label": "Tăng tốc tối đa E",
+      "tooltip": "Gia tốc tối đa của trục E"
+    },
+    "machine_max_acceleration_extruding": {
+      "full_label": "Tăng tốc tối đa cho việc đi lại",
+      "tooltip": "Tăng tốc tối đa cho phép hướng ngoại (M204 p)"
+    },
+    "machine_max_acceleration_retracting": {
+      "full_label": "Tăng tốc tối đa để rút lui",
+      "tooltip": "Tăng tốc tối đa để rút lại (M204 R)"
+    },
+    "machine_max_acceleration_travel": {
+      "full_label": "Tăng tốc tối đa cho du lịch",
+      "tooltip": "Gia tốc tối đa cho du lịch (M204 T), nó chỉ áp dụng cho Marlin 2"
+    },
+    "machine_max_acceleration_x": {
+      "full_label": "Tăng tốc tối đa X",
+      "tooltip": "Gia tốc tối đa của trục X"
+    },
+    "machine_max_acceleration_y": {
+      "full_label": "Gia tốc tối đa Y",
+      "tooltip": "Tăng tốc tối đa của trục Y"
+    },
+    "machine_max_acceleration_z": {
+      "full_label": "Gia tốc tối đa Z",
+      "tooltip": "Gia tốc tối đa của trục Z"
+    },
+    "machine_max_jerk_e": {
+      "full_label": "Hình chữ E tối đa",
+      "tooltip": "Hình chụp tối đa của trục E"
+    },
+    "machine_max_jerk_x": {
+      "full_label": "Điểm ảnh tối đa X",
+      "tooltip": "góc tối đa của trục X"
+    },
+    "machine_max_jerk_y": {
+      "full_label": "giật tối đa Y",
+      "tooltip": "Hình chụp tối đa của trục Y"
+    },
+    "machine_max_jerk_z": {
+      "full_label": "Hình chữ Z tối đa",
+      "tooltip": "Hình ảnh tối đa của trục Z"
+    },
+    "machine_max_speed_e": {
+      "full_label": "Tốc độ tối đa E"
+    },
+    "machine_max_speed_x": {
+      "full_label": "Tốc độ tối đa X"
+    },
+    "machine_max_speed_y": {
+      "full_label": "Tốc độ tối đa Y"
+    },
+    "machine_max_speed_z": {
+      "full_label": "Tốc độ tối đa Z"
+    },
+    "machine_min_extruding_rate": {
+      "full_label": "Tốc độ đùn tối thiểu",
+      "tooltip": "Tốc độ đùn tối thiểu (M205 S)"
+    },
+    "machine_min_travel_rate": {
+      "full_label": "Tốc độ du lịch tối thiểu",
+      "tooltip": "Tốc độ di chuyển tối thiểu (M205 T)"
+    },
+    "machine_pause_gcode": {
+      "label": "Tạm dừng G- code",
+      "tooltip": "This G-code will be used as a code for the pause print. Users can insert pause G-code in the G-code viewer."
+    },
+    "machine_platform_motion_enable": {
+      "label": "Bật chuyển động bàn máy",
+      "tooltip": "Bật chuyển động bàn máy"
+    },
+    "machine_ptc_exist": {
+      "label": "Máy sưởi phòng",
+      "tooltip": "Có bộ gia nhiệt PTC buồng"
+    },
+    "machine_start_gcode": {
+      "label": "Khởi động G- code",
+      "tooltip": "G-code added when starting a print"
+    },
+    "machine_tool_change_time": {
+      "label": "Thời gian thay đổi công cụ",
+      "tooltip": "Mất thời gian để đổi công cụ. Nó thường áp dụng cho những người thay đổi công cụ hoặc máy móc đa công cụ. Đối với máy đa vật liệu đơn phương, nó thường bằng 0. Chỉ cho thống kê"
+    },
+    "machine_unload_filament_time": {
+      "label": "Thời gian rút filament",
+      "tooltip": "Đã đến lúc tháo dây khi đổi dây. Chỉ cho thống kê"
+    },
+    "make_overhang_printable": {
+      "label": "Làm cho in quá nhiều",
+      "tooltip": "Sửa đổi hình học để in quá nhiều vật liệu."
+    },
+    "make_overhang_printable_angle": {
+      "label": "Tạo hình chữ nhật in được - góc tối đa",
+      "tooltip": "Góc tối đa của các bậc cao để cho phép sau khi làm cho nhiều dốc in được.90 độ sẽ không thay đổi các mô hình ở tất cả và cho phép bất kỳ quá dài, trong khi 0 sẽ thay thế tất cả các bậc bằng vật liệu hình nón."
+    },
+    "make_overhang_printable_hole_size": {
+      "label": "Làm một khu vực có thể in được",
+      "tooltip": "Khu vực tối đa của một lỗ hổng trong cơ sở của mô hình trước khi nó được lấp đầy bởi vật liệu hình nón. Một giá trị 0 sẽ lấp đầy tất cả các lỗ trong cơ sở mô hình."
+    },
+    "manual_filament_change": {
+      "label": "Thay đổi tham số thủ công",
+      "tooltip": "Enable this option to omit the custom Change filament G-code only at the beginning of the print. The toolchange command (e.g., T0) will be skipped throughout the entire print. This is useful for manual multi-filament printing, wherewe use M600/PAUSE to trigger the manual filament change action."
+    },
+    "material_flow_dependent_temperature": {
+      "label": "Nhiệt độ tự động",
+      "tooltip": "Tự động thay đổi nhiệt độ cho mỗi lớp theo tốc độ lưu lượng trung bình của lớp đó."
+    },
+    "material_flow_temp_graph": {
+      "label": "Biểu đồ Lưu lượng - Nhiệt độ",
+      "tooltip": "Biểu đồ Lưu lượng - Nhiệt độ"
+    },
+    "max_bridge_length": {
+      "label": "Chiều dài cầu tối đa",
+      "tooltip": "This is the maximum length of bridges that don't need support. Set it to 0 if you want all bridges to be supported, and set it to a very large value if you don't want any bridges to be supported."
+    },
+    "max_layer_height": {
+      "label": "Cực đại",
+      "tooltip": "The highest printable layer height for the extruder: this is used to limit the maximum layer height when adaptive layer height is enabled."
+    },
+    "max_travel_detour_distance": {
+      "label": "Avoid crossing walls - Max detour length",
+      "tooltip": "Maximum detour distance for avoiding crossing wall. Don't detour if the detour distance is large than this value. Detour length could be specified either as an absolute value or as percentage (for example 50%) of a direct travel path. Zero to disableMaximum detour distance for avoiding crossing wall: The printer won't detour if the detour distance is larger than this value. Detour length could be specified either as an absolute value or as percentage (for example 50%) of a direct travel path. A value of 0 will disable this."
+    },
+    "max_volumetric_extrusion_rate_slope": {
+      "label": "Làm mượt tốc độ đùn",
+      "tooltip": "This parameter smooths out sudden extrusion rate changes that happen when the printer transitions from printing a high flow (high speed/larger width) extrusion to a lower flow (lower speed/smaller width) extrusion and vice versa.\n\nIt defines the maximum rateby which the extruded volumetric flow in mm3/sec can change over time. Higher values mean higher extrusion rate changesare allowed, resulting in faster speed transitions.\n\nA value of 0 disables the feature. \n\nFor a high speed, high flowdirect drive printer (like the Bambu lab or Voron) this value is usually not needed. However it can providesome marginal benefit in certain cases where feature speeds vary greatly. For example, when there are aggressive slowdowns dueto overhangs. In these cases a high value of around 300-350mm3/s2 is recommended as this allows for just enoughsmoothing to assist pressure advance achieve a smoother flow transition.\n\nFor slower printers without pressure advance, the value should beset much lower. A value of 10-15mm3/s2 is a good starting point for direct drive extruders and 5-10mm3/s2 forBowden style. \n\nThis feature is known as Pressure Equalizer in Prusa slicer.\n\nNote: this parameter disables arc fitting."
+    },
+    "max_volumetric_extrusion_rate_slope_segment_length": {
+      "label": "Chiều dài đoạn làm mịn",
+      "tooltip": "Giá trị thấp hơn cho chuyển tiếp tốc độ đùn mượt hơn. Tuy nhiên, điều này tạo ra tệp G-code lớn hơn đáng kể và nhiều lệnh hơn để máy in xử lý. \n\nGiá trị mặc định 3 hoạt động tốt trong hầu hết các trường hợp. Nếu máy in của bạn bị giật, hãy tăng giá trị này để giảm số lần điều chỉnh\n\nGiá trị cho phép: 0.5-5"
+    },
+    "mcu_pool_total": {
+      "label": "Tổng dung lượng vùng nhớ MCU"
+    },
+    "min_bead_width": {
+      "label": "Chiều rộng bức tường tối thiểu",
+      "tooltip": "Chiều rộng của thành sẽ thay thế các đặc trưng mỏng (theo Kích thước đặc trưng tối thiểu) của mô hình. Nếu Chiều rộng thành tối thiểu mỏng hơn độ dày của đặc trưng, thành sẽ dày bằng chính đặc trưng đó. Nó được biểu diễn dưới dạng phần trăm trên đường kính đầu phun"
+    },
+    "min_feature_size": {
+      "label": "Cỡ tính năng tối thiểu",
+      "tooltip": "Độ dày tối thiểu của các tính năng mỏng. Các tính năng mô hình mỏng hơn giá trị này sẽ không được in, trong khi tính năng dày hơn kích cỡ tính năng tối thiểu sẽ được mở rộng tới chiều rộng tối thiểu của tường. Nó được thể hiện như một tỷ lệ phần trăm trên đường kính vòi"
+    },
+    "min_layer_height": {
+      "label": "Chính:",
+      "tooltip": "The lowest printable layer height for the extruder. This is used to limit the minimum layer height when adaptive layer height is enabled."
+    },
+    "min_length_factor": {
+      "label": "Chiều dài bức tường tối thiểu",
+      "tooltip": "Adjust this value to prevent short, unclosed walls from being printed, which could increase print time. Higher values removemore and longer walls.\n\nNOTE: Bottom and top surfaces will not be affected by this value to prevent visual gapson the ouside of the model. Adjust 'One wall threshold' in the Advanced settings below to adjust the sensitivityof what is considered a top-surface. 'One wall threshold' is only visibile if this setting is set above the default value of 0.5, or if single-wall top surfaces is enabled."
+    },
+    "min_skirt_length": {
+      "label": "Chiều dài đùn tối thiểu của viền quây (skirt)",
+      "full_label": "Chiều dài đùn tối thiểu của viền quây (skirt)",
+      "tooltip": "Độ dài sợi tối thiểu là khi in váy. Không có nghĩa là tính năng này bị tắt.\n\nDùng giá trị không phải là zero là hữu ích nếu máy in được thiết lập để in mà không có dòng nguyên tố."
+    },
+    "min_width_top_surface": {
+      "label": "Một ngưỡng",
+      "tooltip": "If a top surface has to be printed and it's partially covered by another layer, it won't be considered at a top layer where its width is below this value. This can be useful to not let the 'one perimeter on top' trigger on surface that should be covered only by perimeters. This value can be a mm or a % of the perimeter extrusion width.\nWarning: If enabled, artifacts can be created if you have some thin features on the next layer, like letters. Set this setting to 0 to remove these artifacts.If a top surface has to be printed and it's partially covered by another layer, it won't be consideredat a top layer where its width is below this value. This can be useful to not let the'one perimeter on top' trigger on surface that should be covered only by perimeters. This value can be amm or a % of the perimeter extrusion width.\nWarning: If enabled, artifacts can be created if you have somethin features on the next layer, like letters. Set this setting to 0 to remove these artifacts."
+    },
+    "minimum_sparse_infill_area": {
+      "label": "Ngưỡng lấp đầy thưa tối thiểu",
+      "tooltip": "Sparse infill areas which are smaller than this threshold value are replaced by internal solid infill."
+    },
+    "minimum_support_area": {
+      "label": "Vùng nhô nhỏ",
+      "tooltip": "Kích thước diện tích tối thiểu cho các đa giác hỗ trợ. Các đa giác có diện tích nhỏ hơn giá trị này sẽ không được tạo."
+    },
+    "mixed_color_layer_height_a": {
+      "label": "Cao độ rung động A",
+      "tooltip": "Đóng góp chiều cao lớp của thành phần A cho việc phối trộn (dithering) sợi nhựa ảo."
+    },
+    "mixed_color_layer_height_b": {
+      "label": "Độ rung rung động cao B",
+      "tooltip": "Đóng góp chiều cao lớp của thành phần B cho việc phối trộn (dithering) sợi nhựa ảo."
+    },
+    "mixed_filament_advanced_dithering": {
+      "label": "Rung động cấp cao",
+      "tooltip": "Phân phối các sợi dây kết hợp các lớp xe đạp sử dụng một mô hình rung động có thứ tự tiên tiến."
+    },
+    "mixed_filament_definitions": {
+      "label": "Định nghĩa tùy chỉnh sợi nhựa pha trộn",
+      "tooltip": "Các hàng sợi nhựa pha trộn tùy chỉnh đã tuần tự hóa."
+    },
+    "mixed_filament_gradient_mode": {
+      "label": "Độ trưng cấp cao",
+      "tooltip": "Kích hoạt sợi dây xoắn có trọng lượng cao."
+    },
+    "mixed_filament_height_lower_bound": {
+      "label": "Giới hạn chiều cao dưới của sợi nhựa pha trộn",
+      "tooltip": "Giới hạn dưới được dùng bởi chiều cao cân hợp độ dốc"
+    },
+    "mixed_filament_height_upper_bound": {
+      "label": "Giới hạn chiều cao trên của sợi nhựa pha trộn",
+      "tooltip": "Giới hạn trên được dùng bởi chế độ chuyển đổi sợi hỗn hợp cân cao."
+    },
+    "mixed_filament_pointillism_line_gap": {
+      "label": "Pointillism line gap",
+      "tooltip": "Optional non-extruded spacing between adjacent pointillism segments."
+    },
+    "mixed_filament_pointillism_pixel_size": {
+      "label": "Pointillism pixel size",
+      "tooltip": "Length of one pointillism segment along an extrusion path."
+    },
+    "mixed_filament_surface_indentation": {
+      "label": "Selective expansion/contraction",
+      "tooltip": "Độ lệch XY áp dụng cho các vùng tô màu bằng sợi nhựa pha trộn trước khi phân vùng."
+    },
+    "mmu_segmented_region_interlocking_depth": {
+      "label": "Mở rộng",
+      "tooltip": "Interlocking depth of a segmented region. It will be ignored if \"mmu_segmented_region_max_width\" is zero or if \"mmu_segmented_region_interlocking_depth\"is bigger then\"mmu_segmented_region_max_width\". Zero disables this feature."
+    },
+    "mmu_segmented_region_max_width": {
+      "label": "Chiều rộng tối đa của vùng phân đoạn",
+      "tooltip": "Maximum width of a segmented region. A value of 0 disables this feature."
+    },
+    "msao_recovery_enable": {
+      "label": "Under-extrusion recovery after overhangs (Beta)",
+      "tooltip": "This parameter conflicts with the max_volumetric_extrusion_rate_slope and cannot be enabled at the same time.\n\nWhen the slicer detects that a segment of continuous low-speed extrusion has finished and the path immediately returns to normal high-speed printing, sudden changes inspeed and acceleration can cause the extrusion pressure to lag behind. This may lead to temporary under-extrusion on external walls,resulting in thin lines, whitening, or hollow-looking artifacts. After enabling this option, the slicer inserts additional speed control during therecovery phase so that the printer does not jump directly from “slow” to “fast,” but instead transitions more smoothlyback to normal motion.\n\nTypical usage scenarios include outer walls with overhangs, chamfers, small cross-sections, or the recovery segment afterbridging. Compared to the parameter of Extrusion rate smoothing, this parameter has a smaller impact on the result of slice."
+    },
+    "msao_safe_accel": {
+      "label": "Gia tốc an toàn sau phần nhô (Beta)",
+      "tooltip": "Khi người cắt phát hiện kết thúc của một vùng bị rút lui tốc độ thấp như là một sự cường điệu, nó sẽ không khôi phục ngay lập tức gia tốc in thông thường. Thay vì thế, trước hết nó dùng một giá trị gia tốc thấp hơn và bảo thủ hơn cho một “thời gian phục hồi an toàn, áp lực làm suy yếu, chảy chất nóng chảy, và vòi nước chảy trở lại trạng thái ổn định."
+    },
+    "msao_safe_velocity": {
+      "label": "Tốc độ an toàn sau phần nhô (Beta)",
+      "tooltip": "When the slicer detects the end of a continuous low-speed extrusion region such as an overhang, it will not immediately restore the normal printing speed. Instead, it first uses a lower and more conservative cruise speed for a short “safe recovery segment,” allowing the printer to pass through the transition more gently before gradually returning to the normal printing speed."
+    },
+    "multicolor_method": {
+      "label": "Calculation of flush amount slice",
+      "tooltip": "Calculation of flush amount slice"
+    },
+    "notes": {
+      "label": "Ghi chú cấu hình",
+      "tooltip": "Bạn có thể ghi chú cá nhân tại đây. Văn bản này sẽ được thêm vào phần chú thích đầu tệp G-code."
+    },
+    "nozzle_diameter": {
+      "label": "Đường kính vòi",
+      "tooltip": "Đường kính đầu phun"
+    },
+    "nozzle_height": {
+      "label": "Nozzle cao",
+      "tooltip": "Chiều cao của đầu phun."
+    },
+    "nozzle_hrc": {
+      "label": "HRC đầu phun",
+      "tooltip": "Cái vòi cứng quá. Zero nghĩa là không kiểm tra độ cứng của vòi khi cắt."
+    },
+    "nozzle_pool_total": {
+      "label": "Tổng dung lượng vùng nhớ MCU của đầu phun"
+    },
+    "nozzle_temperature": {
+      "label": "Các lớp khác",
+      "full_label": "Nhiệt độ mũi",
+      "tooltip": "Nhiệt độ vòi cho các lớp sau khi đầu tiên"
+    },
+    "nozzle_temperature_initial_layer": {
+      "label": "First layer",
+      "full_label": "Nhiệt độ ban đầu của lớp nozzle",
+      "tooltip": "Nhiệt độ vòi để in lớp ban đầu khi dùng sợi này"
+    },
+    "nozzle_temperature_range_high": {
+      "label": "Cực đại"
+    },
+    "nozzle_temperature_range_low": {
+      "label": "Chính:"
+    },
+    "nozzle_type": {
+      "label": "Kiểu nút",
+      "tooltip": "Vật liệu kim loại của cái vòi. Điều này quyết định sự kháng cự dữ dội của cái vòi, và loại sợi tóc nào có thể được in",
+      "enum_labels": [
+        "Undefined",
+        "Thép cứng",
+        "Thép không rỉ",
+        "Brass"
+      ]
+    },
+    "nozzle_volume": {
+      "label": "Âm lượng Nozzle",
+      "tooltip": "Volume of nozzle giữa cắt và cuối của vòi"
+    },
+    "only_one_wall_first_layer": {
+      "label": "Chỉ có một bức tường ở lớp một",
+      "tooltip": "Chỉ dùng một thành ở lớp đầu tiên, để tạo thêm không gian cho mẫu lấp đầy đáy"
+    },
+    "only_one_wall_top": {
+      "label": "Chỉ có một bức tường trên bề mặt trên cùng",
+      "tooltip": "Use only one wall on flat top surfaces, to give more space to the top infill pattern"
+    },
+    "ooze_prevention": {
+      "label": "Bật",
+      "tooltip": "Tùy chọn này sẽ hạ nhiệt độ của các đầu đùn không hoạt động để ngăn chảy nhựa (oozing)."
+    },
+    "other_layers_print_sequence": {
+      "label": "Thứ tự in các lớp khác"
+    },
+    "other_layers_print_sequence_nums": {
+      "label": "Số thứ tự in của các lớp khác"
+    },
+    "other_layers_sequence_choice": {
+      "label": "Các lớp khác",
+      "enum_labels": [
+        "Tự động",
+        "Tùy chỉnh"
+      ]
+    },
+    "outer_wall_acceleration": {
+      "label": "Bức tường ngoài",
+      "tooltip": "Acceleration of outer wall: using a lower value can improve quality."
+    },
+    "outer_wall_jerk": {
+      "label": "Bức tường ngoài",
+      "tooltip": "Đồ thối tha"
+    },
+    "outer_wall_line_width": {
+      "label": "Bức tường ngoài",
+      "tooltip": "Chiều rộng đường của tường ngoài. Nếu nhập dạng %, giá trị sẽ được tính theo đường kính đầu phun."
+    },
+    "outer_wall_speed": {
+      "label": "Bức tường ngoài",
+      "tooltip": "This is the printing speed for the outer walls of parts. These are generally printed slower than inner walls for higher quality."
+    },
+    "overhang_fan_speed": {
+      "label": "Fan speed for overhangs",
+      "tooltip": "Force part cooling fan to be this speed when printing bridges or overhang walls which have a large overhang degree. Forcing cooling for overhangs and bridges can achieve better quality for these parts."
+    },
+    "overhang_fan_threshold": {
+      "label": "Làm mát ngưỡng cửa",
+      "tooltip": "Force cooling fan to be specific speed when overhang degree of printed part exceeds this value. Expressed as percentage which indicides how much width of the line without support from lower layer. 0% means forcing cooling for all outer wall no matter how much overhang degreeForce cooling fan to be a specific speed when overhang degree of printed part exceeds this value. This is expressed as a percentage which indicates how much width of the line without support from lower layer. 0% means forcing cooling for all outer wall no matter the overhang degree.",
+      "enum_labels": [
+        "0%",
+        "10%",
+        "25%",
+        "50%",
+        "75%",
+        "95%"
+      ]
+    },
+    "overhang_optimization": {
+      "label": "Làm báp têm quá mức (Beta)",
+      "tooltip": "Chiều cao và chiều rộng đường in tự thích ứng cho từng lớp. "
+    },
+    "overhang_reverse": {
+      "label": "Lùi lại trên lẻ",
+      "full_label": "Đảo chiều phần nhô",
+      "tooltip": "Extrude perimeters that have a part over an overhang in the reverse direction on odd layers. This alternating patterncan drastically improve steep overhangs.\n\nThis setting can also help reduce part warping due to the reduction of stresses inthe part walls."
+    },
+    "overhang_reverse_internal_only": {
+      "label": "Chỉ đảo chiều chu vi bên trong",
+      "full_label": "Chỉ đảo chiều chu vi bên trong",
+      "tooltip": "Chỉ áp dụng logic đảo chiều chu vi cho các chu vi bên trong.\n\nThiết lập này giúp giảm đáng kể ứng suất của chi tiết vì ứng suất được phân bố theo các hướng xen kẽ. Điều này giúp giảm cong vênh trong khi vẫn duy trì chất lượng tường ngoài. Tính năng này rất hữu ích với vật liệu dễ cong vênh như ABS/ASA, cũng như filament đàn hồi như TPU và Silk PLA. Nó cũng có thể giúp giảm cong vênh ở các vùng lơ lửng phía trên support.\n\nĐể thiết lập này hiệu quả nhất, nên đặt Reverse Threshold thành 0 để tất cả tường bên trong được in theo hướng xen kẽ trên các lớp lẻ, bất kể mức độ overhang."
+    },
+    "overhang_reverse_threshold": {
+      "label": "Ngưỡng ngược",
+      "full_label": "Tỷ lệ đảo nghịch quá mức",
+      "tooltip": "Number of mm the overhang need to be for the reversal to be considered useful. Can be a % of the perimeter width.\nValue 0 enables reversal on every odd layers regardless.Number of mm the overhang need to be for the reversal to be considered useful. Can be a %of the perimeter width.\nValue 0 enables reversal on every odd layers regardless."
+    },
+    "overhang_speed_classic": {
+      "label": "Chế độ cổ điển",
+      "tooltip": "Bật tùy chọn này để sử dụng chế độ cổ điển"
+    },
+    "overhang_totally_speed": {
+      "label": "100%",
+      "full_label": "100%"
+    },
+    "parking_pos_retraction": {
+      "label": "Vị trí đỗ của sợi nhựa",
+      "tooltip": "Khoảng cách của đầu dò ra từ vị trí mà sợi dây được đặt khi dỡ xuống. Tùy chọn này sẽ tương ứng giá trị trong phần mềm máy in."
+    },
+    "pathological_segment_protection_enable": {
+      "label": "Bảo vệ tăng tốc phân đoạn bất thường",
+      "tooltip": "Khi được bật, bộ cắt sẽ phát hiện các chuỗi đoạn ngắn dày đặc (chẳng hạn như các mẫu ngoằn ngoèo với các chuyển động dưới milimet) có thể khiến chương trình cơ sở Klipper tích lũy hàng đợi di chuyển quá mức, có khả năng dẫn đến việc ngừng giao tiếp MCU và sự cố máy in.\n\nBộ cắt chèn các lệnh SET_VELOCITY_LIMIT để tạm thời giảm khả năng tăng tốc trước các vùng bất thường này và khôi phục lại sau đó."
+    },
+    "pellet_flow_coefficient": {
+      "label": "Hệ số luồng Pellet",
+      "tooltip": "Hệ số lưu lượng hạt được xác định theo kinh nghiệm và cho phép tính thể tích cho máy in dùng hạt.\n\nBên trong, hệ số này được chuyển đổi thành filament_diameter. Tất cả phép tính thể tích khác vẫn giữ nguyên.\n\nfilament_diameter = sqrt( (4 * pellet_flow_coefficient) / PI )"
+    },
+    "pellet_modded_printer": {
+      "label": "Máy in cải tiến dạng hạt (pellet)",
+      "tooltip": "Bật tùy chọn này nếu máy in của bạn dùng hạt nhựa (pellet) thay vì sợi nhựa"
+    },
+    "post_process": {
+      "label": "Văn lệnh xử lý sau",
+      "tooltip": "If you want to process the output G-code through custom scripts, just list their absolute paths here. Separate multiplescripts with a semicolon. Scripts will be passed the absolute path to the G-code file as the first argument,and they can access the Creality Print config settings by reading environment variables."
+    },
+    "precise_outer_wall": {
+      "label": "Bức tường precise",
+      "tooltip": "Cải thiện độ chính xác của vỏ bằng cách điều chỉnh khoảng cách thành ngoài. Điều này cũng cải thiện tính đồng nhất giữa các lớp.\nLưu ý: Thiết lập này chỉ có hiệu lực nếu trình tự thành được cấu hình là Trong-Ngoài"
+    },
+    "precise_z_height": {
+      "label": "Chuẩn hoá chiều cao Z",
+      "tooltip": "Bật tùy chọn này để có được chiều cao Z chính xác của đối tượng sau khi cắt lớp. Nó sẽ đạt được chiều cao đối tượng chính xác bằng cách tinh chỉnh chiều cao lớp của vài lớp cuối. Lưu ý đây là tham số thử nghiệm."
+    },
+    "preferred_orientation": {
+      "label": "Hướng ưu tiên",
+      "tooltip": "Tự động định hướng Stls trên Z-axis khi nhập đầu tiên"
+    },
+    "preheat_steps": {
+      "label": "Các bước sẵn sàng",
+      "tooltip": "Chèn nhiều lệnh làm nóng trước (ví dụ M104.1). Chỉ hữu ích cho Prusa XL. Với các máy in khác, hãy đặt là 1."
+    },
+    "preheat_temperature_delta": {
+      "label": "Nhiệt độ làm nóng trước",
+      "tooltip": "Áp dụng chênh lệch nhiệt độ trước khi kích hoạt đầu phun. Nhiệt độ làm nóng trước trước được tính bằng nhiệt độ in cộng với giá trị này."
+    },
+    "preheat_time": {
+      "label": "Thời gian chuẩn",
+      "tooltip": "To reduce the waiting time after tool change, Creality can preheat the nexttool while the current tool isstill in use. This setting specifies the timein seconds to preheat the next tool. Creality will insert an M104 command topreheat the tool in advance."
+    },
+    "preset_names": {
+      "label": "Tên preset máy in",
+      "tooltip": "Tên của các cài đặt sẵn liên quan đến máy in vật lý"
+    },
+    "pressure_advance": {
+      "label": "Áp lực đang tăng.",
+      "tooltip": "Áp lực trước (Klapper) Hệ số tiền tiến AKA tuyến (Marlin)"
+    },
+    "prime_tower_brim_width": {
+      "label": "Độ rộng Bem",
+      "tooltip": "Chiều rộng viền (brim) của tháp mồi; số âm nghĩa là chiều rộng được tính tự động dựa trên chiều cao của tháp mồi."
+    },
+    "prime_tower_corner_rib_length": {
+      "label": "Chiều dài gân góc dưới",
+      "tooltip": "Chiều dài cạnh đáy của các gân góc vuông trên tháp vuông nguyên tố. Gân giữ chiều dài tiếp xúc của nó với khu vực lau và thuôn nhọn ra phía ngoài các cạnh của khối ở đỉnh tháp. Đặt thành 0 để sử dụng khoảng cách dòng chu vi."
+    },
+    "prime_tower_enable_framework": {
+      "label": "Xương sườn",
+      "tooltip": "Bật các gân bên trong để tăng độ ổn định của tháp mồi."
+    },
+    "prime_tower_enhance_type": {
+      "label": "Kiểu tăng cường tháp mồi",
+      "tooltip": "Kiểu tăng cường tháp mồi",
+      "enum_labels": [
+        "nón",
+        "Chamfer",
+        "gân góc"
+      ]
+    },
+    "prime_tower_position_type": {
+      "label": "Vị trí tháp",
+      "tooltip": "Vị trí của Tháp mồi (Prime Tower) trên bàn in.",
+      "enum_labels": [
+        "Left Upper",
+        "Middle Upper",
+        "Right Upper",
+        "Left Center",
+        "Middle Center",
+        "Right Center",
+        "Left Below",
+        "Middle Below",
+        "Right Below"
+      ]
+    },
+    "prime_tower_rib_wall": {
+      "label": "Tháp mồi vuông",
+      "tooltip": "When this option is checked, the prime tower will be as close to a square as possible, meaning itswidth will be fixed."
+    },
+    "prime_tower_skip_points": {
+      "label": "Bỏ qua điểm",
+      "tooltip": "Thành của tháp mồi sẽ bỏ qua các điểm bắt đầu của đường lau"
+    },
+    "prime_tower_start_ironing": {
+      "label": "Là phẳng vùng bắt đầu của tháp chính",
+      "tooltip": "Việc ủi khu vực bắt đầu thanh lọc giúp giảm nguy cơ đầu phun làm xước tháp chính trong quá trình in tiếp theo.",
+      "enum_labels": [
+        "Tắt",
+        "Ủi chuyển động qua lại"
+      ]
+    },
+    "prime_tower_start_offset": {
+      "label": "Độ lệch điểm bắt đầu tháp chính",
+      "tooltip": "Di chuyển điểm bắt đầu của đường thanh lọc tháp chính vào trong dọc theo đường thanh lọc đầu tiên. Điều này giữ các đốm màu khởi động bên trong tháp."
+    },
+    "prime_tower_width": {
+      "label": "Bề rộng:",
+      "tooltip": "This is the width of prime towers. Prime tower max width = machine's max XY size."
+    },
+    "prime_volume": {
+      "label": "Âm lượng chính",
+      "tooltip": "Số lượng tài liệu trở thành chất tẩy chính trên tháp."
+    },
+    "print_flow_ratio": {
+      "label": "Tỷ lệ chảy",
+      "tooltip": "The filament may have volumetric change after switching between molten and crystalline states. This setting changes all extrusion flow of this filament in G-code proportionally. The recommended value range is between 0.95 and 1.05. You may be able to tune this value to get a nice flat surface if there is slight overflow or underflow."
+    },
+    "print_host": {
+      "label": "Tên máy chủ, IP hoặc URL",
+      "tooltip": "Creality Print có thể tải các tệp G-code lên máy chủ in. Trường này cần chứa tên máy chủ, địa chỉ IP hoặc URL của máy chủ in. Máy chủ in nằm sau HAProxy có bật xác thực cơ bản có thể được truy cập bằng cách đưa tên người dùng và mật khẩu vào URL theo định dạng sau: https://username:password@your-octopi-address/"
+    },
+    "print_host_webui": {
+      "label": "Giao diện thiết bị",
+      "tooltip": "Chỉ định URL của giao diện người dùng thiết bị nếu nó khác với print_host"
+    },
+    "print_order": {
+      "label": "Thứ tự trong lớp",
+      "tooltip": "Thứ tự in trong một lớp",
+      "enum_labels": [
+        "Mặc định",
+        "Là danh sách đối tượng"
+      ]
+    },
+    "print_sequence": {
+      "label": "Thứ tự in",
+      "tooltip": "This determines the print sequence, allowing you to print layer-by-layer or object-by-object.",
+      "enum_labels": [
+        "Theo lớp",
+        "Theo đối tượng"
+      ]
+    },
+    "printable_area": {
+      "label": "Vùng có thể in"
+    },
+    "printable_height": {
+      "label": "Chiều cao có thể in",
+      "tooltip": "This is the maximum printable height which is limited by the height of the build area."
+    },
+    "printer_notes": {
+      "label": "Ghi chú máy in",
+      "tooltip": "Bạn có thể ghi chú về máy in tại đây."
+    },
+    "printer_structure": {
+      "label": "Cấu trúc máy in",
+      "tooltip": "Thiết lập vật lý và thành phần của thiết bị in",
+      "enum_labels": [
+        "Undefined",
+        "CoreXY",
+        "I3",
+        "Hbot",
+        "Delta"
+      ]
+    },
+    "printhost_apikey": {
+      "label": "Khóa API / Mật khẩu",
+      "tooltip": "Creality Print có thể tải các tệp G-code lên máy chủ in. Trường này cần chứa Khóa API hoặc mật khẩu cần thiết để xác thực."
+    },
+    "printhost_authorization_type": {
+      "label": "Loại xác thực",
+      "enum_labels": [
+        "Khóa API",
+        "HTTP digest"
+      ]
+    },
+    "printhost_cafile": {
+      "label": "Tệp CA HTTPS",
+      "tooltip": "Có thể chỉ định tệp chứng chỉ CA tùy chỉnh cho các kết nối HTTPS OctoPrint, ở định dạng crt/pem. Nếu để trống, kho chứng chỉ CA mặc định của hệ điều hành sẽ được sử dụng."
+    },
+    "printhost_password": {
+      "label": "Mật khẩu"
+    },
+    "printhost_port": {
+      "label": "Máy in",
+      "tooltip": "Tên máy in"
+    },
+    "printhost_ssl_ignore_revoke": {
+      "label": "Bỏ qua các ngân phiếu chứng nhận",
+      "tooltip": "Ignore HTTPS certificate revocation checks in the case of missing or offline distribution points. One may want to enable this option for self signed certificates if connection fails."
+    },
+    "printhost_user": {
+      "label": "Người dùng"
+    },
+    "printing_by_object_gcode": {
+      "label": "Giữa Mã G đối tượng",
+      "tooltip": "Chèn G-code giữa các đối tượng. Tham số này chỉ có hiệu lực khi bạn in các mô hình theo từng đối tượng"
+    },
+    "purge_in_prime_tower": {
+      "label": "Xả (purge) vào tháp mồi",
+      "tooltip": "Xả phần sợi nhựa còn lại vào tháp mồi"
+    },
+    "raft_contact_distance": {
+      "label": "Khoảng cách Z tiếp xúc của bè (raft)",
+      "tooltip": "This is the Z gap between an object and a raft. It is ignored for soluble interfaces."
+    },
+    "raft_expansion": {
+      "label": "Mở rộng bè (raft)",
+      "tooltip": "This expands all raft layers in XY plane."
+    },
+    "raft_first_layer_density": {
+      "label": "First layer density",
+      "tooltip": "This is the density of the first raft or support layer."
+    },
+    "raft_first_layer_expansion": {
+      "label": "First layer expansion",
+      "tooltip": "This expands the first raft or support layer to improve bed adhesion."
+    },
+    "raft_layers": {
+      "label": "Lớp Raft",
+      "tooltip": "Object will be raised by this number of support layers. Use this function to avoid warping when printing ABS."
+    },
+    "reduce_crossing_wall": {
+      "label": "Avoid crossing walls",
+      "tooltip": "This detours to avoid traveling across walls, which may cause blobs on the surface"
+    },
+    "reduce_fan_stop_start_freq": {
+      "label": "Giữ fan hâm mộ luôn luôn",
+      "tooltip": "Enabling this setting means that part cooling fan will never stop entirely and will instead run at least at minimum speed to reduce the frequency of starting and stopping."
+    },
+    "reduce_infill_retraction": {
+      "label": "Giảm rút sợi khi lấp đầy",
+      "tooltip": "Don't retract when the travel is entirely in an infill area. That means the oozing can't been seen. This can reduce times of retraction for complex model and save printing time, but make slicing and G-code generation slower."
+    },
+    "required_nozzle_HRC": {
+      "label": "HRC đầu phun yêu cầu",
+      "tooltip": "HRC tối thiểu của đầu phun cần có để in filament. Giá trị 0 nghĩa là không kiểm tra HRC của đầu phun."
+    },
+    "resolution": {
+      "label": "Độ phân giải",
+      "tooltip": "The G-code path is generated after simplifying the contour of models to avoid too many points and G-code lines. Smaller values mean higher resolution and more time required to slice."
+    },
+    "retract_before_wipe": {
+      "label": "Lượng rút sợi trước khi lau",
+      "tooltip": "This is the length of fast retraction before a wipe, relative to retraction length."
+    },
+    "retract_length_toolchange": {
+      "label": "Chiều dài"
+    },
+    "retract_lift_above": {
+      "label": "Chỉ nâng Z lên trên",
+      "tooltip": "Nếu bạn đặt giá trị dương, nâng Z chỉ diễn ra trên giá trị Z tuyệt đối đã chỉ định."
+    },
+    "retract_lift_below": {
+      "label": "Chỉ nâng Z xuống dưới",
+      "tooltip": "Nếu bạn đặt giá trị dương, nâng Z chỉ diễn ra dưới giá trị Z tuyệt đối đã chỉ định."
+    },
+    "retract_lift_enforce": {
+      "label": "Trên bề mặt",
+      "tooltip": "Bắt buộc hành vi nâng Z. Thiết lập này chịu ảnh hưởng bởi các thiết lập ở trên (Chỉ nâng Z trên/dưới).",
+      "enum_labels": [
+        "Mọi mặt",
+        "Chỉ trên",
+        "Chỉ dưới",
+        "Trên và dưới"
+      ]
+    },
+    "retract_restart_extra": {
+      "label": "Chiều dài thêm khi khởi chạy lại",
+      "tooltip": "Khi việc rút lại được bồi thường sau khi di chuyển, người rút lui sẽ đẩy thêm một số sợi dây. Trường hợp này hiếm khi cần thiết."
+    },
+    "retract_restart_extra_toolchange": {
+      "label": "Chiều dài thêm khi khởi chạy lại",
+      "tooltip": "Khi việc rút sợi được bù sau khi đổi đầu công cụ, đầu đùn sẽ đẩy thêm lượng sợi nhựa này."
+    },
+    "retract_when_changing_layer": {
+      "label": "Retract on layer change",
+      "tooltip": "This forces a retraction on layer changes."
+    },
+    "retraction_distances_when_cut": {
+      "label": "Vòng lại khoảng cách khi cắt",
+      "tooltip": "Đặc điểm thử nghiệm. Quay lại chiều dài trước khi cắt khi sợi dây thay đổi"
+    },
+    "retraction_length": {
+      "label": "Chiều dài",
+      "full_label": "Vòng lặp lại",
+      "tooltip": "Người ta rút lại một số tài liệu về chất thải để tránh chất lỏng trong chuyến hành trình dài. Đặt 0 để tắt rút lui"
+    },
+    "retraction_minimum_travel": {
+      "label": "Ngưỡng đi đường",
+      "tooltip": "Only trigger retraction when the travel distance is longer than this threshold."
+    },
+    "retraction_speed": {
+      "label": "Retraction speed",
+      "full_label": "Retraction speed",
+      "tooltip": "This is the speed for retraction."
+    },
+    "role_based_wipe_speed": {
+      "label": "Tốc độ lau theo vai trò",
+      "tooltip": "The wipe speed is determined by the speed of the current extrusion role.e.g. if a wipe action is executedimmediately following an outer wall extrusion, the speed of the outer wall extrusion will be utilized for the wipeaction."
+    },
+    "rotate_solid_infill_direction": {
+      "label": "Xoay khối",
+      "tooltip": "Xoay hướng lấp đầy đặc 90° cho mỗi lớp."
+    },
+    "scan_first_layer": {
+      "label": "Quét lớp đầu",
+      "tooltip": "Enable this to allow the camera on the printer to check the quality of the first layer."
+    },
+    "scarf_angle_threshold": {
+      "label": "Ngưỡng góc điều kiện",
+      "tooltip": "This option sets the threshold angle for applying a conditional scarf joint seam.\nIf the maximum angle within the perimeterloop exceeds this value (indicating the absence of sharp corners), a scarf joint seam will be used. The defaultvalue is 155°."
+    },
+    "scarf_joint_flow_ratio": {
+      "label": "Tỷ lệ lưu lượng mối nối vát",
+      "tooltip": "Yếu tố này ảnh hưởng đến số lượng vật liệu cho khớp khăn."
+    },
+    "scarf_joint_speed": {
+      "label": "Tốc độ mối nối vát",
+      "tooltip": "This option sets the printing speed for scarf joints. It is recommended to print scarf joints at a slow speed (less than 100 mm/s).  It's also advisable to enable 'Extrusion rate smoothing' if the set speed varies significantly from the speed of the outer or inner walls. If the speed specified here is higher than the speed of the outer or inner walls, the printer will default to the slower of the two speeds. When specified as a percentage (e.g., 80%), the speed is calculated based on the respective outer or inner wall speed. The default value is set to 100%.This option sets the printing speed for scarf joints. It is recommended to print scarf joints at a slowspeed (less than 100 mm/s).  It's also advisable to enable 'Extrusion rate smoothing' if the set speed variessignificantly from the speed of the outer or inner walls. If the speed specified here is higher than thespeed of the outer or inner walls, the printer will default to the slower of the two speeds. Whenspecified as a percentage (e.g., 80%), the speed is calculated based on the respective outer or inner wall speed.The default value is set to 100%."
+    },
+    "scarf_overhang_threshold": {
+      "label": "Ngưỡng phần nhô có điều kiện",
+      "tooltip": "This option determines the overhang threshold for the application of scarf joint seams. If the unsupported portion of the perimeter is less than this threshold, scarf joint seams will be applied. The default threshold is set at 40% of the external wall's width. Due to performance considerations, the degree of overhang is estimated.This option determines the overhang threshold for the application of scarf joint seams. If the unsupported portion of theperimeter is less than this threshold, scarf joint seams will be applied. The default threshold is set at 40%of the external wall's width. Due to performance considerations, the degree of overhang is estimated."
+    },
+    "seam_gap": {
+      "label": "Khoảng cách giữa đường",
+      "tooltip": "In order to reduce the visibility of the seam in a closed loop extrusion, the loop is interrupted and shortened by a specified amount.\nThis amount can be specified in millimeters or as a percentage of the current extruder diameter. The default value for this parameter is 10%.In order to reduce the visibility of the seam in a closed loop extrusion, the loop is interrupted andshortened by a specified amount.\nThis amount can be specified in millimeters or as a percentage of the current extruderdiameter. The default value for this parameter is 10%."
+    },
+    "seam_position": {
+      "label": "Vị trí biển",
+      "tooltip": "This is the starting position for each part of the outer wall.",
+      "enum_labels": [
+        "Gần nhất",
+        "Sắp hàng",
+        "Bị dồn lại",
+        "Quay lại",
+        "Ngẫu nhiên",
+        "Assemble"
+      ]
+    },
+    "seam_slope_conditional": {
+      "label": "Quan hệ điều kiện",
+      "tooltip": "Chỉ áp dụng mối nối vát cho các chu vi mượt nơi mà đường ghép truyền thống không che giấu hiệu quả đường ghép tại các góc sắc."
+    },
+    "seam_slope_entire_loop": {
+      "label": "Vát quanh toàn bộ thành",
+      "tooltip": "Mối nối vát kéo dài trên toàn bộ chiều dài của thành."
+    },
+    "seam_slope_inner_walls": {
+      "label": "Mối nối scarf cho tường trong",
+      "tooltip": "Dùng khớp khăn choàng cho tường bên trong."
+    },
+    "seam_slope_min_length": {
+      "label": "Chiều dài Scarf",
+      "tooltip": "Chiều dài của mối nối vát. Đặt tham số này bằng 0 sẽ tắt hẳn mối nối vát."
+    },
+    "seam_slope_start_height": {
+      "label": "♪ Scarf bắt đầu cao ♪",
+      "tooltip": "Chiều cao bắt đầu của mối nối vát.\nGiá trị này có thể được chỉ định bằng milimét hoặc theo tỷ lệ phần trăm của chiều cao lớp hiện tại. Giá trị mặc định cho tham số này là 0."
+    },
+    "seam_slope_steps": {
+      "label": "Bước scarf",
+      "tooltip": "Số đoạn nhỏ nhất của mỗi chiếc khăn choàng."
+    },
+    "seam_slope_type": {
+      "label": "Đường ghép nối vát (scarf joint) (beta)",
+      "tooltip": "Dùng mối nối vát (scarf joint) để giảm thiểu độ lộ của đường ghép và tăng độ bền đường ghép.",
+      "enum_labels": [
+        "Không",
+        "Contour",
+        "Đường bao và lỗ"
+      ]
+    },
+    "silent_mode": {
+      "label": "Silent Mode",
+      "tooltip": "Whether the machine supports silent mode in which machine uses lower acceleration to print more quietly"
+    },
+    "single_extruder_multi_material": {
+      "label": "Nhiều tài liệu riêng lẻ",
+      "tooltip": "Dùng một đầu phun để in nhiều sợi nhựa"
+    },
+    "single_extruder_multi_material_priming": {
+      "label": "Số nguyên tố:",
+      "tooltip": "If enabled, all printing extruders will be primed at the front edge of the print bed at the startof the print."
+    },
+    "skeleton_flush_slowdown_speed": {
+      "label": "Tốc độ lau trong khung",
+      "tooltip": "Khi tùy chọn \"Chảy vào bộ xương của đối tượng\" được bật, hãy đặt tốc độ cho các đường dẫn khung bị chậm lại sau khi thay đổi vật liệu. Giá trị phần trăm được tính từ tốc độ mà mỗi đường dẫn khung thường sử dụng."
+    },
+    "skeleton_infill_density": {
+      "label": "Mật độ lấp đầy khung xương",
+      "tooltip": "The remaining part of the model contour after removing a certain depth from the surface is called the skeleton. This parameter is used to adjust the density of this section. When two regions have the same sparse infill settings but different skeleton densities, their skeleton areas will develop overlapping sections.default is as same as infill density."
+    },
+    "skeleton_infill_line_width": {
+      "label": "Chiều rộng Đường Skeeleton",
+      "tooltip": "Điều chỉnh độ rộng dòng của các đường khung đã chọn."
+    },
+    "skeleton_wipe_line_width": {
+      "label": "Chiều rộng đường lau trong khung",
+      "tooltip": "Điều chỉnh độ rộng của các đường khung được sử dụng để xóa ở tốc độ giảm sau khi thay đổi vật liệu, ở chế độ không có Tháp chính."
+    },
+    "skin_infill_density": {
+      "label": "Mật độ lấp đầy lớp da",
+      "tooltip": "The portion of the model's outer surface within a certain depth range is called the skin. This parameter is used to adjust the density of this section. When two regions have the same sparse infill settings but different skin densities, This area will not be split into two separateregions.default is as same as infill density."
+    },
+    "skin_infill_depth": {
+      "label": "Độ sâu lấp đầy lớp da",
+      "tooltip": "Tham số đặt độ sâu của da."
+    },
+    "skin_infill_line_width": {
+      "label": "Chiều rộng đường da",
+      "tooltip": "Điều chỉnh độ rộng của đường da đã chọn."
+    },
+    "skirt_distance": {
+      "label": "Khoảng cách",
+      "tooltip": "This is the distance from the skirt to the brim or the object."
+    },
+    "skirt_height": {
+      "label": "Chiều cao",
+      "tooltip": "Number of skirt layers: usually only one"
+    },
+    "skirt_loops": {
+      "label": "Vòng may",
+      "full_label": "Vòng may",
+      "tooltip": "This is the number of loops for the skirt. 0 means the skirt is disabled."
+    },
+    "skirt_speed": {
+      "label": "Tốc độ Trượt",
+      "full_label": "Tốc độ Trượt",
+      "tooltip": "Tốc độ của viền quây (skirt), tính bằng mm/s. Không (0) nghĩa là dùng tốc độ đùn lớp mặc định."
+    },
+    "skirt_type": {
+      "label": "Kiểu váy",
+      "full_label": "Kiểu váy",
+      "tooltip": "Kết hợp - một viền quây (skirt) chung cho tất cả đối tượng; Theo đối tượng - viền quây riêng cho từng đối tượng.",
+      "enum_labels": [
+        "Kết hợp",
+        "Mỗi đối tượng"
+      ]
+    },
+    "slice_closing_radius": {
+      "label": "Bán kính khép khe hở khi cắt lớp",
+      "tooltip": "Các vết nứt nhỏ hơn 2 lần bán kính khép khe hở sẽ được lấp đầy trong quá trình cắt lớp lưới tam giác. Thao tác khép khe hở có thể làm giảm độ phân giải in cuối cùng, do đó nên giữ giá trị này ở mức thấp hợp lý."
+    },
+    "slicing_mode": {
+      "label": "Chế độ cắt",
+      "tooltip": "Dùng \"Even-odd\" cho các mô hình máy bay 3DLabPrint. Dùng \"Close holes\" để đóng tất cả các lỗ trong mô hình.",
+      "enum_labels": [
+        "Chuẩn",
+        "Mặc định",
+        "Đóng lỗ"
+      ]
+    },
+    "slow_down_for_layer_cooling": {
+      "label": "Làm mát lớp làm chậm lại",
+      "tooltip": "Enable this option to slow printing speed down to ensure that the final layer time is not shorter than the layer time threshold in \"Max fan speed threshold\", so that the layer can be cooled for a longer time. This can improve the quality for small details."
+    },
+    "slow_down_layer_time": {
+      "label": "Thời gian Lớp",
+      "tooltip": "The printing speed in exported G-code will be slowed down when the estimated layer time is shorter than this value in order to get better cooling for these layers."
+    },
+    "slow_down_layers": {
+      "label": "This is the number of top interface layers.",
+      "tooltip": "The first few layers are printed slower than normal. The speed is gradually increased in a linear fashion overthe specified number of layers."
+    },
+    "slow_down_min_speed": {
+      "label": "Tốc độ in tối thiểu",
+      "tooltip": "The minimum printing speed that the printer will slow down to to attempt to maintain the minimum layer timeabove, when slow down for better layer cooling is enabled."
+    },
+    "slowdown_for_curled_perimeters": {
+      "label": "Giảm tốc cho chu vi bị cong",
+      "tooltip": "Bật tùy chọn này để giảm tốc độ in ở những khu vực có thể tồn tại chu vi bị cong vênh"
+    },
+    "small_area_infill_flow_compensation": {
+      "label": "Bù lưu lượng cho vùng nhỏ (beta)",
+      "tooltip": "Bật bù lưu lượng cho các vùng lấp đầy nhỏ"
+    },
+    "small_area_infill_flow_compensation_model": {
+      "label": "Mô hình bù lưu lượng",
+      "tooltip": "Flow Compensation Model, used to adjust the flow for small infill areas. The model is expressed as a commaseparated pair of values for extrusion length and flow correction factors, one per line, in the following format: \"1.234,5.678\""
+    },
+    "small_perimeter_speed": {
+      "label": "Vòng tròn nhỏ",
+      "tooltip": "This separate setting will affect the speed of perimeters having radius <= small_perimeter_threshold (usually holes). If expressed as percentage (for example: 80%) it will be calculated on the outer wall speed setting above. Set to zero for auto.This separate setting will affect the speed of perimeters having radius <= small_perimeter_threshold (usually holes). If expressed as percentage(for example: 80%) it will be calculated on the outer wall speed setting above. Set to zero for auto."
+    },
+    "small_perimeter_threshold": {
+      "label": "Ngưỡng chu vi nhỏ",
+      "tooltip": "Điều này đặt ngưỡng cho chu vi nhỏ. Ngưỡng mặc định là 0mm"
+    },
+    "smart_cooling_zones": {
+      "label": "Vùng làm mát thông minh (Beta)",
+      "tooltip": "If enabled, this setting will ensure that large areas without overhangs are not slowed down to meet the minimumlayer time. Makes the selection of slowed down areas more intelligent\n\n"
+    },
+    "smooth_coefficient": {
+      "label": "Hệ số mịn",
+      "tooltip": "Giá trị càng nhỏ thì đường chuyển tiếp tốc độ càng dài. 0 nghĩa là không áp dụng."
+    },
+    "smooth_speed_discontinuity_area": {
+      "label": "Vùng phân hủy tốc độ mịn (Beta)",
+      "tooltip": "Thêm vùng chuyển tiếp tốc độ tại khu vực tốc độ không liên tục."
+    },
+    "solid_infill_direction": {
+      "label": "Hướng infill đặc",
+      "tooltip": "Góc cho mẫu lấp đầy đặc, điều khiển hướng bắt đầu hoặc hướng chính của đường"
+    },
+    "solid_infill_filament": {
+      "label": "Infill đặc",
+      "tooltip": "Sợi nhựa để in lấp đầy đặc"
+    },
+    "sparse_infill_acceleration": {
+      "label": "Infill thưa",
+      "tooltip": "Gia tốc của infill thưa. Nếu giá trị nhập dạng phần trăm (ví dụ 100%), nó sẽ được tính dựa trên gia tốc mặc định."
+    },
+    "sparse_infill_density": {
+      "label": "Mật độ bút",
+      "tooltip": "Mật độ infill thưa bên trong; 100% sẽ biến toàn bộ infill thưa thành infill đặc và sử dụng mẫu infill đặc bên trong"
+    },
+    "sparse_infill_filament": {
+      "label": "Không đầy",
+      "tooltip": "Chất thải để in cặn bã bên trong."
+    },
+    "sparse_infill_line_width": {
+      "label": "Infill thưa",
+      "tooltip": "Chiều rộng đường của infill thưa bên trong. Nếu nhập dạng %, giá trị sẽ được tính theo đường kính đầu phun."
+    },
+    "sparse_infill_pattern": {
+      "label": "Mẫu infill thưa",
+      "tooltip": "This is the line pattern for internal sparse infill.",
+      "enum_labels": [
+        "Tâm",
+        "Đường thẳng",
+        "Lưới",
+        "Đường",
+        "Bậc ba",
+        "Tam giác",
+        "Tam giác",
+        "Gyroid",
+        "Tổ ong",
+        "Bậc ba thích nghi",
+        "Được sắp xếp lại",
+        "Tổ ong 3D",
+        "Đường cong Hilbert",
+        "Dây cung Archimedes",
+        "Xoắn ốc bát giác",
+        "Hỗ trợ bậc ba",
+        "Ánh sáng",
+        "Hình chữ thập",
+        "Qua",
+        "Băng qua 3 chiều",
+        "bậc tư",
+        "Tứ diện",
+        "TPMS-D Cell",
+        "TPMS-G tăng dần",
+        "Stencils",
+        "TPMS-FK tăng dần",
+        "TPMS-FK",
+        "Zig-Zag",
+        "Cross-Zag",
+        "Locked-Zag",
+        "Tổ ong ngang",
+        "Latice sau lưng",
+        "TPMS thích ứng"
+      ]
+    },
+    "sparse_infill_speed": {
+      "label": "Infill thưa",
+      "tooltip": "This is the speed for internal sparse infill."
+    },
+    "speed_limit_to_height": {
+      "label": "Tốc độ và gia tốc giới hạn theo chiều cao",
+      "tooltip": "Tốc độ và gia tốc giới hạn theo chiều cao"
+    },
+    "speed_limit_to_height_enable": {
+      "label": "Tốc độ và gia tốc giới hạn theo chiều cao",
+      "tooltip": "Tốc độ và gia tốc giới hạn theo chiều cao"
+    },
+    "spiral_mode": {
+      "label": "Hoa xoắn ốc",
+      "tooltip": "This enables spiraling, which smooths out the Z moves of the outer contour and turns a solid model into a single walled print with solid bottom layers. The final generated model has no seam."
+    },
+    "spiral_mode_max_xy_smoothing": {
+      "label": "Làm mịn tối đa XY",
+      "tooltip": "Khoảng cách tối đa để di chuyển điểm theo XY nhằm tạo xoắn ốc mượt. Nếu nhập dạng %, giá trị sẽ được tính theo đường kính đầu phun"
+    },
+    "spiral_mode_smooth": {
+      "label": "Đường cong",
+      "tooltip": "Xoắn ốc mượt (Smooth Spiral) làm mượt cả chuyển động X và Y, dẫn đến hoàn toàn không có đường ghép lộ ra, kể cả theo hướng XY trên các thành không thẳng đứng"
+    },
+    "staggered_inner_seams": {
+      "label": "Các đường nối nội thất",
+      "tooltip": "Tùy chọn này khiến các đường ghép bên trong dịch lùi dựa trên độ sâu của chúng, tạo thành hoa văn zigzag."
+    },
+    "standby_temperature_delta": {
+      "label": "Biến thể nhiệt độ",
+      "tooltip": "Sự khác biệt nhiệt độ phải được áp dụng khi bộ tách không hoạt động. Giá trị không được dùng khi thiết lập kiểu 'idle  stearture' trong các thiết lập sợi được đặt thành giá trị không phải là zero."
+    },
+    "start_end_points": {
+      "label": "Bắt đầu điểm kết thúc",
+      "tooltip": "The start and end points which are from the cutter area to the excess chute."
+    },
+    "support_air_filtration": {
+      "label": "Fan sau",
+      "tooltip": "Bật tùy chọn này nếu máy in hỗ trợ lọc không khí\nLệnh G-code: M106 P3 S(0-255)"
+    },
+    "support_angle": {
+      "label": "Góc mẫu",
+      "tooltip": "Dùng thiết lập này để xoay mẫu hỗ trợ trên mặt phẳng ngang."
+    },
+    "support_base_pattern": {
+      "label": "Mẫu cơ bản",
+      "tooltip": "Thiết lập cho mẫu chính của hỗ trợ thường",
+      "enum_labels": [
+        "Mặc định",
+        "Đường thẳng",
+        "Lưới đường thẳng",
+        "Tổ ong",
+        "rỗng"
+      ]
+    },
+    "support_base_pattern_spacing": {
+      "label": "Khoảng cách mẫu cơ bản",
+      "tooltip": "This determines the spacing between support lines."
+    },
+    "support_base_pattern_tree": {
+      "label": "Mẫu cơ bản (Tree)",
+      "tooltip": "Thiết lập cho mẫu chính của hỗ trợ dạng cây; kiểu hỗ trợ cây hữu cơ chỉ hỗ trợ mẫu lấp đầy 'rỗng' (hollow).",
+      "enum_labels": [
+        "Mặc định",
+        "Đường thẳng",
+        "Lưới đường thẳng",
+        "Tổ ong",
+        "rỗng"
+      ]
+    },
+    "support_bottom_interface_spacing": {
+      "label": "Khoảng cách giao diện dưới",
+      "tooltip": "This is the spacing of bottom interface lines. 0 means solid interface."
+    },
+    "support_bottom_z_distance": {
+      "label": "Khoảng cách Z dưới",
+      "tooltip": "Khe hở Z giữa mặt tiếp giáp hỗ trợ ở đáy và đối tượng"
+    },
+    "support_chamber_temp_control": {
+      "label": "Support controlling chamber temperature",
+      "tooltip": "Tùy chọn này được bật nếu máy hỗ trợ điều khiển nhiệt độ buồng in\nLệnh G-code: M141 S(0-255)"
+    },
+    "support_critical_regions_only": {
+      "label": "Chỉ hỗ trợ các vùng quan trọng",
+      "tooltip": "Chỉ tạo hỗ trợ cho các vùng quan trọng bao gồm đuôi nhọn, dầm công-xôn, v.v."
+    },
+    "support_expansion": {
+      "label": "Normal support expansion",
+      "tooltip": "Mở rộng (+) hoặc thu hẹp (-) khẩu độ ngang của hỗ trợ thường"
+    },
+    "support_filament": {
+      "label": "Phần đế hỗ trợ/bè (raft)",
+      "tooltip": "Đồ đạc để in căn cứ và bè. \"Mặc định\" có nghĩa là không có sợi dây cụ thể để hỗ trợ và sợi dây hiện tại được sử dụng"
+    },
+    "support_filament_nozzle_mapping": {
+      "label": "Hỗ trợ ánh xạ đầu phun vật liệu in",
+      "tooltip": "Hiển thị các điều khiển nhóm đầu phun cho vật liệu in dự án cho máy in này."
+    },
+    "support_interface_bottom_layers": {
+      "label": "Lớp dưới giao diện",
+      "tooltip": "Số lớp giao diện dưới"
+    },
+    "support_interface_filament": {
+      "label": "Mặt tiếp giáp hỗ trợ/bè (raft)",
+      "tooltip": "Giao diện hỗ trợ in. \"Mặc định\" có nghĩa là không có sợi cụ thể cho giao diện hỗ trợ và sợi dây hiện nay được sử dụng"
+    },
+    "support_interface_loop_pattern": {
+      "label": "Loop pattern interface",
+      "tooltip": "This covers the top contact layer of the supports with loops. It is disabled by default."
+    },
+    "support_interface_min_area": {
+      "label": "Diện tích tiếp xúc hỗ trợ tối thiểu",
+      "tooltip": "Giá trị thấp hơn tạo ra nhiều bề mặt tiếp xúc hỗ trợ hơn."
+    },
+    "support_interface_not_for_body": {
+      "label": "Tránh dùng sợi nhựa tiếp giáp cho phần đế",
+      "tooltip": "Tránh dùng sợi nhựa tiếp giáp hỗ trợ để in phần đế hỗ trợ nếu có thể."
+    },
+    "support_interface_pattern": {
+      "label": "Mẫu bề mặt tiếp xúc",
+      "tooltip": "This is the line pattern for support interfaces. The default pattern for non-soluble support interfaces is Rectilinear while the default pattern for soluble support interfaces is Concentric.",
+      "enum_labels": [
+        "Mặc định",
+        "Đường thẳng",
+        "Tâm",
+        "Nối tuyến tính lại",
+        "Lưới",
+        "Dòng đơn âm"
+      ]
+    },
+    "support_interface_spacing": {
+      "label": "Interface spacing",
+      "tooltip": "This is the spacing of interface lines. 0 means solid interface."
+    },
+    "support_interface_speed": {
+      "label": "Giao diện hỗ trợ",
+      "tooltip": "This is the speed for support interfaces."
+    },
+    "support_interface_top_layers": {
+      "label": "Lớp giao diện trên",
+      "tooltip": "This is the number of top interface layers."
+    },
+    "support_ironing": {
+      "label": "Ủi mặt tiếp giáp hỗ trợ",
+      "tooltip": "Ironing is using small flow to print on same height of support interface again to make it more smooth.This setting controls whether support interface being ironed. When enabled, support interface will be extruded as solid too."
+    },
+    "support_ironing_flow": {
+      "label": "Lưu lượng ủi hỗ trợ",
+      "tooltip": "The amount of material to extrude during ironing. Relative to flow of normal support interface layer height. Too highvalue results in overextrusion on the surface."
+    },
+    "support_ironing_pattern": {
+      "label": "Mẫu ủi hỗ trợ",
+      "tooltip": "Kiểu mẫu sẽ được dùng khi ủi.",
+      "enum_labels": [
+        "Tâm",
+        "Đường thẳng"
+      ]
+    },
+    "support_ironing_spacing": {
+      "label": "Khoảng cách đường ủi hỗ trợ",
+      "tooltip": "Khoảng cách giữa đường viền."
+    },
+    "support_line_width": {
+      "label": "Hỗ trợ",
+      "tooltip": "Chiều rộng đường của support. Nếu nhập dạng %, giá trị sẽ được tính theo đường kính đầu phun."
+    },
+    "support_material_interface_fan_speed": {
+      "label": "Hỗ trợ tốc độ fan của giao diện",
+      "tooltip": "This fan speed is enforced during all support interfaces, to be able to weaken their bonding with a highfan speed.\nSet to -1 to disable this override.\nCan only be overriden by disable_fan_first_layers."
+    },
+    "support_multi_bed_types": {
+      "label": "Support multiple bed types",
+      "tooltip": "Bật tùy chọn này nếu bạn muốn dùng nhiều loại bàn in"
+    },
+    "support_object_first_layer_gap": {
+      "label": "Khe hở lớp đầu tiên giữa hỗ trợ/đối tượng",
+      "tooltip": "Khoảng cách XY giữa một đối tượng và phần hỗ trợ của nó ở lớp đầu tiên."
+    },
+    "support_object_xy_distance": {
+      "label": "Khoảng cách XY giữa hỗ trợ/đối tượng",
+      "tooltip": "This controls the XY separation between an object and its support."
+    },
+    "support_on_build_plate_only": {
+      "label": "Chỉ trên đĩa",
+      "tooltip": "This setting only generates supports that begin on the build plate."
+    },
+    "support_remove_small_overhang": {
+      "label": "Gỡ bỏ toàn bộ nhỏ",
+      "tooltip": "Loại bỏ những cái cọc nhỏ có thể không cần hỗ trợ."
+    },
+    "support_speed": {
+      "label": "Hỗ trợ",
+      "tooltip": "This is the speed for support."
+    },
+    "support_style": {
+      "label": "Kiểu",
+      "tooltip": "Kiểu dáng và hình dạng của hỗ trợ. Để được hỗ trợ bình thường, việc chiếu những hỗ trợ thành một mạng lưới thường sẽ tạo ra những hỗ trợ ổn định (mặc định), trong khi các tháp hỗ trợ ấm cúng sẽ tiết kiệm được vật liệu và giảm bớt sẹo đối tượng.\nĐể hỗ trợ cây cối, phong cách mỏng manh và hữu cơ sẽ hợp nhất các nhánh một cách tích cực hơn và tiết kiệm được nhiều vật liệu (mặc định hữu cơ), trong khi kiểu lai sẽ tạo ra cấu trúc tương tự với sự hỗ trợ bình thường dưới những cái phẳng lớn.",
+      "enum_labels": [
+        "Mặc định",
+        "Lưới",
+        "Slug",
+        "Hình cây",
+        "Cây chắc",
+        "lai cây",
+        "Organic"
+      ]
+    },
+    "support_threshold_angle": {
+      "label": "Góc",
+      "tooltip": "Support will be generated for overhangs whose slope angle is below this threshold."
+    },
+    "support_top_z_distance": {
+      "label": "Khoảng cách trên Z",
+      "tooltip": "This determines the Z gap between top support interfaces and objects."
+    },
+    "support_type": {
+      "label": "Loại",
+      "tooltip": "Normal(auto) and Tree(auto) are used to generate support automatically. If normal(manual) or tree(manual) is selected, only support enforcers are generated",
+      "enum_labels": [
+        "Normal(auto)",
+        "Tree(auto)",
+        "Normal(manual)",
+        "Tree(manual)"
+      ]
+    },
+    "support_xy_overrides_z": {
+      "label": "Ưu tiên khoảng cách hỗ trợ",
+      "tooltip": "When 'X/Y overrides Z' is selected, the horizontal distance between the model and the support structure will remain constant,but it will result in a larger Z distance. When 'Z overrides X/Y' is selected, the distance between thesupport and the model in the overhang area remains constant, while the support in the XY direction provides betterstability for the overhang.",
+      "enum_labels": [
+        "X/Y ghi đè Z",
+        "Z ghi đè X/Y"
+      ]
+    },
+    "surface_coefficient": {
+      "label": "Hệ số bề mặt (beta)",
+      "tooltip": "Điều khiển mật độ phần điền đầy theo trường gần bề mặt. Giá trị cao hơn làm cho cấu trúc lưới gần bề mặt dày đặc hơn."
+    },
+    "symmetric_infill_y_axis": {
+      "label": "Lấp đầy đối xứng theo trục y",
+      "tooltip": "If the model has two parts that are symmetric about the y-axis, and you wantthese parts to have symmetric textures, please click this option on one ofthe parts."
+    },
+    "temperature_vitrification": {
+      "label": "Nhiệt độ làm mềm",
+      "tooltip": "Vật liệu làm mềm ở nhiệt độ này, vì vậy khi nhiệt độ giường bằng hoặc lớn hơn nó, nó được đề nghị mở cửa trước và/hoặc loại bỏ kính trên để tránh bị đóng băng."
+    },
+    "template_custom_gcode": {
+      "label": "Tự chọn G- code",
+      "tooltip": "G-code này sẽ được dùng làm mã tùy chỉnh"
+    },
+    "textured_plate_temp": {
+      "label": "Các lớp khác",
+      "tooltip": "Nhiệt độ bàn cho các lớp ngoài lớp đầu tiên. Giá trị 0 nghĩa là filament không hỗ trợ in trên tấm PEI nhám"
+    },
+    "textured_plate_temp_initial_layer": {
+      "label": "First layer",
+      "tooltip": "Nhiệt độ bàn của lớp đầu tiên. Giá trị 0 nghĩa là filament không hỗ trợ in trên tấm PEI nhám"
+    },
+    "thick_bridges": {
+      "label": "Những cây cầu dày",
+      "tooltip": "If enabled, bridges are more reliable and can bridge longer distances but may look worse. If disabled, bridges look better but are reliable only for shorter distances."
+    },
+    "thick_internal_bridges": {
+      "label": "Các cầu nối nội bộ dày",
+      "tooltip": "Nếu được bật, cầu nội bộ dày sẽ được dùng. Thường thì nên bật tính năng này lên. Tuy nhiên, hãy thử tắt máy nếu bạn đang dùng những cái vòi lớn."
+    },
+    "thumbnails": {
+      "label": "Ảnh thu nhỏ G-code",
+      "tooltip": "Picture sizes to be stored into a .gcode and .sl1 / .sl1s files, in the following format: \"XxY, XxY,...\""
+    },
+    "thumbnails_format": {
+      "label": "Định dạng ảnh thu nhỏ G-code",
+      "tooltip": "Định dạng ảnh thu nhỏ G-code: PNG cho chất lượng tốt nhất, JPG cho kích thước nhỏ nhất, QOI cho firmware bộ nhớ thấp",
+      "enum_labels": [
+        "PNG",
+        "JPG",
+        "QOI",
+        "BTT TT",
+        "ColPic",
+        "CR PNG"
+      ]
+    },
+    "time_cost": {
+      "label": "Chi phí thời gian",
+      "tooltip": "Chi phí máy in mỗi giờ"
+    },
+    "time_lapse_gcode": {
+      "label": "G-code tua nhanh thời gian (time lapse)"
+    },
+    "timelapse_type": {
+      "label": "Timelapse",
+      "tooltip": "Nếu chế độ mịn hoặc truyền thống được chọn, một video thời gian sẽ được tạo ra cho mỗi bản in. Sau mỗi lớp được in ra, một bức ảnh được chụp bằng máy quay phòng. Tất cả những hình ảnh này được tạo thành một đoạn phim tua nhanh thời gian khi in xong. Nếu chọn chế độ mịn, đầu công cụ sẽ di chuyển tới dù thừa sau mỗi lớp được in ra và sau đó chụp ảnh. Vì sợi dây nóng chảy có thể rỉ ra từ vòi trong quá trình chụp ảnh, nên cần phải có một cái tháp chính để làm mịn để lau vòi.",
+      "enum_labels": [
+        "Truyền thống",
+        "Làm mịn",
+        "Đóng "
+      ]
+    },
+    "top_bottom_infill_wall_overlap": {
+      "label": "Độ chồng lấn lấp đầy đặc/thành trên/dưới",
+      "tooltip": "Top solid infill area is enlarged slightly to overlap with wall for better bonding and to minimize the appearance of pinholes where the top infill meets the walls. A value of 25-30% is a good starting point, minimising the appearance of pinholes. The percentage value is relative to line width of sparse infillTop solid infill area is enlarged slightly to overlap with wall for better bonding and to minimize the appearanceof pinholes where the top infill meets the walls. A value of 25-30% is a good starting point, minimisingthe appearance of pinholes. The percentage value is relative to line width of sparse infill"
+    },
+    "top_fill_flush_layers": {
+      "label": "Số lớp trên cùng xả nhựa trước khi in phần lấp đầy",
+      "tooltip": "Khi bật xả nhựa vào khung của đối tượng, bắt buộc xả nhựa trên tháp mồi tại N lớp trên cùng của đối tượng trước khi in phần lấp đầy hoặc khung, rồi đến bề mặt và thành. Thiết lập này không thay đổi số lớp vỏ trên."
+    },
+    "top_shell_layers": {
+      "label": "Lớp vỏ trên",
+      "full_label": "Lớp đặc trên",
+      "tooltip": "This is the number of solid layers of top shell, including the top surface layer. When the thickness calculated by this value is thinner than the top shell thickness, the top shell layers will be increased"
+    },
+    "top_shell_thickness": {
+      "label": "Độ dày vỏ trên",
+      "full_label": "Độ dày vỏ trên",
+      "tooltip": "The number of top solid layers is increased when slicing if the thickness calculated by top shell layers is thinner than this value. This can avoid having too thin a shell when layer height is small. 0 means that this setting is disabled and thickness of top shell is determined simply by the number of top shell layers."
+    },
+    "top_solid_infill_flow_ratio": {
+      "label": "Tỷ lệ dòng chảy bề mặt trên",
+      "tooltip": "Yếu tố này ảnh hưởng đến số lượng vật liệu chứa chất đặc trên cùng. Bạn có thể giảm nó một chút để có bề mặt mịn kết thúc"
+    },
+    "top_surface_acceleration": {
+      "label": "Bề mặt trên",
+      "tooltip": "This is the acceleration of top surface infill. Using a lower value may improve top surface quality."
+    },
+    "top_surface_jerk": {
+      "label": "Bề mặt trên",
+      "tooltip": "Thằng đần cho bề mặt trên"
+    },
+    "top_surface_line_width": {
+      "label": "Bề mặt trên",
+      "tooltip": "Chiều rộng đường cho bề mặt trên. Nếu nhập dạng %, giá trị sẽ được tính theo đường kính đầu phun."
+    },
+    "top_surface_pattern": {
+      "label": "Cấu hình bề mặt trên",
+      "tooltip": "This is the line pattern for top surface infill.",
+      "enum_labels": [
+        "Tâm",
+        "Đường thẳng",
+        "Đơn âm",
+        "Dòng đơn âm",
+        "Được sắp xếp lại",
+        "Đường cong Hilbert",
+        "Dây cung Archimedes",
+        "Xoắn ốc bát giác"
+      ]
+    },
+    "top_surface_speed": {
+      "label": "Bề mặt trên",
+      "tooltip": "This is the speed for solid top surface infill."
+    },
+    "tpms_end_infill_density": {
+      "label": "Kết thúc mật độ rải rác",
+      "tooltip": "Mật độ lấp đầy thưa kết thúc trong khoảng (1-99)"
+    },
+    "tpms_gradual_direction": {
+      "label": "Hướng đa thức",
+      "tooltip": "Hướng đa thức",
+      "enum_labels": [
+        "Trục x",
+        "Trục y",
+        "trục z"
+      ]
+    },
+    "tpms_start_infill_density": {
+      "label": "Bắt đầu xoá mật độ",
+      "tooltip": "Mật độ lấp đầy thưa ban đầu trong khoảng (1-99)"
+    },
+    "transmittance_matrix": {
+      "label": "Ma trận làm sạch lớp da khung",
+      "tooltip": "Ma trận độ dày da chỉ được dùng khi dội vào các vật thể."
+    },
+    "travel_acceleration": {
+      "label": "Du lịch",
+      "tooltip": "Tăng tốc di chuyển"
+    },
+    "travel_jerk": {
+      "label": "Du lịch",
+      "tooltip": "Đồ ngu đi du lịch"
+    },
+    "travel_short_distance_acceleration": {
+      "label": "Tăng tốc độ đi",
+      "tooltip": "Gia tốc dùng cho các chuyển động di chuyển ngắn. Khoảng cách di chuyển ngắn được xác định bởi thiết lập retract_before_travel."
+    },
+    "travel_short_distance_threshold": {
+      "label": "Di chuyển ngưỡng khoảng cách ngắn",
+      "tooltip": "Ngưỡng khoảng cách di chuyển ngắn cho travel_short_distance_acceleration."
+    },
+    "travel_slope": {
+      "label": "Góc đi",
+      "tooltip": "Góc di chuyển cho kiểu nâng Z Dốc (Slope) và Xoắn ốc (Spiral). Đặt là 90° sẽ cho ra Nâng thường"
+    },
+    "travel_speed": {
+      "label": "Du lịch",
+      "tooltip": "This is the speed at which traveling is done."
+    },
+    "tree_hybrid_cross_height": {
+      "label": "Giới hạn chiều cao hỗ trợ đan chéo",
+      "tooltip": "In low, flat surface holes of the model, cross supports are easier to remove;when set to 0, this featureis disabled."
+    },
+    "tree_support_adaptive_layer_height": {
+      "label": "Chiều cao lớp thích nghi",
+      "tooltip": "Bật tùy chọn này nghĩa là chiều cao của lớp hỗ trợ dạng cây (trừ lớp đầu tiên) sẽ được tính tự động "
+    },
+    "tree_support_angle_slow": {
+      "label": "Góc Chi nhánh ưa thích",
+      "tooltip": "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angleto make them more vertical and more stable. Use a higher angle for branches to merge faster."
+    },
+    "tree_support_auto_brim": {
+      "label": "Tự động mở rộng",
+      "tooltip": "Bật tùy chọn này nghĩa là chiều rộng viền (brim) cho hỗ trợ dạng cây sẽ được tính tự động"
+    },
+    "tree_support_branch_angle": {
+      "label": "Góc nhánh của hỗ trợ dạng cây",
+      "tooltip": "This setting determines the maximum overhang angle that the branches of tree support are allowed to make. If the angle is increased, the branches can be printed more horizontally, allowing them to reach farther."
+    },
+    "tree_support_branch_angle_organic": {
+      "label": "Góc nhánh của hỗ trợ dạng cây",
+      "tooltip": "This setting determines the maximum overhang angle that the branches of tree support are allowed to make. If the angle is increased, the branches can be printed more horizontally, allowing them to reach farther."
+    },
+    "tree_support_branch_diameter": {
+      "label": "Đường kính nhánh của hỗ trợ dạng cây",
+      "tooltip": "Thiết lập này xác định đường kính ban đầu của các nút hỗ trợ."
+    },
+    "tree_support_branch_diameter_angle": {
+      "label": "Góc âm thanh Chi nhánh",
+      "tooltip": "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 willcause the branches to have uniform thickness over their length. A bit of an angle can increase stability ofthe organic support."
+    },
+    "tree_support_branch_diameter_double_wall": {
+      "label": "Đường kính nhánh với tường đôi",
+      "tooltip": "Branches with area larger than the area of a circle of this diameter will be printed with double wallsfor stability. Set this value to zero for no double walls."
+    },
+    "tree_support_branch_diameter_organic": {
+      "label": "Đường kính nhánh của hỗ trợ dạng cây",
+      "tooltip": "Thiết lập này xác định đường kính ban đầu của các nút hỗ trợ."
+    },
+    "tree_support_branch_distance": {
+      "label": "Khoảng cách nhánh của hỗ trợ dạng cây",
+      "tooltip": "Thiết lập này xác định khoảng cách giữa các nút hỗ trợ dạng cây lân cận."
+    },
+    "tree_support_branch_distance_organic": {
+      "label": "Khoảng cách nhánh của hỗ trợ dạng cây",
+      "tooltip": "Thiết lập này xác định khoảng cách giữa các nút hỗ trợ dạng cây lân cận."
+    },
+    "tree_support_brim_width": {
+      "label": "Chiều rộng viền (brim) của hỗ trợ dạng cây",
+      "tooltip": "Khoảng cách từ nhánh cây đến đường viền ngoài cùng"
+    },
+    "tree_support_organic_validate_repair": {
+      "label": "Kiểm tra và sửa chữa hỗ trợ",
+      "tooltip": "After the base support region is generated, validate the continuity of the organic tree support contours. When enabled, additional support paths are used to repair unsupported contour segments. When disabled, organic tree supports are generated using the original extrusion path generation process."
+    },
+    "tree_support_tip_diameter": {
+      "label": "Diameter",
+      "tooltip": "Đường kính đầu nhánh cho hỗ trợ hữu cơ."
+    },
+    "tree_support_top_rate": {
+      "label": "Mật độ Chi nhánh",
+      "tooltip": "Adjusts the density of the support structure used to generate the tips of the branches. A higher value resultsin better overhangs but the supports are harder to remove, thus it is recommended to enable top support interfacesinstead of a high branch density value if dense interfaces are needed."
+    },
+    "tree_support_wall_count": {
+      "label": "Số vòng thành hỗ trợ (Thường)",
+      "tooltip": "Thiết lập số lớp thành ngoài cho hỗ trợ thường; 0 nghĩa là số lớp thông minh"
+    },
+    "tree_support_wall_count_tree": {
+      "label": "Số vòng thành hỗ trợ (Cây)",
+      "tooltip": "Thiết lập số lớp thành ngoài cho hỗ trợ dạng cây; 0 nghĩa là số lớp thông minh."
+    },
+    "tree_support_with_infill": {
+      "label": "Hỗ trợ dạng cây có lấp đầy",
+      "tooltip": "This setting specifies whether to add infill inside large hollows of tree support."
+    },
+    "upward_compatible_machine": {
+      "label": "Máy tương thích với lên trên"
+    },
+    "use_firmware_retraction": {
+      "label": "Dùng co lại phần mềm cứng",
+      "tooltip": "This experimental setting uses G10 and G11 commands to have the firmware handle the retraction. This is only supportedin recent Marlin."
+    },
+    "use_relative_e_distances": {
+      "label": "Dùng khoảng cách tương đối E",
+      "tooltip": "Relative extrusion is recommended when using \"label_objects\" option.Some extruders work better with this option unckecked (absolute extrusion mode). Wipetower is only compatible with relative mode. It is recommended on most printers. Default is checked"
+    },
+    "wall_direction": {
+      "label": "Quay vòng",
+      "tooltip": "The direction which the wall loops are extruded when looking down from the top.\n\nBy default all walls are extruded in counter-clockwise, unless Reverse on odd is enabled. Set this to any option other than Auto will force the wall direction regardless of the Reverse on odd.\n\nThis option will be disabled if spiral vase mode is enabled.",
+      "enum_labels": [
+        "Tự động",
+        "ngược chiều kim đồng hồ",
+        "Đến từ bên phải"
+      ]
+    },
+    "wall_distribution_count": {
+      "label": "Số lượng phân bố thành",
+      "tooltip": "Số thành, tính từ trung tâm, mà trên đó biến thiên cần được phân bố. Giá trị thấp hơn nghĩa là các thành ngoài không thay đổi chiều rộng"
+    },
+    "wall_filament": {
+      "label": "Tường"
+    },
+    "wall_generator": {
+      "label": "Máy phát điện Wall",
+      "tooltip": "The classic wall generator produces walls with constant extrusion width and for very thin areas, gap-fill is used. The Arachne engine produces walls with variable extrusion width.",
+      "enum_labels": [
+        "Cổ điển",
+        "Arachne"
+      ]
+    },
+    "wall_loops": {
+      "label": "Vòng",
+      "tooltip": "This is the number of walls per layer."
+    },
+    "wall_sequence": {
+      "label": "Thứ tự in tường",
+      "tooltip": "Print sequence of the internal (inner) and external (outer) walls. \n\nUse Inner/Outer for best overhangs. This is because the overhanging walls can adhere to a neighouring perimeter while printing. However, this option results in slightly reduced surface quality as the external perimeter is deformed by being squashed to the internal perimeter.\n\nUse Inner/Outer/Inner for the best external surface finish and dimensional accuracy as the external wall is printed undisturbed from an internal perimeter. However, overhang performance will reduce as there is no internal perimeter to print the external wall against. This option requires a minimum of 3 walls to be effective as it prints the internal walls from the 3rd perimeter onwards first, then the external perimeter and, finally, the first internal perimeter. This option is recomended against the Outer/Inner option in most cases. \n\nUse Outer/Inner for the same external wall quality and dimensional accuracy benefits of Inner/Outer/Inner option. However, the z seams will appear less consistent as the first extrusion of a new layer starts on a visible surface.\n\nUse Adaptive Outer/Inner to combine the strengths of both the Outer/Inner and Inner/Outer print sequences. In most situations, this mode will print the outer wall first. However, when encountering overhangs exceeding 75%% or during bridging, the printer will print the inner wall first to ensure better surface quality in the overhanging areas. Note that layer artifacts may appear in regions where the wall printing order switches.\n\n Print sequence of the internal (inner) and external (outer) walls. \n\nUse Inner/Outer for best overhangs. This is because the overhanging walls can adhere to a neighouring perimeter while printing. However, this option results in slightly reduced surface quality as the external perimeter is deformed by being squashed to the internal perimeter.\n\nUse Inner/Outer/Inner for the best external surface finish and dimensional accuracy as the external wall is printed undisturbed from an internal perimeter. However, overhang performance willreduce as there is no internal perimeter to print the external wall against. This option requires a minimum of3 walls to be effective as it prints the internal walls from the 3rd perimeter onwards first, then theexternal perimeter and, finally, the first internal perimeter. This option is recommended against the Outer/Inner option in most cases.\n\nUse Outer/Inner for the same external wall quality and dimensional accuracy benefits of Inner/Outer/Inner option. However, the z seamswill appear less consistent as the first extrusion of a new layer starts on a visible surface.\n\nUse Adaptive Outer/Innerto combine the strengths of both the Outer/Inner and Inner/Outer print sequences. In most situations, this mode will printthe outer wall first. However, when encountering overhangs exceeding 75%% or during bridging, the printer will print the innerwall first to ensure better surface quality in the overhanging areas. Note that layer artifacts may appear in regionswhere the wall printing order switches.\n\n ",
+      "enum_labels": [
+        "Nội bộ/ Ra",
+        "Bên ngoài/ Bên trong",
+        "Trong/Ngoài/Trong",
+        "Ngoài/Trong thích ứng (thử nghiệm)"
+      ]
+    },
+    "wall_transition_angle": {
+      "label": "Góc ngưỡng chuyển tiếp thành",
+      "tooltip": "Khi nào tạo chuyển tiếp giữa số thành chẵn và lẻ. Một hình nêm có góc lớn hơn thiết lập này sẽ không có chuyển tiếp và không có thành nào được in ở giữa để lấp đầy phần không gian còn lại. Giảm thiết lập này làm giảm số lượng và chiều dài của các thành trung tâm này, nhưng có thể để lại khe hở hoặc thừa đùn"
+    },
+    "wall_transition_filter_deviation": {
+      "label": "Biên lọc chuyển tiếp thành",
+      "tooltip": "Ngăn việc chuyển tiếp qua lại giữa việc thêm một thành và bớt một thành. Biên này mở rộng phạm vi chiều rộng đùn theo [Chiều rộng thành tối thiểu - biên, 2 * Chiều rộng thành tối thiểu + biên]. Tăng biên này làm giảm số lần chuyển tiếp, từ đó giảm số lần bắt đầu/dừng đùn và thời gian di chuyển. Tuy nhiên, biến thiên chiều rộng đùn lớn có thể dẫn đến vấn đề thiếu hoặc thừa đùn. Nó được biểu diễn dưới dạng phần trăm trên đường kính đầu phun"
+    },
+    "wall_transition_length": {
+      "label": "Chiều dài chuyển tiếp thành",
+      "tooltip": "Khi sự chuyển tiếp giữa các số khác nhau của bức tường trở nên mỏng hơn, một lượng không gian nhất định được quy định để tách hoặc tham gia vào các đoạn tường. Nó được thể hiện như một tỷ lệ phần trăm trên đường kính vòi"
+    },
+    "wipe": {
+      "label": "Lau trong khi rút sợi",
+      "tooltip": "Di chuyển cái vòi dọc theo con đường dẫn nước cuối cùng khi rút lại tài liệu bị rò rỉ trên vòi. Điều này có thể giảm thiểu khi in phần mới sau khi du lịch"
+    },
+    "wipe_before_external_loop": {
+      "label": "Lau trước vòng ngoài",
+      "tooltip": "To minimise visibility of potential overextrusion at the start of an external perimeter when printing with Outer/Inner or Inner/Outer/Innerwall print order, the deretraction is performed slightly on the inside from the start of the external perimeter. Thatway any potential over extrusion is hidden from the outside surface. \n\nThis is useful when printing with Outer/Inner orInner/Outer/Inner wall print order as in these modes it is more likely an external perimeter is printed immediately aftera deretraction move."
+    },
+    "wipe_distance": {
+      "label": "Wipe distance",
+      "tooltip": "Đánh dấu xem cái vòi sẽ di chuyển bao lâu trên con đường cuối cùng khi rút lại.\n\nTùy thuộc vào hoạt động lau chùi kéo dài bao lâu, cần phải rút lại những sợi tơ còn lại nhanh và dài bao lâu.\n\nĐặt giá trị trong số tiền rút lại trước khi xoá bên dưới sẽ thực hiện việc thu hồi dư trước khi xóa, thì nó sẽ được thực hiện sau."
+    },
+    "wipe_on_loops": {
+      "label": "Lau trên các vòng",
+      "tooltip": "To minimize the visibility of the seam in a closed loop extrusion, a small inward movement is executed beforethe extruder leaves the loop."
+    },
+    "wipe_speed": {
+      "label": "Tốc độ",
+      "tooltip": "Tốc độ lau được xác định bởi thiết lập tốc độ trong cấu hình này. Nếu giá trị nhập dạng phần trăm (ví dụ 80%), nó sẽ được tính dựa trên tốc độ di chuyển ở trên. Giá trị mặc định của tham số này là 80%"
+    },
+    "wipe_tower_bridging": {
+      "label": "Khoảng cách bố trí nghiêm trọng",
+      "tooltip": "Khoảng cách tối đa giữa các hỗ trợ trên các phần lấp đầy thưa."
+    },
+    "wipe_tower_cone_angle": {
+      "label": "Góc hình nón ổn định",
+      "tooltip": "Angle at the apex of the cone that is used to stabilize the wipe tower. Larger angle means widerbase."
+    },
+    "wipe_tower_extra_flow": {
+      "label": "Lưu lượng bổ sung để xả",
+      "tooltip": "Extra flow used for the purging lines on the wipe tower. This makes the purging lines thicker or narrowerthan they normally would be. The spacing is adjusted automatically."
+    },
+    "wipe_tower_extra_spacing": {
+      "label": "Khoảng cách đường xả của tháp lau",
+      "tooltip": "Khoảng cách của các đường xả trên tháp lau."
+    },
+    "wipe_tower_filament": {
+      "label": "Tháp lau",
+      "tooltip": "The extruder to use when printing perimeter of the wipe tower. Set to 0 to use the one thatis available (non-soluble would be preferred)."
+    },
+    "wipe_tower_max_purge_speed": {
+      "label": "Tốc độ in tối đa của tháp lau",
+      "tooltip": "Tốc độ in tối đa khi xả trong tháp lau và khi in các lớp thưa của tháp lau. Khi xả, nếu tốc độ lấp đầy thưa hoặc tốc độ tính từ tốc độ thể tích tối đa của sợi nhựa thấp hơn, giá trị thấp nhất sẽ được dùng thay thế.\n\nKhi in các lớp thưa, nếu tốc độ chu vi bên trong hoặc tốc độ tính từ tốc độ thể tích tối đa của sợi nhựa thấp hơn, giá trị thấp nhất sẽ được dùng thay thế.\n\nTăng tốc độ này có thể ảnh hưởng đến độ ổn định của tháp cũng như tăng lực mà đầu phun va vào bất kỳ cục nhựa nào có thể đã hình thành trên tháp lau.\n\nTrước khi tăng tham số này vượt quá giá trị mặc định 90mm/giây, hãy đảm bảo máy in của bạn có thể bắc cầu ổn định ở tốc độ tăng lên và việc chảy nhựa khi đổi đầu công cụ được kiểm soát tốt.\n\nĐối với chu vi ngoài của tháp lau, tốc độ chu vi bên trong luôn được dùng bất kể thiết lập này."
+    },
+    "wipe_tower_no_sparse_layers": {
+      "label": "Không có lớp nhỏ (beta)",
+      "tooltip": "If enabled, the wipe tower will not be printed on layers with no tool changes. On layers with a tool change, extruder will travel downward to print the wipe tower. User is responsible for ensuring there is no collision with the print."
+    },
+    "wipe_tower_rotation_angle": {
+      "label": "Góc xoay của tháp mồi",
+      "tooltip": "Góc xoay của tháp mồi so với trục x."
+    },
+    "wiping_volumes_extruders": {
+      "label": "Thể tích xả - thể tích nạp/rút",
+      "tooltip": "This vector saves required volumes to change from/to each tool used on the wipe tower. These values are usedto simplify creation of the full purging volumes below."
+    },
+    "xy_contour_compensation": {
+      "label": "bù đắp trục X-Y",
+      "tooltip": "The contour of objects will be grown or shrunk in the XY plane by the set value. Positive values make contours bigger, and negative values make contours smaller. This function is used to adjust sizes slightly when objects have assembly issues."
+    },
+    "xy_hole_compensation": {
+      "label": "bù đắp lỗ X-Y",
+      "tooltip": "Holes in objects will be grown or shrunk in the XY plane by the set value. Positive values make holes bigger and negative values make holes smaller. This function is used to adjust size slightly when objects have assembly issues."
+    },
+    "xy_step_dist": {
+      "label": "Khoảng cách bước XY"
+    },
+    "z_direction_outwall_speed_continuous": {
+      "label": "Tốc độ làm mịn của bức tường dọc theo Z",
+      "tooltip": "Smoothing outwall speed in z direction to get better surface quality. Print time will increases. It does not workon spiral vase mode."
+    },
+    "z_hop": {
+      "label": "Z hop when retracting",
+      "tooltip": "Bất cứ khi nào việc rút lại được thực hiện, cái vòi được nâng lên một chút để tạo ra giấy phép giữa miệng và in. Nó ngăn ngừa tiếng vòi đâm vào bản in khi di chuyển. Sử dụng đường xoắn ốc để nâng z có thể ngăn chặn chuỗi"
+    },
+    "z_hop_types": {
+      "label": "Kiểu nâng Z",
+      "tooltip": "Kiểu nâng Z",
+      "enum_labels": [
+        "Tự động",
+        "Chuẩn",
+        "Trượt",
+        "Hình xoắn ốc"
+      ]
+    },
+    "z_offset": {
+      "label": "Khoảng cách Z",
+      "tooltip": "This value will be added (or subtracted) from all the Z coordinates in the output G-code. It is usedto compensate for bad Z endstop position: for example, if your endstop zero actually leaves the nozzle 0.3mm farfrom the print bed, set this to -0.3 (or fix your endstop)."
+    },
+    "zaa_enabled": {
+      "label": "Kích hoạt tính năng khử răng cưa lớp Z",
+      "tooltip": "Hãy cân nhắc việc kích hoạt tính năng khử răng cưa lớp Z cho các mẫu máy có bề mặt lớn, dốc nhẹ để giảm tình trạng bước cầu thang nhìn thấy được. Để có bề mặt hoàn thiện tốt nhất có thể, hãy cân nhắc sử dụng lớp phủ bề mặt đồng tâm.\nKhi được bật, các đường dẫn trên tường và bề mặt trên đủ điều kiện sẽ điều chỉnh chiều cao Z của chúng để tuân theo bề mặt mô hình. Khử răng cưa lớp Z loại trừ lẫn nhau với Hoa xoắn ốc, Đường ghép nối vát (scarf joint) và Lớp con màu hỗn hợp. Không thể bật tính năng khử răng cưa lớp Z cùng với bất kỳ tính năng nào trong số này. Các đối tượng sử dụng B? hoặc Sắt hoặc chứa các phần âm sẽ quay trở lại trạng thái cắt mặt phẳng giữa thông thường và hiển thị cảnh báo. Khi tính năng này được bật, các lệnh cung trong các đường dẫn đủ điều kiện sẽ được chuyển đổi thành các bước di chuyển tuyến tính G1."
+    },
+    "zaa_lock_top_surface_fill_direction": {
+      "label": "Khóa hướng lấp đầy bề mặt trên",
+      "tooltip": "Giữ hướng của các mẫu lấp đầy bề mặt trên không dựa trên cầu nối (chẳng hạn như Đường thẳng và Đơn âm) không thay đổi giữa các lớp khi khử răng cưa lớp Z đang hoạt động cho đối tượng hiện tại. Hướng lấp đầy cầu và các kiểu lấp đầy khác không bị ảnh hưởng."
+    },
+    "zaa_slice_plane_offset": {
+      "label": "Độ lệch mặt phẳng lát ZAA"
+    },
+    "zaa_wall_lowering_min_slope": {
+      "label": "Độ dốc bề mặt tối thiểu để hạ tường"
+    }
+  },
+  "ui": {
+    "Acceleration": "Tăng tốc",
+    "Acceleration limitation": "Hạn chế tăng tốc",
+    "Accessory": "Truy cập",
+    "Adaptive bed mesh": "Lưới bàn thích ứng",
+    "Advanced": "Cấp cao",
+    "Back Fan": "Fan sau",
+    "Basic information": "Thông tin cơ bản",
+    "Bed temperature": "Nhiệt độ giường",
+    "Before layer change G-code": "G-code trước khi đổi lớp",
+    "Bridging": "Chia sẻ",
+    "Brim": "Brim",
+    "Change extrusion role G-code": "G-code thay đổi vai trò đùn",
+    "Change filament G-code": "G-code thay sợi nhựa",
+    "Cooling": "Làm mát",
+    "Cooling Fan": "Fan làm mát",
+    "Cooling for specific layer": "Làm mát cho lớp cụ thể",
+    "Extruder Clearance": "Giấy phép mở rộng",
+    "Filament": "Vật liệu in",
+    "Filament end G-code": "G-code kết thúc sợi nhựa",
+    "Filament for Features": "Sợi nhựa cho từng tính năng",
+    "Filament start G-code": "G-code khởi động sợi nhựa",
+    "Flush options": "Tùy chọn Flush",
+    "Fuzzy Skin": "Fuzzy skin",
+    "G-code output": "Kết xuất G- code",
+    "Infill": "Không đầy",
+    "Initial layer speed": "First layer speed",
+    "Ironing": "Sắt",
+    "Jerk limitation": "Giới hạn",
+    "Jerk(XY)": "Thằng đần (XY)",
+    "Layer change G-code": "G-code đổi lớp",
+    "Layer height": "Chiều cao lớp",
+    "Layer height limits": "Giới hạn chiều cao Lớp",
+    "Lift Z Enforcement": "Nâng cấp Z đệ quy",
+    "Line width": "Chiều rộng dòng",
+    "Machine end G-code": "G-code kết thúc máy",
+    "Machine gcode": "Machine G-code",
+    "Machine start G-code": "G-code khởi động máy",
+    "Model fan": "quạt mô hình",
+    "Motion ability": "Khả năng chuyển động",
+    "Multimaterial": "Nhiều vật liệu",
+    "Notes": "Ghi chú",
+    "Ooze prevention": "Phòng chống oxy",
+    "Other layers speed": "Tốc độ lớp khác",
+    "Others": "Khác",
+    "Overhang speed": "Tốc độ",
+    "Overhangs": "Vượt quá",
+    "Pause G-code": "Tạm dừng G- code",
+    "Position": "Vị trí",
+    "Post-processing Scripts": "Văn lệnh xử lý sau",
+    "Precision": "Độ chính xác",
+    "Prime tower": "Tháp chính",
+    "Print chamber temperature": "Nhiệt độ buồng in",
+    "Print temperature": "Nhiệt độ in",
+    "Printable space": "Miền màu",
+    "Printing by object G-code": "G-code in theo từng đối tượng",
+    "Quality": "Chất lượng",
+    "Raft": "B?",
+    "Retraction": "Lặp lại",
+    "Retraction when switching material": "Chuyển đổi tài liệu",
+    "Seam": "Đường",
+    "Setting Overrides": "Đặt đè",
+    "Side Fan": "Mở theo chiều ngang",
+    "Single extruder multimaterial parameters": "Tham số đa vật liệu cho một đầu đùn",
+    "Single extruder multimaterial setup": "Thiết lập đa vật liệu đơn",
+    "Size": "Kích thước",
+    "Skirt": "Bông",
+    "Special mode": "Chế độ đặc biệt",
+    "Speed": "Tốc độ",
+    "Speed limitation": "Giới hạn Tốc độ",
+    "Strength": "Độ bền",
+    "Support": "Hỗ trợ",
+    "Support filament": "Hỗ trợ sợi",
+    "Support ironing": "Hỗ trợ ủi",
+    "Template Custom G-code": "G-code tùy chỉnh theo mẫu",
+    "Time lapse G-code": "G-code tua nhanh thời gian (time lapse)",
+    "Toolchange parameters with multi extruder MM printers": "Tham số đổi công cụ cho máy in MM nhiều đầu đùn",
+    "Toolchange parameters with single extruder MM printers": "Tham số đổi công cụ cho máy in MM một đầu đùn",
+    "Top/bottom shells": "Đạn trên/ dưới",
+    "Travel speed": "Tốc độ",
+    "Tree supports": "Cây hỗ trợ",
+    "Volumetric speed limitation": "Giới hạn tốc độ thể tích",
+    "Wall generator": "Máy phát điện Wall",
+    "Walls": "Tường",
+    "Walls and surfaces": "Tường và bề mặt",
+    "Wipe tower": "Tháp lau",
+    "Wipe tower parameters": "Tham số tháp lau",
+    "Z contouring": "Đường viền Z"
+  }
+}

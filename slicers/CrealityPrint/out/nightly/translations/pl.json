@@ -42,8 +42,8 @@
       "tooltip": "Prędkość wentylatora pomocniczego. Wentylator pomocniczy będzie pracować z tą prędkością podczas drukowania, z wyjątkiem pierwszych kilku warstw, które są określone jako warstwy bez chłodzenia.\nProszę włączyć opcję auxiliary_fan w ustawieniach drukarki, aby skorzystać z tej funkcji. Polecenie G-code: M106 P2 S(0-255)"
     },
     "ai_infill": {
-      "label": "AI infill",
-      "tooltip": "Aktywne wypełnienie AI Na podstawie oryginalnego rzadkiego wypełnienia."
+      "label": "Inteligentne wypełnienie",
+      "tooltip": "Włącza inteligentne wypełnienie na podstawie pierwotnego rzadkiego wypełnienia."
     },
     "align_infill_direction_to_model": {
       "label": "Wyrównować kierunek wypełnienia do modelu",
@@ -56,6 +56,10 @@
     "arc_tolerance": {
       "label": "Tolerancja łuku",
       "tooltip": "Tolerancja łuku"
+    },
+    "automatic_extrusion_widths": {
+      "label": "Automatyczna kalkulacja szerokości ekstruzji",
+      "tooltip": "Automatycznie oblicza szerokość wytłaczanej linii na podstawie średnicy dyszy aktualnie używanego ekstrudera. To ustawienie jest niezbędne do drukowania z różnymi średnicami dysz."
     },
     "auxiliary_fan": {
       "label": "Pomocniczy wentylator chłodzący części",
@@ -90,6 +94,14 @@
       "label": "Odległość między punktami skanowania",
       "tooltip": "Ta opcja ustawia preferowaną odległość między punktami skanowania (rozmiar siatki) w kierunku X i Y, przy czym wartość domyślna dla obu kierunków wynosi 50 mm."
     },
+    "bed_temperature_mode": {
+      "label": "Tryb temperatury łóżka",
+      "tooltip": "Wybierz sposób określania temperatury stołu dla wydruków wielowłóknowych.",
+      "enum_labels": [
+        "Użyj najwyższej temperatury złoża żarnika",
+        "Użyj pierwszej temperatury złoża żarnika"
+      ]
+    },
     "before_layer_change_gcode": {
       "label": "G-code przed zmianą warstwy",
       "tooltip": "Ten G-code jest wstawiany przy każdej zmianie warstwy, tuż przed podniesieniem osi Z"
@@ -101,6 +113,10 @@
     "best_object_pos": {
       "label": "Najlepsza pozycja obiektu",
       "tooltip": "Najlepsza automatyczna pozycja w zakresie [0,1] w stosunku do kształtu stołu."
+    },
+    "bottom_fill_flush_layers": {
+      "label": "Dolne warstwy z płukaniem przed wypełnieniem",
+      "tooltip": "Gdy płukanie do szkieletu obiektów jest włączone, w dolnych N warstwach obiektu wymuszane jest płukanie na wieży czyszczącej przed wydrukowaniem wypełnienia lub szkieletu, a następnie powierzchni i ścian. Nie zmienia to liczby warstw dolnej powłoki."
     },
     "bottom_shell_layers": {
       "label": "Dolne warstwy powłoki",
@@ -186,6 +202,15 @@
     "brim_width": {
       "label": "Szerokość Brimu",
       "tooltip": "Odległość od modelu do najbardziej zewnętrznej linii Brimu"
+    },
+    "cell_type": {
+      "label": "Typ komórki",
+      "tooltip": "Wybiera podstawowy kształt komórki używanej przez wypełnienie polowe.",
+      "enum_labels": [
+        "Komórka TPMS-D",
+        "Gyroid",
+        "TPMS-FK"
+      ]
     },
     "chamber_temperature": {
       "label": "Temperatura komory",
@@ -340,6 +365,18 @@
       "label": "Wyłącz ustawianie pozostałego czasu druku",
       "tooltip": "Zablokuj generowanie polecenia M73: Ustaw pozostały czas druku w końcowym G-code"
     },
+    "dithering_local_z_mode": {
+      "label": "Lokalny tryb ditheringu Z",
+      "tooltip": "Do mieszania kolorów używaj warstw zmiennych."
+    },
+    "dithering_step_painted_zones_only": {
+      "label": "Rozmiar stopnia należy stosować wyłącznie w obszarach malowanych",
+      "tooltip": "Po włączeniu rozmiar kroku Z ditheringu jest stosowany tylko wtedy, gdy malowany jest mieszany włókno."
+    },
+    "dithering_z_step_size": {
+      "label": "Rozmiar kroku Z ditheringu",
+      "tooltip": "Wysokość warstwy stosowana w strefach Z malowanych metodą ditheringu."
+    },
     "dont_filter_internal_bridges": {
       "label": "Nie filtruj małych wewnętrznych mostów (beta)",
       "tooltip": "Ta opcja może pomóc w zmniejszeniu poduszek na górnych powierzchniach w modelach mocno nachylonych lub zakrzywionych.\n\nDomyślnie małe wewnętrzne mostki są odfiltrowywane, a wewnętrzne pełne wypełnienie jest drukowane bezpośrednio nad rzadkim wypełnieniem. Działa to dobrze w większości przypadków, przyspieszając drukowanie bez zbytniego kompromisu w zakresie najwyższej jakości powierzchni. \n\nJednakże w modelach mocno nachylonych lub zakrzywionych, szczególnie tam, gdzie zastosowano zbyt małą gęstość wypełnienia, może to skutkować zwijaniem się niepodpartego stałego wypełnienia, powodując poduszkowanie.\n\nWłączenie tej opcji spowoduje wydrukowanie wewnętrznej warstwy mostkowej na lekko niepodpartym wewnętrznym pełnym wypełnieniu. Poniższe opcje kontrolują stopień filtrowania, czyli ilość tworzonych mostków wewnętrznych.\n\nWyłączone — wyłącza tę opcję. Jest to zachowanie domyślne i działa dobrze w większości przypadków.\n\nOgraniczone filtrowanie — tworzy wewnętrzne mostki na mocno nachylonych powierzchniach, unikając jednocześnie tworzenia niepotrzebnych wewnętrznych mostków. Działa to dobrze w przypadku większości trudniejszych modeli.\n\nBrak filtrowania — tworzy wewnętrzne mostki na każdym potencjalnym zwisie wewnętrznym. Ta opcja jest przydatna w przypadku modeli z mocno nachyloną powierzchnią górną. Jednak w większości przypadków tworzy zbyt wiele niepotrzebnych mostów.",
@@ -366,6 +403,9 @@
       "label": "Prędkość wentylatora",
       "tooltip": "Prędkość wentylatora wyciągowego podczas drukowania. Ta prędkość zastąpi prędkość w niestandardowym kodzie G żarnika"
     },
+    "e_step_dist": {
+      "label": "Odległość kroku E"
+    },
     "elefant_foot_compensation": {
       "label": "Kompensacja \"stopy słonia\"",
       "tooltip": "Zmniejszenie pierwszej warstwy w płaszczyźnie XY o określoną wartość, aby skompensować efekt \"stopy słonia\""
@@ -389,6 +429,10 @@
     "enable_filament_ramming": {
       "label": "Włącz szybką ekstruzję filamentu",
       "tooltip": "Włącz szybką ekstruzję filamentu"
+    },
+    "enable_mixed_color_sublayer": {
+      "label": "Podwarstwa mieszana kolorystycznie",
+      "tooltip": "Włącza dzielenie każdej warstwy mieszanego filamentu na podwarstwy w celu fizycznego mieszania kolorów. Wymaga co najmniej jednego włączonego wiersza mieszanego filamentu."
     },
     "enable_overhang_bridge_fan": {
       "label": "Wymuszone chłodzenie dla nawisów i mostów",
@@ -505,6 +549,10 @@
       "label": "Kategoria przyczepności",
       "tooltip": "filament_adhesiveness_category"
     },
+    "filament_can_change": {
+      "label": "Filament można zmienić",
+      "tooltip": "Filament można zmienić"
+    },
     "filament_colour": {
       "label": "Kolor",
       "tooltip": "Używane tylko jako wizualna pomoc w interfejsie użytkownika"
@@ -566,6 +614,23 @@
       "label": "Długość retrakcji przed odcięciem filamentu (eksperymentalna)",
       "tooltip": "Funkcja eksperymentalna. Wycofanie i odcięcie filamentu na większej odległości podczas jego zmian w celu zminimalizowania objętości płukania. Chociaż znacząco zmniejszy to zużycie filamentu, może to również zwiększyć ryzyko zatkania dyszy lub innych problemów podczas drukowania."
     },
+    "filament_map": {
+      "label": "Mapa włókien do dyszy",
+      "tooltip": "Mapuje każdy żarnik projektu na fizyczny numer dyszy oparty na jedynce."
+    },
+    "filament_map_2": {
+      "label": "Indeks dyszy wewnętrznego włókna",
+      "tooltip": "Wewnętrzny indeks dyszy liczony od zera wygenerowany na podstawie filament_map."
+    },
+    "filament_map_mode": {
+      "label": "Tryb mapowania włókien",
+      "tooltip": "Wybiera, czy włókna projektu są przypisywane do dysz automatycznie czy ręcznie.",
+      "enum_labels": [
+        "Automatyczny",
+        "Automatyczne dopasowanie",
+        "Niestandardowy"
+      ]
+    },
     "filament_max_volumetric_speed": {
       "label": "Maksymalna prędkość przepływu",
       "tooltip": "To ustawienie określa, ile objętości filamentu może być stopione i wyciśnięte na sekundę. Prędkość drukowania jest ograniczana przez maksymalną prędkość przepływu, w przypadku zbyt wysokiego i nierealistycznego ustawienia prędkości. Nie może wynosić zero"
@@ -598,6 +663,9 @@
       "label": "Długość retrakcji przed ruchem czyszczącym",
       "tooltip": "Długość szybkiej retrakcji przed czyszczeniem, w stosunku do długości retrakcji."
     },
+    "filament_retract_length_toolchange": {
+      "label": "Długość"
+    },
     "filament_retract_lift_above": {
       "label": "Z-hop tylko powyżej",
       "tooltip": "Jeśli ustawisz to na wartość dodatnią, podnoszenie Z będzie miało miejsce tylko powyżej określonego bezwzględnego Z."
@@ -619,6 +687,10 @@
     "filament_retract_restart_extra": {
       "label": "Dodatkowa długość przed wznowieniem",
       "tooltip": "Gdy retrakcja jest kompensowana po przemieszczeniu, ekstruder przepycha tę dodatkową ilość filamentu. To opcja jest rzadko potrzebna."
+    },
+    "filament_retract_restart_extra_toolchange": {
+      "label": "Dodatkowa długość przed wznowieniem",
+      "tooltip": "Jeśli retrakcja jest korygowana po zmianie narzędzia, extruder przepchnie taką dodatkową ilość filamentu."
     },
     "filament_retract_when_changing_layer": {
       "label": "Retrakcja przy zmianie warstwy",
@@ -753,6 +825,14 @@
     "flush_into_objects": {
       "label": "Płucz do tego obiektu",
       "tooltip": "To jest obiekt wykorzystywany do oczyszczenia dyszy po zmianie filamentu, co pozwala zaoszczędzić filament i skrócić czas druku. W wyniku tego procesu kolory filamentów mogą się wymieszać."
+    },
+    "flush_into_skeleton": {
+      "label": "Płukanie do szkieletu obiektów (eksperymentalne)",
+      "tooltip": "Przedmuchiwanie po zmianie filamentu będzie wykonywane wewnątrz obszaru szkieletu obiektów. Może to zmniejszyć ilość odpadów i skrócić czas druku. Działa tylko po włączeniu wieży czyszczącej."
+    },
+    "flush_into_solid_skeleton": {
+      "label": "Drukuj objętość wstępnego wytłaczania w pełnym szkielecie",
+      "tooltip": "Eliminuje oddzielne Wieża czyszcząca, gdy objętość wstępnego wytłaczania jest poniżej 10 mm³, a minimalna objętość oczyszczania na wieży wynosi zero dla każdego żarnika. Materiał odpowiadający objętość wstępnego wytłaczania jest drukowany jako solidny szkielet wewnątrz modelu. Objętość tego szkieletu odpowiada objętość wstępnego wytłaczania."
     },
     "flush_into_support": {
       "label": "Płucz do podpory obiektów",
@@ -1019,6 +1099,10 @@
     "interface_shells": {
       "label": "Powłoki łączące",
       "tooltip": "Wymuszaj generowanie warstw między sąsiadującymi włóknoami/woluminami. Przydatne przy wydrukach z wieloma ekstruderami, włóknoów o przejrzystej strukturze lub rozpuszczalnym filamente do drukowania podpór"
+    },
+    "interior_coefficient": {
+      "label": "Współczynnik wnętrza (beta)",
+      "tooltip": "Steruje gęstością wypełnienia polowego wewnątrz modelu. Wyższe wartości powodują zagęszczenie wewnętrznej siatki."
     },
     "interlocking_beam": {
       "label": "Użyj blokowania belki",
@@ -1340,6 +1424,9 @@
       "label": "Długość odcinka do wygładzenia",
       "tooltip": "Niższa wartość powoduje płynniejsze przejścia szybkości wytłaczania. Powoduje to jednak znacznie większy plik gcode i więcej instrukcji do przetworzenia przez drukarkę. \n\nDomyślna wartość 3 działa dobrze w większości przypadków. Jeśli drukarka się zacina, zwiększ tę wartość, aby zmniejszyć liczbę dokonywanych regulacji\n\nDozwolone wartości: 0,5-5"
     },
+    "mcu_pool_total": {
+      "label": "Całkowita pojemność puli pamięci MCU"
+    },
     "min_bead_width": {
       "label": "Minimalna szerokość ściany",
       "tooltip": "Szerokość obrysu, który zastąpi cienkie detale modelu (zgodnie z minimalnym rozmiarem detalu). Jeśli minimalna szerokość obrysu jest mniejsza niż grubość detalu, obrys będzie miał taką samą grubość jak sam element. Jest wyrażona w procentach i zostanie obliczona na podstawie średnicy dyszy."
@@ -1372,6 +1459,46 @@
     "minimum_support_area": {
       "label": "Mały obszar zawieszenia",
       "tooltip": "Minimalny rozmiar powierzchni dla wielokątów wspierających. Wielokąty o powierzchni mniejszej niż ta wartość nie będą generowane."
+    },
+    "mixed_color_layer_height_a": {
+      "label": "Wysokość kadencji ditheringu A",
+      "tooltip": "Udział wysokości warstwy składnika A w ditheringu włókien wirtualnych."
+    },
+    "mixed_color_layer_height_b": {
+      "label": "Wysokość kadencji ditheringu B",
+      "tooltip": "Udział wysokości warstwy składnika B w ditheringu włókien wirtualnych."
+    },
+    "mixed_filament_advanced_dithering": {
+      "label": "Zaawansowane dithering",
+      "tooltip": "Rozprowadź rytm cyklu warstw mieszanych włókien, korzystając z zaawansowanego uporządkowanego wzorca ditheringu."
+    },
+    "mixed_filament_definitions": {
+      "label": "Niestandardowe definicje mieszanych włókien",
+      "tooltip": "Serializowane, niestandardowe rzędy mieszanych włókien."
+    },
+    "mixed_filament_gradient_mode": {
+      "label": "Kadencja zależna od wzrostu",
+      "tooltip": "Włącz rytm ważony wysokością dla włókien mieszanych."
+    },
+    "mixed_filament_height_lower_bound": {
+      "label": "Mieszane włókno dolne ograniczenie wysokości",
+      "tooltip": "Dolna granica używana w trybie gradientu z mieszanymi włóknami ważonym wysokością."
+    },
+    "mixed_filament_height_upper_bound": {
+      "label": "Górna granica wysokości z włóknami mieszanymi",
+      "tooltip": "Górna granica używana w trybie gradientu mieszanego ważonego według wysokości."
+    },
+    "mixed_filament_pointillism_line_gap": {
+      "label": "Przerwa w linii pointylizmu",
+      "tooltip": "Opcjonalne niewytłaczane odstępy pomiędzy sąsiednimi segmentami puentylizmu."
+    },
+    "mixed_filament_pointillism_pixel_size": {
+      "label": "Rozmiar piksela pointylizmu",
+      "tooltip": "Długość jednego segmentu pointylizmu wzdłuż ścieżki wytłoczenia."
+    },
+    "mixed_filament_surface_indentation": {
+      "label": "Selektywne rozszerzanie/kurczenie",
+      "tooltip": "Przesunięcie XY zastosowane do obszarów malowanych mieszanymi włóknami przed przypisaniem regionu."
     },
     "mmu_segmented_region_interlocking_depth": {
       "label": "Głębokość zazębiania się podzielonego na segmenty obszaru",
@@ -1412,6 +1539,9 @@
     "nozzle_hrc": {
       "label": "Twardość dyszy (HRC)",
       "tooltip": "Twardość dyszy. Zero oznacza brak sprawdzania twardości dyszy podczas procesu cięcia."
+    },
+    "nozzle_pool_total": {
+      "label": "Całkowita pojemność puli pamięci MCU dyszy"
     },
     "nozzle_temperature": {
       "label": "Pozostałe warstwy",
@@ -1531,6 +1661,10 @@
       "label": "Pozycja parkowania filamentu",
       "tooltip": "Odległość końcówki extrudera od pozycji, gdzie filament jest parkowany przy rozładowaniu. Powinno to odpowiadać wartości w oprogramowaniu drukarki."
     },
+    "pathological_segment_protection_enable": {
+      "label": "Ochrona przed przyspieszeniem segmentu problematycznego",
+      "tooltip": "Po włączeniu fragmentator wykrywa gęste sekwencje krótkich segmentów (takie jak wzory zygzakowate z ruchami submilimetrowymi), które mogą powodować gromadzenie się nadmiernej kolejki ruchów oprogramowania sprzętowego Klipper, co może prowadzić do przestojów w komunikacji MCU i awarii drukarki.\n\n Fragmentator wstawia polecenia SET_VELOCITY_LIMIT, aby tymczasowo zmniejszyć przyspieszenie przed tymi patologicznymi obszarami i przywrócić je potem."
+    },
     "pellet_flow_coefficient": {
       "label": "Współczynnik przepływu peletu",
       "tooltip": "Współczynnik przepływu granulatu (Pellet) jest empirycznie wyprowadzony i umożliwia obliczanie objętości w drukarkach korzystających z granulatów.\n\nWewnętrznie jest przeliczany na średnicę filamentu. Wszystkie pozostałe obliczenia objętości pozostają bez zmian.\n\nśrednica_filamentu = sqrt( (4 * współczynnik_przepływu_granulatu) / PI )"
@@ -1559,6 +1693,10 @@
       "label": "Kroki wstępnego ogrzewania",
       "tooltip": "Wprowadzić wiele poleceń podgrzewania (np. M104.1). Przydatne tylko dla Prusa XL. W przypadku innych drukarek ustaw ją na 1."
     },
+    "preheat_temperature_delta": {
+      "label": "Temperatura podgrzewania",
+      "tooltip": "Różnica temperatur zastosowana przed aktywacją dyszy. Temperaturę wstępnego podgrzewania oblicza się jako temperaturę drukowania plus tę wartość."
+    },
     "preheat_time": {
       "label": "Czas podgrzewania",
       "tooltip": "Aby skrócić czas oczekiwania po zmianie narzędzia, Creality może podgrzać następne narzędzie, gdy bieżące narzędzie jest nadal w użyciu. To ustawienie określa czas w sekundach podgrzewania następnego narzędzia. Creality wstawi polecenie M104, aby wcześniej podgrzać narzędzie."
@@ -1575,6 +1713,10 @@
       "label": "Szerokość Brimu",
       "tooltip": "Szerokość krawędzi wieży głównej, liczba ujemna oznacza szerokość obliczoną automatycznie w oparciu o wysokość wieży głównej."
     },
+    "prime_tower_corner_rib_length": {
+      "label": "Długość dolnego żebra narożnego",
+      "tooltip": "Długość dolnej krawędzi kwadratowych żeber narożnych kwadratowej wieży czyszczącej. Żebro utrzymuje swoją długość styku z obszarem wycierania i zwęża się na zewnątrz w stronę krawędzi bloków na szczycie wieży. Ustaw na 0, aby używać odstępów między liniami obwodowymi."
+    },
     "prime_tower_enable_framework": {
       "label": "Żebra wewnętrzne",
       "tooltip": "Włącz wewnętrzne żebra, aby zwiększyć stabilność głównej wieży."
@@ -1584,7 +1726,8 @@
       "tooltip": "Typ głównej wieży",
       "enum_labels": [
         "stożek",
-        "faza"
+        "faza",
+        "Żebro narożne"
       ]
     },
     "prime_tower_position_type": {
@@ -1609,6 +1752,18 @@
     "prime_tower_skip_points": {
       "label": "Punkty pominięcia",
       "tooltip": "Ściana głównej wieży pominie punkty wyjściowe ścieżki wycierania"
+    },
+    "prime_tower_start_ironing": {
+      "label": "Prasowanie obszaru początkowego wieży czyszczącej",
+      "tooltip": "Wyprasowanie obszaru początkowego oczyszczania zmniejsza ryzyko otarcia dyszy o wieżę gruntującą podczas kolejnego drukowania.",
+      "enum_labels": [
+        "Wyłączone",
+        "Prasowanie posuwisto-zwrotne"
+      ]
+    },
+    "prime_tower_start_offset": {
+      "label": "Przesunięcie początku wieży czyszczącej",
+      "tooltip": "Przesuwa początek ścieżki oczyszczania głównej wieży do wewnątrz, wzdłuż pierwszej linii oczyszczania. Dzięki temu startowe obiekty BLOB znajdują się wewnątrz wieży."
     },
     "prime_tower_width": {
       "label": "Szerokość",
@@ -1889,6 +2044,10 @@
       "label": "Przygotuj wszystkie extrudery do drukowania",
       "tooltip": "Jeśli włączone, wszystkie extrudery do drukowania będą przygotowane na przedniej krawędzi stołu drukującego na początku druku."
     },
+    "skeleton_flush_slowdown_speed": {
+      "label": "Prędkość wycierania szkieletu",
+      "tooltip": "Gdy włączona jest opcja „Płukanie do szkieletu obiektów”, ustaw prędkość dla spowolnionych ścieżek szkieletu po zmianie materiału. Wartości procentowe są obliczane na podstawie prędkości, z której normalnie korzystałaby każda ścieżka szkieletowa."
+    },
     "skeleton_infill_density": {
       "label": "Gęstość wypełnienia szkieletu",
       "tooltip": "Pozostała część konturu modelu po usunięciu określonej głębokości z powierzchni nazywana jest szkieletem. Ten parametr służy do regulacji gęstości tej sekcji. Kiedy dwa regiony mają takie same ustawienia rzadkiego wypełnienia, ale różną gęstość szkieletu, w ich obszarach szkieletu powstaną nakładające się sekcje. Wartość domyślna jest taka sama jak gęstość wypełnienia."
@@ -1896,6 +2055,10 @@
     "skeleton_infill_line_width": {
       "label": "Szerokość linii szkieletowej",
       "tooltip": "Dostosuj szerokość linii wybranych ścieżek szkieletowych."
+    },
+    "skeleton_wipe_line_width": {
+      "label": "Szerokość linii wycierania szkieletu",
+      "tooltip": "Dostosuj szerokość linii szkieletu używanych do wycierania przy zmniejszonej prędkości po zmianie materiału, w trybie bez Wieża czyszcząca."
     },
     "skin_infill_density": {
       "label": "Gęstość wypełnienia skóry",
@@ -2056,7 +2219,8 @@
         "Krzyżowy Zag",
         "Zamknięty Zag",
         "Boczny grzebień miodowy",
-        "Kratka boczna"
+        "Kratka boczna",
+        "Adaptacyjne TPMS"
       ]
     },
     "sparse_infill_speed": {
@@ -2152,6 +2316,10 @@
     "support_filament": {
       "label": "Podstawa podpory/tratwy",
       "tooltip": "Filament do drukowania podstawy podpory i raftu. \"Domyślnie\" oznacza brak wyboru konkretnego filamentu dla ich podstawy. Zostanie użyty obecny filament"
+    },
+    "support_filament_nozzle_mapping": {
+      "label": "Obsługa mapowania dysz filamentu",
+      "tooltip": "Pokazuje kontrolki grupowania filamentu projektu do dysz dla tej drukarki."
     },
     "support_interface_bottom_layers": {
       "label": "Dolne warstwy łączące",
@@ -2288,6 +2456,10 @@
         "Z nadpisuje X/Y"
       ]
     },
+    "surface_coefficient": {
+      "label": "Współczynnik powierzchni (beta)",
+      "tooltip": "Steruje gęstością wypełnienia polowego w pobliżu powierzchni. Wyższe wartości powodują zagęszczenie siatki przy powierzchniach."
+    },
     "symmetric_infill_y_axis": {
       "label": "Symetryczna osi wypełnienia y",
       "tooltip": "Jeśli model ma dwie części, które są symetryczne względem osi Y i chcesz, aby te części miały symetryczne tekstury, kliknij tę opcję na jednej z części."
@@ -2352,6 +2524,10 @@
       "label": "Nachodzenie pełnego wypełnienia na ściany",
       "tooltip": "Górny obszar pełnego wypełnienia jest nieznacznie powiększony, aby zachodził na ścianę, co zapewnia lepsze wiązanie i minimalizuje występowanie dziur w miejscach, w których górne wypełnienie styka się ze ścianami. Dobrym punktem wyjścia jest wartość 25-30 procent, która minimalizuje powstawanie dziur. Wartość procentowa jest zależna od szerokości linii rzadkiego wypełnienia"
     },
+    "top_fill_flush_layers": {
+      "label": "Górne warstwy z płukaniem przed wypełnieniem",
+      "tooltip": "Gdy płukanie do szkieletu obiektów jest włączone, w górnych N warstwach obiektu wymuszane jest płukanie na wieży czyszczącej przed wydrukowaniem wypełnienia lub szkieletu, a następnie powierzchni i ścian. Nie zmienia to liczby warstw górnej powłoki."
+    },
     "top_shell_layers": {
       "label": "Górne warstwy powłoki",
       "full_label": "Pełne warstwy górne",
@@ -2412,6 +2588,10 @@
     "tpms_start_infill_density": {
       "label": "Rozpocznij rzadką gęstość wypełniania",
       "tooltip": "Rozpocznij rzadką gęstość wypełniania w zakresie (1-99)"
+    },
+    "transmittance_matrix": {
+      "label": "Macierz powłoki płukania szkieletu",
+      "tooltip": "Macierz grubości powłoki używana tylko gdy płukanie do szkieletu obiektów jest włączone."
     },
     "travel_acceleration": {
       "label": "Prędkość jałowa",
@@ -2488,6 +2668,10 @@
     "tree_support_brim_width": {
       "label": "Szerokość Brimu dla podpory drzewa",
       "tooltip": "Odległość od gałęzi drzewa do najbardziej zewnętrznej linii Brimu"
+    },
+    "tree_support_organic_validate_repair": {
+      "label": "Walidacja i naprawa podpór",
+      "tooltip": "Po wygenerowaniu podstawowego obszaru podpór sprawdza ciągłość konturów organicznych podpór drzewiastych. Po włączeniu dodatkowe ścieżki podpór są używane do naprawy nieobsługiwanych segmentów konturu. Po wyłączeniu organiczne podpory drzewiaste są generowane przy użyciu oryginalnego procesu generowania ścieżek wytłaczania."
     },
     "tree_support_tip_diameter": {
       "label": "Średnica końcówki",
@@ -2634,6 +2818,9 @@
       "label": "Kompensacja otworów X-Y",
       "tooltip": "Otwory obiektu będą powiększane lub zmniejszane w płaszczyźnie XY przez zadaną wartość (ujemna = zmniejszenie, dodatnia = zwiększenie). Funkcja ta jest używana do lekkiej regulacji rozmiaru, gdy obiekt ma problem z montażem"
     },
+    "xy_step_dist": {
+      "label": "Odległość kroku XY"
+    },
     "z_direction_outwall_speed_continuous": {
       "label": "Prędkość wygładzania ściany wzdłuż Z (eksperymentalna)",
       "tooltip": "Wygładzanie prędkości ściany zewnętrznej w kierunku z, aby uzyskać lepszą jakość powierzchni. Czas drukowania się zwiększy. Nie działa wtrybie wazonu spiralnego."
@@ -2655,6 +2842,20 @@
     "z_offset": {
       "label": "Przesunięcie w osi Z",
       "tooltip": "Wartość tego ustawienia zostanie dodana (lub odjęta) od wszystkich koordynat w osi Z w pliku wyjściowym G-code. Jest używana dla korekcji złego położenia wyłącznika krańcowego osi Z. Np. jeśli końcówka dyszy znajduje się 0.3 mm ponad położeniem zerowym, ustaw tutaj -0.3 (lub napraw krańcówkę).\""
+    },
+    "zaa_enabled": {
+      "label": "Włącz antyaliasing w warstwie Z",
+      "tooltip": "Rozważ włączenie antyaliasingu warstwy Z dla modeli o dużych, delikatnie nachylonych powierzchniach, aby ograniczyć widoczne stopnie schodów. Aby uzyskać najlepsze możliwe wykończenie powierzchni, należy rozważyć zastosowanie koncentrycznego wypełnienia górnej powierzchni.\nPo włączeniu odpowiednie ścieżki górnej powierzchni i ścian dostosowują swoją wysokość Z, aby podążały za powierzchnią modelu. Wygładzanie warstwowe Z wyklucza się wzajemnie z Tryb Wazy, Szew ukośny i Podwarstwa mieszana kolorystycznie. Nie można włączyć antyaliasingu warstwowego Z w połączeniu z żadną z tych funkcji. Obiekty korzystające z Raft lub Prasowanie lub zawierające części ujemne, wracają do konwencjonalnego cięcia płaszczyzny środkowej i wyświetlają ostrzeżenie. Gdy ta funkcja jest włączona, polecenia łuku w kwalifikujących się ścieżkach są konwertowane na ruchy liniowe G1."
+    },
+    "zaa_lock_top_surface_fill_direction": {
+      "label": "Zablokuj kierunek wypełnienia górnej powierzchni",
+      "tooltip": "Utrzymuje kierunek niemostkowych, opartych na liniach wzorów wypełnienia górnej powierzchni (takich jak Prostoliniowy i Monotoniczny) niezmieniony pomiędzy warstwami, gdy dla bieżącego obiektu aktywne jest wygładzanie warstw Z. Kierunek wypełnienia mostu i inne typy wypełnienia pozostają niezmienione."
+    },
+    "zaa_slice_plane_offset": {
+      "label": "Przesunięcie płaszczyzny przekroju ZAA"
+    },
+    "zaa_wall_lowering_min_slope": {
+      "label": "Minimalne nachylenie powierzchni przy obniżaniu ściany"
     }
   },
   "ui": {
@@ -2680,6 +2881,7 @@
     "Filament for Features": "Włókno dla cech",
     "Filament start G-code": "Początkowy G-code filamentu",
     "Flush options": "Opcje czyszczenia",
+    "Fuzzy Skin": "Skóra Fuzzy",
     "G-code output": "Wyjście G-code",
     "Infill": "Wypełnienie",
     "Initial layer speed": "Szybkość pierwszej warstwy",
@@ -2742,6 +2944,7 @@
     "Walls": "Ściany",
     "Walls and surfaces": "Ściany i powierzchnie",
     "Wipe tower": "Wieża czyszcząca",
-    "Wipe tower parameters": "Parametry wieży czyszczącej"
+    "Wipe tower parameters": "Parametry wieży czyszczącej",
+    "Z contouring": "Konturowanie Z"
   }
 }

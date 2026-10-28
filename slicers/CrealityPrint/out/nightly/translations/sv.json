@@ -42,8 +42,8 @@
       "tooltip": "Hastighet av hjälpdelen kylfläkt. Hjälpflakten kommer att köra med denna hastighet under utskrift utom de första flera skikten somdefinieras av inga kylskikt. nAktivera auxiliary_fan i skrivarinställningarna för att använda den här funktionen. G-code kommando: M106 P2 S(0-255)"
     },
     "ai_infill": {
-      "label": "AI infill",
-      "tooltip": "Aktivera AI-fyllningen På grundval av den ursprungliga sparsamma fyllningen."
+      "label": "Intelligent fyllning",
+      "tooltip": "Aktiverar intelligent fyllning baserat på den ursprungliga glesa fyllningen."
     },
     "align_infill_direction_to_model": {
       "label": "Justera fyllningsriktningen till modellen",
@@ -56,6 +56,10 @@
     "arc_tolerance": {
       "label": "Bågetolerans",
       "tooltip": "Bågetolerans"
+    },
+    "automatic_extrusion_widths": {
+      "label": "Automatisk beräkning av profilbredd",
+      "tooltip": "Beräknar automatiskt extruderingsbredder baserat på munstycksdiametern på den aktuella extrudern. Denna inställning är viktig vid utskrift med olika munstycksdiametrar."
     },
     "auxiliary_fan": {
       "label": "Extra del kylnings fläkt",
@@ -90,6 +94,14 @@
       "label": "Avstånd från sondpunkten",
       "tooltip": "Det här alternativet anger det föredragna avståndet mellan sondpunkter (rutnätsstorlek) för X- och Y-riktningarna, med standardvärdet 50 mm för både X och Y."
     },
+    "bed_temperature_mode": {
+      "label": "Sängtemperaturläge",
+      "tooltip": "Välj hur du bestämmer bäddtemperaturen för multifilamentutskrifter.",
+      "enum_labels": [
+        "Använd högsta filamentbäddtemperatur",
+        "Använd den första filamentbäddens temperatur"
+      ]
+    },
     "before_layer_change_gcode": {
       "label": "Före lagerskifte G-code",
       "tooltip": "Denna G-code används för varje lager innan Z axis lyfts"
@@ -101,6 +113,10 @@
     "best_object_pos": {
       "label": "Bästa position för objektet",
       "tooltip": "Bästa automatiska arrangemangs position i intervallet [0,1] w.r.t. bäddens form."
+    },
+    "bottom_fill_flush_layers": {
+      "label": "Bottenlager med rensning före fyllning",
+      "tooltip": "När spolning in i objektskelettet är aktiverad tvingas rensning på primningstornet i objektets nedersta N lager innan fyllningen eller skelettet skrivs ut, följt av ytskikt och väggar. Detta ändrar inte antalet lager i det nedre skalet."
     },
     "bottom_shell_layers": {
       "label": "Botten skal lager",
@@ -186,6 +202,15 @@
     "brim_width": {
       "label": "Brim bredd",
       "tooltip": "Avståndet från modellen till yttersta brim linjen"
+    },
+    "cell_type": {
+      "label": "Celltyp",
+      "tooltip": "Väljer den grundläggande cellform som används av fältbaserad fyllning.",
+      "enum_labels": [
+        "TPMS-D-cell",
+        "Gyroid",
+        "TPMS-FK"
+      ]
     },
     "chamber_temperature": {
       "label": "Kammarens temperatur",
@@ -340,6 +365,18 @@
       "label": "Inaktivera inställd återstående utskriftstid",
       "tooltip": "Inaktivera generering av M73: Ange återstående utskriftstid i den slutliga gcoden"
     },
+    "dithering_local_z_mode": {
+      "label": "Lokalt Z-vibreringsläge",
+      "tooltip": "Använd variabla lager för färgblandning."
+    },
+    "dithering_step_painted_zones_only": {
+      "label": "Använd endast stegstorlek i målade zoner",
+      "tooltip": "När den är aktiverad, tillämpas den vibrerande Z-stegstorleken endast där blandad filament är målad."
+    },
+    "dithering_z_step_size": {
+      "label": "Dithering Z stegstorlek",
+      "tooltip": "Skikthöjd används i Z-zoner målade med vibrering."
+    },
     "dont_filter_internal_bridges": {
       "label": "Filtrera inte ut små inre broar (beta)",
       "tooltip": "Det här alternativet kan hjälpa till att minska kuddar på ovansidan i kraftigt lutande eller böjda modeller.\n\nSom standard filtreras små inre bryggor bort och den interna solida fyllningen skrivs ut direkt över den glesa fyllningen. Detta fungerar bra i de flesta fall och påskyndar utskriften utan att kompromissa för mycket med ytkvaliteten. \n\nMen i kraftigt lutande eller krökta modeller, särskilt där för låg gles fyllnadstäthet används, kan detta resultera i att den ostödda fasta fyllningen krullas, vilket orsakar kuddar.\n\nOm du aktiverar det här alternativet skrivs det interna bryggskiktet ut över något icke-stödd intern solid fyllning. Alternativen nedan styr mängden filtrering, det vill säga mängden interna bryggor som skapas.\n\nDisabled - Inaktiverar det här alternativet. Detta är standardbeteendet och fungerar bra i de flesta fall.\n\nBegränsad filtrering - Skapar inre broar på kraftigt lutande ytor, samtidigt som man undviker att skapa onödiga inre broar. Detta fungerar bra för de flesta svåra modeller.\n\nIngen filtrering - Skapar interna bryggor på varje potentiellt internt överhäng. Det här alternativet är användbart för kraftigt lutande toppytor. Men i de flesta fall skapar det för många onödiga broar.",
@@ -366,6 +403,9 @@
       "label": "Fläkt hastighet",
       "tooltip": "Frånluftsfläktens hastighet under utskrift. Denna hastighet kommer att åsidosätta hastigheten i filament anpassad g-kod"
     },
+    "e_step_dist": {
+      "label": "E stegavstånd"
+    },
     "elefant_foot_compensation": {
       "label": "Elefant fots kompensation",
       "tooltip": "Minska första lager på byggplattan för att kompensera elefant fots effekten"
@@ -389,6 +429,10 @@
     "enable_filament_ramming": {
       "label": "Aktivera filamentramming",
       "tooltip": "Aktivera filamentramming"
+    },
+    "enable_mixed_color_sublayer": {
+      "label": "Underskikt i blandad färg",
+      "tooltip": "Aktiverar uppdelning av varje lager med blandat filament i dellager för fysisk färgblandning. Kräver minst en aktiverad rad med blandat filament."
     },
     "enable_overhang_bridge_fan": {
       "label": "Tvinga kylning av överhäng och bridge/bryggor",
@@ -505,6 +549,10 @@
       "label": "Adhesivitetskategori",
       "tooltip": "filament_adhesivitet_kategori"
     },
+    "filament_can_change": {
+      "label": "Filament kan bytas",
+      "tooltip": "Filament kan bytas"
+    },
     "filament_colour": {
       "label": "Färg",
       "tooltip": "Används endast som visuell hjälp på UI"
@@ -566,6 +614,23 @@
       "label": "Long retraction when cut (experimental)",
       "tooltip": "Experimental feature: Retracting and cutting off the filament at a longer distance during changes to minimize purge.While this reduces flush significantly, it may also raise the risk of nozzle clogs or other printing problems."
     },
+    "filament_map": {
+      "label": "Filamentkarta till munstycke",
+      "tooltip": "Mappar varje projektfilament till ett 1-baserat fysiskt munstycksnummer."
+    },
+    "filament_map_2": {
+      "label": "Inre filamentmunstyckesindex",
+      "tooltip": "Nollbaserat internt munstycksindex genererat från filament_map."
+    },
+    "filament_map_mode": {
+      "label": "Filamentmappningsläge",
+      "tooltip": "Väljer om projektfilament tilldelas munstycken automatiskt eller manuellt.",
+      "enum_labels": [
+        "Automatisk",
+        "Automatisk matchning",
+        "Custom"
+      ]
+    },
     "filament_max_volumetric_speed": {
       "label": "Max volymetrisk hastighet",
       "tooltip": "Den här inställningen är volymen filament som kan smältas och extruderas per sekund. Utskriftshastigheten begränsas av den maximala volymhastigheten om hastigheten är för hög och orimlig. Det här värdet kan inte vara noll."
@@ -598,6 +663,9 @@
       "label": "Retraktions mängd innan wipe",
       "tooltip": "Detta är längden av snabb retraktion före en wipe, i förhållande till retraktions längden"
     },
+    "filament_retract_length_toolchange": {
+      "label": "Längd"
+    },
     "filament_retract_lift_above": {
       "label": "Endast lyft Z ovanför",
       "tooltip": "Om du ställer in detta till ett positivt värde sker Z-lyftet endast över det angivna absoluta Z."
@@ -619,6 +687,10 @@
     "filament_retract_restart_extra": {
       "label": "Extra längd vid omstart",
       "tooltip": "När indragningen kompenseras efter förflyttningen, kommer extrudern att trycka på denna ytterligare mängd filament. Denna inställning behövs sällan."
+    },
+    "filament_retract_restart_extra_toolchange": {
+      "label": "Extra längd vid omstart",
+      "tooltip": "När återdragningen kompenseras efter byte av verktyg, kommer extrudern att trycka denna extra mängd filament."
     },
     "filament_retract_when_changing_layer": {
       "label": "Retraktera vid lager byte",
@@ -753,6 +825,14 @@
     "flush_into_objects": {
       "label": "Rensa in i det här objektet",
       "tooltip": "Det här objektet används för att rensa nozzeln efter ett filamentbyte för att spara filament och minska utskriftstiden. Färgerna i objekten kommer att blandas som ett resultat. Det kommer inte att få effekt om inte prime tower är aktiverat."
+    },
+    "flush_into_skeleton": {
+      "label": "Spola in i objektskelettet (experimentellt)",
+      "tooltip": "Rensning efter filamentbyte görs inuti objektskelettets område. Detta kan minska mängden avfall och förkorta utskriftstiden. Det fungerar bara om primetornet är aktiverat."
+    },
+    "flush_into_solid_skeleton": {
+      "label": "Skriv ut primningsvolymen i ett massivt skelett",
+      "tooltip": "Eliminerar den separata Prime torn när primningsvolym är under 10 mm³ och den minsta spolvolymen på tornet är noll för varje glödtråd. Materialet som motsvarar primningsvolym är tryckt som ett massivt skelett inuti modellen. Volymen på detta skelett matchar primningsvolym."
     },
     "flush_into_support": {
       "label": "Rensa in i objektets support",
@@ -1019,6 +1099,10 @@
     "interface_shells": {
       "label": "Interface shells",
       "tooltip": "Force the generation of solid shells between adjacent tråds/volumes. Useful for multi-extruder prints with translucent tråds or manual soluble support tråd"
+    },
+    "interior_coefficient": {
+      "label": "Inre koefficient (beta)",
+      "tooltip": "Styr densiteten för fältbaserad fyllning inuti modellen. Högre värden ger ett tätare inre gitter."
     },
     "interlocking_beam": {
       "label": "Använd beam interlocking",
@@ -1340,6 +1424,9 @@
       "label": "Utjämna segmentets längd",
       "tooltip": "Ett lägre värde resulterar i mjukare strängsprutningshastighetsövergångar. Detta resulterar dock i en betydligt större gcode-fil och fler instruktioner för skrivaren att bearbeta. \n\nStandardvärdet 3 fungerar bra i de flesta fall. Om din skrivare stammar, öka det här värdet för att minska antalet gjorda justeringar\n\nTillåtna värden: 0,5-5"
     },
+    "mcu_pool_total": {
+      "label": "MCU-minnespoolens totala kapacitet"
+    },
     "min_bead_width": {
       "label": "Minsta vägg bredd",
       "tooltip": "Bredden på den vägg som ska ersätta tunna element (enligt minsta storlek för element) i modellen. Om den minsta väggbredden är tunnare än tjockleken på elementet blir väggen lika tjock som själva elementet. Den uttrycks i procent av nozzel diametern."
@@ -1372,6 +1459,46 @@
     "minimum_support_area": {
       "label": "Små överhängande område",
       "tooltip": "Minsta arealstorlek för stödpolygoner. Polygoner som har ett område mindre än detta värde genereras inte."
+    },
+    "mixed_color_layer_height_a": {
+      "label": "Vibrerande kadenshöjd A",
+      "tooltip": "Lagerhöjdbidrag av komponent A för att vibrera virtuella filament."
+    },
+    "mixed_color_layer_height_b": {
+      "label": "Rakande kadenshöjd B",
+      "tooltip": "Lagerhöjdbidrag av komponent B för att vibrera virtuella filament."
+    },
+    "mixed_filament_advanced_dithering": {
+      "label": "Avancerad dithering",
+      "tooltip": "Distribuera kadens med blandad filamentlagercykel med hjälp av ett avancerat ordnat vibreringsmönster."
+    },
+    "mixed_filament_definitions": {
+      "label": "Blandade filament anpassade definitioner",
+      "tooltip": "Serialiserade anpassade blandade filamentrader."
+    },
+    "mixed_filament_gradient_mode": {
+      "label": "Höjdviktad kadens",
+      "tooltip": "Aktivera höjdviktad kadens för blandade filament."
+    },
+    "mixed_filament_height_lower_bound": {
+      "label": "Blandfilament nedre höjd bunden",
+      "tooltip": "Nedre gräns används av det höjdvägda blandade filamentgradientläget."
+    },
+    "mixed_filament_height_upper_bound": {
+      "label": "Blandfilament övre höjd bunden",
+      "tooltip": "Övre gräns används av det höjdvägda blandade filamentgradientläget."
+    },
+    "mixed_filament_pointillism_line_gap": {
+      "label": "Pointillism linje gap",
+      "tooltip": "Valfritt icke-extruderat avstånd mellan intilliggande pointillismsegment."
+    },
+    "mixed_filament_pointillism_pixel_size": {
+      "label": "Pointillism pixelstorlek",
+      "tooltip": "Längden på ett pointillismsegment längs en extruderingsbana."
+    },
+    "mixed_filament_surface_indentation": {
+      "label": "Selektiv expansion/sammandragning",
+      "tooltip": "XY-offset tillämpas på målade områden med blandade filament före regiontilldelning."
     },
     "mmu_segmented_region_interlocking_depth": {
       "label": "Sammanhängande djup i en segmenterad region",
@@ -1412,6 +1539,9 @@
     "nozzle_hrc": {
       "label": "Nozzle HRC",
       "tooltip": "Nozzelns hårdhet. Noll innebär att ingen kontroll av nozzelns hårdhet görs under beredningen."
+    },
+    "nozzle_pool_total": {
+      "label": "Munstyckets MCU-minnespools totala kapacitet"
     },
     "nozzle_temperature": {
       "label": "Andra lager",
@@ -1531,6 +1661,10 @@
       "label": "Filament parkeringsplats",
       "tooltip": "Avståndet på extruderspetsen från det läge där glödtråden står parkerad när den lossas. Detta bör motsvara värdet i skrivarensfasta programvara."
     },
+    "pathological_segment_protection_enable": {
+      "label": "Accelereringsskydd för problematiskt segment",
+      "tooltip": "When enabled, the slicer detects dense short-segment sequences (such as zigzag patterns with sub-millimeter moves) that can cause Klipper firmware to accumulate an excessive move queue, potentially leading to MCU communication stalls and printer crashes.\n\nThe slicer inserts SET_VELOCITY_LIMIT kommandon att tillfälligt minska accelerationen före dessa problematiska regioner och återställa den efteråt."
+    },
     "pellet_flow_coefficient": {
       "label": "Pelletflödeskoefficient",
       "tooltip": "Pelletsflödeskoefficient är empiriskt härledd och möjliggör volymberäkning för pelletsskrivare.\n\nInternt konverteras den till filament_diameter. Alla andra volymberäkningar förblir desamma.\n\nfilament_diameter = sqrt( (4 * pellet_flow_coefficient) / PI )"
@@ -1559,6 +1693,10 @@
       "label": "Förvärmningssteg",
       "tooltip": "Infoga flera förhärmkommandon (t.ex. M104.1). Endast användbar för Prusa XL. För andra skrivare, ställ in den på 1."
     },
+    "preheat_temperature_delta": {
+      "label": "Förvärm temperatur",
+      "tooltip": "Temperaturskillnaden tillämpas innan ett munstycke aktiveras. Förvärmningstemperaturen beräknas som utskriftstemperaturen plus detta värde."
+    },
     "preheat_time": {
       "label": "Förvärmningstid",
       "tooltip": "För att minska väntetiden efter verktygsbyte kan Creality förvärma nästa verktyg medan det nuvarande verktyget fortfarande används. Den här inställningen anger tiden i sekunder för att förvärma nästa verktyg. Creality kommer att infoga ett M104-kommando för att förvärma verktyget i förväg."
@@ -1575,6 +1713,10 @@
       "label": "Brim bredd",
       "tooltip": "Bredd på kanten av det primära tornet, negativt tal betyder automatiskt beräknad bredd baserat på höjden på det primäratornet."
     },
+    "prime_tower_corner_rib_length": {
+      "label": "Ribblängd i nedre hörn",
+      "tooltip": "Längden på undersidan av de fyrkantiga hörnribborna på det fyrkantiga prime tornet. Ribban behåller sin kontaktlängd med avtorkningsområdet och smalnar av utåt mot blockkanterna vid tornets topp. Sätt till 0 för att använda perimeterlinjeavståndet."
+    },
     "prime_tower_enable_framework": {
       "label": "Inre revben",
       "tooltip": "Aktivera inre revben för att öka stabiliteten i det primära tornet."
@@ -1584,7 +1726,8 @@
       "tooltip": "Förstärkningstyp",
       "enum_labels": [
         "kon",
-        "chamfer"
+        "chamfer",
+        "hörnribba"
       ]
     },
     "prime_tower_position_type": {
@@ -1609,6 +1752,18 @@
     "prime_tower_skip_points": {
       "label": "Hoppa över poäng",
       "tooltip": "Väggen av primära tornet kommer att hoppa över startpunkterna för torka väg"
+    },
+    "prime_tower_start_ironing": {
+      "label": "Strykning av primetornets startområde",
+      "tooltip": "Strykning av reningsstartområdet minskar risken för att munstycket skrapar primetornet under efterföljande utskrift.",
+      "enum_labels": [
+        "Av",
+        "Fram- och återgående strykning"
+      ]
+    },
+    "prime_tower_start_offset": {
+      "label": "Startförskjutning för primetornet",
+      "tooltip": "Flyttar starten av spolningsbanan för primetornet inåt längs den första spolningslinjen. Detta håller startklumpar inne i tornet."
     },
     "prime_tower_width": {
       "label": "Bredd",
@@ -1889,6 +2044,10 @@
       "label": "Prime alla tryckextruderar",
       "tooltip": "Om det är aktiverat primeras alla tryckextruder vid framsidan av skrivbädden i början av utskriften."
     },
+    "skeleton_flush_slowdown_speed": {
+      "label": "Avtorkningshastighet i skelettet",
+      "tooltip": "När alternativet \"Spola in i objektskelettet\" är aktiverat, ställ in hastigheten för långsammare skelettbanor efter en materialbyte. Procentvärden beräknas från den hastighet som varje skelettbana normalt skulle använda."
+    },
     "skeleton_infill_density": {
       "label": "Skelettfyllningsdensitet",
       "tooltip": "Den återstående delen av modellkonturen efter att ha tagit bort ett visst djup från ytan kallas skelettet. Denna parameter används för att justera densiteten för denna sektion. När två regioner har samma glesa utfyllnadsinställningar men olika skelettdensiteter kommer deras skelettområden att utveckla överlappande sektioner. standard är samma som utfyllnadstäthet."
@@ -1896,6 +2055,10 @@
     "skeleton_infill_line_width": {
       "label": "Skelettlinjebredd",
       "tooltip": "Justera linjebredden på de valda skelettbanarna."
+    },
+    "skeleton_wipe_line_width": {
+      "label": "Linjebredd för avtorkning i skelettet",
+      "tooltip": "Justera bredden på skelettlinjerna som används för att torka med reducerad hastighet efter ett materialbyte, i läget utan Prime torn."
     },
     "skin_infill_density": {
       "label": "Hud fyllningsdensitet",
@@ -2056,7 +2219,8 @@
         "Kors-Zag",
         "Låst-Zag",
         "Lateral Honeycomb",
-        "Sidalt latter"
+        "Sidalt latter",
+        "Adaptiv TPMS"
       ]
     },
     "sparse_infill_speed": {
@@ -2152,6 +2316,10 @@
     "support_filament": {
       "label": "Support/raft bas",
       "tooltip": "Filament för att skriva ut support och rafts. ”Standard” betyder ingen specifik filament för support, och nuvarande filament används"
+    },
+    "support_filament_nozzle_mapping": {
+      "label": "Stöd mappning av filamentmunstycken",
+      "tooltip": "Visar grupperingskontroller för projekt filament till munstycke för denna skrivare."
     },
     "support_interface_bottom_layers": {
       "label": "Botten gränssnitts lager",
@@ -2288,6 +2456,10 @@
         "Z överskrider X/Y"
       ]
     },
+    "surface_coefficient": {
+      "label": "Ytkoefficient (beta)",
+      "tooltip": "Styr densiteten för fältbaserad fyllning nära ytor. Högre värden ger ett tätare gitter nära ytorna."
+    },
     "symmetric_infill_y_axis": {
       "label": "Symmetrisk fyllningsaxel y",
       "tooltip": "Om modellen har två delar som är symmetriska kring y-axeln och du vill att dessa delar ska ha symmetriska texturer, klicka på det här alternativet på en av delarna."
@@ -2352,6 +2524,10 @@
       "label": "Topp/Bottom fast fyllning/vägg överlappning",
       "tooltip": "Den fasta fyllningsytan förstoras något för att överlappa väggen för bättre vidhäftning och för att minimera uppkomsten av hål där toppfyllningen möter väggarna. Ett värde på 25-30 procent är en bra utgångspunkt, vilket minimerar uppkomsten av hål. Det procentuella värdet är i förhållande till linjebredden för gles utfyllnad"
     },
+    "top_fill_flush_layers": {
+      "label": "Topplager med rensning före fyllning",
+      "tooltip": "När spolning in i objektskelettet är aktiverad tvingas rensning på primningstornet i objektets översta N lager innan fyllningen eller skelettet skrivs ut, följt av ytskikt och väggar. Detta ändrar inte antalet lager i det övre skalet."
+    },
     "top_shell_layers": {
       "label": "Övre skal lager",
       "full_label": "Solida topp lager",
@@ -2412,6 +2588,10 @@
     "tpms_start_infill_density": {
       "label": "Start sparse fyllningsdensitet",
       "tooltip": "Starta sparsa fyllningsdensitet i intervallet (1-99)"
+    },
+    "transmittance_matrix": {
+      "label": "Skelett spolning ytskikt matris",
+      "tooltip": "Ytskiktets tjockleksmatris som endast används när spolning in i objektskelettet är aktiverat."
     },
     "travel_acceleration": {
       "label": "Flytta",
@@ -2488,6 +2668,10 @@
     "tree_support_brim_width": {
       "label": "Tree supportens brim bredd",
       "tooltip": "Avstånd från trädgren till den yttersta kantlinjen"
+    },
+    "tree_support_organic_validate_repair": {
+      "label": "Validering och reparation av support",
+      "tooltip": "Efter att det grundläggande supportområdet har genererats valideras kontinuiteten hos de organiska trädliknande supportens konturer. När den är aktiverad används ytterligare supportbanor för att reparera kontursegment som saknar support. När den är inaktiverad genereras organiska trädliknande support med den ursprungliga extruderingsbanans genereringsprocess."
     },
     "tree_support_tip_diameter": {
       "label": "Tippdiameter",
@@ -2634,6 +2818,9 @@
       "label": "X-Y håls kompensation",
       "tooltip": "Objektets hål kommer att krympa eller öka i XY planet med valt värde. Positivt värde ökar och negativt värde minskar hålets storlek. Denna funktion används för att justera storleken något när det finns monterings svårigheter"
     },
+    "xy_step_dist": {
+      "label": "XY stegavstånd"
+    },
     "z_direction_outwall_speed_continuous": {
       "label": "Utjämning vägg hastighet längs Z (experimentell)",
       "tooltip": "Utjämning av ytväggen hastighet i z-riktning för att få bättre ytkvalitet. Tiden för utskrift kommer att öka. Det fungerarinte på spiralvas läge."
@@ -2655,6 +2842,20 @@
     "z_offset": {
       "label": "Z-offset",
       "tooltip": "Detta värde kommer att läggas till (eller subtraheras) från alla Z-koordinater i utgången G-code. Den används för att kompenseraför dålig Z-slutposition: till exempel, om din slutstopp noll faktiskt lämnar munstycket 0,3 mm långt från utskriftssängen, ställ indetta på -0,3 (eller fixa din slutstopp)."
+    },
+    "zaa_enabled": {
+      "label": "Aktivera Z-lager kantutjämning",
+      "tooltip": "Överväg att aktivera Z-lagerkantutjämning för modeller med stora, svagt sluttande ytor för att minska synliga trappsteg. För bästa möjliga ytfinish, överväg att använda koncentrisk toppyta fyllning.\nNär det är aktiverat justerar kvalificerade toppyta och väggbanor sin Z-höjd för att följa modellens yta. Z-lagerkantutjämning utesluter varandra med Spiral vas, Skal gemensam söm och Underskikt i blandad färg. Z-lagerkantutjämning kan inte aktiveras tillsammans med någon av dessa funktioner. Objekt som använder en Raft eller Strykning, eller som innehåller negativa delar, faller tillbaka till konventionell mittplansskärning och visar en varning. När den här funktionen är aktiverad omvandlas bågkommandon i berättigade banor till linjära G1-rörelser."
+    },
+    "zaa_lock_top_surface_fill_direction": {
+      "label": "Lås fyllningsriktningen ovanpå ytan",
+      "tooltip": "Håller riktningen för icke-brygga, linjebaserade fyllningsmönster på övre ytan (som Räta linjer och Monoton) oförändrad mellan lagren när Z-lagerkantutjämning är aktiv för det aktuella objektet. Bryggfyllningsriktning och andra fyllningstyper påverkas inte."
+    },
+    "zaa_slice_plane_offset": {
+      "label": "ZAA skivplansförskjutning"
+    },
+    "zaa_wall_lowering_min_slope": {
+      "label": "Minsta ytlutning för väggsänkning"
     }
   },
   "ui": {
@@ -2680,6 +2881,7 @@
     "Filament for Features": "Filament för funktioner",
     "Filament start G-code": "Filament start G-code",
     "Flush options": "Rensnings alternativ",
+    "Fuzzy Skin": "Ojämn Yta",
     "G-code output": "G-code utgång",
     "Infill": "Ifyllnad",
     "Initial layer speed": "Hastighet på första lager",
@@ -2742,6 +2944,7 @@
     "Walls": "Väggar",
     "Walls and surfaces": "Väggar och ytor",
     "Wipe tower": "Torktornet",
-    "Wipe tower parameters": "Torka tornets parametrar"
+    "Wipe tower parameters": "Torka tornets parametrar",
+    "Z contouring": "Z-kontur"
   }
 }
