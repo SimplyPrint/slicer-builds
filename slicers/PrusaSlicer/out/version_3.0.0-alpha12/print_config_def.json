@@ -1,0 +1,3698 @@
+{
+  "default_print": {
+    "type": "string",
+    "label": "Default Print Preset",
+    "tooltip": "Name or ID of print preset to use as default when this printer preset is selected.",
+    "mode": "simple",
+    "default_value": ""
+  },
+  "printer_model": {
+    "type": "string",
+    "label": "Printer type",
+    "tooltip": "Type of the printer.",
+    "mode": "simple",
+    "default_value": ""
+  },
+  "printer_technology": {
+    "type": "enum",
+    "label": "Printer technology",
+    "tooltip": "Printer technology",
+    "mode": "simple",
+    "enum_values": [
+      "FFF",
+      "SLA"
+    ],
+    "default_value": "FFF"
+  },
+  "printer_variant": {
+    "type": "string",
+    "label": "Printer variant",
+    "tooltip": "Name of the printer variant. For example, the printer variants may be differentiated by a nozzle diameter.",
+    "mode": "simple",
+    "default_value": ""
+  },
+  "printer_vendor": {
+    "type": "string",
+    "label": "Printer vendor",
+    "tooltip": "Name of the printer vendor.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "nocli": "true",
+    "default_value": ""
+  },
+  "thumbnails_format": {
+    "type": "enum",
+    "label": "Format of G-code thumbnails",
+    "tooltip": "Format of G-code thumbnails: PNG for best quality, JPG for smallest size, QOI for low memory firmware",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "PNG",
+      "JPG",
+      "QOI"
+    ],
+    "default_value": "PNG"
+  },
+  "gcode_flavor": {
+    "type": "enum",
+    "label": "G-code flavor",
+    "tooltip": "Some G/M-code commands, including temperature control and others, are not universal. Set this option to your printer's firmware to get a compatible output. The \"No extrusion\" flavor prevents PrusaSlicer from exporting any extrusion value at all.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "reprap",
+      "reprapfirmware",
+      "repetier",
+      "teacup",
+      "makerware",
+      "marlin",
+      "marlin2",
+      "prusabuddy",
+      "klipper",
+      "sailfish",
+      "mach3",
+      "machinekit",
+      "smoothie",
+      "no-extrusion"
+    ],
+    "default_value": "reprap"
+  },
+  "binary_gcode": {
+    "type": "bool",
+    "label": "Supports binary G-code",
+    "tooltip": "Enable, if the firmware supports binary G-code format (bgcode). To generate .bgcode files, make sure you have binary G-code enabled in Configuration->Preferences->Other.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "remaining_times": {
+    "type": "bool",
+    "label": "Supports remaining times",
+    "tooltip": "Emit M73 P[percent printed] R[remaining time in minutes] at 1 minute intervals into the G-code to let the firmware show accurate remaining time. As of now only the Prusa i3 MK3 firmware recognizes M73. Also the i3 MK3 firmware supports M73 Qxx Sxx for the silent mode.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "stuck_filament_detection": {
+    "type": "bool",
+    "label": "Supports stuck filament monitoring configuration",
+    "tooltip": "Enable, if the firmware supports configuring the stuck filament detection via the M591 gcode.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "use_relative_e_distances": {
+    "type": "bool",
+    "label": "Use relative E distances",
+    "tooltip": "If your firmware requires relative E values, check this, otherwise leave it unchecked. Most firmwares use absolute values.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "use_volumetric_e": {
+    "type": "bool",
+    "label": "Use volumetric E",
+    "tooltip": "This experimental setting uses outputs the E values in cubic millimeters instead of linear millimeters. If your firmware doesn't already know filament diameter(s), you can put commands like 'M200 D[filament_diameter_0] T0' in your start G-code in order to turn volumetric mode on and use the filament diameter associated to the filament selected in Slic3r. This is only supported in recent Marlin.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "thumbnails": {
+    "type": "string",
+    "label": "G-code thumbnails",
+    "tooltip": "Picture sizes to be stored in .gcode / .bgcode and .sl1 / .sl1s files, in the following format: \"XxY/EXT, XxY/EXT, ...\"\nCurrently supported extensions are PNG, QOI and JPG.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  },
+  "single_extruder_multi_material": {
+    "type": "bool",
+    "label": "Single Extruder Multi Material",
+    "tooltip": "The printer multiplexes filaments into a single hot end.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "use_firmware_retraction": {
+    "type": "bool",
+    "label": "Use firmware retraction",
+    "tooltip": "This setting uses G10 and G11 commands to have the firmware handle the retraction. Note that this has to be supported by firmware.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "silent_mode": {
+    "type": "bool",
+    "label": "Supports stealth mode",
+    "tooltip": "The firmware supports stealth mode",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "variable_layer_height": {
+    "type": "bool",
+    "label": "Enable variable layer height feature",
+    "tooltip": "Some printers or printer setups may have difficulties printing with a variable layer height. Enabled by default.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "prefer_clockwise_movements": {
+    "type": "bool",
+    "label": "Prefer clockwise movements",
+    "tooltip": "This setting makes the printer print loops clockwise instead of counterclockwise.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "filament_change_time": {
+    "type": "float",
+    "label": "Filament change time",
+    "tooltip": "Time required for a single filament change. On a printer with multiple tools this is the time required for a single toolchange to take place. On a printer with multi-material upgrade, this is the time required to unload and load a new filament.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "z_offset": {
+    "type": "float",
+    "label": "Z offset",
+    "tooltip": "This value will be added (or subtracted) from all the Z coordinates in the output G-code. It is used to compensate for bad Z endstop position: for example, if your endstop zero actually leaves the nozzle 0.3mm far from the print bed, set this to -0.3 (or fix your endstop).",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "default_value": "0"
+  },
+  "max_print_height": {
+    "type": "float",
+    "label": "Max print height",
+    "tooltip": "Set this to the maximum height that can be reached by your extruder while printing.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "max": "1200",
+    "default_value": "200"
+  },
+  "extruder_clearance_height": {
+    "type": "float",
+    "label": "Height",
+    "tooltip": "Only used when 'Print Settings -> Complete individual objects' is active. Set this to the vertical distance between your nozzle tip and (usually) the X carriage rods. Used to check for collisions with previously printed objects and to prevent them when arranging.\nThe value is ignored for most Prusa printers, which come with more detailed extruder model.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "20"
+  },
+  "extruder_clearance_radius": {
+    "type": "float",
+    "label": "Radius",
+    "tooltip": "Only used when 'Print Settings -> Complete individual objects' is active. Set this to a radius of a nozzle-centered cylinder big enough to enclose the extruder assembly. Used to check for collisions with previously printed objects and to prevent them when arranging.\nThe value is ignored for most Prusa printers, which come with more detailed extruder model.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "20"
+  },
+  "bed_custom_model": {
+    "type": "string",
+    "label": "Bed custom model",
+    "tooltip": "",
+    "mode": "simple",
+    "gui_type": "file_picker",
+    "default_value": ""
+  },
+  "bed_custom_texture": {
+    "type": "string",
+    "label": "Bed custom texture",
+    "tooltip": "",
+    "mode": "simple",
+    "gui_type": "file_picker",
+    "default_value": ""
+  },
+  "bed_shape": {
+    "type": "points",
+    "label": "Bed shape",
+    "tooltip": "",
+    "mode": "simple",
+    "gui_type": "bed_shape",
+    "default_value": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        200.0,
+        0.0
+      ],
+      [
+        200.0,
+        200.0
+      ],
+      [
+        0.0,
+        200.0
+      ]
+    ]
+  },
+  "start_gcode": {
+    "type": "string",
+    "label": "Start G-code",
+    "tooltip": "This start procedure is inserted at the beginning, possibly prepended by temperature-changing commands. See 'autoemit_temperature_commands'.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": "G28 ; home all axes\nG1 Z5 F5000 ; lift nozzle\n"
+  },
+  "autoemit_temperature_commands": {
+    "type": "bool",
+    "label": "Emit temperature commands automatically",
+    "tooltip": "When enabled, PrusaSlicer will check whether your custom Start G-code contains G-codes to set extruder, bed or chamber temperature (M104, M109, M140, M190, M141 and M191). If so, the temperatures will not be emitted automatically so you're free to customize the order of heating commands and other custom actions. Note that you can use placeholder variables for all PrusaSlicer settings, so you can put a \"M109 S[first_layer_temperature]\" command wherever you want.\nIf your custom Start G-code does NOT contain these G-codes, PrusaSlicer will execute the Start G-code after heated chamber was set to its temperature, bed reached its target temperature and extruder just started heating.\n\nWhen disabled, PrusaSlicer will NOT emit commands to heat up extruder, bed or chamber, leaving all to Custom Start G-code.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "end_gcode": {
+    "type": "string",
+    "label": "End G-code",
+    "tooltip": "This end procedure is inserted at the end of the output file. Note that you can use placeholder variables for all PrusaSlicer settings.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": "M104 S0 ; turn off temperature\nG28 X0  ; home X axis\nM84     ; disable motors\n"
+  },
+  "before_layer_gcode": {
+    "type": "string",
+    "label": "Before layer change G-code",
+    "tooltip": "This custom code is inserted at every layer change, right before the Z move. Note that you can use placeholder variables for all Slic3r settings as well as [layer_num] and [layer_z].",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  },
+  "layer_gcode": {
+    "type": "string",
+    "label": "After layer change G-code",
+    "tooltip": "This custom code is inserted at every layer change, right after the Z move and before the extruder moves to the first layer point. Note that you can use placeholder variables for all Slic3r settings as well as [layer_num] and [layer_z].",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  },
+  "toolchange_gcode": {
+    "type": "string",
+    "label": "Tool change G-code",
+    "tooltip": "This custom code is inserted before every toolchange. Placeholder variables for all PrusaSlicer settings as well as {toolchange_z}, {previous_extruder} and {next_extruder} can be used. When a tool-changing command which changes to the correct extruder is included (such as T{next_extruder}), PrusaSlicer will emit no other such command. It is therefore possible to script custom behaviour both before and after the toolchange.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  },
+  "between_objects_gcode": {
+    "type": "string",
+    "label": "Between objects G-code",
+    "tooltip": "This code is inserted between objects when using sequential printing. By default extruder and bed temperature are reset using non-wait command; however if M104, M109, M140 or M190 are detected in this custom code, Slic3r will not add temperature commands. Note that you can use placeholder variables for all Slic3r settings, so you can put a \"M109 S[first_layer_temperature]\" command wherever you want.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  },
+  "color_change_gcode": {
+    "type": "string",
+    "label": "Color change G-code",
+    "tooltip": "This G-code will be used as a code for the color change",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": "M600"
+  },
+  "pause_print_gcode": {
+    "type": "string",
+    "label": "Pause Print G-code",
+    "tooltip": "This G-code will be used as a code for the pause print",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": "M601"
+  },
+  "template_custom_gcode": {
+    "type": "string",
+    "label": "Custom G-code",
+    "tooltip": "This G-code will be used as a custom code",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  },
+  "custom_parameters_printer": {
+    "type": "string",
+    "label": "Custom printer parameters",
+    "tooltip": "JSON-encoded string defining extra parameters, which can later be expanded in Custom G-code macro language. Each of the parameters is prepended by custom_parameter_printer prefix before it is passed into the parser. For example, defining '{\"my_key\": \"my_value\"}' allows to use 'custom_parameter_printer_my_key'.\n\nThe JSON must be single level (no arrays and objects). All value types are allowed, but nulls will be rejected by the parser.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  },
+  "machine_limits_usage": {
+    "type": "enum",
+    "label": "How to apply limits",
+    "tooltip": "How to apply the Machine Limits",
+    "mode": "simple",
+    "full_label": "Purpose of Machine Limits",
+    "gui_type": "combobox",
+    "enum_values": [
+      "emit_to_gcode",
+      "time_estimate_only",
+      "ignore"
+    ],
+    "default_value": "time_estimate_only"
+  },
+  "machine_max_acceleration_e": {
+    "type": "floats",
+    "label": "Maximum acceleration E",
+    "tooltip": "Maximum acceleration of the E axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": [
+      10000.0,
+      5000.0
+    ]
+  },
+  "machine_max_acceleration_extruding": {
+    "type": "floats",
+    "label": "Maximum acceleration when extruding",
+    "tooltip": "Maximum acceleration when extruding",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": [
+      1500.0,
+      1250.0
+    ]
+  },
+  "machine_max_acceleration_retracting": {
+    "type": "floats",
+    "label": "Maximum acceleration when retracting",
+    "tooltip": "Maximum acceleration when retracting.\n\nNot used for RepRapFirmware, which does not support it.",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": [
+      1500.0,
+      1250.0
+    ]
+  },
+  "machine_max_acceleration_travel": {
+    "type": "floats",
+    "label": "Maximum acceleration for travel moves",
+    "tooltip": "Maximum acceleration for travel moves.",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": [
+      1500.0,
+      1250.0
+    ]
+  },
+  "machine_max_acceleration_x": {
+    "type": "floats",
+    "label": "Maximum acceleration X",
+    "tooltip": "Maximum acceleration of the X axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": [
+      9000.0,
+      1000.0
+    ]
+  },
+  "machine_max_acceleration_y": {
+    "type": "floats",
+    "label": "Maximum acceleration Y",
+    "tooltip": "Maximum acceleration of the Y axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": [
+      9000.0,
+      1000.0
+    ]
+  },
+  "machine_max_acceleration_z": {
+    "type": "floats",
+    "label": "Maximum acceleration Z",
+    "tooltip": "Maximum acceleration of the Z axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": [
+      500.0,
+      200.0
+    ]
+  },
+  "machine_max_feedrate_e": {
+    "type": "floats",
+    "label": "Maximum feedrate E",
+    "tooltip": "Maximum feedrate of the E axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": [
+      120.0,
+      120.0
+    ]
+  },
+  "machine_max_feedrate_x": {
+    "type": "floats",
+    "label": "Maximum feedrate X",
+    "tooltip": "Maximum feedrate of the X axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": [
+      500.0,
+      200.0
+    ]
+  },
+  "machine_max_feedrate_y": {
+    "type": "floats",
+    "label": "Maximum feedrate Y",
+    "tooltip": "Maximum feedrate of the Y axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": [
+      500.0,
+      200.0
+    ]
+  },
+  "machine_max_feedrate_z": {
+    "type": "floats",
+    "label": "Maximum feedrate Z",
+    "tooltip": "Maximum feedrate of the Z axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": [
+      12.0,
+      12.0
+    ]
+  },
+  "machine_max_jerk_e": {
+    "type": "floats",
+    "label": "Maximum jerk E",
+    "tooltip": "Maximum jerk of the E axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": [
+      2.5,
+      2.5
+    ]
+  },
+  "machine_max_jerk_x": {
+    "type": "floats",
+    "label": "Maximum jerk X",
+    "tooltip": "Maximum jerk of the X axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": [
+      10.0,
+      10.0
+    ]
+  },
+  "machine_max_jerk_y": {
+    "type": "floats",
+    "label": "Maximum jerk Y",
+    "tooltip": "Maximum jerk of the Y axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": [
+      10.0,
+      10.0
+    ]
+  },
+  "machine_max_jerk_z": {
+    "type": "floats",
+    "label": "Maximum jerk Z",
+    "tooltip": "Maximum jerk of the Z axis",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": [
+      0.2,
+      0.4
+    ]
+  },
+  "machine_max_junction_deviation": {
+    "type": "floats",
+    "label": "Maximum junction deviation",
+    "tooltip": "Maximum junction deviation (M205 J, only apply if JD > 0 for Marlin Firmware).",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": [
+      0.0,
+      0.0
+    ]
+  },
+  "machine_min_extruding_rate": {
+    "type": "floats",
+    "label": "Minimum feedrate when extruding",
+    "tooltip": "Minimum feedrate when extruding (M205 S)",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": [
+      0.0,
+      0.0
+    ]
+  },
+  "machine_min_travel_rate": {
+    "type": "floats",
+    "label": "Minimum travel feedrate",
+    "tooltip": "Minimum travel feedrate (M205 T)",
+    "mode": "simple",
+    "gui_type": "textfields",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": [
+      0.0,
+      0.0
+    ]
+  },
+  "extruder_offset": {
+    "type": "points",
+    "label": "Extruder offset",
+    "tooltip": "If your firmware doesn't handle the extruder displacement you need the G-code to take it into account. This option lets you specify the displacement of each extruder with respect to the first one. It expects positive coordinates (they will be subtracted from the XY coordinate).",
+    "mode": "simple",
+    "gui_type": "points",
+    "sidetext": "mm",
+    "default_value": [
+      [
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "cooling_tube_length": {
+    "type": "float",
+    "label": "Cooling tube length",
+    "tooltip": "Length of the cooling tube to limit space for cooling moves inside it.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "5"
+  },
+  "cooling_tube_retraction": {
+    "type": "float",
+    "label": "Cooling tube position",
+    "tooltip": "Distance of the center-point of the cooling tube from the extruder tip.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "91.5"
+  },
+  "enable_pressure_advance_during_ramming": {
+    "type": "bool",
+    "label": "Enable pressure advance during ramming",
+    "tooltip": "Check to enable pressure advance during ramming.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "extra_loading_move": {
+    "type": "float",
+    "label": "Extra loading distance",
+    "tooltip": "When set to zero, the distance the filament is moved from parking position during load is exactly the same as it was moved back during unload. When positive, it is loaded further,  if negative, the loading move is shorter than unloading.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "default_value": "-2"
+  },
+  "high_current_on_filament_swap": {
+    "type": "bool",
+    "label": "High extruder current on filament swap",
+    "tooltip": "It may be beneficial to increase the extruder motor current during the filament exchange sequence to allow for rapid ramming feed rates and to overcome resistance when loading a filament with an ugly shaped tip.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "multimaterial_purging": {
+    "type": "float",
+    "label": "Purging volume",
+    "tooltip": "Determines purging volume on the wipe tower. This can be modified in Filament Settings ('filament_purge_multiplier') or overridden using project-specific settings.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm³",
+    "default_value": "140"
+  },
+  "parking_pos_retraction": {
+    "type": "float",
+    "label": "Filament parking position",
+    "tooltip": "Distance of the extruder tip from the position where the filament is parked when unloaded. This should match the value in printer firmware.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "92"
+  },
+  "printer_notes": {
+    "type": "string",
+    "label": "Printer notes",
+    "tooltip": "You can put your notes regarding the printer here.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  },
+  "default_material": {
+    "type": "string",
+    "label": "Default Material Preset",
+    "tooltip": "Name or ID of material preset to use as default when this print preset is selected.",
+    "mode": "simple",
+    "default_value": ""
+  },
+  "default_tool_print": {
+    "type": "string",
+    "label": "Default Tool Print Preset",
+    "tooltip": "Name or ID of tool print preset to use as default when this print preset is selected.",
+    "mode": "simple",
+    "default_value": ""
+  },
+  "first_layer_external_perimeter_speed": {
+    "type": "floatorpercent",
+    "label": "First layer perimeter speed",
+    "tooltip": "If expressed as absolute value in mm/s, this speed will be applied to the external perimeter print moves of the first layer. If expressed as a percentage (for example: 40%) it will be a percantage of the external perimeter speed. Note that 0 means that the \"First layer speed\" value will be used.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "first_layer_gap_fill_speed": {
+    "type": "floatorpercent",
+    "label": "First layer gap fill speed",
+    "tooltip": "If expressed as absolute value in mm/s, this speed will be applied to any gap fill print moves of the first layer. If expressed as a percentage (for example: 40%) it will be a percantage of the gap fill speed. Note that 0 means that the \"First layer speed\" value will be used.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "first_layer_infill_speed": {
+    "type": "floatorpercent",
+    "label": "First layer infill speed",
+    "tooltip": "If expressed as absolute value in mm/s, this speed will be applied to the infill print moves of the first layer. If expressed as a percentage (for example: 40%) it will be a percantage of the infill speed. Note that 0 means that the \"First layer speed\" value will be used.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "first_layer_perimeter_speed": {
+    "type": "floatorpercent",
+    "label": "First layer perimeter speed",
+    "tooltip": "If expressed as absolute value in mm/s, this speed will be applied to the perimeter print moves of the first layer. If expressed as a percentage (for example: 40%) it will be a percantage of the perimeter speed. Note that 0 means that the \"First layer speed\" value will be used.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "first_layer_support_material_speed": {
+    "type": "floatorpercent",
+    "label": "First layer support material speed",
+    "tooltip": "If expressed as absolute value in mm/s, this speed will be applied to any support print moves of the first layer. If expressed as a percentage (for example: 40%) it will be a percantage of the support material speed. Note that 0 means that the \"First layer speed\" value will be used.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "first_layer_top_solid_infill_speed": {
+    "type": "floatorpercent",
+    "label": "First layer top solid infill speed",
+    "tooltip": "If expressed as absolute value in mm/s, this speed will be applied to any top solid print moves of the first layer. If expressed as a percentage (for example: 40%) it will be a percantage of the top solid infill speed. Note that 0 means that the \"First layer speed\" value will be used.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "post_process": {
+    "type": "strings",
+    "label": "Post-processing scripts",
+    "tooltip": "If you want to process the output G-code through custom scripts, just list their absolute paths here. Separate multiple scripts with a semicolon. Scripts will be passed the absolute path to the G-code file as the first argument, and they can access the Slic3r config settings by reading environment variables.",
+    "mode": "simple",
+    "native_type": "array",
+    "editor": {
+      "kind": "list",
+      "value_type": "string"
+    },
+    "gui_type": "textfield",
+    "default_value": []
+  },
+  "first_layer_height": {
+    "type": "floatorpercent",
+    "label": "First layer height",
+    "tooltip": "When printing with very low layer heights, you might still want to print a thicker bottom layer to improve adhesion and tolerance for non perfect build plates.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0.2"
+  },
+  "layer_height": {
+    "type": "float",
+    "label": "Layer height",
+    "tooltip": "This setting controls the height (and thus the total number) of the slices/layers. Thinner layers give better accuracy but take more time to print.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0.3"
+  },
+  "max_layer_height": {
+    "type": "float",
+    "label": "Max",
+    "tooltip": "This is the highest printable layer height for this extruder, used to cap the variable layer height and support layer height. Maximum recommended layer height is 75% of the extrusion width to achieve reasonable inter-layer adhesion. If set to 0, layer height is limited to 75% of the nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "min_layer_height": {
+    "type": "float",
+    "label": "Min",
+    "tooltip": "This is the lowest printable layer height for this extruder and limits the resolution for variable layer height. Typical values are between 0.05 mm and 0.1 mm.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0.07"
+  },
+  "top_solid_layers": {
+    "type": "int",
+    "label": "Top solid layers",
+    "tooltip": "Number of solid layers to generate on top surfaces.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "0",
+    "default_value": "3"
+  },
+  "top_solid_min_thickness": {
+    "type": "float",
+    "label": "Minimum top shell thickness",
+    "tooltip": "The number of top solid layers is increased above top_solid_layers if necessary to satisfy minimum thickness of top shell. This is useful to prevent pillowing effect when printing with variable layer height.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "bottom_solid_layers": {
+    "type": "int",
+    "label": "Bottom solid layers",
+    "tooltip": "Number of solid layers to generate on bottom surfaces.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "0",
+    "default_value": "3"
+  },
+  "bottom_solid_min_thickness": {
+    "type": "float",
+    "label": "Minimum bottom shell thickness",
+    "tooltip": "The number of bottom solid layers is increased above bottom_solid_layers if necessary to satisfy minimum thickness of bottom shell.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "top_fill_pattern": {
+    "type": "enum",
+    "label": "Top fill pattern",
+    "tooltip": "Fill pattern for top infill. This only affects the top visible layer, and not its adjacent solid shells.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "rectilinear",
+      "monotonic",
+      "monotoniclines",
+      "alignedrectilinear",
+      "concentric",
+      "hilbertcurve",
+      "archimedeanchords",
+      "octagramspiral"
+    ],
+    "default_value": "monotonic"
+  },
+  "bottom_fill_pattern": {
+    "type": "enum",
+    "label": "Bottom fill pattern",
+    "tooltip": "Fill pattern for bottom infill. This only affects the bottom external visible layer, and not its adjacent solid shells.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "rectilinear",
+      "monotonic",
+      "monotoniclines",
+      "alignedrectilinear",
+      "concentric",
+      "hilbertcurve",
+      "archimedeanchords",
+      "octagramspiral"
+    ],
+    "default_value": "monotonic"
+  },
+  "only_one_perimeter_first_layer": {
+    "type": "bool",
+    "label": "Only one perimeter on first layer",
+    "tooltip": "Use only one perimeter on the first layer.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "top_one_perimeter_type": {
+    "type": "enum",
+    "label": "Single perimeter on top surfaces",
+    "tooltip": "Use only one perimeter on flat top surface, to give more space to the top infill pattern. Could be applied on topmost surface or all top surfaces.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "none",
+      "top",
+      "topmost"
+    ],
+    "default_value": "none"
+  },
+  "ironing": {
+    "type": "bool",
+    "label": "Enable ironing",
+    "tooltip": "Enable ironing of the top layers with the hot print head for smooth surface",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "ironing_type": {
+    "type": "enum",
+    "label": "Ironing Type",
+    "tooltip": "Ironing Type",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "top",
+      "topmost",
+      "solid"
+    ],
+    "default_value": "top"
+  },
+  "ironing_flowrate": {
+    "type": "percent",
+    "label": "Flow rate",
+    "tooltip": "Percent of a flow rate relative to object's normal layer height.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "%",
+    "min": "0",
+    "default_value": "15%"
+  },
+  "ironing_spacing": {
+    "type": "float",
+    "label": "Spacing between ironing passes",
+    "tooltip": "Distance between ironing lines",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0.1"
+  },
+  "ironing_speed": {
+    "type": "float",
+    "label": "Ironing speed",
+    "tooltip": "Ironing",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "15"
+  },
+  "perimeters": {
+    "type": "int",
+    "label": "Perimeters",
+    "tooltip": "This option sets the minimal number of perimeters to generate for each layer. Note that Slic3r may increase this number automatically when it detects sloping surfaces which benefit from a higher number of perimeters if the Extra Perimeters option is enabled.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "0",
+    "max": "10000",
+    "default_value": "3"
+  },
+  "seam_position": {
+    "type": "enum",
+    "label": "Seam position",
+    "tooltip": "Position of perimeters starting points.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "random",
+      "nearest",
+      "aligned",
+      "rear"
+    ],
+    "default_value": "aligned"
+  },
+  "staggered_inner_seams": {
+    "type": "bool",
+    "label": "Staggered inner seams",
+    "tooltip": "This option causes the inner seams to be shifted backwards based on their depth, forming a zigzag pattern.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "seam_gap_distance": {
+    "type": "floatorpercent",
+    "label": "Seam gap distance",
+    "tooltip": "The distance between the endpoints of a closed loop perimeter. Positive values will shorten and interrupt the loop slightly to reduce the seam. Negative values will extend the loop, causing the endpoints to overlap slightly. When percents are used, the distance is derived from the nozzle diameter. Set to zero to disable this feature.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "default_value": "15%"
+  },
+  "scarf_seam_placement": {
+    "type": "enum",
+    "label": "Scarf joint placement",
+    "tooltip": "Where to place scarf joint seam.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "nowhere",
+      "contours",
+      "everywhere"
+    ],
+    "default_value": "nowhere"
+  },
+  "scarf_seam_only_on_smooth": {
+    "type": "bool",
+    "label": "Scarf joint only on smooth perimeters",
+    "tooltip": "Only use the scarf joint when the perimeter is smooth.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "scarf_seam_start_height": {
+    "type": "percent",
+    "label": "Scarf start height",
+    "tooltip": "Start height of the scarf joint specified as fraction of the current layer height.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "%",
+    "min": "0",
+    "max": "100",
+    "default_value": "0%"
+  },
+  "scarf_seam_entire_loop": {
+    "type": "bool",
+    "label": "Scarf joint around entire perimeter",
+    "tooltip": "Extend the scarf around entire length of the perimeter.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "scarf_seam_length": {
+    "type": "float",
+    "label": "Scarf joint length",
+    "tooltip": "Length of the scarf joint.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "20"
+  },
+  "scarf_seam_max_segment_length": {
+    "type": "float",
+    "label": "Max scarf joint segment length",
+    "tooltip": "Maximum length of any scarf joint segment.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0.15000000596046448",
+    "default_value": "1"
+  },
+  "scarf_seam_on_inner_perimeters": {
+    "type": "bool",
+    "label": "Scarf joint on inner perimeters",
+    "tooltip": "Use scarf joint on inner perimeters.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "external_perimeters_first": {
+    "type": "bool",
+    "label": "External perimeters first",
+    "tooltip": "Print contour perimeters from the outermost one to the innermost one instead of the default inverse order.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "extra_perimeters": {
+    "type": "bool",
+    "label": "Extra perimeters if needed",
+    "tooltip": "Add more perimeters when needed for avoiding gaps in sloping walls. Slic3r keeps adding perimeters, until more than 70% of the loop immediately above is supported.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "extra_perimeters_on_overhangs": {
+    "type": "bool",
+    "label": "Extra perimeters on overhangs (Experimental)",
+    "tooltip": "Detect overhang areas where bridges cannot be anchored, and fill them with extra perimeter paths. These paths are anchored to the nearby non-overhang area when possible.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "overhangs": {
+    "type": "bool",
+    "label": "Detect bridging perimeters",
+    "tooltip": "Experimental option to adjust flow for overhangs (bridge flow will be used), to apply bridge speed to them and enable fan.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "thick_bridges": {
+    "type": "bool",
+    "label": "Thick bridges",
+    "tooltip": "If enabled, bridges are more reliable, can bridge longer distances, but may look worse. If disabled, bridges look better but are reliable just for shorter bridged distances.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "thin_walls": {
+    "type": "bool",
+    "label": "Detect thin walls",
+    "tooltip": "Detect single-width walls (parts where two extrusions don't fit and we need to collapse them into a single trace).",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "gap_fill_enabled": {
+    "type": "bool",
+    "label": "Fill gaps",
+    "tooltip": "Enables filling of gaps between perimeters and between the inner most perimeters and infill.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "ensure_vertical_shell_thickness": {
+    "type": "enum",
+    "label": "Ensure vertical shell thickness",
+    "tooltip": "Add solid infill near sloping surfaces to guarantee the vertical shell thickness (top+bottom solid layers).",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "disabled",
+      "partial",
+      "enabled"
+    ],
+    "default_value": "enabled"
+  },
+  "fuzzy_skin": {
+    "type": "enum",
+    "label": "Fuzzy Skin",
+    "tooltip": "Fuzzy skin type.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "none",
+      "external",
+      "all"
+    ],
+    "default_value": "none"
+  },
+  "fuzzy_skin_point_dist": {
+    "type": "float",
+    "label": "Fuzzy skin point distance",
+    "tooltip": "Perimeters will be split into multiple segments by inserting Fuzzy skin points. Lowering the Fuzzy skin point distance will increase the number of randomly offset points on the perimeter wall.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0.8"
+  },
+  "fuzzy_skin_thickness": {
+    "type": "float",
+    "label": "Fuzzy skin thickness",
+    "tooltip": "The maximum distance that each skin point can be offset (both ways), measured perpendicular to the perimeter wall.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0.3"
+  },
+  "fill_density": {
+    "type": "percent",
+    "label": "Fill density",
+    "tooltip": "Density of internal infill, expressed in the range 0% - 100%.",
+    "mode": "simple",
+    "gui_type": "f_enum_open",
+    "sidetext": "%",
+    "min": "0",
+    "max": "100",
+    "enum_values": [
+      0.0,
+      5.0,
+      10.0,
+      15.0,
+      20.0,
+      25.0,
+      30.0,
+      40.0,
+      50.0,
+      60.0,
+      70.0,
+      80.0,
+      90.0,
+      100.0
+    ],
+    "enum_labels": [
+      "0%",
+      "5%",
+      "10%",
+      "15%",
+      "20%",
+      "25%",
+      "30%",
+      "40%",
+      "50%",
+      "60%",
+      "70%",
+      "80%",
+      "90%",
+      "100%"
+    ],
+    "default_value": "20%"
+  },
+  "fill_pattern": {
+    "type": "enum",
+    "label": "Fill pattern",
+    "tooltip": "Fill pattern for general low-density infill.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "rectilinear",
+      "alignedrectilinear",
+      "grid",
+      "triangles",
+      "stars",
+      "cubic",
+      "line",
+      "concentric",
+      "honeycomb",
+      "3dhoneycomb",
+      "gyroid",
+      "hilbertcurve",
+      "archimedeanchords",
+      "octagramspiral",
+      "adaptivecubic",
+      "supportcubic",
+      "lightning",
+      "zigzag"
+    ],
+    "default_value": "stars"
+  },
+  "automatic_infill_combination": {
+    "type": "bool",
+    "label": "Automatic infill combination",
+    "tooltip": "This feature automatically combines infill of several layers and speeds up your print by extruding thicker infill layers while preserving thin perimeters, thus maintaining accuracy.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "automatic_infill_combination_max_layer_height": {
+    "type": "floatorpercent",
+    "label": "Automatic infill combination - Max layer height",
+    "tooltip": "Maximum layer height for combining infill when automatic infill combining is enabled. Maximum layer height could be specified either as an absolute in millimeters value or as a percentage of nozzle diameter. For printing with different nozzle diameters, it is recommended to use percentage value over absolute value.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "default_value": "100%"
+  },
+  "infill_every_layers": {
+    "type": "int",
+    "label": "Combine infill every",
+    "tooltip": "This feature allows to combine infill and speed up your print by extruding thicker infill layers while preserving thin perimeters, thus accuracy.",
+    "mode": "simple",
+    "full_label": "Combine infill every n layers",
+    "gui_type": "spinbox",
+    "sidetext": "layers",
+    "min": "1",
+    "default_value": "1"
+  },
+  "infill_overlap": {
+    "type": "floatorpercent",
+    "label": "Infill/perimeters overlap",
+    "tooltip": "This setting applies an additional overlap between infill and perimeters for better bonding. Theoretically this shouldn't be needed, but backlash might cause gaps. If expressed as percentage (example: 15%) it is calculated over perimeter extrusion width.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "default_value": "25%"
+  },
+  "infill_anchor": {
+    "type": "floatorpercent",
+    "label": "Length of the infill anchor",
+    "tooltip": "Connect an infill line to an internal perimeter with a short segment of an additional perimeter. If expressed as percentage (example: 15%) it is calculated over infill extrusion width. PrusaSlicer tries to connect two close infill lines to a short perimeter segment. If no such perimeter segment shorter than infill_anchor_max is found, the infill line is connected to a perimeter segment at just one side and the length of the perimeter segment taken is limited to this parameter, but no longer than anchor_length_max. Set this parameter to zero to disable anchoring perimeters connected to a single infill line.",
+    "mode": "simple",
+    "gui_type": "f_enum_open",
+    "sidetext": "mm",
+    "enum_values": [
+      0.0,
+      1.0,
+      2.0,
+      5.0,
+      10.0,
+      1000.0
+    ],
+    "enum_labels": [
+      "0 (no open anchors)",
+      "1 mm",
+      "2 mm",
+      "5 mm",
+      "10 mm",
+      "1000 (unlimited)"
+    ],
+    "default_value": "600%"
+  },
+  "infill_anchor_max": {
+    "type": "floatorpercent",
+    "label": "Maximum length of the infill anchor",
+    "tooltip": "Connect an infill line to an internal perimeter with a short segment of an additional perimeter. If expressed as percentage (example: 15%) it is calculated over infill extrusion width. PrusaSlicer tries to connect two close infill lines to a short perimeter segment. If no such perimeter segment shorter than this parameter is found, the infill line is connected to a perimeter segment at just one side and the length of the perimeter segment taken is limited to infill_anchor, but no longer than this parameter. Set this parameter to zero to disable anchoring.",
+    "mode": "simple",
+    "gui_type": "f_enum_open",
+    "sidetext": "mm",
+    "enum_values": [
+      0.0,
+      1.0,
+      2.0,
+      5.0,
+      10.0,
+      1000.0
+    ],
+    "enum_labels": [
+      "0 (not anchored)",
+      "1 mm",
+      "2 mm",
+      "5 mm",
+      "10 mm",
+      "1000 (unlimited)"
+    ],
+    "default_value": "50"
+  },
+  "infill_first": {
+    "type": "bool",
+    "label": "Infill before perimeters",
+    "tooltip": "This option will switch the print order of perimeters and infill, making the latter first.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "solid_infill_every_layers": {
+    "type": "int",
+    "label": "Solid infill every",
+    "tooltip": "This feature allows to force a solid layer every given number of layers. Zero to disable. You can set this to any value (for example 9999); Slic3r will automatically choose the maximum possible number of layers to combine according to nozzle diameter and layer height.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "layers",
+    "min": "0",
+    "default_value": "0"
+  },
+  "bridge_angle": {
+    "type": "float",
+    "label": "Bridging angle",
+    "tooltip": "Bridging angle override. If left to zero, the bridging angle will be calculated automatically. Otherwise the provided angle will be used for all bridges. Use 180° for zero angle.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "°",
+    "min": "0",
+    "default_value": "0"
+  },
+  "bridge_flow_ratio": {
+    "type": "float",
+    "label": "Bridge flow ratio",
+    "tooltip": "This factor affects the amount of plastic for bridging. You can decrease it slightly to pull the extrudates and prevent sagging, although default settings are usually good and you should experiment with cooling (use a fan) before tweaking this.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "min": "0",
+    "max": "2",
+    "default_value": "1"
+  },
+  "fill_angle": {
+    "type": "float",
+    "label": "Fill angle",
+    "tooltip": "Default base angle for infill orientation. Cross-hatching will be applied to this. Bridges will be infilled using the best direction Slic3r can detect, so this setting does not affect them.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "°",
+    "min": "0",
+    "max": "360",
+    "default_value": "45"
+  },
+  "only_retract_when_crossing_perimeters": {
+    "type": "bool",
+    "label": "Only retract when crossing perimeters",
+    "tooltip": "Disables retraction when the travel path does not exceed the upper layer's perimeters (and thus any ooze will be probably invisible).",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "solid_infill_below_area": {
+    "type": "float",
+    "label": "Solid infill threshold area",
+    "tooltip": "Force solid infill for regions having a smaller area than the specified threshold.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm²",
+    "min": "0",
+    "default_value": "70"
+  },
+  "brim_type": {
+    "type": "enum",
+    "label": "Brim type",
+    "tooltip": "The places where the brim will be printed around each object on the first layer.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "no_brim",
+      "outer_only",
+      "inner_only",
+      "outer_and_inner"
+    ],
+    "default_value": "no_brim"
+  },
+  "brim_width": {
+    "type": "float",
+    "label": "Brim width",
+    "tooltip": "The horizontal width of the brim that will be printed around each object on the first layer. When raft is used, no brim is generated (use raft_first_layer_expansion).",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "max": "200",
+    "default_value": "5"
+  },
+  "brim_separation": {
+    "type": "float",
+    "label": "Brim separation gap",
+    "tooltip": "Offset of brim from the printed object. The offset is applied after the elephant foot compensation.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "skirts": {
+    "type": "int",
+    "label": "Loops (minimum)",
+    "tooltip": "Number of loops for the skirt. If the Minimum Extrusion Length option is set, the number of loops might be greater than the one configured here. Set this to zero to disable skirt completely.",
+    "mode": "simple",
+    "full_label": "Skirt Loops",
+    "gui_type": "spinbox",
+    "min": "0",
+    "default_value": "1"
+  },
+  "skirt_distance": {
+    "type": "float",
+    "label": "Distance from brim/object",
+    "tooltip": "Distance between skirt and brim (when draft shield is not used) or objects.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "6"
+  },
+  "skirt_height": {
+    "type": "int",
+    "label": "Skirt height",
+    "tooltip": "Height of skirt expressed in layers.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "layers",
+    "default_value": "1"
+  },
+  "min_skirt_length": {
+    "type": "float",
+    "label": "Minimal filament extrusion length",
+    "tooltip": "Generate no less than the number of skirt loops required to consume the specified amount of filament on the bottom layer. For multi-extruder machines, this minimum applies to each extruder.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "draft_shield": {
+    "type": "enum",
+    "label": "Draft shield",
+    "tooltip": "With draft shield active, the skirt will be printed skirt_distance from the object, possibly intersecting brim.\nEnabled = skirt is as tall as the highest printed object.\nLimited = skirt is as tall as specified by skirt_height.\nThis is useful to protect an ABS or ASA print from warping and detaching from print bed due to wind draft.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "disabled",
+      "limited",
+      "enabled"
+    ],
+    "default_value": "disabled"
+  },
+  "raft_contact_distance": {
+    "type": "float",
+    "label": "Raft contact Z distance",
+    "tooltip": "The vertical distance between object and raft. Ignored for soluble interface.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0.1"
+  },
+  "raft_expansion": {
+    "type": "float",
+    "label": "Raft expansion",
+    "tooltip": "Expansion of the raft in XY plane for better stability.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "1.5"
+  },
+  "raft_layers": {
+    "type": "int",
+    "label": "Raft layers",
+    "tooltip": "The object will be raised by this number of layers, and support material will be generated under it.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "layers",
+    "min": "0",
+    "default_value": "0"
+  },
+  "raft_first_layer_density": {
+    "type": "percent",
+    "label": "First layer density",
+    "tooltip": "Density of the first raft layer.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "%",
+    "min": "10",
+    "max": "100",
+    "default_value": "90%"
+  },
+  "raft_first_layer_expansion": {
+    "type": "float",
+    "label": "Raft first layer expansion",
+    "tooltip": "Expansion of the raft first layer to improve adhesion to print bed.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "3"
+  },
+  "support_material": {
+    "type": "enum",
+    "label": "Generate Supports",
+    "tooltip": "Enable support material generation.\nOff - Disables support material generation.\nManual Only - Generates supports inside the \"Support Enforcer\" volumes only.\nOn - Generates supports automatically based on the overhang threshold value and also inside the \"Support Enforcer\" volumes.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "none",
+      "enforcers_only",
+      "everywhere"
+    ],
+    "default_value": "enforcers_only"
+  },
+  "support_material_style": {
+    "type": "enum",
+    "label": "Style",
+    "tooltip": "Style and shape of the support towers. Projecting the supports into a regular grid will create more stable supports, while snug support towers will save material and reduce object scarring.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "grid",
+      "snug",
+      "organic"
+    ],
+    "default_value": "grid"
+  },
+  "support_material_threshold": {
+    "type": "int",
+    "label": "Overhang threshold",
+    "tooltip": "Support material will not be generated for overhangs whose slope angle (90° = vertical) is above the given threshold. In other words, this value represent the most horizontal slope (measured from the horizontal plane) that you can print without support material. Set to zero for automatic detection (recommended).",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "°",
+    "min": "0",
+    "max": "90",
+    "default_value": "0"
+  },
+  "support_material_buildplate_only": {
+    "type": "bool",
+    "label": "Support on build plate only",
+    "tooltip": "Only create support if it lies on a build plate. Don't create support on a print.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "support_material_enforce_layers": {
+    "type": "int",
+    "label": "Enforce support for the first",
+    "tooltip": "Generate support material for the specified number of layers counting from bottom, regardless of whether normal support material is enabled or not and regardless of any angle threshold. This is useful for getting more adhesion of objects having a very thin or poor footprint on the build plate.",
+    "mode": "simple",
+    "full_label": "Enforce support for the first n layers",
+    "gui_type": "spinbox",
+    "sidetext": "layers",
+    "min": "0",
+    "default_value": "0"
+  },
+  "dont_support_bridges": {
+    "type": "bool",
+    "label": "Don't support bridges",
+    "tooltip": "Experimental option for preventing support material from being generated under bridged areas.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "support_material_first_layer_density": {
+    "type": "percent",
+    "label": "First layer density",
+    "tooltip": "Density of the first support layer.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "%",
+    "min": "10",
+    "max": "100",
+    "default_value": "90%"
+  },
+  "support_material_first_layer_expansion": {
+    "type": "float",
+    "label": "First layer expansion",
+    "tooltip": "Expansion of the support first layer to improve adhesion to print bed.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "3"
+  },
+  "support_material_closing_radius": {
+    "type": "float",
+    "label": "Closing radius",
+    "tooltip": "For snug supports, the support regions will be merged using morphological closing operation. Gaps smaller than the closing radius will be filled in.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "2"
+  },
+  "support_material_synchronize_layers": {
+    "type": "bool",
+    "label": "Synchronize with object layers",
+    "tooltip": "Synchronize support layers with the object print layers. This is useful with multi-material printers, where the extruder switch is expensive. This option is only available when top contact Z distance is set to zero.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "support_material_with_sheath": {
+    "type": "bool",
+    "label": "With sheath around the support",
+    "tooltip": "Add a sheath (a single perimeter line) around the base support. This makes the support more reliable, but also more difficult to remove.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "support_material_pattern": {
+    "type": "enum",
+    "label": "Pattern",
+    "tooltip": "Pattern used to generate support material.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "rectilinear",
+      "rectilinear-grid",
+      "honeycomb"
+    ],
+    "default_value": "rectilinear"
+  },
+  "support_material_spacing": {
+    "type": "float",
+    "label": "Pattern spacing",
+    "tooltip": "Spacing between support material lines.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "2.5"
+  },
+  "support_material_angle": {
+    "type": "float",
+    "label": "Pattern angle",
+    "tooltip": "Use this setting to rotate the support material pattern on the horizontal plane.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "°",
+    "min": "0",
+    "max": "359",
+    "default_value": "0"
+  },
+  "support_material_bottom_contact_distance": {
+    "type": "float",
+    "label": "Bottom contact Z distance",
+    "tooltip": "The vertical distance between the object top surface and the support material interface. If set to zero, support_material_contact_distance will be used for both top and bottom contact Z distances.",
+    "mode": "simple",
+    "gui_type": "f_enum_open",
+    "sidetext": "mm",
+    "enum_values": [
+      0.0,
+      0.1,
+      0.2
+    ],
+    "enum_labels": [
+      "Same as top",
+      "0.1",
+      "0.2"
+    ],
+    "default_value": "0"
+  },
+  "support_material_bottom_interface_layers": {
+    "type": "int",
+    "label": "Bottom interface layers",
+    "tooltip": "Number of interface layers to insert between the object(s) and support material. Set to -1 to use support_material_interface_layers",
+    "mode": "simple",
+    "gui_type": "i_enum_open",
+    "sidetext": "layers",
+    "min": "-1",
+    "enum_values": [
+      -1,
+      0,
+      1,
+      2,
+      3
+    ],
+    "enum_labels": [
+      "Same as top",
+      "0 (off)",
+      "1 (light)",
+      "2 (default)",
+      "3 (heavy)"
+    ],
+    "default_value": "-1"
+  },
+  "support_material_contact_distance": {
+    "type": "float",
+    "label": "Top contact Z distance",
+    "tooltip": "The vertical distance between object and support material interface. Setting this to 0 will also prevent Slic3r from using bridge flow and speed for the first object layer.",
+    "mode": "simple",
+    "gui_type": "f_enum_open",
+    "sidetext": "mm",
+    "enum_values": [
+      0.0,
+      0.1,
+      0.2
+    ],
+    "enum_labels": [
+      "0 (soluble)",
+      "0.1 (detachable)",
+      "0.2 (detachable)"
+    ],
+    "default_value": "0.2"
+  },
+  "support_material_xy_spacing": {
+    "type": "floatorpercent",
+    "label": "XY separation between an object and its support",
+    "tooltip": "XY separation between an object and its support. If expressed as percentage (for example 50%), it will be calculated over external perimeter width.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "50%"
+  },
+  "support_material_interface_contact_loops": {
+    "type": "bool",
+    "label": "Interface loops",
+    "tooltip": "Cover the top contact layer of the supports with loops. Disabled by default.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "support_material_interface_layers": {
+    "type": "int",
+    "label": "Top interface layers",
+    "tooltip": "Number of interface layers to insert between the object(s) and support material.",
+    "mode": "simple",
+    "gui_type": "i_enum_open",
+    "sidetext": "layers",
+    "min": "0",
+    "enum_values": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "enum_labels": [
+      "0 (off)",
+      "1 (light)",
+      "2 (default)",
+      "3 (heavy)"
+    ],
+    "default_value": "3"
+  },
+  "support_material_interface_pattern": {
+    "type": "enum",
+    "label": "Interface pattern",
+    "tooltip": "Pattern used to generate support material interface. Default pattern for non-soluble support interface is Rectilinear, while default pattern for soluble support interface is Concentric.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "auto",
+      "rectilinear",
+      "concentric"
+    ],
+    "default_value": "rectilinear"
+  },
+  "support_material_interface_spacing": {
+    "type": "float",
+    "label": "Interface pattern spacing",
+    "tooltip": "Spacing between interface lines. Set zero to get a solid interface.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "support_tree_angle": {
+    "type": "float",
+    "label": "Maximum Branch Angle",
+    "tooltip": "The maximum angle of the branches, when the branches have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "°",
+    "min": "0",
+    "max": "85",
+    "default_value": "40"
+  },
+  "support_tree_angle_slow": {
+    "type": "float",
+    "label": "Preferred Branch Angle",
+    "tooltip": "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "°",
+    "min": "10",
+    "max": "85",
+    "default_value": "25"
+  },
+  "support_tree_branch_diameter": {
+    "type": "float",
+    "label": "Branch Diameter",
+    "tooltip": "The diameter of the thinnest branches of organic support. Thicker branches are more sturdy. Branches towards the base will be thicker than this.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0.10000000149011612",
+    "max": "100",
+    "default_value": "2"
+  },
+  "support_tree_branch_diameter_angle": {
+    "type": "float",
+    "label": "Branch Diameter Angle",
+    "tooltip": "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the organic support.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "°",
+    "min": "0",
+    "max": "15",
+    "default_value": "5"
+  },
+  "support_tree_branch_diameter_double_wall": {
+    "type": "float",
+    "label": "Branch Diameter with double walls",
+    "tooltip": "Branches with area larger than the area of a circle of this diameter will be printed with double walls for stability. Set this value to zero for no double walls.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "max": "100",
+    "default_value": "3"
+  },
+  "support_tree_branch_distance": {
+    "type": "float",
+    "label": "Branch Distance",
+    "tooltip": "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": "1"
+  },
+  "support_tree_tip_diameter": {
+    "type": "float",
+    "label": "Tip Diameter",
+    "tooltip": "Branch tip diameter for organic supports.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0.10000000149011612",
+    "max": "100",
+    "default_value": "0.8"
+  },
+  "support_tree_top_rate": {
+    "type": "percent",
+    "label": "Branch Density",
+    "tooltip": "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs but the supports are harder to remove, thus it is recommended to enable top support interfaces instead of a high branch density value if dense interfaces are needed.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "%",
+    "min": "5",
+    "default_value": "15%"
+  },
+  "first_layer_speed": {
+    "type": "floatorpercent",
+    "label": "First layer speed",
+    "tooltip": "If expressed as absolute value in mm/s, this speed will be applied to all the print moves of the first layer, regardless of their type. If expressed as a percentage (for example: 40%) it will scale the default speeds.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "30"
+  },
+  "first_layer_solid_infill_speed": {
+    "type": "floatorpercent",
+    "label": "First layer solid infill speed",
+    "tooltip": "If expressed as absolute value in mm/s, this speed will be applied to the solid infill print moves of the first layer. If expressed as a percentage (for example: 40%) it will be a percantage of the solid infill speed. Note that 0 means that the \"First layer speed\" value will be used.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "first_layer_speed_over_raft": {
+    "type": "floatorpercent",
+    "label": "Speed of object first layer over raft interface",
+    "tooltip": "If expressed as absolute value in mm/s, this speed will be applied to all the print moves of the first object layer above raft interface, regardless of their type. If expressed as a percentage (for example: 40%) it will scale the default speeds.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "30"
+  },
+  "external_perimeter_speed": {
+    "type": "floatorpercent",
+    "label": "External perimeters",
+    "tooltip": "This separate setting will affect the speed of external perimeters (the visible ones). If expressed as percentage (for example: 80%) it will be calculated on the perimeters speed setting above. Set to zero for auto.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "50%"
+  },
+  "perimeter_speed": {
+    "type": "float",
+    "label": "Perimeters",
+    "tooltip": "Speed for perimeters (contours, aka vertical shells). Set to zero for auto.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "60"
+  },
+  "small_perimeter_speed": {
+    "type": "floatorpercent",
+    "label": "Small perimeters",
+    "tooltip": "This separate setting will affect the speed of perimeters having radius <= 6.5mm (usually holes). If expressed as percentage (for example: 80%) it will be calculated on the perimeters speed setting above. Set to zero for auto.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "15"
+  },
+  "infill_speed": {
+    "type": "float",
+    "label": "Infill",
+    "tooltip": "Speed for printing the internal fill. Set to zero for auto.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "80"
+  },
+  "solid_infill_speed": {
+    "type": "floatorpercent",
+    "label": "Solid infill",
+    "tooltip": "Speed for printing solid regions (top/bottom/internal horizontal shells). This can be expressed as a percentage (for example: 80%) over the default infill speed above. Set to zero for auto.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "20"
+  },
+  "top_solid_infill_speed": {
+    "type": "floatorpercent",
+    "label": "Top solid infill",
+    "tooltip": "Speed for printing top solid layers (it only applies to the uppermost external layers and not to their internal solid layers). You may want to slow down this to get a nicer surface finish. This can be expressed as a percentage (for example: 80%) over the solid infill speed above. Set to zero for auto.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "15"
+  },
+  "gap_fill_speed": {
+    "type": "float",
+    "label": "Gap fill",
+    "tooltip": "Speed for filling small gaps using short zigzag moves. Keep this reasonably low to avoid too much shaking and resonance issues. Set zero to disable gaps filling.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "20"
+  },
+  "travel_speed": {
+    "type": "float",
+    "label": "Travel",
+    "tooltip": "Speed for travel moves (jumps between distant extrusion points).",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "1",
+    "default_value": "130"
+  },
+  "travel_speed_z": {
+    "type": "float",
+    "label": "Z travel",
+    "tooltip": "Speed for movements along the Z axis.\nWhen set to zero, the value is ignored and regular travel speed is used instead.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "bridge_speed": {
+    "type": "float",
+    "label": "Bridges",
+    "tooltip": "Speed for printing bridges.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "60"
+  },
+  "over_bridge_speed": {
+    "type": "floatorpercent",
+    "label": "Over bridges",
+    "tooltip": "Speed for printing solid infill above bridges. Set to 0 to use solid infill speed. If set as percentage, the speed is calculated over solid infill speed. ",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "support_material_speed": {
+    "type": "float",
+    "label": "Support material",
+    "tooltip": "Speed for printing support material.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "60"
+  },
+  "support_material_interface_speed": {
+    "type": "floatorpercent",
+    "label": "Support material interface",
+    "tooltip": "Speed for printing support material interface layers. If expressed as percentage (for example 50%) it will be calculated over support material speed.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "100%"
+  },
+  "enable_dynamic_overhang_speeds": {
+    "type": "bool",
+    "label": "Enable dynamic overhang speeds",
+    "tooltip": "This setting enables dynamic speed control on overhangs.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "overhang_speed_0": {
+    "type": "floatorpercent",
+    "label": "speed for 0% overlap (bridge)",
+    "tooltip": "Overhang size is expressed as a percentage of overlap of the extrusion with the previous layer: 100% would be full overlap (no overhang), while 0% represents full overhang (floating extrusion, bridge). Speeds for overhang sizes in between are calculated via linear interpolation. If set as percentage, the speed is calculated over the external perimeter speed. Note that the speeds generated to gcode will never exceed the max volumetric speed value.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "15"
+  },
+  "overhang_speed_1": {
+    "type": "floatorpercent",
+    "label": "speed for 25% overlap",
+    "tooltip": "Overhang size is expressed as a percentage of overlap of the extrusion with the previous layer: 100% would be full overlap (no overhang), while 0% represents full overhang (floating extrusion, bridge). Speeds for overhang sizes in between are calculated via linear interpolation. If set as percentage, the speed is calculated over the external perimeter speed. Note that the speeds generated to gcode will never exceed the max volumetric speed value.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "15"
+  },
+  "overhang_speed_2": {
+    "type": "floatorpercent",
+    "label": "speed for 50% overlap",
+    "tooltip": "Overhang size is expressed as a percentage of overlap of the extrusion with the previous layer: 100% would be full overlap (no overhang), while 0% represents full overhang (floating extrusion, bridge). Speeds for overhang sizes in between are calculated via linear interpolation. If set as percentage, the speed is calculated over the external perimeter speed. Note that the speeds generated to gcode will never exceed the max volumetric speed value.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "20"
+  },
+  "overhang_speed_3": {
+    "type": "floatorpercent",
+    "label": "speed for 75% overlap",
+    "tooltip": "Overhang size is expressed as a percentage of overlap of the extrusion with the previous layer: 100% would be full overlap (no overhang), while 0% represents full overhang (floating extrusion, bridge). Speeds for overhang sizes in between are calculated via linear interpolation. If set as percentage, the speed is calculated over the external perimeter speed. Note that the speeds generated to gcode will never exceed the max volumetric speed value.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "25"
+  },
+  "max_print_speed": {
+    "type": "float",
+    "label": "Max print speed",
+    "tooltip": "When setting other speed settings to 0 Slic3r will autocalculate the optimal speed in order to keep constant extruder pressure. This experimental setting is used to set the highest print speed you want to allow.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "1",
+    "default_value": "80"
+  },
+  "max_volumetric_speed": {
+    "type": "float",
+    "label": "Max volumetric speed",
+    "tooltip": "This experimental setting is used to set the maximum volumetric speed your extruder supports.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm³/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "max_volumetric_extrusion_rate_slope_negative": {
+    "type": "float",
+    "label": "Max volumetric slope negative",
+    "tooltip": "This experimental setting is used to limit the speed of change in extrusion rate for a transition from higher speed to lower speed. A value of 1.8 mm³/s² ensures, that a change from the extrusion rate of 5.4 mm³/s (0.45 mm extrusion width, 0.2 mm extrusion height, feedrate 60 mm/s) to 1.8 mm³/s (feedrate 20 mm/s) will take at least 2 seconds.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm³/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "max_volumetric_extrusion_rate_slope_positive": {
+    "type": "float",
+    "label": "Max volumetric slope positive",
+    "tooltip": "This experimental setting is used to limit the speed of change in extrusion rate for a transition from lower speed to higher speed. A value of 1.8 mm³/s² ensures, that a change from the extrusion rate of 1.8 mm³/s (0.45 mm extrusion width, 0.2 mm extrusion height, feedrate 20 mm/s) to 5.4 mm³/s (feedrate 60 mm/s) will take at least 2 seconds.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm³/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "retract_lift": {
+    "type": "float",
+    "label": "Lift height",
+    "tooltip": "Lift height applied before travel.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "retract_lift_above": {
+    "type": "float",
+    "label": "Only lift Above Z",
+    "tooltip": "If you set this to a positive value, Z lift will only take place above the specified absolute Z. You can tune this setting for skipping lift on the first layers.",
+    "mode": "simple",
+    "full_label": "Only lift Z above",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "default_value": "0"
+  },
+  "retract_lift_below": {
+    "type": "float",
+    "label": "Only lift Below Z",
+    "tooltip": "If you set this to a positive value, Z lift will only take place below the specified absolute Z. You can tune this setting for limiting lift to the first layers.",
+    "mode": "simple",
+    "full_label": "Only lift Z below",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "default_value": "0"
+  },
+  "travel_lift_before_obstacle": {
+    "type": "bool",
+    "label": "Steeper ramp before obstacles",
+    "tooltip": "If enabled, PrusaSlicer detects obstacles along the travel path and makes the slope steeper in case an obstacle might be hit during the initial phase of the travel.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "travel_max_lift": {
+    "type": "float",
+    "label": "Maximum ramping lift",
+    "tooltip": "Maximum lift height of the ramping lift. It may not be reached if the next position is close to the old one.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "travel_ramping_lift": {
+    "type": "bool",
+    "label": "Use ramping lift",
+    "tooltip": "Generates a ramping lift instead of lifting the extruder directly upwards. The travel is split into two phases: the ramp and the standard horizontal travel. This option helps reduce stringing.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "travel_slope": {
+    "type": "float",
+    "label": "Ramping slope angle",
+    "tooltip": "Slope of the ramp in the initial phase of the travel.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "°",
+    "min": "0",
+    "max": "90",
+    "default_value": "0"
+  },
+  "avoid_crossing_curled_overhangs": {
+    "type": "bool",
+    "label": "Avoid crossing curled overhangs (Experimental)",
+    "tooltip": "Plan travel moves such that the extruder avoids areas where the filament may be curled up. This is mostly happening on steeper rounded overhangs and may cause a crash with the nozzle. This feature slows down both the print and the G-code generation.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "avoid_crossing_perimeters": {
+    "type": "bool",
+    "label": "Avoid crossing perimeters",
+    "tooltip": "Optimize travel moves in order to minimize the crossing of perimeters. This is mostly useful with Bowden extruders which suffer from oozing. This feature slows down both the print and the G-code generation.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "avoid_crossing_perimeters_max_detour": {
+    "type": "float",
+    "label": "Avoid crossing perimeters - Max detour length",
+    "tooltip": "The maximum detour length for avoid crossing perimeters. If the detour is longer than this value, avoid crossing perimeters is not applied for this travel path. ",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "bridge_acceleration": {
+    "type": "float",
+    "label": "Bridge",
+    "tooltip": "This is the acceleration your printer will use for bridges. Set zero to disable acceleration control for bridges.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "default_acceleration": {
+    "type": "float",
+    "label": "Default",
+    "tooltip": "This is the acceleration your printer will be reset to after the role-specific acceleration values are used (perimeter/infill). Set zero to prevent resetting acceleration at all.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "external_perimeter_acceleration": {
+    "type": "float",
+    "label": "External perimeters",
+    "tooltip": "This is the acceleration your printer will use for external perimeters. Set zero to use the value for perimeters.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "default_value": "0"
+  },
+  "infill_acceleration": {
+    "type": "float",
+    "label": "Infill",
+    "tooltip": "This is the acceleration your printer will use for infill. Set zero to disable acceleration control for infill.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "perimeter_acceleration": {
+    "type": "float",
+    "label": "Perimeters",
+    "tooltip": "This is the acceleration your printer will use for perimeters. Set zero to disable acceleration control for perimeters.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "default_value": "0"
+  },
+  "solid_infill_acceleration": {
+    "type": "float",
+    "label": "Solid infill",
+    "tooltip": "This is the acceleration your printer will use for solid infill. Set zero to use the value for infill.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "top_solid_infill_acceleration": {
+    "type": "float",
+    "label": "Top solid infill",
+    "tooltip": "This is the acceleration your printer will use for top solid infill. Set zero to use the value for solid infill.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "first_layer_acceleration": {
+    "type": "float",
+    "label": "First layer",
+    "tooltip": "This is the acceleration your printer will use for first layer. Set zero to disable acceleration control for first layer.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "first_layer_acceleration_over_raft": {
+    "type": "float",
+    "label": "First object layer over raft interface",
+    "tooltip": "This is the acceleration your printer will use for first layer of object above raft interface. Set zero to disable acceleration control for first layer of object above raft interface.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "travel_acceleration": {
+    "type": "float",
+    "label": "Travel",
+    "tooltip": "This is the acceleration your printer will use for travel moves. Set zero to disable acceleration control for travel.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "travel_short_distance_acceleration": {
+    "type": "float",
+    "label": "Travel short distance acceleration",
+    "tooltip": "Acceleration used for short travel moves. Short travel distance is determined by the retract_before_travel setting.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "wipe_tower_acceleration": {
+    "type": "float",
+    "label": "Wipe tower",
+    "tooltip": "This is the acceleration your printer will use for wipe tower. Set zero to disable acceleration control for the wipe tower.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s²",
+    "min": "0",
+    "default_value": "0"
+  },
+  "automatic_extrusion_widths": {
+    "type": "bool",
+    "label": "Automatic extrusion widths calculation",
+    "tooltip": "Automatically calculates extrusion widths based on the nozzle diameter of the currently used extruder. This setting is essential for printing with different nozzle diameters.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "extrusion_width": {
+    "type": "floatorpercent",
+    "label": "Default extrusion width",
+    "tooltip": "Set this to a non-zero value to allow a manual extrusion width. If left to zero, Slic3r derives extrusion widths from the nozzle diameter (see the tooltips for perimeter extrusion width, infill extrusion width etc). If expressed as percentage (for example: 230%), it will be computed over nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "max": "1000",
+    "default_value": "0"
+  },
+  "first_layer_extrusion_width": {
+    "type": "floatorpercent",
+    "label": "First layer",
+    "tooltip": "Set this to a non-zero value to set a manual extrusion width for first layer. You can use this to force fatter extrudates for better adhesion. If expressed as percentage (for example 120%) it will be computed over nozzle_diameter. If set to zero, it will use the default extrusion width.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "150%"
+  },
+  "perimeter_extrusion_width": {
+    "type": "floatorpercent",
+    "label": "Perimeters",
+    "tooltip": "Set this to a non-zero value to set a manual extrusion width for perimeters. You may want to use thinner extrudates to get more accurate surfaces. If left zero, default extrusion width will be used if set, otherwise 1.125 x nozzle diameter will be used. If expressed as percentage (for example 200%) it will be computed over nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "external_perimeter_extrusion_width": {
+    "type": "floatorpercent",
+    "label": "External perimeters",
+    "tooltip": "Set this to a non-zero value to set a manual extrusion width for external perimeters. If left zero, default extrusion width will be used if set, otherwise 1.125 x nozzle diameter will be used. If expressed as percentage (for example 200%), it will be computed over nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "infill_extrusion_width": {
+    "type": "floatorpercent",
+    "label": "Infill",
+    "tooltip": "Set this to a non-zero value to set a manual extrusion width for infill. If left zero, default extrusion width will be used if set, otherwise 1.125 x nozzle diameter will be used. You may want to use fatter extrudates to speed up the infill and make your parts stronger. If expressed as percentage (for example 90%) it will be computed over nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "solid_infill_extrusion_width": {
+    "type": "floatorpercent",
+    "label": "Solid infill",
+    "tooltip": "Set this to a non-zero value to set a manual extrusion width for infill for solid surfaces. If left zero, default extrusion width will be used if set, otherwise 1.125 x nozzle diameter will be used. If expressed as percentage (for example 90%) it will be computed over nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "top_infill_extrusion_width": {
+    "type": "floatorpercent",
+    "label": "Top solid infill",
+    "tooltip": "Set this to a non-zero value to set a manual extrusion width for infill for top surfaces. You may want to use thinner extrudates to fill all narrow regions and get a smoother finish. If left zero, default extrusion width will be used if set, otherwise nozzle diameter will be used. If expressed as percentage (for example 90%) it will be computed over nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "support_material_extrusion_width": {
+    "type": "floatorpercent",
+    "label": "Support material",
+    "tooltip": "Set this to a non-zero value to set a manual extrusion width for support material. If left zero, default extrusion width will be used if set, otherwise nozzle diameter will be used. If expressed as percentage (for example 90%) it will be computed over nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "retract_length": {
+    "type": "float",
+    "label": "Retraction length",
+    "tooltip": "When retraction is triggered, filament is pulled back by the specified amount (the length is measured on raw filament, before it enters the extruder).",
+    "mode": "simple",
+    "full_label": "Retraction Length",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "default_value": "2"
+  },
+  "retract_speed": {
+    "type": "float",
+    "label": "Retraction Speed",
+    "tooltip": "The speed for retractions (it only applies to the extruder motor).",
+    "mode": "simple",
+    "full_label": "Retraction Speed",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "default_value": "40"
+  },
+  "deretract_speed": {
+    "type": "float",
+    "label": "Deretraction Speed",
+    "tooltip": "The speed for loading of a filament into extruder after retraction (it only applies to the extruder motor). If left to zero, the retraction speed is used.",
+    "mode": "simple",
+    "full_label": "Deretraction Speed",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "default_value": "0"
+  },
+  "retract_restart_extra": {
+    "type": "float",
+    "label": "Deretraction extra length",
+    "tooltip": "When the retraction is compensated after the travel move, the extruder will push this additional amount of filament. This setting is rarely needed.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "default_value": "0"
+  },
+  "retract_before_travel": {
+    "type": "float",
+    "label": "Minimum travel after retraction",
+    "tooltip": "Retraction is not triggered when travel moves are shorter than this length.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "default_value": "2"
+  },
+  "retract_layer_change": {
+    "type": "bool",
+    "label": "Retract on layer change",
+    "tooltip": "This flag enforces a retraction whenever a Z move is done.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "wipe": {
+    "type": "bool",
+    "label": "Wipe while retracting",
+    "tooltip": "This flag will move the nozzle while retracting to minimize the possible blob on leaky extruders.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "retract_before_wipe": {
+    "type": "percent",
+    "label": "Retract amount before wipe",
+    "tooltip": "With bowden extruders, it may be wise to do some amount of quick retract before doing the wipe movement.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "%",
+    "default_value": "0%"
+  },
+  "retract_length_toolchange": {
+    "type": "float",
+    "label": "Length",
+    "tooltip": "When retraction is triggered before changing tool, filament is pulled back by the specified amount (the length is measured on raw filament, before it enters the extruder).",
+    "mode": "simple",
+    "full_label": "Retraction Length (Toolchange)",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "default_value": "10"
+  },
+  "retract_restart_extra_toolchange": {
+    "type": "float",
+    "label": "Extra length on restart",
+    "tooltip": "When the retraction is compensated after changing tool, the extruder will push this additional amount of filament.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "default_value": "0"
+  },
+  "perimeter_extruder": {
+    "type": "int",
+    "label": "Perimeter extruder",
+    "tooltip": "The extruder to use when printing perimeters and brim. First extruder is 1.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "1",
+    "default_value": "1"
+  },
+  "infill_extruder": {
+    "type": "int",
+    "label": "Infill extruder",
+    "tooltip": "The extruder to use when printing infill.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "1",
+    "default_value": "1"
+  },
+  "solid_infill_extruder": {
+    "type": "int",
+    "label": "Solid infill extruder",
+    "tooltip": "The extruder to use when printing solid infill.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "1",
+    "default_value": "1"
+  },
+  "support_material_extruder": {
+    "type": "int",
+    "label": "Support material/raft/skirt extruder",
+    "tooltip": "The extruder to use when printing support material, raft and skirt (1+, 0 to use the current extruder to minimize tool changes).",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "0",
+    "default_value": "1"
+  },
+  "support_material_interface_extruder": {
+    "type": "int",
+    "label": "Support material/raft interface extruder",
+    "tooltip": "The extruder to use when printing support material interface (1+, 0 to use the current extruder to minimize tool changes). This affects raft too.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "0",
+    "default_value": "1"
+  },
+  "wipe_tower_extruder": {
+    "type": "int",
+    "label": "Wipe tower extruder",
+    "tooltip": "The extruder to use when printing perimeter of the wipe tower. Set to 0 to use the one that is available (non-soluble would be preferred).",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "0",
+    "default_value": "0"
+  },
+  "bed_temperature_extruder": {
+    "type": "int",
+    "label": "Bed temperature by extruder",
+    "tooltip": "The extruder which determines bed temperatures. Set to 0 to determine temperatures based on the first printing extruder of the first and the second layers.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "0",
+    "default_value": "0"
+  },
+  "ooze_prevention": {
+    "type": "bool",
+    "label": "Enable",
+    "tooltip": "This option will drop the temperature of the inactive extruders to prevent oozing.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "standby_temperature_delta": {
+    "type": "int",
+    "label": "Temperature variation",
+    "tooltip": "Temperature difference to be applied when an extruder is not active. The value is not used when 'idle_temperature' in filament settings is defined.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "∆°C",
+    "min": "-1500",
+    "max": "1500",
+    "default_value": "-5"
+  },
+  "wipe_tower": {
+    "type": "bool",
+    "label": "Enable",
+    "tooltip": "Multi material printers may need to prime or purge extruders on tool changes. Extrude the excess material into the wipe tower.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "wipe_tower_width": {
+    "type": "float",
+    "label": "Width",
+    "tooltip": "Width of a wipe tower",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "1",
+    "default_value": "60"
+  },
+  "wipe_tower_brim_width": {
+    "type": "float",
+    "label": "Wipe tower brim width",
+    "tooltip": "Wipe tower brim width",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "2"
+  },
+  "wipe_tower_bridging": {
+    "type": "float",
+    "label": "Maximal bridging distance",
+    "tooltip": "Maximal distance between supports on sparse infill sections.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "default_value": "10"
+  },
+  "wipe_tower_extra_spacing": {
+    "type": "percent",
+    "label": "Wipe tower purge lines spacing",
+    "tooltip": "Spacing of purge lines on the wipe tower.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "%",
+    "min": "100",
+    "max": "300",
+    "default_value": "100%"
+  },
+  "wipe_tower_cone_angle": {
+    "type": "float",
+    "label": "Stabilization cone apex angle",
+    "tooltip": "Angle at the apex of the cone that is used to stabilize the wipe tower. Larger angle means wider base.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "°",
+    "min": "0",
+    "max": "90",
+    "default_value": "0"
+  },
+  "wipe_tower_extra_flow": {
+    "type": "percent",
+    "label": "Extra flow for purging",
+    "tooltip": "Extra flow used for the purging lines on the wipe tower. This makes the purging lines thicker or narrower than they normally would be. The spacing is adjusted automatically.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "%",
+    "min": "100",
+    "max": "300",
+    "default_value": "100%"
+  },
+  "wipe_tower_no_sparse_layers": {
+    "type": "bool",
+    "label": "No sparse layers (EXPERIMENTAL)",
+    "tooltip": "If enabled, the wipe tower will not be printed on layers with no toolchanges. On layers with a toolchange, extruder will travel downward to print the wipe tower. User is responsible for ensuring there is no collision with the print.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "single_extruder_multi_material_priming": {
+    "type": "bool",
+    "label": "Prime all printing extruders",
+    "tooltip": "If enabled, all printing extruders will be primed at the front edge of the print bed at the start of the print.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "interface_shells": {
+    "type": "bool",
+    "label": "Interface shells",
+    "tooltip": "Force the generation of solid shells between adjacent materials/volumes. Useful for multi-extruder prints with translucent materials or manual soluble support material.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "interlocking_beam": {
+    "type": "bool",
+    "label": "Use beam interlocking",
+    "tooltip": "Generate interlocking beam structure at the locations where different filaments touch. This improves the adhesion between filaments, especially models printed in different materials.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "interlocking_beam_layer_count": {
+    "type": "int",
+    "label": "Interlocking beam layers",
+    "tooltip": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "1",
+    "default_value": "2"
+  },
+  "interlocking_beam_width": {
+    "type": "float",
+    "label": "Interlocking beam width",
+    "tooltip": "The width of the interlocking structure beams.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0.10000000149011612",
+    "default_value": "0.8"
+  },
+  "interlocking_boundary_avoidance": {
+    "type": "int",
+    "label": "Interlocking boundary avoidance",
+    "tooltip": "The distance from the outside of a model where interlocking structures will not be generated, measured in cells.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "0",
+    "default_value": "2"
+  },
+  "interlocking_depth": {
+    "type": "int",
+    "label": "Interlocking depth",
+    "tooltip": "The distance from the boundary between filaments to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "1",
+    "default_value": "2"
+  },
+  "interlocking_orientation": {
+    "type": "float",
+    "label": "Interlocking direction",
+    "tooltip": "Orientation of interlocking beams.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "°",
+    "min": "0",
+    "max": "360",
+    "default_value": "22.5"
+  },
+  "mmu_segmented_region_interlocking_depth": {
+    "type": "float",
+    "label": "Interlocking depth of a segmented region",
+    "tooltip": "Interlocking depth of a segmented region. It will be ignored if \"mmu_segmented_region_max_width\" is zero or if \"mmu_segmented_region_interlocking_depth\"is bigger then \"mmu_segmented_region_max_width\". Zero disables this feature.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "mmu_segmented_region_max_width": {
+    "type": "float",
+    "label": "Maximum width of a segmented region",
+    "tooltip": "Maximum width of a segmented region. Zero disables this feature.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "toolchange_ordering": {
+    "type": "enum",
+    "label": "Toolchange ordering",
+    "tooltip": "Determines the order of tool changes on each layer.\nOptimized - Starts with the last used extruder to minimize tool changes.\nCyclic - Uses extruders in a fixed sequential order (1, 2, 3, ...) on every layer.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "optimized",
+      "cyclic"
+    ],
+    "default_value": "optimized"
+  },
+  "slicing_mode": {
+    "type": "enum",
+    "label": "Slicing Mode",
+    "tooltip": "Use \"Even-odd\" for 3DLabPrint airplane models. Use \"Close holes\" to close all holes in the model.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "regular",
+      "even_odd",
+      "close_holes"
+    ],
+    "default_value": "regular"
+  },
+  "spiral_vase": {
+    "type": "bool",
+    "label": "Spiral vase",
+    "tooltip": "This feature will raise Z gradually while printing a single-walled object in order to remove any visible seam. This option requires a single perimeter, no infill, no top solid layers and no support material. You can still set any number of bottom solid layers as well as skirt/brim loops. It won't work when printing more than one single object.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "complete_objects": {
+    "type": "bool",
+    "label": "Complete individual objects",
+    "tooltip": "When printing multiple objects or copies, this feature will complete each object before moving onto next one (and starting it from its bottom layer). This feature is useful to avoid the risk of ruined prints. Slic3r should warn and prevent you from extruder collisions, but beware.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "xy_size_compensation": {
+    "type": "float",
+    "label": "XY Size Compensation",
+    "tooltip": "The object will be grown/shrunk in the XY plane by the configured value (negative = inwards, positive = outwards). This might be useful for fine-tuning hole sizes.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "default_value": "0"
+  },
+  "elefant_foot_compensation": {
+    "type": "float",
+    "label": "Elephant foot compensation",
+    "tooltip": "The first layer will be shrunk in the XY plane by the configured value to compensate for the 1st layer squish aka an Elephant Foot effect.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "slice_closing_radius": {
+    "type": "float",
+    "label": "Slice gap closing radius",
+    "tooltip": "Cracks smaller than 2x gap closing radius are being filled during the triangle mesh slicing. The gap closing operation may reduce the final print resolution, therefore it is advisable to keep the value reasonably low.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0.049"
+  },
+  "perimeter_generator": {
+    "type": "enum",
+    "label": "Perimeter generator",
+    "tooltip": "Classic perimeter generator produces perimeters with constant extrusion width and for very thin areas is used gap-fill. Arachne engine produces perimeters with variable extrusion width. This setting also affects the Concentric infill.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "classic",
+      "arachne"
+    ],
+    "default_value": "arachne"
+  },
+  "min_bead_width": {
+    "type": "floatorpercent",
+    "label": "Minimum perimeter width",
+    "tooltip": "Width of the perimeter that will replace thin features (according to the Minimum feature size) of the model. If the Minimum perimeter width is thinner than the thickness of the feature, the perimeter will become as thick as the feature itself. If expressed as a percentage (for example 85%), it will be computed based on the nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "85%"
+  },
+  "min_feature_size": {
+    "type": "floatorpercent",
+    "label": "Minimum feature size",
+    "tooltip": "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum feature size will be widened to the Minimum perimeter width. If expressed as a percentage (for example 25%), it will be computed based on the biggest nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "25%"
+  },
+  "wall_distribution_count": {
+    "type": "int",
+    "label": "Perimeter distribution count",
+    "tooltip": "The number of perimeters, counted from the center, over which the variation needs to be spread. Lower values mean that the outer perimeters don't change in width.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "1",
+    "default_value": "1"
+  },
+  "wall_transition_angle": {
+    "type": "float",
+    "label": "Perimeter transitioning threshold angle",
+    "tooltip": "When to create transitions between even and odd numbers of perimeters. A wedge shape with an angle greater than this setting will not have transitions and no perimeters will be printed in the center to fill the remaining space. Reducing this setting reduces the number and length of these center perimeters, but may leave gaps or overextrude.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "°",
+    "min": "1",
+    "max": "59",
+    "default_value": "10"
+  },
+  "wall_transition_filter_deviation": {
+    "type": "floatorpercent",
+    "label": "Perimeter transitioning filter margin",
+    "tooltip": "Prevent transitioning back and forth between one extra perimeter and one less. This margin extends the range of extrusion widths which follow to [Minimum perimeter width - margin, 2 * Minimum perimeter width + margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large extrusion width variation can lead to under- or overextrusion problems. If expressed as a percentage (for example 25%), it will be computed based on the nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "25%"
+  },
+  "wall_transition_length": {
+    "type": "floatorpercent",
+    "label": "Perimeter transition length",
+    "tooltip": "When transitioning between different numbers of perimeters as the part becomes thinner, a certain amount of space is allotted to split or join the perimeter segments. If expressed as a percentage (for example 100%), it will be computed based on the nozzle diameter.",
+    "mode": "simple",
+    "gui_type": "unit_or_percentage",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "100%"
+  },
+  "resolution": {
+    "type": "float",
+    "label": "Slice resolution",
+    "tooltip": "Minimum detail resolution, used to simplify the input file for speeding up the slicing job and reducing memory usage. High-resolution models often carry more detail than printers can render. Set to zero to disable any simplification and use full resolution from input.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "gcode_resolution": {
+    "type": "float",
+    "label": "G-code resolution",
+    "tooltip": "Maximum deviation of exported G-code paths from their full resolution counterparts. Very high resolution G-code requires huge amount of RAM to slice and preview, also a 3D printer may stutter not being able to process a high resolution G-code in a timely manner. On the other hand, a low resolution G-code will produce a low poly effect and because the G-code reduction is performed at each layer independently, visible artifacts may be produced.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0.0125"
+  },
+  "arc_fitting": {
+    "type": "enum",
+    "label": "Arc fitting",
+    "tooltip": "Enable to get a G-code file which has G2 and G3 moves. G-code resolution will be used as the fitting tolerance.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "disabled",
+      "emit_center"
+    ],
+    "default_value": "disabled"
+  },
+  "gcode_comments": {
+    "type": "bool",
+    "label": "Verbose G-code",
+    "tooltip": "Enable this to get a commented G-code file, with each line explained by a descriptive text. If you print from SD card, the additional weight of the file could make your firmware slow down.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "gcode_label_objects": {
+    "type": "enum",
+    "label": "Label objects",
+    "tooltip": "Selects whether labels should be exported at object boundaries and in what format.\nOctoPrint = comments to be consumed by OctoPrint CancelObject plugin.\nFirmware = firmware specific G-code (it will be chosen based on firmware flavor and it can end up to be empty).\n\nThis settings is NOT compatible with Single Extruder Multi Material setup and Wipe into Object / Wipe into Infill.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "disabled",
+      "octoprint",
+      "firmware"
+    ],
+    "default_value": "disabled"
+  },
+  "gcode_substitutions": {
+    "type": "strings",
+    "label": "G-code substitutions",
+    "tooltip": "Find / replace patterns in G-code lines and substitute them.",
+    "mode": "simple",
+    "native_type": "array",
+    "editor": {
+      "kind": "list",
+      "value_type": "string"
+    },
+    "gui_type": "substitutions",
+    "default_value": []
+  },
+  "custom_parameters_print": {
+    "type": "string",
+    "label": "Custom print parameters",
+    "tooltip": "JSON-encoded string defining extra parameters, which can later be expanded in Custom G-code macro language. Each of the parameters is prepended by custom_parameter_print prefix before it is passed into the parser. For example, defining '{\"my_key\": \"my_value\"}' allows to use 'custom_parameter_print_my_key'.\n\nThe JSON must be single level (no arrays and objects). All value types are allowed, but nulls will be rejected by the parser.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  },
+  "output_filename_format": {
+    "type": "string",
+    "label": "Output filename format",
+    "tooltip": "You can use all configuration options as variables inside this template. For example: [layer_height], [fill_density] etc. You can also use [timestamp], [year], [month], [day], [hour], [minute], [second], [version], [input_filename_base], [default_output_extension].",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": "[input_filename_base].gcode"
+  },
+  "notes": {
+    "type": "string",
+    "label": "Configuration notes",
+    "tooltip": "You can put here your personal notes. This text will be added to the G-code header comments.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  },
+  "filament_vendor": {
+    "type": "string",
+    "label": "Filament Vendor",
+    "tooltip": "",
+    "mode": "simple",
+    "nocli": "true",
+    "default_value": "(Unknown)"
+  },
+  "filament_colour": {
+    "type": "string",
+    "label": "Color",
+    "tooltip": "Leave unused if the filament profile isn't tied to a specific color. Color can still be set at project-level.",
+    "mode": "simple",
+    "gui_type": "color",
+    "default_value": "#29B2B2"
+  },
+  "filament_type": {
+    "type": "string",
+    "label": "Filament type",
+    "tooltip": "The filament material type for use in custom G-codes.",
+    "mode": "simple",
+    "gui_type": "s_enum_open",
+    "enum_values": [
+      "PLA",
+      "PET",
+      "ABS",
+      "ASA",
+      "FLEX",
+      "HIPS",
+      "EDGE",
+      "NGEN",
+      "PA",
+      "NYLON",
+      "PVA",
+      "PC",
+      "PP",
+      "PEI",
+      "PEEK",
+      "PEKK",
+      "POM",
+      "PSU",
+      "PVDF",
+      "SCAFF"
+    ],
+    "enum_labels": [
+      "PLA",
+      "PET",
+      "ABS",
+      "ASA",
+      "FLEX",
+      "HIPS",
+      "EDGE",
+      "NGEN",
+      "PA",
+      "NYLON",
+      "PVA",
+      "PC",
+      "PP",
+      "PEI",
+      "PEEK",
+      "PEKK",
+      "POM",
+      "PSU",
+      "PVDF",
+      "SCAFF"
+    ],
+    "default_value": "PLA"
+  },
+  "filament_abrasive": {
+    "type": "bool",
+    "label": "Abrasive material",
+    "tooltip": "This flag means that the material is abrasive and requires a hardened nozzle. The value is used by the printer to check it.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "filament_soluble": {
+    "type": "bool",
+    "label": "Soluble material",
+    "tooltip": "Soluble material is most likely used for a soluble support.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "filament_cost": {
+    "type": "float",
+    "label": "Cost",
+    "tooltip": "Enter your filament cost per kg here. This is only for statistical information.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "money/kg",
+    "min": "0",
+    "default_value": "0"
+  },
+  "filament_density": {
+    "type": "float",
+    "label": "Density",
+    "tooltip": "Enter your filament density here. This is only for statistical information. A decent way is to weigh a known length of filament and compute the ratio of the length to volume. Better is to calculate the volume directly through displacement.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "g/cm³",
+    "min": "0",
+    "default_value": "0"
+  },
+  "filament_spool_weight": {
+    "type": "float",
+    "label": "Spool weight",
+    "tooltip": "Enter weight of the empty filament spool. One may weigh a partially consumed filament spool before printing and one may compare the measured weight with the calculated weight of the filament with the spool to find out whether the amount of filament on the spool is sufficient to finish the print.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "g",
+    "min": "0",
+    "default_value": "0"
+  },
+  "first_layer_bed_temperature": {
+    "type": "int",
+    "label": "Bed First layer",
+    "tooltip": "Heated build plate temperature for the first layer. Set this to zero to disable bed temperature control commands in the output.",
+    "mode": "simple",
+    "full_label": "First layer bed temperature",
+    "gui_type": "spinbox",
+    "sidetext": "°C",
+    "max": "300",
+    "default_value": "0"
+  },
+  "bed_temperature": {
+    "type": "int",
+    "label": "Bed other layers",
+    "tooltip": "Bed temperature for layers after the first one. Set this to zero to disable bed temperature control commands in the output.",
+    "mode": "simple",
+    "full_label": "Bed temperature",
+    "gui_type": "spinbox",
+    "sidetext": "°C",
+    "min": "0",
+    "max": "300",
+    "default_value": "0"
+  },
+  "chamber_minimal_temperature": {
+    "type": "int",
+    "label": "Chamber Minimal temperature",
+    "tooltip": "Minimal chamber temperature that the printer waits for before the print starts. This allows to start the print before the nominal chamber temperature is reached.\nWhen set to zero, the minimal chamber temperature is not set in the G-code.",
+    "mode": "simple",
+    "full_label": "Chamber minimal temperature",
+    "gui_type": "spinbox",
+    "sidetext": "°C",
+    "min": "0",
+    "max": "1000",
+    "default_value": "0"
+  },
+  "chamber_temperature": {
+    "type": "int",
+    "label": "Chamber Nominal temperature",
+    "tooltip": "Required chamber temperature for the print.\nWhen set to zero, the nominal chamber temperature is not set in the G-code.",
+    "mode": "simple",
+    "full_label": "Chamber temperature",
+    "gui_type": "spinbox",
+    "sidetext": "°C",
+    "min": "0",
+    "max": "1000",
+    "default_value": "0"
+  },
+  "first_layer_temperature": {
+    "type": "int",
+    "label": "Nozzle First layer",
+    "tooltip": "Nozzle temperature for the first layer. If you want to control temperature manually during print, set this to zero to disable temperature control commands in the output G-code.",
+    "mode": "simple",
+    "full_label": "First layer nozzle temperature",
+    "gui_type": "spinbox",
+    "sidetext": "°C",
+    "min": "0",
+    "max": "1500",
+    "default_value": "200"
+  },
+  "idle_temperature": {
+    "type": "int",
+    "label": "Idle temperature",
+    "tooltip": "Nozzle temperature when the tool is currently not used in multi-tool setups.This is only used when 'Ooze prevention' is active in Print Settings.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "°C",
+    "min": "0",
+    "max": "1500",
+    "default_value": ""
+  },
+  "temperature": {
+    "type": "int",
+    "label": "Nozzle other layers",
+    "tooltip": "Nozzle temperature for layers after the first one. Set this to zero to disable temperature control commands in the output G-code.",
+    "mode": "simple",
+    "full_label": "Nozzle temperature",
+    "gui_type": "spinbox",
+    "sidetext": "°C",
+    "min": "0",
+    "max": "1500",
+    "default_value": "200"
+  },
+  "filament_diameter": {
+    "type": "float",
+    "label": "Diameter",
+    "tooltip": "Enter your filament diameter here. Good precision is required, so use a caliper and do multiple measurements along the filament, then compute the average.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "1.75"
+  },
+  "extrusion_multiplier": {
+    "type": "float",
+    "label": "Extrusion multiplier",
+    "tooltip": "This factor changes the amount of flow proportionally. You may need to tweak this setting to get nice surface finish and correct single wall widths. Usual values are between 0.9 and 1.1. If you think you need to change this more, check filament diameter and your firmware E steps.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "max": "2",
+    "default_value": "1"
+  },
+  "filament_shrinkage_compensation_xy": {
+    "type": "percent",
+    "label": "Shrinkage compensation XY",
+    "tooltip": "Enter your filament shrinkage percentages for the X and Y axes here to apply scaling of the object to compensate for shrinkage in the X and Y axes. For example, if you measured 99mm instead of 100mm, enter 1%.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "%",
+    "min": "-10",
+    "max": "10",
+    "default_value": "0%"
+  },
+  "filament_shrinkage_compensation_z": {
+    "type": "percent",
+    "label": "Shrinkage compensation Z",
+    "tooltip": "Enter your filament shrinkage percentages for the Z axis here to apply scaling of the object to compensate for shrinkage in the Z axis. For example, if you measured 99mm instead of 100mm, enter 1%.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "%",
+    "min": "-10",
+    "max": "10",
+    "default_value": "0%"
+  },
+  "pressure_advance": {
+    "type": "enum",
+    "label": "Pressure advance",
+    "tooltip": "Controls how the pressure advance value is emitted into g-code for this filament. 'Disabled' does not emit any pressure advance command, leaving the printer to use the pressure advance value set in the filament's start g-code (or the firmware default). 'Enabled' emits the configured pressure advance value. 'Automatic Calibration' emits the configured pressure advance value and then triggers the firmware's automatic pressure advance calibration.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "disabled",
+      "enabled",
+      "automatic_calibration"
+    ],
+    "default_value": "disabled"
+  },
+  "pressure_advance_value": {
+    "type": "float",
+    "label": "Pressure advance",
+    "tooltip": "Pressure Advance (also called Linear Advance in some firmware) compensates for nozzle pressure to achieve sharper corners. Proper value helps reduce bulging on deceleration and under-extrusion on acceleration.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "min": "0",
+    "default_value": "0"
+  },
+  "cooling": {
+    "type": "bool",
+    "label": "Enable auto cooling",
+    "tooltip": "This flag enables the automatic cooling logic that adjusts print speed and fan speed according to layer printing time.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "1"
+  },
+  "cooling_slowdown_logic": {
+    "type": "enum",
+    "label": "Cooling slowdown logic",
+    "tooltip": "Determines how the printer slows down layer printing when the minimum layer time isn't reached. 'Consistent surface' first tries to preserve the print speeds of the first two perimeters by slowing all other features. Only if this isn't sufficient, it also slows down those first two perimeters. 'Uniform cooling' slows down all print features, including the first two perimeters.",
+    "mode": "simple",
+    "gui_type": "combobox",
+    "enum_values": [
+      "uniform_cooling",
+      "consistent_surface"
+    ],
+    "default_value": "uniform_cooling"
+  },
+  "cooling_perimeter_transition_distance": {
+    "type": "float",
+    "label": "Perimeter transition distance",
+    "tooltip": "Distance in millimeters before non-slowed perimeters where the original unslowed print speed is restored. This reduces print quality issues when transitioning from heavily slowed feature to fast perimeter printing.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "fan_always_on": {
+    "type": "bool",
+    "label": "Keep fan always on",
+    "tooltip": "If this is enabled, fan will never be disabled and will be kept running at least at its minimum speed. Useful for PLA, harmful for ABS.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "min_fan_speed": {
+    "type": "int",
+    "label": "Min fan speed",
+    "tooltip": "This setting represents the minimum PWM your fan needs to work.",
+    "mode": "simple",
+    "full_label": "Min fan speed",
+    "gui_type": "spinbox",
+    "sidetext": "%",
+    "min": "0",
+    "max": "100",
+    "default_value": "35"
+  },
+  "max_fan_speed": {
+    "type": "int",
+    "label": "Max Fan speed",
+    "tooltip": "This setting represents the maximum speed of your fan.",
+    "mode": "simple",
+    "full_label": "Max fan speed",
+    "gui_type": "spinbox",
+    "sidetext": "%",
+    "min": "0",
+    "max": "100",
+    "default_value": "100"
+  },
+  "bridge_fan_speed": {
+    "type": "int",
+    "label": "Bridges fan speed",
+    "tooltip": "This fan speed is enforced during all bridges and overhangs.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "%",
+    "min": "0",
+    "max": "100",
+    "default_value": "100"
+  },
+  "disable_fan_first_layers": {
+    "type": "int",
+    "label": "Disable fan for the first",
+    "tooltip": "You can set this to a positive value to disable fan at all during the first layers, so that it does not make adhesion worse.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "layers",
+    "min": "0",
+    "max": "1000",
+    "default_value": "3"
+  },
+  "full_fan_speed_layer": {
+    "type": "int",
+    "label": "Full fan speed at layer",
+    "tooltip": "Fan speed will be ramped up linearly from zero at layer \"disable_fan_first_layers\" to maximum at layer \"full_fan_speed_layer\". \"full_fan_speed_layer\" will be ignored if lower than \"disable_fan_first_layers\", in which case the fan will be running at maximum allowed speed at layer \"disable_fan_first_layers\" + 1.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "min": "0",
+    "max": "1000",
+    "default_value": "0"
+  },
+  "fan_below_layer_time": {
+    "type": "int",
+    "label": "Enable fan if layer print time is below",
+    "tooltip": "If layer print time is estimated below this number of seconds, fan will be enabled and its speed will be calculated by interpolating the minimum and maximum speeds.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "approximate seconds",
+    "min": "0",
+    "max": "1000",
+    "default_value": "60"
+  },
+  "min_print_speed": {
+    "type": "float",
+    "label": "Min print speed",
+    "tooltip": "Slic3r will not scale speed down below this speed.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "10"
+  },
+  "slowdown_below_layer_time": {
+    "type": "int",
+    "label": "Slow down if layer print time is below",
+    "tooltip": "If layer print time is estimated below this number of seconds, print moves speed will be scaled down to extend duration to this value.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "s",
+    "min": "0",
+    "max": "1000",
+    "default_value": "5"
+  },
+  "enable_dynamic_fan_speeds": {
+    "type": "bool",
+    "label": "Enable dynamic fan speeds",
+    "tooltip": "This setting enables dynamic fan speed control on overhangs.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "overhang_fan_speed_0": {
+    "type": "int",
+    "label": "speed for 0% overlap (bridge)",
+    "tooltip": "Overhang size is expressed as a percentage of overlap of the extrusion with the previous layer: 100% would be full overlap (no overhang), while 0% represents full overhang (floating extrusion, bridge). Fan speeds for overhang sizes in between are calculated via linear interpolation.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "%",
+    "min": "0",
+    "max": "100",
+    "default_value": "0"
+  },
+  "overhang_fan_speed_1": {
+    "type": "int",
+    "label": "speed for 25% overlap",
+    "tooltip": "Overhang size is expressed as a percentage of overlap of the extrusion with the previous layer: 100% would be full overlap (no overhang), while 0% represents full overhang (floating extrusion, bridge). Fan speeds for overhang sizes in between are calculated via linear interpolation.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "%",
+    "min": "0",
+    "max": "100",
+    "default_value": "0"
+  },
+  "overhang_fan_speed_2": {
+    "type": "int",
+    "label": "speed for 50% overlap",
+    "tooltip": "Overhang size is expressed as a percentage of overlap of the extrusion with the previous layer: 100% would be full overlap (no overhang), while 0% represents full overhang (floating extrusion, bridge). Fan speeds for overhang sizes in between are calculated via linear interpolation.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "%",
+    "min": "0",
+    "max": "100",
+    "default_value": "0"
+  },
+  "overhang_fan_speed_3": {
+    "type": "int",
+    "label": "speed for 75% overlap",
+    "tooltip": "Overhang size is expressed as a percentage of overlap of the extrusion with the previous layer: 100% would be full overlap (no overhang), while 0% represents full overhang (floating extrusion, bridge). Fan speeds for overhang sizes in between are calculated via linear interpolation.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "%",
+    "min": "0",
+    "max": "100",
+    "default_value": "0"
+  },
+  "filament_multitool_ramming": {
+    "type": "bool",
+    "label": "Enable ramming for multitool setups",
+    "tooltip": "Perform ramming when using multitool printer (i.e. when the 'Single Extruder Multimaterial' in Printer Settings is unchecked). When checked, a small amount of filament is rapidly extruded on the wipe tower just before the toolchange. This option is only used when the wipe tower is enabled.",
+    "mode": "simple",
+    "gui_type": "checkbox",
+    "default_value": "0"
+  },
+  "filament_ramming_initial_delay": {
+    "type": "float",
+    "label": "Pause before ramming",
+    "tooltip": "Time in seconds that the printer will remain idle before ramming, allowing the melt zone temperature to equalize.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "s",
+    "default_value": "0"
+  },
+  "filament_ramming_temperature_delta": {
+    "type": "int",
+    "label": "Ramming temperature variation",
+    "tooltip": "Temperature difference to be applied right before ramming. The value can be negative.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "sidetext": "∆°C",
+    "default_value": "0"
+  },
+  "filament_multitool_ramming_volume": {
+    "type": "float",
+    "label": "Multitool ramming volume",
+    "tooltip": "The volume to be rammed before the toolchange.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm³",
+    "min": "0",
+    "default_value": "10"
+  },
+  "filament_multitool_ramming_flow": {
+    "type": "float",
+    "label": "Multitool ramming flow",
+    "tooltip": "Flow used for ramming the filament before the toolchange.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm³/s",
+    "min": "0",
+    "default_value": "10"
+  },
+  "filament_ramming_parameters": {
+    "type": "string",
+    "label": "Ramming parameters",
+    "tooltip": "This string is edited by RammingDialog and contains ramming specific parameters.",
+    "mode": "simple",
+    "gui_type": "ramming_params",
+    "default_value": "120 100 6.6 6.8 7.2 7.6 7.9 8.2 8.7 9.4 9.9 10.0| 0.05 6.6 0.45 6.8 0.95 7.8 1.45 8.3 1.95 9.7 2.45 10 2.95 7.6 3.45 7.6 3.95 7.6 4.45 7.6 4.95 7.6"
+  },
+  "filament_cooling_moves": {
+    "type": "int",
+    "label": "Number of cooling moves",
+    "tooltip": "Filament is cooled by being moved back and forth in the cooling tubes. Specify desired number of these moves.",
+    "mode": "simple",
+    "gui_type": "spinbox",
+    "max": "20",
+    "default_value": "4"
+  },
+  "filament_cooling_initial_speed": {
+    "type": "float",
+    "label": "Speed of the first cooling move",
+    "tooltip": "Cooling moves are gradually accelerating beginning at this speed.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "2.2"
+  },
+  "filament_cooling_final_speed": {
+    "type": "float",
+    "label": "Speed of the last cooling move",
+    "tooltip": "Cooling moves are gradually accelerating towards this speed.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "3.4"
+  },
+  "filament_stamping_distance": {
+    "type": "float",
+    "label": "Stamping distance measured from the center of the cooling tube",
+    "tooltip": "If set to nonzero value, filament is moved toward the nozzle between the individual cooling moves (\"stamping\"). This option configures how long this movement should be before the filament is retracted again.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm",
+    "min": "0",
+    "default_value": "0"
+  },
+  "filament_stamping_loading_speed": {
+    "type": "float",
+    "label": "Stamping loading speed",
+    "tooltip": "Speed used for stamping.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "20"
+  },
+  "filament_toolchange_delay": {
+    "type": "float",
+    "label": "Delay after unloading",
+    "tooltip": "Time to wait after the filament is unloaded. May help to get reliable toolchanges with flexible materials that may need more time to shrink to original dimensions.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "filament_loading_speed_start": {
+    "type": "float",
+    "label": "Loading speed at the start",
+    "tooltip": "Speed used at the very beginning of loading phase.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "3"
+  },
+  "filament_unloading_speed": {
+    "type": "float",
+    "label": "Unloading speed",
+    "tooltip": "Speed used for unloading the filament on the wipe tower (does not affect  initial part of unloading just after ramming).",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "90"
+  },
+  "filament_unloading_speed_start": {
+    "type": "float",
+    "label": "Unloading speed at the start",
+    "tooltip": "Speed used for unloading the tip of the filament immediately after ramming.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "100"
+  },
+  "filament_loading_speed": {
+    "type": "float",
+    "label": "Loading speed",
+    "tooltip": "Speed used for loading the filament on the wipe tower.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "28"
+  },
+  "filament_purge_multiplier": {
+    "type": "percent",
+    "label": "Purge volume multiplier",
+    "tooltip": "Purging volume on the wipe tower is determined by 'multimaterial_purging' in Printer Settings. This option allows to modify the volume on filament level. Note that the project can override this by setting project-specific values.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "%",
+    "min": "0",
+    "default_value": "100%"
+  },
+  "filament_minimal_purge_on_wipe_tower": {
+    "type": "float",
+    "label": "Minimal purge on wipe tower",
+    "tooltip": "After a tool change, the exact position of the newly loaded filament inside the nozzle may not be known, and the filament pressure is likely not yet stable. Before purging the print head into an infill or a sacrificial object, Slic3r will always prime this amount of material into the wipe tower to produce successive infill or sacrificial object extrusions reliably.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm³",
+    "min": "0",
+    "default_value": "15"
+  },
+  "filament_flush_volume": {
+    "type": "float",
+    "label": "Flush volume",
+    "tooltip": "Volume of filament to flush during a tool change. Used in custom toolchange G-code.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm³",
+    "min": "0",
+    "default_value": "0"
+  },
+  "filament_flush_speed": {
+    "type": "float",
+    "label": "Flush speed",
+    "tooltip": "Extrusion speed used for flushing during a tool change. Used in custom toolchange G-code.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "filament_infill_max_crossing_speed": {
+    "type": "float",
+    "label": "Max crossing infill speed",
+    "tooltip": "Maximum speed allowed for this filament while printing infill with self intersections in a single layer. Set to zero for no limit.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "filament_max_volumetric_speed": {
+    "type": "float",
+    "label": "Max volumetric speed",
+    "tooltip": "Maximum volumetric speed allowed for this filament. Limits the maximum volumetric speed of a print to the minimum of print and filament volumetric speed. Set to zero for no limit.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm³/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "filament_infill_max_speed": {
+    "type": "float",
+    "label": "Max non-crossing infill speed",
+    "tooltip": "Maximum speed allowed for this filament while printing infill without any self intersections in a single layer. Set to zero for no limit.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "sidetext": "mm/s",
+    "min": "0",
+    "default_value": "0"
+  },
+  "start_filament_gcode": {
+    "type": "string",
+    "label": "Start G-code",
+    "tooltip": "This start procedure is inserted at the beginning, after any printer start gcode (and after any toolchange to this filament in case of multi-material printers). This is used to override settings for a specific filament. If PrusaSlicer detects M104, M109, M140 or M190 in your custom codes, such commands will not be prepended automatically so you're free to customize the order of heating commands and other custom actions. Note that you can use placeholder variables for all PrusaSlicer settings, so you can put a \"M109 S[first_layer_temperature]\" command wherever you want. If you have multiple extruders, the gcode is processed in extruder order.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": "; Filament gcode\n"
+  },
+  "end_filament_gcode": {
+    "type": "string",
+    "label": "End G-code",
+    "tooltip": "This end procedure is inserted at the end of the output file, before the printer end gcode (and before any toolchange from this filament in case of multimaterial printers). Note that you can use placeholder variables for all PrusaSlicer settings. If you have multiple extruders, the gcode is processed in extruder order.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": "; Filament-specific end gcode \n;END gcode for filament\n"
+  },
+  "custom_parameters_filament": {
+    "type": "string",
+    "label": "Custom filament parameters",
+    "tooltip": "JSON-encoded string defining extra parameters, which can later be expanded in Custom G-code macro language. Each of the parameters is prepended by custom_parameter_filament prefix before it is passed into the parser. For example, defining '{\"my_key\": \"my_value\"}' allows to use 'custom_parameter_filament_my_key'.\n\nThe JSON must be single level (no arrays and objects). All value types are allowed, but nulls will be rejected by the parser.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  },
+  "filament_notes": {
+    "type": "string",
+    "label": "Filament notes",
+    "tooltip": "You can put your notes regarding the filament here.",
+    "mode": "simple",
+    "gui_type": "textfield",
+    "default_value": ""
+  }
+}
