@@ -103,11 +103,6 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix: ${{ fromJSON(needs.prepare_matrix.outputs.matrix) }}
-    concurrency:
-      # Serialize versions of one slicer/architecture so identical dependency
-      # keys are populated once without dropping other slicers in the family.
-      group: slicer-deps-${{ github.ref }}-${{ matrix.slicer }}-${{ matrix.arch }}
-      cancel-in-progress: false
 
     runs-on: ${{ github.event_name == 'schedule' && (matrix.arch == 'arm64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04') || (matrix.arch == 'arm64' && 'ubicloud-standard-30-arm-ubuntu-2404' || 'ubicloud-standard-30-ubuntu-2404') }}
     env:
@@ -332,7 +327,9 @@ jobs:
   update_index:
     needs: [prepare_matrix, build_slicers]
     runs-on: ubuntu-24.04
-    if: needs.prepare_matrix.outputs.has_publish == 'true' && needs.build_slicers.result == 'success' && inputs.preview-only != true
+    # Index every build that finished. A failed job uploads no index artifact,
+    # so one broken slicer no longer holds back the others.
+    if: ${{ !cancelled() && needs.prepare_matrix.outputs.has_publish == 'true' && contains(fromJSON('["success", "failure"]'), needs.build_slicers.result) && inputs.preview-only != true }}
     outputs:
       nightly_indexed: ${{ steps.update-build-index.outputs.nightly_indexed }}
     steps:

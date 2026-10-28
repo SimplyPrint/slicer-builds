@@ -49,7 +49,8 @@ permissions:
 
 jobs:
   generate_defs_visibility:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    # A dump run that failed for one slicer still commits the others.
+    if: github.event_name != 'workflow_run' || contains(fromJSON('["success", "failure"]'), github.event.workflow_run.conclusion)
     runs-on: ubuntu-latest
     env:
       continue_generate: 'true'
