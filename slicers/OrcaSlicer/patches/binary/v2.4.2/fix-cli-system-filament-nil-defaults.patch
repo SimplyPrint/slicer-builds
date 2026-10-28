@@ -1,0 +1,41 @@
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -18,6 +18,7 @@
+     #endif /* SLIC3R_GUI */
+ #endif /* WIN32 */
+ 
++#include <algorithm>
+ #include <cstdio>
+ #include <string>
+ #include <cstring>
+@@ -2189,6 +2190,29 @@
+             std::string inherits;
+             if ((config_from == "User")||(config_from == "user")) {
+                 inherits = config.option<ConfigOptionString>("inherits", true)->value;
++            }
++            if (inherits.empty()) {
++                // A root preset has no parent to inherit "nil" from. Resolve it the
++                // way the preset loader does (extend_default_config_length): an option
++                // that does not override a printer setting takes its default, so a
++                // shipped profile such as filament_flush_temp = ["nil"] passes
++                // validation instead of reading as an out-of-range integer.
++                for (const t_config_option_key &opt_key : config.keys()) {
++                    ConfigOption *opt = config.optptr(opt_key);
++                    if (opt == nullptr || !opt->is_vector() || !opt->nullable() || !opt->is_nil())
++                        continue;
++                    if (std::find(filament_extruder_override_keys.begin(), filament_extruder_override_keys.end(), opt_key) != filament_extruder_override_keys.end())
++                        continue;
++                    const ConfigOptionDef *optdef = print_config_def.get(opt_key);
++                    if (optdef == nullptr || optdef->default_value == nullptr || !optdef->default_value->is_vector()
++                        || static_cast<const ConfigOptionVectorBase *>(optdef->default_value.get())->size() == 0)
++                        continue;
++                    auto *opt_vec = static_cast<ConfigOptionVectorBase *>(opt);
++                    size_t size = opt_vec->size();
++                    opt_vec->clear();
++                    opt_vec->resize(std::max<size_t>(size, 1), optdef->default_value.get());
++                    BOOST_LOG_TRIVIAL(info) << boost::format("filament %1%: resolved nil %2% to its default %3%") % config_name % opt_key % opt->serialize();
++                }
+             }
+             load_filaments_inherit.push_back(inherits);
+             load_filaments_id.push_back(filament_id);
