@@ -1,5 +1,5 @@
 diff --git a/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp b/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp
-index a17ad93..d5a0a66 100644
+index a17ad9390..2a5904532 100644
 --- a/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp
 +++ b/src/slic3r-app-cli/src/Slic3r/App/CLI/ProcessActions.cpp
 @@ -42,6 +42,7 @@
@@ -202,28 +202,15 @@ index a17ad93..d5a0a66 100644
  /**
 @@ -833,7 +1012,7 @@ bool process_actions(
      }
-
+ 
      if (action.dump_json_model) {
 -        perform_config_model_dump(misc);
 +        perform_config_model_dump(runtime, misc);
      }
-
+ 
      if (action.generate_preset_cache) {
-diff --git a/src/slic3r-biz-crypto/include/Slic3r/Biz/Crypto/ContentProvider.hpp b/src/slic3r-biz-crypto/include/Slic3r/Biz/Crypto/ContentProvider.hpp
-index 01b8739..b9ac9c5 100644
---- a/src/slic3r-biz-crypto/include/Slic3r/Biz/Crypto/ContentProvider.hpp
-+++ b/src/slic3r-biz-crypto/include/Slic3r/Biz/Crypto/ContentProvider.hpp
-@@ -12,7 +12,7 @@ class IContentProvider
- public:
-     constexpr static size_t DEFAULT_BUFFER_SIZE = 256 * 1024;
- 
--    using BytesView    = BytesView;
-+    using BytesView    = Slic3r::Biz::Crypto::BytesView;
-     using FileList     = std::vector<std::string>;
-     using StreamKernel = std::function<void(BytesView window)>;
- 
 diff --git a/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp b/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp
-index 81f84e9..aa5993c 100644
+index 94d1874d0..9e4e0e0a5 100644
 --- a/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp
 +++ b/src/slic3r-shared/include/Slic3r/Biz/IConfigBoxSetter.hpp
 @@ -1,5 +1,6 @@
@@ -251,8 +238,8 @@ index 81f84e9..aa5993c 100644
 -    set_item_override(const Domain::ConfigItem& item, bool enable, size_t index = 0) = 0;
 +    set_item_override(const Domain::ConfigItem& item, bool enable, std::size_t index = 0) = 0;
  
--    virtual void set_from_original_value(const Domain::ConfigItem& item, size_t index = 0) {}
-+    virtual void set_from_original_value(const Domain::ConfigItem& item, std::size_t index = 0) {}
+-    virtual void discard_item_changes(const Domain::ConfigItem& item, size_t index = 0) {}
++    virtual void discard_item_changes(const Domain::ConfigItem& item, std::size_t index = 0) {}
  };
  
  } // namespace Slic3r::Biz
@@ -265,15 +252,13 @@ index ce5074b18..c71aca43e 100644
  #include "Slic3r/Domain/ConfigBoxesSLA.hpp"
  #include "Slic3r/Biz/Config/ConfigJson.hpp"
 +#include "Slic3r/App/Config/CategoryUtils.hpp"
--
-+
+ 
  #include <nlohmann/json.hpp>
  #include <boost/nowide/fstream.hpp>
 @@ -59,10 +60,61 @@ void to_json_def(json& j, const ConfigItemDef& cd)
          cd.name,
      }};
--
-+
+ 
 -    if (cd.max != FLT_MAX)
 -        j["max"] = cd.max;
 -    if (cd.min != -FLT_MAX)
@@ -334,6 +319,5 @@ index ce5074b18..c71aca43e 100644
 +        }
 +    }
  }
--
-+
+ 
  static std::vector<std::string> to_strings(const std::vector<std::string_view>& strings)
