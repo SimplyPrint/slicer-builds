@@ -17,6 +17,12 @@ shared = ["cli-thumbnail-orca-opengl-version"]
 [patches.binary_ref_aliases]
 "v2.4.1" = "v2.4.2"
 
+# main (2.5.0-dev) requests GL 3.3 itself, so the shared OpenGL version patch is gone.
+[[patches.series]]
+name = "orca-2.5"
+from = "v2.5.0"
+shared = []
+
 [ci.binary]
 enabled = true
 publish = true
