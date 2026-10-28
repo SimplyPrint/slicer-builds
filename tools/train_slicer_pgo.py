@@ -217,7 +217,9 @@ def run(command: list[str], bundle: Path) -> dict[str, float]:
             command, cwd=bundle, env=env, stdout=log, stderr=subprocess.STDOUT
         )
         try:
-            returncode = process.wait(timeout=180)
+            # Instrumented builds run roughly ten times slower. ElegooSlicer has no
+            # Benchy 3MF and trains on the Stanford Bunny, which takes minutes.
+            returncode = process.wait(timeout=600)
         except subprocess.TimeoutExpired:
             dump_threads(process.pid)
             process.kill()
