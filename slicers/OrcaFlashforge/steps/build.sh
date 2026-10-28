@@ -4,6 +4,10 @@ set -euo pipefail
 bash ./tools/stamp_version_date.sh slicer-src
 source_dir="$(cd -- slicer-src && pwd -P)"
 prefix="$source_dir/deps/build/OrcaSlicer_dep/usr/local"
+# main's BuildLinux.sh still installs the deps to destdir.
+if [[ ! -d "$prefix" && -d "$source_dir/deps/build/destdir/usr/local" ]]; then
+  prefix="$source_dir/deps/build/destdir/usr/local"
+fi
 pch=ON
 if [[ "${SLICER_PCH:-ON}" == "OFF" ]]; then
   pch=OFF

@@ -20,6 +20,13 @@ shared = ["dump-configs-orca-legacy", "glfw-x11-orca-legacy"]
 [patches.binary_ref_aliases]
 "1.7.8" = "1.7.9"
 
+# 1.7.15 is cut from a release branch rebased onto OrcaSlicer 2.4 (GLFW 3.4,
+# glad); main, which nightly builds, is still on the old base.
+[[patches.series]]
+name = "orca-2.4"
+from = "1.7.15"
+nightly = false
+
 [ci.binary]
 enabled = true
 publish = true
