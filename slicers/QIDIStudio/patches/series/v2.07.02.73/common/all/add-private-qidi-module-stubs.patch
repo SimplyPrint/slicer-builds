@@ -1,0 +1,224 @@
+diff --git a/src/slic3r/GUI/SendToPrinter.cpp b/src/slic3r/GUI/SendToPrinter.cpp
+--- a/src/slic3r/GUI/SendToPrinter.cpp
++++ b/src/slic3r/GUI/SendToPrinter.cpp
+@@ -29,9 +29,7 @@
+ #include "QDSPrinterWebView.hpp"
+ #include "OctoPrint.hpp"
+ 
+-#if QDT_RELEASE_TO_PUBLIC
+ #include "../QIDI/P2PManager.hpp"
+-#endif
+ #include <wx/weakref.h>
+ 
+ namespace Slic3r {
+diff --git a/src/slic3r/GUI/SyncBoxInfoDialog.hpp b/src/slic3r/GUI/SyncBoxInfoDialog.hpp
+--- a/src/slic3r/GUI/SyncBoxInfoDialog.hpp
++++ b/src/slic3r/GUI/SyncBoxInfoDialog.hpp
+@@ -11,9 +11,7 @@
+ #include "DeviceManager.hpp"
+ #include "BaseTransparentDPIFrame.hpp"
+ 
+-#if QDT_RELEASE_TO_PUBLIC
+ #include "../QIDI/QIDINetworkTypes.hpp"
+-#endif
+ 
+ class Button;
+ class CheckBox;
+diff --git a/src/slic3r/GUI/WebViewDialog.cpp b/src/slic3r/GUI/WebViewDialog.cpp
+--- a/src/slic3r/GUI/WebViewDialog.cpp
++++ b/src/slic3r/GUI/WebViewDialog.cpp
+@@ -35,9 +35,7 @@
+ #include <wrl/client.h>
+ #endif
+ 
+-#if QDT_RELEASE_TO_PUBLIC
+ #include "../QIDI/QIDINetwork.hpp"
+-#endif
+ 
+ namespace pt = boost::property_tree;
+ 
+diff --git a/src/slic3r/QIDI/P2PManager.hpp b/src/slic3r/QIDI/P2PManager.hpp
+new file mode 100644
+--- /dev/null
++++ b/src/slic3r/QIDI/P2PManager.hpp
+@@ -0,0 +1,38 @@
++// QIDI does not publish src/slic3r/QIDI; this stub stands in for headless builds.
++#ifndef slic3r_QIDI_P2PManager_stub_hpp_
++#define slic3r_QIDI_P2PManager_stub_hpp_
++
++#include <atomic>
++#include <cstdint>
++#include <functional>
++#include <string>
++
++namespace Slic3r {
++
++class P2PManager
++{
++public:
++    struct FileTransferOptions
++    {
++        std::atomic<bool>                      *cancel{nullptr};
++        std::function<void(int64_t, int64_t)> progress;
++    };
++
++    struct FileTransferResult
++    {
++        bool ok{false};
++        bool cancelled{false};
++    };
++
++    static P2PManager &instance()
++    {
++        static P2PManager manager;
++        return manager;
++    }
++
++    FileTransferResult uploadFile(const std::string &, const std::string &, const FileTransferOptions &) { return {}; }
++};
++
++} // namespace Slic3r
++
++#endif
+diff --git a/src/slic3r/QIDI/QIDIDeviceApi.hpp b/src/slic3r/QIDI/QIDIDeviceApi.hpp
+new file mode 100644
+--- /dev/null
++++ b/src/slic3r/QIDI/QIDIDeviceApi.hpp
+@@ -0,0 +1,27 @@
++// QIDI does not publish src/slic3r/QIDI; this stub stands in for headless builds.
++#ifndef slic3r_QIDI_QIDIDeviceApi_stub_hpp_
++#define slic3r_QIDI_QIDIDeviceApi_stub_hpp_
++
++#include <string>
++#include <wx/string.h>
++
++#include "QIDINetworkTypes.hpp"
++
++namespace Slic3r {
++
++class QIDIDeviceApi
++{
++public:
++    static bool get_file_list(const std::string &, std::string &) { return false; }
++    static bool get_timelapse_directory(const std::string &, std::string &) { return false; }
++    static bool get_system_info(const std::string &, std::string &) { return false; }
++    static bool get_client_info(const std::string &, std::string &) { return false; }
++
++    bool get_box_state(wxString &, const std::string &, const std::string &) { return false; }
++    GUI::Box_info get_box_info(wxString &, const std::string &, const std::string &) { return {}; }
++    void get_color_filament_str(wxString &, GUI::Box_info &, const std::string &, const std::string &) {}
++};
++
++} // namespace Slic3r
++
++#endif
+diff --git a/src/slic3r/QIDI/QIDIDeviceWebSocket.hpp b/src/slic3r/QIDI/QIDIDeviceWebSocket.hpp
+new file mode 100644
+--- /dev/null
++++ b/src/slic3r/QIDI/QIDIDeviceWebSocket.hpp
+@@ -0,0 +1,34 @@
++// QIDI does not publish src/slic3r/QIDI; this stub stands in for headless builds.
++#ifndef slic3r_QIDI_QIDIDeviceWebSocket_stub_hpp_
++#define slic3r_QIDI_QIDIDeviceWebSocket_stub_hpp_
++
++#include <functional>
++#include <memory>
++#include <string>
++#include <vector>
++
++#include "nlohmann/json.hpp"
++
++namespace Slic3r {
++namespace GUI { class QDSDevice; }
++
++class QIDIDeviceWebSocket
++{
++public:
++    std::function<void(const std::string &, const std::string &)>    on_status_changed;
++    std::function<void(const std::string &, const nlohmann::json &)> on_message_received;
++
++    bool connect(const std::string &, const std::shared_ptr<GUI::QDSDevice> &) { return false; }
++    void stopConnection(const std::string &) {}
++    void sendSubscribeMessage(const std::string &) {}
++    void getAllErrorList(const std::string &) {}
++    void sendCommand(const std::string &, const std::string &) {}
++    bool sendCommand(const std::string &, const std::string &, const std::string &, const std::string &) { return false; }
++    bool sendCommand(const std::string &, const nlohmann::json &, const std::string &) { return false; }
++    void sendActionCommand(const std::string &, const std::string &) {}
++    std::vector<std::string> getConnectionIds() const { return {}; }
++};
++
++} // namespace Slic3r
++
++#endif
+diff --git a/src/slic3r/QIDI/QIDIFileManager.hpp b/src/slic3r/QIDI/QIDIFileManager.hpp
+new file mode 100644
+--- /dev/null
++++ b/src/slic3r/QIDI/QIDIFileManager.hpp
+@@ -0,0 +1,5 @@
++// QIDI does not publish src/slic3r/QIDI; this stub stands in for headless builds.
++#ifndef slic3r_QIDI_QIDIFileManager_stub_hpp_
++#define slic3r_QIDI_QIDIFileManager_stub_hpp_
++
++#endif
+diff --git a/src/slic3r/QIDI/QIDINetwork.hpp b/src/slic3r/QIDI/QIDINetwork.hpp
+new file mode 100644
+--- /dev/null
++++ b/src/slic3r/QIDI/QIDINetwork.hpp
+@@ -0,0 +1,26 @@
++// QIDI does not publish src/slic3r/QIDI; this stub stands in for headless builds.
++#ifndef slic3r_QIDI_QIDINetwork_stub_hpp_
++#define slic3r_QIDI_QIDINetwork_stub_hpp_
++
++#include <functional>
++#include <string>
++
++namespace Slic3r {
++
++class MakerHttpHandle
++{
++public:
++    static MakerHttpHandle &getInstance()
++    {
++        static MakerHttpHandle handle;
++        return handle;
++    }
++
++    void get_qidi_model_list(std::function<void(std::string, unsigned)>,
++                             std::function<void(std::string, std::string, unsigned)>)
++    {}
++};
++
++} // namespace Slic3r
++
++#endif
+diff --git a/src/slic3r/QIDI/QIDINetworkTypes.hpp b/src/slic3r/QIDI/QIDINetworkTypes.hpp
+new file mode 100644
+--- /dev/null
++++ b/src/slic3r/QIDI/QIDINetworkTypes.hpp
+@@ -0,0 +1,25 @@
++// QIDI does not publish src/slic3r/QIDI; this stub stands in for headless builds.
++#ifndef slic3r_QIDI_QIDINetworkTypes_stub_hpp_
++#define slic3r_QIDI_QIDINetworkTypes_stub_hpp_
++
++#include <string>
++#include <vector>
++
++namespace Slic3r { namespace GUI {
++
++struct Box_info
++{
++    int                      box_count{0};
++    int                      auto_reload_detect{0};
++    std::vector<int>         slot_state;
++    std::vector<int>         slot_id;
++    std::vector<int>         filament_vendor;
++    std::vector<int>         filament_index;
++    std::vector<std::string> filament_id;
++    std::vector<std::string> filament_colors;
++    std::vector<std::string> filament_type;
++};
++
++}} // namespace Slic3r::GUI
++
++#endif

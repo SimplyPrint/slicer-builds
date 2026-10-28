@@ -1,0 +1,21 @@
+diff --git a/src/Orca-Flashforge.cpp b/src/Orca-Flashforge.cpp
+index fbaee0d..9fa4a49 100644
+--- a/src/Orca-Flashforge.cpp
++++ b/src/Orca-Flashforge.cpp
+@@ -6451,6 +6451,16 @@ int CLI::run(int argc, char **argv)
+ 
+             bool thumbnail_opengl_ready = false;
+             glfwSetErrorCallback(glfw_callback);
++#if (defined(__linux__) || defined(__LINUX__)) && defined(GLFW_PLATFORM) && defined(GLFW_PLATFORM_X11)
++            // GLFW 3.4 may select Wayland when both Weston and Xwayland are
++            // available. Prefer X11 for the CLI renderer so GLFW's context
++            // platform and OpenGLManager's desktop GL loader stay in sync.
++            const char* display = ::getenv("DISPLAY");
++            if (display != nullptr && *display != '\0') {
++                ::unsetenv("WAYLAND_DISPLAY");
++                glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
++            }
++#endif
+             int ret = glfwInit();
+             if (ret == GLFW_FALSE) {
+                 const char* error_msg;

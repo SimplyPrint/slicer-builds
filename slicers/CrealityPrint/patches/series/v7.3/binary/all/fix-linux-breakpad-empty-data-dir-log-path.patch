@@ -1,0 +1,104 @@
+diff --git a/src/CrealityPrint.cpp b/src/CrealityPrint.cpp
+index 7d724e1..610fa6b 100644
+--- a/src/CrealityPrint.cpp
++++ b/src/CrealityPrint.cpp
+@@ -730,6 +730,33 @@ extern "C" {
+     }
+ }
+ #else /* _MSC_VER */
++static int run_application_safely(int argc, char **argv)
++{
++    try {
++        return run_application(argc, argv);
++    } catch (const boost::filesystem::filesystem_error &ex) {
++        BOOST_LOG_TRIVIAL(error) << "Uncaught boost::filesystem::filesystem_error: " << ex.what()
++                                 << ", code=" << ex.code().value()
++                                 << ", category=" << ex.code().category().name()
++                                 << ", message=" << ex.code().message()
++                                 << ", path1=" << ex.path1().string()
++                                 << ", path2=" << ex.path2().string();
++        boost::nowide::cerr << "Uncaught boost::filesystem::filesystem_error: " << ex.what() << std::endl;
++        boost::log::core::get()->flush();
++        return 1;
++    } catch (const std::exception &ex) {
++        BOOST_LOG_TRIVIAL(error) << "Uncaught std::exception: " << ex.what();
++        boost::nowide::cerr << "Uncaught std::exception: " << ex.what() << std::endl;
++        boost::log::core::get()->flush();
++        return 1;
++    } catch (...) {
++        BOOST_LOG_TRIVIAL(error) << "Uncaught non-standard exception";
++        boost::nowide::cerr << "Uncaught non-standard exception" << std::endl;
++        boost::log::core::get()->flush();
++        return 1;
++    }
++}
++
+ #if defined(__linux__) || defined(__LINUX__)
+ #ifdef USE_BREAKPAD
+ static bool dumpCallback(const google_breakpad::MinidumpDescriptor& descriptor,void* context, bool succeeded) {
+@@ -803,58 +830,38 @@ static bool dumpCallback(const google_breakpad::MinidumpDescriptor& descriptor,v
+ 			             oldPath.string().c_str(), remove_error.message().c_str());
+ 			     }
+ 			 }
+-			 // 获取当前可执行文件路径
+-			 char exePath[PATH_MAX];
+-			 ssize_t len = readlink("/proc/self/exe", exePath, sizeof(exePath) - 1);
+-			 if (len != -1) {
+-			     exePath[len] = '\0';
+-			     std::string command = std::string(exePath) + " \"minidump://file=" + logPath.string() + "\"";
+-			     // 使用fork和exec启动新进程
+-			     pid_t pid = fork();
+-			     if (pid == 0) {
+-				 // 子进程
+-				 execl("/bin/sh", "sh", "-c", command.c_str(), (char*)NULL);
+-				 _exit(1); // 如果exec失败
+-			     } else if (pid > 0) {
+-				 // 父进程继续执行
+-			     }
+-			 }
++			 BOOST_LOG_TRIVIAL(info) << "MiniDump saved to: " << logPath.string();
+ 		     }
+-		     
++
+ 		     BOOST_LOG_TRIVIAL(info) << "MiniDump succeeded: " << descriptor.path();
+ 		 } else {
+ 		     BOOST_LOG_TRIVIAL(error) << "MiniDump failed: " << descriptor.path();
+ 		 }
+                 return succeeded;
+             }
+ #endif
+ #endif
+ int main(int argc, char **argv)
+ {
+-   BOOST_LOG_TRIVIAL(error) << "main start";
+ #ifdef __linux__
+-   BOOST_LOG_TRIVIAL(error) << "main __linux__";
+     //setenv("WEBKIT_DISABLE_COMPOSITING_MODE", "1", 1);
+ #endif
+-    
++
+     boost::filesystem::path   tempPath = boost::filesystem::path(wxFileName::GetTempDir().ToStdString());
+     if (argc == 2 && boost::starts_with(std::string(argv[1]), "minidump://file=")) {
+ 	 // 处理崩溃报告参数，直接启动GUI应用程序
+-	 return run_application(argc, argv);
++	 return run_application_safely(argc, argv);
+     }else
+     {
+-       BOOST_LOG_TRIVIAL(error) << "main check linux";
+        #if defined(__linux__) || defined(__LINUX__)
+              #ifdef USE_BREAKPAD
+-                BOOST_LOG_TRIVIAL(error) << "main google_breakpad init";
+                 google_breakpad::MinidumpDescriptor descriptor("/tmp");
+                 google_breakpad::ExceptionHandler eh(descriptor, NULL, dumpCallback, NULL, true, -1);
+-                BOOST_LOG_TRIVIAL(error) << "main google_breakpad init finished";
+-                return run_application(argc, argv);
++                return run_application_safely(argc, argv);
+             #endif
+         #endif
+     }
+-    
+-    return run_application(argc, argv);
++
++    return run_application_safely(argc, argv);
+ }
+ #endif /* _MSC_VER */

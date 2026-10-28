@@ -1,0 +1,13 @@
+diff --git a/src/slic3r/CMakeLists.txt b/src/slic3r/CMakeLists.txt
+--- a/src/slic3r/CMakeLists.txt
++++ b/src/slic3r/CMakeLists.txt
+@@ -773,5 +773,8 @@ elseif (APPLE)
+     target_link_libraries(libslic3r_gui resolv)
+ elseif (UNIX)
+-    if (CMAKE_SIZEOF_VOID_P EQUAL 8)
++    # The public repository no longer ships deps/pgLibConnect, and no source calls it.
++    if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../../deps/pgLibConnect/Lib/Ubuntu)
++        message(STATUS "deps/pgLibConnect is missing; libslic3r_gui links without it")
++    elseif (CMAKE_SIZEOF_VOID_P EQUAL 8)
+         target_link_libraries(libslic3r_gui ${CMAKE_CURRENT_SOURCE_DIR}/../../deps/pgLibConnect/Lib/Ubuntu/x64/libconnect.a)
+     else ()

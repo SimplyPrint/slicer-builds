@@ -87,11 +87,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.prepare_matrix.outputs.matrix) }}
-    concurrency:
-      # Serialize versions of one slicer/architecture so identical dependency
-      # keys are populated once without dropping other slicers in the family.
-      group: slicer-deps-${{ github.ref }}-${{ matrix.slicer }}-${{ matrix.arch }}
-      cancel-in-progress: false
 
     runs-on: ${{ inputs.runner || (github.event_name == 'schedule' && 'ubuntu-24.04') || 'ubicloud-standard-30-ubuntu-2404' }}
     env:
@@ -235,7 +230,8 @@ jobs:
   commit_artifacts:
     needs: [prepare_matrix, build_slicers]
     runs-on: ubuntu-24.04
-    if: needs.prepare_matrix.outputs.has_publish == 'true' && needs.build_slicers.result == 'success'
+    # Commit every config that was extracted; failed jobs upload nothing.
+    if: ${{ !cancelled() && needs.prepare_matrix.outputs.has_publish == 'true' && contains(fromJSON('["success", "failure"]'), needs.build_slicers.result) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

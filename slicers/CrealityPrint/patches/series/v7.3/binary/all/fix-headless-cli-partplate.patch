@@ -1,0 +1,15 @@
+diff --git a/src/slic3r/GUI/PartPlate.cpp b/src/slic3r/GUI/PartPlate.cpp
+index b915e14..f6063bd 100644
+--- a/src/slic3r/GUI/PartPlate.cpp
++++ b/src/slic3r/GUI/PartPlate.cpp
+@@ -1923,7 +1923,9 @@ Vec3d PartPlate::estimate_wipe_tower_size(const DynamicPrintConfig & config, con
+                         use_corner_rib;
+ 
+     double depth = plate_extruder_size == 1 ? 0 : d;
+-    int    nozzle_nums = (wxTheApp && wxGetApp().preset_bundle) ? wxGetApp().preset_bundle->get_printer_extruder_count() : 1;
++    const auto* nozzle_diameter = config.option<ConfigOptionFloats>("nozzle_diameter");
++    int    nozzle_nums = (wxTheApp && wxGetApp().preset_bundle) ? wxGetApp().preset_bundle->get_printer_extruder_count() :
++                         nozzle_diameter ? std::max<int>(1, nozzle_diameter->values.size()) : 1;
+     double volume      = wipe_volume * (nozzle_nums == 2 ? plate_extruder_size : (plate_extruder_size - 1));
+     if (use_rib_wall) {
+         depth = std::sqrt(volume / layer_height);

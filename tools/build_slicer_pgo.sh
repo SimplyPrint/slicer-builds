@@ -30,6 +30,11 @@ case "$family" in
   bambu | orca | prusa) ;;
   *) exec "$build" ;;
 esac
+# PrusaSlicer 3 replaced the CLI the training workload drives.
+if [[ "$family" == prusa && -d slicer-src/src/slic3r-app-cli ]]; then
+  echo "No PGO workload for the PrusaSlicer 3 CLI yet; building without PGO."
+  exec "$build"
+fi
 
 base_cflags="${CFLAGS:-}"
 base_cxxflags="${CXXFLAGS:-}"

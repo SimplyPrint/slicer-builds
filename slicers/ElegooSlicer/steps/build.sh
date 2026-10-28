@@ -4,6 +4,10 @@ set -euo pipefail
 bash ./tools/stamp_version_date.sh slicer-src
 source_dir="$(cd -- slicer-src && pwd -P)"
 prefix="$source_dir/deps/build/destdir/usr/local"
+# From v1.5.3.5 the deps install to ElegooSlicer_dep, as OrcaSlicer's do to OrcaSlicer_dep.
+if [[ -d "$source_dir/deps/build/ElegooSlicer_dep/usr/local" ]]; then
+  prefix="$source_dir/deps/build/ElegooSlicer_dep/usr/local"
+fi
 if [[ -z "${CMAKE_BUILD_PARALLEL_LEVEL:-}" ]]; then
   export CMAKE_BUILD_PARALLEL_LEVEL=4
 fi

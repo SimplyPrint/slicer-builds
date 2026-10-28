@@ -20,6 +20,18 @@ shared = [
     "cli-thumbnail-orca-legacy",
 ]
 
+# 2.4.1 is still on OrcaSlicer 2.3, but GLModel gained a VAO path, LOD models
+# and a third wxApp GL-version check, and the expand-extruders fix landed upstream.
+[[patches.series]]
+name = "snapmaker-2.4"
+from = "v2.4.1"
+shared = [
+    "dump-configs-orca-legacy",
+    "glfw-x11-orca-legacy",
+    "glew-glx-orca-legacy",
+    "cli-thumbnail-glew-glx",
+]
+
 [ci.binary]
 enabled = true
 publish = true

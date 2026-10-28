@@ -25,6 +25,8 @@ GITHUB_REPOSITORY_RE = re.compile(
     r"[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*"
 )
 RETAINED_RELEASE_LIMIT = 3
+NIGHTLY_REFS = frozenset({"HEAD", "nightly"})
+VERSION_RE = re.compile(r"([0-9]+(?:\.[0-9]+){1,3})(?:-(alpha|beta|rc)([0-9]+))?")
 
 
 @dataclass(frozen=True)
@@ -56,6 +58,16 @@ def safe_ref(value: Any, label: str) -> str:
     return value
 
 
+def version_parts(ref: str) -> tuple[int, ...] | None:
+    match = VERSION_RE.fullmatch(ref.removeprefix("version_").removeprefix("v").removeprefix("V"))
+    if match is None:
+        return None
+    core = tuple(int(part) for part in match.group(1).split("."))
+    core = (*core, *(0 for _ in range(4 - len(core))))
+    stage = match.group(2)
+    return (*core, {None: 4, "rc": 3, "beta": 2, "alpha": 1}[stage], int(match.group(3) or 0))
+
+
 def ref_specs(manifest: Manifest) -> list[dict[str, str | None]]:
     """Read retained release locks from the successful-artifact index."""
 
@@ -70,23 +82,13 @@ def ref_specs(manifest: Manifest) -> list[dict[str, str | None]]:
     if not isinstance(versions, dict):
         fail(f"{index_path}: versions must be an object")
 
-    def version_parts(ref: str) -> tuple[int, ...]:
-        clean = ref.removeprefix("version_").removeprefix("v")
-        match = re.fullmatch(
-            r"([0-9]+(?:\.[0-9]+){1,3})(?:-(alpha|beta|rc)([0-9]+))?", clean
-        )
-        if match is None:
-            fail(f"{index_path}: unsupported release version {ref!r}")
-        core = tuple(int(part) for part in match.group(1).split("."))
-        core = (*core, *(0 for _ in range(4 - len(core))))
-        stage = match.group(2)
-        return (*core, {None: 4, "rc": 3, "beta": 2, "alpha": 1}[stage], int(match.group(3) or 0))
-
     grouped: dict[str, tuple[str, tuple[int, ...]]] = {}
     for ref in versions:
         if ref == "nightly":
             continue
         parts = version_parts(ref)
+        if parts is None:
+            fail(f"{index_path}: unsupported release version {ref!r}")
         clean = ref.removeprefix("version_").removeprefix("v")
         clean_core = clean.split("-", 1)[0]
         clean_parts = clean_core.split(".")
@@ -158,14 +160,27 @@ def validate_manifest(manifest: Manifest) -> None:
     patch_config = data.get("patches", {})
     if not isinstance(patch_config, dict):
         fail(f"{manifest.path}: patches must be a table")
-    shared = patch_config.get("shared", [])
-    if not isinstance(shared, list) or len(shared) != len(set(shared)):
-        fail(f"{manifest.path}: patches.shared must contain unique names")
-    for name in shared:
-        if not isinstance(name, str) or SAFE_NAME_RE.fullmatch(name) is None:
-            fail(f"{manifest.path}: invalid shared patch-set name")
-        if not (ROOT / "patches" / name).is_dir():
-            fail(f"{manifest.path}: unknown shared patch set {name!r}")
+    validate_shared(manifest, patch_config.get("shared", []), "patches.shared")
+    series = patch_config.get("series", [])
+    if not isinstance(series, list):
+        fail(f"{manifest.path}: patches.series must be an array of tables")
+    seen_series: set[str] = set()
+    for entry in series:
+        if not isinstance(entry, dict) or set(entry) - {"name", "from", "nightly", "shared"}:
+            fail(f"{manifest.path}: patches.series entries take name, from, nightly and shared")
+        series_name = entry.get("name")
+        if not isinstance(series_name, str) or SAFE_NAME_RE.fullmatch(series_name) is None:
+            fail(f"{manifest.path}: invalid patch series name")
+        if series_name in seen_series:
+            fail(f"{manifest.path}: duplicate patch series {series_name!r}")
+        seen_series.add(series_name)
+        if not isinstance(entry.get("from"), str) or version_parts(entry["from"]) is None:
+            fail(f"{manifest.path}: patch series {series_name!r} needs a release version in from")
+        if not isinstance(entry.get("nightly", True), bool):
+            fail(f"{manifest.path}: patch series {series_name!r} nightly must be a boolean")
+        validate_shared(manifest, entry.get("shared", []), f"series {series_name!r} shared")
+        if not series_root(manifest, series_name).is_dir():
+            fail(f"{manifest.path}: missing directory for patch series {series_name!r}")
     for alias_name in ("common_ref_aliases", "binary_ref_aliases", "dump_ref_aliases"):
         aliases = patch_config.get(alias_name, {})
         if not isinstance(aliases, dict):
@@ -173,6 +188,16 @@ def validate_manifest(manifest: Manifest) -> None:
         for source_ref, target_ref in aliases.items():
             safe_ref(source_ref, f"{manifest.path}: {alias_name} source")
             safe_ref(target_ref, f"{manifest.path}: {alias_name} target")
+
+
+def validate_shared(manifest: Manifest, shared: Any, label: str) -> None:
+    if not isinstance(shared, list) or len(shared) != len(set(shared)):
+        fail(f"{manifest.path}: {label} must contain unique names")
+    for name in shared:
+        if not isinstance(name, str) or SAFE_NAME_RE.fullmatch(name) is None:
+            fail(f"{manifest.path}: invalid shared patch-set name")
+        if not (ROOT / "patches" / name).is_dir():
+            fail(f"{manifest.path}: unknown shared patch set {name!r}")
 
 
 def manifests() -> dict[str, Manifest]:
@@ -207,12 +232,35 @@ def version_directory(root: Path, ref: str) -> Path:
     return root / "nightly"
 
 
-def patch_roots(manifest: Manifest) -> list[Path]:
-    shared = manifest.data.get("patches", {}).get("shared", [])
-    return [
-        *(ROOT / "patches" / name for name in shared),
-        manifest.directory / "patches",
-    ]
+def series_root(manifest: Manifest, name: str) -> Path:
+    return manifest.directory / "patches" / "series" / name
+
+
+def patch_series(manifest: Manifest, ref: str) -> dict[str, Any] | None:
+    """The newest series a ref has reached. Upstream rebases (a fork moving onto
+    a newer OrcaSlicer) need a different patch stack from that release on, while
+    older releases keep the one they were built with."""
+
+    series = manifest.data.get("patches", {}).get("series", [])
+    if ref in NIGHTLY_REFS:
+        eligible = [entry for entry in series if entry.get("nightly", True)]
+    else:
+        parts = version_parts(ref)
+        if parts is None:
+            return None
+        eligible = [entry for entry in series if version_parts(entry["from"]) <= parts]
+    return max(eligible, key=lambda entry: version_parts(entry["from"]), default=None)
+
+
+def patch_roots(manifest: Manifest, ref: str) -> list[Path]:
+    series = patch_series(manifest, ref)
+    if series is None:
+        shared = manifest.data.get("patches", {}).get("shared", [])
+        local = manifest.directory / "patches"
+    else:
+        shared = series.get("shared", [])
+        local = series_root(manifest, series["name"])
+    return [*(ROOT / "patches" / name for name in shared), local]
 
 
 def patches_in(*directories: Path) -> list[Path]:
@@ -238,7 +286,7 @@ def patch_files(manifest: Manifest, ref: str, mode: str) -> list[Path]:
     common_ref = common_aliases.get(ref, ref)
     safe_ref(common_ref, "common patch ref alias")
 
-    for root in patch_roots(manifest):
+    for root in patch_roots(manifest, ref):
         common = root / "common"
         selected.extend(
             patches_in(common / "all", version_directory(common, common_ref))
@@ -388,22 +436,28 @@ def verify_stack(
         if loaded.returncode != 0:
             return {"stage": "read-tree", "error": git_error(loaded)}
 
+        # The build runs a strict --check before applying with whitespace
+        # repair; repairing first would accept context the build rejects.
         for patch in selected:
-            applied = subprocess.run(
+            for command in (
+                ["git", "apply", "--cached", "--check", patch],
                 ["git", "apply", "--cached", "--whitespace=fix", patch],
-                cwd=mirror,
-                env=environment,
-                check=False,
-                text=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            if applied.returncode != 0:
-                return {
-                    "stage": "apply",
-                    "patch": str(patch.relative_to(ROOT)),
-                    "error": git_error(applied),
-                }
+            ):
+                applied = subprocess.run(
+                    command,
+                    cwd=mirror,
+                    env=environment,
+                    check=False,
+                    text=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                )
+                if applied.returncode != 0:
+                    return {
+                        "stage": "apply",
+                        "patch": str(patch.relative_to(ROOT)),
+                        "error": git_error(applied),
+                    }
     return None
 
 
@@ -459,6 +513,45 @@ def command_patch_files(args: argparse.Namespace) -> None:
         print("\n".join(rendered))
 
 
+def matrix_plans(
+    available: dict[str, Manifest], names: list[str], path: Path, mode: str
+) -> list[tuple[Manifest, dict[str, str | None], list[Path]]]:
+    """Plans for rows of a generated CI matrix, so the stacks a scheduled build
+    is about to apply are checked even before the release is indexed."""
+
+    try:
+        rows = json.loads(path.read_text(encoding="utf-8"))["include"]
+    except (OSError, KeyError, TypeError, json.JSONDecodeError) as error:
+        fail(f"Cannot read matrix {path}: {error}")
+    plans = []
+    for row in rows:
+        if row.get("skip") or row.get("config_generator_only") or row.get("slicer") not in names:
+            continue
+        manifest = available[row["slicer"]]
+        commit = row.get("build_ref")
+        patch_version = safe_ref(row.get("patch_version"), f"{path}: patch_version")
+        if not isinstance(commit, str) or COMMIT_RE.fullmatch(commit) is None:
+            fail(f"{path}: invalid build_ref for {manifest.name}")
+        repository = row.get("repo")
+        if not isinstance(repository, str) or GITHUB_REPOSITORY_RE.fullmatch(repository) is None:
+            fail(f"{path}: invalid repo for {manifest.name}")
+        selected = patch_files(manifest, patch_version, mode)
+        if selected:
+            plans.append(
+                (
+                    manifest,
+                    {
+                        "ref": patch_version,
+                        "commit": commit,
+                        "expected_commit": commit,
+                        "repository": f"https://github.com/{repository}.git",
+                    },
+                    selected,
+                )
+            )
+    return plans
+
+
 def command_verify(args: argparse.Namespace) -> None:
     available = manifests()
     names = list(dict.fromkeys(args.slicers or available))
@@ -505,6 +598,19 @@ def command_verify(args: argparse.Namespace) -> None:
                     }
                 plans.append((manifest, mode_spec, mode, selected))
 
+    for path, mode in (
+        *((path, "binary") for path in args.binary_matrices or ()),
+        *((path, "dump") for path in args.config_matrices or ()),
+    ):
+        for manifest, spec, selected in matrix_plans(available, names, path, mode):
+            key = (manifest.name, spec["commit"], mode, tuple(selected))
+            if any(
+                (planned.name, planned_spec.get("commit") or planned_spec.get("expected_commit"), planned_mode, tuple(planned_selected)) == key
+                for planned, planned_spec, planned_mode, planned_selected in plans
+            ):
+                continue
+            plans.append((manifest, spec, mode, selected))
+
     missing_refs = sorted(requested_refs - matched_refs)
     if missing_refs:
         fail(f"Refs are not declared: {', '.join(missing_refs)}")
@@ -532,7 +638,9 @@ def command_verify(args: argparse.Namespace) -> None:
             failure = {"stage": "prepare-mirror", "error": str(mirror_result)}
         else:
             mirror, transport = mirror_result
-            commit, error = resolve_ref(mirror, transport, str(spec["ref"]))
+            commit, error = resolve_ref(
+                mirror, transport, str(spec.get("commit") or spec["ref"])
+            )
             if commit is None:
                 failure = {"stage": "resolve-ref", "error": error}
             elif spec.get("expected_commit") and commit != spec["expected_commit"]:
@@ -602,6 +710,8 @@ def parser() -> argparse.ArgumentParser:
     verify.add_argument(
         "--mode", dest="modes", choices=("binary", "dump"), action="append"
     )
+    verify.add_argument("--binary-matrix", dest="binary_matrices", type=Path, action="append")
+    verify.add_argument("--config-matrix", dest="config_matrices", type=Path, action="append")
     verify.add_argument("--source", type=Path)
     verify.add_argument("--include-head", action="store_true")
     verify.add_argument("--fail-fast", action="store_true")

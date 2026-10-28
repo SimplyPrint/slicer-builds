@@ -1,0 +1,15 @@
+diff --git a/src/CrealityPrint.cpp b/src/CrealityPrint.cpp
+index eeadce7..7d724e1 100644
+--- a/src/CrealityPrint.cpp
++++ b/src/CrealityPrint.cpp
+@@ -158,6 +158,10 @@ static ApplicationArguments parse_application_arguments(int argc, char **argv)
+             result.cli_mode = true;
+             continue;
+         }
++        // Releases before 7.3 entered the CLI whenever an action was given.
++        // Keep headless callers that pass --slice without --cli working.
++        if (std::strcmp(argv[index], "--slice") == 0 || std::strncmp(argv[index], "--slice=", 8) == 0)
++            result.cli_mode = true;
+         result.forwarded.push_back(argv[index]);
+     }
+     result.forwarded.push_back(nullptr);

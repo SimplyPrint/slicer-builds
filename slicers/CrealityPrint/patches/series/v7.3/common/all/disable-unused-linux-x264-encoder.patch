@@ -1,0 +1,26 @@
+diff --git a/deps/FFmpeg/ffmpeg.cmake b/deps/FFmpeg/ffmpeg.cmake
+index d411ac7..1e4e77a 100644
+--- a/deps/FFmpeg/ffmpeg.cmake
++++ b/deps/FFmpeg/ffmpeg.cmake
+@@ -10,7 +10,7 @@ ExternalProject_Add(dep_FFmpeg
+ 	CONFIGURE_COMMAND ${_conf_cmd}
+         "--prefix=${DESTDIR}"
+         "--enable-gpl"
+-        "--enable-libx264"
++        "--disable-libx264"
+         "--enable-static"
+         "--disable-x86asm"
+ 	    "--disable-doc"
+diff --git a/src/video/CMakeLists.txt b/src/video/CMakeLists.txt
+index cec7589..837f1f2 100644
+--- a/src/video/CMakeLists.txt
++++ b/src/video/CMakeLists.txt
+@@ -45,7 +45,7 @@ if(FFMPEG_VERSION)
+             FFmpeg::swscale
+             FFmpeg::avfilter
+         )
+-        if(NOT WIN32)
++        if(NOT WIN32 AND ENABLE_WEBRTC_VIDEO)
+             find_library(SLIC3R_X264_LIBRARY
+                 NAMES x264
+                 PATHS ${CMAKE_PREFIX_PATH}

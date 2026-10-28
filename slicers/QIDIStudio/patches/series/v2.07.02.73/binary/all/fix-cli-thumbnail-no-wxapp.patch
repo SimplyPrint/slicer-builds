@@ -1,0 +1,30 @@
+diff --git a/src/slic3r/GUI/GLShadersManager.cpp b/src/slic3r/GUI/GLShadersManager.cpp
+index 8f25e7f..1953289 100644
+--- a/src/slic3r/GUI/GLShadersManager.cpp
++++ b/src/slic3r/GUI/GLShadersManager.cpp
+@@ -3,6 +3,7 @@
+ #include "GLShadersManager.hpp"
+ #include "3DScene.hpp"
+ #include "GUI_App.hpp"
++#include "OpenGLManager.hpp"
+ #include "GLShader.hpp"
+ 
+ #include <cassert>
+@@ -34,7 +34,7 @@ std::pair<bool, std::string> GLShadersManager::init()
+ 
+     bool valid = true;
+ 
+-    bool gl31 = GUI::wxGetApp().is_gl_version_greater_or_equal_to(3, 1);
++    bool gl31 = GUI::OpenGLManager::get_gl_info().is_version_greater_or_equal_to(3, 1);
+     const std::string glsl_version_prefix = gl31 ? "140/" : "110/";
+ 
+     // used to render bed axes and model, selection hints, gcode sequential view marker model, preview shells, options in gcode preview
+@@ -49,7 +49,7 @@ std::pair<bool, std::string> GLShadersManager::init()
+     valid &= append_shader("printbed", { glsl_version_prefix + "printbed.vs", glsl_version_prefix + "printbed.fs"});
+     valid &= append_shader("hotbed", { glsl_version_prefix + "hotbed.vs", glsl_version_prefix + "hotbed.fs"});
+     // used to render options in gcode preview
+-    if (GUI::wxGetApp().is_gl_version_greater_or_equal_to(3, 3))
++    if (GUI::OpenGLManager::get_gl_info().is_version_greater_or_equal_to(3, 3))
+         valid &= append_shader("gouraud_light_instanced", { glsl_version_prefix + "gouraud_light_instanced.vs", glsl_version_prefix + "gouraud_light.fs" });
+     // used to render extrusion and travel paths as lines in gcode preview
+     valid &= append_shader("toolpaths_lines", { glsl_version_prefix + "toolpaths_lines.vs", glsl_version_prefix + "toolpaths_lines.fs" });

@@ -4,6 +4,10 @@ set -euo pipefail
 bash ./tools/stamp_version_date.sh slicer-src
 source_dir="$(cd -- slicer-src && pwd -P)"
 prefix="$source_dir/deps/build/OrcaSlicer_dep/usr/local"
+# main's BuildLinux.sh still installs the deps to destdir.
+if [[ ! -d "$prefix" && -d "$source_dir/deps/build/destdir/usr/local" ]]; then
+  prefix="$source_dir/deps/build/destdir/usr/local"
+fi
 pch=ON
 if [[ "${SLICER_PCH:-ON}" == "OFF" ]]; then
   pch=OFF
@@ -19,12 +23,18 @@ if [[ -n "${ORCA_UPDATER_SIG_KEY:-}" ]]; then
   extra_args+=("-DORCA_UPDATER_SIG_KEY=${ORCA_UPDATER_SIG_KEY}")
 fi
 
+# main has no run_gettext.sh; releases from 1.7.15 do.
+gettext_args=()
+if [[ -f "$source_dir/scripts/run_gettext.sh" ]]; then
+  gettext_args=(--gettext scripts/run_gettext.sh)
+fi
+
 bash ./tools/build_cmake_target.sh \
   --source "$source_dir" \
   --target Orca-Flashforge \
   --generator "Ninja Multi-Config" \
   --config Release \
-  --gettext scripts/run_gettext.sh \
+  "${gettext_args[@]}" \
   --auto-compiler-cache \
   -- \
   "-DSLIC3R_PCH=$pch" \

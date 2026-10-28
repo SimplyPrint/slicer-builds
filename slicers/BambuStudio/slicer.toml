@@ -14,6 +14,13 @@ thumbnail = true
 [patches]
 shared = ["ffmpeg-pic-bambu-legacy", "glfw-x11-bambu-legacy", "cli-thumbnail-glew-glx"]
 
+# 02.08.02.60 split init_bed_type_info() around a printer model, which the
+# config dump's bed-texture hunks have to follow.
+[[patches.series]]
+name = "v02.08"
+from = "v02.08.02.60"
+shared = ["ffmpeg-pic-bambu-legacy", "glfw-x11-bambu-legacy", "cli-thumbnail-glew-glx"]
+
 [ci.binary]
 enabled = true
 publish = true

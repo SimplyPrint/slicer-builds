@@ -1,0 +1,115 @@
+diff --git a/src/slic3r/GUI/3DScene.cpp b/src/slic3r/GUI/3DScene.cpp
+--- a/src/slic3r/GUI/3DScene.cpp
++++ b/src/slic3r/GUI/3DScene.cpp
+@@ -733,49 +733,49 @@ void GLVolume::simple_render(GLShaderProgram*        shader,
+                 }
+             }
+             if (tverts_range == std::make_pair<size_t, size_t>(0, -1))
+-                m.render();
++                m.render(shader);
+             else
+-                m.render(this->tverts_range);
++                m.render(shader, this->tverts_range);
+         }
+     } else {
+         // Select LOD model based on current LOD level
+         static int lodRenderLogCounter = 0;
+         lodRenderLogCounter++;
+         if (!picking) {
+             // DEBUG: color-code LOD levels for visual verification
+             // GREEN = HIGH (original), BLUE = MIDDLE, RED = SMALL
+             if (m_curLodLevel == LODLevel::Small && m_modelSmall && !m_modelSmall->is_render_disabled() && m_modelSmall->is_initialized()) {
+                 if (lodRenderLogCounter % 180 == 0)
+                     BOOST_LOG_TRIVIAL(debug) << "LOD: SMALL '" << name << "'";
+                 m_modelSmall->set_color(render_color);
+                 //m_modelSmall->set_color(ColorRGBA::GREEN());
+-                m_modelSmall->render();
++                m_modelSmall->render(shader);
+             } else if (m_curLodLevel == LODLevel::Middle && m_modelMiddle && !m_modelMiddle->is_render_disabled() && m_modelMiddle->is_initialized()) {
+                 if (lodRenderLogCounter % 180 == 0)
+                     BOOST_LOG_TRIVIAL(debug) << "LOD: MID '" << name << "'";
+                 m_modelMiddle->set_color(render_color);
+                 //m_modelMiddle->set_color(ColorRGBA::BLUE());
+-                m_modelMiddle->render();
++                m_modelMiddle->render(shader);
+             } else {
+                 if (lodRenderLogCounter % 180 == 0) {
+                     BOOST_LOG_TRIVIAL(debug) << "LOD: HIGH fallback '" << name
+                                               << "' lv=" << static_cast<int>(m_curLodLevel)
+                                               << " s=" << (m_modelSmall ? (int)(!m_modelSmall->is_render_disabled() && m_modelSmall->is_initialized()) : -1)
+                                               << " m=" << (m_modelMiddle ? (int)(!m_modelMiddle->is_render_disabled() && m_modelMiddle->is_initialized()) : -1);
+                 }
+                 // model.set_color() already called in render loop line 1301
+                 //model.set_color(ColorRGBA::RED());
+                 if (tverts_range == std::make_pair<size_t, size_t>(0, -1))
+-                    model.render();
++                    model.render(shader);
+                 else
+-                    model.render(this->tverts_range);
++                    model.render(shader, this->tverts_range);
+             }
+         } else {
+             // Picking: always use full-resolution model
+             if (tverts_range == std::make_pair<size_t, size_t>(0, -1))
+-                model.render();
++                model.render(shader);
+             else
+-                model.render(this->tverts_range);
++                model.render(shader, this->tverts_range);
+         }
+     }
+     if (this->is_left_handed())
+diff --git a/src/slic3r/GUI/Camera.cpp b/src/slic3r/GUI/Camera.cpp
+--- a/src/slic3r/GUI/Camera.cpp
++++ b/src/slic3r/GUI/Camera.cpp
+@@ -55,7 +55,9 @@ void Camera::select_next_type()
+ 
+ void Camera::auto_type(EType preferred_type)
+ {
+-    if (!wxGetApp().app_config->get_bool("auto_perspective")) return;
++    if (wxTheApp == nullptr || wxGetApp().app_config == nullptr ||
++        !wxGetApp().app_config->get_bool("auto_perspective"))
++        return;
+     if (preferred_type == EType::Perspective) {
+         if (!m_prevent_auto_type) {
+             set_type(preferred_type);
+diff --git a/src/slic3r/GUI/GLModel.cpp b/src/slic3r/GUI/GLModel.cpp
+--- a/src/slic3r/GUI/GLModel.cpp
++++ b/src/slic3r/GUI/GLModel.cpp
+@@ -637,14 +637,23 @@ void GLModel::render()
+ }
+ 
+ void GLModel::render(const std::pair<size_t, size_t>& range)
++{
++    render(wxTheApp != nullptr ? wxGetApp().get_current_shader() : nullptr, range);
++}
++
++void GLModel::render(GLShaderProgram* shader)
++{
++    render(shader, std::make_pair<size_t, size_t>(0, indices_count()));
++}
++
++void GLModel::render(GLShaderProgram* shader, const std::pair<size_t, size_t>& range)
+ {
+     if (m_render_disabled)
+         return;
+ 
+     if (range.second == range.first)
+         return;
+ 
+-    GLShaderProgram* shader = wxGetApp().get_current_shader();
+     if (shader == nullptr)
+         return;
+ 
+diff --git a/src/slic3r/GUI/GLModel.hpp b/src/slic3r/GUI/GLModel.hpp
+--- a/src/slic3r/GUI/GLModel.hpp
++++ b/src/slic3r/GUI/GLModel.hpp
+@@ -184,6 +184,8 @@ namespace GUI {
+         void reset();
+         void render();
+         void render(const std::pair<size_t, size_t>& range);
++        void render(GLShaderProgram* shader);
++        void render(GLShaderProgram* shader, const std::pair<size_t, size_t>& range);
+         void render_instanced(unsigned int instances_vbo, unsigned int instances_count);
+ 
+         bool is_initialized() const { return vertices_count() > 0 && indices_count() > 0; }

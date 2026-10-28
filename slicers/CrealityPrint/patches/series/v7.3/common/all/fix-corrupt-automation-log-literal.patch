@@ -1,0 +1,13 @@
+diff --git a/src/slic3r/GUI/Plater.cpp b/src/slic3r/GUI/Plater.cpp
+index 09c4580..40b7602 100644
+--- a/src/slic3r/GUI/Plater.cpp
++++ b/src/slic3r/GUI/Plater.cpp
+@@ -12277,7 +12277,7 @@ void Plater::priv::on_slicing_completed(wxCommandEvent& evt)
+     if (AutomationMgr::enabled()) {
+         PartPlateList& plate_list = wxGetApp().plater()->get_partplate_list();
+         if (!plate_list.get_plate(m_cur_slice_plate)->can_slice()) {
+-            std::string logContent = "鐩? + std::to_string(m_cur_slice_plate + 1) + "涓嶈兘鍒囩墖";
++            std::string logContent = "Plate " + std::to_string(m_cur_slice_plate + 1) + " cannot be sliced";
+             AutomationMgr::outputLog(logContent, 1);
+             AutomationMgr::endFunction();
+         }

@@ -18,6 +18,7 @@ on:
       - "slicers/*/patches/**"
       - "slicers/*/slicer.toml"
       - "tools/slicerctl.py"
+      - ".github/scripts/generate_ci_matrix.py"
   push:
     paths:
       - ".github/workflows/verify_patches.yml"
@@ -26,6 +27,7 @@ on:
       - "slicers/*/patches/**"
       - "slicers/*/slicer.toml"
       - "tools/slicerctl.py"
+      - ".github/scripts/generate_ci_matrix.py"
 
 permissions:
   contents: read
@@ -65,5 +67,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify retained and nightly patch stacks
-        run: ./slicerctl verify-patches --slicer "${{ matrix.slicer }}" --include-head --json
+      # The scheduled matrices name the exact upstream commit and patch version
+      # each build applies, including releases not yet in the index.
+      - name: Generate scheduled build targets
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for lane in binary config; do
+            # A disabled lane builds nothing, so it has no stacks to verify.
+            if [[ "$(python3 -c 'import sys, tomllib; print(tomllib.load(open(sys.argv[1], "rb"))["ci"].get(sys.argv[2], {}).get("enabled", False))' \
+              "slicers/${{ matrix.slicer }}/slicer.toml" "$lane")" != True ]]; then
+              echo '{"include": []}' > "$RUNNER_TEMP/$lane-matrix.json"
+              continue
+            fi
+            python3 .github/scripts/generate_ci_matrix.py \
+              --lane "$lane" \
+              --slicer "${{ matrix.slicer }}" \
+              --build-type all \
+              --arch x86-64 \
+              --release-tag "" > "$RUNNER_TEMP/$lane-matrix.json"
+          done
+
+      - name: Verify retained and scheduled patch stacks
+        run: |
+          ./slicerctl verify-patches \
+            --slicer "${{ matrix.slicer }}" \
+            --binary-matrix "$RUNNER_TEMP/binary-matrix.json" \
+            --config-matrix "$RUNNER_TEMP/config-matrix.json" \
+            --json
