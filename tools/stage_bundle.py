@@ -194,14 +194,16 @@ def _is_within(path: Path, roots: Sequence[Path]) -> bool:
 
 
 def _resolve_missing_search_dirs(
-    roots: Sequence[Path], names: Sequence[str]
+    roots: Sequence[Path], names: Sequence[str], preferred_dir: Path | None = None
 ) -> list[Path]:
     """Find one unambiguous candidate for each unresolved loader name.
 
     Dependency builds commonly copy the same shared object into both their
     build and install trees. Treat byte-identical copies as one artifact while
     continuing to reject genuinely different libraries with the same loader
-    name.
+    name. A copy the application build staged next to its executable is the
+    one its own runtime layout loads, so it wins over differing copies in
+    dependency build trees (for example an unstripped FFmpeg build output).
     """
     wanted = set(names)
     candidates: dict[str, set[Path]] = defaultdict(set)
@@ -219,6 +221,12 @@ def _resolve_missing_search_dirs(
                 f"unresolved shared library has no eligible candidate: {name}"
             )
         ordered_matches = sorted(matches, key=str)
+        if preferred_dir is not None:
+            preferred = [
+                path for path in ordered_matches if path.parent == preferred_dir
+            ]
+            if preferred:
+                ordered_matches = preferred
         if len(ordered_matches) != 1:
             digests = {
                 hashlib.sha256(path.read_bytes()).digest()
@@ -451,7 +459,7 @@ def _dependency_closure(
                 # prepending every build directory can silently select a debug
                 # or stale library with the same SONAME.
                 discovered = _resolve_missing_search_dirs(
-                    library_roots, error.names
+                    library_roots, error.names, executable.parent
                 )
                 added = [path for path in discovered if path not in search_dirs]
                 if not added:
