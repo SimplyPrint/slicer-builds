@@ -23,12 +23,18 @@ if [[ -n "${ORCA_UPDATER_SIG_KEY:-}" ]]; then
   extra_args+=("-DORCA_UPDATER_SIG_KEY=${ORCA_UPDATER_SIG_KEY}")
 fi
 
+# main has no run_gettext.sh; releases from 1.7.15 do.
+gettext_args=()
+if [[ -f "$source_dir/scripts/run_gettext.sh" ]]; then
+  gettext_args=(--gettext scripts/run_gettext.sh)
+fi
+
 bash ./tools/build_cmake_target.sh \
   --source "$source_dir" \
   --target Orca-Flashforge \
   --generator "Ninja Multi-Config" \
   --config Release \
-  --gettext scripts/run_gettext.sh \
+  "${gettext_args[@]}" \
   --auto-compiler-cache \
   -- \
   "-DSLIC3R_PCH=$pch" \
