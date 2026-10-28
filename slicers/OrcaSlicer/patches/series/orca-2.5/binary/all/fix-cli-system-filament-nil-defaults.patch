@@ -18,7 +18,7 @@ diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
 +                    if (is_filament_extruder_override_key(opt_key))
 +                        continue;
 +                    const ConfigOptionDef *optdef = print_config_def.get(opt_key);
-+                    if (optdef == nullptr || optdef->default_value == nullptr || !optdef->default_value->is_vector()
++                    if (optdef == nullptr || optdef->default_value.get() == nullptr || !optdef->default_value->is_vector()
 +                        || static_cast<const ConfigOptionVectorBase *>(optdef->default_value.get())->size() == 0)
 +                        continue;
 +                    auto *opt_vec = static_cast<ConfigOptionVectorBase *>(opt);
