@@ -246,6 +246,9 @@ def train_orca(
             run(
                 [
                     str(executable),
+                    # The fixture is stamped BambuStudio 01.00.00.00. Forks that
+                    # compare it with their own 2.x version reject it otherwise.
+                    "--allow-newer-file",
                     "--slice",
                     "0",
                     "--outputdir",
