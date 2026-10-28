@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import mmap
 import os
 import re
 import resource
@@ -160,6 +161,9 @@ def make_orca_project(source: Path, output: Path) -> None:
             "Metadata/model_settings.config": (
                 b'<?xml version="1.0" encoding="UTF-8"?>'
                 b'<config><object id="2"><metadata key="name" value="PGO workload"/>'
+                # CrealityPrint 7.3 resolves an object without an extruder to
+                # filament 0 and rejects the nozzle mapping.
+                b'<metadata key="extruder" value="1"/>'
                 b"</object></config>"
             ),
         }
@@ -244,6 +248,11 @@ def require_gcode_markers(work: Path, markers: tuple[str, ...]) -> None:
         raise RuntimeError(f"PGO workload did not exercise: {', '.join(missing)}")
 
 
+def binary_mentions(executable: Path, text: bytes) -> bool:
+    with executable.open("rb") as file, mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ) as data:
+        return data.find(text) >= 0
+
+
 def option_supports(help_text: str, option: str, value: str) -> bool:
     match = re.search(
         rf"(?ms)^ {re.escape(option)}(?:[^\n]*\n)(?:(?!^ --).*\n)*",
@@ -265,6 +274,13 @@ def train_orca(
     # Bambu-family forks resolve "default" + tree(auto) to their organic tree
     # implementation; the explicit enum spelling differs between older forks.
     support_style = "default" if family == "bambu" else "organic"
+    # CrealityPrint 7.3 keeps G-code in a temporary project unless asked. Its
+    # GUI starts for --help without --cli, so look for the option instead.
+    gcode_option = (
+        ["--need-gcode-file"]
+        if binary_mentions(executable, b"--need-gcode-file")
+        else []
+    )
     metrics = []
     for iteration in range(repeat):
         run_work = work / f"run-{iteration + 1}"
@@ -276,6 +292,7 @@ def train_orca(
                     # The fixture is stamped BambuStudio 01.00.00.00. Forks that
                     # compare it with their own 2.x version reject it otherwise.
                     "--allow-newer-file",
+                    *gcode_option,
                     "--slice",
                     "0",
                     "--outputdir",
