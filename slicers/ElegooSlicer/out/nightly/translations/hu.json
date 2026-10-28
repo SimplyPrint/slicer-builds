@@ -9,16 +9,69 @@
       "tooltip": "A Klipper max_accel_to_decel értékét a rendszer automatikusan beállítja"
     },
     "accel_to_decel_factor": {
-      "label": "accel_to_decel"
+      "label": "accel_to_decel",
+      "tooltip": "A Klipper max_accel_to_decel értéke a gyorsulás erre a százalékra lesz állítva."
     },
     "activate_air_filtration": {
-      "label": "Activate air filtration"
+      "label": "Activate air filtration",
+      "tooltip": "Aktiváld a jobb légszűrés érdekében. G-kód parancs: M106 P3 S(0-255)"
+    },
+    "activate_air_filtration_during_print": {
+      "full_label": "Nyomtatás közben",
+      "tooltip": "Engedélyezzd ezt az egyéni G-kódban beállított ventilátorsebesség felülbírálásához nyomtatás közben."
+    },
+    "activate_air_filtration_on_completion": {
+      "full_label": "Befejezéskor",
+      "tooltip": "Engedélyezzd ezt az egyéni G-kódban beállított ventilátorsebesség felülbírálásához a nyomtatás befejezése után."
+    },
+    "activate_chamber_temp_control": {
+      "label": "Hőmérséklet-szabályozás aktiválása"
+    },
+    "adaptive_bed_mesh_margin": {
+      "label": "Háló margó",
+      "tooltip": "Ez az opció azt a további távolságot határozza meg, amellyel az adaptív asztalháló területét az XY irányokban ki kell terjeszteni."
+    },
+    "adaptive_pressure_advance": {
+      "label": "Adaptív nyomáselőtolás engedélyezése (béta)",
+      "tooltip": "A nyomtatási sebesség növekedésével (és ezzel együtt a fúvókán átáramló volumetrikus anyagmennyiség növekedésével), valamint a gyorsulás növekedésével megfigyelhető, hogy a tényleges PA érték általában csökken. Ez azt jelenti, hogy egyetlen PA érték nem mindig 100%-ban optimális minden jellemzőhöz, ezért általában kompromisszumos értéket használnak, amely nem okoz túlzott kidudorodást az alacsonyabb áramlási sebességű és kisebb gyorsulású elemeknél, miközben a gyorsabb elemeknél sem okoz réseket.\n\nEz a funkció ezt a korlátozást úgy próbálja kezelni, hogy modellezi a nyomtató extrudálórendszerének válaszát az adott volumetrikus áramlási sebesség és gyorsulás függvényében. Belsőleg egy illesztett modellt hoz létre, amely képes a szükséges nyomáselőtolást extrapolálni bármely adott volumetrikus áramlási sebességhez és gyorsuláshoz, majd ezt a nyomtató felé a pillanatnyi nyomtatási feltételek alapján küldi ki.\n\nHa engedélyezve van, a fenti nyomáselőtolási érték felülíródik. Ennek ellenére erősen ajánlott egy ésszerű alapértelmezett értéket megadni tartalékértékként és/vagy szerszámváltás esetére.\n\n"
+    },
+    "adaptive_pressure_advance_bridges": {
+      "label": "Nyomáselőtolás hidakhoz",
+      "tooltip": "Nyomáselőtolási érték hidakhoz. A kikapcsoláshoz állítsd 0-ra.\n\nHidak nyomtatásakor az alacsonyabb PA érték segít csökkenteni a hidak után közvetlenül jelentkező enyhe alulextrudálás megjelenését. Ezt az okozza, hogy a levegőbe nyomtatás során nyomásesés lép fel a fúvókában, amit az alacsonyabb PA részben ellensúlyoz."
+    },
+    "adaptive_pressure_advance_model": {
+      "label": "Adaptív nyomáselőtolás mérései (béta)",
+      "tooltip": "Adj meg nyomáselőtolási (PA) értékeket, valamint a hozzájuk tartozó volumetrikus áramlási sebességeket és gyorsulásokat vesszővel elválasztva. Soronkét egy értékhármas. Például\n0.04,3.96,3000\n0.033,3.96,10000\n0.029,7.91,3000\n0.026,7.91,10000\n\nKalibrálás menete:\n1. Futtasd le a nyomáselőtolási tesztet legalább 3 sebességgel minden gyorsulási értékhez. Ajánlott legalább a külső kerületek sebességén, a belső kerületek sebességén és a profilod leggyorsabb jellemzőnyomtatási sebességén lefuttatni (ez általában a ritka vagy tömör kitöltés). Ezután ugyanezeket a sebességeket futtasd le a leglassabb és a leggyorsabb nyomtatási gyorsulásokhoz is, de ne menj gyorsabban, mint a Klipper rezgéskompenzátor által ajánlott maximális gyorsulás\n2. Jegyezd fel az optimális PA értéket minden volumetrikus áramlási sebességhez és gyorsuláshoz. Az áramlási számot úgy találhatod meg, hogy a színséma legördülő menüben az áramlást választod, majd a vízszintes csúszkát a PA mintavonalak fölé mozgatod. A számnak az oldal alján kell megjelenjen. Az ideális PA értéknek csökkennie kell a volumetrikus áramlás növekedésével. Ha nem így van, ellenőrizd, hogy az extrudered megfelelően működik-e. Minél lassabban és kisebb gyorsulással nyomtatsz, annál nagyobb az elfogadható PA értékek tartománya. Ha nincs látható különbség, használd a gyorsabb tesztből származó PA értéket\n3. Add meg a PA értékek, az áramlás és a gyorsulás hármasait az itt található szövegmezőben, majd mentsd el a filamentprofilt."
+    },
+    "adaptive_pressure_advance_overhangs": {
+      "label": "Adaptív nyomáselőtolás engedélyezése túlnyúlásokhoz (béta)",
+      "tooltip": "Adaptív PA engedélyezése túlnyúlásokhoz, valamint akkor is, amikor az áramlás ugyanazon jellemzőn belül változik. Ez egy kísérleti opció; ha a PA profil nincs pontosan beállítva, egyenletességi problémákat okozhat a külső felületeken a túlnyúlások előtt és után.\n"
     },
     "additional_cooling_fan_speed": {
-      "label": "Ventilátor fordulatszám"
+      "label": "Ventilátor fordulatszám",
+      "tooltip": "A kiegészítő tárgyhűtő ventilátor sebessége. A kiegészítő ventilátor ezen a sebességen működik nyomtatás közben, kivéve az első néhány réteget, amelyet a hűtés nélküli rétegek határoznak meg.\nA funkció használatához engedélyezd az auxiliary_fan opciót a nyomtatóbeállításokban. G-kód parancs: M106 P2 S(0-255)"
+    },
+    "additional_fan_full_speed_layer": {
+      "label": "Teljes ventilátor fordulatszám ennél a rétegnél",
+      "tooltip": "A segédventilátor sebessége lineárisan megemelkedik az \"Az első\" rétegtől a maximálisig a \"Teljes ventilátorsebesség\" rétegnél.\nA rendszer figyelmen kívül hagyja a „teljes ventilátor fordulatszámot” ha alacsonyabb,  mint „Az első”, ebben az esetben a ventilátor a maximális megengedett sebességgel fog működni „Az első” + 1 rétegben."
+    },
+    "align_infill_direction_to_model": {
+      "label": "Kitöltési irány igazítása a modellhez"
+    },
+    "alternate_extra_wall": {
+      "label": "Váltakozó extra fal",
+      "tooltip": "Ez a beállítás minden második réteghez extra falat ad. Így a kitöltés függőlegesen ékelődik a falak közé, ami erősebb nyomatokat eredményez.\n\nHa ez az opció engedélyezve van, a függőleges héjvastagság biztosítása opciót ki kell kapcsolni.\n\nA villám kitöltés használata ezzel az opcióval együtt nem ajánlott, mert korlátozott mennyiségű kitöltés áll rendelkezésre az extra kerületek rögzítéséhez."
     },
     "auxiliary_fan": {
-      "label": "Kiegészítő tárgyhűtő ventilátor"
+      "label": "Kiegészítő tárgyhűtő ventilátor",
+      "tooltip": "Engedélyezd ezt az opciót, ha a gép rendelkezik kiegészítő tárgyhűtő ventilátorral. G-kód parancs: M106 P2 S(0-255)."
+    },
+    "bbl_calib_mark_logo": {
+      "label": "Automatikus kalibrációs jelek megjelenítése"
+    },
+    "bbl_use_printhost": {
+      "label": "Külső nyomtatási gazdagép használata",
+      "tooltip": "Lehetővé teszi a BambuLab nyomtatók vezérlését külső nyomtatási gazdagépeken keresztül."
     },
     "bed_custom_model": {
       "label": "Egyedi tárgyasztal modell"
@@ -28,6 +81,24 @@
     },
     "bed_exclude_area": {
       "label": "Asztal kizárási terület"
+    },
+    "bed_mesh_max": {
+      "label": "Asztalháló maximuma"
+    },
+    "bed_mesh_min": {
+      "label": "Asztalháló minimuma"
+    },
+    "bed_mesh_probe_distance": {
+      "label": "Szondázási pontok távolsága",
+      "tooltip": "Ez az opció az X és Y irányú szondapontok közötti kívánt távolságot (rácsméretet) állítja be; az alapértelmezett érték mindkét irányban 50 mm."
+    },
+    "bed_temperature_formula": {
+      "label": "Asztalhőmérséklet típusa",
+      "tooltip": "Ez az opció határozza meg, hogyan kerüljön beállításra az asztalhőmérséklet a szeletelés során: az első filament hőmérséklete vagy a nyomtatott filamentek közül a legmagasabb hőmérséklet alapján.",
+      "enum_labels": [
+        "Az első filament alapján",
+        "A legmagasabb hőmérséklet alapján"
+      ]
     },
     "before_layer_change_gcode": {
       "label": "Rétegváltás előtti G-kód",
@@ -47,6 +118,17 @@
       "full_label": "Alsó héj vastagság",
       "tooltip": "Az alsó szilárd rétegek száma szeleteléskor megnő, ha az alsó héjrétegek vastagsága kisebb ennél az értéknél. Ezzel elkerülhető, hogy túl vékony legyen a héj, ha a rétegmagasság kicsi. A 0 azt jelenti, hogy ez a beállítás ki van kapcsolva, és az alsó héj vastagságát egyszerűen az alsó héjrétegek száma határozza meg."
     },
+    "bottom_solid_infill_flow_ratio": {
+      "label": "Alsó felület áramlási aránya",
+      "tooltip": "Ez a tényező befolyásolja az alsó tömör kitöltéshez felhasznált anyag mennyiségét.\n\nA ténylegesen használt alsó tömör kitöltési áramlás ennek az értéknek, a filament áramlási arányának, valamint ha be van állítva, az objektum áramlási arányának a szorzatából adódik."
+    },
+    "bottom_surface_density": {
+      "label": "Alsó felületi sűrűség",
+      "tooltip": "Az alsó felületi réteg sűrűsége. Esztétikai vagy funkcionális célokra szolgál, nem pedig olyan problémák javítására, mint a túlextrudálás.\nFIGYELMEZTETÉS: Ennek az értéknek a csökkentése kedvezőtlenül befolyásolhatja a tárgyasztalhoz való tapadást."
+    },
+    "bottom_surface_filament_id": {
+      "label": "Alsó felület"
+    },
     "bottom_surface_pattern": {
       "label": "Alsó felület mintázata",
       "tooltip": "Ez az alsó felület kitöltésének mintája, kivéve az áthidalásokat.",
@@ -62,20 +144,44 @@
       ]
     },
     "bridge_acceleration": {
-      "label": "Áthidalás"
+      "label": "Áthidalás",
+      "tooltip": "A hidak gyorsulása. Ha az érték százalékban van megadva (pl. 50%), a külső fal gyorsulása alapján lesz kiszámítva."
     },
     "bridge_angle": {
-      "tooltip": "Az áthidalás szögének felülbírálása. A 0 érték azt jelenti, hogy az áthidalás szöge automatikusan kerül kiszámításra. Máskülönben a megadott érték kerül alkalmazásra. Ha az áthidalást a falakkal párhuzamosra szeretnéd állítani, használj 180°-os értéket."
+      "label": "Külső híd kitöltési iránya"
+    },
+    "bridge_density": {
+      "label": "Külső híd sűrűsége"
     },
     "bridge_flow": {
       "label": "Áthidalás áramlási sebessége"
+    },
+    "bridge_line_width": {
+      "label": "Áthidalás"
     },
     "bridge_no_support": {
       "label": "Ne támassza alá az áthidalásokat",
       "tooltip": "Nem támasztja alá az áthidalásokat, ezáltal támaszanyagot spórolva. Az áthidalások általában támasz nélkül is jól nyomtathatók, ha nem túl hosszúak"
     },
+    "bridge_speed": {
+      "label": "Külső",
+      "tooltip": "A külsőleg látható hídextrudálások sebessége.\n\nEzen felül, ha a felkunkorodó kerületeknél való lassítás ki van kapcsolva, vagy a klasszikus túlnyúlási mód engedélyezett, akkor ez lesz azon túlnyúló falak nyomtatási sebessége is, amelyeket 13%-nál kisebb mértékben támaszt alá az alattuk lévő réteg, függetlenül attól, hogy híd vagy túlnyúlás részét képezik."
+    },
     "brim_ears": {
-      "label": "Karimás fülek"
+      "label": "Karimás fülek",
+      "tooltip": "Csak a modell éles szélei fölé rajzoljon peremet."
+    },
+    "brim_ears_detection_length": {
+      "label": "Peremfül-észlelési sugár",
+      "tooltip": "Az éles szögek észlelése előtt a geometria egyszerűsítve lesz. Ez a paraméter a leegyszerűsítésnél figyelembe vett eltérés minimális hosszát adja meg.\n0 értékkel kikapcsolható."
+    },
+    "brim_ears_max_angle": {
+      "label": "Peremfül maximális szöge",
+      "tooltip": "A maximális szög, amelynél peremfül jelenhet meg.\nHa 0-ra van állítva, nem jön létre perem.\nHa ~180-ra van állítva, a perem mindenhol létrejön, kivéve az egyenes szakaszokon."
+    },
+    "brim_flow_ratio": {
+      "label": "Perem áramlási arány",
+      "tooltip": "Ez a tényező befolyásolja a karimák anyagának mennyiségét.\n\nA ténylegesen használt peremáramlást úgy számítjuk ki, hogy ezt az értéket megszorozzuk a filament áramlási arányával, és ha be van állítva, akkor az objektum áramlási arányával.\n\nMegjegyzés: A kapott értéket nem befolyásolja az első réteg áramlási aránya."
     },
     "brim_object_gap": {
       "label": "Perem-tárgy közötti rés",
@@ -86,13 +192,17 @@
       "tooltip": "This controls the generation of the brim at outer and/or inner side of models. Auto means the brim width is analyzed and calculated automatically.",
       "enum_labels": [
         "Auto",
-        "Mouse ear",
-        "Painted",
+        "Egérfül",
+        "Festett",
         "Outer brim only",
         "Inner brim only",
         "Outer and inner brim",
         "Nincs perem"
       ]
+    },
+    "brim_use_efc_outline": {
+      "label": "A Perem a kompenzált körvonalat követi",
+      "tooltip": "Ha engedélyezve van, a perem igazodik az első réteg kerületi geometriájához az elefánttalp-kompenzáció alkalmazása után.\nEz az opció arra az esetre szolgál, amikor az elefánttalp-kompenzáció jelentősen megváltoztatja az első réteg alapterületét.\n\nHa a jelenlegi beállítás már jól működik, előfordulhat, hogy az engedélyezése felesleges és a perem összeolvadását okozhatja a felső rétegekkel."
     },
     "brim_width": {
       "label": "Perem szélessége",
@@ -100,24 +210,46 @@
     },
     "chamber_temperature": {
       "label": "Kamra hőmérséklete",
-      "full_label": "Kamra hőmérséklete"
+      "full_label": "Kamra hőmérséklete",
+      "tooltip": "Magas hőmérsékletű anyagoknál, például ABS, ASA, PC és PA esetén a magasabb kamrahőmérséklet segíthet mérsékelni vagy csökkenteni a kunkorodást és növelheti a rétegek közötti kötés szilárdságát. Ugyanakkor a magasabb kamrahőmérséklet csökkenti a levegőszűrés hatékonyságát ABS és ASA esetén.\n\nPLA, PETG, TPU, PVA és más alacsony hőmérsékletű anyagok esetén ezt az opciót ki kell kapcsolni (0-ra kell állítani), mert a kamrahőmérsékletnek alacsonynak kell maradnia, hogy elkerülhető legyen az extruder eltömődése, amit a hőhatárolónál fellépő anyaglágyulás okozhat.\n\nBekapcsolva ez a paraméter egy chamber_temperature nevű G-code változót is beállít, amely felhasználható a kívánt kamrahőmérséklet átadására a nyomtatásindító makrónak, vagy egy ilyen hőkiegyenlítő makrónak: PRINT_START (egyéb változók) CHAMBER_TEMP=[chamber_temperature]. Ez akkor lehet hasznos, ha a nyomtatód nem támogatja az M141/M191 parancsokat, vagy ha az aktív kamrafűtés hiányában a hőkiegyenlítést a nyomtatásindító makróban szeretnéd kezelni."
+    },
+    "change_extrusion_role_gcode": {
+      "label": "Extrudálási szerep váltása G-kód",
+      "tooltip": "Ez a G-kód akkor kerül beillesztésre, amikor az extrudálási szerep megváltozik."
     },
     "change_filament_gcode": {
       "label": "Filament csere G-kód",
       "tooltip": "Ez a G-kód kerül beillesztésre, amikor a filament csere történik, beleértve a szerszámváltást indító T parancsokat is."
     },
+    "close_additional_fan_first_x_layers": {
+      "label": "Az első",
+      "tooltip": "A speciális kiegészítő hűtőventilátor beállítása az első bizonyos rétegekhez."
+    },
     "close_fan_the_first_x_layers": {
       "label": "Nincs hűtés az első",
       "tooltip": "Kikapcsolja a hűtést a megadott első pár rétegnél. A hűtés kikapcsolása segítheti a jobb tárgyasztalhoz való tapadást"
     },
+    "combine_brims": {
+      "label": "Peremek egyesítése",
+      "tooltip": "Karimák egybevonása, ha azok közel vannak egymáshoz. Ez javíthatja a perem tapadását."
+    },
+    "compatible_printers": {
+      "label": "Nyomtatók kiválasztása"
+    },
     "compatible_printers_condition": {
+      "label": "Feltétel",
       "tooltip": "Logikai kifejezés, amely egy aktív nyomtatóprofil konfigurációs értékeit használja. Ha ez a kifejezés igaz, akkor ez a profil kompatibilis az aktív nyomtatóprofillal."
     },
+    "compatible_prints": {
+      "label": "Profilok kiválasztása"
+    },
     "compatible_prints_condition": {
+      "label": "Feltétel",
       "tooltip": "Logikai kifejezés, amely egy aktív nyomtatási profil konfigurációs értékeit használja. Ha ez a kifejezés igaz, akkor ez a profil kompatibilis az aktív nyomtatási profillal."
     },
     "complete_print_exhaust_fan_speed": {
-      "label": "Ventilátor fordulatszám"
+      "label": "Ventilátor fordulatszám",
+      "tooltip": "Az elszívó ventilátor sebessége a nyomtatás befejezése után."
     },
     "cool_plate_temp": {
       "label": "Többi réteg",
@@ -138,37 +270,55 @@
       "tooltip": "A hűtőcső középpontjának távolsága az extruder csúcsától."
     },
     "counterbore_hole_bridging": {
+      "label": "Hidak süllyesztett furatokhoz",
+      "tooltip": "Ez az opció hidakat hoz létre a süllyesztett furatokhoz, így azok támasz nélkül is nyomtathatók. Elérhető módok:\n1. Egyik sem: Nincs: nem jön létre híd\n2. Részben áthidalt: a támasz nélküli területnek csak egy része lesz áthidalva\n3. Áldozati réteg: teljes áldozati hídréteg jön létre",
       "enum_labels": [
         "Sehol",
-        "Partially bridged",
-        "Sacrificial layer"
+        "Részben áthidalt",
+        "Áldozati réteg"
       ]
     },
     "curr_bed_type": {
       "label": "Asztaltípus",
       "tooltip": "Nyomtató által támogatott asztaltípusok",
       "enum_labels": [
-        "Smooth Cool Plate",
+        "Sima hűvös tálca",
         "Engineering Plate",
-        "Smooth High Temp Plate",
+        "Smooth PEI Plate / High Temp Plate",
         "Textured PEI Plate",
         "Textured Cool Plate",
-        "Cool Plate (SuperTack)"
+        "Hűvös tálca (SuperTack)"
       ]
     },
     "default_acceleration": {
       "label": "Normál nyomtatás",
       "tooltip": "Ez az alapértelmezett gyorsulás mind a normál nyomtatáshoz, mind az első réteg utáni mozgáshoz."
     },
+    "default_bed_type": {
+      "label": "Alapértelmezett asztaltípus",
+      "tooltip": "A nyomtató alapértelmezett tárgyasztaltípusa (szám- és szöveges formátumot is támogat)."
+    },
     "default_filament_colour": {
-      "label": "Alapértelmezett szín"
+      "label": "Alapértelmezett szín",
+      "tooltip": "Alapértelmezett filament szín.\nJobb kattintással visszaállítható a rendszer alapértelmezett értékére."
     },
     "default_filament_profile": {
       "label": "Alapértelmezett filament profil",
       "tooltip": "Alapértelmezett filament profil, ha erre a gép profilra váltasz"
     },
     "default_jerk": {
-      "label": "Alapértelmezett"
+      "label": "Alapértelmezett",
+      "tooltip": "Alapértelmezett jerk."
+    },
+    "default_junction_deviation": {
+      "label": "Csomóponti eltérés",
+      "tooltip": "Marlin firmware csomóponti eltérése (a hagyományos XY jerk beállítást helyettesíti)."
+    },
+    "default_nozzle_volume_type": {
+      "enum_labels": [
+        "Normál",
+        "Nagy áramlás"
+      ]
     },
     "default_print_profile": {
       "label": "Alapértelmezett folyamat profil",
@@ -176,29 +326,35 @@
     },
     "deretraction_speed": {
       "label": "Betöltési sebesség",
-      "full_label": "Betöltési sebesség"
+      "full_label": "Betöltési sebesség",
+      "tooltip": "A filament visszatöltésének sebessége a fúvókába. A 0 ugyanazt a sebességet jelenti, mint a visszahúzásnál."
     },
     "detect_narrow_internal_solid_infill": {
-      "label": "Keskeny belső szilárd kitöltés felismerése",
       "tooltip": "Ez a beállítás automatikusan felismeri a keskeny belső tömör kitöltési területeket. Ha engedélyezve van, a nyomtatás felgyorsítása érdekében ezen a területen a koncentrikus mintát fogja használni. Ellenkező esetben alapértelmezés szerint az egyenes vonalú mintát használja."
     },
     "detect_overhang_wall": {
-      "label": "Túlnyúló fal felismerése",
       "tooltip": "Felismeri a túlnyúlás százalékos arányát a vonalszélességhez viszonyítva, és más sebességet használ. A 100%%-os túlnyúlás esetén az áthidaláshoz beállított sebességet használja."
     },
-    "detect_thin_wall": {
-      "label": "Vékony fal felismerése",
-      "tooltip": "Felismeri a vékony falat, amit nem lehet két vonalnyi szélességgel nyomtatni, és egyetlen vonallal nyomtatja"
+    "disable_m73": {
+      "label": "A hátralévő nyomtatási idő beállításának letiltása",
+      "tooltip": "Az M73 parancs generálásának letiltása: a hátralévő nyomtatási idő beállítása a végső G-kódban."
     },
     "dont_filter_internal_bridges": {
+      "label": "Kis belső hidak kiszűrése",
+      "tooltip": "Ez az opció segíthet csökkenteni a felső felületek párnásodását erősen lejtős vagy ívelt modelleknél.\nAlapértelmezés szerint a kis belső hidak kiszűrésre kerülnek, és a belső tömör kitöltés közvetlenül a ritka kitöltés fölé nyomtatódik. Ez a legtöbb esetben jól működik, felgyorsítja a nyomtatást anélkül, hogy túl nagy kompromisszumot kellene kötni a felső felület minőségében.\nErősen lejtős vagy ívelt modelleknél azonban, különösen túl alacsony ritka kitöltési sűrűség esetén, ez a támasz nélküli tömör kitöltés felkunkorodását okozhatja, ami párnásodáshoz vezet.\nA korlátozott szűrés vagy a szűrés kikapcsolása belső hídréteget nyomtat a kissé alátámasztatlan belső tömör kitöltés fölé. Az alábbi opciók a szűrés érzékenységét szabályozzák, azaz azt, hogy hol jöjjenek létre belső hidak:\n1. Szűrés - engedélyezi ezt az opciót. Ez az alapértelmezett működés, és a legtöbb esetben jól működik\n2. Korlátozott szűrés - erősen lejtős felületeken hoz létre belső hidakat, miközben elkerüli a felesleges hidakat. Ez a legtöbb nehéz modellnél jól működik\n3. Nincs szűrés - minden lehetséges belső túlnyúlásnál belső hidat hoz létre. Ez hasznos lehet erősen lejtős felső felületű modelleknél, de a legtöbb esetben túl sok szükségtelen hidat eredményez.",
       "enum_labels": [
         "Szűrő",
-        "Limited filtering",
-        "No filtering"
+        "Korlátozott szűrés",
+        "Nincs szűrés"
       ]
+    },
+    "dont_slow_down_outer_wall": {
+      "label": "Lassítás nélküli külső falak",
+      "tooltip": "Ha engedélyezve van, ez a beállítás biztosítja, hogy a külső kerületek ne lassuljanak le a minimális rétegidő teljesítése érdekében. Ez különösen hasznos az alábbi esetekben:\n1. A fényesség változásának elkerülésére fényes filamentek nyomtatásakor\n2. A külső fal sebességének változásából eredő enyhe falhibák, Z-sávosodás szerű jelenségek elkerülésére\n3. Olyan sebességeken való nyomtatás elkerülésére, amelyek VFA-kat (apró rendellenességek) okoznak a külső falakon"
     },
     "draft_shield": {
       "label": "Huzatvédő",
+      "tooltip": "A huzatvédő hasznos lehet az ABS vagy ASA nyomatok kunkorodásának és a tárgyasztalról való leválásának megelőzésére, amelyet légmozgás okozhat. Általában csak nyitott vázas, azaz burkolat nélküli nyomtatóknál van rá szükség.\n\nEngedélyezve = a szoknya olyan magas lesz, mint a legmagasabb nyomtatott objektum. Ellenkező esetben a \"Szoknya magassága\" érték kerül használatra.\nMegjegyzés: Aktív huzatvédő mellett a szoknya az objektumtól mért szoknyatávolságban lesz nyomtatva. Ezért ha perem is aktív, metszheti azt. Ennek elkerüléséhez növeld a szoknyatávolság értékét.\n",
       "enum_labels": [
         "Letiltva",
         "Engedélyezve"
@@ -212,23 +368,60 @@
       "label": "Elefántláb kompenzáció",
       "tooltip": "Zsugorítja a kezdőréteget a tárgyasztalon, hogy kompenzálja az elefántláb-hatást"
     },
+    "elefant_foot_compensation_layers": {
+      "label": "Elefántláb-kompenzáció rétegei",
+      "tooltip": "Azon rétegek száma, amelyeken az elefántláb-kompenzáció aktív lesz. Az első réteg az elefántláb-kompenzáció értékével csökken, majd a következő rétegek egyre kisebb mértékben zsugorodnak lineárisan az itt megadott rétegig."
+    },
+    "elefant_foot_layers_density": {
+      "label": "Az elefántláb rétegek sűrűsége",
+      "tooltip": "A belső szilárd töltés sűrűsége az elefánt lábrétegeinek kompenzálásához.\nA második réteg kezdeti értéke van állítva.\nA következő rétegek lineárisan sűrűbbé válnak az elefant_foot_compensation_layers paraméterben megadott magassággal."
+    },
+    "emit_machine_limits_to_gcode": {
+      "label": "Korlátok kiírása a G-kódba",
+      "tooltip": "Bekapcsolva a gépkorlátok bekerülnek a G-kód fájlba.\nEz az opció figyelmen kívül marad, ha a G-kód változat Klipperre van állítva."
+    },
     "enable_arc_fitting": {
-      "label": "Íves illesztés"
+      "label": "Íves illesztés",
+      "tooltip": "Engedélyezd ezt, hogy olyan G-kód fájlt kapj, amely G2 és G3 mozgásokat is tartalmaz. Az illesztési tűrés megegyezik a felbontással.\n\nMegjegyzés: Klipper gépeknél ajánlott ezt az opciót kikapcsolni. A Klipper nem profitál az ívparancsokból, mert a firmware ezeket ismét vonalszakaszokra bontja. Ez a felületi minőség romlását eredményezi, mivel a szeletelő a vonalszakaszokat ívekké alakítja, majd a firmware újra vonalszakaszokká bontja őket."
     },
     "enable_extra_bridge_layer": {
+      "label": "Extra hídrétegek (béta)",
+      "tooltip": "Ez az opció extra hídréteg létrehozását teszi lehetővé a belső és/vagy külső hidak fölött.\n\nAz extra hídrétegek javítják a hidak megjelenését és megbízhatóságát, mert a tömör kitöltés jobb alátámasztást kap. Ez különösen gyors nyomtatóknál hasznos, ahol a híd- és tömörkitöltési sebességek nagyban eltérnek. Az extra hídréteg csökkenti a felső felületek párnásodását, valamint a külső hídréteg leválását a környező kerületekről.\n\nÁltalában ajánlott ezt legalább \"Csak külső híd\" értékre állítani, kivéve ha a szeletelt modellen valamilyen konkrét probléma jelentkezik.\n\nLehetőségek:\n1. Letiltva - nem hoz létre második hídréteget. Ez az alapértelmezett és kompatibilitási okokból így van beállítva\n2. Csak külső híd - csak a kifelé néző hidaknál hoz létre második hídréteget. A beállított kerületszámnál rövidebb vagy keskenyebb kis hidak kimaradnak, mert nem profitálnának a második hídrétegből. Ha létrejön, a második hídréteg az első hídréteggel párhuzamosan kerül extrudálásra a híd megerősítése érdekében\n3. Csak belső híd - csak a ritka kitöltés feletti belső hidaknál hoz létre második hídréteget. Vedd figyelembe, hogy a belső hidak beleszámítanak a modell felső héjrétegeinek számába. A második belső hídréteg lehetőség szerint az elsőre merőlegesen kerül extrudálásra. Ha ugyanazon a szigeten több eltérő hídszögű régió van, akkor a sziget utolsó régiója lesz a szögreferencia\n4. Alkalmazás mindenre - második hídréteget hoz létre mind a belső, mind a kifelé néző hidakhoz\n",
       "enum_labels": [
         "Letiltva",
-        "External bridge only",
-        "Internal bridge only",
-        "Apply to all"
+        "Csak külső híd",
+        "Csak belső híd",
+        "Alkalmazás mindenre"
       ]
+    },
+    "enable_filament_dynamic_map": {
+      "label": "Filament dinamikus leképezés engedélyezése",
+      "tooltip": "Dinamikus filament-leképezés engedélyezése nyomtatás közben."
+    },
+    "enable_filament_ramming": {
+      "label": "Filament tömörítés engedélyezése",
+      "tooltip": "Filament tömörítés engedélyezése"
+    },
+    "enable_overhang_bridge_fan": {
+      "label": "Hűtés kényszerítése túlnyúlásokhoz és hidakhoz",
+      "tooltip": "Engedélyezd ezt az opciót, hogy külön beállítható legyen a tárgyhűtő ventilátor sebessége a túlnyúlásokhoz, valamint a belső és külső hidakhoz. Az ezekhez a jellemzőkhöz külön megadott ventilátorsebesség javíthatja az általános nyomtatási minőséget és csökkentheti a kunkorodást."
     },
     "enable_overhang_speed": {
       "label": "Lassítás túlnyúlásoknál",
       "tooltip": "Engedélyezd ezt az opciót a nyomtatási sebesség lassításához különböző túlnyúlási szögeknél"
     },
+    "enable_power_loss_recovery": {
+      "label": "Áramkimaradás utáni helyreállítás",
+      "tooltip": "Válaszd ki, hogyan történjen az áramkimaradás utáni helyreállítás kezelése. Ha Nyomtatókonfigurációra van állítva, a szeletelő nem generál ehhez kapcsolódó G-kódot, és a nyomtató beállításait változatlanul hagyja. Bambu Lab vagy Marlin 2 firmware-alapú nyomtatókra alkalmazható.",
+      "enum_labels": [
+        "Nyomtatókonfiguráció",
+        "Engedélyezve",
+        "Disable"
+      ]
+    },
     "enable_pressure_advance": {
-      "label": "Nyomáselőtolás engedélyezése"
+      "label": "Nyomáselőtolás engedélyezése",
+      "tooltip": "Nyomáselőtolás engedélyezése. Bekapcsoláskor az automatikus kalibráció eredménye felülíródik."
     },
     "enable_prime_tower": {
       "label": "Engedélyezve",
@@ -237,6 +430,18 @@
     "enable_support": {
       "label": "Támasz engedélyezése",
       "tooltip": "Engedélyezi a támasz generálását."
+    },
+    "enable_tower_interface_cooldown_during_tower": {
+      "label": "Lehűtés érintkezőfelület-erősítés után a törlőtorony során",
+      "tooltip": "Ha az érintkezőfelületi réteg hőmérsékletnövelése aktív, a törlőtorony kezdetén állítsd vissza a fúvókát a nyomtatási hőmérsékletre, hogy a torony nyomtatása közben lehűlhessen."
+    },
+    "enable_tower_interface_features": {
+      "label": "Toronyérintkező felületi funkciók engedélyezése",
+      "tooltip": "Optimalizált törlőtorony-érintkező felületi viselkedés engedélyezése, amikor különböző anyagok találkoznak."
+    },
+    "enable_wrapping_detection": {
+      "label": "Csomósodásészlelés engedélyezése",
+      "tooltip": "Csomósodásészlelés engedélyezése"
     },
     "eng_plate_temp": {
       "label": "Többi réteg",
@@ -250,19 +455,29 @@
     },
     "ensure_vertical_shell_thickness": {
       "label": "Függőleges héjvastagság biztosítása",
+      "tooltip": "Tömör kitöltést ad a lejtős felületek közelébe a függőleges héjvastagság (felső+alsó tömör rétegek) biztosításához.\nNincs: sehol nem ad hozzá tömör kitöltést. Figyelem: csak körültekintően használd ezt az opciót, ha a modellen lejtős felületek vannak\nCsak kritikus: elkerüli a tömör kitöltés hozzáadását a falaknál\nMérsékelt: csak az erősen lejtős felületeknél ad hozzá tömör kitöltést\nMinden: minden megfelelő lejtős felületnél hozzáad tömör kitöltést\nAz alapértelmezett érték: Minden.",
       "enum_labels": [
         "Sehol",
-        "Critical Only",
-        "Moderate",
+        "Csak kritikus",
+        "Mérsékelt",
         "Összes"
       ]
     },
     "exclude_object": {
-      "label": "Tárgyak kizárása"
+      "label": "Tárgyak kizárása",
+      "tooltip": "Engedélyezd ezt az opciót, hogy EXCLUDE OBJECT parancs kerüljön a G-kódba."
     },
     "extra_loading_move": {
       "label": "Extra betöltési hossz",
       "tooltip": "Ha nullára van állítva, akkor a filamentet a betöltés során a parkolóhelyzetből pontosan ugyanannyira kerül előtolásra, mint amennyire a kiürítéskor vissza lett húzva. Ha pozitív, akkor tovább töltődik, ha negatív, akkor a betöltési mozgás rövidebb, mint a kiürítési."
+    },
+    "extra_perimeters_on_overhangs": {
+      "label": "Extra kerületek túlnyúlásoknál",
+      "tooltip": "További kerületi útvonalak létrehozása meredek túlnyúlásoknál és olyan területeken, ahol a hidak nem tudnak megtámaszkodni."
+    },
+    "extra_solid_infills": {
+      "label": "Tömör rétegek beszúrása",
+      "tooltip": "Adott rétegeknél tömör kitöltést szúr be. Használd az N formátumot minden N-edik réteghez, az N#K formátumot K egymást követő tömör réteg beszúrásához minden N rétegenként (K opcionális, pl. a '5#' megegyezik az '5#1' értékkel), vagy vesszővel elválasztott listát (pl. 1,7,9) konkrét rétegek megadásához. A rétegszámozás 1-től indul."
     },
     "extruder": {
       "label": "Extruder"
@@ -286,9 +501,31 @@
     "extruder_offset": {
       "label": "Extruder offszet"
     },
+    "extruder_printable_area": {
+      "label": "Extruder nyomtatható területe"
+    },
+    "extruder_printable_height": {
+      "label": "Extruder nyomtatható magassága",
+      "tooltip": "Ennek az extrudernek a maximális nyomtatható magassága, amelyet a nyomtató mechanikája korlátoz."
+    },
+    "extruder_type": {
+      "label": "Típus",
+      "enum_labels": [
+        "Direct Drive",
+        "Bowden"
+      ]
+    },
+    "extrusion_rate_smoothing_external_perimeter_only": {
+      "label": "Csak külső elemekre alkalmazza",
+      "tooltip": "Az extrudálási sebesség simítását csak a külső kerületekre és túlnyúlásokra alkalmazza. Ez segíthet csökkenteni a kívülről látható túlnyúlásoknál a hirtelen sebességváltások miatti hibákat anélkül, hogy befolyásolná a felhasználó számára nem látható elemek nyomtatási sebességét."
+    },
     "fan_cooling_layer_time": {
       "label": "Rétegidő",
       "tooltip": "A tárgyhűtő ventilátor azon rétegek esetében lesz engedélyezve, amelyek becsült ideje rövidebb ennél az értéknél. A ventilátor fordulatszáma a rétegnyomtatási időnek megfelelően skálázódik a minimális és maximális ventilátor fordulatszám között"
+    },
+    "fan_kickstart": {
+      "label": "Ventilátor indítási rásegítési ideje",
+      "tooltip": "Ennyi másodpercig maximális ventilátorsebesség parancsot ad ki, mielőtt visszaállna a célsebességre, hogy berántsa a hűtőventilátort.\nEz olyan ventilátoroknál hasznos, ahol az alacsony PWM/teljesítmény nem elegendő a ventilátor álló helyzetből való elindításához, vagy a gyorsabb felpörgetéshez.\nA kikapcsoláshoz állítsd 0-ra."
     },
     "fan_max_speed": {
       "label": "Ventilátor fordulatszám",
@@ -298,9 +535,36 @@
       "label": "Ventilátor fordulatszám",
       "tooltip": "Tárgyhűtő ventilátor minimum fordulatszáma"
     },
+    "fan_speedup_overhangs": {
+      "label": "Csak túlnyúlások",
+      "tooltip": "Csak a túlnyúlások hűtésének késleltetését veszi figyelembe."
+    },
+    "fan_speedup_time": {
+      "tooltip": "Ennyi másodperccel a célzott indítási időpont előtt indítja el a ventilátort (tört másodperc is használható). Az időbecslésnél végtelen gyorsulással számol, és csak a G1 és G0 mozgásokat veszi figyelembe (az íves illesztés nem támogatott).\nAz egyedi G-kódban szereplő ventilátorparancsokat nem mozgatja el (ezek egyfajta \"akadályként\" működnek).\nA ventilátorparancsokat nem helyezi át a kezdő G-kódba, ha a \"csak egyedi kezdő G-kód\" aktív.\nA kikapcsoláshoz használd a 0 értéket."
+    },
+    "filament_adaptive_volumetric_speed": {
+      "label": "Adaptív volumetrikus sebesség",
+      "tooltip": "Ha engedélyezve van, az extrudálási áramlást az illesztett érték (a vonalszélességből és rétegmagasságból számított) és a felhasználó által megadott maximális áramlás közül a kisebb korlátozza. Ha le van tiltva, csak a felhasználó által megadott maximális áramlás érvényesül.\n\nMegjegyzés: Kísérleti és hiányos funkció, a BBS-ből importálva. Azoknál a profiloknál működik, amelyeknél a változó már mentve van."
+    },
+    "filament_adhesiveness_category": {
+      "label": "Tapadási kategória",
+      "tooltip": "Filament kategória."
+    },
+    "filament_change_extrusion_role_gcode": {
+      "label": "Az extrudálási szerep G-kódjának módosítása (szál)",
+      "tooltip": "Ez a G-kód akkor kerül beillesztésre, amikor az aktív filament extrudálási szerepe megváltozik."
+    },
+    "filament_change_length": {
+      "label": "Filament tömörítési hossza",
+      "tooltip": "Extruderváltáskor ajánlott bizonyos hosszúságú filamentet extrudálni az eredeti extruderből. Ez segít minimalizálni a fúvóka szivárgását."
+    },
     "filament_colour": {
       "label": "Szín",
       "tooltip": "Csak vizuális segédként használatos a felhasználói felületen"
+    },
+    "filament_cooling_before_tower": {
+      "label": "Törlőtorony hűtése",
+      "tooltip": "Hőmérsékletcsökkenés az filamenttoronyba lépés előtt"
     },
     "filament_cooling_final_speed": {
       "label": "Az utolsó hűtési lépés sebessége",
@@ -324,7 +588,8 @@
     },
     "filament_deretraction_speed": {
       "label": "Betöltési sebesség",
-      "full_label": "Betöltési sebesség"
+      "full_label": "Betöltési sebesség",
+      "tooltip": "A filament visszatöltésének sebessége a fúvókába. A 0 ugyanazt a sebességet jelenti, mint a visszahúzásnál."
     },
     "filament_diameter": {
       "label": "Átmérő",
@@ -338,6 +603,30 @@
       "label": "Anyagáramlás",
       "tooltip": "Az anyag térfogata megváltozhat az olvadt és a kristályos állapot közötti átmenet során. Ez a beállítás arányosan megváltoztatja az anyagáramlást a G-kódban. Az ajánlott értéktartomány 0,95 és 1,05 között van. Ennek az értéknek a változtatásával szép sík felületet kaphatsz, ha úgy tapasztalod, hogy túl sok vagy kevés az anyagáramlás."
     },
+    "filament_flush_temp": {
+      "label": "Öblítési hőmérséklet",
+      "tooltip": "A filament öblítésekor használt hőmérséklet. A 0 az ajánlott fúvókahőmérséklet-tartomány felső határát jelenti."
+    },
+    "filament_flush_volumetric_speed": {
+      "label": "Öblítési volumetrikus sebesség",
+      "tooltip": "A filament öblítésekor használt volumetrikus sebesség. A 0 a maximális volumetrikus sebességet jelenti."
+    },
+    "filament_ironing_flow": {
+      "label": "Vasalás áramlási sebesség",
+      "tooltip": "Filament-specifikus felülbírálás a vasalási áramláshoz. Lehetővé teszi a vasalási áramlás külön beállítását minden filamenttípushoz. Túl magas érték a felület túlextrudálását okozza."
+    },
+    "filament_ironing_inset": {
+      "label": "Vasalási beljebb húzás",
+      "tooltip": "Filament-specifikus felülbírálás a vasalási beljebb húzáshoz. Lehetővé teszi az élektől tartott távolság külön beállítását vasaláskor minden filamenttípushoz."
+    },
+    "filament_ironing_spacing": {
+      "label": "Vasalási vonalak közötti távolság",
+      "tooltip": "Filament-specifikus felülbírálás a vasalási vonaltávolsághoz. Lehetővé teszi a vasalási vonalak közötti távolság külön beállítását minden filamenttípushoz."
+    },
+    "filament_ironing_speed": {
+      "label": "Vasalás sebessége",
+      "tooltip": "Filament-specifikus felülbírálás a vasalási sebességhez. Lehetővé teszi a vasalási vonalak nyomtatási sebességének külön beállítását minden filamenttípushoz."
+    },
     "filament_is_support": {
       "label": "Támaszanyag",
       "tooltip": "A támaszanyag a támaszok és a támasz érintkező felületeinek nyomtatásához van használva."
@@ -350,6 +639,22 @@
       "label": "Betöltési sebesség kezdéskor",
       "tooltip": "A betöltési fázis legelején használt sebesség."
     },
+    "filament_long_retractions_when_cut": {
+      "label": "Hosszú visszahúzás vágáskor (béta)",
+      "tooltip": "Kísérleti funkció: Filamentváltás közben nagyobb távolságról történő visszahúzás és vágás a kiürítés minimalizálása érdekében. Bár ez jelentősen csökkenti az öblítést, növelheti a fúvóka eltömődésének vagy más nyomtatási problémáknak a kockázatát."
+    },
+    "filament_map": {
+      "label": "Filament hozzárendelése extruderhez",
+      "tooltip": "Filament hozzárendelése extruderhez."
+    },
+    "filament_map_mode": {
+      "enum_labels": [
+        "Automatikus öblítéshez",
+        "Automatikus egyeztetéshez",
+        "Manuális",
+        "Alapértelmezett"
+      ]
+    },
     "filament_max_volumetric_speed": {
       "label": "Max. volumetrikus sebesség",
       "tooltip": "Ezzel a beállítással adhatod meg a másodpercenként megolvasztható és extrudálható maximális filamentmennyiséget. A nyomtatási sebességet a maximális térfogatsebesség korlátozhatja, túl magas és ésszerűtlen sebesség esetén. Ez az érték nem lehet 0."
@@ -357,9 +662,25 @@
     "filament_minimal_purge_on_wipe_tower": {
       "label": "Minimális tisztítás a törlőtoronyban"
     },
+    "filament_multitool_ramming": {
+      "label": "Tömörítés engedélyezése több szerszámos beállításokhoz",
+      "tooltip": "Tömörítés végrehajtása több szerszámos nyomtató használatakor (vagyis amikor a Nyomtatóbeállításokban az \"Egyextruderes többanyagú\" opció nincs bejelölve). Bekapcsolva a szerszámváltás előtt közvetlenül kis mennyiségű filament gyorsan extrudálódik a törlőtoronyra. Ez az opció csak akkor érvényes, ha a törlőtorony engedélyezve van."
+    },
+    "filament_multitool_ramming_flow": {
+      "label": "Többszerszámos tömörítési áramlás",
+      "tooltip": "A filament tömörítéséhez használt áramlás a szerszámváltás előtt."
+    },
+    "filament_multitool_ramming_volume": {
+      "label": "Többszerszámos tömörítési térfogat",
+      "tooltip": "A szerszámváltás előtt tömörítendő térfogat."
+    },
     "filament_notes": {
       "label": "Filament notes",
       "tooltip": "You can put your notes regarding the filament here."
+    },
+    "filament_printable": {
+      "label": "Filament nyomtatható",
+      "tooltip": "A filament nyomtatható az extruderben."
     },
     "filament_ramming_parameters": {
       "label": "Tömörítési paraméterek",
@@ -370,17 +691,21 @@
       "tooltip": "Ez a törlés előtti gyors visszahúzás hossza a visszahúzási hosszhoz viszonyítva."
     },
     "filament_retract_lift_above": {
-      "label": "Z emelés csak efelett"
+      "label": "Z emelés csak efelett",
+      "tooltip": "Ha ezt pozitív értékre állítod, a Z-emelés csak a megadott abszolút Z érték felett történik meg."
     },
     "filament_retract_lift_below": {
-      "label": "Z emelés csak ezalatt"
+      "label": "Z emelés csak ezalatt",
+      "tooltip": "Ha ezt pozitív értékre állítod, a Z-emelés csak a megadott abszolút Z érték alatt történik meg."
     },
     "filament_retract_lift_enforce": {
+      "label": "Felületeken",
+      "tooltip": "Z-emelési viselkedés kényszerítése. Ezt a beállítást a fenti opciók befolyásolják (Z emelés csak efelett/ezalatt).",
       "enum_labels": [
-        "All Surfaces",
-        "Top Only",
-        "Bottom Only",
-        "Top and Bottom"
+        "Minden felület",
+        "Csak felül",
+        "Csak alul",
+        "Felül és alul"
       ]
     },
     "filament_retract_restart_extra": {
@@ -392,11 +717,13 @@
       "tooltip": "Kényszeríti a visszahúzást minden rétegváltáskor"
     },
     "filament_retraction_distances_when_cut": {
-      "label": "Retraction distance when cut"
+      "label": "Retraction distance when cut",
+      "tooltip": "Kísérleti funkció: a visszahúzás hossza a filamentváltás közbeni vágás előtt."
     },
     "filament_retraction_length": {
       "label": "Hossz",
-      "full_label": "Visszahúzás hossza"
+      "full_label": "Visszahúzás hossza",
+      "tooltip": "Az extruderben lévő anyag egy részét visszahúzza, hogy hosszabb mozgások közben elkerülje a szivárgást. A visszahúzás kikapcsolásához állítsd 0-ra."
     },
     "filament_retraction_minimum_travel": {
       "label": "Mozgás távolságának küszöbértéke",
@@ -404,11 +731,28 @@
     },
     "filament_retraction_speed": {
       "label": "Visszahúzás sebessége",
-      "full_label": "Visszahúzás sebessége"
+      "full_label": "Visszahúzás sebessége",
+      "tooltip": "A filament visszahúzásának sebessége a fúvókából."
+    },
+    "filament_shrink": {
+      "label": "Zsugorodás (XY)",
+      "tooltip": "Add meg a filament lehűlés utáni zsugorodási százalékát (például 94%, ha 100 mm helyett 94 mm-t mérsz). Az alkatrész XY irányban lesz skálázva a kompenzációhoz. Többanyagú nyomtatásnál ügyelj arra, hogy a zsugorodás minden használt filamentnél megegyezzen.\nBiztosíts elegendő helyet az objektumok között, mert ez a kompenzáció az ellenőrzések után történik."
+    },
+    "filament_shrinkage_compensation_z": {
+      "label": "Zsugorodás (Z)",
+      "tooltip": "Add meg a filament lehűlés utáni zsugorodási százalékát (például 94%, ha 100 mm helyett 94 mm-t mérsz). Az alkatrész Z irányban lesz skálázva a kompenzációhoz."
     },
     "filament_soluble": {
       "label": "Oldható anyag",
       "tooltip": "Az oldható anyagot általában a támaszok és érintkező felületek nyomtatására használják"
+    },
+    "filament_stamping_distance": {
+      "label": "A bélyegzési távolság a hűtőcső közepétől mérve",
+      "tooltip": "Ha nem nulla értékre van állítva, a filament az egyes hűtési mozgások között a fúvóka felé mozdul (\"bélyegzés\"). Ez az opció azt állítja be, hogy milyen hosszú legyen ez a mozgás, mielőtt a filament újra visszahúzódik."
+    },
+    "filament_stamping_loading_speed": {
+      "label": "Bélyegző betöltési sebesség",
+      "tooltip": "A bélyegzéshez használt sebesség."
     },
     "filament_start_gcode": {
       "label": "Kezdő G-kód",
@@ -417,6 +761,26 @@
     "filament_toolchange_delay": {
       "label": "Várakozás a kiürítés után",
       "tooltip": "A várakozási idő az filament kiürítése után. Segíthet megbízható szerszámcserét elérni rugalmas anyagok esetén, amelyeknek több időre lehet szükségük ahhoz, hogy az eredeti méretükre zsugorodjanak."
+    },
+    "filament_tower_interface_pre_extrusion_dist": {
+      "label": "Érintkezőréteg előextrudálási távolsága",
+      "tooltip": "Előextrudálási távolság a törlőtorony érintkezőrétegéhez (ahol a különböző anyagok találkoznak)."
+    },
+    "filament_tower_interface_pre_extrusion_length": {
+      "label": "Érintkezőréteg előextrudálási hossza",
+      "tooltip": "Előextrudálási hossz a törlőtorony érintkezőrétegéhez (ahol a különböző anyagok találkoznak)."
+    },
+    "filament_tower_interface_print_temp": {
+      "label": "Érintkezőréteg nyomtatási hőmérséklete",
+      "tooltip": "Nyomtatási hőmérséklet a törlőtorony érintkezőrétegéhez (ahol a különböző anyagok találkoznak). Ha -1-re van állítva, a maximális ajánlott fúvókahőmérsékletet használja."
+    },
+    "filament_tower_interface_purge_volume": {
+      "label": "Érintkezőréteg kiürítési hossza",
+      "tooltip": "Kiürítési hossz a törlőtorony érintkezőrétegéhez (ahol a különböző anyagok találkoznak)."
+    },
+    "filament_tower_ironing_area": {
+      "label": "Torony vasalási területe",
+      "tooltip": "Vasalási terület a törlőtorony érintkezőrétegéhez (ahol a különböző anyagok találkoznak)."
     },
     "filament_type": {
       "label": "Típus",
@@ -439,12 +803,16 @@
       "tooltip": "Ez visszahúzáskor a fúvókát az utolsó extrudálási útvonal mentén mozgatja, hogy a fúvókából szivárgott anyagot eltávolítsa. Ez minimálisra csökkentheti a pöttyöket, amikor a nyomtatófej a mozgást követően egy egy új alkatrész nyomtatásába kezd."
     },
     "filament_wipe_distance": {
-      "label": "Törlési távolság"
+      "label": "Törlési távolság",
+      "tooltip": "Megadja, hogy a fúvóka visszahúzás közben ennyit mozogjon az utolsó útvonal mentén.\n\nAttól függően, hogy mennyi ideig tart a törlési művelet, illetve milyen gyorsak és hosszúak az extruder/filament visszahúzási beállításai, szükség lehet egy további visszahúzási mozdulatra a megmaradt filament visszahúzásához.\n\nHa az alábbi \"visszahúzási mennyiség törlés előtt\" beállításban értéket adsz meg, akkor az esetleges többletvisszahúzás a törlés előtt történik meg, különben utána."
     },
     "filament_z_hop": {
+      "label": "Z-emelés magassága",
       "tooltip": "Visszahúzáskor a fúvóka egy kicsit megemelkedik, hogy a fúvóka és a nyomtatott tárgy között rés keletkezzen. Ez megakadályozza, hogy a fúvóka nagyobb mozgás közben a tárgynak ütközzön. A Z tengely emelésekor használt körkörös mozgás megelőzheti a szálazást."
     },
     "filament_z_hop_types": {
+      "label": "Z-emelés típusa",
+      "tooltip": "A Z-emelés típusa.",
       "enum_labels": [
         "Auto",
         "Normál",
@@ -452,12 +820,25 @@
         "Spirál"
       ]
     },
+    "file_start_gcode": {
+      "label": "Fájlfejléc G-kód",
+      "tooltip": "A kimeneti fájl legelejére írt G-kód, minden más tartalom előtt. Hasznos olyan metaadatok hozzáadására, amelyeket a nyomtató firmware-e a fájl első soraiból olvas ki (pl. becsült nyomtatási idő, filamentfelhasználás). Támogatja az olyan helyőrzőket, mint a {print_time_sec} és a {used_filament_length}."
+    },
     "filename_format": {
       "label": "Fájlnév formátum",
       "tooltip": "A felhasználó dönthet a projektfájlok nevéről exportáláskor."
     },
+    "fill_multiline": {
+      "label": "Többvonalas kitöltés",
+      "tooltip": "Több vonal használata a kitöltési mintához, ha azt a kitöltési minta támogatja."
+    },
     "filter_out_gap_fill": {
-      "label": "Apró rések szűrése"
+      "label": "Apró rések szűrése",
+      "tooltip": "Ne nyomtasson olyan réskitöltést, amelynek hossza kisebb a megadott küszöbértéknél (mm-ben). Ez a beállítás a felső, alsó és tömör kitöltésre vonatkozik, valamint klasszikus kerületgenerátor használata esetén a falréskitöltésre is."
+    },
+    "first_layer_flow_ratio": {
+      "label": "Első réteg áramlási aránya",
+      "tooltip": "Ez a tényező az ebben a szakaszban felsorolt extrudálási útszerepek első rétegén felhasznált anyagmennyiséget befolyásolja.\n\nAz első rétegen az egyes útszerepek tényleges áramlási aránya (a peremeket és szoknyákat nem érinti) ezzel az értékkel lesz megszorozva."
     },
     "first_layer_print_sequence": {
       "label": "Az első réteg nyomtatási sorrendje"
@@ -468,6 +849,10 @@
         "Auto",
         "Testreszabás"
       ]
+    },
+    "first_x_layer_fan_speed": {
+      "label": "Ventilátor fordulatszám",
+      "tooltip": "Speciális kiegészítő hűtőventilátor sebessége, csak az első x rétegeknél hatásos."
     },
     "flush_into_infill": {
       "label": "Öblítés a tárgyak kitöltésébe",
@@ -488,6 +873,9 @@
     "flush_volumes_matrix": {
       "label": "Tisztítási mennyiségek"
     },
+    "flush_volumes_vector": {
+      "label": "Kiürítési mennyiségek - betöltési/kirakodási mennyiségek"
+    },
     "full_fan_speed_layer": {
       "label": "Teljes ventilátor fordulatszám ennél a rétegnél"
     },
@@ -495,41 +883,82 @@
       "label": "Barázdált felület",
       "tooltip": "A nyomtató véletlenszerűen vibrál a fal nyomtatása közben, így a felület durva megjelenésű lesz",
       "enum_labels": [
-        "Sehol",
+        "Csak festett",
         "Contour",
+        "Lyuk",
         "Contour and hole",
-        "Összes fal"
+        "Összes fal",
+        "Letiltva"
       ]
     },
+    "fuzzy_skin_first_layer": {
+      "label": "Bolyhos felület alkalmazása az első rétegre",
+      "tooltip": "Alkalmazzon-e bolyhos felületet az első rétegen."
+    },
+    "fuzzy_skin_layers_between_ripple_offset": {
+      "label": "A hullámosság eltolása közötti rétegek",
+      "tooltip": "Meghatározza, hogy hány egymást követő réteg osztozik ugyanazon a hullámzási fázison az eltolás alkalmazása előtt.\nPéldául:\n- 1 = Az 1. réteg az alap hullámmintával kerül nyomtatásra, majd a 2. réteg eltolódik a konfigurált eltolás szerint, majd a 3. réteg visszatér az alapmintázathoz, és így tovább.\n- 3 = Az 1-től 3-ig rétegek nyomtatása az alap hullámmintával, majd a 4-től 6-ig a konfigurált eltolás szerint eltolódik, majd a 7-től 9-ig visszaáll az alapmintázat stb."
+    },
     "fuzzy_skin_mode": {
+      "label": "A bolyhos felület generálási módja",
+      "tooltip": "Bolyhos felület generálási mód. Csak az Arachne-nal működik!\nEltolás: Klasszikus mód, amikor a mintázat úgy jön létre, hogy a fúvóka oldalirányban eltér az eredeti útvonaltól.\nExtrudálás: Olyan mód, amikor a mintázatot az extrudált műanyag mennyisége alakítja ki. Ez egy gyors és egyenes algoritmus, felesleges fúvókarázás nélkül, amely sima mintázatot ad. Ugyanakkor inkább a teljes felületen lazább falak kialakítására hasznos.\nKombinált: Egyesített mód [Eltolás] + [Extrudálás]. A falak megjelenése hasonló az [Eltolás] módhoz, de nem hagy pórusokat a kerületek között.\n\nFigyelem! Az [Extrudálás] és a [Kombinált] mód csak akkor működik, ha a fuzzy_skin_thickness paraméter nem nagyobb a nyomtatott hurok vastagságánál. Emellett egy adott réteg extrudálási szélessége sem lehet egy bizonyos szint alá csökkentve. Ez általában a rétegmagasság 15-25%%-a. Ezért 0,4 mm kerületszélesség és 0,2 mm rétegmagasság mellett a maximális bolyhos felület vastagság 0,4-(0,2*0,25)=±0,35 mm lesz. Ha ennél nagyobb értéket adsz meg, a Flow::spacing() hiba jelenik meg, és a modell nem lesz szeletelhető. Ezt az értéket addig választhatod, amíg ez a hiba meg nem ismétlődik.",
       "enum_labels": [
-        "Displacement",
-        "Extrusion",
-        "Combined"
+        "Eltolás",
+        "Extrudálás",
+        "Kombinált"
       ]
     },
     "fuzzy_skin_noise_type": {
+      "label": "A bolyhos felület zajtípusa",
+      "tooltip": "A bolyhos felület generálására használható zajtípus:\nKlasszikus: Klasszikus egységes véletlenszerű zaj.\nPerlin: Perlin zaj, amely egyenletesebb textúrát ad.\nBillow: Hasonló a perlin zajhoz, de csomósabb.\nRidged Multifractal: Bordázott zaj éles, szaggatott jellemzőkkel. Márványszerű textúrákat hoz létre.\nVoronoi: A felületet voronoi cellákra osztja, és mindegyiket véletlenszerűen kiszorítja. Patchwork textúrát hoz létre.\nHullámozás: Egységes hullámzási minta, amely az eredeti útvonaltól balra és jobbra hullámzik. Ismétlődő minta, szövött megjelenés.",
       "enum_labels": [
         "Klasszikus",
         "Perlin",
         "Billow",
-        "Ridged Multifractal",
-        "Voronoi"
+        "Bordás multifraktális",
+        "Voronoi",
+        "Fodrozódás"
       ]
+    },
+    "fuzzy_skin_octaves": {
+      "label": "A bolyhos felület zajának oktávjai",
+      "tooltip": "A használt összefüggő zaj oktávjainak száma. A nagyobb értékek részletesebb zajt eredményeznek, de növelik a számítási időt is."
+    },
+    "fuzzy_skin_persistence": {
+      "label": "A bolyhos felület zajának perzisztenciája",
+      "tooltip": "Az összefüggő zaj magasabb oktávjainak lecsengési aránya. Az alacsonyabb értékek simább zajt eredményeznek."
     },
     "fuzzy_skin_point_distance": {
       "label": "Fuzzy skin pontok távolsága",
       "tooltip": "Az egyes vonalszakaszokon használt véletlen pontok közötti átlagos távolság"
     },
+    "fuzzy_skin_ripple_offset": {
+      "label": "Fodrozódás eltolás",
+      "tooltip": "Előre tolja a hullámos fázist a nyomtatási útvonal mentén a hullámhossz meghatározott százalékával minden rétegperiódusban.\n- A 0% minden réteget azonosan tart.\n- 50% fél hullámhosszal eltolja a mintát, hatékonyan megfordítva a fázist.\n- 100% eltolja a mintát egy teljes hullámhosszal, visszatérve az eredeti fázishoz.\n\nAz eltolás a hullámosság eltolása közötti rétegek által beállított rétegközzel érvényesül, így az azonos csoporton belüli rétegek nyomtatása azonos."
+    },
+    "fuzzy_skin_ripples_per_layer": {
+      "label": "A fodrozódások száma rétegenként",
+      "tooltip": "Azt szabályozza, hogy hány teljes ciklus hullámzás kerüljön hozzáadásra rétegenként."
+    },
+    "fuzzy_skin_scale": {
+      "label": "A bolyhos felület mintázatmérete",
+      "tooltip": "Az összefüggő zajmintázat jellemzőinek alapmérete mm-ben. A nagyobb értékek nagyobb mintázatelemeket eredményeznek."
+    },
     "fuzzy_skin_thickness": {
       "label": "Fuzzy skin vastagsága",
       "tooltip": "A rezgés szélessége: ezt ajánlott kisebbre állítani, mint a külső fal szélessége."
     },
+    "gap_fill_flow_ratio": {
+      "label": "Réskitöltés áramlási aránya",
+      "tooltip": "Ez a tényező a rések kitöltéséhez felhasznált anyagmennyiséget befolyásolja.\n\nA tényleges réskitöltési áramlás úgy számolódik, hogy ezt az értéket megszorozza a filament áramlási arányával, valamint ha be van állítva, az objektum áramlási arányával."
+    },
     "gap_fill_target": {
+      "label": "Réskitöltés alkalmazása",
+      "tooltip": "Engedélyezi a réskitöltést a kijelölt tömör felületeken. A kitöltendő minimális rés hosszát az alábbi apró rések szűrése beállítással lehet szabályozni.\n\nLehetőségek:\n1. Mindenhol: A réskitöltést a felső, alsó és belső tömör felületeken is alkalmazza a maximális szilárdság érdekében\n2. Felső és alsó felületek: Csak a felső és alsó felületeken alkalmazza a réskitöltést, egyensúlyt teremtve a nyomtatási sebesség, a tömör kitöltés esetleges túlextrudálásának csökkentése, valamint a felső és alsó felületek tűlyukmentessége között\n3. Sehol: Letiltja a réskitöltést minden tömör kitöltési területen\n\nVedd figyelembe, hogy klasszikus falgenerátor használatakor a falak között is keletkezhet réskitöltés, ha közéjük nem fér el egy teljes szélességű vonal. Ezt a falak közötti réskitöltést ez a beállítás nem szabályozza.\n\nHa minden réskitöltést, beleértve a klasszikus falgenerátor által létrehozottat is, el szeretnél távolítani, állítsd az apró rések szűrése értékét egy nagy számra, például 999999-re.\n\nEz azonban nem ajánlott, mert a falak közötti réskitöltés hozzájárul a modell szilárdságához. Olyan modelleknél, ahol túl sok réskitöltés keletkezik a falak között, jobb megoldás lehet az Arachne falgenerátorra váltani, és ezzel a beállítással szabályozni, hogy létrejöjjön-e a felső és alsó felületek esztétikai réskitöltése.",
       "enum_labels": [
         "Mindenhol",
-        "Top and bottom surfaces",
-        "Nowhere"
+        "Felső és alsó felületek",
+        "Sehol"
       ]
     },
     "gap_infill_speed": {
@@ -551,24 +980,47 @@
         "Marlin(legacy)",
         "Klipper",
         "RepRapFirmware",
+        "Repetier",
         "Marlin 2"
       ]
     },
     "gcode_label_objects": {
-      "label": "Objektumok címkézése"
+      "label": "Objektumok címkézése",
+      "tooltip": "Engedélyezd ezt, hogy a G-kódba olyan megjegyzések kerüljenek, amelyek megjelölik, hogy az egyes nyomtatási mozgások melyik objektumhoz tartoznak. Ez hasznos az Octoprint CancelObject bővítményhez. Ez a beállítás NEM kompatibilis az Egyextruderes többanyagú beállítással és az Objektumba törlés / Kitöltésbe törlés funkcióval."
+    },
+    "grab_length": {
+      "label": "Megragadási hossz"
+    },
+    "gyroid_optimized": {
+      "label": "Z-kihajlási torzítás optimalizálása (kísérleti)"
+    },
+    "has_filament_switcher": {
+      "label": "Filament-váltóval rendelkezik",
+      "tooltip": "A nyomtató rendelkezik filament-váltó hardverrel (pl. AMS)."
     },
     "high_current_on_filament_swap": {
       "label": "Magas extruderáram a szálcserénél",
       "tooltip": "Előnyös lehet az extrudermotor áramának növelése a filamentcsere során, hogy elérhetővé tegye a tömörítéshez szükséges magas előtolási sebességet és az ellenállás leküzdését deformált hegyű filament betöltésekor."
     },
+    "hole_to_polyhole": {
+      "label": "Lyukak sokszögesítése",
+      "tooltip": "Megkeresi a közel kör alakú, egynél több rétegen átnyúló lyukakat, és a geometriájukat sokszögelt lyukakká alakítja. A sokszögelt lyuk kiszámításához a fúvóka méretét és a legnagyobb átmérőt használja.\nLásd: http://hydraraptor.blogspot.com/2011/02/polyholes.html"
+    },
+    "hole_to_polyhole_threshold": {
+      "label": "Sokszögelt lyuk észlelési tűrése",
+      "tooltip": "Egy pont maximális eltérése a kör becsült sugarától.\nMivel a hengereket gyakran eltérő méretű háromszögekként exportálják, a pontok nem feltétlenül esnek pontosan a kör kerületére. Ez a beállítás némi tűrést enged az észlelés kibővítéséhez.\nMegadható mm-ben vagy a sugár %-ában."
+    },
+    "hole_to_polyhole_twisted": {
+      "label": "Sokszögelt lyuk elforgatása",
+      "tooltip": "A sokszögelt lyuk forgatása rétegenként."
+    },
     "host_type": {
       "label": "Host típusa",
       "tooltip": "A ElegooSlicer képes G-kód fájlokat feltölteni a nyomtatóra. Ennek a mezőnek tartalmaznia kell a gazdagép típusát.",
       "enum_labels": [
-        "ElegooLink",
-        "OctoPrint",
         "PrusaLink",
         "PrusaConnect",
+        "OctoPrint",
         "Duet",
         "FlashAir",
         "AstroBox",
@@ -578,7 +1030,10 @@
         "CrealityPrint",
         "Obico",
         "Flashforge",
-        "SimplyPrint"
+        "SimplyPrint",
+        "Elegoo Link",
+        "3DPrinterOS",
+        "Moonraker (Klipper)"
       ]
     },
     "hot_plate_temp": {
@@ -591,8 +1046,16 @@
       "full_label": "Első réteg asztalhőmérséklete",
       "tooltip": "A kezdőréteg asztalhőmérséklete. A 0 érték azt jelenti, hogy a filament nem támogatja a High Temp Plate-re történő nyomtatást"
     },
+    "idle_temperature": {
+      "label": "Üresjárati hőmérséklet",
+      "tooltip": "A fúvóka hőmérséklete, amikor az eszköz éppen nincs használatban többeszközös beállításoknál. Ez csak akkor használatos, ha a Nyomtatási beállításokban a \"Szivárgás megelőzése\" aktív. A kikapcsoláshoz állítsd 0-ra."
+    },
     "independent_support_layer_height": {
-      "label": "Független támasz rétegmagassága"
+      "label": "Független támasz rétegmagassága",
+      "tooltip": "A támaszréteg az objektum rétegeitől független rétegmagasságot használ. Ez a Z-rés testreszabását támogatja és nyomtatási időt takarít meg. Ez az opció érvénytelen lesz, ha a törlőtorony engedélyezve van."
+    },
+    "infill_anchor": {
+      "label": "Ritka kitöltés horgonyhossza"
     },
     "infill_anchor_max": {
       "label": "A kitöltőhorgony maximális hossza"
@@ -601,17 +1064,37 @@
       "label": "Kitöltés összevonása",
       "tooltip": "Több réteg ritkás kitöltésének automatikus kombinálása a nyomtatási idő csökkentése érdekében. A fal továbbra is az eredeti rétegmagassággal kerül kinyomtatásra."
     },
+    "infill_combination_max_layer_height": {
+      "label": "Kitöltés összevonása - maximális rétegmagasság",
+      "tooltip": "A kombinált ritka kitöltés maximális rétegmagassága.\n\nÁllítsd 0-ra vagy 100%-ra a fúvókaátmérő használatához (a nyomtatási idő maximális csökkentéséhez), vagy kb. 80%-ra a ritka kitöltés szilárdságának maximalizálásához.\n\nAz a rétegszám, amelyen a kitöltés összevonásra kerül, úgy számolódik, hogy ezt az értéket elosztja a rétegmagassággal, majd lefelé kerekíti a legközelebbi egészre.\n\nHasználhatsz abszolút mm értékeket (pl. 0,32 mm 0,4 mm-es fúvókánál) vagy százalékos értékeket (pl. 80%). Ez az érték nem lehet nagyobb a fúvókaátmérőnél."
+    },
     "infill_direction": {
+      "label": "Ritka kitöltés iránya",
       "tooltip": "A ritkás kitöltési minta szöge, amely a vonal kezdő- vagy fő irányát szabályozza"
     },
     "infill_jerk": {
-      "label": "Kitöltés"
+      "label": "Kitöltés",
+      "tooltip": "Jerk a kitöltéshez."
+    },
+    "infill_lock_depth": {
+      "label": "Kitöltés rögzítési mélysége",
+      "tooltip": "Ez a paraméter a belső rész és a felületi réteg közötti átfedés mélységét állítja be."
+    },
+    "infill_overhang_angle": {
+      "label": "Kitöltés túlnyúlási szöge",
+      "tooltip": "A kitöltés ferde vonalainak szöge. A 60° tiszta méhsejtmintát eredményez."
+    },
+    "infill_shift_step": {
+      "label": "Kitöltés eltolási lépése",
+      "tooltip": "Ez a paraméter enyhe eltolást ad a kitöltéshez minden rétegen, hogy keresztmintás textúra jöjjön létre."
     },
     "infill_wall_overlap": {
-      "label": "Kitöltés/fal átfedés"
+      "label": "Kitöltés/fal átfedés",
+      "tooltip": "A kitöltési terület kissé megnagyobbodik, hogy átfedésbe kerüljön a fallal a jobb kötés érdekében. A százalékos érték a ritka kitöltés vonalszélességéhez viszonyított. Állítsd ezt az értéket kb. 10-15%-ra a lehetséges túlextrudálás és az anyagfelhalmozódás minimalizálásához, amely érdes felső felületeket eredményezhet."
     },
     "inherits": {
-      "label": "Örököli a profilt"
+      "label": "Örököli a profilt",
+      "tooltip": "A szülőprofil neve."
     },
     "initial_layer_acceleration": {
       "label": "Kezdőréteg",
@@ -622,44 +1105,158 @@
       "tooltip": "A kezdőréteg szilárd kitöltési részének sebessége"
     },
     "initial_layer_jerk": {
-      "label": "Kezdőréteg"
+      "label": "Kezdőréteg",
+      "tooltip": "Jerk az első réteghez."
     },
     "initial_layer_line_width": {
-      "label": "Kezdőréteg"
+      "label": "Kezdőréteg",
+      "tooltip": "Az első réteg vonalszélessége. Ha százalékban van megadva, a fúvókaátmérő alapján lesz kiszámítva."
+    },
+    "initial_layer_min_bead_width": {
+      "label": "Első réteg minimális falszélessége",
+      "tooltip": "Az első rétegnél használandó minimális falszélességet ajánlott a fúvóka méretével azonosra állítani. Ez a módosítás várhatóan javítja a tapadást."
     },
     "initial_layer_print_height": {
-      "label": "Kezdő rétegmagasság",
-      "tooltip": "Kezdőréteg magassága. A vastagabb kezdőréteg javíthatja a tárgy asztalhoz való tapadását"
+      "label": "Kezdő rétegmagasság"
     },
     "initial_layer_speed": {
       "label": "Kezdőréteg",
       "tooltip": "A kezdőréteg nyomtatási sebessége a szilárd kitöltési rész kivételével"
     },
+    "initial_layer_travel_acceleration": {
+      "label": "Első réteg mozgás",
+      "tooltip": "Az első réteg mozgási gyorsulása.\nA százalékos érték az mozgási gyorsuláshoz van viszonyítva."
+    },
+    "initial_layer_travel_jerk": {
+      "label": "Első réteg mozgás",
+      "tooltip": "Az első réteg Jerk-je.\nA százalékos érték a mozgás Jerk-hez van viszonyítva."
+    },
+    "initial_layer_travel_speed": {
+      "label": "Első réteg mozgási sebessége",
+      "tooltip": "Az első réteg mozgási sebessége."
+    },
     "inner_wall_acceleration": {
-      "label": "Belső fal"
+      "label": "Belső fal",
+      "tooltip": "A belső falak gyorsulása."
+    },
+    "inner_wall_flow_ratio": {
+      "label": "Belső fal áramlási aránya",
+      "tooltip": "Ez a tényező a belső falakhoz felhasznált anyagmennyiséget befolyásolja.\n\nA tényleges belső fali áramlás úgy számolódik, hogy ezt az értéket megszorozza a filament áramlási arányával, valamint ha be van állítva, az objektum áramlási arányával."
     },
     "inner_wall_jerk": {
       "label": "Belső fal",
       "tooltip": "Jerk a belső falaknál"
     },
     "inner_wall_line_width": {
-      "label": "Belső fal"
+      "label": "Belső fal",
+      "tooltip": "A belső fal vonalszélessége. Ha százalékban van megadva, a fúvókaátmérő alapján lesz kiszámítva."
     },
     "inner_wall_speed": {
       "label": "Belső fal",
       "tooltip": "A belső fal nyomtatási sebessége"
     },
+    "input_shaping_damp_x": {
+      "label": "X",
+      "tooltip": "Csillapítási arány az X tengely rezgéskompenzációjához.\nA nulla érték a firmware csillapítási arányát fogja használni.\nA rezgéskompenzáció letiltásához használd a Letiltás típust.\nRRF: X és Y értékek egyenlőek."
+    },
+    "input_shaping_damp_y": {
+      "label": "Y",
+      "tooltip": "Csillapítási arány az Y tengely rezgéskompenzációjához.\nA nulla érték a firmware csillapítási arányát fogja használni.\nA rezgéskompenzáció letiltásához használd a Letiltás típust."
+    },
+    "input_shaping_emit": {
+      "label": "Rezgéskompenzáció kibocsájtás",
+      "tooltip": "Firmware rezgéskompenzáció beállítások felülírása.\nHa le van tiltva, a firmware-beállítások használatosak."
+    },
+    "input_shaping_freq_x": {
+      "label": "X",
+      "tooltip": "Rezonanciafrekvencia az X tengely rezgéskompenzációjához.\nA nulla érték firmware frekvenciáját fogja használni.\nA rezgéskompenzáció letiltásához használd a Letiltás típust.\nRRF: X és Y értékek egyenlőek."
+    },
+    "input_shaping_freq_y": {
+      "label": "Y",
+      "tooltip": "Rezonanciafrekvencia az Y tengely rezgéskompenzációjához.\nA nulla érték a firmware frekvenciáját fogja használni.\nA rezgéskompenzáció letiltásához használd a Letiltás típust."
+    },
+    "input_shaping_type": {
+      "label": "Rezgéskompenzátor típusa",
+      "tooltip": "Válaszd ki a rezgéskompenzáció algoritmust.\nA Default a firmware alapértelmezett beállításait használja.\nA letiltása kikapcsolja a rezgéskompenzációt a firmware-ben.",
+      "enum_labels": [
+        "Alapértelmezett",
+        "MZV",
+        "ZV",
+        "ZVD",
+        "ZVDD",
+        "ZVDDD",
+        "EI",
+        "EI2",
+        "2HUMP_EI",
+        "EI3",
+        "3HUMP_EI",
+        "DAA",
+        "Disable"
+      ]
+    },
     "interface_shells": {
-      "label": "Interface shells"
+      "label": "Interface shells",
+      "tooltip": "Kikényszeríti a tömör héjak létrehozását a szomszédos anyagok/térfogatok között. Hasznos többextruderes nyomatoknál áttetsző anyagokkal vagy manuálisan oldható támaszanyag használatakor."
+    },
+    "interlocking_beam": {
+      "label": "Gerendaszerű kapcsolódás használata",
+      "tooltip": "Gerendaszerű kapcsolódó szerkezetet hoz létre ott, ahol a különböző filamentek érintkeznek. Ez javítja a filamentek közötti tapadást, különösen eltérő anyagokból nyomtatott modelleknél."
+    },
+    "interlocking_beam_layer_count": {
+      "label": "Kapcsolódó gerendarétegek",
+      "tooltip": "A kapcsolódó szerkezet gerendáinak magassága rétegszámban megadva. A kevesebb réteg erősebb, de hajlamosabb a hibákra."
+    },
+    "interlocking_beam_width": {
+      "label": "Kapcsolódó gerendák szélessége",
+      "tooltip": "A kapcsolódó szerkezet gerendáinak szélessége."
+    },
+    "interlocking_boundary_avoidance": {
+      "label": "Kapcsolódás peremkerülése",
+      "tooltip": "A modell külső peremétől mért távolság, ahol nem jön létre kapcsolódó szerkezet, cellákban megadva."
+    },
+    "interlocking_depth": {
+      "label": "Kapcsolódási mélység",
+      "tooltip": "A filamentek közötti határtól mért távolság, ahol a kapcsolódó szerkezet létrejön, cellákban megadva. Túl kevés cella gyenge tapadást eredményez."
+    },
+    "interlocking_orientation": {
+      "label": "Kapcsolódás iránya",
+      "tooltip": "A kapcsolódó gerendák tájolása."
+    },
+    "internal_bridge_angle": {
+      "label": "Belső híd kitöltési iránya"
+    },
+    "internal_bridge_density": {
+      "label": "Belső híd sűrűsége"
+    },
+    "internal_bridge_fan_speed": {
+      "label": "Belső hidak ventilátorsebessége",
+      "tooltip": "A tárgyhűtő ventilátor sebessége minden belső hídhoz. Állítsd -1-re, ha inkább a túlnyúlási ventilátorsebesség beállításait szeretnéd használni.\n\nA belső hidak ventilátorsebességének csökkentése a normál ventilátorsebességhez képest segíthet csökkenteni az alkatrész kunkorodását, amit a nagy felületen, hosszabb ideig alkalmazott túlzott hűtés okozhat."
+    },
+    "internal_bridge_flow": {
+      "label": "Belső híd áramlási aránya"
+    },
+    "internal_bridge_speed": {
+      "label": "Belső",
+      "tooltip": "A belső hidak sebessége. Ha az érték százalékban van megadva, a bridge_speed alapján lesz kiszámítva. Az alapértelmezett érték 150%."
+    },
+    "internal_solid_filament_id": {
+      "label": "Belső szilárd kitöltés"
     },
     "internal_solid_infill_acceleration": {
-      "label": "Belső szilárd kitöltés"
+      "label": "Belső szilárd kitöltés",
+      "tooltip": "A belső tömör kitöltés gyorsulása. Ha az érték százalékban van megadva (pl. 100%), az alapértelmezett gyorsulás alapján lesz kiszámítva."
+    },
+    "internal_solid_infill_flow_ratio": {
+      "label": "Belső tömör kitöltés áramlási aránya",
+      "tooltip": "Ez a tényező a belső tömör kitöltéshez felhasznált anyagmennyiséget befolyásolja.\n\nA tényleges belső tömör kitöltési áramlás úgy számolódik, hogy ezt az értéket megszorozza a filament áramlási arányával, valamint ha be van állítva, az objektum áramlási arányával."
     },
     "internal_solid_infill_line_width": {
-      "label": "Belső szilárd kitöltés"
+      "label": "Belső szilárd kitöltés",
+      "tooltip": "A belső tömör kitöltés vonalszélessége. Ha százalékban van megadva, a fúvókaátmérő alapján lesz kiszámítva."
     },
     "internal_solid_infill_pattern": {
       "label": "Belső tömör kitöltés mintája",
+      "tooltip": "A belső tömör kitöltés vonalmintája. Ha a keskeny belső tömör kitöltés érzékelése engedélyezve van, a kis területeken koncentrikus mintázat lesz használva.",
       "enum_labels": [
         "Monotonikus",
         "Monotonikus vonal",
@@ -675,12 +1272,33 @@
       "label": "Belső szilárd kitöltés",
       "tooltip": "A belső szilárd kitöltés sebessége, de az az érték nem vonatkozik a felső és alsó felületre"
     },
+    "ironing_angle": {
+      "label": "Vasalási szögeltolás",
+      "tooltip": "A vasalási vonalak szögeltolása a felső felülethez képest."
+    },
+    "ironing_angle_fixed": {
+      "label": "Rögzített vasalási szög",
+      "tooltip": "Rögzített abszolút szög használata a vasaláshoz."
+    },
+    "ironing_expansion": {
+      "label": "Vasaló bővítés",
+      "tooltip": "A vasalási terület bővítése/szűkítése ."
+    },
+    "ironing_fan_speed": {
+      "label": "Vasalási ventilátorsebesség",
+      "tooltip": "Ez a tárgyhűtő ventilátorsebesség vasaláskor lesz alkalmazva. A szokásosnál alacsonyabb érték csökkenti az alacsony volumetrikus áramlás miatti esetleges fúvókaeltömődést, így simább felületet eredményez.\nA kikapcsoláshoz állítsd -1-re."
+    },
     "ironing_flow": {
       "label": "Vasalás áramlási sebesség",
       "tooltip": "A vasalás során extrudálandó anyag mennyisége a normál anyagáramláshoz viszonyítva. A túl magas érték a felületen túlextrudálást eredményez."
     },
+    "ironing_inset": {
+      "label": "Vasalási beljebb húzás",
+      "tooltip": "Az élektől tartandó távolság. A 0 érték ezt a fúvókaátmérő felére állítja."
+    },
     "ironing_pattern": {
       "label": "Ironing Pattern",
+      "tooltip": "A vasaláskor használt minta.",
       "enum_labels": [
         "Vonalak",
         "Koncentrikus"
@@ -701,11 +1319,20 @@
         "Nincs vasalás",
         "Felső felületek",
         "Legfelső felület",
-        "Összes szilárd réteg"
+        "All solid layers"
       ]
     },
     "is_infill_first": {
-      "label": "Kitöltés a falak előtt"
+      "label": "Kitöltés a falak előtt",
+      "tooltip": "A falak és a kitöltés nyomtatási sorrendje. Ha a jelölőnégyzet nincs bekapcsolva, először a falak készülnek el, ami a legtöbb esetben a legjobb megoldás.\n\nA kitöltés elsőként történő nyomtatása segíthet szélsőséges túlnyúlásoknál, mert a falak a szomszédos kitöltéshez tudnak tapadni. Ugyanakkor a kitöltés kissé kifelé nyomhatja a nyomtatott falakat ott, ahol hozzájuk kapcsolódik, ami gyengébb külső felületi minőséget eredményez. Azt is okozhatja, hogy a kitöltés átsejlik az alkatrész külső felületein."
+    },
+    "lateral_lattice_angle_1": {
+      "label": "Oldalsó rács 1. szöge",
+      "tooltip": "Az oldalsó rács elemeinek első készletének szöge Z irányban. A nulla függőlegeset jelent."
+    },
+    "lateral_lattice_angle_2": {
+      "label": "Oldalsó rács 2. szöge",
+      "tooltip": "Az oldalsó rács elemeinek második készletének szöge Z irányban. A nulla függőlegeset jelent."
     },
     "layer_change_gcode": {
       "label": "Rétegváltás G-kód",
@@ -716,14 +1343,23 @@
       "tooltip": "Az egyes rétegek szeletelési magassága. A kisebb rétegmagasság pontosabb nyomtatást és több időt jelent"
     },
     "line_width": {
-      "label": "Alapértelmezett"
+      "label": "Alapértelmezett",
+      "tooltip": "Alapértelmezett vonalszélesség, ha a többi vonalszélesség 0-ra van állítva. Ha százalékban van megadva, a fúvókaátmérő alapján lesz kiszámítva."
+    },
+    "long_retractions_when_cut": {
+      "label": "Hosszú visszahúzás vágáskor (béta)",
+      "tooltip": "Kísérleti funkció: Filamentváltás közben nagyobb távolságról történő visszahúzás és vágás a kiürítés minimalizálása érdekében. Bár ez jelentősen csökkenti az öblítést, növelheti a fúvóka eltömődésének vagy más nyomtatási problémáknak a kockázatát."
+    },
+    "long_retractions_when_ec": {
+      "label": "Hosszú visszahúzás extruderváltáskor"
     },
     "machine_end_gcode": {
       "label": "Befejező G-kód",
       "tooltip": "Befejező G-kód az egész nyomtatás befejezésekor"
     },
     "machine_load_filament_time": {
-      "label": "Filament betöltési idő"
+      "label": "Filament betöltési idő",
+      "tooltip": "Az új filament betöltéséhez szükséges idő filamentváltáskor. Ez általában egyextruderes többanyagú gépeknél releváns. Szerszámváltós vagy több szerszámos gépeknél jellemzően 0. Csak statisztikai célra."
     },
     "machine_max_acceleration_e": {
       "full_label": "Maximális gyorsulás E",
@@ -738,7 +1374,8 @@
       "tooltip": "Maximális gyorsulás a visszahúzáshoz (M204 R)"
     },
     "machine_max_acceleration_travel": {
-      "full_label": "Maximális gyorsulás a mozgáshoz"
+      "full_label": "Maximális gyorsulás a mozgáshoz",
+      "tooltip": "Maximális mozgási gyorsulás (M204 T), ez csak a Marlin 2-re vonatkozik."
     },
     "machine_max_acceleration_x": {
       "full_label": "Maximális sebesség  X",
@@ -768,6 +1405,10 @@
       "full_label": "Maximális jerk Z",
       "tooltip": "Maximális jerk a Z tengelyen"
     },
+    "machine_max_junction_deviation": {
+      "full_label": "Maximális csomóponti eltérés",
+      "tooltip": "Maximális csomóponti eltérés (M205 J, csak akkor érvényes, ha a JD > 0 a Marlin firmware esetén).\nHa a Marlin 2 nyomtatód klasszikus Jerk beállítást használ, állítsd ezt 0-ra."
+    },
     "machine_max_speed_e": {
       "full_label": "Maximális sebesség E"
     },
@@ -796,42 +1437,89 @@
       "label": "Kezdő G-kód",
       "tooltip": "Kezdő G-kód az egész nyomtatás megkezdésekor"
     },
+    "machine_tool_change_time": {
+      "label": "Szerszámváltási idő",
+      "tooltip": "A szerszámváltáshoz szükséges idő. Ez általában szerszámváltós vagy több szerszámos gépeknél releváns. Egyextruderes többanyagú gépeknél jellemzően 0. Csak statisztikai célra."
+    },
     "machine_unload_filament_time": {
-      "label": "Filament kitöltési idő"
+      "label": "Filament kitöltési idő",
+      "tooltip": "A régi filament kiürítéséhez szükséges idő filamentváltáskor. Ez általában egyextruderes többanyagú gépeknél releváns. Szerszámváltós vagy több szerszámos gépeknél jellemzően 0. Csak statisztikai célra."
+    },
+    "make_overhang_printable": {
+      "label": "Túlnyúlások nyomtathatóvá tétele",
+      "tooltip": "A geometria módosítása, hogy a túlnyúlások támaszanyag nélkül is nyomtathatók legyenek."
+    },
+    "make_overhang_printable_angle": {
+      "label": "Túlnyúlások nyomtathatóvá tétele - maximális szög",
+      "tooltip": "A túlnyúlások maximális megengedett szöge a meredekebb túlnyúlások nyomtathatóvá tétele után. A 90° egyáltalán nem módosítja a modellt, és minden túlnyúlást megenged, míg a 0 minden túlnyúlást kúpos anyaggal helyettesít."
+    },
+    "make_overhang_printable_hole_size": {
+      "label": "Túlnyúlások nyomtathatóvá tétele - lyuk területe",
+      "tooltip": "A modell alján lévő lyuk maximális területe, mielőtt kúpos anyag töltené ki. A 0 érték a modellalap összes lyukát kitölti."
+    },
+    "manual_filament_change": {
+      "label": "Manuális filamentcsere",
+      "tooltip": "Engedélyezd ezt az opciót, hogy az egyedi Filamentcsere G-kód csak a nyomtatás elején maradjon ki. A szerszámváltási parancs (pl. T0) a teljes nyomtatás során ki lesz hagyva. Ez manuális többanyagú nyomtatásnál hasznos, ahol az M600/PAUSE parancsot használjuk a manuális filamentcsere elindítására."
     },
     "max_bridge_length": {
       "label": "Maximum áthidalás hossza",
       "tooltip": "Ez a maximális hossza azoknak az áthidalásoknak, amelyeknek nincs szükségük alátámasztásra. Állítsd 0-ra, ha azt szeretnéd, hogy minden áthidalás alá legyen támasztva, vagy állítsd egy nagyon nagy értékre, ha azt szeretnéd, hogy egyetlen áthidalás se legyen alátámasztva."
     },
     "max_layer_height": {
-      "label": "Max"
+      "label": "Max",
+      "tooltip": "Az extruder legnagyobb nyomtatható rétegmagassága. Az adaptív rétegmagasság bekapcsolásakor a maximális rétegmagasság korlátozására szolgál."
     },
     "max_resonance_avoidance_speed": {
-      "label": "Max"
+      "label": "Max",
+      "tooltip": "A rezonanciaelkerülés maximális sebessége."
     },
     "max_travel_detour_distance": {
       "label": "Kerülje a falak keresztezését - Max kitérő hossza",
       "tooltip": "A kitérő maximális hossza a fal keresztezésének elkerüléséhez: a nyomtató figyelmen kívül hagyja a kitérést, ha az ehhez szükséges távolság nagyobb, mint ez az érték. A kitérő megadható abszolút értékként vagy a közvetlen útvonal százalékában (például 50%). Állítsd az értéket 0-ra, ha ki szeretnéd kapcsolni ezt az opciót."
+    },
+    "max_volumetric_extrusion_rate_slope": {
+      "label": "Extrudálási sebesség simítása",
+      "tooltip": "Ez a paraméter kisimítja a hirtelen extrudálási sebességváltozásokat, amelyek akkor jelentkeznek, amikor a nyomtató nagy áramlású (nagy sebesség/szélesebb vonal) extrudálásról alacsonyabb áramlású (kisebb sebesség/szűkebb vonal) extrudálásra vált, illetve fordítva.\n\nMeghatározza azt a maximális ütemet, amellyel az extrudált volumetrikus áramlás mm³/s-ben időben változhat. A magasabb értékek nagyobb extrudálási sebességváltozást engednek, így gyorsabb sebességátmeneteket eredményeznek.\n\nA 0 érték kikapcsolja ezt a funkciót.\n\nGyors, nagy áramlású direct drive nyomtatóknál (például Bambu Lab vagy Voron) erre az értékre általában nincs szükség. Bizonyos esetekben azonban kisebb előnyt jelenthet, amikor a jellemzők sebessége erősen eltér. Például amikor agresszív lassítás történik túlnyúlások miatt. Ilyen esetekben egy magas, körülbelül 300-350 mm³/s² érték ajánlott, mivel ez éppen elegendő simítást biztosít ahhoz, hogy a nyomáselőtolás simább áramlási átmenetet tudjon elérni.\n\nLassabb, nyomáselőtolás nélküli nyomtatóknál az értéket jóval alacsonyabbra kell állítani. Direct drive extrudereknél 10-15 mm³/s² jó kiindulási pont, Bowden rendszereknél pedig 5-10 mm³/s².\n\nEz a funkció a PrusaSlicerben Pressure Equalizer néven ismert.\n\nMegjegyzés: ez a paraméter kikapcsolja az íves illesztést."
+    },
+    "max_volumetric_extrusion_rate_slope_segment_length": {
+      "label": "Simítási szegmenshossz",
+      "tooltip": "Az alacsonyabb érték simább extrudálási sebességátmeneteket eredményez. Ugyanakkor jelentősen nagyobb G-kód fájlt és több feldolgozandó utasítást eredményez a nyomtató számára.\n\nA 3-as alapértelmezett érték a legtöbb esetben jól működik. Ha a nyomtató akad, növeld ezt az értéket, hogy csökkenjen a végrehajtott módosítások száma.\n\nMegengedett értékek: 0,5-5"
     },
     "min_bead_width": {
       "label": "Minimális falszélesség",
       "tooltip": "A fal szélessége, amely lecseréli a modell vékony részeit (a Minimális méretben megadott érték szerint). Ha a minimális falszélesség vékonyabb, mint a nyomtatandó elem vastagsága, akkor a fal olyan vastag lesz, mint maga a nyomtatott elem. A fúvóka átmérőjének százalékában van kifejezve"
     },
     "min_feature_size": {
-      "label": "Minimális méret"
+      "label": "Minimális méret",
+      "tooltip": "A vékony elemek minimális vastagsága. Az ennél vékonyabb modellelemek nem lesznek kinyomtatva, míg az ennél vastagabb elemek a minimális falszélességre lesznek szélesítve. A fúvóka átmérőjének százalékában van megadva."
     },
     "min_layer_height": {
-      "label": "Min"
+      "label": "Min",
+      "tooltip": "Az extruder legkisebb nyomtatható rétegmagassága. Az adaptív rétegmagasság bekapcsolásakor a minimális rétegmagasság korlátozására szolgál."
+    },
+    "min_length_factor": {
+      "label": "Minimális falhossz",
+      "tooltip": "Állítsd ezt az értéket úgy, hogy megakadályozza a rövid, nem zárt falak kinyomtatását, amelyek növelhetik a nyomtatási időt. A nagyobb értékek több és hosszabb falat távolítanak el.\n\nMEGJEGYZÉS: Az alsó és felső felületeket ez az érték nem érinti, hogy elkerülhetők legyenek a modell külsején megjelenő látható hézagok. A lentebbi Speciális beállításokban az 'Egyfalas küszöbérték' módosításával állíthatod be annak érzékenységét, hogy mi számít felső felületnek. Az 'Egyfalas küszöbérték' csak akkor látható, ha ez a beállítás az alapértelmezett 0.5 fölé van állítva, vagy ha az egyfalú felső felületek engedélyezve vannak."
     },
     "min_resonance_avoidance_speed": {
-      "label": "Min"
+      "label": "Min",
+      "tooltip": "A rezonanciaelkerülés minimális sebessége."
+    },
+    "min_skirt_length": {
+      "label": "Szoknya minimális extrudálási hossza",
+      "full_label": "Szoknya minimális extrudálási hossza",
+      "tooltip": "A filament minimális extrudálási hossza mm-ben a szoknya nyomtatásakor. A 0 azt jelenti, hogy ez a funkció ki van kapcsolva.\n\nNem nulla érték használata akkor hasznos, ha a nyomtató előkészítő vonal nélkül van beállítva.\nA hurkok végső száma nincs figyelembe véve az objektumok elrendezésekor vagy távolságának ellenőrzésekor. Ilyen esetben növeld a hurkok számát."
+    },
+    "min_width_top_surface": {
+      "label": "Egyfalas küszöbérték",
+      "tooltip": "Ha egy felső felületet ki kell nyomtatni, de azt részben egy másik réteg fedi, akkor nem lesz felső rétegként kezelve, ha a szélessége ez alatt az érték alatt van. Ez hasznos lehet, hogy az \"egy kerület felül\" ne aktiválódjon olyan felületen, amelyet csak kerületeknek kell lefedniük. Ez az érték mm-ben vagy a kerület extrudálási szélességének százalékában adható meg.\nFigyelmeztetés: Ha engedélyezve van, hibák keletkezhetnek, ha a következő rétegen vékony részletek vannak, például betűk. Az ilyen hibák eltávolításához állítsd ezt a beállítást 0-ra."
     },
     "minimum_sparse_infill_area": {
-      "label": "Ritkás kitöltés küszöbértéke",
-      "tooltip": "A küszöbérték alatti ritkás kitöltési terület belső szilárd kitöltéssel kerül leváltásra"
+      "label": "Ritkás kitöltés küszöbértéke"
     },
     "mmu_segmented_region_interlocking_depth": {
-      "label": "Szegmentált régió összekapcsolódási mélysége"
+      "label": "Szegmentált régió összekapcsolódási mélysége",
+      "tooltip": "A szegmentált régió összekapcsolódási mélysége. Figyelmen kívül marad, ha a \"mmu_segmented_region_max_width\" értéke nulla, vagy ha a \"mmu_segmented_region_interlocking_depth\" nagyobb, mint a \"mmu_segmented_region_max_width\". A 0 letiltja ezt a funkciót."
     },
     "mmu_segmented_region_max_width": {
       "label": "Szegmentált régió maximális szélessége",
@@ -876,6 +1564,7 @@
         "Nincs meghatározva",
         "Edzett acél",
         "Rozsdamentes acél",
+        "Volfrám-karbid",
         "Sárgaréz"
       ]
     },
@@ -883,15 +1572,23 @@
       "label": "Fúvóka térfogata",
       "tooltip": "A fúvóka térfogata a filamentvágó és a fúvóka vége között"
     },
+    "nozzle_volume_type": {
+      "enum_labels": [
+        "Normál",
+        "Nagy áramlás"
+      ]
+    },
     "only_one_wall_first_layer": {
-      "label": "Only one wall on first layer"
+      "label": "Only one wall on first layer",
+      "tooltip": "Csak egy fal használata az első rétegen, hogy több hely maradjon az alsó kitöltési mintának."
     },
     "only_one_wall_top": {
       "label": "Csak egy fal a felső felületeken",
       "tooltip": "Csak egy falat használ a sík felső felületeken, hogy több hely maradjon a felső kitöltési mintának"
     },
     "ooze_prevention": {
-      "label": "Engedélyezve"
+      "label": "Engedélyezve",
+      "tooltip": "Ez az opció csökkenti az inaktív extruderek hőmérsékletét a szivárgás megelőzése érdekében."
     },
     "other_layers_print_sequence": {
       "label": "Other layers print sequence"
@@ -910,18 +1607,29 @@
       "label": "Külső fal",
       "tooltip": "Gyorsulás a külső falnál: alacsonyabb érték használata javíthatja a minőséget."
     },
+    "outer_wall_flow_ratio": {
+      "label": "Külső fal áramlási aránya",
+      "tooltip": "Ez a tényező a külső falakhoz felhasznált anyagmennyiséget befolyásolja.\n\nA tényleges külső fali áramlás úgy számolódik, hogy ezt az értéket megszorozza a filament áramlási arányával, valamint ha be van állítva, az objektum áramlási arányával."
+    },
     "outer_wall_jerk": {
       "label": "Külső fal",
       "tooltip": "Jerk a külső falaknál"
     },
     "outer_wall_line_width": {
-      "label": "Külső fal"
+      "label": "Külső fal",
+      "tooltip": "A külső fal vonalszélessége. Ha százalékban van megadva, a fúvókaátmérő alapján lesz kiszámítva."
     },
     "outer_wall_speed": {
       "label": "Külső fal",
       "tooltip": "A legkülső látható fal sebessége. A jobb minőség érdekében ez lassabb, mint a belső fal sebessége."
     },
+    "overhang_fan_speed": {
+      "label": "Túlnyúlások és külső hidak ventilátorsebessége",
+      "tooltip": "Ezt a tárgyhűtő ventilátorsebességet használd hidak vagy olyan túlnyúló falak nyomtatásakor, amelyek túlnyúlási értéke meghaladja a fenti \"Túlnyúlás-hűtés aktiválási küszöbértéke\" paraméterben megadott értéket. A kifejezetten a túlnyúlásokhoz és hidakhoz növelt hűtés javíthatja ezeknek a részleteknek az általános nyomtatási minőségét.\n\nVedd figyelembe, hogy ennek a ventilátorsebességnek az alsó határát a fent beállított minimális ventilátorsebesség-küszöb korlátozza. Emellett a sebesség a maximális ventilátorsebesség-küszöbig növekedhet, ha a minimális rétegidő-küszöb nem teljesül."
+    },
     "overhang_fan_threshold": {
+      "label": "Túlnyúlás-hűtés aktiválási küszöbértéke",
+      "tooltip": "Ha a túlnyúlás meghaladja ezt a megadott küszöbértéket, a hűtőventilátor az alább beállított \"Túlnyúlások és külső hidak ventilátorsebessége\" értéken fog működni. Ez a küszöb százalékban van megadva, és azt jelöli, hogy az egyes vonalak szélességének mekkora része marad alátámasztás nélkül az alatta lévő réteghez képest. Az érték 0%-ra állítása minden külső falnál bekapcsolja a hűtőventilátort, a túlnyúlás mértékétől függetlenül.",
       "enum_labels": [
         "0%",
         "10%",
@@ -931,26 +1639,86 @@
         "95%"
       ]
     },
+    "overhang_flow_ratio": {
+      "label": "Túlnyúlás áramlási aránya",
+      "tooltip": "Ez a tényező a túlnyúlásokhoz felhasznált anyagmennyiséget befolyásolja.\n\nA tényleges túlnyúlási áramlás úgy számolódik, hogy ezt az értéket megszorozza a filament áramlási arányával, valamint ha be van állítva, az objektum áramlási arányával."
+    },
+    "overhang_reverse": {
+      "label": "Megfordítás páros rétegeken",
+      "full_label": "Túlnyúlás megfordítása",
+      "tooltip": "Azokat a kerületeket, amelyek egy része túlnyúlás fölé esik, páros rétegeken fordított irányban extrudálja. Ez a váltakozó minta jelentősen javíthatja a meredek túlnyúlásokat.\n\nEz a beállítás az alkatrész falain fellépő feszültségek csökkentésével az alkatrész kunkorodását is mérsékelheti."
+    },
+    "overhang_reverse_internal_only": {
+      "label": "Csak a belső kerületek megfordítása",
+      "full_label": "Csak a belső kerületek megfordítása",
+      "tooltip": "A fordított kerületek logikájanak alkalmazása csak a belső kerületeknél.\n\nEz a beállítás jelentősen csökkenti az alkatrészben fellépő feszültségeket, mivel azok most váltakozó irányokban oszlanak el. Ez várhatóan csökkenti a kunkorodást, miközben megőrzi a külső fal minőségét. Ez a funkció különösen hasznos lehet kunkorodásra hajlamos anyagoknál, mint az ABS/ASA, valamint rugalmas filamenteknél, mint a TPU és a Silk PLA. Segíthet a támaszok fölött lebegő részek kunkorodásának csökkentésében is.\n\nA lehető leghatékonyabb működés érdekében ajánlott a Fordítási küszöböt 0-ra állítani, hogy minden belső fal páros rétegeken váltakozó irányban nyomtatódjon, függetlenül a túlnyúlás mértékétől."
+    },
+    "overhang_reverse_threshold": {
+      "label": "Megfordítási küszöb",
+      "full_label": "Túlnyúlás-megfordítási küszöb",
+      "tooltip": "A túlnyúlás szükséges mérete mm-ben ahhoz, hogy a megfordítás hasznosnak minősüljön. Megadható a kerületszélesség százalékában is.\nA 0 érték minden páros rétegen engedélyezi a megfordítást.\nHa a túlnyúló fal érzékelése nincs engedélyezve, ez az opció figyelmen kívül marad, és a megfordítás minden páros rétegen megtörténik."
+    },
     "parking_pos_retraction": {
       "label": "Filament parkolási pozíció",
       "tooltip": "Az extruder hegyének távolsága attól a helyzettől, ahol a szál betöltetlenül parkol. Ennek meg kell egyeznie a nyomtató firmware-ében megadott értékkel."
     },
+    "part_cooling_fan_min_pwm": {
+      "label": "Minimális nem nulla rész-hűtőventilátor fordulatszáma",
+      "tooltip": "Egyes részleges hűtőventilátorok nem tudnak pörögni, ha egy bizonyos PWM munkaciklus alá utasítják őket. Ha 0 fölé állítod, minden nem nulla részleges hűtési ventilátorparancs legalább erre a százalékra emelkedik, így a ventilátor megbízhatóan elindul. A 0-s ventilátorparancs (ventilátor kikapcsolva) mindig pontosan végrhajtódik. Ez a korlátozás minden második ventilátorszámítás után alkalmazódik (első réteg rámpa, rétegidő interpoláció, túlnyúlás/híd/tartófelület/vasalás felülbírálása), így a skálázás továbbra is a [ez az érték, 100%] tartományon belül működik.\nHa a firmware már letiltja a ventilátort egy küszöbérték alatt (például a Klipper [fan] off_below: 0.10 értéke kikapcsolja a ventilátort, ha a parancsolt munkaciklus 10% alatt van), akkor ezt az opciót és a firmware küszöbértékét ideális esetben ugyanarra az értékre kell állítani. Ezek megfeleltetése (pl. off_below: 0,10 a Klipperben és 10% itt) garantálja, hogy a szeletelő soha nem ad ki olyan nullától eltérő értéket, amelyet a firmware csendben ejtene, és a ventilátor soha nem kap olyan értéket, amely alacsonyabb, mint amiről tudod, hogy ténylegesen képes forogni.\nA deaktiváláshoz állítsd 0-ra."
+    },
+    "pellet_flow_coefficient": {
+      "label": "Granulátum áramlási együttható",
+      "tooltip": "A granulátum áramlási együttható empirikusan meghatározott érték, amely lehetővé teszi a térfogatszámítást granulátumos nyomtatókhoz.\n\nBelsőleg filament_diameter értékké alakul át. Az összes többi térfogatszámítás változatlan marad.\n\nfilament_diameter = sqrt( (4 * pellet_flow_coefficient) / PI )"
+    },
+    "pellet_modded_printer": {
+      "label": "Granulátumos módosított nyomtató"
+    },
     "post_process": {
       "label": "Post-processing Scripts"
     },
+    "precise_outer_wall": {
+      "label": "Pontos fal",
+      "tooltip": "Javítja a héj pontosságát a külső fal távolságának finomhangolásával. Ez a rétegek egyenletességét is javítja. MEGJEGYZÉS: Ez az opció figyelmen kívül lesz hagyva külső-belső vagy belső-külső-belső fali sorrend esetén."
+    },
     "precise_z_height": {
       "label": "Precise Z height",
-      "tooltip": "Enable this to get precise z height of object after slicing. It will get the precise object height by fine-tuning the layer heights of the last few layers. Note that this is an experimental parameter."
+      "tooltip": "Engedélyezd ezt, ha pontos objektum-Z-magasságot szeretnél szeletelés után. A rendszer az utolsó néhány réteg magasságának finomhangolásával állítja be a pontos objektummagasságot. Vedd figyelembe, hogy ez egy kísérleti paraméter."
+    },
+    "preferred_orientation": {
+      "label": "Előnyben részesített orientáció",
+      "tooltip": "Az STL fájlok automatikus Z tengely szerinti tájolása első importáláskor."
+    },
+    "preheat_steps": {
+      "label": "Előmelegítési lépések",
+      "tooltip": "Több előmelegítési parancs beszúrása (pl. M104.1). Ez csak a Prusa XL esetén hasznos. Más nyomtatóknál állítsd 1-re."
+    },
+    "preheat_time": {
+      "label": "Előmelegítési idő",
+      "tooltip": "A szerszámváltás utáni várakozási idő csökkentése érdekében Orca előre felmelegítheti a következő szerszámot, miközben az aktuális még használatban van. Ez a beállítás másodpercben adja meg, mennyi ideig melegítse elő a következő szerszámot. Orca egy M104 parancsot illeszt be a szerszám előzetes felfűtéséhez."
     },
     "preset_names": {
       "label": "Nyomtató beállítások neve",
       "tooltip": "A fizikai nyomtatóhoz kapcsolódó beállítások nevei"
     },
     "pressure_advance": {
-      "label": "Nyomáselőtolás (PA)"
+      "label": "Nyomáselőtolás (PA)",
+      "tooltip": "Nyomáselőtolás (Klipper), más néven lineáris előtolási tényező (Marlin)."
     },
     "prime_tower_brim_width": {
-      "label": "Perem szélessége"
+      "label": "Perem szélessége",
+      "tooltip": "A törlőtorony karimájának szélessége. Negatív szám esetén a szélesség automatikusan, a törlőtorony magassága alapján kerül kiszámításra."
+    },
+    "prime_tower_enable_framework": {
+      "label": "Belső bordák",
+      "tooltip": "Belső bordák engedélyezése a törlőtorony stabilitásának növeléséhez."
+    },
+    "prime_tower_infill_gap": {
+      "label": "Kitöltési hézag",
+      "tooltip": "Kitöltési hézag."
+    },
+    "prime_tower_skip_points": {
+      "label": "Pontok kihagyása",
+      "tooltip": "A törlőtorony fala kihagyja a törlési útvonal kezdőpontjait."
     },
     "prime_tower_width": {
       "label": "Szélesség",
@@ -961,7 +1729,8 @@
       "tooltip": "Ez az az anyagmennyiség, amelyet az extruder a toronyban ürít."
     },
     "print_flow_ratio": {
-      "label": "Anyagáramlás"
+      "label": "Anyagáramlás",
+      "tooltip": "Az anyag térfogata megváltozhat az olvadt és a kristályos állapot közötti átmenet során. Ez a beállítás arányosan megváltoztatja ennek a filamentnek az összes extrudálási áramlását a G-kódban. Az ajánlott értéktartomány 0,95 és 1,05 között van. Ennek az értéknek a finomhangolásával szép sík felület érhető el enyhe túl- vagy alulextrudálás esetén.\n\nAz objektum végső áramlási aránya ennek az értéknek és a filament áramlási arányának a szorzata."
     },
     "print_host": {
       "label": "Hosztnév, IP vagy URL",
@@ -972,9 +1741,11 @@
       "tooltip": "Add meg az eszköz felhasználói felületének URL-címét, ha az nem azonos a print_host címével."
     },
     "print_order": {
+      "label": "Rétegen belüli sorrend",
+      "tooltip": "Nyomtatási sorrend egyetlen rétegen belül.",
       "enum_labels": [
         "Alapértelmezett",
-        "As object list"
+        "Objektumlista szerint"
       ]
     },
     "print_sequence": {
@@ -992,8 +1763,13 @@
       "label": "Nyomtatási magasság",
       "tooltip": "Ez a maximális nyomtatható magasság, amelyet a nyomtatótér magassága korlátoz."
     },
+    "printer_agent": {
+      "label": "Nyomtatóügynök",
+      "tooltip": "Válaszd ki a nyomtató kommunikációjához használt hálózati ügynök implementációját."
+    },
     "printer_model": {
-      "label": "Nyomtató típusa"
+      "label": "Nyomtató típusa",
+      "tooltip": "A nyomtató típusa."
     },
     "printer_notes": {
       "label": "Printer notes",
@@ -1049,9 +1825,17 @@
       "label": "Objektumok közötti G-kód",
       "tooltip": "A tárgyak nyomtatása között használt G-kód. Ez a paraméter csak akkor működik, ha a nyomtatás tárgyankénti sorrendben történik."
     },
+    "process_change_extrusion_role_gcode": {
+      "label": "Extrudálási szerepkör G-kód módosítása (folyamat)",
+      "tooltip": "Ez a G-kód akkor kerül beillesztésre, amikor az extrudálási szerep megváltozik. A gép és a filament extrudálási szerepkör G-kódja után fut."
+    },
+    "purge_in_prime_tower": {
+      "label": "Kiürítés a törlőtoronyban",
+      "tooltip": "A megmaradt filament kiürítése a törlőtoronyba."
+    },
     "raft_contact_distance": {
       "label": "Tutaj érintkezés Z távolság",
-      "tooltip": "This is the Z gap between an object and a raft. It is ignored for soluble interfaces."
+      "tooltip": "Z rés a tutaj és a tárgy között. Ha a támasz felső Z-távolsága 0, ez az érték figyelmen kívül lesz hagyva és a tárgy közvetlenül a tutajon kerül nyomtatásra (rés nélkül)."
     },
     "raft_expansion": {
       "label": "Tutaj kibővítése",
@@ -1062,7 +1846,7 @@
       "tooltip": "Az első tutaj vagy támasz réteg sűrűsége"
     },
     "raft_first_layer_expansion": {
-      "label": "First layer expansion",
+      "label": "Első réteg kiterjesztése",
       "tooltip": "This expands the first raft or support layer to improve bed adhesion."
     },
     "raft_layers": {
@@ -1089,6 +1873,10 @@
       "label": "Felbontás",
       "tooltip": "A G-kód útvonal a modell kontúrjának egyszerűsítése után jön létre, hogy elkerüljük a túl sok sort a G-kód fájlban. A kisebb érték nagyobb felbontást és több időt jelent a szeletelésnél"
     },
+    "resonance_avoidance": {
+      "label": "Rezonancia elkerülése",
+      "tooltip": "A külső fal sebességének csökkentésével, hogy a nyomtató rezonanciatartománya el legyen kerülve, megelőzhetők a modellen megjelenő rezonanciacsíkok.\nKérlek, a rezonanciacsíkok tesztelésekor kapcsold ki ezt az opciót."
+    },
     "retract_before_wipe": {
       "label": "Visszahúzott mennyiség törlés előtt",
       "tooltip": "Ez a törlés előtti gyors visszahúzás hossza a visszahúzási hosszhoz viszonyítva."
@@ -1097,17 +1885,21 @@
       "label": "Hossz"
     },
     "retract_lift_above": {
-      "label": "Z emelés csak efelett"
+      "label": "Z emelés csak efelett",
+      "tooltip": "Ha ezt pozitív értékre állítod, a Z-emelés csak a megadott abszolút Z érték felett történik meg."
     },
     "retract_lift_below": {
-      "label": "Z emelés csak ezalatt"
+      "label": "Z emelés csak ezalatt",
+      "tooltip": "Ha ezt pozitív értékre állítod, a Z-emelés csak a megadott abszolút Z érték alatt történik meg."
     },
     "retract_lift_enforce": {
+      "label": "Felületeken",
+      "tooltip": "Z-emelési viselkedés kényszerítése. Ezt a beállítást a fenti opciók befolyásolják (Z emelés csak efelett/ezalatt).",
       "enum_labels": [
-        "All Surfaces",
-        "Top Only",
-        "Bottom Only",
-        "Top and Bottom"
+        "Minden felület",
+        "Csak felül",
+        "Csak alul",
+        "Felül és alul"
       ]
     },
     "retract_restart_extra": {
@@ -1123,11 +1915,16 @@
       "tooltip": "Kényszeríti a visszahúzást minden rétegváltáskor"
     },
     "retraction_distances_when_cut": {
-      "label": "Retraction distance when cut"
+      "label": "Retraction distance when cut",
+      "tooltip": "Kísérleti funkció: a visszahúzás hossza a filamentváltás közbeni vágás előtt."
+    },
+    "retraction_distances_when_ec": {
+      "label": "Visszahúzási távolság extruderváltáskor"
     },
     "retraction_length": {
       "label": "Hossz",
-      "full_label": "Visszahúzás hossza"
+      "full_label": "Visszahúzás hossza",
+      "tooltip": "Az extruderben lévő anyag egy részét visszahúzza, hogy hosszabb mozgások közben elkerülje a szivárgást. A visszahúzás kikapcsolásához állítsd 0-ra."
     },
     "retraction_minimum_travel": {
       "label": "Mozgás távolságának küszöbértéke",
@@ -1135,17 +1932,35 @@
     },
     "retraction_speed": {
       "label": "Visszahúzás sebessége",
-      "full_label": "Visszahúzás sebessége"
+      "full_label": "Visszahúzás sebessége",
+      "tooltip": "A filament visszahúzásának sebessége a fúvókából."
+    },
+    "role_based_wipe_speed": {
+      "label": "Szerepalapú törlési sebesség"
     },
     "scan_first_layer": {
       "label": "Az első réteg szkennelése",
       "tooltip": "Engedélyezd ezt az opciót, hogy a nyomtató kamerája ellenőrizze az első réteg minőségét"
     },
     "scarf_angle_threshold": {
-      "label": "Conditional angle threshold"
+      "label": "Conditional angle threshold",
+      "tooltip": "Ez az opció beállítja a feltételes átlapolt varrat alkalmazásának szögküszöbét.\nHa a kerülethurokon belüli maximális szög meghaladja ezt az értéket (ami arra utal, hogy nincsenek éles sarkok), akkor átlapolt varrat lesz használva. Az alapértelmezett érték 155°."
+    },
+    "scarf_joint_flow_ratio": {
+      "label": "Átlapolt varrat áramlási aránya",
+      "tooltip": "Ez a tényező az átlapolt varratokhoz felhasznált anyag mennyiségét befolyásolja."
+    },
+    "scarf_joint_speed": {
+      "label": "Átlapolt varrat sebessége",
+      "tooltip": "Ez az opció beállítja az átlapolt varratok nyomtatási sebességét. Ajánlott az átlapolt varratokat alacsony sebességgel nyomtatni (100 mm/s alatt). Az is javasolt, hogy kapcsold be az \"Extrudálási sebesség simítását\", ha az itt megadott sebesség jelentősen eltér a külső vagy belső fal sebességétől. Ha az itt megadott sebesség nagyobb, mint a külső vagy belső fal sebessége, a nyomtató a kettő közül a lassabbat fogja használni. Ha százalékban van megadva (pl. 80%), a sebesség a megfelelő külső vagy belső fali sebesség alapján lesz kiszámítva. Az alapértelmezett érték 100%."
+    },
+    "scarf_overhang_threshold": {
+      "label": "Feltételes túlnyúlási küszöb",
+      "tooltip": "Ez az opció meghatározza az átlapolt varratok alkalmazásának túlnyúlási küszöbét. Ha a kerület alá nem támasztott része kisebb ennél a küszöbnél, átlapolt varrat kerül alkalmazásra. Az alapértelmezett küszöb a külső fal szélességének 40%-a. Teljesítménybeli okokból a túlnyúlás mértéke becsült érték."
     },
     "seam_gap": {
-      "label": "Varrat hézag"
+      "label": "Varrat hézag",
+      "tooltip": "A varrat láthatóságának csökkentéséhez zárt hurkú extrudálásnál a hurok megszakad és a megadott mértékben rövidül.\nEz az érték megadható milliméterben vagy az aktuális extruderátmérő százalékában. Ennek a paraméternek az alapértelmezett értéke 10%."
     },
     "seam_position": {
       "label": "Varrat pozíció",
@@ -1153,7 +1968,7 @@
       "enum_labels": [
         "Legközelebbi",
         "Igazított",
-        "Aligned back",
+        "Hátulra igazítva",
         "Hátul",
         "Véletlenszerû"
       ]
@@ -1183,6 +1998,7 @@
       "tooltip": "Minimum number of segments of each scarf."
     },
     "seam_slope_type": {
+      "label": "Átlapolt varrat (béta)",
       "tooltip": "Use scarf joint to minimize seam visibility and increase seam strength.",
       "enum_labels": [
         "Sehol",
@@ -1190,33 +2006,75 @@
         "Contour and hole"
       ]
     },
+    "set_other_flow_ratios": {
+      "label": "Egyéb áramlási arányok beállítása",
+      "tooltip": "Anyagáramlási arányok módosítása más extrudálási úttípusokhoz."
+    },
     "silent_mode": {
       "label": "Csendes mód",
       "tooltip": "Csendes üzemmód támogatása, amelyben a gép kisebb gyorsulást használ a csendesebb nyomtatáshoz"
     },
     "single_extruder_multi_material": {
-      "label": "Egyetlen Extruder Többféle Anyag"
+      "label": "Egyetlen Extruder Többféle Anyag",
+      "tooltip": "Egyetlen fúvóka használata többféle filament nyomtatásához."
     },
     "single_extruder_multi_material_priming": {
       "label": "Az összes nyomtató extruder előkészítése",
       "tooltip": "Ha engedélyezve van, akkor a nyomtatás kezdetén az összes nyomtató extruder előkészítésre kerül a tárgyasztal elülső szélénél."
+    },
+    "single_loop_draft_shield": {
+      "label": "Egyetlen hurok az első réteg után",
+      "tooltip": "Az első réteg után a szoknya/huzatvédő hurkait egy falra korlátozza. Ez alkalmanként hasznos lehet a filament megtakarításához, de a huzatvédő/szoknya kunkorodását vagy repedését okozhatja."
+    },
+    "skeleton_infill_density": {
+      "label": "Vázkitöltés sűrűsége",
+      "tooltip": "A modell körvonalának a felületről egy bizonyos mélység eltávolítása után megmaradó részét vázként értelmezzük. Ez a paraméter ennek a résznek a sűrűségét szabályozza. Ha két régió ugyanazzal a ritka kitöltési beállítással, de eltérő vázsűrűséggel rendelkezik, a vázterületeik átfedésbe kerülnek. Alapértelmezés szerint megegyezik a kitöltési sűrűséggel."
+    },
+    "skeleton_infill_line_width": {
+      "label": "Váz vonalszélessége",
+      "tooltip": "A kijelölt vázútvonalak vonalszélességének beállítása."
+    },
+    "skin_infill_density": {
+      "label": "Felületi kitöltés sűrűsége",
+      "tooltip": "A modell külső felületének egy adott mélységtartományba eső részét felületi rétegnek nevezzük. Ez a paraméter ennek a szakasznak a sűrűségét szabályozza. Ha két régió ugyanazzal a ritka kitöltési beállítással, de eltérő felületi réteg-sűrűséggel rendelkezik, ez a terület nem lesz két külön régióra bontva. Alapértelmezés szerint megegyezik a kitöltési sűrűséggel."
+    },
+    "skin_infill_depth": {
+      "label": "Felületi kitöltés mélysége",
+      "tooltip": "Ez a paraméter a felületi réteg mélységét állítja be."
+    },
+    "skin_infill_line_width": {
+      "label": "Felületi vonalszélesség",
+      "tooltip": "A kijelölt felületi réteg útvonalainak vonalszélességét állítja be."
     },
     "skirt_distance": {
       "label": "Szoknya távolsága",
       "tooltip": "A szoknyától a peremig vagy tárgyig mért távolság"
     },
     "skirt_height": {
-      "label": "Skirt height"
+      "label": "Skirt height",
+      "tooltip": "A szoknya rétegeinek száma. Általában csak egy réteg."
     },
     "skirt_loops": {
       "label": "Szoknya hurkok száma",
       "full_label": "Szoknya hurkok száma",
       "tooltip": "A szoknya hurkainak száma. A nulla a szoknya kikapcsolását jelenti.\n\nA szoknya (Skirt) egy körvonal, amit a tárgyasztalon lévő összes modell köré nyomtatnak.\nMég a tárgyak előtt kerül nyomtatásra és a feladata a fúvóka anyagáramlásának stabilizálása"
     },
+    "skirt_speed": {
+      "label": "Szoknya sebessége",
+      "full_label": "Szoknya sebessége",
+      "tooltip": "A szoknya sebessége mm/s-ben. A 0 az alapértelmezett réteg-extrudálási sebesség használatát jelenti."
+    },
+    "skirt_start_angle": {
+      "label": "Szoknya kezdőpontja",
+      "tooltip": "Az objektum középpontjától a szoknya kezdőpontjáig mért szög. A 0 a legjobboldalibb pozíció, az óramutató járásával ellentétes irány a pozitív szög."
+    },
     "skirt_type": {
+      "label": "Szoknya típusa",
+      "full_label": "Szoknya típusa",
+      "tooltip": "Kombinált - egyetlen közös szoknya minden objektumhoz, Objektumonként - külön szoknya minden egyes objektumhoz.",
       "enum_labels": [
-        "Combined",
-        "Per object"
+        "Kombinált",
+        "Objektumonként"
       ]
     },
     "slice_closing_radius": {
@@ -1240,31 +2098,59 @@
       "label": "Rétegidő",
       "tooltip": "A nyomtatási sebesség az exportált G-kódban csökkentésre kerül, ha a becsült rétegidő kisebb, mint ez az érték, hogy a rétegek jobb hűtése biztosított legyen."
     },
+    "slow_down_layers": {
+      "label": "Lassú rétegek száma",
+      "tooltip": "Az első néhány réteg a normálnál lassabban nyomtatódik. A sebesség a megadott rétegszámon keresztül fokozatosan, lineárisan növekszik."
+    },
     "slow_down_min_speed": {
-      "label": "Min. nyomtatási sebesség"
+      "label": "Min. nyomtatási sebesség",
+      "tooltip": "Az a minimális nyomtatási sebesség, ameddig a nyomtató lelassulhat a fent megadott minimális rétegidő megtartásához, ha a jobb réteghűtés érdekében történő lassítás engedélyezve van."
+    },
+    "slowdown_for_curled_perimeters": {
+      "label": "Lassítás felkunkorodó kerületeknél"
+    },
+    "small_area_infill_flow_compensation": {
+      "label": "Kis területű áramláskompenzáció (béta)",
+      "tooltip": "Áramláskompenzáció engedélyezése kis kitöltési területekhez."
+    },
+    "small_area_infill_flow_compensation_model": {
+      "label": "Áramláskompenzációs modell",
+      "tooltip": "Áramláskompenzációs modell, amely a kis kitöltési területek áramlásának beállítására szolgál. A modell az extrudálási hossz és az áramláskorrekciós tényező vesszővel elválasztott értékpárjaiból áll. Minden pár külön sorban szerepel, pontosvesszővel zárva, a következő formátumban: \"1.234, 5.678;\""
     },
     "small_perimeter_speed": {
-      "label": "Kis peremek"
+      "label": "Kis peremek",
+      "tooltip": "Ez a külön beállítás a <= small_perimeter_threshold sugarú kerületek sebességét befolyásolja (általában furatoknál). Ha százalékban van megadva (például: 80%), a fenti külső fali sebesség alapján lesz kiszámítva. Az automatikus módhoz állítsd 0-ra."
     },
     "small_perimeter_threshold": {
+      "label": "Kis kerületek küszöbértéke",
       "tooltip": "A kis peremek hosszának küszöbértékét határozza meg. Az alapértelmezett érték 0 mm"
     },
-    "solid_infill_filament": {
-      "label": "Tömör kitöltés"
+    "solid_infill_direction": {
+      "label": "Tömör kitöltés iránya",
+      "tooltip": "A tömör kitöltési minta szöge, amely a vonalak kezdő- vagy fő irányát szabályozza."
+    },
+    "solid_infill_rotate_template": {
+      "label": "Tömör kitöltés forgatási sablonja",
+      "tooltip": "Ez a paraméter a tömör kitöltés irányának forgatását adja hozzá minden réteghez a megadott sablon szerint. A sablon fokokban megadott, vesszővel elválasztott szöglista, például '0,90'. Az első szög az első rétegre, a második a másodikra és így tovább vonatkozik. Ha több réteg van, mint szög, a szögek ismétlődnek. Vedd figyelembe, hogy nem minden tömör kitöltési minta támogatja a forgatást."
     },
     "sparse_infill_acceleration": {
       "label": "Kitöltés",
       "tooltip": "Gyorsulás a ritkás kitöltéseknél. Ha az érték százalékban van megadva (pl. 100%), akkor az alapértelmezett gyorsulás alapján kerül kiszámításra."
     },
     "sparse_infill_density": {
-      "label": "Kitöltés sűrűsége"
+      "label": "Kitöltés sűrűsége",
+      "tooltip": "A belső ritka kitöltés sűrűsége. A 100% minden ritka kitöltést tömör kitöltéssé alakít, és a belső tömör kitöltési minta kerül használatra."
     },
-    "sparse_infill_filament": {
-      "label": "Kitöltés",
-      "tooltip": "Filament a belső ritkás kitöltésekhez."
+    "sparse_infill_filament_id": {
+      "label": "Kitöltés"
+    },
+    "sparse_infill_flow_ratio": {
+      "label": "Ritka kitöltés áramlási aránya",
+      "tooltip": "Ez a tényező a ritka kitöltéshez felhasznált anyagmennyiséget befolyásolja.\n\nA tényleges ritka kitöltési áramlás úgy számolódik, hogy ezt az értéket megszorozza a filament áramlási arányával, valamint ha be van állítva, az objektum áramlási arányával."
     },
     "sparse_infill_line_width": {
-      "label": "Kitöltés"
+      "label": "Kitöltés",
+      "tooltip": "A belső ritka kitöltés vonalszélessége. Ha százalékban van megadva, a fúvókaátmérő alapján lesz kiszámítva."
     },
     "sparse_infill_pattern": {
       "label": "Kitöltési mintázat",
@@ -1272,22 +2158,22 @@
       "enum_labels": [
         "Vonalak",
         "Igazított vonal",
-        "Zig Zag",
-        "Cross Zag",
-        "Locked Zag",
+        "Cikkcakk",
+        "Kereszt cikkcakk",
+        "Rögzített cikkcakk",
         "Vonal",
         "Rács",
         "Háromszögek",
         "Háromszögletű",
         "Kockás",
         "Adaptív kocka",
-        "Quarter Cubic",
+        "Negyed kocka",
         "Támasz kocka",
         "Világítás",
         "Méhsejt",
         "3D-méhsejt",
-        "Lateral Honeycomb",
-        "Lateral Lattice",
+        "Oldalsó méhsejt",
+        "Oldalsó rács",
         "Cross Hatch",
         "TPMS-D",
         "TPMS-FK",
@@ -1298,21 +2184,41 @@
         "Nyolcágú spirál"
       ]
     },
+    "sparse_infill_rotate_template": {
+      "label": "Ritka kitöltés forgatási sablonja",
+      "tooltip": "A ritka kitöltés irányát rétegenként forgatja egy szögsablon alapján. Adj meg vesszővel elválasztott fokértékeket (pl. '0,30,60,90'). A szögek rétegenként sorban lesznek alkalmazva, majd a lista végén ismétlődnek. Támogatott a haladó szintaxis is: a '+5' minden rétegen +5°-kal forgat; a '+5#5' minden 5 rétegenként +5°-kal forgat. A részletekért lásd a Wikit. Ha sablon van megadva, a normál kitöltési irány beállítás figyelmen kívül marad. Megjegyzés: egyes kitöltési minták (pl. Gyroid) saját maguk kezelik a forgatást; körültekintően használd."
+    },
     "sparse_infill_speed": {
       "label": "Kitöltés",
       "tooltip": "A belső ritkás kitöltés sebessége"
     },
+    "spiral_finishing_flow_ratio": {
+      "label": "Spirál befejező áramlási aránya",
+      "tooltip": "Beállítja a befejező áramlási arányt a spirál lezárásakor. Normál esetben a spirál lezárása az utolsó hurok alatt 100%-ról 0%-ra skálázza az áramlási arányt, ami egyes esetekben alulextrudálást okozhat a spirál végén."
+    },
     "spiral_mode": {
-      "label": "Spirál (váza)"
+      "label": "Spirál (váza)",
+      "tooltip": "A spirál mód kisimítja a külső kontúr Z mozgásait. A tömör modellt egyfalú nyomatokká alakítja, tömör alsó rétegekkel. A végső modellen nincsenek varratok"
     },
     "spiral_mode_max_xy_smoothing": {
-      "label": "Max XY Smoothing"
+      "label": "Max XY Smoothing",
+      "tooltip": "A pontok XY irányban történő maximális elmozdítása a sima spirál elérése érdekében. Ha százalékban van megadva, a fúvókaátmérő alapján lesz kiszámítva."
     },
     "spiral_mode_smooth": {
-      "label": "Smooth Spiral"
+      "label": "Smooth Spiral",
+      "tooltip": "A sima spirál az X és Y mozgásokat is kisimítja, így egyáltalán nem marad látható varrat, még az XY irányban sem a nem függőleges falakon."
+    },
+    "spiral_starting_flow_ratio": {
+      "label": "Spirál kezdő áramlási aránya",
+      "tooltip": "Beállítja a kezdő áramlási arányt az utolsó alsó rétegről a spirálra való átmenet során. Normál esetben a spirálra váltás az első hurok alatt 0%-ról 100%-ra skálázza az áramlási arányt, ami egyes esetekben alulextrudálást okozhat a spirál elején."
+    },
+    "staggered_inner_seams": {
+      "label": "Eltolt belső varratok",
+      "tooltip": "Ez az opció a belső varratokat a mélységük alapján hátrafelé tolja el, így cikkcakk mintát hozva létre."
     },
     "standby_temperature_delta": {
-      "label": "Hőmérséklet változás"
+      "label": "Hőmérséklet változás",
+      "tooltip": "Az az alkalmazandó hőmérséklet-különbség, amikor egy extruder nem aktív. Ez az érték nem kerül felhasználásra, ha a filament beállításokban az 'idle_temperature' nem nulla értékre van állítva."
     },
     "start_end_points": {
       "label": "Kezdő- és végpontok",
@@ -1320,14 +2226,17 @@
     },
     "supertack_plate_temp": {
       "label": "Többi réteg",
-      "full_label": "Asztalhőmérséklet"
+      "full_label": "Asztalhőmérséklet",
+      "tooltip": "A kezdőrétegen kívüli rétegek tárgyasztalhőmérséklete. A 0 érték azt jelenti, hogy a filament nem támogatja a nyomtatást a SuperTac hűvös tálcán."
     },
     "supertack_plate_temp_initial_layer": {
       "label": "Kezdőréteg",
-      "full_label": "Első réteg asztalhőmérséklete"
+      "full_label": "Első réteg asztalhőmérséklete",
+      "tooltip": "A kezdőréteg tárgyasztalhőmérséklete. A 0 érték azt jelenti, hogy a filament nem támogatja a nyomtatást a SuperTac hűvös tálcán."
     },
     "support_air_filtration": {
-      "label": "Légszűrés támogatása"
+      "label": "Légszűrés támogatása",
+      "tooltip": "Engedélyezd ezt, ha a nyomtató támogatja a légszűrést.\nG-kód parancs: M106 P3 S(0-255)"
     },
     "support_angle": {
       "label": "Mintázat szöge",
@@ -1335,7 +2244,7 @@
     },
     "support_base_pattern": {
       "label": "Alap mintázata",
-      "tooltip": "A támasz mintázata.",
+      "tooltip": "A támasz vonalmintázata.\n\nA fa támaszoknál az Alapértelmezett beállítás az Üreges, ami azt jelenti, hogy nincs alapmintázat. Más támasztípusoknál az Alapértelmezett a Vonalrács mintázat.\n\nMegjegyzés: Organikus támaszoknál a két fal csak az Üreges/Alapértelmezett alapmintázattal van alátámasztva. A Villám alapmintázatot csak a Karcsú/Erős/Hibrid fa támaszok támogatják. A többi támasztípusnál a Vonalrács lesz használva a Villám helyett.",
       "enum_labels": [
         "Alapértelmezett",
         "Vonalak",
@@ -1355,10 +2264,11 @@
     },
     "support_bottom_z_distance": {
       "label": "Alsó Z távolság",
-      "tooltip": "A Z távolság az alsó támasz érintkező rétege és az objektum között."
+      "tooltip": "Z rés a tárgy és a támasz alja között. Ha a támasz felső Z-távolsága 0 és az alján vannak interfész rétegek, ez az érték figyelmen kívül lesz hagyva, és a támasz közvetlenül a tárgyhoz lesz nyomtatva (rés nélkül)."
     },
     "support_chamber_temp_control": {
-      "label": "Kamrahőmérséklet-szabályozás engedélyezése"
+      "label": "Kamrahőmérséklet-szabályozás engedélyezése",
+      "tooltip": "Engedélyezd ezt az opciót, ha a gép támogatja a kamrahőmérséklet szabályozását.\nG-kód parancs: M141 S(0-255)"
     },
     "support_critical_regions_only": {
       "label": "Csak a kritikus területek alátámasztása",
@@ -1369,16 +2279,22 @@
       "tooltip": "Megnöveli (+) vagy összehúzza (-) a normál támaszt vízszintes irányban"
     },
     "support_filament": {
-      "label": "Support/raft base",
-      "tooltip": "A támasz alapjához és a tutaj nyomtatásához használt filament. Az „Alapértelmezett“ beállítás választásakor a jelenleg használt filament kerül felhasználásra."
+      "label": "Support/raft base"
+    },
+    "support_flow_ratio": {
+      "label": "Támasz áramlási aránya",
+      "tooltip": "Ez a tényező a támaszhoz felhasznált anyagmennyiséget befolyásolja.\n\nA tényleges támaszáramlás úgy számolódik, hogy ezt az értéket megszorozza a filament áramlási arányával, valamint ha be van állítva, az objektum áramlási arányával."
     },
     "support_interface_bottom_layers": {
       "label": "Alsó érintkező rétegek",
       "tooltip": "Alsó érintkezőrétegek száma"
     },
     "support_interface_filament": {
-      "label": "Support/raft interface",
-      "tooltip": "Filament a támasz érintkező felületének nyomtatásához. Az „Alapértelmezett“ beállítás választásakor a jelenleg használt filament kerül felhasználásra."
+      "label": "Support/raft interface"
+    },
+    "support_interface_flow_ratio": {
+      "label": "Támasz érintkező felület áramlási aránya",
+      "tooltip": "Ez a tényező a támasz érintkező felületéhez felhasznált anyagmennyiséget befolyásolja.\n\nA tényleges támasz érintkező felületi áramlás úgy számolódik, hogy ezt az értéket megszorozza a filament áramlási arányával, valamint ha be van állítva, az objektum áramlási arányával."
     },
     "support_interface_loop_pattern": {
       "label": "Hurokminta felület",
@@ -1400,7 +2316,8 @@
       ]
     },
     "support_interface_spacing": {
-      "label": "Felső érintkező felület térköze"
+      "label": "Felső érintkező felület térköze",
+      "tooltip": "Az érintkező felület vonalai közötti távolság. A nulla tömör érintkező felületet jelent.\nTámaszérintkező felület vasalása esetén a tömör érintkező felület használatát kényszeríti."
     },
     "support_interface_speed": {
       "label": "Támasz érintkező felület",
@@ -1410,17 +2327,41 @@
       "label": "Felső érintkező rétegek",
       "tooltip": "A felső érintkező rétegek száma."
     },
+    "support_ironing": {
+      "label": "Támaszérintkező felület vasalása",
+      "tooltip": "A vasalás kis anyagáramlással újra nyomtat az érintkező felület magasságában, hogy simábbá tegye azt. Ez a beállítás szabályozza, hogy a támaszérintkező felület kapjon-e vasalást. Bekapcsolva a támaszérintkező felület tömören is extrudálásra kerül."
+    },
+    "support_ironing_flow": {
+      "label": "Támaszvasalás áramlása",
+      "tooltip": "A vasalás során extrudálandó anyagmennyiség. A normál támaszérintkező felületi réteg áramlásához viszonyítva. A túl magas érték túlextrudálást okoz a felületen."
+    },
     "support_ironing_pattern": {
+      "label": "Támaszvasalás mintázata",
+      "tooltip": "A vasaláskor használt minta.",
       "enum_labels": [
         "Vonalak",
         "Koncentrikus"
       ]
     },
     "support_ironing_spacing": {
+      "label": "Támaszvasalás vonaltávolsága",
       "tooltip": "A vasaláshoz használt vonalak közötti távolság."
     },
     "support_line_width": {
-      "label": "Támasz"
+      "label": "Támasz",
+      "tooltip": "A támasz vonalszélessége. Ha százalékban van megadva, a fúvókaátmérő alapján lesz kiszámítva."
+    },
+    "support_material_interface_fan_speed": {
+      "label": "Támasz érintkező felület ventilátorsebessége",
+      "tooltip": "Ez a tárgyhűtő ventilátorsebesség a támasz érintkező felületeinek nyomtatásakor lesz alkalmazva. A szokásosnál magasabb érték gyengíti a rétegek kötését a támasz és a megtámasztott alkatrész között, így azok könnyebben elválaszthatók.\nA kikapcsoláshoz állítsd -1-re.\nEzt a beállítást a disable_fan_first_layers felülírja."
+    },
+    "support_multi_bed_types": {
+      "label": "Több asztaltípus támogatása",
+      "tooltip": "Engedélyezd ezt az opciót, ha több asztaltípust szeretnél használni."
+    },
+    "support_object_first_layer_gap": {
+      "label": "Támasz/tárgy rés az első rétegen",
+      "tooltip": "A tárgy és a támasz közötti XY távolság az első rétegen."
     },
     "support_object_xy_distance": {
       "label": "Támasz/tárgy XY távolság",
@@ -1431,8 +2372,8 @@
       "tooltip": "Nem generál támaszt a modell felületén, csak a tárgyasztalon"
     },
     "support_remove_small_overhang": {
-      "label": "Kis túlnyúlások eltávolítása",
-      "tooltip": "Eltávolítja a kis túlnyúlásokat, amelyek esetleg nem igényelnek alátámasztást."
+      "label": "Kis túlnyúlások mellőzése",
+      "tooltip": "Azoknak a kis túlnyúlásoknak a mellőzése, amelyek valószínűleg nem igényelnek támaszt."
     },
     "support_speed": {
       "label": "Támasz",
@@ -1440,11 +2381,12 @@
     },
     "support_style": {
       "label": "Stílus",
+      "tooltip": "A támasz stílusa és alakja. Normál támasznál a támaszok szabályos rácsba vetítése stabilabb támaszokat eredményez (alapértelmezett), míg a szoros támasztornyok anyagot takarítanak meg és csökkentik az objektum sérülését.\nFa támasznál a karcsú és organikus stílus agresszívebben vonja össze az ágakat és sok anyagot takarít meg (az organikus az alapértelmezett), míg a hibrid stílus nagy, lapos túlnyúlások alatt a normál támaszhoz hasonló szerkezetet hoz létre.",
       "enum_labels": [
-        "Default (Grid/Organic)",
+        "Alapértelmezett (rács/organikus)",
         "Rács",
         "Szoros",
-        "Organic",
+        "Organikus",
         "Karcsú fa",
         "Erős fa",
         "Hibrid fa"
@@ -1452,11 +2394,15 @@
     },
     "support_threshold_angle": {
       "label": "Dőlésszög küszöbértéke",
-      "tooltip": "Az olyan túlnyúlásoknál, amelynek dőlésszöge ez alatt az érték alatt van, támasz fog generálódni."
+      "tooltip": "Az olyan túlnyúlásoknál, amelynek dőlésszöge ez alatt az érték alatt van, támasz fog generálódni.Minél kisebb ez az érték, annál meredekebb a túlnyúlás, amely alátámasztás nélkül nyomtatható.\nMegjegyzés: Ha 0-ra van állítva, a normál támaszok a Küszöbátfedést használják, míg a fa típusú támaszok az alapértelmezett 30-as értékre térnek vissza."
+    },
+    "support_threshold_overlap": {
+      "label": "Átfedési küszöbérték",
+      "tooltip": "Ha a küszöbszög nulla, támasz azoknál a túlnyúlásoknál jön létre, amelyek átfedése a küszöbérték alatt van. Minél kisebb ez az érték, annál meredekebb túlnyúlás nyomtatható támasz nélkül."
     },
     "support_top_z_distance": {
       "label": "Z távolság",
-      "tooltip": "Meghatározza a Z távolságot a felső támasz érintkező rétege és az objektum között."
+      "tooltip": "Z rés a támasz teteje és a tárgy között."
     },
     "support_type": {
       "label": "Típus",
@@ -1467,8 +2413,13 @@
         "fa (manuális)"
       ]
     },
+    "symmetric_infill_y_axis": {
+      "label": "Szimmetrikus kitöltés Y tengely",
+      "tooltip": "Ha a modell két, az Y tengelyre szimmetrikus részből áll, és azt szeretnéd, hogy ezek a részek szimmetrikus textúrát kapjanak, kattints erre az opcióra az egyik részen."
+    },
     "temperature_vitrification": {
-      "label": "Lágyulási hőmérséklet"
+      "label": "Lágyulási hőmérséklet",
+      "tooltip": "Az anyag ezen a hőmérsékleten kezd meglágyulni, ezért ha az asztal hőmérséklete ezt eléri vagy meghaladja, az eltömődés elkerülése érdekében erősen ajánlott kinyitni az első ajtót és/vagy eltávolítani a felső üveget."
     },
     "template_custom_gcode": {
       "label": "Egyedi G-kód",
@@ -1476,11 +2427,13 @@
     },
     "textured_cool_plate_temp": {
       "label": "Többi réteg",
-      "full_label": "Asztalhőmérséklet"
+      "full_label": "Asztalhőmérséklet",
+      "tooltip": "A kezdőrétegen kívüli rétegek tárgyasztalhőmérséklete. A 0 érték azt jelenti, hogy a filament nem támogatja a nyomtatást a texturált hűvös tálcán."
     },
     "textured_cool_plate_temp_initial_layer": {
       "label": "Kezdőréteg",
-      "full_label": "Első réteg asztalhőmérséklete"
+      "full_label": "Első réteg asztalhőmérséklete",
+      "tooltip": "A kezdőréteg tárgyasztalhőmérséklete. A 0 érték azt jelenti, hogy a filament nem támogatja a nyomtatást a texturált hűvös tálcán."
     },
     "textured_plate_temp": {
       "label": "Többi réteg",
@@ -1493,12 +2446,18 @@
       "tooltip": "Az első réteg asztalhőmérsékletének beállított 0 érték azt jelenti, hogy a filament nem támogatja texturált PEI tálcára történő nyomtatást."
     },
     "thick_bridges": {
-      "tooltip": "Ha engedélyezve van, az áthidalások megbízhatóbbak, nagyobb távolságokat tudnak áthidalni, de rosszabbul nézhetnek ki.\nHa ki van kapcsolva, az áthidalások jobban néznek ki, de csak a rövidebb áthidalt távolságokon megbízhatóak."
+      "label": "Vastag külső hidak"
+    },
+    "thick_internal_bridges": {
+      "label": "Vastag belső hidak"
     },
     "thumbnails": {
-      "label": "G-kód miniatűrök"
+      "label": "G-kód miniatűrök",
+      "tooltip": "A .gcode és .sl1 / .sl1s fájlokban tárolandó képméretek a következő formátumban: \"XxY, XxY, ...\""
     },
     "thumbnails_format": {
+      "label": "A G-kód miniatűrjeinek formátuma",
+      "tooltip": "A G-kód miniatűrjeinek formátuma: PNG a legjobb minőséghez, JPG a legkisebb mérethez, QOI a kevés memóriával rendelkező firmware-ekhez.",
       "enum_labels": [
         "PNG",
         "JPG",
@@ -1507,16 +2466,28 @@
         "ColPic"
       ]
     },
+    "time_cost": {
+      "label": "Időköltség",
+      "tooltip": "A nyomtató óránkénti költsége."
+    },
     "time_lapse_gcode": {
       "label": "Timelapse G-kód"
     },
     "timelapse_type": {
       "label": "Timelapse",
-      "tooltip": "Ha a sima vagy a hagyományos mód van kiválasztva, minden nyomtatásnál készül egy timelapse-videó. Az egyes rétegek kinyomtatása után a beépített kamera egy képet készít. A nyomtatás befejeződése után aztán ezeket a képeket a szoftver egy videóvá fűzi össze. Ha a sima mód van kiválasztva, a réteg nyomtatása után a nyomtatófej a kidobónyíláshoz mozog, majd a kamera egy képet készít. Mivel a kép készítése során szivároghat valamennyi olvadt filament a fúvókából, egy törlőtoronyra van szükség a fúvóka megtisztításához.",
+      "tooltip": "Ha a sima vagy a hagyományos mód van kiválasztva, minden nyomtatásnál készül egy időfelvétel-videó. Az egyes rétegek kinyomtatása után a beépített kamera egy képet készít. A nyomtatás befejeződése után aztán ezeket a képeket a szoftver egy videóvá fűzi össze. Ha a sima mód van kiválasztva, a réteg nyomtatása után a nyomtatófej a kidobónyíláshoz mozog, majd a kamera egy képet készít. Mivel a kép készítése során szivároghat valamennyi olvadt filament a fúvókából, egy törlőtoronyra van szükség a fúvóka megtisztításához.",
       "enum_labels": [
         "Hagyományos",
         "Sima"
       ]
+    },
+    "tool_change_on_wipe_tower": {
+      "label": "Szerszámcsere a törlőtoronyban",
+      "tooltip": "A szerszámcsere parancs (Tx) kiadása előtt kényszerítse a szerszámfejet a törlőtoronyhoz. Csak a 2-es típusú törlőtornyot használó többextruderes (több szerszámfejes) nyomtatóknál releváns. Alapértelmezés szerint az Orca kihagyja az utazást a több szerszámfejes gépeken, mert a firmware kezeli a fejcserét, ami azt eredményezheti, hogy a Tx parancs a nyomtatott rész felett kerül kiadásra. Engedélyezd ezt az opciót, ha azt szeretnéd, hogy a szerszámcsere mindig a törlőtorony felett történjen."
+    },
+    "top_bottom_infill_wall_overlap": {
+      "label": "Felső/alsó tömör kitöltés és fal átfedése",
+      "tooltip": "A felső tömör kitöltési terület kissé megnagyobbodik, hogy átfedésbe kerüljön a fallal a jobb kötés érdekében, és csökkentse a tűlyukszerű hibák megjelenését ott, ahol a felső kitöltés a falakkal találkozik. Jó kiindulási érték a 25-30%, amely segít minimalizálni a tűlyukak megjelenését. A százalékos érték a ritka kitöltés vonalszélességéhez viszonyított."
     },
     "top_shell_layers": {
       "label": "Felső héj rétegek",
@@ -1529,17 +2500,27 @@
       "tooltip": "A felső szilárd rétegek száma szeleteléskor megnő, ha a felső héjrétegekből számított vastagság kisebb ennél az értéknél. Ezzel elkerülhető, hogy túl vékony legyen a héj kis rétegmagasságnál. A 0 azt jelenti, hogy ez a beállítás ki van kapcsolva, és a felső héj vastagságát egyszerűen a felső héjrétegek száma határozza meg."
     },
     "top_solid_infill_flow_ratio": {
-      "label": "Felső felület anyagáramlása"
+      "label": "Felső felület anyagáramlása",
+      "tooltip": "Ez a tényező befolyásolja a felső tömör kitöltéshez felhasznált anyag mennyiségét. Kissé csökkentheted az értéket, hogy simább felületi megjelenést kapj.\n\nA ténylegesen használt felső felületi áramlás ennek az értéknek, a filament áramlási arányának, valamint ha be van állítva, az objektum áramlási arányának a szorzatából adódik."
     },
     "top_surface_acceleration": {
       "label": "Felső felület",
       "tooltip": "A felső felületi kitöltés gyorsulása. Alacsonyabb érték használata javíthatja a felső felület minőségét"
     },
-    "top_surface_jerk": {
+    "top_surface_density": {
+      "label": "Felső felületi sűrűség",
+      "tooltip": "A felső felületi réteg sűrűsége. A 100%-os érték teljesen tömör, sima felső réteget hoz létre. Ennek az értéknek a csökkentése a kiválasztott felső felületi mintázatnak megfelelően texturált felső felületet eredményez. A 0%-os érték azt eredményezi, hogy a felső rétegen csak a falak jönnek létre. Esztétikai vagy funkcionális célokra szolgál, nem pedig olyan problémák javítására, mint a túlextrudálás."
+    },
+    "top_surface_filament_id": {
       "label": "Felső felület"
     },
+    "top_surface_jerk": {
+      "label": "Felső felület",
+      "tooltip": "Jerk a felső felülethez."
+    },
     "top_surface_line_width": {
-      "label": "Felső felület"
+      "label": "Felső felület",
+      "tooltip": "A felső felületek vonalszélessége. Ha %-ban van megadva, a rendszer a fúvóka átmérője alapján számítja ki."
     },
     "top_surface_pattern": {
       "label": "Felső felület mintázata",
@@ -1560,17 +2541,28 @@
       "tooltip": "A felső felületi kitöltés sebessége, amely szilárd"
     },
     "travel_acceleration": {
-      "label": "Mozgás"
+      "label": "Mozgás",
+      "tooltip": "Az utazó mozgások gyorsulása."
     },
     "travel_jerk": {
-      "label": "Mozgás"
+      "label": "Mozgás",
+      "tooltip": "Jerk az utazó mozgásokhoz."
+    },
+    "travel_slope": {
+      "label": "Mozgási szög",
+      "tooltip": "A mozgási szög a Lejtő és Spirál Z-emelés típushoz. 90°-ra állítva normál emelést eredményez."
     },
     "travel_speed": {
       "label": "Mozgás",
       "tooltip": "Mozgási sebesség, amikor nem történik extrudálás"
     },
-    "tree_support_adaptive_layer_height": {
-      "label": "Adaptív rétegmagasság"
+    "tree_support_angle_slow": {
+      "label": "Előnyben részesített ágszög",
+      "tooltip": "Az ágak előnyben részesített szöge, amikor nem kell elkerülniük a modellt. Alacsonyabb szöggel függőlegesebbek és stabilabbak lesznek, nagyobb szöggel pedig gyorsabban összeolvadnak."
+    },
+    "tree_support_auto_brim": {
+      "label": "Automatikus karimaszélesség",
+      "tooltip": "Ennek az opciónak az engedélyezése azt jelenti, hogy a fa támasz karimájának szélessége automatikusan lesz kiszámítva."
     },
     "tree_support_branch_angle": {
       "label": "Fa típusú támasz ágainak szöge",
@@ -1583,6 +2575,10 @@
     "tree_support_branch_diameter": {
       "label": "Fa támasz ágának átmérője",
       "tooltip": "Ez a beállítás határozza meg a támasz csomópontok kezdeti átmérőjét."
+    },
+    "tree_support_branch_diameter_angle": {
+      "label": "Ágátmérő szöge",
+      "tooltip": "Az ágak átmérőjének szöge, ahogy lefelé haladva fokozatosan vastagodnak. A 0 érték azt eredményezi, hogy az ágak teljes hosszban egyforma vastagságúak lesznek. Egy kisebb szög növelheti az organikus támasz stabilitását."
     },
     "tree_support_branch_diameter_organic": {
       "label": "Fa támasz ágának átmérője",
@@ -1597,10 +2593,20 @@
       "tooltip": "Ez a beállítás határozza meg a szomszédos fa támasz csomópontok közötti távolságot."
     },
     "tree_support_brim_width": {
-      "label": "Tree support brim width"
+      "label": "Tree support brim width",
+      "tooltip": "A távolság a fa támasz ágától a legkülső karimavonalig."
+    },
+    "tree_support_tip_diameter": {
+      "label": "Csúcsátmérő",
+      "tooltip": "Az ágak csúcsának átmérője organikus támaszoknál."
+    },
+    "tree_support_top_rate": {
+      "label": "Ágsűrűség",
+      "tooltip": "Az ágak csúcsainak létrehozásához használt támaszszerkezet sűrűségét állítja be. A nagyobb érték jobb túlnyúlásokat eredményez, viszont a támaszokat nehezebb eltávolítani, ezért ha sűrű érintkező felületre van szükség, inkább a felső támaszérintkező felületek engedélyezése javasolt a magas ágsűrűségérték helyett."
     },
     "tree_support_wall_count": {
-      "label": "Támaszfalak száma"
+      "label": "Támaszfalak száma",
+      "tooltip": "Ez a beállítás a támaszfalak számát adja meg a [0,2] tartományban. A 0 automatikus értéket jelent."
     },
     "tree_support_with_infill": {
       "label": "Fa támasz kitöltéssel",
@@ -1610,24 +2616,27 @@
       "label": "felfelé kompatibilis gép"
     },
     "use_firmware_retraction": {
-      "label": "Firmware-ben megadott visszahúzás használata"
+      "label": "Firmware-ben megadott visszahúzás használata",
+      "tooltip": "Ez a kísérleti beállítás a G10 és G11 parancsokat használja, hogy a visszahúzást a firmware kezelje. Ez csak az újabb Marlin verziókban támogatott."
     },
     "use_relative_e_distances": {
-      "label": "Relatív E távolságok használata"
+      "label": "Relatív E távolságok használata",
+      "tooltip": "A relatív extrudálás használata ajánlott a \"label_objects\" opcióval. Bizonyos extruderek jobban működnek, ha ez az opció nincs bejelölve (abszolút extrudálási mód). A törlőtorony csak a relatív móddal kompatibilis. A legtöbb nyomtatón ajánlott. Alapértelmezés szerint be van jelölve."
+    },
+    "volumetric_speed_coefficients": {
+      "label": "Maximális volumetrikus sebesség polinomiális együtthatói"
     },
     "wall_direction": {
+      "label": "Falhurkok iránya",
+      "tooltip": "Az az irány, amerre a kontúrfalhurkok extrudálódnak felülről lefelé nézve.\nA lyukak a kontúrral ellentétes irányban vannak nyomtatva, hogy fenntartsák az igazodást azokkal a rétegekkel, amelyek kontúrpoligonjai nem teljesek és megváltoztatják az irányt, ugyanakkor a lyuk részleges kontúrját képezve.\n\nEz az opció le lesz tiltva, ha a spirálváza mód engedélyezve van.",
       "enum_labels": [
-        "Auto",
-        "Counter clockwise",
-        "Clockwise"
+        "Óramutató járásával ellentétes",
+        "Óramutató járásával megegyező"
       ]
     },
     "wall_distribution_count": {
       "label": "Falak elosztása",
       "tooltip": "A falak száma, a középponttól számítva, amelyek között a falakat el kell osztani. Az alacsonyabb érték azt jelenti, hogy a külső falak szélessége nem változik."
-    },
-    "wall_filament": {
-      "label": "Falak"
     },
     "wall_generator": {
       "label": "Falgenerátor",
@@ -1641,11 +2650,21 @@
       "label": "Falak száma",
       "tooltip": "Ez a falak száma rétegenként."
     },
+    "wall_maximum_deviation": {
+      "label": "Maximális fal eltérés",
+      "tooltip": "A megengedett legnagyobb eltérés a „Maximális falfelbontás” beállítás felbontásának csökkentésekor. Ha ezt növeled, a nyomtatás kevésbé lesz pontos, de a G-kód kisebb lesz. A „maximális faleltérés” korlátozza a „maximális falfelbontást”, így ha a kettő ütközik, a „Maximális faleltérés” élvez elsőbbséget."
+    },
+    "wall_maximum_resolution": {
+      "label": "Maximális falfelbontás",
+      "tooltip": "Ez az érték határozza meg a legkisebb falvonalszakasz hosszát mm-ben. Minél kisebbre állítod be ezt az értéket, annál pontosabbak és precízebbek lesznek a falak."
+    },
     "wall_sequence": {
+      "label": "Falak nyomtatási sorrendje",
+      "tooltip": "A belső és külső falak nyomtatási sorrendje.\n\nA legjobb túlnyúlásokhoz használd a Belső/Külső módot. Ennek oka, hogy a túlnyúló falak nyomtatás közben hozzátapadhatnak egy szomszédos kerülethez. Ez az opció azonban kissé gyengébb felületminőséget eredményez, mert a külső kerület deformálódik, amikor a belső kerülethez préselődik.\n\nA legjobb külső felületi minőség és méretpontosság érdekében használd a Belső/Külső/Belső módot, mivel a külső fal zavartalanul nyomtatódik a belső kerülettől. Ugyanakkor a túlnyúlási teljesítmény csökken, mivel nincs belső kerület, amelyhez a külső fal hozzányomtatható lenne. Ennek a módnak a hatékony működéséhez legalább 3 fal szükséges, mert először a 3. kerülettől kezdve nyomtatja a belső falakat, majd a külső kerületet, végül az első belső kerületet. A legtöbb esetben ez a mód ajánlott a Külső/Belső helyett.\n\nA Külső/Belső mód ugyanazokat az előnyöket nyújtja külső falminőség és méretpontosság terén, mint a Belső/Külső/Belső. A Z-varratok azonban kevésbé lesznek egyenletesek, mivel az új réteg első extrudálása látható felületen kezdődik.",
       "enum_labels": [
-        "Inner/Outer",
-        "Outer/Inner",
-        "Inner/Outer/Inner"
+        "Belső/Külső",
+        "Külső/Belső",
+        "Belső/Külső/Belső"
       ]
     },
     "wall_transition_angle": {
@@ -1664,8 +2683,17 @@
       "label": "Törlés visszahúzás közben",
       "tooltip": "Ez visszahúzáskor a fúvókát az utolsó extrudálási útvonal mentén mozgatja, hogy a fúvókából szivárgott anyagot eltávolítsa. Ez minimálisra csökkentheti a pöttyöket, amikor a nyomtatófej a mozgást követően egy egy új alkatrész nyomtatásába kezd."
     },
+    "wipe_before_external_loop": {
+      "label": "Törlés a külső hurok előtt",
+      "tooltip": "A külső kerület elején jelentkező esetleges túlextrudálás láthatóságának csökkentése érdekében, ha a nyomtatás Külső/Belső vagy Belső/Külső/Belső falnyomtatási sorrenddel történik, a visszatöltés kissé a külső kerület kezdőpontján belül történik. Így az esetleges túlextrudálás a külső felületről elrejtve marad.\n\nEz hasznos Külső/Belső vagy Belső/Külső/Belső falnyomtatási sorrendnél, mivel ezekben a módokban nagyobb az esélye annak, hogy egy külső kerület közvetlenül egy visszatöltési mozdulat után nyomtatódik."
+    },
     "wipe_distance": {
-      "label": "Törlési távolság"
+      "label": "Törlési távolság",
+      "tooltip": "Megadja, hogy a fúvóka visszahúzás közben ennyit mozogjon az utolsó útvonal mentén.\n\nAttól függően, hogy mennyi ideig tart a törlési művelet, illetve milyen gyorsak és hosszúak az extruder/filament visszahúzási beállításai, szükség lehet egy további visszahúzási mozdulatra a megmaradt filament visszahúzásához.\n\nHa az alábbi \"visszahúzási mennyiség törlés előtt\" beállításban értéket adsz meg, akkor az esetleges többletvisszahúzás a törlés előtt történik meg, különben utána."
+    },
+    "wipe_on_loops": {
+      "label": "Törlés hurkokon",
+      "tooltip": "A varrat láthatóságának csökkentéséhez zárt hurok extrudálásnál egy kis befelé irányuló mozgás történik, mielőtt az extruder elhagyná a hurkot."
     },
     "wipe_speed": {
       "label": "Törlés sebessége",
@@ -1675,22 +2703,76 @@
       "label": "Maximális áthidalási távolság",
       "tooltip": "A támaszok közötti maximális távolság a ritkás kitöltésű részeken."
     },
+    "wipe_tower_cone_angle": {
+      "label": "Stabilizáló kúp csúcsszöge",
+      "tooltip": "A törlőtorony stabilizálására szolgáló kúp csúcsszöge. A nagyobb szög szélesebb alapot jelent."
+    },
+    "wipe_tower_extra_flow": {
+      "label": "Többletáramlás a kiürítéshez",
+      "tooltip": "A törlőtorony kiürítési vonalaihoz használt többletáramlás. Ez a kiürítési vonalakat a szokásosnál vastagabbá vagy vékonyabbá teszi. A távolság automatikusan igazodik."
+    },
+    "wipe_tower_extra_rib_length": {
+      "label": "Extra bordahossz"
+    },
+    "wipe_tower_extra_spacing": {
+      "label": "A törlőtorony kiürítési vonalainak távolsága",
+      "tooltip": "A törlőtoronyon lévő kiürítési vonalak távolsága."
+    },
     "wipe_tower_filament": {
-      "label": "Törlőtorony"
+      "label": "Törlőtorony",
+      "tooltip": "Az a extruder, amelyet a törlőtorony kerületének nyomtatásához kell használni. Állítsd 0-ra, ha az éppen elérhető extrudert szeretnéd használni (előnyösítve a nem oldhatót)."
+    },
+    "wipe_tower_fillet_wall": {
+      "label": "Lekerekített fal",
+      "tooltip": "A törlőtorony fala lekerekített lesz."
+    },
+    "wipe_tower_max_purge_speed": {
+      "label": "A törlőtorony maximális nyomtatási sebessége",
+      "tooltip": "A maximális nyomtatási sebesség öblítéskor a törlőtoronyban, valamint a törlőtorony ritka rétegeinek nyomtatásakor. Öblítés közben, ha a ritka kitöltés sebessége vagy a filament maximális térfogati sebességéből számolt sebesség alacsonyabb, akkor a kisebbik érték lesz használva.\n\nA ritka rétegek nyomtatásakor, ha a belső kerület sebessége vagy a filament maximális térfogati sebességéből számolt sebesség alacsonyabb, akkor a kisebbik érték lesz használva.\n\nEnnek a sebességnek a növelése befolyásolhatja a torony stabilitását, és növelheti azt az erőt is, amellyel a fúvóka nekiütközik a törlőtoronyon esetleg kialakuló anyagcsomóknak.\n\nMielőtt ezt a paramétert a 90 mm/s alapértelmezett érték fölé emeled, győződj meg arról, hogy a nyomtatód megbízhatóan tud hidalni nagyobb sebességen is, és hogy a szerszámváltás közbeni szivárgás megfelelően szabályozott.\n\nA törlőtorony külső kerületeinél ettől a beállítástól függetlenül a belső kerületi sebesség lesz használva."
     },
     "wipe_tower_no_sparse_layers": {
+      "label": "Nincsenek ritka rétegek (béta)",
       "tooltip": "Ha engedélyezve van, akkor törlőtorony nem kerül kinyomtatásra szerszámváltás nélküli rétegeken. A szerszámcserével rendelkező rétegeken az extruder az aktuális magasság alá süllyed a törlőtorony nyomtatásához. A felhasználó felelős azért, hogy ez ne okozzon ütközést a nyomtatás során."
+    },
+    "wipe_tower_rib_width": {
+      "label": "Bordaszélesség",
+      "tooltip": "A bordaszélesség mindig kisebb, mint a törlőtorony oldalhosszának fele."
     },
     "wipe_tower_rotation_angle": {
       "label": "Törlőtorony forgatási szöge",
       "tooltip": "Törlőtorony forgatási szöge az x-tengelyhez képest."
     },
+    "wipe_tower_type": {
+      "label": "Törlőtorony típusa",
+      "tooltip": "Válassza ki a törlőtorony megvalósítását a többanyagos nyomtatáshoz. Az 1. típus ajánlott a Bambu és Qidi nyomtatókhoz szálvágóval. A 2. típus jobb kompatibilitást kínál a többszerszámos és MMU nyomtatókkal, és összességében jobb kompatibilitást biztosít.",
+      "enum_labels": [
+        "1. típus",
+        "2. típus"
+      ]
+    },
     "wipe_tower_wall_type": {
+      "label": "Fal típusa",
+      "tooltip": "A törlőtorony külső falának típusa.\n1. Téglalap: Az alapértelmezett faltípus, rögzített szélességű és magasságú téglalap.\n2. Kúp: Alul lekerekített kúp, amely segít stabilizálni a törlőtoronyt.\n3. Borda: Négy bordát ad a torony falához a nagyobb stabilitás érdekében.",
       "enum_labels": [
         "Négyzet",
         "Kúp",
-        "Rib"
+        "Borda"
       ]
+    },
+    "wiping_volumes_extruders": {
+      "label": "Kiürítési mennyiségek - betöltési/kirakodási mennyiségek",
+      "tooltip": "Ez a vektor eltárolja a törlőtornyon használt egyes szerszámokra/szerszámokról való váltáshoz szükséges mennyiségeket. Ezek az értékek az alábbi teljes kiürítési mennyiségek létrehozásának egyszerűsítésére szolgálnak."
+    },
+    "wrapping_detection_gcode": {
+      "label": "Csomósodásészlelés G-kód"
+    },
+    "wrapping_detection_layers": {
+      "label": "Csomósodásészlelési rétegek",
+      "tooltip": "Csomósodásészlelési rétegek."
+    },
+    "wrapping_exclude_area": {
+      "label": "Csomósodás kizárási területének szondázása",
+      "tooltip": "Csomósodás kizárási területének szondázása."
     },
     "xy_contour_compensation": {
       "label": "X-Y körvonal kompenzáció"
@@ -1699,9 +2781,12 @@
       "label": "X-Y furatkompenzáció"
     },
     "z_hop": {
+      "label": "Z-emelés magassága",
       "tooltip": "Visszahúzáskor a fúvóka egy kicsit megemelkedik, hogy a fúvóka és a nyomtatott tárgy között rés keletkezzen. Ez megakadályozza, hogy a fúvóka nagyobb mozgás közben a tárgynak ütközzön. A Z tengely emelésekor használt körkörös mozgás megelőzheti a szálazást."
     },
     "z_hop_types": {
+      "label": "Z-emelés típusa",
+      "tooltip": "A Z-emelés típusa.",
       "enum_labels": [
         "Auto",
         "Normál",
@@ -1712,36 +2797,63 @@
     "z_offset": {
       "label": "Z ofszet",
       "tooltip": "Ez az érték hozzáadódik (vagy kivonásra kerül) az összes Z koordinátához a kimeneti G-kódban. A Z tengely végállás pozíciójának kompenzálására szolgál: például ha a végállás nullája valójában 0,3 mm-re hagyja a fúvókát a tárgyasztal felett, akkor állítsa ezt az értéke -0,3-ra (vagy javítsa meg a végállást)."
+    },
+    "zaa_dont_alternate_fill_direction": {
+      "label": "Ne váltakozzon a töltési irány",
+      "tooltip": "A váltakozó kitöltési irány letiltása Z kontúrozás használatakor."
+    },
+    "zaa_enabled": {
+      "label": "Z kontúrozás engedélyezve",
+      "tooltip": "Z-réteg kontúrozás engedélyezése (más néven Z-réteg élsimítás)."
+    },
+    "zaa_min_z": {
+      "label": "Minimális Z magasság",
+      "tooltip": "Minimális Z-réteg magasság.\nVezérli a szeletelő síkot is."
+    },
+    "zaa_minimize_perimeter_height": {
+      "label": "Falmagasság szög minimalizálása",
+      "tooltip": "Csökkentsd a felső felület kerületének magasságát, hogy megfeleljen a modell élmagasságának.\nBefolyásolja az ennél a szögnél (foknál) kisebb lejtésű kerületeket.\nAz ésszerű érték 35. A letiltáshoz állítsd 0-ra."
     }
   },
   "ui": {
     "Acceleration": "Gyorsulás",
     "Acceleration limitation": "Gyorsulási limitek",
     "Accessory": "Tartozékok",
+    "Adaptive bed mesh": "Adaptív asztalháló",
     "Advanced": "Haladó",
     "Auxiliary part cooling fan": "Kiegészítő tárgyhűtő ventilátor",
     "Basic information": "Alapinformációk",
     "Bed temperature": "Asztalhőmérséklet",
     "Before layer change G-code": "Rétegváltás előtti G-kód",
+    "Bridging": "Hídnyomtatás",
     "Brim": "Perem",
+    "Change extrusion role G-code": "Extrudálási szerep váltása G-kód",
     "Change filament G-code": "Filament csere G-kód",
+    "Clumping Detection G-code": "Csomósodásészlelés G-kód",
+    "Compatible printers": "Kompatibilis nyomtatók",
     "Compatible process profiles": "Kompatibilis folyamatprofilok",
     "Cooling": "Hűtés",
+    "Cooling Fan": "Hűtőventilátor",
     "Cooling for specific layer": "Hűtés a megadott rétegtől",
     "Dependencies": "Függőségek",
     "Exhaust fan": "Elszívóventilátor",
+    "Extruder": "Extruder",
     "Extruder Clearance": "Extruder távolság",
     "Filament": "Filament",
     "Filament end G-code": "Filament befejező G-kód",
+    "Filament for Features": "Filament funkciókhoz",
     "Filament start G-code": "Filament kezdő G-kód",
+    "File header G-code": "Fájlfejléc G-kód",
+    "First layer speed": "Kezdőréteg sebessége",
+    "Flow ratio and Pressure Advance": "Anyagáramlási arány és nyomáskiegyenlítés",
     "Flush options": "Öblítési lehetőségek",
     "Fuzzy Skin": "Barázdált felület",
     "G-code output": "G-kód kimenet",
     "Infill": "Kitöltés",
-    "Initial layer speed": "Kezdőréteg sebessége",
     "Ironing": "Vasalás",
     "Jerk limitation": "Jerk limitek",
     "Jerk(XY)": "Jerk(XY)",
+    "Junction Deviation": "Csomóponti eltérés",
     "Layer change G-code": "Rétegváltás G-kód",
     "Layer height": "Rétegmagasság",
     "Layer height limits": "Rétegmagasság limitek",
@@ -1750,28 +2862,33 @@
     "Machine end G-code": "Gép befejező G-kód",
     "Machine start G-code": "Gép kezdő G-kód",
     "Motion ability": "Géplimitek",
+    "Multi Filament": "Több filament",
+    "Multimaterial": "Többanyagú nyomtatás",
     "Notes": "Notes",
     "Ooze prevention": "Szivárgás megelőzés",
     "Other layers speed": "Többi réteg sebessége",
     "Others": "Egyéb",
     "Overhang speed": "Sebesség túlnyúlásnál",
+    "Overhangs": "Túlnyúlások",
     "Part cooling fan": "Tárgyhűtő ventilátor",
     "Pause G-code": "Szünet G-kód",
     "Position": "Pozíció",
     "Post-processing Scripts": "Post-processing Scripts",
     "Precision": "Pontosság",
     "Prime tower": "Törlő torony",
+    "Print chamber temperature": "Nyomtatókamra hőmérséklete",
     "Print temperature": "Nyomtatási hőmérséklet",
     "Printable space": "Nyomtatási terület",
     "Printing by object G-code": "Nyomtatás objektumonként G-kód",
     "Quality": "Minőség",
     "Raft": "Tutaj",
+    "Resonance Compensation": "Rezonancia kompenzáció",
     "Retraction": "Visszahúzás",
     "Retraction when switching material": "Visszahúzás anyagváltáskor",
     "Seam": "Varrat",
     "Setting Overrides": "Beállítások felülbírálása",
     "Single extruder multi-material parameters": "Egyetlen extruder többanyagú paraméterei",
-    "Size": "Méret",
+    "Single extruder multi-material setup": "Egyextruderes többanyagú beállítás",
     "Skirt": "Szoknya",
     "Special mode": "Speciális mód",
     "Speed": "Sebesség",
@@ -1779,15 +2896,21 @@
     "Strength": "Szilárdság",
     "Support": "Támasz",
     "Support filament": "Filament a támaszhoz",
+    "Support ironing": "Támasz vasalása",
     "Template Custom G-code": "Sablon egyedi G-kód",
     "Timelapse G-code": "Timelapse G-kód",
+    "Tool change parameters with multi extruder MM printers": "Szerszámváltási paraméterek többextruderes MM nyomtatókhoz",
     "Tool change parameters with single extruder MM printers": "Szerszámváltási paraméterek egy extruderes Több Anyagos (MM) nyomtatónál",
     "Top/bottom shells": "Felső/alsó héjak",
     "Travel speed": "Mozgás sebessége",
+    "Tree supports": "Fatámaszok",
     "Volumetric speed limitation": "Volumetrikus sebességhatár",
     "Wall generator": "Falgenerátor",
     "Walls": "Falak",
+    "Walls and surfaces": "Falak és felületek",
     "Wipe tower": "Törlőtorony",
-    "Wipe tower parameters": "Törlőtorony paraméterek"
+    "Wipe tower parameters": "Törlőtorony paraméterek",
+    "Z contouring": "Z kontúrozás",
+    "Z-Hop": "Z-emelés"
   }
 }

@@ -16,6 +16,9 @@
       "label": "공기 여과 활성화",
       "tooltip": "더 나은 공기 여과를 위해 활성화하세요. G코드 명령: M106 P3 S(0-255)"
     },
+    "activate_air_filtration_during_print": {
+      "full_label": "출력 중"
+    },
     "activate_chamber_temp_control": {
       "label": "온도 제어 활성화",
       "tooltip": "자동화된 챔버 온도 제어를 위해 이 옵션을 활성화합니다. 이 옵션은 \"machine_start_gcode\" 이전에 M191 명령 내보내기를 활성화합니다.\n 챔버 온도를 설정하고 온도에 도달할 때까지 기다립니다. 또한 출력가 끝나면 챔버 히터를 끄는 M141 명령을 내보냅니다(있는 경우).\n\n이 옵션은 매크로를 통해 또는 기본적으로 M191 및 M141 명령을 지원하는 펌웨어에 의존하며 일반적으로 활성 챔버 히터가 설치된 경우 사용됩니다."
@@ -42,6 +45,9 @@
     "additional_cooling_fan_speed": {
       "label": "팬 속도",
       "tooltip": "보조 출력물 냉각팬의 속도. 냉각 레이어가 없는 것으로 정의된 처음 여러 레이어를 제외하고 출력 중에 보조 팬이 이 속도로 작동합니다.\n이 기능을 사용하려면 프린터 설정에서 보조 팬을 활성화하세요. G코드 명령: M106 P2 S(0-255)"
+    },
+    "additional_fan_full_speed_layer": {
+      "label": "팬 최대 속도 레이어"
     },
     "alternate_extra_wall": {
       "label": "대체 추가 벽",
@@ -79,6 +85,14 @@
       "label": "프로브 포인트 거리",
       "tooltip": "이 옵션은 X와 Y 방향에 대한 프로브 점(그리드 크기) 사이의 기본 거리를 설정하며 X와 Y 모두에 대한 기본값은 50mm입니다."
     },
+    "bed_temperature_formula": {
+      "label": "베드 온도 유형",
+      "tooltip": "이 옵션은 첫 번째 필라멘트의 온도 또는 출력된 필라멘트의 최고 온도에 따라 슬라이싱 중 베드 온도를 설정하는 방법을 결정합니다.",
+      "enum_labels": [
+        "By 첫 번째 필라멘트",
+        "최고 온도 기준"
+      ]
+    },
     "before_layer_change_gcode": {
       "label": "레이어 변경 전 G코드",
       "tooltip": "이 Gcode는 Z좌표를 올리기 전 모든 레이어 변경에 삽입됩니다"
@@ -101,6 +115,12 @@
       "label": "하단 표면 유량 비율",
       "tooltip": "이 요소는 바닥 솔리드 인필의 재료 양에 영향을 줍니다.\n\n사용되는 실제 바닥 솔리드 인필 압출량은 이 값에 필라멘트 압출량 비율을 곱하여 계산되며, 설정된 경우 객체의 압출량 비율을 곱합니다."
     },
+    "bottom_surface_density": {
+      "label": "하단 표면 밀도"
+    },
+    "bottom_surface_filament_id": {
+      "label": "하단 표면"
+    },
     "bottom_surface_pattern": {
       "label": "하단 표면 패턴",
       "tooltip": "브릿지 채우기가 아닌 바닥면 채우기의 선 패턴",
@@ -120,16 +140,16 @@
       "tooltip": "브릿지의 가속도. 값을 백분율 (ex. 50%)로 표시하면 외벽 가속도 기준으로 계산됩니다."
     },
     "bridge_angle": {
-      "label": "외부 브릿지 채우기 방향",
-      "tooltip": "브릿지 출력 각도 재정의. 0°으로 두면 브릿지 출력 각도가 자동으로 계산됩니다. 그렇지 않으면 제공된 각도가 외부 브릿지 출력에 사용됩니다. 0도에는 180°를 사용합니다."
+      "label": "외부 브릿지 채우기 방향"
     },
     "bridge_density": {
-      "label": "외부 브릿지 밀도",
-      "tooltip": "외부 브릿지 라인의 밀도(간격)를 제어합니다. 100%는 솔리드 브릿지를 의미합니다. 기본값은 100%입니다.\n\n밀도가 낮은 외부 브릿지는 돌출된 브릿지 주변에 공기가 순환할 수 있는 공간이 더 많아져 냉각 속도가 향상되므로 안정성을 개선하는 데 도움이 될 수 있습니다."
+      "label": "외부 브릿지 밀도"
     },
     "bridge_flow": {
-      "label": "브릿지 유량 비율",
-      "tooltip": "이 값을 약간 낮추면(예: 0.9) 브릿지의 재질 양을 줄여 처짐을 개선할 수 있습니다.\n\n실제 사용되는 브릿지 압출량은 이 값에 필라멘트 압출량 비율을 곱하여 계산되며, 설정된 경우 객체의 압출량 비율을 곱합니다."
+      "label": "브릿지 유량 비율"
+    },
+    "bridge_line_width": {
+      "label": "브릿지"
     },
     "bridge_no_support": {
       "label": "브릿지에서 지지대 사용안함",
@@ -168,6 +188,10 @@
         "사용안함"
       ]
     },
+    "brim_use_efc_outline": {
+      "label": "브림는 보상된 아웃라인을 따릅니다.",
+      "tooltip": "활성화되면 브림은 첫 번째 레이어 주변 형상과 정렬됩니다 코끼리 발 보정이 적용된 후.\n이 옵션은 코끼리 발 보상이 적용되는 경우를 위한 것입니다 첫 번째 레이어 공간을 크게 변경합니다.\n\n현재 설정이 이미 잘 작동하는 경우 활성화할 필요가 없으며 브림이 상위 레이어와 융합될 수 있습니다."
+    },
     "brim_width": {
       "label": "브림 너비",
       "tooltip": "모델과 가장 바깥쪽 브림 선까지의 거리"
@@ -184,6 +208,10 @@
     "change_filament_gcode": {
       "label": "필라멘트 교체 G코드",
       "tooltip": "이 Gcode는 툴 체인지을 유발하는 T 명령을 포함하여 필라멘트를 변경할 때 삽입됩니다"
+    },
+    "close_additional_fan_first_x_layers": {
+      "label": "첫 몇개의",
+      "tooltip": "첫 몇 개의 특정 레이어에 대해 특수 보조 냉각 팬을 설정하십시오."
     },
     "close_fan_the_first_x_layers": {
       "label": "처음에는 냉각이 적용되지 않습니다",
@@ -232,7 +260,7 @@
       "enum_labels": [
         "부드러운 쿨 플레이트",
         "엔지니어링 플레이트",
-        "부드러운 고온 플레이트",
+        "부드러운 PEI 플레이트 / 고온 플레이트",
         "텍스처 PEI 플레이트",
         "텍스처 쿨 플레이트",
         "쿨 플레이트(슈퍼택)"
@@ -252,6 +280,12 @@
     "default_jerk": {
       "label": "기본값"
     },
+    "default_nozzle_volume_type": {
+      "enum_labels": [
+        "표준",
+        "높은 흐름"
+      ]
+    },
     "default_print_profile": {
       "label": "기본 프로세스 사전설정",
       "tooltip": "이 장치 사전설정으로 전환할 때의 기본 프로세스 사전설정"
@@ -261,16 +295,10 @@
       "full_label": "후퇴 복귀 속도"
     },
     "detect_narrow_internal_solid_infill": {
-      "label": "좁은 꽉찬 내부 채우기 감지",
       "tooltip": "이 옵션은 좁은 꽉찬 내부 채우기 영역을 자동으로 감지합니다. 활성화하면 출력 속도를 높이기 위해 해당 영역에 동심 패턴이 사용됩니다. 그렇지 않으면 기본적으로 직선 패턴이 사용됩니다."
     },
     "detect_overhang_wall": {
-      "label": "돌출부 벽 감지",
       "tooltip": "선 너비에 비례하여 돌출부 백분율을 감지하고 다른 속도를 사용하여 출력합니다. 100%% 돌출부의 경우 브릿지 속도가 사용됩니다."
-    },
-    "detect_thin_wall": {
-      "label": "얇은 벽 감지",
-      "tooltip": "두개의 선 너비를 포함할 수 없는 얇은 벽을 감지합니다. 그리고 한 선으로 출력합니다. 폐쇄 루프가 아니기 때문에 출력이 잘 되지 않을 수 있습니다"
     },
     "disable_m73": {
       "label": "설정된 남은 출력 시간 비활성화",
@@ -339,6 +367,13 @@
       "label": "돌출부에서 감속",
       "tooltip": "오버행 정도에 따라 출력 속도를 낮추려면 이 옵션을 활성화합니다"
     },
+    "enable_power_loss_recovery": {
+      "enum_labels": [
+        "Printer configuration",
+        "활성화",
+        "비활성"
+      ]
+    },
     "enable_pressure_advance": {
       "label": "프레셔 어드밴스 활성화",
       "tooltip": "프레셔 어드밴스를 활성화합니다. 활성화되면 자동 보정 결과를 덮어씁니다."
@@ -350,6 +385,13 @@
     "enable_support": {
       "label": "지지대 사용",
       "tooltip": "지지대 생성을 활성화 합니다."
+    },
+    "enable_tower_interface_features": {
+      "label": "타워 인터페이스 기능 활성화"
+    },
+    "enable_wrapping_detection": {
+      "label": "뭉침 감지 활성화",
+      "tooltip": "뭉침 감지 활성화"
     },
     "eng_plate_temp": {
       "label": "다른 레이어",
@@ -405,6 +447,19 @@
     "extruder_offset": {
       "label": "압출기 옵셋"
     },
+    "extruder_printable_area": {
+      "label": "압출기 출력 가능 영역"
+    },
+    "extruder_printable_height": {
+      "label": "압출기 출력 가능 높이"
+    },
+    "extruder_type": {
+      "label": "유형",
+      "enum_labels": [
+        "직접 드라이브",
+        "보우덴"
+      ]
+    },
     "extrusion_rate_smoothing_external_perimeter_only": {
       "label": "외부 기능에만 적용",
       "tooltip": "외부 경계와 오버행에만 돌출 속도 평활화를 적용합니다. 이렇게 하면 사용자에게 보이지 않는 피처의 출력 속도에는 영향을 주지 않으면서 외부에 보이는 오버행의 급격한 속도 전환으로 인한 아티팩트를 줄일 수 있습니다."
@@ -432,9 +487,23 @@
     "fan_speedup_time": {
       "tooltip": "목표한 시작 시간보다 이 시간(소수 초를 사용할 수 있음) 일찍 팬을 시작합니다. 이 시간 추정을 위해 무한 가속을 가정하고 G1 및 G0 이동만 고려합니다(원호 맞춤은 지원되지 않음).\n사용자 정의 Gcode에서 팬 명령을 이동하지 않습니다(일종의 '장벽' 역할을 함).\n'사용자 정의 시작 Gcode만'이 활성화된 경우 팬 명령을 시작 Gcode로 이동하지 않습니다.\n비활성화하려면 0을 사용하세요."
     },
+    "filament_adaptive_volumetric_speed": {
+      "label": "적응형 볼륨 속도"
+    },
+    "filament_adhesiveness_category": {
+      "label": "접착력 카테고리"
+    },
+    "filament_change_length": {
+      "label": "필라멘트 충돌 길이",
+      "tooltip": "압출기를 교체할 때는 원래 압출기에서 일정 길이의 필라멘트를 압출하는 것이 좋습니다. 이렇게 하면 노즐 흘러내림을 최소화할 수 있습니다."
+    },
     "filament_colour": {
       "label": "색상",
       "tooltip": "UI의 시각적 도움말로만 사용됨"
+    },
+    "filament_cooling_before_tower": {
+      "label": "와이프 타워 냉각",
+      "tooltip": "필라멘트 타워 진입 전 온도 강하"
     },
     "filament_cooling_final_speed": {
       "label": "마지막 냉각 이동 속도",
@@ -472,6 +541,24 @@
       "label": "유량 비율",
       "tooltip": "재료는 용융 상태와 결정 상태 사이를 전환한 후 부피 변화가 있을 수 있습니다. 이 설정은 이 필라멘트 코드의 모든 압출 압출량을 비례적으로 변경합니다. 권장 값 범위는 0.95와 1.05 사이입니다. 약간의 과대압출 또는 과소압출이 있을 때 이 값을 조정하여 평평한 표면을 얻을 수 있습니다"
     },
+    "filament_flush_temp": {
+      "label": "플러시 온도"
+    },
+    "filament_flush_volumetric_speed": {
+      "label": "플러시 체적 속도"
+    },
+    "filament_ironing_flow": {
+      "label": "다림질 유량"
+    },
+    "filament_ironing_inset": {
+      "label": "다림질 삽입"
+    },
+    "filament_ironing_spacing": {
+      "label": "다림질 선 간격"
+    },
+    "filament_ironing_speed": {
+      "label": "다림질 속도"
+    },
     "filament_is_support": {
       "label": "지지대 재료",
       "tooltip": "서포트 재료는 일반적으로 서포트 및 서포트 접점을 출력하는 데 사용됩니다"
@@ -487,6 +574,17 @@
     "filament_long_retractions_when_cut": {
       "label": "절단 시 긴 후퇴(실험적)",
       "tooltip": "실험적 기능. 퍼지를 최소화하기 위해 변경하는 동안 더 먼 거리에서 필라멘트를 집어넣고 절단합니다. 이렇게 하면 플러시가 크게 줄어들지만 노즐 막힘이나 기타 출력 문제가 발생할 위험이 높아질 수도 있습니다."
+    },
+    "filament_map": {
+      "label": "압출기에 대한 필라멘트 맵"
+    },
+    "filament_map_mode": {
+      "enum_labels": [
+        "자동 플러시",
+        "자동 경기",
+        "수동",
+        "기본값"
+      ]
     },
     "filament_max_volumetric_speed": {
       "label": "최대 체적 속도",
@@ -511,6 +609,9 @@
     "filament_notes": {
       "label": "필라멘트 메모",
       "tooltip": "여기에 필라멘트에 관한 메모를 할 수 있습니다."
+    },
+    "filament_printable": {
+      "label": "필라멘트 출력 가능"
     },
     "filament_ramming_parameters": {
       "label": "래밍 매개변수",
@@ -563,8 +664,7 @@
       "full_label": "후퇴 속도"
     },
     "filament_shrink": {
-      "label": "수축(XY)",
-      "tooltip": "냉각 후 필라멘트가 얻게 될 수축률을 입력합니다(100mm 대신 94mm를 측정하는 경우 94%). 출력물은 xy 방향으로 보정됩니다. 외벽에 사용되는 필라멘트에만 적용됩니다.\n이 보정은 확인 후 수행되므로 개체 사이에 충분한 공간을 허용해야 합니다."
+      "label": "수축(XY)"
     },
     "filament_shrinkage_compensation_z": {
       "label": "수축(Z)",
@@ -589,6 +689,26 @@
     "filament_toolchange_delay": {
       "label": "빼기 후 지연",
       "tooltip": "필라멘트를 뺀 후 기다리는 시간입니다. 원래 치수로 축소되는 데 더 많은 시간이 필요할 수 있는 유연한 재료 사용 시 안정적으로 툴 체인지를 할 수 있게 도움이 될 수 있습니다."
+    },
+    "filament_tower_interface_pre_extrusion_dist": {
+      "label": "인터페이스 레이어 사전 압출 거리",
+      "tooltip": "프라임 타워 인터페이스 레이어(서로 다른 재료가 만나는 부분)의  사전 압출 거리."
+    },
+    "filament_tower_interface_pre_extrusion_length": {
+      "label": "인터페이스 레이어 사전 압출 길이",
+      "tooltip": "프라임 타워 인터페이스 레이어(서로 다른 재료가 만나는 부분)의 사전 압출 길이."
+    },
+    "filament_tower_interface_print_temp": {
+      "label": "인터페이스 레이어 출력 온도",
+      "tooltip": "서로 다른 재료가 만나는 프라임 타워 인터페이스 층의 출력 온도입니다. -1로 설정하면 권장 최대 노즐 온도를 사용합니다."
+    },
+    "filament_tower_interface_purge_volume": {
+      "label": "인터페이스 레이어 퍼지 길이",
+      "tooltip": "프라임 타워 인터페이스 레이어(서로 다른 재료가 만나는 부분)의 퍼지 길이."
+    },
+    "filament_tower_ironing_area": {
+      "label": "타워 다림질 영역",
+      "tooltip": "프라임 타워 인터페이스 레이어(서로 다른 재료가 만나는 부분)의 다림질 영역."
     },
     "filament_type": {
       "label": "유형",
@@ -631,6 +751,9 @@
       "label": "파일 이름 형식",
       "tooltip": "사용자가 내보낼 파일 이름을 자체 정의할 수 있습니다"
     },
+    "fill_multiline": {
+      "tooltip": "채우기 패턴에서 지원되는 경우 채우기 패턴에 여러 줄을 사용합니다."
+    },
     "filter_out_gap_fill": {
       "label": "작은 간격 필터링",
       "tooltip": "지정된 임계값(mm 단위)보다 길이가 작은 간격 채우기를 출력하지 마십시오. 이 설정은 상단, 하단 및 솔리드 채우기에 적용되며, 클래식 주변 생성기를 사용하는 경우 벽 간격 채우기에 적용됩니다."
@@ -644,6 +767,9 @@
         "자동",
         "사용자 정의"
       ]
+    },
+    "first_x_layer_fan_speed": {
+      "label": "팬 속도"
     },
     "flush_into_infill": {
       "label": "개체의 채우기에서 버리기",
@@ -675,10 +801,12 @@
       "label": "퍼지 스킨",
       "tooltip": "벽을 출력하는 동안 무작위로 지터가 발생하여 표면이 거칠게 보입니다. 이 설정은 퍼지 위치를 제어합니다",
       "enum_labels": [
-        "없음",
+        "도색만",
         "윤곽",
+        "구멍",
         "윤곽 및 구멍",
-        "모든 벽"
+        "모든 벽",
+        "비활성"
       ]
     },
     "fuzzy_skin_first_layer": {
@@ -686,21 +814,22 @@
       "tooltip": "첫 번째 레이어에 퍼지 스킨을 적용할지 여부"
     },
     "fuzzy_skin_mode": {
+      "label": "솜털 스킨 생성기 모드",
       "enum_labels": [
-        "Displacement",
-        "Extrusion",
+        "배수량",
+        "압출",
         "결합"
       ]
     },
     "fuzzy_skin_noise_type": {
       "label": "퍼지 스킨 노이즈 유형",
-      "tooltip": "흐릿한 피부 생성에 사용할 노이즈 유형입니다.\n클래식: 클래식 균일 랜덤 노이즈.\n펄린: 펄린 노이즈: 보다 일관된 텍스처를 제공하는 펄린 노이즈입니다.\n빌로우: 펄린 노이즈와 비슷하지만 더 뭉툭합니다.\n리지드 멀티프랙탈: 날카롭고 들쭉날쭉한 특징을 가진 리지드 노이즈입니다. 대리석과 같은 텍스처를 만듭니다.\n보로노이: 보로노이: 표면을 보로노이 셀로 나누고 각 셀을 임의의 양만큼 이동시킵니다. 패치워크 텍스처를 만듭니다.",
       "enum_labels": [
         "클래식",
         "펄린",
         "빌로우",
         "리지드 멀티프랙탈",
-        "보로노이"
+        "보로노이",
+        "Ripple"
       ]
     },
     "fuzzy_skin_octaves": {
@@ -751,12 +880,16 @@
         "Marlin(legacy)",
         "Klipper",
         "RepRapFirmware",
+        "Repetier",
         "Marlin 2"
       ]
     },
     "gcode_label_objects": {
       "label": "개체 이름표",
       "tooltip": "이 옵션을 선택하면 Gcode 출력시 이동에 설명을 추가할 수 있습니다. 이는 Octoprint CancelObject 플러그인에 유용합니다.\n이 설정은 단일 압출기 다중 재료 설정 및 객체에서 노즐 청소 / 채우기에서 노즐 청소와 호환되지 않습니다."
+    },
+    "grab_length": {
+      "label": "그랩 길이"
     },
     "high_current_on_filament_swap": {
       "label": "필라멘트 교체 시 높은 압출기 전류",
@@ -778,10 +911,9 @@
       "label": "호스트 유형",
       "tooltip": "ElegooSlicer은 G코드 파일을 프린터 호스트에 업로드할 수 있습니다. 이 필드는 호스트의 종류를 포함해야 합니다.",
       "enum_labels": [
-        "ElegooLink",
-        "OctoPrint",
         "PrusaLink",
         "PrusaConnect",
+        "OctoPrint",
         "Duet",
         "FlashAir",
         "AstroBox",
@@ -791,7 +923,10 @@
         "CrealityPrint",
         "Obico",
         "Flashforge",
-        "SimplyPrint"
+        "SimplyPrint",
+        "Elegoo Link",
+        "3DPrinterOS",
+        "Moonraker (Klipper)"
       ]
     },
     "hot_plate_temp": {
@@ -809,7 +944,8 @@
       "tooltip": "도구가 현재 다중 도구 설정에서 사용되지 않을 때의 노즐 온도. 이는 출력 설정에서 '흘러내림 방지'가 활성화된 경우에만 사용됩니다. 비활성화하려면 0으로 설정합니다."
     },
     "independent_support_layer_height": {
-      "label": "독립적 지지대 레이어 높이"
+      "label": "독립적 지지대 레이어 높이",
+      "tooltip": "서포트 레이어는 객체 레이어와 독립적인 레이어 높이를 사용합니다. 이것은 Z 거리 사용자 정의를 지원하고 출력 시간을 절약하기 위한 것입니다. 프라임 타워가 활성화되면 이 옵션은 유효하지 않습니다."
     },
     "infill_anchor": {
       "label": "드문 채우기 고정점 길이"
@@ -832,6 +968,14 @@
     "infill_jerk": {
       "label": "채우기",
       "tooltip": "채우기 저크"
+    },
+    "infill_lock_depth": {
+      "label": "채우기 잠금 깊이",
+      "tooltip": "매개변수는 내부와 표면 사이의 겹치는 깊이를 설정합니다."
+    },
+    "infill_shift_step": {
+      "label": "인필 시프트 단계",
+      "tooltip": "이 파라미터는 각 인필 레이어에 약간의 변위를 추가하여 교차 텍스처를 만듭니다."
     },
     "infill_wall_overlap": {
       "label": "채우기/벽 겹치기",
@@ -862,8 +1006,7 @@
       "tooltip": "첫 번째 레이어에 사용되는 최소 벽 너비는 노즐과 동일한 크기로 설정하는 것이 좋습니다. 이러한 조정을 통해 접착력이 향상될 수 있습니다."
     },
     "initial_layer_print_height": {
-      "label": "초기 레이어 높이",
-      "tooltip": "초기 레이어의 높이입니다. 초기 레이어 높이를 약간 두껍게 하면 빌드 플레이트 접착력을 향상시킬 수 있습니다"
+      "label": "초기 레이어 높이"
     },
     "initial_layer_speed": {
       "label": "초기 레이어",
@@ -888,6 +1031,35 @@
     "inner_wall_speed": {
       "label": "내벽",
       "tooltip": "내벽 속도"
+    },
+    "input_shaping_damp_x": {
+      "label": "X"
+    },
+    "input_shaping_damp_y": {
+      "label": "Y"
+    },
+    "input_shaping_freq_x": {
+      "label": "X"
+    },
+    "input_shaping_freq_y": {
+      "label": "Y"
+    },
+    "input_shaping_type": {
+      "enum_labels": [
+        "기본값",
+        "MZV",
+        "ZV",
+        "ZVD",
+        "ZVDD",
+        "ZVDDD",
+        "EI",
+        "EI2",
+        "2HUMP_EI",
+        "EI3",
+        "3HUMP_EI",
+        "DAA",
+        "비활성"
+      ]
     },
     "interface_shells": {
       "label": "접점 쉘",
@@ -918,24 +1090,24 @@
       "tooltip": "인터로킹 빔의 배치 방향."
     },
     "internal_bridge_angle": {
-      "label": "내부 브릿지 채우기 방향",
-      "tooltip": "내부 브릿지 각도 오버라이드. 0으로 두면 브릿지 각도가 자동으로 계산됩니다. 그렇지 않으면 제공된 각도가 내부 브릿지에 사용됩니다. 0 각도는 180°를 사용합니다.\n\n특정 모델이 필요하지 않는 한 0으로 두는 것이 좋습니다."
+      "label": "내부 브릿지 채우기 방향"
     },
     "internal_bridge_density": {
-      "label": "내부 브릿지 밀도",
-      "tooltip": "내부 브릿지 라인의 밀도(간격)를 제어합니다. 100%는 솔리드 브릿지를 의미합니다. 기본값은 100%입니다.\n\n 내부 브릿지의 밀도가 낮으면 돌출된 브릿지 주변에 공기가 순환할 수 있는 공간이 더 많아져 냉각 속도가 향상되므로 상단 표면 필링을 줄이고 내부 브릿지 안정성을 개선하는 데 도움이 됩니다.\n\n이 옵션은 특히 두 번째 내부 브릿지 오버 인필 옵션과 함께 사용하면 솔리드 인필이 압출되기 전에 내부 브릿지 구조를 더욱 개선할 수 있습니다."
+      "label": "내부 브릿지 밀도"
     },
     "internal_bridge_fan_speed": {
       "label": "내부 브릿지 팬 속도",
       "tooltip": "모든 내부 브릿지에 사용되는 부품 냉각 팬 속도입니다. 오버행 팬 속도 설정을 대신 사용하려면 -1로 설정합니다.\n\n내부 브릿지 팬 속도를 일반 팬 속도보다 낮추면 넓은 표면에 장시간 과도한 냉각이 가해져 파트가 뒤틀리는 현상을 줄일 수 있습니다."
     },
     "internal_bridge_flow": {
-      "label": "내부 브릿지 유량 비율",
-      "tooltip": "이 값은 내부 브릿지 레이어의 두께를 결정합니다. 이 레이어는 스파스 인필 위에 있는 첫 번째 레이어입니다. 이 값을 약간 낮추면(예: 0.9) 스파스 인필에 대한 표면 품질을 향상시킬 수 있습니다.\n\n사용되는 실제 내부 브릿지 흐름은 이 값에 브릿지 흐름 비율, 필라멘트 흐름 비율, 설정된 경우 오브젝트의 흐름 비율을 곱하여 계산됩니다."
+      "label": "내부 브릿지 유량 비율"
     },
     "internal_bridge_speed": {
       "label": "내부",
       "tooltip": "내부 브릿지의 속도. 값을 백분율로 표현하면 bridge_speed를 기준으로 계산됩니다. 기본값은 150%입니다."
+    },
+    "internal_solid_filament_id": {
+      "label": "꽉찬 내부 채우기"
     },
     "internal_solid_infill_acceleration": {
       "label": "꽉찬 내부 채우기",
@@ -963,9 +1135,8 @@
       "label": "꽉찬 내부 채우기",
       "tooltip": "상단 및 하단 표면을 제외한 꽉찬 내부 채우기 속도"
     },
-    "ironing_angle": {
-      "label": "다림질 각도",
-      "tooltip": "다림질이 해당 각도에서 실행됩니다. 음수는 이 기능을 비활성화하고 기본값을 사용합니다."
+    "ironing_fan_speed": {
+      "label": "다림질 속도"
     },
     "ironing_flow": {
       "label": "다림질 유량",
@@ -998,7 +1169,7 @@
         "사용안함",
         "상단 표면",
         "최상단 표면",
-        "모든 꽉찬 레이어"
+        "All solid layers"
       ]
     },
     "is_infill_first": {
@@ -1028,6 +1199,9 @@
     "long_retractions_when_cut": {
       "label": "절단 시 긴 후퇴(실험적)",
       "tooltip": "실험적 기능. 퍼지를 최소화하기 위해 변경하는 동안 더 먼 거리에서 필라멘트를 집어넣고 절단합니다. 이렇게 하면 플러시가 크게 줄어들지만 노즐 막힘이나 기타 출력 문제가 발생할 위험이 높아질 수도 있습니다."
+    },
+    "long_retractions_when_ec": {
+      "label": "압출기 교체 시 긴 수축"
     },
     "machine_end_gcode": {
       "label": "종료 G코드",
@@ -1181,8 +1355,7 @@
       "tooltip": "상단 표면을 출력해야 하고 부분적으로 다른 레이어로 덮여 있는 경우 너비가 이 값 미만인 상단 레이어에서는 고려되지 않습니다. 이는 둘레로만 덮여야 하는 표면에서 '상단 둘레 하나'가 발동되지 않도록 하는 데 유용할 수 있습니다. 이 값은 압출 너비의 mm 또는 % o로 설정됩니다.\n경고: 활성화된 경우, 의도치 않은 형상이 생성되는건 다음 레이어에 문자와 같은 일부 얇은 형상이 있기 때문입니다. 이러한 형상을 제거하려면 이 값을 0으로 설정하세요."
     },
     "minimum_sparse_infill_area": {
-      "label": "최소 드문 채우기 임계값",
-      "tooltip": "임계값보다 작은 드문 채우기 영역은 꽉찬 내부 채우기로 대체됩니다"
+      "label": "최소 드문 채우기 임계값"
     },
     "mmu_segmented_region_interlocking_depth": {
       "label": "분할된 영역의 연동 깊이",
@@ -1231,12 +1404,19 @@
         "알 수 없음",
         "경화강 노즐",
         "스테인레스강 노즐",
+        "텅스텐 카바이드",
         "황동 노즐"
       ]
     },
     "nozzle_volume": {
       "label": "노즐 부피",
       "tooltip": "커터와 노즐 끝단 사이의 노즐 부피"
+    },
+    "nozzle_volume_type": {
+      "enum_labels": [
+        "표준",
+        "높은 흐름"
+      ]
     },
     "only_one_wall_first_layer": {
       "label": "하단 표면에 단일 벽 생성",
@@ -1331,10 +1511,11 @@
     },
     "precise_z_height": {
       "label": "정확한 Z 높이",
-      "tooltip": "슬라이싱 후 객체의 정확한 z 높이를 얻으려면 이 옵션을 활성화하세요. 마지막 몇 레이어의 레이어 높이를 미세 조정하여 정확한 개체 높이를 얻습니다. 이는 실험적인 매개변수입니다."
+      "tooltip": "슬라이싱 후 객체의 정확한 z 높이를 얻으려면 이 옵션을 활성화하세요. 마지막 몇 레이어의 레이어 높이를 미세 조정하여 정확한 객체 높이를 얻습니다. 이는 실험적인 매개변수입니다."
     },
     "preferred_orientation": {
-      "label": "선호하는 방향"
+      "label": "선호하는 방향",
+      "tooltip": "최초 임포트 시 Z축에서 자동으로 스톨 방향 지정"
     },
     "preheat_steps": {
       "label": "예열 단계",
@@ -1353,7 +1534,18 @@
       "tooltip": "프레셔 어드밴스(Klipper) / 리니어 어드밴스(Marlin)"
     },
     "prime_tower_brim_width": {
-      "label": "브림 너비"
+      "label": "브림 너비",
+      "tooltip": "프라임 타워의 테두리 너비, 음수는 프라임 타워 높이에 따라 자동으로 계산된 너비를 의미합니다."
+    },
+    "prime_tower_enable_framework": {
+      "label": "내부 갈비",
+      "tooltip": "프라임 타워의 안정성을 높이기 위해 내부 리브를 활성화합니다."
+    },
+    "prime_tower_infill_gap": {
+      "label": "인필 갭"
+    },
+    "prime_tower_skip_points": {
+      "label": "포인트 건너뛰기"
     },
     "prime_tower_width": {
       "label": "너비",
@@ -1462,7 +1654,7 @@
     },
     "raft_contact_distance": {
       "label": "라프트 접점 Z 거리",
-      "tooltip": "객체와 라프트 사이의 Z 거리. 가용성 재료의 접점은 무시됨"
+      "tooltip": "래프트와 객체 사이의 Z 간격. 서포트 상단 Z 거리가 0이면 이 값은 무시되고 객체는 래프트에 직접 접촉하여 출력됩니다(간격 없음)."
     },
     "raft_expansion": {
       "label": "라프트 확장",
@@ -1489,8 +1681,7 @@
       "tooltip": "이 설정을 활성화하면 출력물 냉각 팬이 정지되지 않으며 팬을 최소 속도로 가동하여 시동 및 정지 빈도를 줄입니다"
     },
     "reduce_infill_retraction": {
-      "label": "채우기 후퇴 감소",
-      "tooltip": "이동 구간이 채우기 영역에 있을 때 수축하지 마십시오. 즉, 스며드는 것을 볼 수 없습니다. 이는 복잡한 모델의 후퇴 시간을 줄이고 출력 시간을 절약할 수 있지만 슬라이싱 및 Gcode 생성 속도를 느리게 만듭니다"
+      "label": "채우기 후퇴 감소"
     },
     "required_nozzle_HRC": {
       "label": "필수 노즐 록웰 경도",
@@ -1540,6 +1731,9 @@
     "retraction_distances_when_cut": {
       "label": "절단 시 후퇴 거리",
       "tooltip": "실험적 기능. 필라멘트 교체 시 절단 전 후퇴 길이."
+    },
+    "retraction_distances_when_ec": {
+      "label": "압출기 교체 시 수축 거리"
     },
     "retraction_length": {
       "label": "길이",
@@ -1637,6 +1831,24 @@
       "label": "모든 활성화된 압출기 프라이밍",
       "tooltip": "활성화되면 모든 활성화된 압출기는 출력 시작 시 출력 베드의 앞쪽 가장자리에서 프라이밍합니다."
     },
+    "skeleton_infill_density": {
+      "label": "골격 채우기 밀도"
+    },
+    "skeleton_infill_line_width": {
+      "label": "골격 선 폭",
+      "tooltip": "선택한 골격 경로의 선 폭를 조정합니다."
+    },
+    "skin_infill_density": {
+      "label": "표면 채우기 밀도"
+    },
+    "skin_infill_depth": {
+      "label": "표면 채우기 깊이",
+      "tooltip": "매개변수는 표면의 깊이를 설정합니다."
+    },
+    "skin_infill_line_width": {
+      "label": "표면 선 폭",
+      "tooltip": "선택한 표면 경로의 선 폭를 조정합니다."
+    },
     "skirt_distance": {
       "label": "스커트 거리",
       "tooltip": "스커트와 브림 또는 객체와의 거리"
@@ -1719,10 +1931,6 @@
       "label": "꽉찬 채우기 방향",
       "tooltip": "선의 시작 또는 기본 방향을 제어하는 솔리드 채우기 패턴의 각도"
     },
-    "solid_infill_filament": {
-      "label": "솔리드 채우기",
-      "tooltip": "솔리드 인필을 출력하는 필라멘트"
-    },
     "sparse_infill_acceleration": {
       "label": "드문 채우기",
       "tooltip": "드문 채우기 가속도. 값이 백분율 (예. 100%)로 표시되면 기본 가속도를 기준으로 계산됩니다."
@@ -1731,9 +1939,8 @@
       "label": "드문 채우기 밀도",
       "tooltip": "내부 드문 채우기의 밀도, 100%는 모든 드문 채우기를 꽉찬 내부 채우기로 변경하고 채우기에는 패턴이 사용됩니다"
     },
-    "sparse_infill_filament": {
-      "label": "채우기",
-      "tooltip": "내부 드문 채우기를 출력할 필라멘트."
+    "sparse_infill_filament_id": {
+      "label": "채우기"
     },
     "sparse_infill_line_width": {
       "label": "드문 채우기",
@@ -1745,9 +1952,9 @@
       "enum_labels": [
         "직선",
         "정렬된 직선",
-        "Zig Zag",
-        "Cross Zag",
-        "Locked Zag",
+        "지그재그",
+        "크로스 재그",
+        "잠긴 재그",
         "선",
         "격자",
         "삼각형",
@@ -1780,7 +1987,8 @@
       "tooltip": "나선형을 끝내는 동안 마무리 압출량을 설정합니다. 일반적으로 나선형 전환은 마지막 루프 동안 압출량 비율을 100% 에서 0% 로 스케일링하므로 경우에 따라 나선형 끝에서 압출이 미달될 수 있습니다."
     },
     "spiral_mode": {
-      "label": "나선형 꽃병 모드"
+      "label": "나선형 꽃병 모드",
+      "tooltip": "나선형은 외부 윤곽선의 z 이동을 부드럽게 합니다. 그리고 객체를 꽉찬 하단 레이어가 있는 단일 벽으로 출력합니다. 최종 생성된 출력물에는 재봉선가 없습니다"
     },
     "spiral_mode_max_xy_smoothing": {
       "label": "최대 XY 스무딩",
@@ -1825,7 +2033,6 @@
     },
     "support_base_pattern": {
       "label": "기본 패턴",
-      "tooltip": "서포트 기본 패턴",
       "enum_labels": [
         "기본값",
         "직선",
@@ -1845,7 +2052,7 @@
     },
     "support_bottom_z_distance": {
       "label": "하단 Z 거리",
-      "tooltip": "서포트 하단과 객체 접점의 간격"
+      "tooltip": "객체와 서포트 하단 사이의 Z 간격. 서포트 상단 Z 거리가 0이고 하단에 인터페이스 레이어가 있으면 이 값은 무시되고 서포트가 객체에 직접 접촉하여 출력됩니다(간격 없음)."
     },
     "support_chamber_temp_control": {
       "label": "챔버 온도 제어 지원",
@@ -1860,16 +2067,14 @@
       "tooltip": "일반 서포트의 수평 범위를 확대(+) 또는 축소(-)합니다"
     },
     "support_filament": {
-      "label": "지지대/라프트 기본",
-      "tooltip": "기본 서포트 및 라프트를 출력하기 위한 필라멘트. \"기본값\"은 지원을 위한 특정 필라멘트가 없으며 현재 필라멘트가 사용됨을 의미합니다"
+      "label": "지지대/라프트 기본"
     },
     "support_interface_bottom_layers": {
       "label": "하단 접점 레이어",
       "tooltip": "하단 인터페이스 레이어 수"
     },
     "support_interface_filament": {
-      "label": "지지대/라프트 접점",
-      "tooltip": "서포트 및 라프트 접점을 출력하기 위한 필라멘트. \"기본값\"은 지원을 위한 특정 필라멘트가 없으며 현재 필라멘트가 사용됨을 의미합니다"
+      "label": "지지대/라프트 접점"
     },
     "support_interface_loop_pattern": {
       "label": "접점에서 루프 패턴 사용",
@@ -1928,16 +2133,12 @@
       "tooltip": "첫 번째 레이어에서 객체와 서포트 사이의 XY 분리."
     },
     "support_object_xy_distance": {
-      "label": "지지대/개체 XY 거리",
+      "label": "서포트/객체 XY 거리",
       "tooltip": "객체와 서포트를 분리하는 XY 간격"
     },
     "support_on_build_plate_only": {
       "label": "빌드 플레이트에만 생성",
       "tooltip": "모델 표면에 서포트를 생성하지 않고 빌드 플레이트에만 생성합니다"
-    },
-    "support_remove_small_overhang": {
-      "label": "작은 돌출부 지지대 제거",
-      "tooltip": "지지대가 필요하지 않은 작은 돌출부에서 지지대를 제거합니다."
     },
     "support_speed": {
       "label": "지지대",
@@ -1958,7 +2159,7 @@
     },
     "support_threshold_angle": {
       "label": "임계값 각도",
-      "tooltip": "경사각이 임계값 미만인 돌출부에 지지대가 생성됩니다."
+      "tooltip": "기울기 각도가 임계값보다 작은 오버행에 대해 서포트가 생성됩니다.이 값이 작을수록 서포트 없이 출력할 수 있는 오버행이 더 가파릅니다.\n참고: 0으로 설정하면 일반 서포트는 대신 임계값 중복을 사용하고, 트리 서포트는 기본값 30으로 돌아갑니다."
     },
     "support_threshold_overlap": {
       "label": "임계값 중복",
@@ -1966,7 +2167,7 @@
     },
     "support_top_z_distance": {
       "label": "상단 Z 거리",
-      "tooltip": "서포트 상단과 객체 접점의 간격"
+      "tooltip": "서포트 상단과 객체 사이의 Z 간격."
     },
     "support_type": {
       "label": "유형",
@@ -2007,12 +2208,10 @@
       "tooltip": "초기 레이어의 베드 온도. 값 0은 필라멘트가 텍스처 PEI 플레이트 출력을 지원하지 않음을 의미합니다."
     },
     "thick_bridges": {
-      "label": "두꺼운 외부 브릿지",
-      "tooltip": "활성화하면 브릿지는 더 견고해지고 더 먼 거리를 생성할 수 있지만 나빠 보일 수 있습니다. 비활성화하면 브릿지가 더 좋아 보이지만 짧은 브릿지 거리에 대해서만 안정적입니다."
+      "label": "두꺼운 외부 브릿지"
     },
     "thick_internal_bridges": {
-      "label": "두꺼운 내부 브릿지",
-      "tooltip": "활성화되면 두꺼운 내부 브릿지가 사용됩니다. 일반적으로 다음을 권장합니다.이 기능을 켜두세요. 하지만 다음과 같은 경우에는 끄는 것을 고려해 보세요.큰 노즐을 사용합니다."
+      "label": "두꺼운 내부 브릿지"
     },
     "thumbnails": {
       "label": "G코드 미리보기",
@@ -2066,6 +2265,12 @@
       "label": "상단 표면",
       "tooltip": "상단 표면 가속도. 낮은 값을 사용하면 상단 표면 품질이 향상될 수 있습니다"
     },
+    "top_surface_density": {
+      "label": "상단 표면 밀도"
+    },
+    "top_surface_filament_id": {
+      "label": "상단 표면"
+    },
     "top_surface_jerk": {
       "label": "상단 표면",
       "tooltip": "상단 표면 저크"
@@ -2107,9 +2312,6 @@
     "travel_speed": {
       "label": "이동",
       "tooltip": "압출이 없을 때의 이동 속도"
-    },
-    "tree_support_adaptive_layer_height": {
-      "label": "적응형 레이어 높이"
     },
     "tree_support_angle_slow": {
       "label": "선호 가지 각도",
@@ -2178,11 +2380,12 @@
       "label": "상대적 E 거리 사용",
       "tooltip": "\"label_objects\" 옵션을 사용할 때는 상대 압출을 권장합니다. 일부 압출기는 이 옵션을 선택하지 않은 경우(절대 압출 모드) 더 잘 작동합니다. 와이프 타워는 상대 모드와만 호환됩니다. 대부분의 프린터에 권장됩니다. 기본값이 선택되어 있습니다"
     },
+    "volumetric_speed_coefficients": {
+      "label": "최대 체적 속도 다항 계수"
+    },
     "wall_direction": {
       "label": "벽 루프 방향",
-      "tooltip": "위에서 아래를 내려다볼 때 벽 루프가 돌출되는 방향입니다.\n\n기본적으로 짝수에 반전이 활성화되지 않은 한 모든 벽은 시계 반대 방향으로 돌출됩니다. Auto 이외의 옵션으로 설정하면 짝수에 반전 관계없이 벽 방향이 강제됩니다.\n\n나선형 꽃병 모드가 활성화된 경우 이 옵션은 비활성화됩니다.",
       "enum_labels": [
-        "자동",
         "시계 반대 방향",
         "시계방향"
       ]
@@ -2190,10 +2393,6 @@
     "wall_distribution_count": {
       "label": "벽 분포 수",
       "tooltip": "변환을 분산해야 하는 벽의 개수(중심에서 카운트)입니다. 값이 낮으면 외벽의 너비가 변경되지 않습니다"
-    },
-    "wall_filament": {
-      "label": "벽",
-      "tooltip": "벽을 출력하는 필라멘트"
     },
     "wall_generator": {
       "label": "벽 생성기",
@@ -2209,6 +2408,7 @@
     },
     "wall_sequence": {
       "label": "벽 출력 순서",
+      "tooltip": "내벽 및 외벽의 출력 순서를 지정합니다.\n\n오버행을 가장 잘 출력하려면 내부/외부를 사용합니다. 이는 돌출된 벽이 출력하는 동안 인접한 경계에 부착될 수 있기 때문입니다. 그러나 이 옵션을 사용하면 외부 경계가 내부 경계에 눌려 변형되므로 표면 품질이 약간 저하됩니다.\n\n내부/외부/내부를 사용하면 외부 벽이 내부 경계에서 방해받지 않고 출력되므로 최상의 외부 표면 마감과 치수 정확도를 얻을 수 있습니다. 그러나 외부 벽을 출력할 내부 경계가 없으므로 오버행 성능이 저하됩니다. 이 옵션은 세 번째 경계부터 내부 벽을 먼저 출력한 다음 외부 경계, 마지막으로 첫 번째 내부 경계를 출력하므로 최소 3개 이상의 벽이 있어야 효과적입니다. 이 옵션은 대부분의 경우 외부/내부 옵션보다 권장됩니다.\n\n내부/외부/내부 옵션과 동일한 외벽 품질 및 치수 정확도 이점을 얻으려면 외부/내부를 사용하세요. 그러나 새 레이어의 첫 번째 돌출이 보이는 표면에서 시작되므로 Z 심이 덜 일관되게 나타납니다.",
       "enum_labels": [
         "내벽/외벽",
         "외벽/내벽",
@@ -2258,6 +2458,9 @@
       "label": "퍼지를 위한 추가 흐름",
       "tooltip": "와이프 타워의 퍼지 라인에 추가 흐름이 사용됩니다. 이렇게 하면 퍼지 라인이 평소보다 두껍거나 좁아집니다. 간격은 자동으로 조정됩니다."
     },
+    "wipe_tower_extra_rib_length": {
+      "label": "추가 리브 길이"
+    },
     "wipe_tower_extra_spacing": {
       "label": "닦기 타워 청소 선 간격",
       "tooltip": "닦기 타워의 청소 선 간격입니다."
@@ -2265,6 +2468,9 @@
     "wipe_tower_filament": {
       "label": "닦기 타워",
       "tooltip": "닦기 타워의 둘레를 출력할 때 사용하는 압출기입니다. 사용 가능한 압출기를 사용하려면 0으로 설정하세요(비가용성 재료가 적절함)."
+    },
+    "wipe_tower_fillet_wall": {
+      "label": "필렛 벽"
     },
     "wipe_tower_max_purge_speed": {
       "label": "최대 와이프 타워 인쇄 속도",
@@ -2274,9 +2480,20 @@
       "label": "희소 레이어 없음(베타)",
       "tooltip": "활성화되면 툴 체인지 없이 레이어에 프라임 타워가 출력되지 않습니다. 툴 체인지가 있는 레이어에서는 압출기가 아래쪽으로 이동하여 프라임 타워를 출력합니다. 출력물과의 충돌이 없는지 확인하는 것은 사용자의 책임입니다."
     },
+    "wipe_tower_rib_width": {
+      "label": "리브 너비",
+      "tooltip": "리브 너비는 항상 프라임 타워 변 길이의 절반 미만입니다."
+    },
     "wipe_tower_rotation_angle": {
       "label": "닦기 타워 회전 각도",
       "tooltip": "X축 기준의 프라임 타워 회전 각도."
+    },
+    "wipe_tower_type": {
+      "label": "와이프 타워 유형",
+      "enum_labels": [
+        "유형 1",
+        "유형 2"
+      ]
     },
     "wipe_tower_wall_type": {
       "enum_labels": [
@@ -2288,6 +2505,17 @@
     "wiping_volumes_extruders": {
       "label": "제거 부피 - 넣기/빼기 부피",
       "tooltip": "이 벡터는 닦기 타워에서 사용되는 각 툴을 교체하는 데 필요한 부피을 저장합니다. 이러한 값은 아래의 전체 청소 부피 생성을 단순화하는 데 사용됩니다."
+    },
+    "wrapping_detection_gcode": {
+      "label": "뭉침 감지 G-code"
+    },
+    "wrapping_detection_layers": {
+      "label": "뭉침 감지 레이어",
+      "tooltip": "뭉침 감지 레이어."
+    },
+    "wrapping_exclude_area": {
+      "label": "뭉침 영역 프로빙 제외",
+      "tooltip": "뭉침 감지 제외 영역."
     },
     "xy_contour_compensation": {
       "label": "X-Y 윤곽 보상"
@@ -2327,23 +2555,25 @@
     "Brim": "브림",
     "Change extrusion role G-code": "압출 역할 G코드 변경",
     "Change filament G-code": "필라멘트 교체 G코드",
+    "Clumping Detection G-code": "뭉침 감지 G-code",
     "Compatible process profiles": "호환 프로세스 사전설정",
     "Cooling": "냉각",
     "Cooling Fan": "냉각 팬",
     "Cooling for specific layer": "특정 레이어 냉각",
     "Dependencies": "종속성",
     "Exhaust fan": "환기 팬",
+    "Extruder": "압출기",
     "Extruder Clearance": "압출기 회피",
     "Filament": "필라멘트",
     "Filament end G-code": "필라멘트 종료 G코드",
     "Filament for Features": "기능용 필라멘트",
     "Filament start G-code": "필라멘트 시작 G코드",
+    "First layer speed": "초기 레이어 속도",
     "Flow ratio and Pressure Advance": "유량 비율 및 압력 사전",
     "Flush options": "버리기 옵션",
     "Fuzzy Skin": "퍼지 스킨",
     "G-code output": "G코드 출력",
     "Infill": "채우기",
-    "Initial layer speed": "초기 레이어 속도",
     "Ironing": "다림질",
     "Jerk limitation": "저크 제한",
     "Jerk(XY)": "저크(XY)",
@@ -2355,6 +2585,7 @@
     "Machine end G-code": "장치 종료 G코드",
     "Machine start G-code": "장치 시작 G코드",
     "Motion ability": "동작 능력",
+    "Multi Filament": "멀티 필라멘트",
     "Multimaterial": "다중 재료",
     "Notes": "메모",
     "Ooze prevention": "유출 방지",
@@ -2380,7 +2611,6 @@
     "Setting Overrides": "설정 덮어쓰기",
     "Single extruder multi-material parameters": "단일 압출기 다중 재료 매개변수",
     "Single extruder multi-material setup": "단일 압출기 다중 재료 설정",
-    "Size": "크기",
     "Skirt": "스커트",
     "Special mode": "특수 모드",
     "Speed": "속도",
@@ -2388,6 +2618,7 @@
     "Strength": "강도",
     "Support": "지지대",
     "Support filament": "지지대 필라멘트",
+    "Support ironing": "지지대 다림질",
     "Template Custom G-code": "템플릿 사용자 정의 G코드",
     "Timelapse G-code": "타임랩스 Gcode",
     "Tool change parameters with multi extruder MM printers": "다중 재료 프린터의 다중 압출기 툴 체인지 매개변수",
