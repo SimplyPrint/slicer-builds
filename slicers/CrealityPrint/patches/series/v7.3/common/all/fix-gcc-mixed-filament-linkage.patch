@@ -1,0 +1,13 @@
+diff --git a/src/slic3r/GUI/Plater.cpp b/src/slic3r/GUI/Plater.cpp
+index 2584f73..60363cc 100644
+--- a/src/slic3r/GUI/Plater.cpp
++++ b/src/slic3r/GUI/Plater.cpp
+@@ -1504,7 +1504,7 @@ static void remap_model_filament_assignments(const std::vector<unsigned int> &re
+ namespace {
+ constexpr size_t MAX_TOTAL_FILAMENTS = 64;
+ 
+-MixedFilamentResult build_result_from_mixed(const MixedFilament& mf);
++static MixedFilamentResult build_result_from_mixed(const MixedFilament& mf);
+ void apply_result_to_mixed(const MixedFilamentResult& r, MixedFilament& mf);
+ void apply_result_append_to_manager(const MixedFilamentResult& r,
+                                     MixedFilamentManager& mgr,
