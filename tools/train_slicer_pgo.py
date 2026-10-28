@@ -8,6 +8,7 @@ import json
 import os
 import re
 import resource
+import shutil
 import struct
 import subprocess
 import sys
@@ -175,6 +176,30 @@ def make_orca_project(source: Path, output: Path) -> None:
             target_zip.writestr(name, data)
 
 
+def dump_threads(pid: int) -> None:
+    """Print every thread's backtrace of a hung slicer, when gdb is available."""
+    gdb = shutil.which("gdb")
+    if gdb is None:
+        return
+    # Yama only lets gdb attach to its own descendants without privileges.
+    command = [gdb, "-p", str(pid), "-batch", "-ex", "thread apply all bt 40"]
+    if os.geteuid() != 0 and shutil.which("sudo"):
+        command = ["sudo", "-n", *command]
+    try:
+        result = subprocess.run(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors="replace",
+            timeout=120,
+        )
+    except subprocess.TimeoutExpired:
+        sys.stderr.write("gdb did not finish dumping the hung slicer\n")
+        return
+    sys.stderr.write(f"Thread backtraces of hung slicer {pid}:\n{result.stdout[-60_000:]}\n")
+
+
 def run(command: list[str], bundle: Path) -> dict[str, float]:
     env = os.environ.copy()
     env["LD_LIBRARY_PATH"] = str(bundle / "bin") + (
@@ -184,20 +209,22 @@ def run(command: list[str], bundle: Path) -> dict[str, float]:
     before = resource.getrusage(resource.RUSAGE_CHILDREN)
     started = time.perf_counter()
     with tempfile.TemporaryFile(mode="w+t") as log:
+        process = subprocess.Popen(
+            command, cwd=bundle, env=env, stdout=log, stderr=subprocess.STDOUT
+        )
         try:
-            subprocess.run(
-                command,
-                cwd=bundle,
-                env=env,
-                timeout=180,
-                check=True,
-                stdout=log,
-                stderr=subprocess.STDOUT,
-            )
-        except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+            returncode = process.wait(timeout=180)
+        except subprocess.TimeoutExpired:
+            dump_threads(process.pid)
+            process.kill()
+            process.wait()
             log.seek(0)
             sys.stderr.write(log.read()[-20_000:])
             raise
+        if returncode:
+            log.seek(0)
+            sys.stderr.write(log.read()[-20_000:])
+            raise subprocess.CalledProcessError(returncode, command)
     after = resource.getrusage(resource.RUSAGE_CHILDREN)
     return {
         "wall_seconds": time.perf_counter() - started,

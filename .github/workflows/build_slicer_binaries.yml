@@ -165,7 +165,7 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install -y xvfb zip
+          sudo apt-get install -y gdb xvfb zip
 
           git -C slicer-src fetch --no-tags --depth 1 origin "$BUILD_REF_HASH"
           git -C slicer-src checkout --detach "$BUILD_REF_HASH"
