@@ -1,0 +1,15 @@
+diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
+--- a/src/libslic3r/PrintConfig.cpp
++++ b/src/libslic3r/PrintConfig.cpp
+@@ -12656,6 +12656,11 @@
+         assert(opt != nullptr);
+         const ConfigOptionDef   *optdef = print_config_def.get(opt_key);
+         assert(optdef != nullptr);
++        // Shipped printer profiles leave this outside its edit range: 0 marks long
++        // retraction when cut as off (GCode only uses values > 0) and some Creality
++        // printers use 28-30 mm. The GUI slices them without a range check.
++        if (opt_key == "retraction_distances_when_cut")
++            continue;
+         bool out_of_range = false;
+         switch (opt->type()) {
+         case coFloat:
