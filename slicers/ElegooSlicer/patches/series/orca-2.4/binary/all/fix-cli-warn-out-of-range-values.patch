@@ -1,0 +1,17 @@
+diff --git a/src/libslic3r/PrintConfig.cpp b/src/libslic3r/PrintConfig.cpp
+--- a/src/libslic3r/PrintConfig.cpp
++++ b/src/libslic3r/PrintConfig.cpp
+@@ -10591,6 +10591,13 @@
+         default:;
+         }
+         if (out_of_range) {
++            // The GUI only warns about out-of-range values and slices anyway; shipped
++            // profiles rely on that (Kobra S1 Max retraction_distances_when_cut = 0).
++            if (under_cli) {
++                BOOST_LOG_TRIVIAL(warning) << "Out-of-range value, slicing anyway: " << opt_key << " = " << opt->serialize()
++                                           << " not in range [" << optdef->min << "," << optdef->max << "]";
++                continue;
++            }
+             if (error_message.find(opt_key) == error_message.end())
+                 error_message.emplace(opt_key, opt->serialize() + L(" not in range ") +"[" + std::to_string(optdef->min) + "," + std::to_string(optdef->max) + "]");
+             //return std::string("Value out of range: " + opt_key);
