@@ -19,7 +19,11 @@ SUPPORTED_SLICERS = {
     },
     'PrusaSlicer': {
         'toggle_print_fff_options': (
-            "https://raw.githubusercontent.com/prusa3d/PrusaSlicer/{}/src/slic3r/GUI/ConfigManipulation.cpp",
+            # PrusaSlicer 3 moved the toggles into AbstractConfigManipulation.
+            (
+                "https://raw.githubusercontent.com/prusa3d/PrusaSlicer/{}/src/slic3r-shared/src/Slic3r/Biz/Preset/AbstractConfigManipulation.cpp",
+                "https://raw.githubusercontent.com/prusa3d/PrusaSlicer/{}/src/slic3r/GUI/ConfigManipulation.cpp",
+            ),
             "ConfigManipulation::toggle_print_fff_options",
             "main",
         ),
@@ -117,13 +121,17 @@ def extract_function(code: str, function_name: str) -> str | None:
 
 
 def fetch_and_extract(
-        url: str,
+        urls: tuple[str, ...],
         function_name: str,
 ) -> str | None:
-    response = requests.get(url)
-    response.raise_for_status()
-    function_code = extract_function(response.text, function_name)
-    return function_code
+    """Return the function from the first URL that exists."""
+    for url in urls:
+        response = requests.get(url)
+        if response.status_code == 404 and url != urls[-1]:
+            continue
+        response.raise_for_status()
+        return extract_function(response.text, function_name)
+    return None
 
 
 def main():
@@ -178,9 +186,12 @@ def main():
 
     slicer_settings = SUPPORTED_SLICERS[args.slicer]
 
-    code_url, func_name, default_ref = slicer_settings['toggle_print_fff_options']
+    code_urls, func_name, default_ref = slicer_settings['toggle_print_fff_options']
+    if isinstance(code_urls, str):
+        code_urls = (code_urls,)
 
-    code = fetch_and_extract(code_url.format(args.ref or default_ref), func_name)
+    ref = args.ref or default_ref
+    code = fetch_and_extract(tuple(url.format(ref) for url in code_urls), func_name)
 
     # Process input.
     p = ParseConditionalVisibility(
