@@ -6,7 +6,7 @@
   "settings": {
     "accel_to_decel_enable": {
       "label": "Accel_to_decel'i etkinleştir",
-      "tooltip": "Klipper'ın max_accel_to_decel'i otomatik olarak ayarlanacak"
+      "tooltip": "Klipper'ın max_accel_to_decel'i otomatik olarak ayarlanacak."
     },
     "accel_to_decel_factor": {
       "label": "Accel_to_decel",
@@ -15,6 +15,9 @@
     "activate_air_filtration": {
       "label": "Hava filtrelemesini etkinleştirin",
       "tooltip": "Daha iyi hava filtrasyonu için etkinleştirin. G-kodu komutu: M106 P3 S(0-255)"
+    },
+    "activate_air_filtration_during_print": {
+      "full_label": "Baskı boyunca"
     },
     "activate_chamber_temp_control": {
       "label": "Sıcaklık kontrolünü etkinleştirin",
@@ -34,7 +37,7 @@
     },
     "adaptive_pressure_advance_model": {
       "label": "Uyarlanabilir basınç ilerleme ölçümleri (beta)",
-      "tooltip": "Basınç ilerlemesi (basınç) değerlerinin setlerini, hacimsel akış hızlarını ve ölçüldükleri ivmeleri virgülle ayırarak ekleyin. Satır başına bir değer kümesi. Örneğin\n0.04,3.96,3000\n0,033,3,96,10000\n0.029,7.91,3000\n0.026,7.91,10000\n\nNasıl kalibre edilir:\n1. Hızlanma değeri başına en az 3 hız için basınç ilerleme testini çalıştırın. Testin en azından dış çevrelerin hızı, iç çevrelerin hızı ve profilinizdeki en hızlı özellik yazdırma hızı (genellikle seyrek veya katı dolgudur) için çalıştırılması önerilir. Daha sonra bunları, en yavaş ve en hızlı yazdırma hızlanmaları için aynı hızlarda çalıştırın ve klipper giriş şekillendirici tarafından verilen önerilen maksimum hızlanmadan daha hızlı değil.\n2. Her hacimsel akış hızı ve ivme için en uygun PA değerini not edin. Renk şeması açılır menüsünden akışı seçerek ve yatay kaydırıcıyı PA desen çizgileri üzerinde hareket ettirerek akış numarasını bulabilirsiniz. Numara sayfanın altında görünmelidir. İdeal PA değeri hacimsel akış ne kadar yüksek olursa o kadar azalmalıdır. Değilse, ekstruderinizin doğru şekilde çalıştığını doğrulayın. Ne kadar yavaş ve daha az ivmeyle yazdırırsanız, kabul edilebilir PA değerleri aralığı o kadar geniş olur. Hiçbir fark görünmüyorsa, daha hızlı olan testteki PA değerini kullanın.\n3. Buradaki metin kutusuna PA değerleri, Akış ve Hızlanma üçlüsünü girin ve filament profilinizi kaydedin"
+      "tooltip": "Basınç ilerlemesi (basınç) değerlerinin setlerini, hacimsel akış hızlarını ve ölçüldükleri ivmeleri virgülle ayırarak ekleyin. Satır başına bir değer kümesi. Örneğin\n0.04,3.96,3000\n0,033,3,96,10000\n0.029,7.91,3000\n0.026,7.91,10000\n\nNasıl kalibre edilir:\n1. Hızlanma değeri başına en az 3 hız için basınç ilerleme testini çalıştırın. Testin en azından dış çevrelerin hızı, iç çevrelerin hızı ve profilinizdeki en hızlı özellik yazdırma hızı (genellikle seyrek veya katı dolgudur) için çalıştırılması önerilir. Daha sonra bunları, en yavaş ve en hızlı yazdırma hızlanmaları için aynı hızlarda çalıştırın ve klipper giriş şekillendirici tarafından verilen önerilen maksimum hızlanmadan daha hızlı değil.\n2. Her hacimsel akış hızı ve ivme için en uygun PA değerini not edin. Renk şeması açılır menüsünden akışı seçerek ve yatay kaydırıcıyı PA desen çizgileri üzerinde hareket ettirerek akış numarasını bulabilirsiniz. Numara sayfanın altında görünmelidir. İdeal PA değeri hacimsel akış ne kadar yüksek olursa o kadar azalmalıdır. Değilse, ekstruderinizin doğru şekilde çalıştığını doğrulayın. Ne kadar yavaş ve daha az ivmeyle yazdırırsanız, kabul edilebilir PA değerleri aralığı o kadar geniş olur. Hiçbir fark görünmüyorsa, daha hızlı olan testteki PA değerini kullanın.\n3. Buradaki metin kutusuna PA değerleri, Akış ve Hızlanma üçlüsünü girin ve filament profilinizi kaydedin."
     },
     "adaptive_pressure_advance_overhangs": {
       "label": "Çıkıntılar için uyarlanabilir basınç ilerlemesini etkinleştirin (beta)",
@@ -44,9 +47,11 @@
       "label": "Fan hızı",
       "tooltip": "Yardımcı parça soğutma fanının hızı. Yardımcı fan, soğutma katmanlarının bulunmadığı ilk birkaç katman dışında, yazdırma sırasında bu hızda çalışacaktır.\nLütfen bu özelliği kullanmak için yazıcı ayarlarında yardımcı_fan'ı etkinleştirin. G-code komut: M106 P2 S(0-255)"
     },
+    "additional_fan_full_speed_layer": {
+      "label": "Maksimum fan hızı"
+    },
     "align_infill_direction_to_model": {
-      "label": "Dolgu yönünü modele hizalayın",
-      "tooltip": "Dolgu ve yüzey dolgu yönlerini, modelin yapı plakasındaki yönünü takip edecek şekilde hizalar. Etkinleştirildiğinde, dolgu yönleri optimum dayanıklılık özelliklerini korumak için modelle birlikte döner."
+      "label": "Dolgu yönünü modele hizalayın"
     },
     "alternate_extra_wall": {
       "label": "Alternatif ekstra duvar",
@@ -84,6 +89,14 @@
       "label": "Prob noktası mesafesi",
       "tooltip": "Bu seçenek, X ve Y yönleri için prob noktaları arasındaki tercih edilen mesafeyi (ızgara boyutu) ayarlar; varsayılan değer hem X hem de Y için 50 mm'dir."
     },
+    "bed_temperature_formula": {
+      "label": "Yatak sıcaklığı tipi",
+      "tooltip": "Bu seçenek, dilimleme sırasında yatak sıcaklığının nasıl ayarlanacağını belirler: ilk filamentin sıcaklığına veya basılan filamentlerin en yüksek sıcaklığına göre.",
+      "enum_labels": [
+        "İlk filamente göre",
+        "En Yüksek Sıcaklığa Göre"
+      ]
+    },
     "before_layer_change_gcode": {
       "label": "Katman Değişimi Öncesi G-kod",
       "tooltip": "Bu G kodu, z'yi kaldırmadan önce her katman değişikliğinde eklenir."
@@ -110,6 +123,9 @@
       "label": "Alt yüzey yoğunluğu",
       "tooltip": "Alt yüzey katmanının yoğunluğu. Estetik veya işlevsel amaçlar için tasarlanmıştır, aşırı ekstrüzyon gibi sorunları gidermek için değildir.\nUYARI: Bu değerin düşürülmesi, yatak yapışmasını olumsuz etkileyebilir."
     },
+    "bottom_surface_filament_id": {
+      "label": "Alt yüzey"
+    },
     "bottom_surface_pattern": {
       "label": "Alt yüzey deseni",
       "tooltip": "Köprü dolgusu değil, alt yüzey dolgusunun çizgi deseni.",
@@ -129,16 +145,16 @@
       "tooltip": "Köprülerin hızlandırılması. Değer yüzde olarak ifade edilirse (örn. %50), dış duvar ivmesine göre hesaplanacaktır."
     },
     "bridge_angle": {
-      "label": "Dış köprü dolgu yönü",
-      "tooltip": "Köprüleme açısı geçersiz kılma. Sıfıra bırakılırsa köprüleme açısı otomatik olarak hesaplanacaktır. Aksi halde dış köprüler için sağlanan açı kullanılacaktır. Sıfır açı için 180°'yi kullanın."
+      "label": "Dış köprü dolgu yönü"
     },
     "bridge_density": {
-      "label": "Dış köprü yoğunluğu",
-      "tooltip": "Dış köprü çizgilerinin yoğunluğunu (aralığını) kontrol eder. 100 katı köprü anlamına gelir. Varsayılan değer %100’dür.\n\nDaha düşük yoğunluklu dış köprüler güvenilirliği artırmaya yardımcı olabilir, çünkü havanın ekstrüde köprünün etrafında dolaşması için daha fazla alan vardır ve soğutma hızını artırır."
+      "label": "Dış köprü yoğunluğu"
     },
     "bridge_flow": {
-      "label": "Köprülerde akış oranı",
-      "tooltip": "Köprü için malzeme miktarını azaltmak ve sarkmayı iyileştirmek amacıyla bu değeri biraz azaltın (örneğin 0,9).\n\nKullanılan gerçek köprü akışı, bu değerin filament akış oranıyla ve ayarlandıysa nesnenin akış oranıyla çarpılmasıyla hesaplanır."
+      "label": "Köprülerde akış oranı"
+    },
+    "bridge_line_width": {
+      "label": "Köprü"
     },
     "bridge_no_support": {
       "label": "Köprülerde destek olmasın",
@@ -177,6 +193,10 @@
         "Kenarsız"
       ]
     },
+    "brim_use_efc_outline": {
+      "label": "Kenar telafi edilen taslağı takip ediyor",
+      "tooltip": "Etkinleştirildiğinde, kenar birinci katmanın çevre geometrisiyle hizalanır Fil Ayağı Telafisi uygulandıktan sonra.\nBu seçenek Fil Ayağı Telafisinin geçerli olmadığı durumlar için tasarlanmıştır ilk katmanın ayak izini önemli ölçüde değiştirir.\n\nMevcut kurulumunuz zaten iyi çalışıyorsa, bunu etkinleştirmek gereksiz olabilir ve kenar'in üst katmanlarla kaynaşmasına neden olabilir."
+    },
     "brim_width": {
       "label": "Kenar genişliği",
       "tooltip": "Modelden en dış kenar çizgisine kadar olan mesafe."
@@ -193,6 +213,9 @@
     "change_filament_gcode": {
       "label": "Filament Değişimi G-kod",
       "tooltip": "Bu gcode, takım değişimini tetiklemek için T komutu da dahil olmak üzere filament değiştirildiğinde eklenir."
+    },
+    "close_additional_fan_first_x_layers": {
+      "label": "İlk olarak"
     },
     "close_fan_the_first_x_layers": {
       "label": "Soğutmayı devre dışı bırak",
@@ -249,7 +272,7 @@
       "enum_labels": [
         "Smooth Cool Plate",
         "Mühendislik Plakası",
-        "Smooth High Temp Plate",
+        "Düz PEI Plakası / Yüksek Sıcaklık Plakası",
         "Dokulu PEI Plaka",
         "Textured Cool Plate",
         "Cool Plate (SuperTack)"
@@ -279,6 +302,12 @@
       "label": "Köşe sapması",
       "tooltip": "Marlin Firmware Köşe Sapması (geleneksel XY Sarsıntı ayarının yerini alır)"
     },
+    "default_nozzle_volume_type": {
+      "enum_labels": [
+        "Standart",
+        "Yüksek Akış"
+      ]
+    },
     "default_print_profile": {
       "label": "Varsayılan süreç profili",
       "tooltip": "Bu yazıcı profiline geçildiğinde varsayılan işlem profili."
@@ -306,7 +335,7 @@
     },
     "dont_filter_internal_bridges": {
       "label": "Küçük iç köprüleri filtreleyin",
-      "tooltip": "Bu seçenek, aşırı eğimli veya kavisli modellerde üst yüzeylerdeki yastıklamayı azaltmaya yardımcı olabilir.\nVarsayılan olarak küçük iç köprüler filtrelenir ve iç katı dolgu doğrudan seyrek dolgunun üzerine yazdırılır. Bu çoğu durumda işe yarar ve üstün yüzey kalitesinden çok fazla ödün vermeden yazdırmayı hızlandırır.\nBununla birlikte, çok eğimli veya kavisli modellerde, özellikle çok düşük seyrek dolgu yoğunluğunun kullanıldığı durumlarda bu, desteklenmeyen katı dolgunun kıvrılmasına ve yastıklanmaya neden olmasına neden olabilir.\nSınırlı filtrelemenin etkinleştirilmesi veya hiç filtre uygulanmaması, dahili köprü katmanını hafif desteksiz iç katı dolgu üzerine yazdıracaktır. Aşağıdaki seçenekler filtrelemenin hassasiyetini kontrol eder, yani iç köprülerin nerede oluşturulduğunu kontrol ederler.\n1. Filtrele - bu seçeneği etkinleştirir. Bu varsayılan davranıştır ve çoğu durumda iyi çalışır.\n2. Sınırlı filtreleme - aşırı eğimli yüzeylerde iç köprüler oluştururken gereksiz köprülerden kaçınır. Bu, çoğu zor modelde işe yarar.\n3. Filtreleme yok - her potansiyel dahili çıkıntıda iç köprüler oluşturur. Bu seçenek aşırı eğimli üst yüzey modelleri için kullanışlıdır; ancak çoğu durumda çok fazla gereksiz köprü oluşturur",
+      "tooltip": "Bu seçenek, aşırı eğimli veya kavisli modellerde üst yüzeylerdeki yastıklamayı azaltmaya yardımcı olabilir.\nVarsayılan olarak küçük iç köprüler filtrelenir ve iç katı dolgu doğrudan seyrek dolgunun üzerine yazdırılır. Bu çoğu durumda işe yarar ve üstün yüzey kalitesinden çok fazla ödün vermeden yazdırmayı hızlandırır.\nBununla birlikte, çok eğimli veya kavisli modellerde, özellikle çok düşük seyrek dolgu yoğunluğunun kullanıldığı durumlarda bu, desteklenmeyen katı dolgunun kıvrılmasına ve yastıklanmaya neden olmasına neden olabilir.\nSınırlı filtrelemenin etkinleştirilmesi veya hiç filtre uygulanmaması, dahili köprü katmanını hafif desteksiz iç katı dolgu üzerine yazdıracaktır. Aşağıdaki seçenekler filtrelemenin hassasiyetini kontrol eder, yani iç köprülerin nerede oluşturulduğunu kontrol ederler.\n1. Filtrele - bu seçeneği etkinleştirir. Bu varsayılan davranıştır ve çoğu durumda iyi çalışır.\n2. Sınırlı filtreleme - aşırı eğimli yüzeylerde iç köprüler oluştururken gereksiz köprülerden kaçınır. Bu, çoğu zor modelde işe yarar.\n3. Filtreleme yok - her potansiyel dahili çıkıntıda iç köprüler oluşturur. Bu seçenek aşırı eğimli üst yüzey modelleri için kullanışlıdır; ancak çoğu durumda çok fazla gereksiz köprü oluşturur.",
       "enum_labels": [
         "Filtreli",
         "Sınırlı filtreleme",
@@ -367,6 +396,15 @@
       "label": "Çıkıntılarda yavaşla",
       "tooltip": "Farklı sarkma derecelerinde yazdırmayı yavaşlatmak için bu seçeneği etkinleştirin."
     },
+    "enable_power_loss_recovery": {
+      "label": "Güç Kaybının Geri Kazanımı",
+      "tooltip": "Güç kaybı kurtarmanın nasıl kontrol edileceğini seçin. Yazıcı yapılandırması olarak ayarlandığında, dilimleyici güç kaybı kurtarma G kodunu yayınlamayacak ve yazıcının yapılandırmasını değiştirmeden bırakacaktır. Bambu Lab veya Marlin 2 ürün yazılımı tabanlı yazıcılar için geçerlidir.",
+      "enum_labels": [
+        "Yazıcı yapılandırması",
+        "Aktif et",
+        "Devre dışı bırak"
+      ]
+    },
     "enable_pressure_advance": {
       "label": "Basınç Avansı (PA)",
       "tooltip": "Basınç avansını etkinleştirin; etkinleştirildiğinde otomatik kalibrasyon sonucunun üzerine yazılacaktır."
@@ -378,6 +416,18 @@
     "enable_support": {
       "label": "Desteği etkinleştir",
       "tooltip": "Destek oluşturmayı etkinleştir."
+    },
+    "enable_tower_interface_cooldown_during_tower": {
+      "label": "Prime tower sırasında arayüz takviyesinden soğuma",
+      "tooltip": "Arayüz katmanı sıcaklık artışı etkin olduğunda, püskürtme ucunu ana kulenin başlangıcındaki yazdırma sıcaklığına geri ayarlayın, böylece kule sırasında soğuyacaktır."
+    },
+    "enable_tower_interface_features": {
+      "label": "Kule arayüzü özelliklerini etkinleştirin",
+      "tooltip": "Farklı malzemeler karşılaştığında optimize edilmiş prime tower arayüz davranışını etkinleştirin."
+    },
+    "enable_wrapping_detection": {
+      "label": "Topaklanma tespitini etkinleştir",
+      "tooltip": "Topaklanma tespitini etkinleştir"
     },
     "eng_plate_temp": {
       "label": "Diğer katmanlar",
@@ -437,6 +487,20 @@
     "extruder_offset": {
       "label": "Ekstruder konum"
     },
+    "extruder_printable_area": {
+      "label": "Ekstruder yazdırılabilir alan"
+    },
+    "extruder_printable_height": {
+      "label": "Ekstruder yazdırılabilir yükseklik",
+      "tooltip": "Bu ekstruderin maksimum yazdırılabilir yüksekliği, yazıcının mekanizmasıyla sınırlıdır."
+    },
+    "extruder_type": {
+      "label": "Tür",
+      "enum_labels": [
+        "Doğrudan Tahrik",
+        "Bowden"
+      ]
+    },
     "extrusion_rate_smoothing_external_perimeter_only": {
       "label": "Yalnızca harici özelliklere uygula",
       "tooltip": "Ekstrüzyon hızı yumuşatmayı yalnızca dış çevre ve çıkıntılara uygular. Bu, kullanıcı tarafından görülmeyecek özelliklerin yazdırma hızını etkilemeden, dışarıdan görülebilen çıkıntılarda keskin hız geçişlerinden kaynaklanan bozulmaların azaltılmasına yardımcı olabilir."
@@ -463,6 +527,18 @@
     },
     "fan_speedup_time": {
       "tooltip": "Fanı hedef başlangıç zamanından bu kadar saniye önce başlatın (kesirli saniyeleri kullanabilirsiniz). Bu süre tahmini için sonsuz ivme varsayar ve yalnızca G1 ve G0 hareketlerini hesaba katar (yay uydurma desteklenmez).\nFan komutlarını özel kodlardan taşımaz (bir çeşit 'bariyer' görevi görürler).\n'Yalnızca özel başlangıç gcode'u etkinleştirilmişse, fan komutları başlangıç gcode'una taşınmayacaktır.\nDevre dışı bırakmak için 0'ı kullanın."
+    },
+    "filament_adaptive_volumetric_speed": {
+      "label": "Uyarlanabilir hacimsel hız",
+      "tooltip": "Etkinleştirildiğinde, ekstrüzyon akışı, hesaplanan değer (çizgi genişliği ve katman yüksekliğinden hesaplanan) ile kullanıcı tanımlı maksimum akıştan küçük olanıyla sınırlandırılır. Devre dışı bırakıldığında, yalnızca kullanıcı tanımlı maksimum akış uygulanır.\n\nNot: BBS'den aktarılan deneysel ve tamamlanmamış özellik. Değişkenin zaten kaydedilmiş olduğu bazı profiller için işlevseldir."
+    },
+    "filament_adhesiveness_category": {
+      "label": "Yapışkanlık kategorisi",
+      "tooltip": "Filament kategorisi."
+    },
+    "filament_change_length": {
+      "label": "Filament sıkıştırma uzunluğu",
+      "tooltip": "Ekstrüderi değiştirirken, orijinal ekstrüderden belirli bir uzunlukta filamanın çıkarılması tavsiye edilir. Bu, meme sızıntısını en aza indirmeye yardımcı olur."
     },
     "filament_colour": {
       "label": "Renk",
@@ -505,6 +581,30 @@
       "label": "Akış oranı",
       "tooltip": "Malzeme, erimiş hal ile kristal hal arasında geçiş yaptıktan sonra hacimsel değişime sahip olabilir. Bu ayar, bu filamentin gcode'daki tüm ekstrüzyon akışını orantılı olarak değiştirir. Önerilen değer aralığı 0,95 ile 1,05 arasındadır. Belki hafif taşma veya taşma olduğunda güzel düz bir yüzey elde etmek için bu değeri ayarlayabilirsiniz."
     },
+    "filament_flush_temp": {
+      "label": "Yıkama sıcaklığı",
+      "tooltip": "Filament yıkanırken sıcaklık. 0, önerilen meme sıcaklık aralığının üst sınırını gösterir."
+    },
+    "filament_flush_volumetric_speed": {
+      "label": "Yıkama hacimsel hızı",
+      "tooltip": "Filament yıkanırken hacimsel hız. 0 maksimum hacimsel hızı gösterir."
+    },
+    "filament_ironing_flow": {
+      "label": "Ütüleme akışı",
+      "tooltip": "Ütüleme akışı için filamana özgü geçersiz kılma. Bu, her filaman türü için ütüleme akışını özelleştirmenize olanak tanır. Çok yüksek değer yüzeyde aşırı ekstrüzyona neden olur."
+    },
+    "filament_ironing_inset": {
+      "label": "Ütüleme boşluğu",
+      "tooltip": "İç parçayı ütülemek için filamente özel geçersiz kılma. Bu, her filaman türü için ütüleme sırasında kenarlardan korunacak mesafeyi özelleştirmenize olanak tanır."
+    },
+    "filament_ironing_spacing": {
+      "label": "Ütüleme çizgi aralığı",
+      "tooltip": "Ütüleme hattı aralığı için filamente özel geçersiz kılma. Bu, her filaman türü için ütüleme çizgileri arasındaki boşluğu özelleştirmenize olanak tanır."
+    },
+    "filament_ironing_speed": {
+      "label": "Ütüleme hızı",
+      "tooltip": "Ütüleme hızı için filamana özgü geçersiz kılma. Bu, her filaman türü için ütüleme hatlarının baskı hızını özelleştirmenize olanak tanır."
+    },
     "filament_is_support": {
       "label": "Destek malzemesi",
       "tooltip": "Destek malzemesi yaygın olarak destek ve destek arayüzünü yazdırmak için kullanılır."
@@ -520,6 +620,18 @@
     "filament_long_retractions_when_cut": {
       "label": "Kesildiğinde uzun geri çekilme (beta)",
       "tooltip": "Deneysel özellik: Tasfiyeyi en aza indirmek için değişiklikler sırasında filamentin daha uzun bir mesafeden geri çekilmesi ve kesilmesi. Bu, yıkamayı önemli ölçüde azaltırken, aynı zamanda nozul tıkanması veya diğer yazdırma sorunları riskini de artırabilir."
+    },
+    "filament_map": {
+      "label": "Ekstrudere filaman haritası",
+      "tooltip": "Ekstrudere filaman haritası."
+    },
+    "filament_map_mode": {
+      "enum_labels": [
+        "Yıkama İçin Otomatik",
+        "Otomatik Maç İçin",
+        "Manual",
+        "Varsayılan"
+      ]
     },
     "filament_max_volumetric_speed": {
       "label": "Maksimum hacimsel hız",
@@ -544,6 +656,10 @@
     "filament_notes": {
       "label": "Filament Notları",
       "tooltip": "Filament ile ilgili notlarınızı buraya yazabilirsiniz."
+    },
+    "filament_printable": {
+      "label": "Filament yazdırılabilir",
+      "tooltip": "Filament ekstruderde basılabilir."
     },
     "filament_ramming_parameters": {
       "label": "Sıkıştırma parametreleri",
@@ -625,6 +741,26 @@
       "label": "Boşaltma işleminden sonra gecikme",
       "tooltip": "Filament boşaltıldıktan sonra beklenmesi gereken süre. Orijinal boyutlara küçülmesi için daha fazla zamana ihtiyaç duyabilecek esnek malzemelerle güvenilir takım değişimleri elde etmeye yardımcı olabilir."
     },
+    "filament_tower_interface_pre_extrusion_dist": {
+      "label": "Arayüz katmanı ön ekstrüzyon mesafesi",
+      "tooltip": "Ana kule arayüz katmanı (farklı malzemelerin buluştuğu yer) için ön ekstrüzyon mesafesi."
+    },
+    "filament_tower_interface_pre_extrusion_length": {
+      "label": "Arayüz katmanı ön ekstrüzyon uzunluğu",
+      "tooltip": "Ana kule arayüz katmanı (farklı malzemelerin buluştuğu yer) için ön ekstrüzyon uzunluğu."
+    },
+    "filament_tower_interface_print_temp": {
+      "label": "Arayüz katmanı yazdırma sıcaklığı",
+      "tooltip": "Ana kule arayüz katmanı (farklı malzemelerin buluştuğu yer) için yazdırma sıcaklığı. -1 olarak ayarlanırsa önerilen maksimum püskürtme ucu sıcaklığını kullanın."
+    },
+    "filament_tower_interface_purge_volume": {
+      "label": "Arayüz katmanı temizleme uzunluğu",
+      "tooltip": "Ana kule arayüz katmanı (farklı malzemelerin buluştuğu yer) için temizleme uzunluğu."
+    },
+    "filament_tower_ironing_area": {
+      "label": "Kule ütü alanı",
+      "tooltip": "Prime tower arayüz katmanı için ütüleme alanı (farklı malzemelerin buluştuğu yer)."
+    },
     "filament_type": {
       "label": "Tür",
       "tooltip": "Filament malzeme türü."
@@ -663,6 +799,10 @@
         "Spiral"
       ]
     },
+    "file_start_gcode": {
+      "label": "Dosya başlığı G kodu",
+      "tooltip": "G kodu, çıktı dosyasının en üstünde, diğer içeriklerden önce yazılır. Yazıcı ürün yazılımının dosyanın ilk satırlarından okuduğu meta verileri (ör. tahmini yazdırma süresi, filaman kullanımı) eklemek için kullanışlıdır. {print_time_sec} ve {used_filament_length} gibi yer tutucuları destekler."
+    },
     "filename_format": {
       "label": "Dosya adı formatı",
       "tooltip": "Kullanıcı dışa aktarma sırasında proje dosyası adını kendisi tanımlayabilir."
@@ -675,6 +815,10 @@
       "label": "Küçük boşlukları filtrele",
       "tooltip": "Belirtilen eşikten (mm cinsinden) daha küçük bir uzunluğa sahip boşluk dolgusunu yazdırmayın. Bu ayar üst, alt ve katı dolgu için ve klasik çevre oluşturucu kullanılıyorsa duvar boşluğu dolgusu için geçerlidir."
     },
+    "first_layer_flow_ratio": {
+      "label": "İlk katman akış oranı",
+      "tooltip": "Bu faktör, bu bölümde listelenen ekstrüzyon yolu rolleri için ilk katmandaki malzeme miktarını etkiler.\n\nİlk katman için, her yol rolüne ilişkin gerçek akış oranı (kenarları ve etekleri etkilemez) bu değerle çarpılacaktır."
+    },
     "first_layer_print_sequence": {
       "label": "İlk katman yazdırma sırası"
     },
@@ -684,6 +828,9 @@
         "Otomatik",
         "Özelleştir"
       ]
+    },
+    "first_x_layer_fan_speed": {
+      "label": "Fan hızı"
     },
     "flush_into_infill": {
       "label": "Nesnelerin dolgusuna hizalayın",
@@ -715,10 +862,12 @@
       "label": "Bulanık kaplama",
       "tooltip": "Duvara baskı yaparken rastgele titreme, böylece yüzeyin pürüzlü bir görünüme sahip olması. Bu ayar pütürlü konumu kontrol eder.",
       "enum_labels": [
-        "Hiçbiri",
+        "Sadece boyalı",
         "Kontur",
+        "Delik",
         "Kontur ve delik",
-        "Tüm duvarlar"
+        "Tüm duvarlar",
+        "Devredışı"
       ]
     },
     "fuzzy_skin_first_layer": {
@@ -735,13 +884,13 @@
     },
     "fuzzy_skin_noise_type": {
       "label": "Pütürlü yüzey gürültü türü",
-      "tooltip": "Pütürlü yüzey oluşumu için kullanılacak gürültü türü.\nKlasik: Klasik tek tip rastgele gürültü.\nPerlin: Daha tutarlı bir doku veren Perlin gürültüsü.\nBillow: Perlin gürültüsüne benzer, ancak daha topaklanır.\nRidged multifractal: Keskin, pürüzlü özelliklere sahip çıkıntılı gürültü. Mermer benzeri dokular oluşturur.\nVoronoi: Yüzeyi voronoi hücrelerine böler ve her birini rastgele miktarda yer değiştirir. Patchwork dokusu oluşturur.",
       "enum_labels": [
         "Klasik",
         "Perlin",
         "Billow",
         "Ridged multifractal",
-        "Voronoi"
+        "Voronoi",
+        "Ripple"
       ]
     },
     "fuzzy_skin_octaves": {
@@ -763,6 +912,10 @@
     "fuzzy_skin_thickness": {
       "label": "Bulanık kaplama kalınlığı",
       "tooltip": "Titremenin gerçekleşeceği genişlik. Dış duvar çizgi genişliğinin altında olması sakıncalıdır."
+    },
+    "gap_fill_flow_ratio": {
+      "label": "Boşluk doldurma akış oranı",
+      "tooltip": "Bu faktör boşlukları dolduracak malzeme miktarını etkiler.\n\nKullanılan gerçek boşluk doldurma akışı, bu değerin filaman akış oranıyla ve ayarlandıysa nesnenin akış oranıyla çarpılmasıyla hesaplanır."
     },
     "gap_fill_target": {
       "label": "Boşluk doldurmayı uygula",
@@ -792,12 +945,16 @@
         "Marlin(legacy)",
         "Klipper",
         "RepRapFirmware",
+        "Repetier",
         "Marlin 2"
       ]
     },
     "gcode_label_objects": {
       "label": "Nesneleri etiketle",
       "tooltip": "G-Code etiketleme yazdırma hareketlerine ait oldukları nesneyle ilgili yorumlar eklemek için bunu etkinleştirin; bu, Octoprint CancelObject eklentisi için kullanışlıdır. Bu ayarlar Tek Ekstruder Çoklu Malzeme kurulumu ve Nesneye Temizleme / Dolguya Temizleme ile uyumlu DEĞİLDİR."
+    },
+    "grab_length": {
+      "label": "Tutma uzunluğu"
     },
     "high_current_on_filament_swap": {
       "label": "Filament değişiminde yüksek ekstruder akımı",
@@ -819,10 +976,9 @@
       "label": "Bağlantı Türü",
       "tooltip": "ElegooSlicer, G kodu dosyalarını bir yazıcı ana bilgisayarına yükleyebilir. Bu alan ana bilgisayarın türünü içermelidir.",
       "enum_labels": [
-        "ElegooLink",
-        "OctoPrint",
         "PrusaLink",
         "PrusaConnect",
+        "OctoPrint",
         "Duet",
         "FlashAir",
         "AstroBox",
@@ -832,7 +988,10 @@
         "CrealityPrint",
         "Obico",
         "Flashforge",
-        "SimplyPrint"
+        "SimplyPrint",
+        "Elegoo Link",
+        "3DPrinterOS",
+        "Moonraker (Klipper)"
       ]
     },
     "hot_plate_temp": {
@@ -850,7 +1009,8 @@
       "tooltip": "Alet şu anda çoklu alet kurulumlarında kullanılmadığında püskürtme ucu sıcaklığı. Bu yalnızca Yazdırma Ayarlarında ‘Sızıntı önleme’ etkin olduğunda kullanılır. Devre dışı bırakmak için 0’a ayarlayın."
     },
     "independent_support_layer_height": {
-      "label": "Bağımsız destek katmanı yüksekliği"
+      "label": "Bağımsız destek katmanı yüksekliği",
+      "tooltip": "Destek katmanı, nesne katmanından bağımsız olarak katman yüksekliğini kullanır. Bu, z aralığının özelleştirilmesine destek olmak ve yazdırma süresinden tasarruf etmek içindir. Prime tower etkinleştirildiğinde bu seçenek geçersiz olacaktır."
     },
     "infill_anchor": {
       "label": "Dolgu uzunluğu"
@@ -930,6 +1090,10 @@
       "label": "İç duvar",
       "tooltip": "İç duvarların hızlandırılması."
     },
+    "inner_wall_flow_ratio": {
+      "label": "İç duvar akış oranı",
+      "tooltip": "Bu faktör iç duvarlar için malzeme miktarını etkiler.\n\nKullanılan gerçek iç duvar akışı, bu değerin filaman akış oranıyla ve ayarlandıysa nesnenin akış oranıyla çarpılmasıyla hesaplanır."
+    },
     "inner_wall_jerk": {
       "label": "İç duvar",
       "tooltip": "İç duvarlar JERK değeri."
@@ -941,6 +1105,36 @@
     "inner_wall_speed": {
       "label": "İç duvar",
       "tooltip": "İç duvarın hızı."
+    },
+    "input_shaping_damp_x": {
+      "label": "X"
+    },
+    "input_shaping_damp_y": {
+      "label": "Y"
+    },
+    "input_shaping_freq_x": {
+      "label": "X"
+    },
+    "input_shaping_freq_y": {
+      "label": "Y"
+    },
+    "input_shaping_type": {
+      "label": "Giriş şekillendirici türü",
+      "enum_labels": [
+        "Varsayılan",
+        "MZV",
+        "ZV",
+        "ZVD",
+        "ZVDD",
+        "ZVDDD",
+        "EI",
+        "EI2",
+        "2HUMP_EI",
+        "EI3",
+        "3HUMP_EI",
+        "DAA",
+        "Devre dışı bırak"
+      ]
     },
     "interface_shells": {
       "label": "Arayüz kabukları",
@@ -971,28 +1165,32 @@
       "tooltip": "Kilitleme kirişlerinin yönelimi."
     },
     "internal_bridge_angle": {
-      "label": "İç köprü dolgu yönü",
-      "tooltip": "İç köprüleme açısı geçersiz kılma. Sıfır olarak bırakılırsa, köprüleme açısı otomatik olarak hesaplanacaktır. Aksi takdirde sağlanan açı iç köprüler için kullanılacaktır. Sıfır açı için 180° kullanın.\n\nBelirli bir model ihtiyacı olmadığı sürece 0’da bırakılması önerilir."
+      "label": "İç köprü dolgu yönü"
     },
     "internal_bridge_density": {
-      "label": "İç köprü yoğunluğu",
-      "tooltip": "İç köprü çizgilerinin yoğunluğunu (aralığını) kontrol eder. 100 katı köprü anlamına gelir. Varsayılan değer %100’dür.\n\n Daha düşük yoğunluklu iç köprüler, üst yüzeydeki yastıklanmayı azaltmaya yardımcı olabilir ve ekstrüde köprünün etrafında havanın dolaşması için daha fazla alan olduğundan iç köprü güvenilirliğini artırarak soğutma hızını artırır.\n\nBu seçenek, dolgu üzerine ikinci iç köprü seçeneği ile birleştirildiğinde özellikle iyi çalışır ve katı dolgu ekstrüde edilmeden önce iç köprüleme yapısını daha da iyileştirir."
+      "label": "İç köprü yoğunluğu"
     },
     "internal_bridge_fan_speed": {
       "label": "İç köprü fan hızı",
       "tooltip": "Tüm iç köprüler için kullanılan parça soğutma fanı hızı. Bunun yerine çıkıntılı fan hızı ayarlarını kullanmak için -1’e ayarlayın.\n\nNormal fan hızınızla karşılaştırıldığında iç köprü fan hızını azaltmak, geniş bir yüzeye uzun süre uygulanan aşırı soğutma nedeniyle parçanın bükülmesinin azaltılmasına yardımcı olabilir."
     },
     "internal_bridge_flow": {
-      "label": "İç köprü akış oranı",
-      "tooltip": "Bu değer iç köprü katmanının kalınlığını belirler. Bu, seyrek dolgunun üzerindeki ilk katmandır. Seyrek dolguya göre yüzey kalitesini iyileştirmek için bu değeri biraz azaltın (örneğin 0,9).\n\nKullanılan gerçek iç köprü akışı, bu değerin köprü akış oranı, filament akış oranı ve ayarlandıysa nesnenin akış oranıyla çarpılmasıyla hesaplanır."
+      "label": "İç köprü akış oranı"
     },
     "internal_bridge_speed": {
       "label": "Dahili",
       "tooltip": "İç köprülerin hızı. Değer yüzde olarak ifade edilirse köprü hızına göre hesaplanacaktır. Varsayılan değer %150’dir."
     },
+    "internal_solid_filament_id": {
+      "label": "İç katı dolgu"
+    },
     "internal_solid_infill_acceleration": {
       "label": "İç katı dolgu",
       "tooltip": "İç katı dolgunun hızlandırılması. Değer yüzde olarak ifade edilirse (örn. %100), varsayılan ivmeye göre hesaplanacaktır."
+    },
+    "internal_solid_infill_flow_ratio": {
+      "label": "Dahili katı dolgu akış oranı",
+      "tooltip": "Bu faktör, iç katı dolgu için malzeme miktarını etkiler.\n\nKullanılan gerçek dahili katı dolgu akışı, bu değerin filaman akış oranıyla ve ayarlandıysa nesnenin akış oranıyla çarpılmasıyla hesaplanır."
     },
     "internal_solid_infill_line_width": {
       "label": "İç katı dolgu",
@@ -1017,8 +1215,12 @@
       "tooltip": "Üst ve alt yüzeyin değil, iç katı dolgunun hızı."
     },
     "ironing_angle": {
-      "label": "Ütüleme açısı",
-      "tooltip": "Köşebent ütüleme işlemi yapılır. Negatif bir sayı bu işlevi devre dışı bırakır ve varsayılan yöntemi kullanır."
+      "label": "Ütüleme açısı ofseti",
+      "tooltip": "Ütüleme çizgilerinin açısı üst yüzeyden kaydırılmıştır."
+    },
+    "ironing_angle_fixed": {
+      "label": "Sabit ütüleme açısı",
+      "tooltip": "Ütüleme için sabit bir mutlak açı kullanın."
     },
     "ironing_fan_speed": {
       "label": "Ütüleme fan hızı",
@@ -1050,7 +1252,7 @@
     },
     "ironing_type": {
       "label": "Ütüleme tipi",
-      "tooltip": "Ütüleme, düz yüzeyi daha pürüzsüz hale getirmek için aynı yükseklikteki yüzeye tekrar baskı yapmak için küçük akış kullanmaktır. Bu ayar hangi katmanın ütüleneceğini kontrol eder",
+      "tooltip": "Ütüleme, düz yüzeyi daha pürüzsüz hale getirmek için aynı yükseklikteki yüzeye tekrar baskı yapmak için küçük akış kullanmaktır. Bu ayar hangi katmanın ütüleneceğini kontrol eder.",
       "enum_labels": [
         "Ütüleme yok",
         "Üst yüzeyler",
@@ -1085,6 +1287,9 @@
     "long_retractions_when_cut": {
       "label": "Kesildiğinde uzun geri çekilme (beta)",
       "tooltip": "Deneysel özellik: Tasfiyeyi en aza indirmek için değişiklikler sırasında filamentin daha uzun bir mesafeden geri çekilmesi ve kesilmesi. Bu, yıkamayı önemli ölçüde azaltırken, aynı zamanda nozul tıkanması veya diğer yazdırma sorunları riskini de artırabilir."
+    },
+    "long_retractions_when_ec": {
+      "label": "Ekstruder değiştiğinde uzun geri çekilme"
     },
     "machine_end_gcode": {
       "label": "Bitiş G kodu",
@@ -1139,7 +1344,8 @@
       "tooltip": "Z ekseninin maksimum sarsıntısı (Jerk)"
     },
     "machine_max_junction_deviation": {
-      "full_label": "Maksimum köşe sapması"
+      "full_label": "Maksimum köşe sapması",
+      "tooltip": "Maksimum bağlantı sapması (M205 J, yalnızca Marlin Aygıt Yazılımı için JD > 0 ise geçerlidir)\nMarlin 2 yazıcınız Classic Jerk kullanıyorsa bu değeri 0 olarak ayarlayın.)"
     },
     "machine_max_speed_e": {
       "full_label": "Maksimum hız E"
@@ -1297,12 +1503,19 @@
         "Tanımsız",
         "Güçlendirilmiş çelik",
         "Paslanmaz çelik",
+        "Tungsten karbür",
         "Pirinç"
       ]
     },
     "nozzle_volume": {
       "label": "Nozul hacmi",
       "tooltip": "Kesici ile nozulun ucu arasındaki nozul hacmi."
+    },
+    "nozzle_volume_type": {
+      "enum_labels": [
+        "Standart",
+        "Yüksek Akış"
+      ]
     },
     "only_one_wall_first_layer": {
       "label": "İlk katmanda yalnızca bir duvar",
@@ -1333,6 +1546,10 @@
       "label": "Dış duvar",
       "tooltip": "Dış duvarın hızlanması. Daha düşük bir değer kullanmak kaliteyi artırabilir."
     },
+    "outer_wall_flow_ratio": {
+      "label": "Dış duvar akış oranı",
+      "tooltip": "Bu faktör dış duvarlar için malzeme miktarını etkiler.\n\nKullanılan gerçek dış duvar akışı, bu değerin filaman akış oranıyla ve ayarlandıysa nesnenin akış oranıyla çarpılmasıyla hesaplanır."
+    },
     "outer_wall_jerk": {
       "label": "Dış duvar",
       "tooltip": "Dış duvar JERK değeri."
@@ -1360,6 +1577,10 @@
         "75%",
         "95%"
       ]
+    },
+    "overhang_flow_ratio": {
+      "label": "Çıkıntı akış oranı",
+      "tooltip": "Bu faktör çıkıntılar için malzeme miktarını etkiler.\n\nKullanılan gerçek sarkma akışı, bu değerin filaman akış oranıyla ve ayarlandıysa nesnenin akış oranıyla çarpılmasıyla hesaplanır."
     },
     "overhang_reverse": {
       "label": "Çift katmanlarda ters yön",
@@ -1401,14 +1622,16 @@
       "tooltip": "Dilimlemeden sonra nesnenin kesin z yüksekliğini elde etmek için bunu etkinleştirin. Son birkaç katmanın katman yüksekliklerine ince ayar yaparak kesin nesne yüksekliğini elde edecektir. Bunun deneysel bir parametre olduğunu unutmayın."
     },
     "preferred_orientation": {
-      "label": "Tercih edilen yönlendirme"
+      "label": "Tercih edilen yönlendirme",
+      "tooltip": "İlk içe aktarma sonrasında STL'leri Z ekseninde otomatik olarak yönlendirin."
     },
     "preheat_steps": {
       "label": "Ön ısıtma adımları",
       "tooltip": "Birden fazla ön ısıtma komutu ekleyin (örn. M104.1). Yalnızca Prusa XL için kullanışlıdır. Diğer yazıcılar için lütfen 1’e ayarlayın."
     },
     "preheat_time": {
-      "label": "Ön ısıtma süresi"
+      "label": "Ön ısıtma süresi",
+      "tooltip": "Takım değişiminden sonra bekleme süresini azaltmak için Orca, mevcut takım hala kullanımdayken bir sonraki takıma ön ısıtma yapabilir. Bu ayar, bir sonraki takımın ön ısıtılması için gereken süreyi saniye cinsinden belirtir. Orca, aleti önceden ısıtmak için bir M104 komutu ekleyecektir."
     },
     "preset_names": {
       "label": "Yazıcı ön ayar adları",
@@ -1419,7 +1642,20 @@
       "tooltip": "Basınç avansı (Klipper) Doğrusal ilerleme faktörü (Marlin)"
     },
     "prime_tower_brim_width": {
-      "label": "Kenar genişliği"
+      "label": "Kenar genişliği",
+      "tooltip": "Ana kulenin kenar genişliği; negatif sayı, ana kulenin yüksekliğine göre otomatik olarak hesaplanan genişlik anlamına gelir."
+    },
+    "prime_tower_enable_framework": {
+      "label": "İç kaburgalar",
+      "tooltip": "Ana kulenin stabilitesini artırmak için iç kaburgaları etkinleştirin."
+    },
+    "prime_tower_infill_gap": {
+      "label": "Dolgu boşluğu",
+      "tooltip": "Boşluğu doldurun."
+    },
+    "prime_tower_skip_points": {
+      "label": "Noktaları atla",
+      "tooltip": "Ana kulenin duvarı, silme yolunun başlangıç ​​noktalarını atlayacaktır."
     },
     "prime_tower_width": {
       "label": "Genişlik",
@@ -1463,6 +1699,10 @@
     "printable_height": {
       "label": "Yazdırılabilir yükseklik",
       "tooltip": "Yazıcının mekanizması tarafından sınırlanan maksimum yazdırılabilir yükseklik."
+    },
+    "printer_agent": {
+      "label": "Yazıcı Aracısı",
+      "tooltip": "Yazıcı iletişimi için ağ aracısı uygulamasını seçin."
     },
     "printer_model": {
       "label": "Yazıcı türü",
@@ -1528,7 +1768,7 @@
     },
     "raft_contact_distance": {
       "label": "Raft kontak Z mesafesi",
-      "tooltip": "Nesne ve raft arasındaki Z boşluğu. Çözünür arayüz için göz ardı edildi."
+      "tooltip": "Sal ile nesne arasındaki Z boşluğu. Destek üst Z mesafesi 0 ise bu değer yok sayılır ve nesne sal ile doğrudan temas halinde basılır (boşluk yok)."
     },
     "raft_expansion": {
       "label": "Raft genişletme",
@@ -1610,6 +1850,9 @@
     "retraction_distances_when_cut": {
       "label": "Kesildiğinde geri çekilme mesafesi",
       "tooltip": "Deneysel özellik: Filament değişimi sırasında kesilmeden önce geri çekilme uzunluğu."
+    },
+    "retraction_distances_when_ec": {
+      "label": "Ekstruder değiştiğinde geri çekilme mesafesi"
     },
     "retraction_length": {
       "label": "Uzunluk",
@@ -1696,6 +1939,10 @@
         "Kontur",
         "Kontur ve delik"
       ]
+    },
+    "set_other_flow_ratios": {
+      "label": "Diğer akış oranlarını ayarlayın",
+      "tooltip": "Diğer ekstrüzyon yolu türleri için akış oranlarını değiştirin."
     },
     "silent_mode": {
       "label": "Sessiz modu destekler",
@@ -1794,8 +2041,7 @@
       "tooltip": "Daha iyi katman soğutması için yavaşlama etkinleştirildiğinde, yukarıda tanımlanan minimum katman süresini korumak için yazıcının yavaşladığı minimum yazdırma hızı."
     },
     "slowdown_for_curled_perimeters": {
-      "label": "Kıvrılmış çevre çizgilerinde yavaşlat",
-      "tooltip": "Çevrelerin yukarıya doğru kıvrılmış olabileceği alanlarda yazdırmayı yavaşlatmak için bu seçeneği etkinleştirin. Örneğin, Benchy gövdesinin önü gibi keskin köşelerdeki çıkıntılara yazdırırken birden fazla katman üzerinde oluşan kıvrılmayı azaltacak şekilde ek yavaşlama uygulanacaktır.\n\n Yazıcınızın soğutması yeterince güçlü olmadığı veya yazdırma hızı çevre kıvrılmasını önleyecek kadar yavaş olmadığı sürece, genellikle bu seçeneğin açık olması önerilir. Yüksek harici çevre hızıyla yazdırılıyorsa, bu parametre, yazdırma hızlarındaki büyük farklılıklar nedeniyle yavaşlama sırasında hafif bozulmalara neden olabilir. Artefaktlar fark ederseniz basınç ilerlemenizin doğru şekilde ayarlandığından emin olun.\n\nNot: Bu seçenek etkinleştirildiğinde, çıkıntı çevreleri çıkıntılar gibi ele alınır; bu, çıkıntının çevresi bir köprünün parçası olsa bile çıkıntı hızının uygulandığı anlamına gelir. Örneğin, çevreler 100% çıkıntılı olduğunda ve onları alttan destekleyen bir duvar olmadığında 100% çıkıntı hızı uygulanacaktır."
+      "label": "Kıvrılmış çevre çizgilerinde yavaşlat"
     },
     "small_area_infill_flow_compensation": {
       "label": "Küçük alan akış telafisi (beta)",
@@ -1817,10 +2063,6 @@
       "label": "Katı dolgu yönü",
       "tooltip": "Hattın başlangıcını veya ana yönünü kontrol eden katı dolgu deseni açısı."
     },
-    "solid_infill_filament": {
-      "label": "Katı dolgu",
-      "tooltip": "Katı dolguyu yazdırmak için filament."
-    },
     "solid_infill_rotate_template": {
       "label": "Katı dolgu döndürme şablonu",
       "tooltip": "Bu parametre, belirtilen şablona göre her katmana katı dolgu yönünün döndürülmesini ekler. Şablon, derece cinsinden virgülle ayrılmış bir açı listesidir (örneğin, '0,90'). İlk açı ilk katmana, ikinci açı ikinci katmana uygulanır ve bu şekilde devam eder. Açılardan daha fazla katman varsa, açılar tekrarlanır. Tüm katı dolgu desenlerinin döndürmeyi desteklemediğini unutmayın."
@@ -1833,9 +2075,12 @@
       "label": "Dolgu yoğunluğu",
       "tooltip": "İç seyrek dolgunun yoğunluğu, %100 tüm seyrek dolguyu katı dolguya dönüştürür ve iç katı dolgu modeli kullanılacaktır."
     },
-    "sparse_infill_filament": {
-      "label": "Dolgu",
-      "tooltip": "İç seyrek dolguyu yazdırmak için filament."
+    "sparse_infill_filament_id": {
+      "label": "Dolgu"
+    },
+    "sparse_infill_flow_ratio": {
+      "label": "Seyrek dolgu akış oranı",
+      "tooltip": "Bu faktör seyrek dolgu için malzeme miktarını etkiler.\n\nKullanılan gerçek seyrek dolgu akışı, bu değerin filaman akış oranıyla ve ayarlandıysa nesnenin akış oranıyla çarpılmasıyla hesaplanır."
     },
     "sparse_infill_line_width": {
       "label": "Dolgu",
@@ -1886,7 +2131,8 @@
       "tooltip": "Spirali sonlandırırken bitirme akış oranını ayarlar. Normalde spiral geçiş, son döngü sırasında akış oranını %100 den %0 a ölçeklendirir; bu da bazı durumlarda spiralin sonunda yetersiz ekstrüzyona yol açabilir."
     },
     "spiral_mode": {
-      "label": "Spiral vazo"
+      "label": "Spiral vazo",
+      "tooltip": "Spiralleştirme, dış konturun z hareketlerini yumuşatır. Ve katı bir modeli, katı alt katmanlara sahip tek duvarlı bir baskıya dönüştürür. Oluşturulan son modelde dikiş yok."
     },
     "spiral_mode_max_xy_smoothing": {
       "label": "Maksimum xy yumuşatma",
@@ -1932,7 +2178,7 @@
     },
     "support_base_pattern": {
       "label": "Destek deseni",
-      "tooltip": "Desteğin çizgi deseni.",
+      "tooltip": "Desteğin çizgi deseni.\n\nAğaç destekleri için Varsayılan seçenek İçi Boş'tur; bu, temel desen olmadığı anlamına gelir. Diğer destek türleri için Varsayılan seçenek Doğrusal modeldir.\n\nNOT: Organik destekler için iki duvar yalnızca İçi Boş/Varsayılan taban düzeniyle desteklenir. Yıldırım tabanı deseni yalnızca İnce Ağaç/Güçlü/Hibrit destekler tarafından desteklenir. Diğer destek türlerinde Yıldırım yerine Doğrusal destek kullanılacaktır.",
       "enum_labels": [
         "Varsayılan",
         "Doğrusal",
@@ -1952,7 +2198,7 @@
     },
     "support_bottom_z_distance": {
       "label": "Alt Z mesafesi",
-      "tooltip": "Alt destek arayüzü ile nesne arasındaki z boşluğu."
+      "tooltip": "Nesne ile destek altı arasındaki Z boşluğu. Destek üst Z mesafesi 0 ise ve altta arayüz katmanları varsa bu değer yok sayılır ve destek nesneyle doğrudan temas halinde basılır (boşluk yok)."
     },
     "support_chamber_temp_control": {
       "label": "Destek kontrol ortam sıcaklığı",
@@ -1967,16 +2213,22 @@
       "tooltip": "Normal desteğin yatay açıklığını genişletin (+) veya daraltın (-)"
     },
     "support_filament": {
-      "label": "Destek/raft tabanı",
-      "tooltip": "Destek tabanını ve salı yazdırmak için filament. \"Varsayılan\", destek için belirli bir filamentin olmadığı ve mevcut filamentin kullanıldığı anlamına gelir."
+      "label": "Destek/raft tabanı"
+    },
+    "support_flow_ratio": {
+      "label": "Destek akış oranı",
+      "tooltip": "Bu faktör destek için malzeme miktarını etkiler.\n\nKullanılan gerçek destek akışı, bu değerin filaman akış oranıyla ve ayarlandıysa nesnenin akış oranıyla çarpılmasıyla hesaplanır."
     },
     "support_interface_bottom_layers": {
       "label": "Alt arayüz katmanları",
       "tooltip": "Alt arayüz katmanlarının sayısı."
     },
     "support_interface_filament": {
-      "label": "Destek/raft arayüzü",
-      "tooltip": "Filament baskı desteği arayüzü. \"Varsayılan\", destek arayüzü için özel bir filamentin olmadığı ve mevcut filamentin kullanıldığı anlamına gelir."
+      "label": "Destek/raft arayüzü"
+    },
+    "support_interface_flow_ratio": {
+      "label": "Destek arayüzü akış oranı",
+      "tooltip": "Bu faktör, destek arayüzü için malzeme miktarını etkiler.\n\nKullanılan gerçek destek arayüzü akışı, bu değerin filaman akış oranıyla ve ayarlandıysa nesnenin akış oranıyla çarpılmasıyla hesaplanır."
     },
     "support_interface_loop_pattern": {
       "label": "Arayüz kullanım döngüsü modeli",
@@ -2046,7 +2298,7 @@
       "tooltip": "Bir nesne ile ilk katmandaki desteği arasındaki XY ayrımı."
     },
     "support_object_xy_distance": {
-      "label": "Destek/nesne xy mesafesi",
+      "label": "Destek/nesne XY mesafesi",
       "tooltip": "Bir nesne ile desteği arasındaki XY ayrımı."
     },
     "support_on_build_plate_only": {
@@ -2054,8 +2306,8 @@
       "tooltip": "Model yüzeyinde destek oluşturmayın, yalnızca baskı plakasında."
     },
     "support_remove_small_overhang": {
-      "label": "Küçük çıkıntıları kaldır",
-      "tooltip": "Muhtemelen desteğe ihtiyaç duymayan küçük çıkıntıları kaldırın."
+      "label": "Küçük çıkıntıları göz ardı edin",
+      "tooltip": "Muhtemelen destek gerektirmeyen küçük çıkıntıları göz ardı edin."
     },
     "support_speed": {
       "label": "Destek",
@@ -2076,7 +2328,7 @@
     },
     "support_threshold_angle": {
       "label": "Destek açısı",
-      "tooltip": "Eğim açısı eşiğin altında olan çıkmalar için destek oluşturulacaktır."
+      "tooltip": "Eğim açısı eşik değerinin altında olan çıkıntılar için destek oluşturulacaktır.Bu değer ne kadar küçükse, desteksiz yazdırılabilecek çıkıntı o kadar dik olur.\nNot: 0 olarak ayarlanırsa, normal destekler bunun yerine Eşik çakışması kullanır, ağaç destekler ise varsayılan 30 değerine geri döner."
     },
     "support_threshold_overlap": {
       "label": "Eşik çakışması",
@@ -2084,7 +2336,7 @@
     },
     "support_top_z_distance": {
       "label": "Üst Z mesafesi",
-      "tooltip": "Üst destek arayüzü ile nesne arasındaki z boşluğu."
+      "tooltip": "Desteğin üstü ile nesne arasındaki Z boşluğu."
     },
     "support_type": {
       "label": "Tür",
@@ -2129,12 +2381,10 @@
       "tooltip": "İlk katmanın yatak sıcaklığı. 0 Değeri, filamentin Dokulu PEI Plaka üzerine yazdırmayı desteklemediği anlamına gelir."
     },
     "thick_bridges": {
-      "label": "Kalın dış köprüler",
-      "tooltip": "Etkinleştirilirse köprüler daha güvenilir olur, daha uzun mesafeler arasında köprü kurabilir ancak daha kötü görünebilir. Devre dışı bırakıldığında köprüler daha iyi görünür ancak yalnızca daha kısa köprü mesafeleri için güvenilirdir."
+      "label": "Kalın dış köprüler"
     },
     "thick_internal_bridges": {
-      "label": "Kalın iç köprüler",
-      "tooltip": "Etkinleştirilirse kalın iç köprüler kullanılacaktır. Genellikle bu özelliğin açık olması önerilir. Ancak büyük nozul uçları kullanıyorsanız kapatmayı düşünün."
+      "label": "Kalın iç köprüler"
     },
     "thumbnails": {
       "label": "G-kodu küçük resimleri",
@@ -2192,6 +2442,9 @@
       "label": "Üst yüzey yoğunluğu",
       "tooltip": "Üst yüzey katmanının yoğunluğu. %100 değeri, tamamen sağlam ve pürüzsüz bir üst katman oluşturur. Bu değerin düşürülmesi, seçilen üst yüzey desenine göre dokulu bir üst yüzey elde edilmesini sağlar. %0 değeri ise yalnızca üst katmandaki duvarların oluşturulmasını sağlar. Estetik veya işlevsel amaçlar için tasarlanmıştır, aşırı ekstrüzyon gibi sorunları gidermek için değildir."
     },
+    "top_surface_filament_id": {
+      "label": "Üst yüzey"
+    },
     "top_surface_jerk": {
       "label": "Üst yüzey",
       "tooltip": "Üst yüzey için JERK değeri."
@@ -2233,9 +2486,6 @@
     "travel_speed": {
       "label": "Seyahat",
       "tooltip": "Daha hızlı ve ekstrüzyonsuz seyahat hızı."
-    },
-    "tree_support_adaptive_layer_height": {
-      "label": "Uyarlanabilir katman yüksekliği"
     },
     "tree_support_angle_slow": {
       "label": "Tercih Edilen Dal Açısı",
@@ -2304,11 +2554,12 @@
       "label": "Göreceli (relative) E mesafelerini kullan",
       "tooltip": "\"label_objects\" seçeneği kullanılırken göreceli ekstrüzyon önerilir. Bazı ekstrüderler bu seçenek işaretlenmediğinde daha iyi çalışır (mutlak ekstrüzyon modu). Silme kulesi yalnızca göreceli modla uyumludur. Çoğu yazıcıda önerilir. Varsayılan işaretlendi."
     },
+    "volumetric_speed_coefficients": {
+      "label": "Maksimum hacimsel hız çok terimli katsayılar"
+    },
     "wall_direction": {
       "label": "Duvar döngüsü yönü",
-      "tooltip": "Yukarıdan aşağıya bakıldığında duvar döngülerinin ekstrüzyona uğradığı yön.\n\nÇift yönlü ters çevirme seçeneği etkinleştirilmediği sürece, varsayılan olarak tüm duvarlar saat yönünün tersine ekstrüde edilir. Bunu Otomatik dışında herhangi bir seçeneğe ayarlayın, Ters çevirmeden bağımsız olarak duvar yönünü eşit olarak zorlayacaktır.\n\nSpiral vazo modu etkinse bu seçenek devre dışı bırakılacaktır.",
       "enum_labels": [
-        "Otomatik",
         "Saat yönünün tersine",
         "Saat yönünde"
       ]
@@ -2316,10 +2567,6 @@
     "wall_distribution_count": {
       "label": "Duvar dağılım sayısı",
       "tooltip": "Varyasyonun yayılması gereken, merkezden sayılan duvar sayısı. Daha düşük değerler, dış duvarların genişliğinin değişmediği anlamına gelir."
-    },
-    "wall_filament": {
-      "label": "Duvarlar",
-      "tooltip": "Duvarları yazdırmak için filament."
     },
     "wall_generator": {
       "label": "Duvar Türü",
@@ -2335,6 +2582,7 @@
     },
     "wall_sequence": {
       "label": "Duvar baskı sırası",
+      "tooltip": "İç (iç) ve dış (dış) duvarların baskı sırası.\n\nEn iyi çıkıntılar için İç/Dış seçeneğini kullanın. Bunun nedeni, sarkan duvarların baskı sırasında komşu çevreye yapışabilmesidir. Ancak bu seçenek, dış çevrenin iç çevreye sıkıştırılarak deforme olması nedeniyle yüzey kalitesinin biraz düşmesine neden olur.\n\nDış duvar iç çevreden rahatsız edilmeden basıldığından, en iyi dış yüzey kalitesi ve boyutsal doğruluk için İç/Dış/İç seçeneğini kullanın. Ancak, dış duvarın üzerine baskı yapılacak bir iç çevre olmadığından sarkma performansı düşecektir. Bu seçenek, önce 3. çevreden itibaren iç duvarları, ardından dış çevreyi ve son olarak da birinci iç çevreyi yazdırdığından etkili olması için en az 3 duvar gerektirir. Bu seçenek çoğu durumda Dış/İç seçeneğine karşı önerilir.\n\nİç/Dış/İç seçeneğinin aynı dış duvar kalitesi ve boyutsal doğruluk avantajları için Dış/İç seçeneğini kullanın. Bununla birlikte, yeni bir katmanın ilk ekstrüzyonu görünür bir yüzey üzerinde başladığından Z dikişleri daha az tutarlı görünecektir.",
       "enum_labels": [
         "İç/Dış",
         "Dış/İç",
@@ -2410,11 +2658,19 @@
     },
     "wipe_tower_rib_width": {
       "label": "Rib genişliği",
-      "tooltip": "Rib genişliği"
+      "tooltip": "Diş genişliği her zaman ana kule yan uzunluğunun yarısından azdır."
     },
     "wipe_tower_rotation_angle": {
       "label": "Silme kulesi dönüş açısı",
       "tooltip": "X eksenine göre silme kulesi dönüş açısı."
+    },
+    "wipe_tower_type": {
+      "label": "Temizleme kulesi tipi",
+      "tooltip": "Çok malzemeli baskılar için temizleme kulesi uygulamasını seçin. Tip 1, filament kesicili Bambu ve Qidi yazıcılar için önerilir. Tip 2, çok araçlı ve MMU yazıcılarla daha iyi uyumluluk sunar ve genel olarak daha iyi uyumluluk sağlar.",
+      "enum_labels": [
+        "Tip 1",
+        "Tip 2"
+      ]
     },
     "wipe_tower_wall_type": {
       "label": "Duvar tipi",
@@ -2422,12 +2678,23 @@
       "enum_labels": [
         "Dikdörtgen",
         "Koni",
-        "Rib"
+        "Kaburga"
       ]
     },
     "wiping_volumes_extruders": {
       "label": "Hacimleri temizleme - hacimleri yükleme/boşaltma",
       "tooltip": "Bu vektör, silme kulesinde kullanılan her bir araçtan/araca geçiş için gerekli hacimleri kaydeder. Bu değerler, aşağıdaki tam temizleme hacimlerinin oluşturulmasını basitleştirmek için kullanılır."
+    },
+    "wrapping_detection_gcode": {
+      "label": "Topaklanma tespiti G kodu"
+    },
+    "wrapping_detection_layers": {
+      "label": "Topaklanma algılama katmanları",
+      "tooltip": "Topaklanma algılama katmanları."
+    },
+    "wrapping_exclude_area": {
+      "label": "Sondalama topaklanma alanını hariç tutar",
+      "tooltip": "Sondalama, topaklanma alanını hariç tutar."
     },
     "xy_contour_compensation": {
       "label": "X-Y kontur telafisi",
@@ -2470,6 +2737,7 @@
     "Brim": "Kenar",
     "Change extrusion role G-code": "Ekstrüzyon Rolü G-kodu Değiştirme",
     "Change filament G-code": "Filament Değişimi G-kod",
+    "Clumping Detection G-code": "Topaklanma Tespiti G Kodu",
     "Compatible printers": "Uyumlu yazıcılar",
     "Compatible process profiles": "Uyumlu süreç profilleri",
     "Cooling": "Soğutma",
@@ -2477,20 +2745,23 @@
     "Cooling for specific layer": "Belirli Katman İçin Soğutma",
     "Dependencies": "Bağımlılıklar",
     "Exhaust fan": "Egzos Fanı",
+    "Extruder": "Ekstruder",
     "Extruder Clearance": "Ekstruder Boşluğu",
     "Filament": "Filament",
     "Filament end G-code": "Filament Bitiş G Kodu",
     "Filament for Features": "Filament Kullanım Alanları",
     "Filament start G-code": "Filament Başlangıç G Kodu",
+    "File header G-code": "Dosya başlığı G kodu",
+    "First layer speed": "Başlangıç Katmanı",
     "Flow ratio and Pressure Advance": "Akış Oranı Ve Basınç İlerlemesi",
     "Flush options": "Filament Temizleme",
     "Fuzzy Skin": "Bulanık kaplama",
     "G-code output": "G Kodu Çıktısı",
     "Infill": "Dolgu",
-    "Initial layer speed": "Başlangıç Katmanı",
     "Ironing": "Ütüleme",
     "Jerk limitation": "Sarsıntı Sınırlaması",
     "Jerk(XY)": "Sarsıntı(XY)",
+    "Junction Deviation": "Köşe sapması",
     "Layer change G-code": "Katman Değişimi G-kod",
     "Layer height": "Katman Yüksekliği",
     "Layer height limits": "Katman Yüksekliği Sınırları",
@@ -2499,6 +2770,7 @@
     "Machine end G-code": "Yazıcı Bitiş G-kod",
     "Machine start G-code": "Yazıcı Başlangıç G-kod",
     "Motion ability": "Hareket",
+    "Multi Filament": "Çoklu Filament",
     "Multimaterial": "Çoklu Malzeme",
     "Notes": "Notlar",
     "Ooze prevention": "Sızıntı Önleme",
@@ -2518,14 +2790,12 @@
     "Printing by object G-code": "Nesneye Göre Yazdırma G-kod",
     "Quality": "Kalite",
     "Raft": "Raft",
-    "Resonance Avoidance": "Rezonans Kaçınma",
     "Retraction": "Geri Çekme",
     "Retraction when switching material": "Malzemeyi Değiştirirken Geri Çekme",
     "Seam": "Dikiş",
     "Setting Overrides": "Ayarların Üzerine Yazma",
     "Single extruder multi-material parameters": "Tek Ekstruder Çoklu Malzeme Parametreleri",
     "Single extruder multi-material setup": "Tek Ekstruder Çoklu Malzeme Kurulumu",
-    "Size": "Boyut",
     "Skirt": "Etek",
     "Special mode": "Özel Mod",
     "Speed": "Hız",

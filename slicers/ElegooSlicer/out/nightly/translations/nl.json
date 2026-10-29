@@ -9,19 +9,59 @@
       "tooltip": "De max_accel_to_decel van Klipper wordt automatisch aangepast"
     },
     "accel_to_decel_factor": {
-      "label": "accel_to_decel"
+      "label": "accel_to_decel",
+      "tooltip": "Klipper's max_accel_to_decel will be adjusted to this %% of acceleration."
     },
     "activate_air_filtration": {
-      "label": "Activate air filtration"
+      "label": "Activate air filtration",
+      "tooltip": "Activate for better air filtration. G-code command: M106 P3 S(0-255)"
+    },
+    "activate_air_filtration_during_print": {
+      "full_label": "Tijdens het afdrukken"
     },
     "activate_chamber_temp_control": {
       "label": "Temperatuurregeling activeren"
     },
+    "adaptive_bed_mesh_margin": {
+      "label": "Mesh margin",
+      "tooltip": "This option determines the additional distance by which the adaptive bed mesh area should be expanded in the XY directions."
+    },
+    "adaptive_pressure_advance": {
+      "label": "Enable adaptive pressure advance (beta)",
+      "tooltip": "With increasing print speeds (and hence increasing volumetric flow through the nozzle) and increasing accelerations, it has been observed that the effective PA value typically decreases. This means that a single PA value is not always 100% optimal for all features and a compromise value is usually used that does not cause too much bulging on features with lower flow speed and accelerations while also not causing gaps on faster features.\n\nThis feature aims to address this limitation by modeling the response of your printer's extrusion system depending on the volumetric flow speed and acceleration it is printing at. Internally, it generates a fitted model that can extrapolate the needed pressure advance for any given volumetric flow speed and acceleration, which is then emitted to the printer depending on the current print conditions.\n\nWhen enabled, the pressure advance value above is overridden. However, a reasonable default value above is strongly recommended to act as a fallback and for when tool changing.\n\n"
+    },
+    "adaptive_pressure_advance_bridges": {
+      "label": "Pressure advance for bridges",
+      "tooltip": "Pressure advance value for bridges. Set to 0 to disable.\n\nA lower PA value when printing bridges helps reduce the appearance of slight under extrusion immediately after bridges. This is caused by the pressure drop in the nozzle when printing in the air and a lower PA helps counteract this."
+    },
+    "adaptive_pressure_advance_model": {
+      "label": "Adaptive pressure advance measurements (beta)",
+      "tooltip": "Add sets of pressure advance (PA) values, the volumetric flow speeds and accelerations they were measured at, separated by a comma. One set of values per line. For example\n0.04,3.96,3000\n0.033,3.96,10000\n0.029,7.91,3000\n0.026,7.91,10000\n\nHow to calibrate:\n1. Run the pressure advance test for at least 3 speeds per acceleration value. It is recommended that the test is run for at least the speed of the external perimeters, the speed of the internal perimeters and the fastest feature print speed in your profile (usually its the sparse or solid infill). Then run them for the same speeds for the slowest and fastest print accelerations, and no faster than the recommended maximum acceleration as given by the Klipper input shaper\n2. Take note of the optimal PA value for each volumetric flow speed and acceleration. You can find the flow number by selecting flow from the color scheme drop down and move the horizontal slider over the PA pattern lines. The number should be visible at the bottom of the page. The ideal PA value should be decreasing the higher the volumetric flow is. If it is not, confirm that your extruder is functioning correctly. The slower and with less acceleration you print, the larger the range of acceptable PA values. If no difference is visible, use the PA value from the faster test\n3. Enter the triplets of PA values, Flow and Accelerations in the text box here and save your filament profile."
+    },
+    "adaptive_pressure_advance_overhangs": {
+      "label": "Enable adaptive pressure advance for overhangs (beta)",
+      "tooltip": "Enable adaptive PA for overhangs as well as when flow changes within the same feature. This is an experimental option, as if the PA profile is not set accurately, it will cause uniformity issues on the external surfaces before and after overhangs.\n"
+    },
     "additional_cooling_fan_speed": {
-      "label": "Ventilator snelheid"
+      "label": "Ventilator snelheid",
+      "tooltip": "Speed of auxiliary part cooling fan. Auxiliary fan will run at this speed during printing except the first several layers which is defined by no cooling layers.\nPlease enable auxiliary_fan in printer settings to use this feature. G-code command: M106 P2 S(0-255)"
+    },
+    "additional_fan_full_speed_layer": {
+      "label": "Volledige snelheid op laag"
+    },
+    "align_infill_direction_to_model": {
+      "label": "Align infill direction to model"
+    },
+    "alternate_extra_wall": {
+      "label": "Alternate extra wall",
+      "tooltip": "This setting adds an extra wall to every other layer. This way the infill gets wedged vertically between the walls, resulting in stronger prints.\n\nWhen this option is enabled, the ensure vertical shell thickness option needs to be disabled.\n\nUsing lightning infill together with this option is not recommended as there is limited infill to anchor the extra perimeters to."
     },
     "auxiliary_fan": {
-      "label": "Extra koel ventilator"
+      "label": "Extra koel ventilator",
+      "tooltip": "Enable this option if machine has auxiliary part cooling fan. G-code command: M106 P2 S(0-255)."
+    },
+    "bbl_calib_mark_logo": {
+      "label": "Show auto-calibration marks"
     },
     "bbl_use_printhost": {
       "label": "Gebruik een printhost van derden",
@@ -35,6 +75,24 @@
     },
     "bed_exclude_area": {
       "label": "Uitgesloten printbed gebied"
+    },
+    "bed_mesh_max": {
+      "label": "Bed mesh max"
+    },
+    "bed_mesh_min": {
+      "label": "Bed mesh min"
+    },
+    "bed_mesh_probe_distance": {
+      "label": "Probe point distance",
+      "tooltip": "This option sets the preferred distance between probe points (grid size) for the X and Y directions, with the default being 50mm for both X and Y."
+    },
+    "bed_temperature_formula": {
+      "label": "Bed temperature type",
+      "tooltip": "This option determines how the bed temperature is set during slicing: based on the temperature of the first filament or the highest temperature of the printed filaments.",
+      "enum_labels": [
+        "By First filament",
+        "By Highest Temp"
+      ]
     },
     "before_layer_change_gcode": {
       "label": "G-Code voor de laag wijziging",
@@ -54,6 +112,17 @@
       "full_label": "Bodemdikte",
       "tooltip": "Het aantal onderste solide lagen wordt verhoogd tijdens het slicen als de totale dikte van de onderste lagen lager is dan deze waarde. Dit zorgt ervoor dat de schaal niet te dun is bij een lage laaghoogte. 0 betekend dat deze instelling niet actief is en dat de dikte van de bodem bepaald wordt door het aantal bodem lagen."
     },
+    "bottom_solid_infill_flow_ratio": {
+      "label": "Bottom surface flow ratio",
+      "tooltip": "This factor affects the amount of material for bottom solid infill.\n\nThe actual bottom solid infill flow used is calculated by multiplying this value with the filament flow ratio, and if set, the object's flow ratio."
+    },
+    "bottom_surface_density": {
+      "label": "Bottom surface density",
+      "tooltip": "Density of the bottom surface layer. Intended for aesthetic or functional purposes, not to fix issues such as over-extrusion.\nWARNING: Lowering this value may negatively affect bed adhesion."
+    },
+    "bottom_surface_filament_id": {
+      "label": "Bodem oppervlak"
+    },
     "bottom_surface_pattern": {
       "label": "Bodem oppvlakte patroon",
       "tooltip": "Dit is het lijnenpatroon van de vulling (infill) van het bodemoppervlak, maar niet van de vulling van de brug.",
@@ -69,20 +138,40 @@
       ]
     },
     "bridge_acceleration": {
-      "label": "Brug"
+      "label": "Brug",
+      "tooltip": "Acceleration of bridges. If the value is expressed as a percentage (e.g. 50%), it will be calculated based on the outer wall acceleration."
     },
     "bridge_angle": {
-      "tooltip": "Overbrugingshoek overschrijven. 0 betekent dat de overbruggingshoek automatisch wordt berekend. Anders wordt de opgegeven hoek gebruikt voor externe bruggen. Gebruik 180° voor een hoek van nul."
+      "label": "External bridge infill direction"
+    },
+    "bridge_density": {
+      "label": "External bridge density"
     },
     "bridge_flow": {
       "label": "Brugflow"
+    },
+    "bridge_line_width": {
+      "label": "Brug"
     },
     "bridge_no_support": {
       "label": "Geen support bij bruggen toepassen",
       "tooltip": "Dit schakelt de ondersteuning (support) voor bruggebieden uit, waardoor de ondersteuning (support) erg groot kan worden. Bruggen kunnen meestal direct zonder ondersteuning (support) worden afgedrukt als ze niet erg lang zijn."
     },
+    "bridge_speed": {
+      "label": "Extern",
+      "tooltip": "Speed of the externally visible bridge extrusions.\n\nIn addition, if Slow down for curled perimeters is disabled or Classic overhang mode is enabled, it will be the print speed of overhang walls that are supported by less than 13%, whether they are part of a bridge or an overhang."
+    },
     "brim_ears": {
-      "label": "Rand oren"
+      "label": "Rand oren",
+      "tooltip": "Only draw brim over the sharp edges of the model."
+    },
+    "brim_ears_detection_length": {
+      "label": "Brim ear detection radius",
+      "tooltip": "The geometry will be decimated before detecting sharp angles. This parameter indicates the minimum length of the deviation for the decimation.\n0 to deactivate."
+    },
+    "brim_ears_max_angle": {
+      "label": "Brim ear max angle",
+      "tooltip": "Maximum angle to let a brim ear appear.\nIf set to 0, no brim will be created.\nIf set to ~180, brim will be created on everything but straight sections."
     },
     "brim_object_gap": {
       "label": "Ruimte tussen rand en object",
@@ -94,12 +183,16 @@
       "enum_labels": [
         "Automatisch",
         "Mouse ear",
-        "Painted",
+        "Geschilderd",
         "Outer brim only",
         "Inner brim only",
         "Outer and inner brim",
         "Geen extra rand (brim)"
       ]
+    },
+    "brim_use_efc_outline": {
+      "label": "Rand volgt de gecompenseerde omtrek",
+      "tooltip": "Indien ingeschakeld, wordt de rand uitgelijnd met de omtrekgeometrie van de eerste laag nadat olifantenvoetcompensatie is toegepast.\nDeze optie is bedoeld voor gevallen waarin sprake is van olifantenvoetcompensatie verandert de voetafdruk van de eerste laag aanzienlijk.\n\nAls uw huidige configuratie al goed werkt, kan het inschakelen hiervan niet nodig zijn kan ervoor zorgen dat de rand samensmelt met de bovenste lagen."
     },
     "brim_width": {
       "label": "Rand breedte",
@@ -107,23 +200,42 @@
     },
     "chamber_temperature": {
       "label": "Kamertemperatuur",
-      "full_label": "Kamertemperatuur"
+      "full_label": "Kamertemperatuur",
+      "tooltip": "For high-temperature materials like ABS, ASA, PC, and PA, a higher chamber temperature can help suppress or reduce warping and potentially lead to higher interlayer bonding strength. However, at the same time, a higher chamber temperature will reduce the efficiency of air filtration for ABS and ASA.\n\nFor PLA, PETG, TPU, PVA, and other low-temperature materials, this option should be disabled (set to 0) as the chamber temperature should be low to avoid extruder clogging caused by material softening at the heat break.\n\nIf enabled, this parameter also sets a G-code variable named chamber_temperature, which can be used to pass the desired chamber temperature to your print start macro, or a heat soak macro like this: PRINT_START (other variables) CHAMBER_TEMP=[chamber_temperature]. This may be useful if your printer does not support M141/M191 commands, or if you desire to handle heat soaking in the print start macro if no active chamber heater is installed."
+    },
+    "change_extrusion_role_gcode": {
+      "label": "Change extrusion role G-code",
+      "tooltip": "This G-code is inserted when the extrusion role is changed."
     },
     "change_filament_gcode": {
       "label": "Filament G-code aanpassen",
       "tooltip": "Deze G-code wordt ingevoegd wanneer filament wordt vervangen, inclusief T-commando's om gereedschapswissel te activeren."
     },
+    "close_additional_fan_first_x_layers": {
+      "label": "Voor de eerste",
+      "tooltip": "Stel speciale extra koelventilator in voor de eerste bepaalde lagen."
+    },
     "close_fan_the_first_x_layers": {
-      "label": "Geen koeling voor de eerste"
+      "label": "Geen koeling voor de eerste",
+      "tooltip": "Turn off all cooling fans for the first few layers. This can be used to improve build plate adhesion."
+    },
+    "compatible_printers": {
+      "label": "Select printers"
     },
     "compatible_printers_condition": {
+      "label": "Voorwaarde",
       "tooltip": "Een waar/niet waar aanduiding die gebruik maakt van configuratiewaarden van een actief printerprofiel. Als deze aanduiding op waar staat, wordt dit profiel beschouwd als geschikt voor het actieve printerprofiel."
     },
+    "compatible_prints": {
+      "label": "Select profiles"
+    },
     "compatible_prints_condition": {
+      "label": "Voorwaarde",
       "tooltip": "Een waar/niet waar aanduiding die gebruik maakt van configuratiewaarden van een actief printprofiel. Als deze aanduiding op waar staat, wordt dit profiel beschouwd als geschikt voor het actieve printprofiel."
     },
     "complete_print_exhaust_fan_speed": {
-      "label": "Ventilator snelheid"
+      "label": "Ventilator snelheid",
+      "tooltip": "Speed of exhaust fan after printing completes."
     },
     "cool_plate_temp": {
       "label": "Andere lagen",
@@ -144,6 +256,8 @@
       "tooltip": "Afstand vanaf het mondstuk tot het middelpunt van de koelbuis."
     },
     "counterbore_hole_bridging": {
+      "label": "Bridge counterbore holes",
+      "tooltip": "This option creates bridges for counterbore holes, allowing them to be printed without support. Available modes include:\n1. None: No bridge is created\n2. Partially Bridged: Only a part of the unsupported area will be bridged\n3. Sacrificial Layer: A full sacrificial bridge layer is created",
       "enum_labels": [
         "Geen",
         "Partially bridged",
@@ -156,7 +270,7 @@
       "enum_labels": [
         "Smooth Cool Plate",
         "Engineering plate (technisch printbed)",
-        "Smooth High Temp Plate",
+        "Gladde PEI-plaat / Hoge temperatuurplaat",
         "Getextureerde PEI-plaat",
         "Textured Cool Plate",
         "Cool Plate (SuperTack)"
@@ -166,15 +280,31 @@
       "label": "Normaal printen",
       "tooltip": "Dit is de standaard versnelling voor zowel normaal printen en verplaatsen behalve voor de eerste laag"
     },
+    "default_bed_type": {
+      "label": "Default bed type",
+      "tooltip": "Default bed type for the printer (supports both numeric and string format)."
+    },
     "default_filament_colour": {
-      "label": "Standaardkleur"
+      "label": "Standaardkleur",
+      "tooltip": "Default filament color.\nRight click to reset value to system default."
     },
     "default_filament_profile": {
       "label": "Standaard filament profiel",
       "tooltip": "Standaard filamentprofiel bij het overschakelen naar dit machineprofiel"
     },
     "default_jerk": {
-      "label": "Standaard"
+      "label": "Standaard",
+      "tooltip": "Default jerk."
+    },
+    "default_junction_deviation": {
+      "label": "Junction Deviation",
+      "tooltip": "Marlin Firmware Junction Deviation (replaces the traditional XY Jerk setting)."
+    },
+    "default_nozzle_volume_type": {
+      "enum_labels": [
+        "Standaard",
+        "High Flow"
+      ]
     },
     "default_print_profile": {
       "label": "Standaard proces profiel",
@@ -182,29 +312,35 @@
     },
     "deretraction_speed": {
       "label": "Snelheid van terugtrekken (deretraction)",
-      "full_label": "Snelheid van terugtrekken (deretraction)"
+      "full_label": "Snelheid van terugtrekken (deretraction)",
+      "tooltip": "Speed for reloading filament into the nozzle. Zero means same speed of retraction."
     },
     "detect_narrow_internal_solid_infill": {
-      "label": "Detecteer dichte interne solide vulling (infill)",
       "tooltip": "Deze optie detecteert automatisch smalle interne solide opvul (infill) gebieden. Indien ingeschakeld, wordt het concentrische patroon gebruikt voor het gebied om het afdrukken te versnellen. Anders wordt standaard het rechtlijnige patroon gebruikt."
     },
     "detect_overhang_wall": {
-      "label": "Overhange wand detecteren",
       "tooltip": "Dit maakt het mogelijk om het overhangpercentage ten opzichte van de lijnbreedte te detecteren en gebruikt verschillende snelheden om af te drukken. Voor 100%% overhang wordt de brugsnelheid gebruikt."
     },
-    "detect_thin_wall": {
-      "label": "Detecteer dunne wanden",
-      "tooltip": "Dit detecteert dunne wanden die geen twee lijnen kunnen bevatten en gebruikt een enkele lijn tijdens het printen. Het kan zijn dat de kwaliteit minder goed is, omdat er geen gesloten lus is"
+    "disable_m73": {
+      "label": "Disable set remaining print time",
+      "tooltip": "Disable generating of the M73: Set remaining print time in the final G-code."
     },
     "dont_filter_internal_bridges": {
+      "label": "Filter out small internal bridges",
+      "tooltip": "This option can help reduce pillowing on top surfaces in heavily slanted or curved models.\nBy default, small internal bridges are filtered out and the internal solid infill is printed directly over the sparse infill. This works well in most cases, speeding up printing without too much compromise on top surface quality.\nHowever, in heavily slanted or curved models, especially where too low a sparse infill density is used, this may result in curling of the unsupported solid infill, causing pillowing.\nEnabling limited filtering or no filtering will print internal bridge layer over slightly unsupported internal solid infill. The options below control the sensitivity of the filtering, i.e. they control where internal bridges are created:\n1. Filter - enables this option. This is the default behavior and works well in most cases\n2. Limited filtering - creates internal bridges on heavily slanted surfaces while avoiding unnecessary bridges. This works well for most difficult models\n3. No filtering - creates internal bridges on every potential internal overhang. This option is useful for heavily slanted top surface models; however, in most cases, it creates too many unnecessary bridges.",
       "enum_labels": [
         "Filter",
         "Limited filtering",
         "No filtering"
       ]
     },
+    "dont_slow_down_outer_wall": {
+      "label": "Don't slow down outer walls",
+      "tooltip": "If enabled, this setting will ensure external perimeters are not slowed down to meet the minimum layer time. This is particularly helpful in the below scenarios:\n1. To avoid changes in shine when printing glossy filaments\n2. To avoid changes in external wall speed which may create slight wall artifacts that appear like Z banding\n3. To avoid printing at speeds which cause VFAs (fine artifacts) on the external walls"
+    },
     "draft_shield": {
       "label": "Tochtscherm",
+      "tooltip": "A draft shield is useful to protect an ABS or ASA print from warping and detaching from print bed due to wind draft. It is usually needed only with open frame printers, i.e. without an enclosure.\n\nEnabled = skirt is as tall as the highest printed object. Otherwise 'Skirt height' is used.\nNote: With the draft shield active, the skirt will be printed at skirt distance from the object. Therefore, if brims are active it may intersect with them. To avoid this, increase the skirt distance value.\n",
       "enum_labels": [
         "Uit",
         "Aan"
@@ -222,10 +358,17 @@
       "label": "\"Elephant foot\" compensatielagen",
       "tooltip": "Het aantal lagen waarop de \"elephant foot\" compensatie actief zal zijn. De eerste laag zal worden verkleind met de \"elephant foot\" compensatiewaarde, daarna zullen de volgende lagen lineair minder worden verkleind, tot aan de laag die wordt aangegeven door deze waarde."
     },
+    "emit_machine_limits_to_gcode": {
+      "label": "Emit limits to G-code",
+      "tooltip": "If enabled, the machine limits will be emitted to G-code file.\nThis option will be ignored if the G-code flavor is set to Klipper."
+    },
     "enable_arc_fitting": {
-      "label": "Boog montage"
+      "label": "Boog montage",
+      "tooltip": "Enable this to get a G-code file which has G2 and G3 moves. The fitting tolerance is same as the resolution.\n\nNote: For Klipper machines, this option is recommended to be disabled. Klipper does not benefit from arc commands as these are split again into line segments by the firmware. This results in a reduction in surface quality as line segments are converted to arcs by the slicer and then back to line segments by the firmware."
     },
     "enable_extra_bridge_layer": {
+      "label": "Extra bridge layers (beta)",
+      "tooltip": "This option enables the generation of an extra bridge layer over internal and/or external bridges.\n\nExtra bridge layers help improve bridge appearance and reliability, as the solid infill is better supported. This is especially useful in fast printers, where the bridge and solid infill speeds vary greatly. The extra bridge layer results in reduced pillowing on top surfaces, as well as reduced separation of the external bridge layer from its surrounding perimeters.\n\nIt is generally recommended to set this to at least 'External bridge only', unless specific issues with the sliced model are found.\n\nOptions:\n1. Disabled - does not generate second bridge layers. This is the default and is set for compatibility purposes\n2. External bridge only - generates second bridge layers for external-facing bridges only. Please note that small bridges that are shorter or narrower than the set number of perimeters will be skipped as they would not benefit from a second bridge layer. If generated, the second bridge layer will be extruded parallel to the first bridge layer to reinforce the bridge strength\n3. Internal bridge only - generates second bridge layers for internal bridges over sparse infill only. Please note that the internal bridges count towards the top shell layer count of your model. The second internal bridge layer will be extruded as close to perpendicular to the first as possible. If multiple regions in the same island, with varying bridge angles are present, the last region of that island will be selected as the angle reference\n4. Apply to all - generates second bridge layers for both internal and external-facing bridges\n",
       "enum_labels": [
         "Uit",
         "External bridge only",
@@ -233,12 +376,30 @@
         "Apply to all"
       ]
     },
+    "enable_filament_ramming": {
+      "label": "Enable filament ramming",
+      "tooltip": "Enable filament ramming"
+    },
+    "enable_overhang_bridge_fan": {
+      "label": "Force cooling for overhangs and bridges",
+      "tooltip": "Enable this option to allow adjustment of the part cooling fan speed for specifically for overhangs, internal and external bridges. Setting the fan speed specifically for these features can improve overall print quality and reduce warping."
+    },
     "enable_overhang_speed": {
       "label": "Afremmen voor overhangende delen",
       "tooltip": "Schakel deze optie in om de snelheid omlaag te brengen voor verschillende overhangende hoeken"
     },
+    "enable_power_loss_recovery": {
+      "label": "Stroomuitvalherstel",
+      "tooltip": "Choose how to control power loss recovery. When set to Printer configuration, the slicer will not emit power loss recovery G-code and will leave the printer's configuration unchanged. Applicable to Bambu Lab or Marlin 2 firmware based printers.",
+      "enum_labels": [
+        "Printer configuration",
+        "Inschakelen",
+        "Uitschakelen"
+      ]
+    },
     "enable_pressure_advance": {
-      "label": "Pressure advance inschakelen"
+      "label": "Pressure advance inschakelen",
+      "tooltip": "Enable pressure advance, auto calibration result will be overwritten once enabled."
     },
     "enable_prime_tower": {
       "label": "Inschakelen",
@@ -247,6 +408,18 @@
     "enable_support": {
       "label": "Support inschakelen",
       "tooltip": "Dit maakt het genereren van support mogelijk."
+    },
+    "enable_tower_interface_cooldown_during_tower": {
+      "label": "Cool down from interface boost during prime tower",
+      "tooltip": "When interface-layer temperature boost is active, set the nozzle back to print temperature at the start of the prime tower so it cools down during the tower."
+    },
+    "enable_tower_interface_features": {
+      "label": "Enable tower interface features",
+      "tooltip": "Enable optimized prime tower interface behavior when different materials meet."
+    },
+    "enable_wrapping_detection": {
+      "label": "Enable clumping detection",
+      "tooltip": "Enable clumping detection"
     },
     "eng_plate_temp": {
       "label": "Andere lagen",
@@ -260,6 +433,7 @@
     },
     "ensure_vertical_shell_thickness": {
       "label": "Zorg voor een verticale schaaldikte",
+      "tooltip": "Add solid infill near sloping surfaces to guarantee the vertical shell thickness (top+bottom solid layers)\nNone: No solid infill will be added anywhere. Caution: Use this option carefully if your model has sloped surfaces\nCritical Only: Avoid adding solid infill for walls\nModerate: Add solid infill for heavily sloping surfaces only\nAll: Add solid infill for all suitable sloping surfaces\nDefault value is All.",
       "enum_labels": [
         "Geen",
         "Critical Only",
@@ -268,11 +442,20 @@
       ]
     },
     "exclude_object": {
-      "label": "Objecten uitsluiten"
+      "label": "Objecten uitsluiten",
+      "tooltip": "Enable this option to add EXCLUDE OBJECT command in G-code."
     },
     "extra_loading_move": {
       "label": "Extra laadafstand",
       "tooltip": "Als dit ingesteld is op 0, zal de afstand die het filament tijdens het laden uit de parkeerpositie even groot zijn als wanneer het filament teruggetrokken wordt. Als de waarde positief is, zal het verder geladen worden. Als het negatief is, is de laadafstand dus korter."
+    },
+    "extra_perimeters_on_overhangs": {
+      "label": "Extra perimeters on overhangs",
+      "tooltip": "Create additional perimeter paths over steep overhangs and areas where bridges cannot be anchored."
+    },
+    "extra_solid_infills": {
+      "label": "Insert solid layers",
+      "tooltip": "Insert solid infill at specific layers. Use N to insert every Nth layer, N#K to insert K consecutive solid layers every N layers (K is optional, e.g. '5#' equals '5#1'), or a comma-separated list (e.g. 1,7,9) to insert at explicit layers. Layers are 1-based."
     },
     "extruder": {
       "label": "Extruder"
@@ -296,9 +479,31 @@
     "extruder_offset": {
       "label": "Extruder offset"
     },
+    "extruder_printable_area": {
+      "label": "Extruder printable area"
+    },
+    "extruder_printable_height": {
+      "label": "Extruder printable height",
+      "tooltip": "Maximum printable height of this extruder which is limited by mechanism of printer."
+    },
+    "extruder_type": {
+      "label": "Type",
+      "enum_labels": [
+        "Direct Drive",
+        "Bowden"
+      ]
+    },
+    "extrusion_rate_smoothing_external_perimeter_only": {
+      "label": "Apply only on external features",
+      "tooltip": "Applies extrusion rate smoothing only on external perimeters and overhangs. This can help reduce artefacts due to sharp speed transitions on externally visible overhangs without impacting the print speed of features that will not be visible to the user."
+    },
     "fan_cooling_layer_time": {
       "label": "Laag tijd",
       "tooltip": "De printkop ventilator wordt ingeschakeld voor lagen waarvan de geschatte printtijd korter is dan deze waarde. Ventilatorsnelheid wordt geïnterpoleerd tussen de minimale en maximale ventilatorsnelheden volgens de printtijd van de laag"
+    },
+    "fan_kickstart": {
+      "label": "Fan kick-start time",
+      "tooltip": "Emit a max fan speed command for this amount of seconds before reducing to target speed to kick-start the cooling fan.\nThis is useful for fans where a low PWM/power may be insufficient to get the fan started spinning from a stop, or to get the fan up to speed faster.\nSet to 0 to deactivate."
     },
     "fan_max_speed": {
       "label": "Ventilator snelheid",
@@ -308,9 +513,32 @@
       "label": "Ventilator snelheid",
       "tooltip": "Minimale snelheid voor de printkop ventilator"
     },
+    "fan_speedup_overhangs": {
+      "label": "Only overhangs",
+      "tooltip": "Will only take into account the delay for the cooling of overhangs."
+    },
+    "fan_speedup_time": {
+      "tooltip": "Start the fan this number of seconds earlier than its target start time (you can use fractional seconds). It assumes infinite acceleration for this time estimation, and will only take into account G1 and G0 moves (arc fitting is unsupported).\nIt won't move fan commands from custom G-code (they act as a sort of 'barrier').\nIt won't move fan commands into the start G-code if the 'only custom start G-code' is activated.\nUse 0 to deactivate."
+    },
+    "filament_adaptive_volumetric_speed": {
+      "label": "Adaptive volumetric speed",
+      "tooltip": "When enabled, the extrusion flow is limited by the smaller of the fitted value (calculated from line width and layer height) and the user-defined maximum flow. When disabled, only the user-defined maximum flow is applied.\n\nNote: Experimental and incomplete feature imported from BBS. Functional for some profiles that already have the variable saved."
+    },
+    "filament_adhesiveness_category": {
+      "label": "Adhesiveness Category",
+      "tooltip": "Filament category."
+    },
+    "filament_change_length": {
+      "label": "Filament ramming length",
+      "tooltip": "When changing the extruder, it is recommended to extrude a certain length of filament from the original extruder. This helps minimize nozzle oozing."
+    },
     "filament_colour": {
       "label": "Kleur",
       "tooltip": "Wordt alleen gebruikt als een visuele weergave op de UI"
+    },
+    "filament_cooling_before_tower": {
+      "label": "Afkoeling veegtoren",
+      "tooltip": "Temperatuurdaling voor het binnengaan van de filamenttoren"
     },
     "filament_cooling_final_speed": {
       "label": "Snelheid voor de laatste koelbeweging",
@@ -334,7 +562,8 @@
     },
     "filament_deretraction_speed": {
       "label": "Snelheid van terugtrekken (deretraction)",
-      "full_label": "Snelheid van terugtrekken (deretraction)"
+      "full_label": "Snelheid van terugtrekken (deretraction)",
+      "tooltip": "Speed for reloading filament into the nozzle. Zero means same speed of retraction."
     },
     "filament_diameter": {
       "label": "Diameter",
@@ -347,6 +576,30 @@
     "filament_flow_ratio": {
       "label": "Flow verhouding",
       "tooltip": "Het materiaal kan een volumetrische verandering hebben na het wisselen tussen gesmolten en gekristaliseerde toestand. Deze instelling verandert alle extrusiestromen van dit filament in de G-code proportioneel. Het aanbevolen waardebereik ligt tussen 0,95 en 1,05. U kunt deze waarde mogelijk optimaliseren om een mooi vlak oppervlak te krijgen als er een lichte over- of onderflow is."
+    },
+    "filament_flush_temp": {
+      "label": "Flush temperature",
+      "tooltip": "Temperature when flushing filament. 0 indicates the upper bound of the recommended nozzle temperature range."
+    },
+    "filament_flush_volumetric_speed": {
+      "label": "Flush volumetric speed",
+      "tooltip": "Volumetric speed when flushing filament. 0 indicates the max volumetric speed."
+    },
+    "filament_ironing_flow": {
+      "label": "Flow tijdens strijken",
+      "tooltip": "Filament-specific override for ironing flow. This allows you to customize the ironing flow for each filament type. Too high value results in overextrusion on the surface."
+    },
+    "filament_ironing_inset": {
+      "label": "Ironing inset",
+      "tooltip": "Filament-specific override for ironing inset. This allows you to customize the distance to keep from the edges when ironing for each filament type."
+    },
+    "filament_ironing_spacing": {
+      "label": "Afstand tussen de strijklijnen",
+      "tooltip": "Filament-specific override for ironing line spacing. This allows you to customize the spacing between ironing lines for each filament type."
+    },
+    "filament_ironing_speed": {
+      "label": "Snelheid tijdens het strijken",
+      "tooltip": "Filament-specific override for ironing speed. This allows you to customize the print speed of ironing lines for each filament type."
     },
     "filament_is_support": {
       "label": "Support materiaal",
@@ -361,7 +614,20 @@
       "tooltip": "Snelheid die gebruikt wordt aan het begin van de laadfase."
     },
     "filament_long_retractions_when_cut": {
+      "label": "Long retraction when cut (beta)",
       "tooltip": "Experimentele functie: Het filament wordt tijdens het wisselen over een grotere afstand teruggetrokken en afgesneden om de spoeling tot een minimum te beperken. Dit vermindert de spoeling aanzienlijk, maar vergroot mogelijk ook het risico op verstoppingen in het mondstuk of andere printproblemen."
+    },
+    "filament_map": {
+      "label": "Filament map to extruder",
+      "tooltip": "Filament map to extruder."
+    },
+    "filament_map_mode": {
+      "enum_labels": [
+        "Auto For Flush",
+        "Auto For Match",
+        "Handmatig",
+        "Standaard"
+      ]
     },
     "filament_max_volumetric_speed": {
       "label": "Maximale volumetrische snelheid",
@@ -370,9 +636,25 @@
     "filament_minimal_purge_on_wipe_tower": {
       "label": "Minimale filament reiniging op de wipe tower"
     },
+    "filament_multitool_ramming": {
+      "label": "Enable ramming for multi-tool setups",
+      "tooltip": "Perform ramming when using multi-tool printer (i.e. when the 'Single Extruder Multimaterial' in Printer Settings is unchecked). When checked, a small amount of filament is rapidly extruded on the wipe tower just before the tool change. This option is only used when the wipe tower is enabled."
+    },
+    "filament_multitool_ramming_flow": {
+      "label": "Multi-tool ramming flow",
+      "tooltip": "Flow used for ramming the filament before the tool change."
+    },
+    "filament_multitool_ramming_volume": {
+      "label": "Multi-tool ramming volume",
+      "tooltip": "The volume to be rammed before the tool change."
+    },
     "filament_notes": {
       "label": "Filament notes",
       "tooltip": "You can put your notes regarding the filament here."
+    },
+    "filament_printable": {
+      "label": "Filament printable",
+      "tooltip": "The filament is printable in extruder."
     },
     "filament_ramming_parameters": {
       "label": "Rammingparameters",
@@ -383,12 +665,16 @@
       "tooltip": "Dit is de lengte van snel intrekken (retraction) vóór een wipe, in verhouding tot de retraction lengte."
     },
     "filament_retract_lift_above": {
-      "label": "Beweeg Z alleen omhoog boven"
+      "label": "Beweeg Z alleen omhoog boven",
+      "tooltip": "If you set this to a positive value, Z lift will only take place above the specified absolute Z."
     },
     "filament_retract_lift_below": {
-      "label": "Beweeg Z alleen omhoog onder"
+      "label": "Beweeg Z alleen omhoog onder",
+      "tooltip": "If you set this to a positive value, Z lift will only take place below the specified absolute Z."
     },
     "filament_retract_lift_enforce": {
+      "label": "On surfaces",
+      "tooltip": "Enforce Z-Hop behavior. This setting is impacted by the above settings (Only lift Z above/below).",
       "enum_labels": [
         "All Surfaces",
         "Top Only",
@@ -405,11 +691,13 @@
       "tooltip": "Dit forceert retraction (terugtrekken van filament) als er gewisseld wordt van laag"
     },
     "filament_retraction_distances_when_cut": {
-      "label": "Retraction distance when cut"
+      "label": "Retraction distance when cut",
+      "tooltip": "Experimental feature: Retraction length before cutting off during filament change."
     },
     "filament_retraction_length": {
       "label": "Lengte",
-      "full_label": "Terugtrek (retraction) lengte"
+      "full_label": "Terugtrek (retraction) lengte",
+      "tooltip": "Some amount of material in extruder is pulled back to avoid ooze during long travel. Set zero to disable retraction."
     },
     "filament_retraction_minimum_travel": {
       "label": "Drempel voor verplaatsingsafstand",
@@ -417,11 +705,28 @@
     },
     "filament_retraction_speed": {
       "label": "Terugtrek (retraction) snelheid",
-      "full_label": "Terugtrek (retraction) snelheid"
+      "full_label": "Terugtrek (retraction) snelheid",
+      "tooltip": "Speed for retracting filament from the nozzle."
+    },
+    "filament_shrink": {
+      "label": "Shrinkage (XY)",
+      "tooltip": "Enter the shrinkage percentage that the filament will get after cooling (94% if you measure 94mm instead of 100mm). The part will be scaled in XY to compensate. For multi-material prints, ensure filament shrinkage matches across all used filaments\nBe sure to allow enough space between objects, as this compensation is done after the checks."
+    },
+    "filament_shrinkage_compensation_z": {
+      "label": "Shrinkage (Z)",
+      "tooltip": "Enter the shrinkage percentage that the filament will get after cooling (94% if you measure 94mm instead of 100mm). The part will be scaled in Z to compensate."
     },
     "filament_soluble": {
       "label": "Oplosbaar materiaal",
       "tooltip": "Oplosbaar materiaal wordt doorgaans gebruikt om odnersteuning (support) en support interface te printen "
+    },
+    "filament_stamping_distance": {
+      "label": "Stamping distance measured from the center of the cooling tube",
+      "tooltip": "If set to non-zero value, filament is moved toward the nozzle between the individual cooling moves (\"stamping\"). This option configures how long this movement should be before the filament is retracted again."
+    },
+    "filament_stamping_loading_speed": {
+      "label": "Stamping loading speed",
+      "tooltip": "Speed used for stamping."
     },
     "filament_start_gcode": {
       "label": "Start G-code",
@@ -430,6 +735,26 @@
     "filament_toolchange_delay": {
       "label": "Vertraging na het ontladen",
       "tooltip": "Wachttijd voor het ontladen van het filament. Dit kan helpen om betrouwbare toolwisselingen te krijgen met flexibele materialen die meer tijd nodig hebben om te krimpen naar de originele afmetingen."
+    },
+    "filament_tower_interface_pre_extrusion_dist": {
+      "label": "Interface layer pre-extrusion distance",
+      "tooltip": "Pre-extrusion distance for prime tower interface layer (where different materials meet)."
+    },
+    "filament_tower_interface_pre_extrusion_length": {
+      "label": "Interface layer pre-extrusion length",
+      "tooltip": "Pre-extrusion length for prime tower interface layer (where different materials meet)."
+    },
+    "filament_tower_interface_print_temp": {
+      "label": "Interface layer print temperature",
+      "tooltip": "Print temperature for prime tower interface layer (where different materials meet). If set to -1, use max recommended nozzle temperature."
+    },
+    "filament_tower_interface_purge_volume": {
+      "label": "Interface layer purge length",
+      "tooltip": "Purge length for prime tower interface layer (where different materials meet)."
+    },
+    "filament_tower_ironing_area": {
+      "label": "Tower ironing area",
+      "tooltip": "Ironing area for prime tower interface layer (where different materials meet)."
     },
     "filament_type": {
       "label": "Type",
@@ -452,12 +777,16 @@
       "tooltip": "Dit beweegt het mondstuk langs het laatste extrusiepad bij het terugtrekken (retraction) om eventueel gelekt materiaal op het mondstuk te reinigen. Dit kan \"blobs\" minimaliseren bij het printen van een nieuw onderdeel na het verplaatsen"
     },
     "filament_wipe_distance": {
-      "label": "Veeg afstand"
+      "label": "Veeg afstand",
+      "tooltip": "Describe how long the nozzle will move along the last path when retracting.\n\nDepending on how long the wipe operation lasts, how fast and long the extruder/filament retraction settings are, a retraction move may be needed to retract the remaining filament.\n\nSetting a value in the retract amount before wipe setting below will perform any excess retraction before the wipe, else it will be performed after."
     },
     "filament_z_hop": {
+      "label": "Z-hop height",
       "tooltip": "Wanneer er een terugtrekking (retraction) is, wordt het mondstuk een beetje opgetild om ruimte te creëren tussen het mondstuk en de print. Dit voorkomt dat het mondstuk de print raakt bij verplaatsen. Het gebruik van spiraallijnen om Z op te tillen kan stringing voorkomen."
     },
     "filament_z_hop_types": {
+      "label": "Z-hop type",
+      "tooltip": "Type of Z-hop.",
       "enum_labels": [
         "Automatisch",
         "Normaal",
@@ -465,12 +794,25 @@
         "Spiraal"
       ]
     },
+    "file_start_gcode": {
+      "label": "File header G-code",
+      "tooltip": "G-code written at the very top of the output file, before any other content. Useful for adding metadata that printer firmware reads from the first lines of the file (e.g. estimated print time, filament usage). Supports placeholders like {print_time_sec} and {used_filament_length}."
+    },
     "filename_format": {
       "label": "Bestandsnaam formaat",
       "tooltip": "Gebruikers kunnen zelf de project bestandsnaam kiezen tijdens het exporteren"
     },
+    "fill_multiline": {
+      "label": "Fill Multiline",
+      "tooltip": "Using multiple lines for the infill pattern, if supported by infill pattern."
+    },
     "filter_out_gap_fill": {
-      "label": "Kleine openingen wegfilteren"
+      "label": "Kleine openingen wegfilteren",
+      "tooltip": "Don't print gap fill with a length is smaller than the threshold specified (in mm). This setting applies to top, bottom and solid infill and, if using the classic perimeter generator, to wall gap fill."
+    },
+    "first_layer_flow_ratio": {
+      "label": "First layer flow ratio",
+      "tooltip": "This factor affects the amount of material on the first layer for the extrusion path roles listed in this section.\n\nFor the first layer, the actual flow ratio for each path role (does not affect brims and skirts) will be multiplied by this value."
     },
     "first_layer_print_sequence": {
       "label": "Afdrukvolgorde van de eerste laag"
@@ -481,6 +823,9 @@
         "Automatisch",
         "Aanpassen"
       ]
+    },
+    "first_x_layer_fan_speed": {
+      "label": "Ventilator snelheid"
     },
     "flush_into_infill": {
       "label": "Uitspoelen in de opvulling van objecten",
@@ -511,13 +856,21 @@
       "label": "Vage buitenkant",
       "tooltip": "Deze instelling zorgt ervoor dat de toolhead willekeurig schudt tijdens het printen van muren, zodat het oppervlak er ruw uitziet. Deze instelling regelt de \"fuzzy\" positie.",
       "enum_labels": [
-        "Geen",
+        "Alleen geverfd",
         "Contour",
+        "Gat",
         "Contour and hole",
-        "Alle wanden"
+        "Alle wanden",
+        "Uit"
       ]
     },
+    "fuzzy_skin_first_layer": {
+      "label": "Apply fuzzy skin to first layer",
+      "tooltip": "Whether to apply fuzzy skin on the first layer."
+    },
     "fuzzy_skin_mode": {
+      "label": "Fuzzy skin generator mode",
+      "tooltip": "Fuzzy skin generation mode. Works only with Arachne!\nDisplacement: Сlassic mode when the pattern is formed by shifting the nozzle sideways from the original path.\nExtrusion: The mode when the pattern formed by the amount of extruded plastic. This is the fast and straight algorithm without unnecessary nozzle shake that gives a smooth pattern. But it is more useful for forming loose walls in the entire they array.\nCombined: Joint mode [Displacement] + [Extrusion]. The appearance of the walls is similar to [Displacement] Mode, but it leaves no pores between the perimeters.\n\nAttention! The [Extrusion] and [Combined] modes works only the fuzzy_skin_thickness parameter not more than the thickness of printed loop. At the same time, the width of the extrusion for a particular layer should also not be below a certain level. It is usually equal 15-25%% of a layer height. Therefore, the maximum fuzzy skin thickness with a perimeter width of 0.4 mm and a layer height of 0.2 mm will be 0.4-(0.2*0.25)=±0.35mm! If you enter a higher parameter than this, the error Flow::spacing() will displayed, and the model will not be sliced. You can choose this number until this error is repeated.",
       "enum_labels": [
         "Displacement",
         "Extrusion",
@@ -525,23 +878,43 @@
       ]
     },
     "fuzzy_skin_noise_type": {
+      "label": "Fuzzy skin noise type",
       "enum_labels": [
         "Klassiek",
         "Perlin",
         "Billow",
         "Ridged Multifractal",
-        "Voronoi"
+        "Voronoi",
+        "Ripple"
       ]
+    },
+    "fuzzy_skin_octaves": {
+      "label": "Fuzzy Skin Noise Octaves",
+      "tooltip": "The number of octaves of coherent noise to use. Higher values increase the detail of the noise, but also increase computation time."
+    },
+    "fuzzy_skin_persistence": {
+      "label": "Fuzzy skin noise persistence",
+      "tooltip": "The decay rate for higher octaves of the coherent noise. Lower values will result in smoother noise."
     },
     "fuzzy_skin_point_distance": {
       "label": "Fuzzy skin punt afstand",
       "tooltip": "De gemiddelde afstand tussen de willekeurige punten die op ieder lijnsegment zijn geïntroduceerd"
     },
+    "fuzzy_skin_scale": {
+      "label": "Fuzzy skin feature size",
+      "tooltip": "The base size of the coherent noise features, in mm. Higher values will result in larger features."
+    },
     "fuzzy_skin_thickness": {
       "label": "Fuzzy skin dikte",
       "tooltip": "De breedte van jittering: het is aan te raden deze lager te houden dan de lijndikte van de buitenste wand."
     },
+    "gap_fill_flow_ratio": {
+      "label": "Gap fill flow ratio",
+      "tooltip": "This factor affects the amount of material for filling the gaps.\n\nThe actual gap filling flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio."
+    },
     "gap_fill_target": {
+      "label": "Apply gap fill",
+      "tooltip": "Enables gap fill for the selected solid surfaces. The minimum gap length that will be filled can be controlled from the filter out tiny gaps option below.\n\nOptions:\n1. Everywhere: Applies gap fill to top, bottom and internal solid surfaces for maximum strength\n2. Top and Bottom surfaces: Applies gap fill to top and bottom surfaces only, balancing print speed, reducing potential over extrusion in the solid infill and making sure the top and bottom surfaces have no pinhole gaps\n3. Nowhere: Disables gap fill for all solid infill areas\n\nNote that if using the classic perimeter generator, gap fill may also be generated between perimeters, if a full width line cannot fit between them. That perimeter gap fill is not controlled by this setting.\n\nIf you would like all gap fill, including the classic perimeter generated one, removed, set the filter out tiny gaps value to a large number, like 999999.\n\nHowever this is not advised, as gap fill between perimeters is contributing to the model's strength. For models where excessive gap fill is generated between perimeters, a better option would be to switch to the arachne wall generator and use this option to control whether the cosmetic top and bottom surface gap fill is generated.",
       "enum_labels": [
         "Overal",
         "Boven- en onderoppervlakken",
@@ -567,6 +940,7 @@
         "Marlin(legacy)",
         "Klipper",
         "RepRapFirmware",
+        "Repetier",
         "Marlin 2"
       ]
     },
@@ -574,18 +948,32 @@
       "label": "Label objecten",
       "tooltip": "Schakel dit in om opmerkingen in de G-code toe te voegen voor bewegingen die behoren tot een object. Dit is handig voor de OctoPrint CancelObject-plugin. Deze instelling is NIET geschikt voor een multi-materialsetup met één extruder en 'Afvegen in object' en 'Afvegen in vulling'."
     },
+    "grab_length": {
+      "label": "Grab length"
+    },
     "high_current_on_filament_swap": {
       "label": "Hoge stroomsterkte bij extruder voor filamentwissel",
       "tooltip": "Het kan nuttig zijn om de stroomsterkte van de extrudermotor te verhogen tijdens het uitvoeren van de filamentwisseling om snelle ramming mogelijk te maken en om weerstand te overwinnen tijdens het laden van filament met een misvormde kop."
+    },
+    "hole_to_polyhole": {
+      "label": "Convert holes to polyholes",
+      "tooltip": "Search for almost-circular holes that span more than one layer and convert the geometry to polyholes. Use the nozzle size and the (biggest) diameter to compute the polyhole.\nSee http://hydraraptor.blogspot.com/2011/02/polyholes.html"
+    },
+    "hole_to_polyhole_threshold": {
+      "label": "Polyhole detection margin",
+      "tooltip": "Maximum defection of a point to the estimated radius of the circle.\nAs cylinders are often exported as triangles of varying size, points may not be on the circle circumference. This setting allows you some leeway to broaden the detection.\nIn mm or in % of the radius."
+    },
+    "hole_to_polyhole_twisted": {
+      "label": "Polyhole twist",
+      "tooltip": "Rotate the polyhole every layer."
     },
     "host_type": {
       "label": "Hosttype",
       "tooltip": "ElegooSlicer kan G-codebestanden uploaden naar een printerhost. Dit veld moet het type host bevatten.",
       "enum_labels": [
-        "ElegooLink",
-        "OctoPrint",
         "PrusaLink",
         "PrusaConnect",
+        "OctoPrint",
         "Duet",
         "FlashAir",
         "AstroBox",
@@ -595,7 +983,10 @@
         "CrealityPrint",
         "Obico",
         "Flashforge",
-        "SimplyPrint"
+        "SimplyPrint",
+        "Elegoo Link",
+        "3DPrinterOS",
+        "Moonraker (Klipper)"
       ]
     },
     "hot_plate_temp": {
@@ -608,8 +999,16 @@
       "full_label": "Printbed temperatuur voor de eerste laag",
       "tooltip": "Dit is de bedtemperatuur van de beginlaag. Een waarde van 0 betekent dat het filament printen op de High Temp Plate niet ondersteunt."
     },
+    "idle_temperature": {
+      "label": "Idle temperature",
+      "tooltip": "Nozzle temperature when the tool is currently not used in multi-tool setups. This is only used when 'Ooze prevention' is active in Print Settings. Set to 0 to disable."
+    },
     "independent_support_layer_height": {
-      "label": "Onafhankelijke support laaghoogte"
+      "label": "Onafhankelijke support laaghoogte",
+      "tooltip": "Support layer uses layer height independent with object layer. This is to support customizing Z-gap and save print time. This option will be invalid when the prime tower is enabled."
+    },
+    "infill_anchor": {
+      "label": "Sparse infill anchor length"
     },
     "infill_anchor_max": {
       "label": "Maximale lengte van de vullingsbevestiging"
@@ -618,17 +1017,37 @@
       "label": "Vulling (infill) combinatie",
       "tooltip": "Combineer het printen van meerdere lagen vulling om te printtijd te verlagen. De wanden worden geprint in de originele laaghoogte."
     },
+    "infill_combination_max_layer_height": {
+      "label": "Infill combination - Max layer height",
+      "tooltip": "Maximum layer height for the combined sparse infill.\n\nSet it to 0 or 100% to use the nozzle diameter (for maximum reduction in print time) or a value of ~80% to maximize sparse infill strength.\n\nThe number of layers over which infill is combined is derived by dividing this value with the layer height and rounded down to the nearest decimal.\n\nUse either absolute mm values (eg. 0.32mm for a 0.4mm nozzle) or % values (eg 80%). This value must not be larger than the nozzle diameter."
+    },
     "infill_direction": {
+      "label": "Sparse infill direction",
       "tooltip": "Dit is de hoek voor een dun opvulpatroon, dat het begin of de hoofdrichting van de lijnen bepaalt."
     },
     "infill_jerk": {
-      "label": "Vulling"
+      "label": "Vulling",
+      "tooltip": "Jerk for infill."
+    },
+    "infill_lock_depth": {
+      "label": "Infill lock depth",
+      "tooltip": "The parameter sets the overlapping depth between the interior and skin."
+    },
+    "infill_overhang_angle": {
+      "label": "Infill overhang angle",
+      "tooltip": "The angle of the infill angled lines. 60° will result in a pure honeycomb."
+    },
+    "infill_shift_step": {
+      "label": "Infill shift step",
+      "tooltip": "This parameter adds a slight displacement to each layer of infill to create a cross texture."
     },
     "infill_wall_overlap": {
-      "label": "Vulling (infill)/wand overlap"
+      "label": "Vulling (infill)/wand overlap",
+      "tooltip": "Infill area is enlarged slightly to overlap with wall for better bonding. The percentage value is relative to line width of sparse infill. Set this value to ~10-15% to minimize potential over extrusion and accumulation of material resulting in rough top surfaces."
     },
     "inherits": {
-      "label": "Afgeleid profiel"
+      "label": "Afgeleid profiel",
+      "tooltip": "Name of parent profile."
     },
     "initial_layer_acceleration": {
       "label": "Eerste laag",
@@ -639,48 +1058,129 @@
       "tooltip": "Dit is de snelheid voor de solide vulling (infill) delen van de eerste laag."
     },
     "initial_layer_jerk": {
-      "label": "Eerste laag"
+      "label": "Eerste laag",
+      "tooltip": "Jerk for the first layer."
     },
     "initial_layer_line_width": {
-      "label": "Eerste laag"
+      "label": "Eerste laag",
+      "tooltip": "Line width of the first layer. If expressed as a %, it will be computed over the nozzle diameter."
     },
     "initial_layer_min_bead_width": {
       "label": "Eerste laag minimale wandbreedte",
       "tooltip": "De minimale wandbreedte die voor de eerste laag moet worden gebruikt, wordt aanbevolen om op dezelfde grootte als het mondstuk te worden ingesteld. Deze aanpassing zal naar verwachting de hechting verbeteren."
     },
     "initial_layer_print_height": {
-      "label": "Laaghoogte van de eerste laag",
-      "tooltip": "Dit is de hoogte van de eerste laag. Door de hoogte van de eerste laag hoger te maken, kan de hechting op het printbed worden verbeterd."
+      "label": "Laaghoogte van de eerste laag"
     },
     "initial_layer_speed": {
       "label": "Eerste laag",
       "tooltip": "Dit is de snelheid voor de eerste laag behalve solide vulling (infill) delen"
     },
+    "initial_layer_travel_speed": {
+      "label": "First layer travel speed",
+      "tooltip": "Travel speed of the first layer."
+    },
     "inner_wall_acceleration": {
-      "label": "Binnenste wand"
+      "label": "Binnenste wand",
+      "tooltip": "Acceleration of inner walls."
+    },
+    "inner_wall_flow_ratio": {
+      "label": "Inner wall flow ratio",
+      "tooltip": "This factor affects the amount of material for inner walls.\n\nThe actual inner wall flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio."
     },
     "inner_wall_jerk": {
       "label": "Binnenste wand",
       "tooltip": "Jerk van de binnenwand"
     },
     "inner_wall_line_width": {
-      "label": "Binnenste wand"
+      "label": "Binnenste wand",
+      "tooltip": "Line width of inner wall. If expressed as a %, it will be computed over the nozzle diameter."
     },
     "inner_wall_speed": {
       "label": "Binnenste wand",
       "tooltip": "Dit is de snelheid voor de binnenste wanden"
     },
+    "input_shaping_type": {
+      "label": "Input shaper type",
+      "enum_labels": [
+        "Standaard",
+        "MZV",
+        "ZV",
+        "ZVD",
+        "ZVDD",
+        "ZVDDD",
+        "EI",
+        "EI2",
+        "2HUMP_EI",
+        "EI3",
+        "3HUMP_EI",
+        "DAA",
+        "Uitschakelen"
+      ]
+    },
     "interface_shells": {
-      "label": "Interface shells"
+      "label": "Interface shells",
+      "tooltip": "Force the generation of solid shells between adjacent materials/volumes. Useful for multi-extruder prints with translucent materials or manual soluble support material."
+    },
+    "interlocking_beam": {
+      "label": "Use beam interlocking",
+      "tooltip": "Generate interlocking beam structure at the locations where different filaments touch. This improves the adhesion between filaments, especially models printed in different materials."
+    },
+    "interlocking_beam_layer_count": {
+      "label": "Interlocking beam layers",
+      "tooltip": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
+    },
+    "interlocking_beam_width": {
+      "label": "Interlocking beam width",
+      "tooltip": "The width of the interlocking structure beams."
+    },
+    "interlocking_boundary_avoidance": {
+      "label": "Interlocking boundary avoidance",
+      "tooltip": "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
+    },
+    "interlocking_depth": {
+      "label": "Interlocking depth",
+      "tooltip": "The distance from the boundary between filaments to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
+    },
+    "interlocking_orientation": {
+      "label": "Interlocking direction",
+      "tooltip": "Orientation of interlock beams."
+    },
+    "internal_bridge_angle": {
+      "label": "Internal bridge infill direction"
+    },
+    "internal_bridge_density": {
+      "label": "Internal bridge density"
+    },
+    "internal_bridge_fan_speed": {
+      "label": "Internal bridges fan speed",
+      "tooltip": "The part cooling fan speed used for all internal bridges. Set to -1 to use the overhang fan speed settings instead.\n\nReducing the internal bridges fan speed, compared to your regular fan speed, can help reduce part warping due to excessive cooling applied over a large surface for a prolonged period of time."
+    },
+    "internal_bridge_flow": {
+      "label": "Internal bridge flow ratio"
+    },
+    "internal_bridge_speed": {
+      "label": "Intern",
+      "tooltip": "Speed of internal bridges. If the value is expressed as a percentage, it will be calculated based on the bridge_speed. Default value is 150%."
+    },
+    "internal_solid_filament_id": {
+      "label": "Interne solide vulling"
     },
     "internal_solid_infill_acceleration": {
-      "label": "Interne solide vulling"
+      "label": "Interne solide vulling",
+      "tooltip": "Acceleration of internal solid infill. If the value is expressed as a percentage (e.g. 100%), it will be calculated based on the default acceleration."
+    },
+    "internal_solid_infill_flow_ratio": {
+      "label": "Internal solid infill flow ratio",
+      "tooltip": "This factor affects the amount of material for internal solid infill.\n\nThe actual internal solid infill flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio."
     },
     "internal_solid_infill_line_width": {
-      "label": "Interne solide vulling"
+      "label": "Interne solide vulling",
+      "tooltip": "Line width of internal solid infill. If expressed as a %, it will be computed over the nozzle diameter."
     },
     "internal_solid_infill_pattern": {
       "label": "Intern massief invulpatroon",
+      "tooltip": "Line pattern of internal solid infill. if the detect narrow internal solid infill be enabled, the concentric pattern will be used for the small area.",
       "enum_labels": [
         "Monotoon",
         "Monotone lijn",
@@ -696,12 +1196,29 @@
       "label": "Interne solide vulling",
       "tooltip": "Dit is de snelheid voor de interne solide vulling (infill), bodem en bovenste oppervlakte zijn hiervan uitgezonderd"
     },
+    "ironing_angle": {
+      "label": "Ironing angle offset",
+      "tooltip": "The angle of ironing lines offset from the top surface."
+    },
+    "ironing_angle_fixed": {
+      "label": "Fixed ironing angle",
+      "tooltip": "Use a fixed absolute angle for ironing."
+    },
+    "ironing_fan_speed": {
+      "label": "Ironing fan speed",
+      "tooltip": "This part cooling fan speed is applied when ironing. Setting this parameter to a lower than regular speed reduces possible nozzle clogging due to the low volumetric flow rate, making the interface smoother.\nSet to -1 to disable it."
+    },
     "ironing_flow": {
       "label": "Flow tijdens strijken",
       "tooltip": "Dit is de hoeveelheid materiaal die dient te worden geëxtrudeerd tijdens het strijken. Het is relatief ten opzichte van de flow van normale laaghoogte. Een te hoge waarde zal resulteren in overextrusie op het oppervlak."
     },
+    "ironing_inset": {
+      "label": "Ironing inset",
+      "tooltip": "The distance to keep from the edges. A value of 0 sets this to half of the nozzle diameter."
+    },
     "ironing_pattern": {
       "label": "Ironing Pattern",
+      "tooltip": "The pattern that will be used when ironing.",
       "enum_labels": [
         "Rechtlijning",
         "Concentrisch"
@@ -722,11 +1239,20 @@
         "Niet strijken",
         "Alle bovenoppervlakken",
         "Alleen het bovenste oppervlak",
-        "Alle vaste lagen"
+        "All solid layers"
       ]
     },
     "is_infill_first": {
-      "label": "Eerst infill afdrukken"
+      "label": "Eerst infill afdrukken",
+      "tooltip": "Order of wall/infill. When the tickbox is unchecked the walls are printed first, which works best in most cases.\n\nPrinting infill first may help with extreme overhangs as the walls have the neighbouring infill to adhere to. However, the infill will slightly push out the printed walls where it is attached to them, resulting in a worse external surface finish. It can also cause the infill to shine through the external surfaces of the part."
+    },
+    "lateral_lattice_angle_1": {
+      "label": "Lateral lattice angle 1",
+      "tooltip": "The angle of the first set of Lateral lattice elements in the Z direction. Zero is vertical."
+    },
+    "lateral_lattice_angle_2": {
+      "label": "Lateral lattice angle 2",
+      "tooltip": "The angle of the second set of Lateral lattice elements in the Z direction. Zero is vertical."
     },
     "layer_change_gcode": {
       "label": "G-code laag wijzigen",
@@ -737,17 +1263,23 @@
       "tooltip": "Dit is de hoogte voor iedere laag. Kleinere laaghoogtes geven een grotere nauwkeurigheid maar een langere printtijd."
     },
     "line_width": {
-      "label": "Standaard"
+      "label": "Standaard",
+      "tooltip": "Default line width if other line widths are set to 0. If expressed as a %, it will be computed over the nozzle diameter."
     },
     "long_retractions_when_cut": {
+      "label": "Long retraction when cut (beta)",
       "tooltip": "Experimentele functie: Het filament wordt tijdens het wisselen over een grotere afstand teruggetrokken en afgesneden om de spoeling tot een minimum te beperken. Dit vermindert de spoeling aanzienlijk, maar vergroot mogelijk ook het risico op verstoppingen in het mondstuk of andere printproblemen."
+    },
+    "long_retractions_when_ec": {
+      "label": "Long retraction when extruder change"
     },
     "machine_end_gcode": {
       "label": "Einde G-code",
       "tooltip": "Voeg een eind G-code toe bij het afwerken van de hele print."
     },
     "machine_load_filament_time": {
-      "label": "Filament laadt tijd"
+      "label": "Filament laadt tijd",
+      "tooltip": "Time to load new filament when switch filament. It's usually applicable for single-extruder multi-material machines. For tool changers or multi-tool machines, it's typically 0. For statistics only."
     },
     "machine_max_acceleration_e": {
       "full_label": "Maximale versnelling E",
@@ -762,7 +1294,8 @@
       "tooltip": "Maximale versnelling voor terugtrekken (retraction) (M204 R)"
     },
     "machine_max_acceleration_travel": {
-      "full_label": "Maximale versnelling voor verplaatsen"
+      "full_label": "Maximale versnelling voor verplaatsen",
+      "tooltip": "Maximum acceleration for travel (M204 T), it only applies to Marlin 2."
     },
     "machine_max_acceleration_x": {
       "full_label": "Maximale versnelling voor X",
@@ -792,6 +1325,10 @@
       "full_label": "Maximale Z jerk",
       "tooltip": "Maximale jerk voor de Z as"
     },
+    "machine_max_junction_deviation": {
+      "full_label": "Maximum Junction Deviation",
+      "tooltip": "Maximum junction deviation (M205 J, only apply if JD > 0 for Marlin Firmware\nIf your Marlin 2 printer uses Classic Jerk set this value to 0.)"
+    },
     "machine_max_speed_e": {
       "full_label": "Maximale snelheid voor E"
     },
@@ -820,45 +1357,89 @@
       "label": "Start G-code",
       "tooltip": "Start G-code bij het starten van een print"
     },
+    "machine_tool_change_time": {
+      "label": "Tool change time",
+      "tooltip": "Time taken to switch tools. It's usually applicable for tool changers or multi-tool machines. For single-extruder multi-material machines, it's typically 0. For statistics only."
+    },
     "machine_unload_filament_time": {
-      "label": "Tijd die nodig is om filament te ontladen"
+      "label": "Tijd die nodig is om filament te ontladen",
+      "tooltip": "Time to unload old filament when switch filament. It's usually applicable for single-extruder multi-material machines. For tool changers or multi-tool machines, it's typically 0. For statistics only."
+    },
+    "make_overhang_printable": {
+      "label": "Make overhangs printable",
+      "tooltip": "Modify the geometry to print overhangs without support material."
+    },
+    "make_overhang_printable_angle": {
+      "label": "Make overhangs printable - Maximum angle",
+      "tooltip": "Maximum angle of overhangs to allow after making more steep overhangs printable.90° will not change the model at all and allow any overhang, while 0 will replace all overhangs with conical material."
+    },
+    "make_overhang_printable_hole_size": {
+      "label": "Make overhangs printable - Hole area",
+      "tooltip": "Maximum area of a hole in the base of the model before it's filled by conical material. A value of 0 will fill all the holes in the model base."
+    },
+    "manual_filament_change": {
+      "label": "Manual Filament Change",
+      "tooltip": "Enable this option to omit the custom Change filament G-code only at the beginning of the print. The tool change command (e.g., T0) will be skipped throughout the entire print. This is useful for manual multi-material printing, where we use M600/PAUSE to trigger the manual filament change action."
     },
     "max_bridge_length": {
       "label": "Maximale bruglengte",
       "tooltip": "Maximale lengte van bruggen die geen ondersteuning nodig hebben. Stel het in op 0 als u wilt dat alle bruggen worden ondersteund, en stel het in op een zeer grote waarde als u niet wilt dat bruggen worden ondersteund."
     },
     "max_layer_height": {
-      "label": "Maximum"
+      "label": "Maximum",
+      "tooltip": "The highest printable layer height for the extruder. Used to limit the maximum layer height when enable adaptive layer height."
     },
     "max_resonance_avoidance_speed": {
-      "label": "Maximum"
+      "label": "Maximum",
+      "tooltip": "Maximum speed of resonance avoidance."
     },
     "max_travel_detour_distance": {
       "label": "Walls vermijden - Maximale omleidingslengte",
       "tooltip": "Maximale omleidingsafstand om te voorkomen dat een muur wordt overgestoken: De printer zal geen omweg maken als de omleidingsafstand groter is dan deze waarde. De lengte van de omleiding kan worden gespecificeerd als absolute waarde of als percentage (bijvoorbeeld 50%) van een directe reisroute. Een waarde van 0 zal dit uitschakelen."
+    },
+    "max_volumetric_extrusion_rate_slope": {
+      "label": "Extrusion rate smoothing",
+      "tooltip": "This parameter smooths out sudden extrusion rate changes that happen when the printer transitions from printing a high flow (high speed/larger width) extrusion to a lower flow (lower speed/smaller width) extrusion and vice versa.\n\nIt defines the maximum rate by which the extruded volumetric flow in mm³/s can change over time. Higher values mean higher extrusion rate changes are allowed, resulting in faster speed transitions.\n\nA value of 0 disables the feature.\n\nFor a high speed, high flow direct drive printer (like the Bambu lab or Voron) this value is usually not needed. However it can provide some marginal benefit in certain cases where feature speeds vary greatly. For example, when there are aggressive slowdowns due to overhangs. In these cases a high value of around 300-350 mm³/s² is recommended as this allows for just enough smoothing to assist pressure advance achieve a smoother flow transition.\n\nFor slower printers without pressure advance, the value should be set much lower. A value of 10-15 mm³/s² is a good starting point for direct drive extruders and 5-10 mm³/s² for Bowden style.\n\nThis feature is known as Pressure Equalizer in Prusa slicer.\n\nNote: this parameter disables arc fitting."
+    },
+    "max_volumetric_extrusion_rate_slope_segment_length": {
+      "label": "Smoothing segment length",
+      "tooltip": "A lower value results in smoother extrusion rate transitions. However, this results in a significantly larger G-code file and more instructions for the printer to process.\n\nDefault value of 3 works well for most cases. If your printer is stuttering, increase this value to reduce the number of adjustments made.\n\nAllowed values: 0.5-5"
     },
     "min_bead_width": {
       "label": "Minimale wandbreedte",
       "tooltip": "Breedte van de muur die dunne delen (volgens de minimale functiegrootte) van het model zal vervangen. Als de minimale wandbreedte dunner is dan de dikte van het element, wordt de muur net zo dik als het object zelf. Dit wordt uitgedrukt als een percentage ten opzichte van de diameter van het mondstuk"
     },
     "min_feature_size": {
-      "label": "Minimale kenmerkgrootte"
+      "label": "Minimale kenmerkgrootte",
+      "tooltip": "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than than this value will be widened to the minimum wall width. It's expressed as a percentage over nozzle diameter."
     },
     "min_layer_height": {
-      "label": "Minimaal"
+      "label": "Minimaal",
+      "tooltip": "The lowest printable layer height for the extruder. Used to limit the minimum layer height when enable adaptive layer height."
     },
     "min_length_factor": {
-      "label": "Minimale wandlengte"
+      "label": "Minimale wandlengte",
+      "tooltip": "Adjust this value to prevent short, unclosed walls from being printed, which could increase print time. Higher values remove more and longer walls.\n\nNOTE: Bottom and top surfaces will not be affected by this value to prevent visual gaps on the outside of the model. Adjust 'One wall threshold' in the Advanced settings below to adjust the sensitivity of what is considered a top-surface. 'One wall threshold' is only visible if this setting is set above the default value of 0.5, or if single-wall top surfaces is enabled."
     },
     "min_resonance_avoidance_speed": {
-      "label": "Minimaal"
+      "label": "Minimaal",
+      "tooltip": "Minimum speed of resonance avoidance."
+    },
+    "min_skirt_length": {
+      "label": "Skirt minimum extrusion length",
+      "full_label": "Skirt minimum extrusion length",
+      "tooltip": "Minimum filament extrusion length in mm when printing the skirt. Zero means this feature is disabled.\n\nUsing a non-zero value is useful if the printer is set up to print without a prime line.\nFinal number of loops is not taking into account while arranging or validating objects distance. Increase loop number in such case."
+    },
+    "min_width_top_surface": {
+      "label": "One wall threshold",
+      "tooltip": "If a top surface has to be printed and it's partially covered by another layer, it won't be considered at a top layer where its width is below this value. This can be useful to not let the 'one perimeter on top' trigger on surface that should be covered only by perimeters. This value can be a mm or a % of the perimeter extrusion width.\nWarning: If enabled, artifacts can be created if you have some thin features on the next layer, like letters. Set this setting to 0 to remove these artifacts."
     },
     "minimum_sparse_infill_area": {
-      "label": "Minimale drempel voor dunne opvulling (infill)",
-      "tooltip": "Dunne opvullingen (infill) die kleiner zijn dan deze drempelwaarde worden vervangen door solide interne vulling (infill)."
+      "label": "Minimale drempel voor dunne opvulling (infill)"
     },
     "mmu_segmented_region_interlocking_depth": {
-      "label": "Insluitdiepte van een gesegmenteerde regio"
+      "label": "Insluitdiepte van een gesegmenteerde regio",
+      "tooltip": "Interlocking depth of a segmented region. It will be ignored if \"mmu_segmented_region_max_width\" is zero or if \"mmu_segmented_region_interlocking_depth\" is bigger than \"mmu_segmented_region_max_width\". Zero disables this feature."
     },
     "mmu_segmented_region_max_width": {
       "label": "Maximale breedte van een gesegmenteerd gebied",
@@ -903,6 +1484,7 @@
         "Undefined",
         "Gehard staal",
         "Roestvrij staal",
+        "Tungsten carbide",
         "Messing"
       ]
     },
@@ -910,15 +1492,23 @@
       "label": "Mondstuk volume",
       "tooltip": "Volume van het mondstuk tussen de filamentsnijder en het uiteinde van het mondstuk"
     },
+    "nozzle_volume_type": {
+      "enum_labels": [
+        "Standaard",
+        "High Flow"
+      ]
+    },
     "only_one_wall_first_layer": {
-      "label": "Only one wall on first layer"
+      "label": "Only one wall on first layer",
+      "tooltip": "Use only one wall on first layer, to give more space to the bottom infill pattern."
     },
     "only_one_wall_top": {
       "label": "Slechts één wand op de bovenste oppervlakken",
       "tooltip": "Gebruik slechts één wand op het vlakke bovenvlak, om meer ruimte te geven aan het bovenste invulpatroon"
     },
     "ooze_prevention": {
-      "label": "Inschakelen"
+      "label": "Inschakelen",
+      "tooltip": "This option will drop the temperature of the inactive extruders to prevent oozing."
     },
     "other_layers_print_sequence": {
       "label": "Other layers print sequence"
@@ -937,18 +1527,29 @@
       "label": "Buitenste wand",
       "tooltip": "Versnelling van de buitenwand: een lagere waarde kan de kwaliteit verbeteren."
     },
+    "outer_wall_flow_ratio": {
+      "label": "Outer wall flow ratio",
+      "tooltip": "This factor affects the amount of material for outer walls.\n\nThe actual outer wall flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio."
+    },
     "outer_wall_jerk": {
       "label": "Buitenste wand",
       "tooltip": "Jerk van de buitenwand"
     },
     "outer_wall_line_width": {
-      "label": "Buitenste wand"
+      "label": "Buitenste wand",
+      "tooltip": "Line width of outer wall. If expressed as a %, it will be computed over the nozzle diameter."
     },
     "outer_wall_speed": {
       "label": "Buitenste wand",
       "tooltip": "Dit is de snelheid voor de buitenste wand die zichtbaar is. Deze wordt langzamer geprint dan de binnenste wanden om een betere kwaliteit te krijgen."
     },
+    "overhang_fan_speed": {
+      "label": "Overhangs and external bridges fan speed",
+      "tooltip": "Use this part cooling fan speed when printing bridges or overhang walls with an overhang threshold that exceeds the value set in the 'Overhangs cooling threshold' parameter above. Increasing the cooling specifically for overhangs and bridges can improve the overall print quality of these features.\n\nPlease note, this fan speed is clamped on the lower end by the minimum fan speed threshold set above. It is also adjusted upwards up to the maximum fan speed threshold when the minimum layer time threshold is not met."
+    },
     "overhang_fan_threshold": {
+      "label": "Overhang cooling activation threshold",
+      "tooltip": "When the overhang exceeds this specified threshold, force the cooling fan to run at the 'Overhang Fan Speed' set below. This threshold is expressed as a percentage, indicating the portion of each line's width that is unsupported by the layer beneath it. Setting this value to 0% forces the cooling fan to run for all outer walls, regardless of the overhang degree.",
       "enum_labels": [
         "0%",
         "10%",
@@ -958,29 +1559,82 @@
         "95%"
       ]
     },
+    "overhang_flow_ratio": {
+      "label": "Overhang flow ratio",
+      "tooltip": "This factor affects the amount of material for overhangs.\n\nThe actual overhang flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio."
+    },
+    "overhang_reverse": {
+      "label": "Reverse on even",
+      "full_label": "Overhang reversal",
+      "tooltip": "Extrude perimeters that have a part over an overhang in the reverse direction on even layers. This alternating pattern can drastically improve steep overhangs.\n\nThis setting can also help reduce part warping due to the reduction of stresses in the part walls."
+    },
+    "overhang_reverse_internal_only": {
+      "label": "Reverse only internal perimeters",
+      "full_label": "Reverse only internal perimeters",
+      "tooltip": "Apply the reverse perimeters logic only on internal perimeters.\n\nThis setting greatly reduces part stresses as they are now distributed in alternating directions. This should reduce part warping while also maintaining external wall quality. This feature can be very useful for warp prone material, like ABS/ASA, and also for elastic filaments, like TPU and Silk PLA. It can also help reduce warping on floating regions over supports.\n\nFor this setting to be the most effective, it is recommended to set the Reverse Threshold to 0 so that all internal walls print in alternating directions on even layers irrespective of their overhang degree."
+    },
+    "overhang_reverse_threshold": {
+      "label": "Reverse threshold",
+      "full_label": "Overhang reversal threshold",
+      "tooltip": "Number of mm the overhang need to be for the reversal to be considered useful. Can be a % of the perimeter width.\nValue 0 enables reversal on every even layers regardless.\nWhen Detect overhang wall is not enabled, this option is ignored and reversal happens on every even layers regardless."
+    },
     "parking_pos_retraction": {
       "label": "Filament parkeerpositie",
       "tooltip": "Afstand van de punt van het mondstuk tot de positie waar het filament wordt geparkeerd wanneer dat niet geladen is. Deze moet overeenkomen met de waarde in de firmware."
     },
+    "pellet_flow_coefficient": {
+      "label": "Pellet flow coefficient",
+      "tooltip": "Pellet flow coefficient is empirically derived and allows for volume calculation for pellet printers.\n\nInternally it is converted to filament_diameter. All other volume calculations remain the same.\n\nfilament_diameter = sqrt( (4 * pellet_flow_coefficient) / PI )"
+    },
+    "pellet_modded_printer": {
+      "label": "Pellet Modded Printer"
+    },
     "post_process": {
       "label": "Post-processing Scripts"
     },
+    "precise_outer_wall": {
+      "label": "Precieze wand",
+      "tooltip": "Improve shell precision by adjusting outer wall spacing. This also improves layer consistency. NOTE: This option will be ignored for outer-inner or inner-outer-inner wall sequences."
+    },
     "precise_z_height": {
       "label": "Precise Z height",
-      "tooltip": "Enable this to get precise z height of object after slicing. It will get the precise object height by fine-tuning the layer heights of the last few layers. Note that this is an experimental parameter."
+      "tooltip": "Enable this to get precise Z height of object after slicing. It will get the precise object height by fine-tuning the layer heights of the last few layers. Note that this is an experimental parameter."
     },
     "preferred_orientation": {
-      "label": "Voorkeursoriëntatie"
+      "label": "Voorkeursoriëntatie",
+      "tooltip": "Automatically orient STL files on the Z axis upon initial import."
+    },
+    "preheat_steps": {
+      "label": "Preheat steps",
+      "tooltip": "Insert multiple preheat commands (e.g. M104.1). Only useful for Prusa XL. For other printers, please set it to 1."
+    },
+    "preheat_time": {
+      "label": "Preheat time",
+      "tooltip": "To reduce the waiting time after tool change, Orca can preheat the next tool while the current tool is still in use. This setting specifies the time in seconds to preheat the next tool. Orca will insert a M104 command to preheat the tool in advance."
     },
     "preset_names": {
       "label": "Namen van printer voorinstellingen",
       "tooltip": "Namen van voorinstellingen gerelateerd aan de fysieke printer"
     },
     "pressure_advance": {
-      "label": "Drukverhoging"
+      "label": "Drukverhoging",
+      "tooltip": "Pressure advance (Klipper) AKA Linear advance factor (Marlin)."
     },
     "prime_tower_brim_width": {
-      "label": "Rand breedte"
+      "label": "Rand breedte",
+      "tooltip": "Brim width of prime tower, negative number means auto calculated width based on the height of prime tower."
+    },
+    "prime_tower_enable_framework": {
+      "label": "Internal ribs",
+      "tooltip": "Enable internal ribs to increase the stability of the prime tower."
+    },
+    "prime_tower_infill_gap": {
+      "label": "Infill gap",
+      "tooltip": "Infill gap."
+    },
+    "prime_tower_skip_points": {
+      "label": "Skip points",
+      "tooltip": "The wall of prime tower will skip the start points of wipe path."
     },
     "prime_tower_width": {
       "label": "Breedte",
@@ -991,7 +1645,8 @@
       "tooltip": "Dit is het volume van het materiaal dat de extruder op de prime toren uitwerpt."
     },
     "print_flow_ratio": {
-      "label": "Flow verhouding"
+      "label": "Flow verhouding",
+      "tooltip": "The material may have volumetric change after switching between molten and crystalline states. This setting changes all extrusion flow of this filament in G-code proportionally. The recommended value range is between 0.95 and 1.05. You may be able to tune this value to get a nice flat surface if there is slight overflow or underflow.\n\nThe final object flow ratio is this value multiplied by the filament flow ratio."
     },
     "print_host": {
       "label": "Hostnaam, IP of URL",
@@ -1002,6 +1657,8 @@
       "tooltip": "Geef de URL op van de gebruikersinterface van uw apparaat als deze niet hetzelfde is als print_host"
     },
     "print_order": {
+      "label": "Intra-layer order",
+      "tooltip": "Print order within a single layer.",
       "enum_labels": [
         "Standaard",
         "As object list"
@@ -1022,8 +1679,13 @@
       "label": "Hoogte waarbinnen geprint kan worden",
       "tooltip": "Dit is de maximale printbare hoogte gelimiteerd door de constructie van de printer"
     },
+    "printer_agent": {
+      "label": "Printer Agent",
+      "tooltip": "Select the network agent implementation for printer communication."
+    },
     "printer_model": {
-      "label": "Printertype"
+      "label": "Printertype",
+      "tooltip": "Type of the printer."
     },
     "printer_notes": {
       "label": "Printer notes",
@@ -1079,9 +1741,13 @@
       "label": "Tussen object G-code",
       "tooltip": "G-code invoegen tussen objecten. Deze parameter wordt alleen actief wanneer u uw modellen object voor object afdrukt."
     },
+    "purge_in_prime_tower": {
+      "label": "Purge in prime tower",
+      "tooltip": "Purge remaining filament into prime tower."
+    },
     "raft_contact_distance": {
       "label": "Vlot (raft) contact Z afstand:",
-      "tooltip": "Dit is de Z-afstand tussen een object en een raft. Het wordt genegeerd voor oplosbare materialen."
+      "tooltip": "Z-gap tussen het vlot en het object. Als de bovenste Z-afstand van de ondersteuning 0 is, wordt deze waarde genegeerd en wordt het object direct in contact met het vlot geprint (geen gap)."
     },
     "raft_expansion": {
       "label": "Vlot (raft) expansie",
@@ -1119,6 +1785,10 @@
       "label": "Resolutie",
       "tooltip": "Het G-codepad wordt gegenereerd na het vereenvoudigen van de contouren van modellen om teveel punten en G-codelijnen te vermijden. Kleinere waarden betekenen een hogere resolutie en meer tijd die nodig is om het ontwerpen te slicen."
     },
+    "resonance_avoidance": {
+      "label": "Resonance avoidance",
+      "tooltip": "By reducing the speed of the outer wall to avoid the resonance zone of the printer, ringing on the surface of the model are avoided.\nPlease turn this option off when testing ringing."
+    },
     "retract_before_wipe": {
       "label": "Terugtrek (retract) hoeveelheid voor schoonvegen",
       "tooltip": "Dit is de lengte van snel intrekken (retraction) vóór een wipe, in verhouding tot de retraction lengte."
@@ -1127,12 +1797,16 @@
       "label": "Lengte"
     },
     "retract_lift_above": {
-      "label": "Beweeg Z alleen omhoog boven"
+      "label": "Beweeg Z alleen omhoog boven",
+      "tooltip": "If you set this to a positive value, Z lift will only take place above the specified absolute Z."
     },
     "retract_lift_below": {
-      "label": "Beweeg Z alleen omhoog onder"
+      "label": "Beweeg Z alleen omhoog onder",
+      "tooltip": "If you set this to a positive value, Z lift will only take place below the specified absolute Z."
     },
     "retract_lift_enforce": {
+      "label": "On surfaces",
+      "tooltip": "Enforce Z-Hop behavior. This setting is impacted by the above settings (Only lift Z above/below).",
       "enum_labels": [
         "All Surfaces",
         "Top Only",
@@ -1153,11 +1827,16 @@
       "tooltip": "Dit forceert retraction (terugtrekken van filament) als er gewisseld wordt van laag"
     },
     "retraction_distances_when_cut": {
-      "label": "Retraction distance when cut"
+      "label": "Retraction distance when cut",
+      "tooltip": "Experimental feature: Retraction length before cutting off during filament change."
+    },
+    "retraction_distances_when_ec": {
+      "label": "Retraction distance when extruder change"
     },
     "retraction_length": {
       "label": "Lengte",
-      "full_label": "Terugtrek (retraction) lengte"
+      "full_label": "Terugtrek (retraction) lengte",
+      "tooltip": "Some amount of material in extruder is pulled back to avoid ooze during long travel. Set zero to disable retraction."
     },
     "retraction_minimum_travel": {
       "label": "Drempel voor verplaatsingsafstand",
@@ -1165,17 +1844,35 @@
     },
     "retraction_speed": {
       "label": "Terugtrek (retraction) snelheid",
-      "full_label": "Terugtrek (retraction) snelheid"
+      "full_label": "Terugtrek (retraction) snelheid",
+      "tooltip": "Speed for retracting filament from the nozzle."
+    },
+    "role_based_wipe_speed": {
+      "label": "Role base wipe speed"
     },
     "scan_first_layer": {
       "label": "Eerste laag scannen",
       "tooltip": "Schakel dit in zodat de camera in de printer de kwaliteit van de eerste laag kan controleren."
     },
     "scarf_angle_threshold": {
-      "label": "Conditional angle threshold"
+      "label": "Conditional angle threshold",
+      "tooltip": "This option sets the threshold angle for applying a conditional scarf joint seam.\nIf the maximum angle within the perimeter loop exceeds this value (indicating the absence of sharp corners), a scarf joint seam will be used. The default value is 155°."
+    },
+    "scarf_joint_flow_ratio": {
+      "label": "Scarf joint flow ratio",
+      "tooltip": "This factor affects the amount of material for scarf joints."
+    },
+    "scarf_joint_speed": {
+      "label": "Scarf joint speed",
+      "tooltip": "This option sets the printing speed for scarf joints. It is recommended to print scarf joints at a slow speed (less than 100 mm/s). It's also advisable to enable 'Extrusion rate smoothing' if the set speed varies significantly from the speed of the outer or inner walls. If the speed specified here is higher than the speed of the outer or inner walls, the printer will default to the slower of the two speeds. When specified as a percentage (e.g., 80%), the speed is calculated based on the respective outer or inner wall speed. The default value is set to 100%."
+    },
+    "scarf_overhang_threshold": {
+      "label": "Conditional overhang threshold",
+      "tooltip": "This option determines the overhang threshold for the application of scarf joint seams. If the unsupported portion of the perimeter is less than this threshold, scarf joint seams will be applied. The default threshold is set at 40% of the external wall's width. Due to performance considerations, the degree of overhang is estimated."
     },
     "seam_gap": {
-      "label": "Naadopening"
+      "label": "Naadopening",
+      "tooltip": "In order to reduce the visibility of the seam in a closed loop extrusion, the loop is interrupted and shortened by a specified amount.\nThis amount can be specified in millimeters or as a percentage of the current extruder diameter. The default value for this parameter is 10%."
     },
     "seam_position": {
       "label": "Naad positie",
@@ -1213,6 +1910,7 @@
       "tooltip": "Minimum number of segments of each scarf."
     },
     "seam_slope_type": {
+      "label": "Scarf joint seam (beta)",
       "tooltip": "Use scarf joint to minimize seam visibility and increase seam strength.",
       "enum_labels": [
         "Geen",
@@ -1220,30 +1918,72 @@
         "Contour and hole"
       ]
     },
+    "set_other_flow_ratios": {
+      "label": "Set other flow ratios",
+      "tooltip": "Change flow ratios for other extrusion path types."
+    },
     "silent_mode": {
       "label": "Stille modus",
       "tooltip": "Dit geeft aan of de machine de stille modus ondersteunt waarin de machine een lagere versnelling gebruikt om te printen"
     },
     "single_extruder_multi_material": {
-      "label": "Multi-material met één extruder"
+      "label": "Multi-material met één extruder",
+      "tooltip": "Use single nozzle to print multi filament."
     },
     "single_extruder_multi_material_priming": {
       "label": "Veeg alle printextruders af",
       "tooltip": "Alle extruders worden afgeveegd aan de voorzijde van het printbed aan het begin van de print als dit is ingeschakeld."
+    },
+    "single_loop_draft_shield": {
+      "label": "Single loop after first layer",
+      "tooltip": "Limits the skirt/draft shield loops to one wall after the first layer. This is useful, on occasion, to conserve filament but may cause the draft shield/skirt to warp / crack."
+    },
+    "skeleton_infill_density": {
+      "label": "Skeleton infill density",
+      "tooltip": "The remaining part of the model contour after removing a certain depth from the surface is called the skeleton. This parameter is used to adjust the density of this section. When two regions have the same sparse infill settings but different skeleton densities, their skeleton areas will develop overlapping sections. Default is as same as infill density."
+    },
+    "skeleton_infill_line_width": {
+      "label": "Skeleton line width",
+      "tooltip": "Adjust the line width of the selected skeleton paths."
+    },
+    "skin_infill_density": {
+      "label": "Skin infill density",
+      "tooltip": "The portion of the model's outer surface within a certain depth range is called the skin. This parameter is used to adjust the density of this section. When two regions have the same sparse infill settings but different skin densities, this area will not be split into two separate regions. Default is as same as infill density."
+    },
+    "skin_infill_depth": {
+      "label": "Skin infill depth",
+      "tooltip": "The parameter sets the depth of skin."
+    },
+    "skin_infill_line_width": {
+      "label": "Skin line width",
+      "tooltip": "Adjust the line width of the selected skin paths."
     },
     "skirt_distance": {
       "label": "Rand (skirt) afstand",
       "tooltip": "Dit is de afstand van de skirt tot de rand van het object."
     },
     "skirt_height": {
-      "label": "Skirt height"
+      "label": "Skirt height",
+      "tooltip": "How many layers of skirt. Usually only one layer."
     },
     "skirt_loops": {
       "label": "Rand (skirt) lussen",
       "full_label": "Rand (skirt) lussen",
       "tooltip": "Dit is het aantal lussen voor de skirt. 0 betekent dat de skirt is uitgeschakeld."
     },
+    "skirt_speed": {
+      "label": "Skirt speed",
+      "full_label": "Skirt speed",
+      "tooltip": "Speed of skirt, in mm/s. Zero means use default layer extrusion speed."
+    },
+    "skirt_start_angle": {
+      "label": "Skirt start point",
+      "tooltip": "Angle from the object center to skirt start point. Zero is the most right position, counter clockwise is positive angle."
+    },
     "skirt_type": {
+      "label": "Skirt type",
+      "full_label": "Skirt type",
+      "tooltip": "Combined - single skirt for all objects, Per object - individual object skirt.",
       "enum_labels": [
         "Combined",
         "Per object"
@@ -1270,31 +2010,59 @@
       "label": "Laag tijd",
       "tooltip": "De printnelheid in geëxporteerde G-code wordt vertraagd wanneer de geschatte laagtijd korter is dan deze waarde om een betere koeling voor deze lagen te krijgen."
     },
+    "slow_down_layers": {
+      "label": "Number of slow layers",
+      "tooltip": "The first few layers are printed slower than normal. The speed is gradually increased in a linear fashion over the specified number of layers."
+    },
     "slow_down_min_speed": {
-      "label": "Minimale print snelheid"
+      "label": "Minimale print snelheid",
+      "tooltip": "The minimum print speed to which the printer slows down to maintain the minimum layer time defined above when the slowdown for better layer cooling is enabled."
+    },
+    "slowdown_for_curled_perimeters": {
+      "label": "Slow down for curled perimeters"
+    },
+    "small_area_infill_flow_compensation": {
+      "label": "Small area flow compensation (beta)",
+      "tooltip": "Enable flow compensation for small infill areas."
+    },
+    "small_area_infill_flow_compensation_model": {
+      "label": "Flow Compensation Model",
+      "tooltip": "Flow Compensation Model, used to adjust the flow for small infill areas. The model is expressed as a comma separated pair of values for extrusion length and flow correction factor. Each pair is on a separate line, followed by a semicolon, in the following format: \"1.234, 5.678;\""
     },
     "small_perimeter_speed": {
-      "label": "Kleine omtrek"
+      "label": "Kleine omtrek",
+      "tooltip": "This separate setting will affect the speed of perimeters having radius <= small_perimeter_threshold (usually holes). If expressed as percentage (for example: 80%) it will be calculated on the outer wall speed setting above. Set to zero for auto."
     },
     "small_perimeter_threshold": {
+      "label": "Small perimeters threshold",
       "tooltip": "Dit stelt de drempel voor kleine omtreklengte in. De standaarddrempel is 0 mm"
     },
-    "solid_infill_filament": {
-      "label": "Dichte vulling"
+    "solid_infill_direction": {
+      "label": "Solid infill direction",
+      "tooltip": "Angle for solid infill pattern, which controls the start or main direction of line."
+    },
+    "solid_infill_rotate_template": {
+      "label": "Solid infill rotation template",
+      "tooltip": "This parameter adds a rotation of solid infill direction to each layer according to the specified template. The template is a comma-separated list of angles in degrees, e.g. '0,90'. The first angle is applied to the first layer, the second angle to the second layer, and so on. If there are more layers than angles, the angles will be repeated. Note that not all solid infill patterns support rotation."
     },
     "sparse_infill_acceleration": {
       "label": "Dunne vulling (infill)",
       "tooltip": "Versnelling van de schaarse invulling. Als de waarde wordt uitgedrukt als een percentage (bijvoorbeeld 100%), wordt deze berekend op basis van de standaardversnelling."
     },
     "sparse_infill_density": {
-      "label": "Vulling percentage"
+      "label": "Vulling percentage",
+      "tooltip": "Density of internal sparse infill, 100% turns all sparse infill into solid infill and internal solid infill pattern will be used."
     },
-    "sparse_infill_filament": {
-      "label": "Vulling",
-      "tooltip": "Dit is het filament voor het printen van interne dunne vulling (infill)"
+    "sparse_infill_filament_id": {
+      "label": "Vulling"
+    },
+    "sparse_infill_flow_ratio": {
+      "label": "Sparse infill flow ratio",
+      "tooltip": "This factor affects the amount of material for sparse infill.\n\nThe actual sparse infill flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio."
     },
     "sparse_infill_line_width": {
-      "label": "Dunne vulling (infill)"
+      "label": "Dunne vulling (infill)",
+      "tooltip": "Line width of internal sparse infill. If expressed as a %, it will be computed over the nozzle diameter."
     },
     "sparse_infill_pattern": {
       "label": "Vulpatroon",
@@ -1328,22 +2096,41 @@
         "Octagram Spiraal"
       ]
     },
+    "sparse_infill_rotate_template": {
+      "label": "Sparse infill rotation template",
+      "tooltip": "Rotate the sparse infill direction per layer using a template of angles. Enter comma-separated degrees (e.g., '0,30,60,90'). Angles are applied in order by layer and repeat when the list ends. Advanced syntax is supported: '+5' rotates +5° every layer; '+5#5' rotates +5° every 5 layers. See the Wiki for details. When a template is set, the standard infill direction setting is ignored. Note: some infill patterns (e.g., Gyroid) control rotation themselves; use with care."
+    },
     "sparse_infill_speed": {
       "label": "Dunne vulling (infill)",
       "tooltip": "Dit is de snelheid voor de dunne vulling (infill)"
     },
+    "spiral_finishing_flow_ratio": {
+      "label": "Spiral finishing flow ratio",
+      "tooltip": "Sets the finishing flow ratio while ending the spiral. Normally the spiral transition scales the flow ratio from 100% to 0% during the last loop which can in some cases lead to under extrusion at the end of the spiral."
+    },
     "spiral_mode": {
-      "label": "Spiraalvaas"
+      "label": "Spiraalvaas",
+      "tooltip": "Dit maakt spiralen mogelijk, waardoor de Z-bewegingen van de buitencontour worden afgevlakt en een solide model wordt omgezet in een enkelwandige print met solide onderlagen. Het uiteindelijke gegenereerde model heeft geen naad."
     },
     "spiral_mode_max_xy_smoothing": {
       "label": "Max XY Smoothing",
       "tooltip": "Maximale afstand om punten in XY te verplaatsen om te proberen een gladde spiraal te bereiken. Als het wordt uitgedrukt als een %, wordt het berekend over de diameter van het mondstuk"
     },
     "spiral_mode_smooth": {
-      "label": "Smooth Spiral"
+      "label": "Smooth Spiral",
+      "tooltip": "Smooth Spiral smooths out X and Y moves as well, resulting in no visible seam at all, even in the XY directions on walls that are not vertical."
+    },
+    "spiral_starting_flow_ratio": {
+      "label": "Spiral starting flow ratio",
+      "tooltip": "Sets the starting flow ratio while transitioning from the last bottom layer to the spiral. Normally the spiral transition scales the flow ratio from 0% to 100% during the first loop which can in some cases lead to under extrusion at the start of the spiral."
+    },
+    "staggered_inner_seams": {
+      "label": "Staggered inner seams",
+      "tooltip": "This option causes the inner seams to be shifted backwards based on their depth, forming a zigzag pattern."
     },
     "standby_temperature_delta": {
-      "label": "Temperatuur variatie"
+      "label": "Temperatuur variatie",
+      "tooltip": "Temperature difference to be applied when an extruder is not active. The value is not used when 'idle_temperature' in filament settings is set to non-zero value."
     },
     "start_end_points": {
       "label": "Start end points",
@@ -1351,14 +2138,17 @@
     },
     "supertack_plate_temp": {
       "label": "Andere lagen",
-      "full_label": "Printbed temperatuur"
+      "full_label": "Printbed temperatuur",
+      "tooltip": "Bed temperature for layers except the initial one. A value of 0 means the filament does not support printing on the Cool Plate SuperTack."
     },
     "supertack_plate_temp_initial_layer": {
       "label": "Eerste laag",
-      "full_label": "Printbed temperatuur voor de eerste laag"
+      "full_label": "Printbed temperatuur voor de eerste laag",
+      "tooltip": "Bed temperature of the first layer. A value of 0 means the filament does not support printing on the Cool Plate SuperTack."
     },
     "support_air_filtration": {
-      "label": "Ondersteun luchtfiltratie"
+      "label": "Ondersteun luchtfiltratie",
+      "tooltip": "Enable this if printer support air filtration\nG-code command: M106 P3 S(0-255)"
     },
     "support_angle": {
       "label": "Patroon hoek",
@@ -1366,7 +2156,7 @@
     },
     "support_base_pattern": {
       "label": "Basis patroon",
-      "tooltip": "Dit is het lijnpatroon voor support.",
+      "tooltip": "Line pattern of support.\n\nThe Default option for Tree supports is Hollow, which means no base pattern. For other support types, the Default option is the Rectilinear pattern.\n\nNOTE: For Organic supports, the two walls are supported only with the Hollow/Default base pattern. The Lightning base pattern is supported only by Tree Slim/Strong/Hybrid supports. For the other support types, the Rectilinear will be used instead of Lightning.",
       "enum_labels": [
         "Standaard",
         "Rechtlijning",
@@ -1386,10 +2176,11 @@
     },
     "support_bottom_z_distance": {
       "label": "Onderste Z-afstand",
-      "tooltip": "De z-opening tussen de onderste ondersteuningsinterface en het object"
+      "tooltip": "Z-gap tussen het object en de onderkant van de ondersteuning. Als de bovenste Z-afstand van de ondersteuning 0 is en de onderkant interfacerlagen heeft, wordt deze waarde genegeerd en wordt de ondersteuning direct in contact met het object geprint (geen gap)."
     },
     "support_chamber_temp_control": {
-      "label": "Ondersteuning voor het regelen van de kamertemperatuur"
+      "label": "Ondersteuning voor het regelen van de kamertemperatuur",
+      "tooltip": "This option is enabled if machine support controlling chamber temperature\nG-code command: M141 S(0-255)"
     },
     "support_critical_regions_only": {
       "label": "Alleen kritische regio's ondersteunen",
@@ -1400,16 +2191,22 @@
       "tooltip": "Vergroot (+) of verklein (-) het horizontale bereik van de normale ondersteuning"
     },
     "support_filament": {
-      "label": "Support/raft base",
-      "tooltip": "Filament voor het printen van ondersteuning (support) en raft. \"Standaard\" betekent geen specifiek filament voor  ondersteuning (support) en het huidige filament wordt gebruikt."
+      "label": "Support/raft base"
+    },
+    "support_flow_ratio": {
+      "label": "Support flow ratio",
+      "tooltip": "This factor affects the amount of material for support.\n\nThe actual support flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio."
     },
     "support_interface_bottom_layers": {
       "label": "Onderste interfacelagen",
       "tooltip": "Aantal onderste interfacelagen"
     },
     "support_interface_filament": {
-      "label": "Support/raft interface",
-      "tooltip": "Filament om  ondersteuning (support) te printen. \"Standaard\" betekent geen specifiek filament voor  ondersteuning (support), en het huidige filament wordt gebruikt."
+      "label": "Support/raft interface"
+    },
+    "support_interface_flow_ratio": {
+      "label": "Support interface flow ratio",
+      "tooltip": "This factor affects the amount of material for the support interface.\n\nThe actual support interface flow used is calculated by multiplying this value by the filament flow ratio, and if set, the object's flow ratio."
     },
     "support_interface_loop_pattern": {
       "label": "Luspatroon interface",
@@ -1431,7 +2228,8 @@
       ]
     },
     "support_interface_spacing": {
-      "label": "Bovenste interface-afstand"
+      "label": "Bovenste interface-afstand",
+      "tooltip": "Spacing of interface lines. Zero means solid interface.\nForce using solid interface when support ironing is enabled."
     },
     "support_interface_speed": {
       "label": "Support interface",
@@ -1441,17 +2239,41 @@
       "label": "Bovenste interface lagen",
       "tooltip": "Dit is het aantal bovenste interfacelagen."
     },
+    "support_ironing": {
+      "label": "Ironing Support Interface",
+      "tooltip": "Ironing is using small flow to print on same height of support interface again to make it more smooth. This setting controls whether support interface being ironed. When enabled, support interface will be extruded as solid too."
+    },
+    "support_ironing_flow": {
+      "label": "Support Ironing flow",
+      "tooltip": "The amount of material to extrude during ironing. Relative to flow of normal support interface layer height. Too high value results in overextrusion on the surface."
+    },
     "support_ironing_pattern": {
+      "label": "Support Ironing Pattern",
+      "tooltip": "The pattern that will be used when ironing.",
       "enum_labels": [
         "Rechtlijning",
         "Concentrisch"
       ]
     },
     "support_ironing_spacing": {
+      "label": "Support Ironing line spacing",
       "tooltip": "Dit is de afstand voor de lijnen die gebruikt worden voor het strijken."
     },
     "support_line_width": {
-      "label": "Ondersteuning"
+      "label": "Ondersteuning",
+      "tooltip": "Line width of support. If expressed as a %, it will be computed over the nozzle diameter."
+    },
+    "support_material_interface_fan_speed": {
+      "label": "Support interface fan speed",
+      "tooltip": "This part cooling fan speed is applied when printing support interfaces. Setting this parameter to a higher than regular speed reduces the layer binding strength between supports and the supported part, making them easier to separate.\nSet to -1 to disable it.\nThis setting is overridden by disable_fan_first_layers."
+    },
+    "support_multi_bed_types": {
+      "label": "Support multi bed types",
+      "tooltip": "Enable this option if you want to use multiple bed types."
+    },
+    "support_object_first_layer_gap": {
+      "label": "Support/object first layer gap",
+      "tooltip": "XY separation between an object and its support at the first layer."
     },
     "support_object_xy_distance": {
       "label": "Support/object XY afstand",
@@ -1462,8 +2284,8 @@
       "tooltip": "Deze instelling genereert alleen support die begint op het printbed."
     },
     "support_remove_small_overhang": {
-      "label": "Kleine uitsteeksels verwijderen",
-      "tooltip": "Verwijder kleine overstekken die mogelijk geen steun nodig hebben."
+      "label": "Ignore small overhangs",
+      "tooltip": "Ignore small overhangs that possibly don't require support."
     },
     "support_speed": {
       "label": "Ondersteuning",
@@ -1471,6 +2293,7 @@
     },
     "support_style": {
       "label": "Stijl",
+      "tooltip": "Style and shape of the support. For normal support, projecting the supports into a regular grid will create more stable supports (default), while snug support towers will save material and reduce object scarring.\nFor tree support, slim and organic style will merge branches more aggressively and save a lot of material (default organic), while hybrid style will create similar structure to normal support under large flat overhangs.",
       "enum_labels": [
         "Default (Grid/Organic)",
         "Rooster",
@@ -1483,11 +2306,15 @@
     },
     "support_threshold_angle": {
       "label": "Drempel hoek",
-      "tooltip": "Er zal ondersteuning support gegenereerd worden voor overhangende hoeken waarvan de hellingshoek lager is dan deze drempel."
+      "tooltip": "Er zal ondersteuning support gegenereerd worden voor overhangende hoeken waarvan de hellingshoek lager is dan deze drempel.Hoe kleiner deze waarde is, hoe steiler de overhang die zonder ondersteuning kan worden geprint.\nOpmerking: Indien ingesteld op 0, gebruiken normale ondersteuningen in plaats daarvan de drempelwaarde voor overlap,terwijl boomstructuurondersteuningen terugvallen op een standaardwaarde van 30."
+    },
+    "support_threshold_overlap": {
+      "label": "Threshold overlap",
+      "tooltip": "Als de drempelhoek nul is, wordt er ondersteuning gegenereerd voor overhangen waarvan de overlap onder de drempelwaarde ligt. Hoe kleiner deze waarde is, hoe steiler de overhang die zonder ondersteuning kan worden geprint."
     },
     "support_top_z_distance": {
       "label": "Top Z afstand",
-      "tooltip": "Dit bepaald de Z-afstand tussen de bovenste support interfaces en het object."
+      "tooltip": "Z-gap tussen de bovenkant van de ondersteuning en het object."
     },
     "support_type": {
       "label": "Type",
@@ -1498,8 +2325,13 @@
         "tree (handmatig)"
       ]
     },
+    "symmetric_infill_y_axis": {
+      "label": "Symmetric infill Y axis",
+      "tooltip": "If the model has two parts that are symmetric about the Y axis, and you want these parts to have symmetric textures, please click this option on one of the parts."
+    },
     "temperature_vitrification": {
-      "label": "Verzachtingstemperatuur"
+      "label": "Verzachtingstemperatuur",
+      "tooltip": "The material softens at this temperature, so when the bed temperature is equal to or greater than this, it's highly recommended to open the front door and/or remove the upper glass to avoid clogging."
     },
     "template_custom_gcode": {
       "label": "Aangepaste G-code",
@@ -1507,11 +2339,13 @@
     },
     "textured_cool_plate_temp": {
       "label": "Andere lagen",
-      "full_label": "Printbed temperatuur"
+      "full_label": "Printbed temperatuur",
+      "tooltip": "Bed temperature for layers except the initial one. A value of 0 means the filament does not support printing on the Textured Cool Plate."
     },
     "textured_cool_plate_temp_initial_layer": {
       "label": "Eerste laag",
-      "full_label": "Printbed temperatuur voor de eerste laag"
+      "full_label": "Printbed temperatuur voor de eerste laag",
+      "tooltip": "Bed temperature of the first layer. A value of 0 means the filament does not support printing on the Textured Cool Plate."
     },
     "textured_plate_temp": {
       "label": "Andere lagen",
@@ -1524,7 +2358,10 @@
       "tooltip": "De bedtemperatuur van de eerste laag 0 betekent dat het filament niet wordt ondersteund op de getextureerde PEI-plaat."
     },
     "thick_bridges": {
-      "tooltip": "Indien ingeschakeld, zijn bruggen betrouwbaarder en kunnen ze langere afstanden overbruggen, maar ze kunnen er slechter uitzien. Indien uitgeschakeld, zien bruggen er beter uit, maar zijn ze alleen betrouwbaar voor kortere afstanden."
+      "label": "Thick external bridges"
+    },
+    "thick_internal_bridges": {
+      "label": "Thick internal bridges"
     },
     "thumbnails": {
       "label": "G-code miniaturen",
@@ -1541,6 +2378,10 @@
         "ColPic"
       ]
     },
+    "time_cost": {
+      "label": "Time cost",
+      "tooltip": "The printer cost per hour."
+    },
     "time_lapse_gcode": {
       "label": "Time-lapse G-code"
     },
@@ -1551,6 +2392,10 @@
         "Traditioneel",
         "Vloeiend"
       ]
+    },
+    "top_bottom_infill_wall_overlap": {
+      "label": "Top/Bottom solid infill/wall overlap",
+      "tooltip": "Top solid infill area is enlarged slightly to overlap with wall for better bonding and to minimize the appearance of pinholes where the top infill meets the walls. A value of 25-30% is a good starting point, minimizing the appearance of pinholes. The percentage value is relative to line width of sparse infill."
     },
     "top_shell_layers": {
       "label": "Aantal lagen bovenkant",
@@ -1563,17 +2408,27 @@
       "tooltip": "Het aantal bovenste solide lagen wordt verhoogd tijdens het slicen als de totale dikte van de bovenste lagen lager is dan deze waarde. Dit zorgt ervoor dat de schaal niet te dun is bij een lage laaghoogte. 0 betekend dat deze instelling niet actief is en dat de dikte van de bovenkant bepaald wordt door het aantal bodem lagen."
     },
     "top_solid_infill_flow_ratio": {
-      "label": "Flowratio bovenoppervlak"
+      "label": "Flowratio bovenoppervlak",
+      "tooltip": "This factor affects the amount of material for top solid infill. You can decrease it slightly to have smooth surface finish.\n\nThe actual top surface flow used is calculated by multiplying this value with the filament flow ratio, and if set, the object's flow ratio."
     },
     "top_surface_acceleration": {
       "label": "Bovenvlak",
       "tooltip": "Versnelling van de topoppervlakte-invulling. Gebruik van een lagere waarde kan de kwaliteit van de bovenlaag verbeteren."
     },
-    "top_surface_jerk": {
+    "top_surface_density": {
+      "label": "Top surface density",
+      "tooltip": "Density of top surface layer. A value of 100% creates a fully solid, smooth top layer. Reducing this value results in a textured top surface, according to the chosen top surface pattern. A value of 0% will result in only the walls on the top layer being created. Intended for aesthetic or functional purposes, not to fix issues such as over-extrusion."
+    },
+    "top_surface_filament_id": {
       "label": "Bovenvlak"
     },
+    "top_surface_jerk": {
+      "label": "Bovenvlak",
+      "tooltip": "Jerk for top surface."
+    },
     "top_surface_line_width": {
-      "label": "Bovenvlak"
+      "label": "Bovenvlak",
+      "tooltip": "Line width for top surfaces. If expressed as a %, it will be computed over the nozzle diameter."
     },
     "top_surface_pattern": {
       "label": "Patroon bovenvlak",
@@ -1594,17 +2449,28 @@
       "tooltip": "Dit is de snelheid voor de solide vulling (infill) van de bovenste laag"
     },
     "travel_acceleration": {
-      "label": "Verplaatsen"
+      "label": "Verplaatsen",
+      "tooltip": "Acceleration of travel moves."
     },
     "travel_jerk": {
-      "label": "Verplaatsen"
+      "label": "Verplaatsen",
+      "tooltip": "Jerk for travel."
+    },
+    "travel_slope": {
+      "label": "Traveling angle",
+      "tooltip": "Traveling angle for Slope and Spiral Z-hop type. Setting it to 90° results in Normal Lift."
     },
     "travel_speed": {
       "label": "Verplaatsen",
       "tooltip": "Dit is de snelheid waarmee verplaatsingen zullen worden gedaan."
     },
-    "tree_support_adaptive_layer_height": {
-      "label": "Adaptieve laaghoogte"
+    "tree_support_angle_slow": {
+      "label": "Preferred Branch Angle",
+      "tooltip": "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
+    },
+    "tree_support_auto_brim": {
+      "label": "Auto brim width",
+      "tooltip": "Enabling this option means the width of the brim for tree support will be automatically calculated."
     },
     "tree_support_branch_angle": {
       "label": "Tree support vertakkingshoek",
@@ -1617,6 +2483,10 @@
     "tree_support_branch_diameter": {
       "label": "Tree support diameter van de takken",
       "tooltip": "Deze instelling bepaalt de initiële diameter van support knooppunten."
+    },
+    "tree_support_branch_diameter_angle": {
+      "label": "Branch Diameter Angle",
+      "tooltip": "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the organic support."
     },
     "tree_support_branch_diameter_organic": {
       "label": "Tree support diameter van de takken",
@@ -1631,10 +2501,20 @@
       "tooltip": "Deze instelling bepaald de afstand tussen naastliggende tree support knooppunten."
     },
     "tree_support_brim_width": {
-      "label": "Tree support brim width"
+      "label": "Tree support brim width",
+      "tooltip": "Distance from tree branch to the outermost brim line."
+    },
+    "tree_support_tip_diameter": {
+      "label": "Tip Diameter",
+      "tooltip": "Branch tip diameter for organic supports."
+    },
+    "tree_support_top_rate": {
+      "label": "Branch Density",
+      "tooltip": "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs but the supports are harder to remove, thus it is recommended to enable top support interfaces instead of a high branch density value if dense interfaces are needed."
     },
     "tree_support_wall_count": {
-      "label": "Steunmuurlussen"
+      "label": "Steunmuurlussen",
+      "tooltip": "This setting specifies the count of support walls in the range of [0,2]. 0 means auto."
     },
     "tree_support_with_infill": {
       "label": "Tree support met vulling",
@@ -1651,9 +2531,12 @@
       "label": "Relatieve E-afstanden gebruiken",
       "tooltip": "Relatieve extrusie wordt aanbevolen bij gebruik van de optie \"label_objects\". Sommige extruders werken beter als deze optie niet is aangevinkt (absolute extrusiemodus). Wipe tower is alleen compatibel met relatieve modus. Het wordt aanbevolen op de meeste printers. Standaard is aangevinkt"
     },
+    "volumetric_speed_coefficients": {
+      "label": "Max volumetric speed multinomial coefficients"
+    },
     "wall_direction": {
+      "label": "Wall loop direction",
       "enum_labels": [
-        "Automatisch",
         "Counter clockwise",
         "Clockwise"
       ]
@@ -1661,9 +2544,6 @@
     "wall_distribution_count": {
       "label": "Aantal wandverdelingen",
       "tooltip": "Het aantal wanden, geteld vanuit het midden, waarover de variatie moet worden verdeeld. Lagere waarden betekenen dat de buitenwanden niet in breedte veranderen."
-    },
-    "wall_filament": {
-      "label": "Wanden"
     },
     "wall_generator": {
       "label": "Wandgenerator",
@@ -1678,6 +2558,8 @@
       "tooltip": "Dit is het aantal wanden per laag."
     },
     "wall_sequence": {
+      "label": "Walls printing order",
+      "tooltip": "Print sequence of the internal (inner) and external (outer) walls.\n\nUse Inner/Outer for best overhangs. This is because the overhanging walls can adhere to a neighbouring perimeter while printing. However, this option results in slightly reduced surface quality as the external perimeter is deformed by being squashed to the internal perimeter.\n\nUse Inner/Outer/Inner for the best external surface finish and dimensional accuracy as the external wall is printed undisturbed from an internal perimeter. However, overhang performance will reduce as there is no internal perimeter to print the external wall against. This option requires a minimum of 3 walls to be effective as it prints the internal walls from the 3rd perimeter onwards first, then the external perimeter and, finally, the first internal perimeter. This option is recommended against the Outer/Inner option in most cases.\n\nUse Outer/Inner for the same external wall quality and dimensional accuracy benefits of Inner/Outer/Inner option. However, the Z seams will appear less consistent as the first extrusion of a new layer starts on a visible surface.",
       "enum_labels": [
         "Inner/Outer",
         "Outer/Inner",
@@ -1700,8 +2582,17 @@
       "label": "Vegen tijdens intrekken (retracting)",
       "tooltip": "Dit beweegt het mondstuk langs het laatste extrusiepad bij het terugtrekken (retraction) om eventueel gelekt materiaal op het mondstuk te reinigen. Dit kan \"blobs\" minimaliseren bij het printen van een nieuw onderdeel na het verplaatsen"
     },
+    "wipe_before_external_loop": {
+      "label": "Wipe before external loop",
+      "tooltip": "To minimize visibility of potential overextrusion at the start of an external perimeter when printing with Outer/Inner or Inner/Outer/Inner wall print order, the de-retraction is performed slightly on the inside from the start of the external perimeter. That way any potential over extrusion is hidden from the outside surface.\n\nThis is useful when printing with Outer/Inner or Inner/Outer/Inner wall print order as in these modes it is more likely an external perimeter is printed immediately after a de-retraction move."
+    },
     "wipe_distance": {
-      "label": "Veeg afstand"
+      "label": "Veeg afstand",
+      "tooltip": "Describe how long the nozzle will move along the last path when retracting.\n\nDepending on how long the wipe operation lasts, how fast and long the extruder/filament retraction settings are, a retraction move may be needed to retract the remaining filament.\n\nSetting a value in the retract amount before wipe setting below will perform any excess retraction before the wipe, else it will be performed after."
+    },
+    "wipe_on_loops": {
+      "label": "Wipe on loops",
+      "tooltip": "To minimize the visibility of the seam in a closed loop extrusion, a small inward movement is executed before the extruder leaves the loop."
     },
     "wipe_speed": {
       "label": "Veegsnelheid",
@@ -1711,17 +2602,56 @@
       "label": "Maximale brugafstand",
       "tooltip": "Maximale afstand tussen support op dunne vullingsdelen."
     },
+    "wipe_tower_cone_angle": {
+      "label": "Stabilization cone apex angle",
+      "tooltip": "Angle at the apex of the cone that is used to stabilize the wipe tower. Larger angle means wider base."
+    },
+    "wipe_tower_extra_flow": {
+      "label": "Extra flow for purging",
+      "tooltip": "Extra flow used for the purging lines on the wipe tower. This makes the purging lines thicker or narrower than they normally would be. The spacing is adjusted automatically."
+    },
+    "wipe_tower_extra_rib_length": {
+      "label": "Extra rib length"
+    },
+    "wipe_tower_extra_spacing": {
+      "label": "Wipe tower purge lines spacing",
+      "tooltip": "Spacing of purge lines on the wipe tower."
+    },
     "wipe_tower_filament": {
-      "label": "Afveegblok"
+      "label": "Afveegblok",
+      "tooltip": "The extruder to use when printing perimeter of the wipe tower. Set to 0 to use the one that is available (non-soluble would be preferred)."
+    },
+    "wipe_tower_fillet_wall": {
+      "label": "Fillet wall",
+      "tooltip": "The wall of prime tower will fillet."
+    },
+    "wipe_tower_max_purge_speed": {
+      "label": "Maximum wipe tower print speed",
+      "tooltip": "The maximum print speed when purging in the wipe tower and printing the wipe tower sparse layers. When purging, if the sparse infill speed or calculated speed from the filament max volumetric speed is lower, the lowest will be used instead.\n\nWhen printing the sparse layers, if the internal perimeter speed or calculated speed from the filament max volumetric speed is lower, the lowest will be used instead.\n\nIncreasing this speed may affect the tower's stability as well as increase the force with which the nozzle collides with any blobs that may have formed on the wipe tower.\n\nBefore increasing this parameter beyond the default of 90 mm/s, make sure your printer can reliably bridge at the increased speeds and that ooze when tool changing is well controlled.\n\nFor the wipe tower external perimeters the internal perimeter speed is used regardless of this setting."
     },
     "wipe_tower_no_sparse_layers": {
+      "label": "No sparse layers (beta)",
       "tooltip": "Het afveegblok wordt niet geprint bij lagen zonder toolwisselingen als dit is ingeschakeld. Op lagen met een toolwissel zal de extruder neerwaarts bewegen naar het afveegblok. De gebruiker is verantwoordelijk voor eventuele botsingen met de print."
+    },
+    "wipe_tower_rib_width": {
+      "label": "Rib width",
+      "tooltip": "Rib width is always less than half the prime tower side length."
     },
     "wipe_tower_rotation_angle": {
       "label": "Rotatie van het afveegblok",
       "tooltip": "Rotatie van het afveegblok ten opzichte van de X-as."
     },
+    "wipe_tower_type": {
+      "label": "Type spoeltoren",
+      "tooltip": "Choose the wipe tower implementation for multi-material prints. Type 1 is recommended for Bambu and Qidi printers with a filament cutter. Type 2 offers better compatibility with multi-tool and MMU printers and provide overall better compatibility.",
+      "enum_labels": [
+        "Type 1",
+        "Type 2"
+      ]
+    },
     "wipe_tower_wall_type": {
+      "label": "Wall type",
+      "tooltip": "Wipe tower outer wall type.\n1. Rectangle: The default wall type, a rectangle with fixed width and height.\n2. Cone: A cone with a fillet at the bottom to help stabilize the wipe tower.\n3. Rib: Adds four ribs to the tower wall for enhanced stability.",
       "enum_labels": [
         "Rechthoek",
         "Kegel",
@@ -1732,6 +2662,17 @@
       "label": "Afveegvolume - laad/ontlaad volumes",
       "tooltip": "Deze vector bespaart de benodigde volumes om van/naar elke extruder dat op het afveegblok wordt gebruikt te wisselen. Deze waarden worden gebruikt om het creëren van de onderstaande volledige reinigingsvolumes te vereenvoudigen."
     },
+    "wrapping_detection_gcode": {
+      "label": "Clumping detection G-code"
+    },
+    "wrapping_detection_layers": {
+      "label": "Clumping detection layers",
+      "tooltip": "Clumping detection layers."
+    },
+    "wrapping_exclude_area": {
+      "label": "Probing exclude area of clumping",
+      "tooltip": "Probing exclude area of clumping."
+    },
     "xy_contour_compensation": {
       "label": "X-Y contourcompensatie"
     },
@@ -1739,9 +2680,12 @@
       "label": "X-Y-gaten compensatie"
     },
     "z_hop": {
+      "label": "Z-hop height",
       "tooltip": "Wanneer er een terugtrekking (retraction) is, wordt het mondstuk een beetje opgetild om ruimte te creëren tussen het mondstuk en de print. Dit voorkomt dat het mondstuk de print raakt bij verplaatsen. Het gebruik van spiraallijnen om Z op te tillen kan stringing voorkomen."
     },
     "z_hop_types": {
+      "label": "Z-hop type",
+      "tooltip": "Type of Z-hop.",
       "enum_labels": [
         "Automatisch",
         "Normaal",
@@ -1758,6 +2702,7 @@
     "Acceleration": "Versnelling",
     "Acceleration limitation": "Versnellingsbeperking",
     "Accessory": "Accessoire",
+    "Adaptive bed mesh": "Adaptive bed mesh",
     "Advanced": "Geavanceerd",
     "Auxiliary part cooling fan": "Extra koel ventilator",
     "Basic information": "Basisinformatie",
@@ -1765,31 +2710,42 @@
     "Before layer change G-code": "G-Code voor de laag wijziging",
     "Bridging": "Overbruggen",
     "Brim": "Rand",
+    "Change extrusion role G-code": "Change extrusion role G-code",
     "Change filament G-code": "Filament G-code aanpassen",
+    "Clumping Detection G-code": "Clumping Detection G-code",
+    "Compatible printers": "Compatibele printers",
     "Compatible process profiles": "Geschikte proces profielen",
     "Cooling": "Koeling",
+    "Cooling Fan": "Koelventilator",
     "Cooling for specific layer": "Koeling voor specifieke laag",
     "Dependencies": "Afhankelijkheden",
     "Exhaust fan": "Uitlaatventilator",
+    "Extruder": "Extruder",
     "Extruder Clearance": "Extruder ruimte",
     "Filament": "Filament",
     "Filament end G-code": "Filament einde G-code",
+    "Filament for Features": "Filament for Features",
     "Filament start G-code": "Filament start G-code",
+    "File header G-code": "File header G-code",
+    "First layer speed": "Printsnelheid van de eerste laag",
+    "Flow ratio and Pressure Advance": "Flow ratio and Pressure Advance",
     "Flush options": "Uitspoel-opties",
     "Fuzzy Skin": "Vage buitenkant",
     "G-code output": "G-code uitvoer",
     "Infill": "Vulling",
-    "Initial layer speed": "Printsnelheid van de eerste laag",
     "Ironing": "Strijken",
     "Jerk limitation": "Jerk beperking",
     "Jerk(XY)": "Jerk(XY)",
+    "Junction Deviation": "Junction Deviation",
     "Layer change G-code": "G-code laag wijzigen",
     "Layer height": "Laaghoogte",
     "Layer height limits": "Limieten voor laaghoogte",
     "Line width": "Lijn dikte",
+    "Machine G-code": "Machine G-code",
     "Machine end G-code": "Machine einde G-code",
     "Machine start G-code": "Machine start G-code",
     "Motion ability": "Bewegingsvermogen",
+    "Multi Filament": "Multi Filament",
     "Multimaterial": "Multimateriaal",
     "Notes": "Opmerkingen",
     "Ooze prevention": "Druippreventie",
@@ -1803,6 +2759,7 @@
     "Post-processing Scripts": "Post-processing Scripts",
     "Precision": "Precisie",
     "Prime tower": "Prime toren",
+    "Print chamber temperature": "Print chamber temperature",
     "Print temperature": "Print temperatuur",
     "Printable space": "Ruimte waarbinnen geprint kan worden",
     "Printing by object G-code": "Afdrukken met object G-code",
@@ -1813,7 +2770,7 @@
     "Seam": "Naad",
     "Setting Overrides": "Overschrijvingen instellen",
     "Single extruder multi-material parameters": "Parameter voor multi-material met één extruder",
-    "Size": "Maat",
+    "Single extruder multi-material setup": "Single extruder multi-material setup",
     "Skirt": "Skirt",
     "Special mode": "Speciale modus",
     "Speed": "Snelheid",
@@ -1821,16 +2778,20 @@
     "Strength": "Sterkte",
     "Support": "Ondersteuning",
     "Support filament": "Support filament",
+    "Support ironing": "Ondersteuning strijken",
     "Template Custom G-code": "Sjabloon Aangepaste G-code",
     "Timelapse G-code": "Time-lapse G-code",
+    "Tool change parameters with multi extruder MM printers": "Tool change parameters with multi extruder MM printers",
     "Tool change parameters with single extruder MM printers": "Toolwisselparameter voor multi-materialprinters met één extruder",
     "Top/bottom shells": "Boven-/onderlagen",
     "Travel speed": "Verplaatsing-sneleheid",
+    "Tree supports": "Boomondersteuningen",
     "Volumetric speed limitation": "Volumetrische snelheidsbeperking",
     "Wall generator": "Wandgenerator",
     "Walls": "Wanden",
     "Walls and surfaces": "Wanden en oppervlakten",
     "Wipe tower": "Afveegblok",
-    "Wipe tower parameters": "Afveegblokparameters"
+    "Wipe tower parameters": "Afveegblokparameters",
+    "Z-Hop": "Z-hop"
   }
 }

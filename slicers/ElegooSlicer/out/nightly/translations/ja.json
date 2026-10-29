@@ -5,20 +5,39 @@
   "messages": {},
   "settings": {
     "accel_to_decel_enable": {
-      "label": "Enable accel_to_decel",
-      "tooltip": "Klipper's max_accel_to_decel will be adjusted automatically"
+      "label": "Enable accel_to_decel"
     },
     "accel_to_decel_factor": {
       "label": "accel_to_decel"
     },
     "activate_air_filtration": {
-      "label": "Activate air filtration"
+      "label": "Activate air filtration",
+      "tooltip": "より良いエアフィルトレーションのために有効にします。G-codeコマンド: M106 P3 S(0-255)"
+    },
+    "activate_air_filtration_during_print": {
+      "full_label": "During print"
+    },
+    "adaptive_bed_mesh_margin": {
+      "label": "メッシュマージン"
     },
     "additional_cooling_fan_speed": {
       "label": "回転速度"
     },
+    "additional_fan_full_speed_layer": {
+      "label": "最大回転速度の積層"
+    },
+    "align_infill_direction_to_model": {
+      "label": "インフィル方向をモデルに合わせる"
+    },
+    "alternate_extra_wall": {
+      "label": "代替エクストラウォール"
+    },
     "auxiliary_fan": {
       "label": "パーツ補助冷却ファン"
+    },
+    "bbl_use_printhost": {
+      "label": "サードパーティ印刷ホストを使用",
+      "tooltip": "サードパーティの印刷ホストを通じてBambuLabのプリンターを制御することを許可します。"
     },
     "bed_custom_model": {
       "label": "カスタムベッドモデル"
@@ -29,6 +48,23 @@
     "bed_exclude_area": {
       "label": "除外領域",
       "tooltip": "XY方向の除外領域"
+    },
+    "bed_mesh_max": {
+      "label": "ベッドメッシュ最大"
+    },
+    "bed_mesh_min": {
+      "label": "ベッドメッシュ最小"
+    },
+    "bed_mesh_probe_distance": {
+      "label": "プローブポイント距離"
+    },
+    "bed_temperature_formula": {
+      "label": "ベッド温度タイプ",
+      "tooltip": "このオプションは、スライス時のベッド温度の設定方法を決定します。最初のフィラメントの温度に基づくか、印刷するフィラメントの最高温度に基づくかを選択できます。",
+      "enum_labels": [
+        "最初のフィラメント基準",
+        "最高温度基準"
+      ]
     },
     "before_layer_change_gcode": {
       "label": "積層変更前のG-code",
@@ -48,6 +84,15 @@
       "full_label": "底面厚さ",
       "tooltip": "底面の厚さです、底面層数で決まった厚みがこの値より小さい場合、層数を増やします。この値が0にする場合、この設定が無効となり、設定した層数で造形します。"
     },
+    "bottom_solid_infill_flow_ratio": {
+      "label": "底面フロー率"
+    },
+    "bottom_surface_density": {
+      "label": "底面密度"
+    },
+    "bottom_surface_filament_id": {
+      "label": "底面"
+    },
     "bottom_surface_pattern": {
       "label": "底面パターン",
       "tooltip": "底面のインフィル パターンです、ブリッジインフィルが含まれていません。",
@@ -66,14 +111,32 @@
       "label": "ブリッジ"
     },
     "bridge_angle": {
-      "tooltip": "ブリッジ角度。値が0の場合は自動計算となります。0°を使用したい場合は180を入力していください。"
+      "label": "外部ブリッジインフィル方向"
+    },
+    "bridge_density": {
+      "label": "外部ブリッジ密度"
     },
     "bridge_flow": {
       "label": "ブリッジ流量"
     },
+    "bridge_line_width": {
+      "label": "ブリッジ"
+    },
     "bridge_no_support": {
       "label": "ブリッジにサポートしない",
       "tooltip": "ブリッジが長くない場合は、サポートが無くても造形できます。フィラメントの消費量を減らします。"
+    },
+    "bridge_speed": {
+      "label": "外部"
+    },
+    "brim_ears": {
+      "label": "ブリムイヤー"
+    },
+    "brim_ears_detection_length": {
+      "label": "ブリムイヤー検出半径"
+    },
+    "brim_ears_max_angle": {
+      "label": "ブリムイヤー最大角度"
     },
     "brim_object_gap": {
       "label": "ブリムとオブジェクトの間隔",
@@ -84,13 +147,17 @@
       "tooltip": "This controls the generation of the brim at outer and/or inner side of models. Auto means the brim width is analyzed and calculated automatically.",
       "enum_labels": [
         "自動",
-        "Mouse ear",
-        "Painted",
+        "マウスイヤー",
+        "ペイント済み",
         "Outer brim only",
         "Inner brim only",
         "Outer and inner brim",
         "ブリム無し"
       ]
+    },
+    "brim_use_efc_outline": {
+      "label": "ブリム は補正されたアウトラインに従います",
+      "tooltip": "有効にすると、ブリム は最初の層の周囲ジオメトリと位置合わせされます。 エレファント・フット・コンペンセーション適用後。\nこのオプションは、象の足の補正が必要な場合を対象としています。 最初の層のフットプリントを大幅に変更します。\n\n現在の設定がすでにうまく機能している場合は、それを有効にする必要はないかもしれません。 ブリム が上位層と融合する可能性があります。"
     },
     "brim_width": {
       "label": "ブリム幅",
@@ -100,22 +167,38 @@
       "label": "Chamber temperature",
       "full_label": "Chamber temperature"
     },
+    "change_extrusion_role_gcode": {
+      "label": "押出ロール変更G-code"
+    },
     "change_filament_gcode": {
       "label": "フィラメント変更G-code",
       "tooltip": "フィラメントを切り替える直後に実行するG-codeです。"
+    },
+    "close_additional_fan_first_x_layers": {
+      "label": "最初に",
+      "tooltip": "最初の指定層に対して補助冷却ファンを設定します。"
     },
     "close_fan_the_first_x_layers": {
       "label": "冷却しない最初層数",
       "tooltip": "1層目をプリント時に全てのファンをオフにします。ベッドとの接着性を高めます"
     },
+    "compatible_printers": {
+      "label": "プリンターを選択"
+    },
     "compatible_printers_condition": {
+      "label": "条件",
       "tooltip": "アクティブなプリンタープロファイルの構成値を使った論理式です。 この論理式が真の場合、このプロファイルはアクティブなプリンタープロファイルと互換性があると見なされます。"
     },
+    "compatible_prints": {
+      "label": "プロファイルを選択"
+    },
     "compatible_prints_condition": {
+      "label": "条件",
       "tooltip": "アクティブなプリントプロファイルの構成値を使用する論理式。 この式の結果がtrueの場合、このプロファイルはアクティブなプリントプロファイルと互換性があるとみなされます。"
     },
     "complete_print_exhaust_fan_speed": {
-      "label": "回転速度"
+      "label": "回転速度",
+      "tooltip": "印刷完了後の排気ファン速度。"
     },
     "cool_plate_temp": {
       "label": "他の層",
@@ -136,37 +219,53 @@
       "tooltip": "ノズル先端から冷却チューブの中心までの距離。"
     },
     "counterbore_hole_bridging": {
+      "label": "ブリッジ座繰り穴",
       "enum_labels": [
         "無し",
-        "Partially bridged",
-        "Sacrificial layer"
+        "部分的にブリッジ",
+        "犠牲レイヤー"
       ]
     },
     "curr_bed_type": {
       "label": "プレート",
       "tooltip": "適応ベッド種類",
       "enum_labels": [
-        "Smooth Cool Plate",
+        "スムースクールプレート",
         "エンジニアリングプレート",
-        "Smooth High Temp Plate",
+        "Smooth PEI Plate / High Temp Plate",
         "PEIプレート",
-        "Textured Cool Plate",
-        "Cool Plate (SuperTack)"
+        "テクスチャークールプレート",
+        "クールプレート（SuperTack）"
       ]
     },
     "default_acceleration": {
       "label": "通常造形",
       "tooltip": "造形と移動時のデフォルト加速度です。"
     },
+    "default_bed_type": {
+      "label": "デフォルトベッドタイプ",
+      "tooltip": "プリンターのデフォルトベッドタイプ（数値と文字列形式の両方をサポート）。"
+    },
     "default_filament_colour": {
-      "label": "デフォルト色"
+      "label": "デフォルト色",
+      "tooltip": "デフォルトのフィラメント色。\n右クリックでシステムデフォルトにリセット。"
     },
     "default_filament_profile": {
       "label": "デフォルト フィラメント プロファイル",
       "tooltip": "デバイスを切替える時のデフォルト フィラメント プロファイル"
     },
     "default_jerk": {
-      "label": "デフォルト"
+      "label": "デフォルト",
+      "tooltip": "デフォルトジャーク。"
+    },
+    "default_junction_deviation": {
+      "label": "接合偏差"
+    },
+    "default_nozzle_volume_type": {
+      "enum_labels": [
+        "標準",
+        "ハイフロー"
+      ]
     },
     "default_print_profile": {
       "label": "デフォルト プロセスプロファイル",
@@ -177,23 +276,22 @@
       "full_label": "復帰速度"
     },
     "detect_narrow_internal_solid_infill": {
-      "label": "薄いソリッド インフィル検出",
       "tooltip": "ソリッド インフィル領域に狭い部分があるか検出します。その設定を有効にする場合、狭い領域は同心パターンを使用し、それ以外の領域は、直線パターンを使用します。"
     },
     "detect_overhang_wall": {
-      "label": "オーバーハングを検出",
       "tooltip": "この設定により、線幅に対するオーバーハングの割合を検出し、異なる速度で造形します。100%%のオーバーハングの場合、ブリッジの速度が使用されます。"
     },
-    "detect_thin_wall": {
-      "label": "薄い壁を検出",
-      "tooltip": "2ラインの入らない薄い壁面を検出し、1ラインで造形します。仕上がりが悪くなり可能性があります。"
-    },
     "dont_filter_internal_bridges": {
+      "label": "小さな内部ブリッジを除外",
       "enum_labels": [
         "フィルター",
-        "Limited filtering",
-        "No filtering"
+        "制限付きフィルタリング",
+        "フィルタリングなし"
       ]
+    },
+    "dont_slow_down_outer_wall": {
+      "label": "外周壁の速度を低下させない",
+      "tooltip": "この設定を有効にすると、最小レイヤー時間を満たすために外周壁の速度が低下するのを防ぎます。以下のようなケースで特に効果的です：\n1. 光沢フィラメントの印刷時に、艶のムラを防ぐため\n2. 外周壁の速度変化によって発生する、Zバンディングのような微細なアーティファクトを防ぐため\n3. 外周壁にVFAs（微細なアーティファクト）が出る原因となる低速印刷を避けるため"
     },
     "draft_shield": {
       "label": "保護シールド",
@@ -203,29 +301,50 @@
       ]
     },
     "during_print_exhaust_fan_speed": {
-      "label": "回転速度"
+      "label": "回転速度",
+      "tooltip": "印刷中の排気ファン速度。この速度はフィラメントカスタムG-codeの速度を上書きします。"
     },
     "elefant_foot_compensation": {
       "label": "コーナーはみ出し補正",
       "tooltip": "1層目を縮小して、コーナーのはみ出しを軽減します。"
     },
+    "elefant_foot_compensation_layers": {
+      "label": "象の足補正レイヤー"
+    },
     "enable_arc_fitting": {
       "label": "曲線フィッティング"
     },
     "enable_extra_bridge_layer": {
+      "label": "追加ブリッジレイヤー（ベータ）",
       "enum_labels": [
         "無効",
-        "External bridge only",
-        "Internal bridge only",
-        "Apply to all"
+        "外部ブリッジのみ",
+        "内部ブリッジのみ",
+        "すべてに適用"
       ]
+    },
+    "enable_filament_ramming": {
+      "label": "フィラメントラミングを有効にする",
+      "tooltip": "フィラメントラミングを有効にする"
+    },
+    "enable_overhang_bridge_fan": {
+      "label": "オーバーハングとブリッジの強制冷却"
     },
     "enable_overhang_speed": {
       "label": "オーバーハング減速",
       "tooltip": "オーバーハングを造形時に速度を下げます。各角度のオーバーハングに対して、下記の減速パラメータを設定してください。"
     },
+    "enable_power_loss_recovery": {
+      "label": "停電復旧",
+      "enum_labels": [
+        "プリンター設定",
+        "有効化",
+        "Disable"
+      ]
+    },
     "enable_pressure_advance": {
-      "label": "Enable pressure advance"
+      "label": "Enable pressure advance",
+      "tooltip": "圧力アドバンスを有効にします。有効にすると自動キャリブレーション結果が上書きされます。"
     },
     "enable_prime_tower": {
       "label": "有効化",
@@ -234,6 +353,16 @@
     "enable_support": {
       "label": "有効化",
       "tooltip": "この設定によりサポート生成を有効になります。"
+    },
+    "enable_tower_interface_cooldown_during_tower": {
+      "label": "プライムタワー中のインターフェースブーストからの冷却"
+    },
+    "enable_tower_interface_features": {
+      "label": "タワーインターフェース機能を有効にする"
+    },
+    "enable_wrapping_detection": {
+      "label": "クランピング検出を有効にする",
+      "tooltip": "クランピング検出を有効にする"
     },
     "eng_plate_temp": {
       "label": "他の層",
@@ -249,8 +378,8 @@
       "label": "壁の厚さを確保",
       "enum_labels": [
         "無し",
-        "Critical Only",
-        "Moderate",
+        "重要のみ",
+        "中程度",
         "すべて"
       ]
     },
@@ -260,6 +389,12 @@
     "extra_loading_move": {
       "label": "追加ローディング長さ",
       "tooltip": "ゼロに設定すると、ロード中にフィラメントがパーキング位置から押し出される距離は、アンロード中に戻った距離と同一になります。 正の場合、その分多くロードされ、逆に負の場合は、ロード距離はアンロードよりも短くなります。"
+    },
+    "extra_perimeters_on_overhangs": {
+      "label": "オーバーハングの追加外周"
+    },
+    "extra_solid_infills": {
+      "label": "ソリッドレイヤーを挿入"
     },
     "extruder": {
       "label": "押出機"
@@ -283,6 +418,20 @@
     "extruder_offset": {
       "label": "押出機オフセット"
     },
+    "extruder_printable_area": {
+      "label": "エクストルーダー印刷可能エリア"
+    },
+    "extruder_printable_height": {
+      "label": "エクストルーダー印刷可能高さ",
+      "tooltip": "プリンターの機構により制限されるこのエクストルーダーの最大印刷可能高さ。"
+    },
+    "extruder_type": {
+      "label": "タイプ",
+      "enum_labels": [
+        "ダイレクトドライブ",
+        "Bowden"
+      ]
+    },
     "fan_cooling_layer_time": {
       "label": "積層時間",
       "tooltip": "パーツ冷却ファンは、積層造形時間がこの値より短い時に作動します。"
@@ -295,9 +444,24 @@
       "label": "回転速度",
       "tooltip": "パーツ冷却ファンの最低回転数"
     },
+    "filament_adaptive_volumetric_speed": {
+      "label": "アダプティブ体積速度"
+    },
+    "filament_adhesiveness_category": {
+      "label": "接着性カテゴリ",
+      "tooltip": "フィラメントカテゴリ。"
+    },
+    "filament_change_length": {
+      "label": "フィラメントラミング長さ",
+      "tooltip": "押出機を交換する際は、元の押出機から一定長さのフィラメントを押し出すことをお勧めします。これにより、ノズルのオーズを最小限に抑えることができます。"
+    },
     "filament_colour": {
       "label": "色",
       "tooltip": "ビジュアル情報として使用される"
+    },
+    "filament_cooling_before_tower": {
+      "label": "ワイプタワー冷却",
+      "tooltip": "フィラメントタワーに入る前に温度を下げる"
     },
     "filament_cooling_final_speed": {
       "label": "最後の冷却移動の速度",
@@ -335,6 +499,26 @@
       "label": "流量比",
       "tooltip": "フィラメントは温度により体積が変わります。この設定で押出流量を比例的に調整します。 0.95 ～ 1.05の間で設定していください。"
     },
+    "filament_flush_temp": {
+      "label": "フラッシュ温度",
+      "tooltip": "フィラメントフラッシュ時の温度。0は推奨ノズル温度範囲の上限を示します。"
+    },
+    "filament_flush_volumetric_speed": {
+      "label": "フラッシュ体積速度",
+      "tooltip": "フィラメントフラッシュ時の体積速度。0は最大体積速度を示します。"
+    },
+    "filament_ironing_flow": {
+      "label": "アイロン時の流量比率"
+    },
+    "filament_ironing_inset": {
+      "label": "アイロニングインセット"
+    },
+    "filament_ironing_spacing": {
+      "label": "アイロン時にライン間隔"
+    },
+    "filament_ironing_speed": {
+      "label": "アイロン時の移動速度"
+    },
     "filament_is_support": {
       "label": "サポート耗材",
       "tooltip": "サポート素材は、サポート又はサポート接触面の造形によく使われます。"
@@ -346,6 +530,18 @@
     "filament_loading_speed_start": {
       "label": "ローディング開始時の速度",
       "tooltip": "ロードし始めの最初のスピード。"
+    },
+    "filament_map": {
+      "label": "フィラメントからエクストルーダーへのマッピング",
+      "tooltip": "フィラメントからエクストルーダーへのマッピング。"
+    },
+    "filament_map_mode": {
+      "enum_labels": [
+        "フラッシュ用自動",
+        "マッチ用自動",
+        "手動",
+        "デフォルト"
+      ]
     },
     "filament_max_volumetric_speed": {
       "label": "最大体積速度",
@@ -369,6 +565,10 @@
     "filament_notes": {
       "label": "Filament notes",
       "tooltip": "You can put your notes regarding the filament here."
+    },
+    "filament_printable": {
+      "label": "フィラメント印刷可能",
+      "tooltip": "このフィラメントはエクストルーダーで印刷可能です。"
     },
     "filament_ramming_parameters": {
       "label": "ラミングパラメーター",
@@ -438,6 +638,26 @@
       "label": "アンロードした後の待ち時間",
       "tooltip": "フィラメントがアンロードされた後に停止する時間。 軟らかい材料などで元の寸法に縮小するのに時間を必要とすると考えられる場合で、信頼性の高いツール交換を行うのに役立ちます。"
     },
+    "filament_tower_interface_pre_extrusion_dist": {
+      "label": "インターフェース層の事前押出し距離",
+      "tooltip": "異なる材料が接するプライムタワーのインターフェース層における、事前押出し距離です。"
+    },
+    "filament_tower_interface_pre_extrusion_length": {
+      "label": "インターフェース層の事前押出し長さ",
+      "tooltip": "異なる材料が接するプライムタワーのインターフェース層における、事前押出しの長さです。"
+    },
+    "filament_tower_interface_print_temp": {
+      "label": "インターフェース層の造形温度",
+      "tooltip": "異なる材料が接するプライムタワーのインターフェース層に使用する造形温度です。-1 に設定すると、推奨ノズル温度の最大値が使用されます。"
+    },
+    "filament_tower_interface_purge_volume": {
+      "label": "インターフェース層のパージ長さ",
+      "tooltip": "異なる材料が接するプライムタワーのインターフェース層における、パージの長さです。"
+    },
+    "filament_tower_ironing_area": {
+      "label": "タワーアイロニング領域",
+      "tooltip": "異なる材料が接するプライムタワーのインターフェース層に適用される、アイロニングの領域です。"
+    },
     "filament_type": {
       "label": "タイプ",
       "tooltip": "フィラメント素材タイプ"
@@ -471,12 +691,22 @@
         "スパイラル"
       ]
     },
+    "file_start_gcode": {
+      "label": "ファイルヘッダーG-code"
+    },
     "filename_format": {
       "label": "ファイル名形式",
       "tooltip": "エクスポート時ファイル名を設定できます"
     },
+    "fill_multiline": {
+      "label": "マルチラインフィル",
+      "tooltip": "充填パターンが対応している場合は、複数のラインを使って充填します。"
+    },
     "filter_out_gap_fill": {
       "label": "Filter out tiny gaps"
+    },
+    "first_layer_flow_ratio": {
+      "label": "初期レイヤーフロー率"
     },
     "first_layer_print_sequence": {
       "label": "First layer print sequence"
@@ -487,6 +717,9 @@
         "自動",
         "Customize"
       ]
+    },
+    "first_x_layer_fan_speed": {
+      "label": "回転速度"
     },
     "flush_into_infill": {
       "label": "インフィルにフラッシュ",
@@ -517,40 +750,64 @@
       "label": "ファジー壁面",
       "tooltip": "この設定により、壁面を造形時にノズルがランダムで軽微な振動を加えます。これにより、表面にザラザラ感が出来上がります。",
       "enum_labels": [
-        "無し",
+        "塗装のみ",
         "Contour",
+        "穴",
         "Contour and hole",
-        "すべての壁"
+        "すべての壁",
+        "無効"
       ]
     },
+    "fuzzy_skin_first_layer": {
+      "label": "一層目にファジースキンを適用",
+      "tooltip": "一層目にファジースキンを適用するかどうかを指定します。"
+    },
     "fuzzy_skin_mode": {
+      "label": "ファジースキンの生成モード",
       "enum_labels": [
-        "Displacement",
-        "Extrusion",
+        "変位",
+        "押出",
         "Combined"
       ]
     },
     "fuzzy_skin_noise_type": {
+      "label": "ファジースキンのノイズタイプ",
       "enum_labels": [
         "クラシック",
         "Perlin",
         "Billow",
         "Ridged Multifractal",
-        "Voronoi"
+        "Voronoi",
+        "Ripple"
       ]
+    },
+    "fuzzy_skin_octaves": {
+      "tooltip": "使用するノイズのオクターブ数。値を大きくするとディテールが増えますが、計算時間も増加します。"
+    },
+    "fuzzy_skin_persistence": {
+      "label": "ファジースキンのノイズ減衰率",
+      "tooltip": "高次オクターブにおけるノイズの減衰率を指定します。値を小さくすると、より滑らかなノイズになります。"
     },
     "fuzzy_skin_point_distance": {
       "label": "ポイント距離",
       "tooltip": "ポイント間の平均距離"
     },
+    "fuzzy_skin_scale": {
+      "label": "ファジースキンの特徴サイズ",
+      "tooltip": "ノイズパターンの基本サイズ（mm）。値を大きくすると、より大きなパターンになります。"
+    },
     "fuzzy_skin_thickness": {
       "label": "厚さ",
       "tooltip": "ジッターの幅：外壁の線幅より小さくするのをお勧めします。"
     },
+    "gap_fill_flow_ratio": {
+      "label": "ギャップフィルフロー率"
+    },
     "gap_fill_target": {
+      "label": "ギャップフィルを適用",
       "enum_labels": [
         "どこでも",
-        "Top and bottom surfaces",
+        "上面と底面",
         "なし"
       ]
     },
@@ -573,12 +830,16 @@
         "Marlin(legacy)",
         "Klipper",
         "RepRapFirmware",
+        "Repetier",
         "Marlin 2"
       ]
     },
     "gcode_label_objects": {
       "label": "オブジェクトにラベルを付ける",
       "tooltip": "このオプションを有効にすると、Gコードのプリント移動コマンドに、どのオブジェクトに属するものかがわかるようにラベルコメントが追加されます。これはOctoprintのCancelObjectプラグインに役立ちます。 この設定は、単一エクストルーダーのマルチマテリアル構成およびオブジェクト内ワイプのノズルクリーニング機能と互換性がありません。"
+    },
+    "grab_length": {
+      "label": "グラブ長さ"
     },
     "high_current_on_filament_swap": {
       "label": "フィラメント交換時の高いエクストルーダー電流",
@@ -588,10 +849,9 @@
       "label": "ホストタイプ",
       "tooltip": "ホストタイプを入力してください。",
       "enum_labels": [
-        "ElegooLink",
-        "OctoPrint",
         "PrusaLink",
         "PrusaConnect",
+        "OctoPrint",
         "Duet",
         "FlashAir",
         "AstroBox",
@@ -601,7 +861,10 @@
         "CrealityPrint",
         "Obico",
         "Flashforge",
-        "SimplyPrint"
+        "SimplyPrint",
+        "Elegoo Link",
+        "3DPrinterOS",
+        "Moonraker (Klipper)"
       ]
     },
     "hot_plate_temp": {
@@ -633,6 +896,17 @@
     "infill_jerk": {
       "label": "インフィル"
     },
+    "infill_lock_depth": {
+      "label": "インフィルロック深さ",
+      "tooltip": "このパラメーターは、内部とスキンが重なる深さを設定します。"
+    },
+    "infill_overhang_angle": {
+      "label": "インフィルオーバーハング角度"
+    },
+    "infill_shift_step": {
+      "label": "インフィルシフトステップ",
+      "tooltip": "このパラメータは、インフィルの各層にわずかな変位を加え、クロステクスチャを作成します。"
+    },
     "infill_wall_overlap": {
       "label": "インフィル/壁面 オーバーラップ"
     },
@@ -654,8 +928,7 @@
       "label": "1層目"
     },
     "initial_layer_print_height": {
-      "label": "1層目の高さ",
-      "tooltip": "1層目の高さです。高さを大きくすればプレートとの接着性が良くなります。"
+      "label": "1層目の高さ"
     },
     "initial_layer_speed": {
       "label": "1層目",
@@ -663,6 +936,9 @@
     },
     "inner_wall_acceleration": {
       "label": "内壁"
+    },
+    "inner_wall_flow_ratio": {
+      "label": "内壁フロー率"
     },
     "inner_wall_jerk": {
       "label": "内壁"
@@ -674,8 +950,27 @@
       "label": "内壁",
       "tooltip": "内壁の造形速度です。"
     },
+    "input_shaping_type": {
+      "label": "入力シェーパータイプ",
+      "enum_labels": [
+        "デフォルト",
+        "MZV",
+        "ZV",
+        "ZVD",
+        "ZVDD",
+        "ZVDDD",
+        "EI",
+        "EI2",
+        "2HUMP_EI",
+        "EI3",
+        "3HUMP_EI",
+        "DAA",
+        "Disable"
+      ]
+    },
     "interface_shells": {
-      "label": "Interface shells"
+      "label": "Interface shells",
+      "tooltip": "隣接するマテリアル/ボリューム間に強制的にソリッド(塗りつぶし)シェルを生成します。 半透明材料または可溶性サポート材を使用したマルチエクストルーダーのプリントに役立ちます。"
     },
     "interlocking_beam": {
       "label": "インターロックビームを使用する",
@@ -698,16 +993,36 @@
       "tooltip": "フィラメント間の境界からインターロック構造を形成するまでの距離で、セル単位で測定されます。セル数が少なすぎると接着力が低下します。"
     },
     "interlocking_orientation": {
-      "label": "インターロックの方向"
+      "label": "インターロックの方向",
+      "tooltip": "インターロックビームの向き"
+    },
+    "internal_bridge_angle": {
+      "label": "内部ブリッジインフィル方向"
+    },
+    "internal_bridge_density": {
+      "label": "内部ブリッジ密度"
+    },
+    "internal_bridge_flow": {
+      "label": "内部ブリッジフロー率"
+    },
+    "internal_bridge_speed": {
+      "label": "内部"
+    },
+    "internal_solid_filament_id": {
+      "label": "内部ソリッド インフィル"
     },
     "internal_solid_infill_acceleration": {
       "label": "内部ソリッド インフィル"
+    },
+    "internal_solid_infill_flow_ratio": {
+      "label": "内部ソリッドインフィルフロー率"
     },
     "internal_solid_infill_line_width": {
       "label": "内部ソリッド インフィル"
     },
     "internal_solid_infill_pattern": {
       "label": "Internal solid infill pattern",
+      "tooltip": "内部ソリッドインフィルのラインパターン：「狭い内部ソリッドインフィルを検出」が有効になっている場合、小さなエリアには同心円パターンが使用されます。",
       "enum_labels": [
         "単調",
         "単調線",
@@ -723,9 +1038,21 @@
       "label": "内部ソリッド インフィル",
       "tooltip": "ソリッド インフィルの造形速度です。"
     },
+    "ironing_angle": {
+      "label": "アイロニング角度オフセット"
+    },
+    "ironing_angle_fixed": {
+      "label": "固定アイロニング角度"
+    },
+    "ironing_fan_speed": {
+      "label": "アイロニングファン速度"
+    },
     "ironing_flow": {
       "label": "アイロン時の流量比率",
       "tooltip": "アイロン時の押出量です。通常流量の比率で決まります。"
+    },
+    "ironing_inset": {
+      "label": "アイロニングインセット"
     },
     "ironing_pattern": {
       "label": "Ironing Pattern",
@@ -749,7 +1076,7 @@
         "しない",
         "全てのトップ面",
         "最上部のみ",
-        "全てのソリッド積層"
+        "All solid layers"
       ]
     },
     "is_infill_first": {
@@ -765,6 +1092,9 @@
     },
     "line_width": {
       "label": "デフォルト"
+    },
+    "long_retractions_when_ec": {
+      "label": "押出機切り替え時のロングリトラクション"
     },
     "machine_end_gcode": {
       "label": "終了G-code",
@@ -815,6 +1145,9 @@
     "machine_max_jerk_z": {
       "full_label": "最大振動 Z",
       "tooltip": "最大振動 Z"
+    },
+    "machine_max_junction_deviation": {
+      "full_label": "最大接合偏差"
     },
     "machine_max_speed_e": {
       "full_label": "最大速度 E"
@@ -873,9 +1206,11 @@
     "min_resonance_avoidance_speed": {
       "label": "最小"
     },
+    "min_width_top_surface": {
+      "label": "1壁しきい値"
+    },
     "minimum_sparse_infill_area": {
-      "label": "スパース インフィルの下閾値",
-      "tooltip": "スパース インフィルの面積がこの値以下の場合、ソリッド インフィルに変換されます"
+      "label": "スパース インフィルの下閾値"
     },
     "mmu_segmented_region_interlocking_depth": {
       "label": "Interlocking depth of a segmented region",
@@ -924,12 +1259,19 @@
         "未定義",
         "焼入れスチール",
         "ステンレススチール",
+        "タングステンカーバイド",
         "真鍮"
       ]
     },
     "nozzle_volume": {
       "label": "内腔容積",
       "tooltip": "ノズル先端とフィラメントカッターの間の体積"
+    },
+    "nozzle_volume_type": {
+      "enum_labels": [
+        "標準",
+        "ハイフロー"
+      ]
     },
     "only_one_wall_first_layer": {
       "label": "Only one wall on first layer"
@@ -959,6 +1301,9 @@
       "label": "外壁",
       "tooltip": "外壁の加速度：低い値では品質を向上させることができます。"
     },
+    "outer_wall_flow_ratio": {
+      "label": "外壁フロー率"
+    },
     "outer_wall_jerk": {
       "label": "外壁"
     },
@@ -968,6 +1313,9 @@
     "outer_wall_speed": {
       "label": "外壁",
       "tooltip": "外壁の造形速度です。普段は内壁より遅い速度を指定し、仕上がりが良くなります。"
+    },
+    "overhang_fan_speed": {
+      "label": "オーバーハングと外部ブリッジのファン速度"
     },
     "overhang_fan_threshold": {
       "enum_labels": [
@@ -979,6 +1327,21 @@
         "95%"
       ]
     },
+    "overhang_flow_ratio": {
+      "label": "オーバーハングフロー率"
+    },
+    "overhang_reverse": {
+      "label": "偶数レイヤーで反転",
+      "full_label": "オーバーハング反転"
+    },
+    "overhang_reverse_internal_only": {
+      "label": "内部外周のみ反転",
+      "full_label": "内部外周のみ反転"
+    },
+    "overhang_reverse_threshold": {
+      "label": "反転しきい値",
+      "full_label": "オーバーハング反転しきい値"
+    },
     "parking_pos_retraction": {
       "label": "フィラメント待避ポジション",
       "tooltip": "アンロード時にフィラメントが止まっている位置からエクストルーダー先端までの距離。 これは、プリンターファームウェアの値と一致させる必要があります。"
@@ -986,9 +1349,15 @@
     "post_process": {
       "label": "Post-processing Scripts"
     },
+    "precise_outer_wall": {
+      "label": "正確な壁"
+    },
     "precise_z_height": {
-      "label": "Precise Z height",
-      "tooltip": "Enable this to get precise z height of object after slicing. It will get the precise object height by fine-tuning the layer heights of the last few layers. Note that this is an experimental parameter."
+      "label": "Precise Z height"
+    },
+    "preferred_orientation": {
+      "label": "推奨方向",
+      "tooltip": "初回インポート時にSTLファイルをZ軸方向に自動設定します。"
     },
     "preset_names": {
       "label": "プリセット名",
@@ -998,7 +1367,19 @@
       "label": "Pressure advance"
     },
     "prime_tower_brim_width": {
-      "label": "ブリム幅"
+      "label": "ブリム幅",
+      "tooltip": "プライムタワーのブリム幅を設定します。負の値を指定すると、プライムタワーの高さに基づいて自動計算されます。"
+    },
+    "prime_tower_enable_framework": {
+      "label": "内部リブ",
+      "tooltip": "プライムタワーの安定性を高めるために内部リブを有効にします。"
+    },
+    "prime_tower_infill_gap": {
+      "label": "インフィル間隔",
+      "tooltip": "インフィル間隔。"
+    },
+    "prime_tower_skip_points": {
+      "label": "スキップポイント"
     },
     "prime_tower_width": {
       "label": "幅",
@@ -1016,12 +1397,15 @@
       "tooltip": "ホスト名、IPアドレス、URLを入力してください。ユーザ名とパスワードがある場合、下記形式を参照してください https://username:password@your-octopi-address/"
     },
     "print_host_webui": {
-      "label": "Device UI"
+      "label": "Device UI",
+      "tooltip": "print_hostと異なる場合、デバイスのユーザーインターフェースのURLを指定します。"
     },
     "print_order": {
+      "label": "レイヤー内の順序",
+      "tooltip": "単一レイヤー内の印刷順序。",
       "enum_labels": [
         "デフォルト",
-        "As object list"
+        "オブジェクトリスト順"
       ]
     },
     "print_sequence": {
@@ -1039,8 +1423,13 @@
       "label": "造形可能高さ",
       "tooltip": "造形可能の最大高さです。"
     },
+    "printer_agent": {
+      "label": "プリンターエージェント",
+      "tooltip": "プリンター通信用のネットワークエージェント実装を選択します。"
+    },
     "printer_model": {
-      "label": "プリンタータイプ"
+      "label": "プリンタータイプ",
+      "tooltip": "プリンターのタイプ。"
     },
     "printer_notes": {
       "label": "Printer notes",
@@ -1091,9 +1480,12 @@
     "printhost_user": {
       "label": "ユーザ"
     },
+    "printing_by_object_gcode": {
+      "label": "オブジェクト間G-code"
+    },
     "raft_contact_distance": {
       "label": "ラフト接触面Z間隔",
-      "tooltip": "ラフトとオブジェクトのZ方向の間隔。可溶性材料を使用する場合この設定が無効です。"
+      "tooltip": "ラフトとオブジェクトの間のZ隙間。サポート上面Z距離が0の場合、この値は無視され、オブジェクトはラフトに直接接触して印刷されます（隙間なし）。"
     },
     "raft_expansion": {
       "label": "ラフト拡張",
@@ -1131,6 +1523,9 @@
       "label": "分解能",
       "tooltip": "モデルを簡略化してG-codeのデータ量を減らせます。値が小さく設定するほど、分解能が高くなり、スライス時間も長くなります。"
     },
+    "resonance_avoidance": {
+      "label": "共振回避"
+    },
     "retract_before_wipe": {
       "label": "拭き上げ前のリトラクション量",
       "tooltip": "拭き上げ前のリトラクション量です、通常のリトラクション量の比率で指定します。"
@@ -1166,6 +1561,9 @@
     },
     "retraction_distances_when_cut": {
       "label": "Retraction distance when cut"
+    },
+    "retraction_distances_when_ec": {
+      "label": "押出機切替時のリトラクション距離"
     },
     "retraction_length": {
       "label": "長さ",
@@ -1232,6 +1630,9 @@
         "Contour and hole"
       ]
     },
+    "set_other_flow_ratios": {
+      "label": "他のフロー率を設定"
+    },
     "silent_mode": {
       "label": "サイレントモード",
       "tooltip": "サイレントモード有無"
@@ -1242,6 +1643,24 @@
     "single_extruder_multi_material_priming": {
       "label": "全てのエクストルーダーでプライムを実施",
       "tooltip": "有効にすると、すべてのプリントエクストルーダーは、プリント開始時にプリントベッドの前端で準備されます。"
+    },
+    "skeleton_infill_density": {
+      "label": "スケルトンインフィル密度"
+    },
+    "skeleton_infill_line_width": {
+      "label": "スケルトンライン幅",
+      "tooltip": "選択したスケルトンパスの線幅を調整します。"
+    },
+    "skin_infill_density": {
+      "label": "スキンインフィル密度"
+    },
+    "skin_infill_depth": {
+      "label": "スキンインフィル深さ",
+      "tooltip": "このパラメーターはスキンの深さを設定します。"
+    },
+    "skin_infill_line_width": {
+      "label": "スキンライン幅",
+      "tooltip": "選択したスキンパスの線幅を調整します。"
     },
     "skirt_distance": {
       "label": "スカート距離",
@@ -1285,11 +1704,17 @@
     "slow_down_min_speed": {
       "label": "最小造形速度"
     },
+    "slowdown_for_curled_perimeters": {
+      "label": "カールした外周のスローダウン"
+    },
     "small_perimeter_speed": {
       "label": "Small perimeters"
     },
-    "solid_infill_filament": {
-      "label": "ソリッドインフィル"
+    "small_perimeter_threshold": {
+      "label": "小さな外周のしきい値"
+    },
+    "solid_infill_rotate_template": {
+      "label": "ソリッドインフィル回転テンプレート"
     },
     "sparse_infill_acceleration": {
       "label": "スパース インフィル",
@@ -1298,9 +1723,11 @@
     "sparse_infill_density": {
       "label": "充填密度"
     },
-    "sparse_infill_filament": {
-      "label": "インフィル",
-      "tooltip": "スパース インフィルを造形時使用するフィラメントです。"
+    "sparse_infill_filament_id": {
+      "label": "インフィル"
+    },
+    "sparse_infill_flow_ratio": {
+      "label": "スパースインフィルフロー率"
     },
     "sparse_infill_line_width": {
       "label": "スパース インフィル"
@@ -1311,9 +1738,9 @@
       "enum_labels": [
         "直線",
         "整列直線",
-        "Zig Zag",
-        "Cross Zag",
-        "Locked Zag",
+        "ジグザグ",
+        "クロスザグ",
+        "ロックザグ",
         "直線",
         "グリッド",
         "三角形",
@@ -1325,7 +1752,7 @@
         "ライトニング",
         "ハニカム",
         "3D ハニカム",
-        "Lateral Honeycomb",
+        "ラテラルハニカム",
         "Lateral Lattice",
         "Cross Hatch",
         "TPMS-D",
@@ -1337,12 +1764,16 @@
         "オクタグラムスパイラル"
       ]
     },
+    "sparse_infill_rotate_template": {
+      "label": "スパースインフィル回転テンプレート"
+    },
     "sparse_infill_speed": {
       "label": "スパース インフィル",
       "tooltip": "スパース インフィルの造形速度です。"
     },
     "spiral_mode": {
-      "label": "スパイラル"
+      "label": "スパイラル",
+      "tooltip": "スパイラルモードでは、輪郭面を一筆書きで造形します。Z方向の移動に段差がないので、シームはありません。"
     },
     "spiral_mode_max_xy_smoothing": {
       "label": "Max XY Smoothing"
@@ -1378,7 +1809,6 @@
     },
     "support_base_pattern": {
       "label": "基本パターン",
-      "tooltip": "サポートのサターンです。",
       "enum_labels": [
         "デフォルト",
         "直線",
@@ -1398,7 +1828,7 @@
     },
     "support_bottom_z_distance": {
       "label": "底面とのZ間隔",
-      "tooltip": "サポート底面とオブジェクトのZ方向間隔"
+      "tooltip": "オブジェクトとサポート下面の間のZ隙間。サポート上面Z距離が0で、下面にインターフェース層がある場合、この値は無視され、サポートはオブジェクトに直接接触して印刷されます（隙間なし）。"
     },
     "support_chamber_temp_control": {
       "label": "Support controlling chamber temperature"
@@ -1412,15 +1842,19 @@
       "tooltip": "+/-でサポートの水平サイズを調整します"
     },
     "support_filament": {
-      "label": "Support/raft base",
-      "tooltip": "サポートとラフトを造形用のフィラメント。「デフォルト」では当時のフィラメントを使用する意味です。"
+      "label": "Support/raft base"
+    },
+    "support_flow_ratio": {
+      "label": "サポートフロー率"
     },
     "support_interface_bottom_layers": {
       "label": "底部接触面層数"
     },
     "support_interface_filament": {
-      "label": "Support/raft interface",
-      "tooltip": "サポートの接触面用のフィラメントです。「デフォルト」では指定しなく、当時のフィラメントを使用する意味です。"
+      "label": "Support/raft interface"
+    },
+    "support_interface_flow_ratio": {
+      "label": "サポートインターフェースフロー率"
     },
     "support_interface_loop_pattern": {
       "label": "接触面は同心パターンにする",
@@ -1452,17 +1886,29 @@
       "label": "トップ接触面の層数",
       "tooltip": "トップ接触面の層数"
     },
+    "support_ironing": {
+      "label": "アイロニングサポートインターフェース"
+    },
+    "support_ironing_flow": {
+      "label": "サポートアイロニングフロー"
+    },
     "support_ironing_pattern": {
+      "label": "サポートアイロニングパターン",
       "enum_labels": [
         "直線",
         "同心"
       ]
     },
     "support_ironing_spacing": {
+      "label": "サポートアイロニングライン間隔",
       "tooltip": "アイロン時の線間隔です。"
     },
     "support_line_width": {
       "label": "サポート"
+    },
+    "support_object_first_layer_gap": {
+      "label": "サポート／オブジェクト一層目のギャップ",
+      "tooltip": "1層目でのオブジェクトとサポートの間のXY方向の間隔"
     },
     "support_object_xy_distance": {
       "label": "水平間隔",
@@ -1473,8 +1919,7 @@
       "tooltip": "この設定により、プレートから生成するサポートのみを造形します。"
     },
     "support_remove_small_overhang": {
-      "label": "Remove small overhangs",
-      "tooltip": "This removes small overhangs that may need no support."
+      "label": "小さなオーバーハングを無視"
     },
     "support_speed": {
       "label": "サポート",
@@ -1494,11 +1939,15 @@
     },
     "support_threshold_angle": {
       "label": "閾値角度",
-      "tooltip": "オーバーハングの角度がこの閾値以下になる場合、サポートを生成します"
+      "tooltip": "オーバーハングの角度がこの閾値以下になる場合、サポートを生成しますこの値が小さいほど、サポートなしで印刷できるオーバーハングの急勾配になります。\n注: 0 に設定すると、通常のサポートは代わりに閾値オーバーラップを使用しますが、ツリーサポートはデフォルト値の 30 に戻ります。"
+    },
+    "support_threshold_overlap": {
+      "label": "閾値の重複",
+      "tooltip": "しきい値角度がゼロの場合、オーバーラップがしきい値を下回るオーバーハングに対してサポートが生成されます。この値が小さいほど、サポートなしで印刷できるオーバーハングの角度が急になります。"
     },
     "support_top_z_distance": {
       "label": "トップ面とのZ間隔",
-      "tooltip": "サポート接触面とオブジェクトのZ方向の間隔"
+      "tooltip": "サポート上面とオブジェクトの間のZ隙間。"
     },
     "support_type": {
       "label": "タイプ",
@@ -1508,6 +1957,9 @@
         "通常 (手動)",
         "ツリー (手動)"
       ]
+    },
+    "symmetric_infill_y_axis": {
+      "label": "Y軸対称インフィル"
     },
     "temperature_vitrification": {
       "label": "Softening temperature"
@@ -1535,7 +1987,10 @@
       "tooltip": "1層目のベッド温度。値が0の場合は、フィラメントがPEIプレートをサポートしない意味です。"
     },
     "thick_bridges": {
-      "tooltip": "有効になる場合、より長いブリッジを造形できますが、仕上がりが劣る可能性があります。"
+      "label": "厚い外部ブリッジ"
+    },
+    "thick_internal_bridges": {
+      "label": "厚い内部ブリッジ"
     },
     "thumbnails": {
       "label": "Gコードのサムネイル",
@@ -1551,6 +2006,9 @@
         "BTT TT",
         "ColPic"
       ]
+    },
+    "time_lapse_gcode": {
+      "label": "タイムラプスG-code"
     },
     "timelapse_type": {
       "label": "タイムラプス",
@@ -1576,6 +2034,12 @@
     "top_surface_acceleration": {
       "label": "トップ面",
       "tooltip": "トップ面のインフィル加速度です。遅くすると表面の仕上がりが向上させることができます"
+    },
+    "top_surface_density": {
+      "label": "上面密度"
+    },
+    "top_surface_filament_id": {
+      "label": "トップ面"
     },
     "top_surface_jerk": {
       "label": "トップ面"
@@ -1610,9 +2074,6 @@
     "travel_speed": {
       "label": "移動",
       "tooltip": "移動完了時の速度です。"
-    },
-    "tree_support_adaptive_layer_height": {
-      "label": "アダプティブ積層ピッチ"
     },
     "tree_support_angle_slow": {
       "label": "優先の枝アングル",
@@ -1678,19 +2139,19 @@
     "use_relative_e_distances": {
       "label": "Use relative E distances"
     },
+    "volumetric_speed_coefficients": {
+      "label": "最大体積速度の多項式係数"
+    },
     "wall_direction": {
+      "label": "壁ループ方向",
       "enum_labels": [
-        "自動",
-        "Counter clockwise",
-        "Clockwise"
+        "反時計回り",
+        "時計回り"
       ]
     },
     "wall_distribution_count": {
       "label": "壁面分布カウント",
       "tooltip": "壁の層数"
-    },
-    "wall_filament": {
-      "label": "壁面"
     },
     "wall_generator": {
       "label": "壁面生成器",
@@ -1705,10 +2166,11 @@
       "tooltip": "壁面の層数です。"
     },
     "wall_sequence": {
+      "label": "壁の印刷順序",
       "enum_labels": [
-        "Inner/Outer",
-        "Outer/Inner",
-        "Inner/Outer/Inner"
+        "内側/外側",
+        "外側/内側",
+        "内側/外側/内側"
       ]
     },
     "wall_transition_angle": {
@@ -1742,6 +2204,9 @@
       "label": "パージ用の余分の量",
       "tooltip": "ワイプタワーのパージラインで使用される余分の量。 これによって、パージラインが通常よりも太くなったり、細くなったりします。 間隔は自動的に調整されます。"
     },
+    "wipe_tower_extra_rib_length": {
+      "label": "追加リブ長さ"
+    },
     "wipe_tower_extra_spacing": {
       "label": "ワイプタワーのパージラインの間隔",
       "tooltip": "ワイプタワーのパージラインの間隔。"
@@ -1750,23 +2215,49 @@
       "label": "ワイプタワー",
       "tooltip": "ワイプタワーの外周を印刷する際に使用するエクストルーダーです。0に設定すると、使用可能なものを使用します（非水溶性であることが望ましい）。"
     },
+    "wipe_tower_fillet_wall": {
+      "label": "フィレット壁"
+    },
     "wipe_tower_no_sparse_layers": {
       "tooltip": "有効にすると、ツール変更がない場合にワイプタワーをプリントしなくなります。 ワイプタワーの高さが同期しなくなりますので、ツールチェンジのあるレイヤーでは、エクストルーダーがプリント面より下方に移動してワイプタワーをプリントするケースもあります。 この場合、プリントした部分との衝突がないことをご自身で確認しておく必要があります。"
+    },
+    "wipe_tower_rib_width": {
+      "label": "リブ幅",
+      "tooltip": "リブの幅は常にプライムタワーの一辺の長さの半分未満になります。"
     },
     "wipe_tower_rotation_angle": {
       "label": "ワイプタワーの回転角",
       "tooltip": "x軸に対するワイプタワーの回転角度。"
     },
+    "wipe_tower_type": {
+      "label": "ワイプタワータイプ",
+      "enum_labels": [
+        "タイプ1",
+        "タイプ2"
+      ]
+    },
     "wipe_tower_wall_type": {
+      "label": "壁タイプ",
       "enum_labels": [
         "Rectangle",
         "コーン",
-        "Rib"
+        "リブ"
       ]
     },
     "wiping_volumes_extruders": {
       "label": "パージ量-ロード/アンロード時",
       "tooltip": "このベクトル列には、ワイプタワーで使用される各フィラメント間で変更するために必要なボリュームが保存されます。 これらの値は、以下の完全なパージボリュームの作成を簡素化するために使用されます。"
+    },
+    "wrapping_detection_gcode": {
+      "label": "クラミング検出G-code"
+    },
+    "wrapping_detection_layers": {
+      "label": "クランピング検出レイヤー",
+      "tooltip": "クランピング検出レイヤー。"
+    },
+    "wrapping_exclude_area": {
+      "label": "クランピングのプロービング除外エリア",
+      "tooltip": "クランピングのプロービング除外エリア。"
     },
     "xy_contour_compensation": {
       "label": "輪郭補正 X-Y"
@@ -1794,30 +2285,41 @@
     "Acceleration": "加速度",
     "Acceleration limitation": "加速制限",
     "Accessory": "アクセサリー",
+    "Adaptive bed mesh": "アダプティブベッドメッシュ",
     "Advanced": "高度な設定",
     "Auxiliary part cooling fan": "パーツ補助冷却ファン",
     "Basic information": "基本情報",
     "Bed temperature": "ベッド温度",
     "Before layer change G-code": "積層変更前のG-code",
+    "Bridging": "ブリッジング",
     "Brim": "ブリム",
+    "Change extrusion role G-code": "押出ロール変更G-code",
     "Change filament G-code": "フィラメント変更G-code",
+    "Clumping Detection G-code": "クランピング検出G-code",
+    "Compatible printers": "互換プリンター",
     "Compatible process profiles": "互換性のあるプロセスプロファイル",
     "Cooling": "冷却",
+    "Cooling Fan": "冷却ファン",
     "Cooling for specific layer": "特定層の冷却",
     "Dependencies": "依存関係",
     "Exhaust fan": "Exhaust fan",
+    "Extruder": "押出機",
     "Extruder Clearance": "押出機クリアランス",
     "Filament": "フィラメント",
     "Filament end G-code": "フィラメント終了G-code",
+    "Filament for Features": "フィーチャー用フィラメント",
     "Filament start G-code": "フィラメント開始G-code",
+    "File header G-code": "ファイルヘッダーG-code",
+    "First layer speed": "1層目の移動速度",
+    "Flow ratio and Pressure Advance": "フロー率と圧力アドバンス",
     "Flush options": "フラッシュオプション",
     "Fuzzy Skin": "ファジー壁面",
     "G-code output": "G-code出力",
     "Infill": "インフィル",
-    "Initial layer speed": "1層目の移動速度",
     "Ironing": "アイロン",
     "Jerk limitation": "振動特性",
     "Jerk(XY)": "Jerk(XY)",
+    "Junction Deviation": "接合偏差",
     "Layer change G-code": "積層変更時のG-code",
     "Layer height": "積層ピッチ",
     "Layer height limits": "積層ピッチの制限",
@@ -1826,17 +2328,21 @@
     "Machine end G-code": "プリンター終了G-code",
     "Machine start G-code": "プリンター開始G-code",
     "Motion ability": "移動能力",
+    "Multi Filament": "マルチフィラメント",
+    "Multimaterial": "マルチマテリアル",
     "Notes": "Notes",
     "Ooze prevention": "垂れ出し抑止",
     "Other layers speed": "他の層の速度",
     "Others": "その他",
     "Overhang speed": "オーバーハング速度",
+    "Overhangs": "オーバーハング",
     "Part cooling fan": "パーツ冷却ファン",
     "Pause G-code": "G-codeを一時停止",
     "Position": "位置",
     "Post-processing Scripts": "Post-processing Scripts",
     "Precision": "精度",
     "Prime tower": "プライムタワー",
+    "Print chamber temperature": "印刷チャンバー温度",
     "Print temperature": "造形温度",
     "Printable space": "造形可能領域",
     "Printing by object G-code": "Printing by object G-code",
@@ -1847,7 +2353,7 @@
     "Seam": "継ぎ目",
     "Setting Overrides": "上書き設定",
     "Single extruder multi-material parameters": "単一エクストルーダーのマルチマテリアルパラメーター",
-    "Size": "サイズ",
+    "Single extruder multi-material setup": "シングルエクストルーダー マルチマテリアル設定",
     "Skirt": "スカート",
     "Special mode": "特別モード",
     "Speed": "速度",
@@ -1855,15 +2361,20 @@
     "Strength": "強度",
     "Support": "サポート",
     "Support filament": "サポート用フィラメント",
+    "Support ironing": "サポートアイロニング",
     "Template Custom G-code": "カスタムG-code雛形",
+    "Timelapse G-code": "タイムラプスG-code",
     "Tool change parameters with multi extruder MM printers": "マルチエクストルーダーMMプリンターのツールチェンジパラメータ",
     "Tool change parameters with single extruder MM printers": "単一エクストルーダーMMプリンターのツールチェンジパラメーター",
     "Top/bottom shells": "トップ面/底面",
     "Travel speed": "移動速度",
+    "Tree supports": "ツリーサポート",
     "Volumetric speed limitation": "体積速度制限",
     "Wall generator": "壁面生成器",
     "Walls": "壁面",
+    "Walls and surfaces": "壁と表面",
     "Wipe tower": "ワイプタワー",
-    "Wipe tower parameters": "ワイプタワーのパラメータ"
+    "Wipe tower parameters": "ワイプタワーのパラメータ",
+    "Z-Hop": "Z-ホップ"
   }
 }
