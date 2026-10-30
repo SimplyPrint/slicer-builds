@@ -1,8 +1,6 @@
 name: Build and Extract JSON
 
 on:
-  schedule:
-    - cron: "0 22 * * *"
   workflow_dispatch:
     inputs:
       runner:
@@ -88,7 +86,7 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.prepare_matrix.outputs.matrix) }}
 
-    runs-on: ${{ inputs.runner || (github.event_name == 'schedule' && 'ubuntu-24.04') || 'ubicloud-standard-30-ubuntu-2404' }}
+    runs-on: ${{ inputs.runner || 'ubicloud-standard-30-ubuntu-2404' }}
     env:
       DEPS_CACHE_KEY: ''
       SLICER_CACHE_KEY: ''

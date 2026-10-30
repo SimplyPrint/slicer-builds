@@ -1,8 +1,6 @@
 name: Build Slicer Binaries
 
 on:
-  schedule:
-    - cron: "0 22 * * *"
   workflow_dispatch:
     inputs:
       slicer:
@@ -104,7 +102,7 @@ jobs:
       max-parallel: 4
       matrix: ${{ fromJSON(needs.prepare_matrix.outputs.matrix) }}
 
-    runs-on: ${{ github.event_name == 'schedule' && (matrix.arch == 'arm64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04') || (matrix.arch == 'arm64' && 'ubicloud-standard-30-arm-ubuntu-2404' || 'ubicloud-standard-30-ubuntu-2404') }}
+    runs-on: ${{ matrix.arch == 'arm64' && 'ubicloud-standard-30-arm-ubuntu-2404' || 'ubicloud-standard-30-ubuntu-2404' }}
     env:
       DEPS_CACHE_KEY: ''
       SLICER_CACHE_KEY: ''
