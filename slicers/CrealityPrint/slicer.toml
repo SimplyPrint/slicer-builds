@@ -12,14 +12,14 @@ config_dump = true
 thumbnail = true
 
 [patches]
-shared = ["glfw-x11-orca-legacy", "cli-thumbnail-glew-glx"]
+shared = ["glfw-x11-orca-legacy", "cli-thumbnail-glew-glx", "concentric-zero-step-hang"]
 
 # 7.3.0 rewrote the CLI as a slice-only command without OpenGL thumbnails and
 # moved from GLEW to GLAD, so the GL thumbnail patches have nothing to fix.
 [[patches.series]]
 name = "v7.3"
 from = "v7.3.0"
-shared = ["glfw-x11-orca-legacy"]
+shared = ["glfw-x11-orca-legacy", "concentric-zero-step-hang"]
 
 [ci.binary]
 enabled = true

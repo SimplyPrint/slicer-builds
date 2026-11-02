@@ -12,12 +12,13 @@ config_dump = true
 thumbnail = true
 
 [patches]
-shared = ["cli-thumbnail-orca-opengl-version"]
+shared = ["cli-thumbnail-orca-opengl-version", "concentric-zero-step-hang"]
 
 [patches.binary_ref_aliases]
 "v2.4.1" = "v2.4.2"
 
-# main (2.5.0-dev) requests GL 3.3 itself, so the shared OpenGL version patch is gone.
+# main (2.5.0-dev) requests GL 3.3 itself, so the shared OpenGL version patch is gone,
+# and already guards the concentric zero-step hang (OrcaSlicer#15949).
 [[patches.series]]
 name = "orca-2.5"
 from = "v2.5.0"
