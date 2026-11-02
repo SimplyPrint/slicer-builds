@@ -12,13 +12,16 @@ from tree_sitter_cpp import language
 
 CPP_LANG: Language = Language(language())
 
-# Find toggle_line and toggle_field calls with a constant string literal as the first argument
+# Find toggle_line and toggle_field calls with a constant string literal as the first argument.
+# The anchor keeps only the argument right after the setting: later ones are an extruder
+# index and, in newer OrcaSlicer, the reason shown in the UI, not part of the condition.
 q_constant_toggle = CPP_LANG.query(fr"""
 (call_expression
     (identifier) @func.name
     (#match? @func.name "toggle_(line|field)")
     (argument_list
         (string_literal (string_content) @func.setting)
+        .
         (_) @func.condition
     )
 )""")
@@ -34,6 +37,7 @@ def q_ident_toggle(ident):
     (argument_list
         (identifier) @_ident
         (#match? @_ident "{ident}")
+        .
         (_) @func.condition
     )
 )""")
@@ -474,7 +478,7 @@ class ParseConditionalVisibility:
                         receiver_expr = self.expand_condition(receiver)
                         return Function(name=helper, args=[receiver_expr, *args])
 
-                    if member_name == 'has' and self.node_to_str(receiver) == 'config':
+                    if member_name == 'has' and self.node_to_str(receiver).endswith('config'):
                         helper = self.register_function(
                             'hasSetting',
                             {'kind': 'has_setting'},

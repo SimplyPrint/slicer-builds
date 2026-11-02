@@ -52,6 +52,18 @@ SUPPORTED_SLICERS = {
     },
 }
 
+# Where each slicer maps its C++ enum members to config strings (s_keys_map_<Enum>).
+ENUM_KEY_SOURCES = {
+    'OrcaSlicer': ("https://raw.githubusercontent.com/SoftFever/OrcaSlicer/{}/src/libslic3r/PrintConfig.cpp",),
+    'PrusaSlicer': (
+        "https://raw.githubusercontent.com/prusa3d/PrusaSlicer/{}/src/slic3r-shared/src/Slic3r/Biz/Config/Legacy/PrintConfig.cpp",
+        "https://raw.githubusercontent.com/prusa3d/PrusaSlicer/{}/src/libslic3r/PrintConfig.cpp",
+    ),
+    'BambuStudio': ("https://raw.githubusercontent.com/bambulab/BambuStudio/{}/src/libslic3r/PrintConfig.cpp",),
+    'ElegooSlicer': ("https://raw.githubusercontent.com/ELEGOO-3D/ElegooSlicer/{}/src/libslic3r/PrintConfig.cpp",),
+    'CrealityPrint': ("https://raw.githubusercontent.com/CrealityOfficial/CrealityPrint/{}/src/libslic3r/PrintConfig.cpp",),
+}
+
 # These capabilities are upstream printer-resource metadata, not slicer settings.
 # Keep the family policy in the producer so the browser only executes declared,
 # portable helpers and unknown/future models retain the conservative false fallback.
@@ -98,6 +110,104 @@ NATIVE_FUNCTION_DEFINITIONS = {
         },
     },
 }
+
+
+# OrcaSlicer's is_separable_infill_pattern (src/libslic3r/PrintConfig.hpp) returns true for these.
+ORCA_SEPARABLE_INFILL_PATTERNS = (
+    'ipMonotonic', 'ipMonotonicLine', 'ipRectilinear', 'ipAlignedRectilinear', 'ipZigZag',
+    'ipCrossZag', 'ipLockedZag', 'ipLine', 'ipGrid', 'ipTriangles', 'ipStars', 'ipCubic',
+    'ipQuarterCubic', 'ipHoneycomb', 'ip3DHoneycomb', 'ipLateralHoneycomb', 'ipLateralLattice',
+    'ipCrossHatch', 'ipTpmsD', 'ipTpmsFK', 'ipGyroid', 'ipHilbertCurve', 'ipArchimedeanChords',
+    'ipOctagramSpiral',
+)
+
+# Helpers the toggle function calls with one argument. The browser cannot call them, so
+# each call is replaced by the helper's body as one expression before parsing, with
+# `{arg}` standing for the argument. Copied from upstream: update them when it changes.
+INLINE_HELPERS = {
+    'CrealityPrint': {
+        # 7.3.0: Field infill sets its own density through interior_coefficient.
+        'has_effective_sparse_infill': (
+            '{arg}->option<ConfigOptionPercent>("sparse_infill_density")->value > 0'
+            ' || ({arg}->opt_enum<InfillPattern>("sparse_infill_pattern") == ipField'
+            ' && {arg}->option<ConfigOptionPercent>("interior_coefficient")->value > 0)'
+        ),
+    },
+    'OrcaSlicer': {
+        # Both from src/libslic3r/PrintConfig.hpp.
+        'is_adaptive_infill_pattern': '{arg} == ipGyroid || {arg} == ipTpmsD || {arg} == ipTpmsFK',
+        'is_separable_infill_pattern': ' || '.join(f'{{arg}} == {p}' for p in ORCA_SEPARABLE_INFILL_PATTERNS),
+    },
+}
+
+# Undeclared helpers the web evaluator implements itself (LEGACY_VISIBILITY_FUNCTIONS
+# in web's visibility-evaluator.ts). It rejects a file that calls any other helper
+# without a function definition.
+BROWSER_FUNCTIONS = {'is_auto', 'is_tree', 'creality::is_k2_series_printer_from_string', 'extruderValues'}
+
+
+# A one-parameter lambda whose body is a single return, e.g. OrcaSlicer's
+# `auto is_centered_fill = [](InfillPattern p) { return p == ipConcentric || ...; };`
+LAMBDA = re.compile(
+    r'auto\s+(\w+)\s*=\s*\[[^\]]*\]\s*\(\s*[\w:<>\s]+?[\s&*](\w+)\s*\)\s*\{\s*return\s+([^;{}]*);\s*\}\s*;',
+)
+
+
+def lambda_helpers(code: str) -> tuple[str, dict[str, str]]:
+    """Remove one-expression lambdas from the code and return them as helpers."""
+    helpers = {}
+
+    def collect(match: re.Match) -> str:
+        name, param, body = match.groups()
+        helpers[name] = re.sub(rf'\b{param}\b', '{arg}', body)
+        return ''
+
+    return LAMBDA.sub(collect, code), helpers
+
+
+def inline_helpers(code: str, helpers: dict[str, str]) -> str:
+    """Replace each one-argument call of a helper by its body."""
+    for name, expression in helpers.items():
+        call = re.compile(rf'(?<![\w.>:]){re.escape(name)}\s*\(')
+        out, pos = [], 0
+        while match := call.search(code, pos):
+            depth, end = 1, match.end()
+            while depth:
+                depth += {'(': 1, ')': -1}.get(code[end], 0)
+                end += 1
+            argument = code[match.end():end - 1].strip()
+            if not re.fullmatch(r'\w+', argument):
+                argument = f'({argument})'
+            out += [code[pos:match.start()], '(', expression.replace('{arg}', argument), ')']
+            pos = end
+        code = ''.join(out) + code[pos:]
+    return code
+
+
+def undefined_functions(cv: ConditionalVisibility) -> list[str]:
+    return sorted(set(cv.functions) - set(cv.function_definitions) - BROWSER_FUNCTIONS)
+
+
+def enum_keys(code: str) -> dict[str, dict[str, list[str]]]:
+    """Read every `s_keys_map_<Enum> { { "key", member }, ... }` as {Enum: {member: [keys]}}."""
+    maps = {}
+    for enum, body in re.findall(r's_keys_map_(\w+)\s*=?\s*\{(.*?)\n\s*\};', code, re.DOTALL):
+        members = maps.setdefault(enum, {})
+        for key, member in re.findall(r'\{\s*"([^"]*)"\s*,\s*(?:[\w:]+::)?(\w+)\s*\}', body):
+            members.setdefault(member, []).append(key)
+    return maps
+
+
+def fetch_enum_keys(urls: tuple[str, ...]) -> dict[str, dict[str, list[str]]]:
+    """The enum key maps from the first URL that exists."""
+    for url in urls:
+        response = requests.get(url)
+        if response.status_code == 404:
+            continue
+        response.raise_for_status()
+        return enum_keys(response.text)
+    print(f"No enum key maps at {urls}")
+    return {}
 
 
 def extract_function(code: str, function_name: str) -> str | None:
@@ -192,6 +302,8 @@ def main():
 
     ref = args.ref or default_ref
     code = fetch_and_extract(tuple(url.format(ref) for url in code_urls), func_name)
+    code, lambdas = lambda_helpers(code)
+    code = inline_helpers(code, {**INLINE_HELPERS.get(args.slicer, {}), **lambdas})
 
     # Process input.
     p = ParseConditionalVisibility(
@@ -216,9 +328,16 @@ def main():
 
     # Fill out enum values using OpenAI API.
     # and substitute the variables in the code.
-    map_missing_variables(cv, config_def)
+    enum_key_urls = tuple(url.format(ref) for url in ENUM_KEY_SOURCES.get(args.slicer, ()))
+    map_missing_variables(cv, config_def, fetch_enum_keys(enum_key_urls))
 
     cv.format_conditions()
+
+    if undefined := undefined_functions(cv):
+        raise SystemExit(f"{args.slicer} {ref}: visibility calls helpers the browser cannot evaluate: {undefined}")
+
+    # Sorted, as for-loop settings come out in a different order on each run.
+    cv.conditions = dict(sorted(cv.conditions.items()))
 
     with (work_dir / 'conditional_visibility.json').open('w') as f:
         f.write(cv.model_dump_json(indent=2))
