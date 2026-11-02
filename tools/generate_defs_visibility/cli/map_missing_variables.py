@@ -12,8 +12,6 @@ ENUM_VALUE_ALIASES = {
     'btbrimears': 'brim_ears',
     'btnobrim': 'no_brim',
     'gcfklipper': 'klipper',
-    'gcfmarlinfirmware': 'marlin',
-    'iprectilinear': 'line',
     'ipstars': 'tri-hexagon',
     'noironing': 'no ironing',
     'rear': 'back',
@@ -23,6 +21,28 @@ ENUM_VALUE_ALIASES = {
 
 def normalize_enum_token(value: str) -> str:
     return re.sub(r'[^a-z0-9]', '', value.lower())
+
+
+def upstream_enum_value(
+        variable: str,
+        enum_values: list[str],
+        enum_keys: dict[str, dict[str, list[str]]],
+) -> str | None:
+    """The config string upstream maps this member to, from its s_keys_map tables.
+
+    It may be a value the setting does not offer (ipSpiralInset for sparse infill):
+    the comparison then never holds, as in the slicer.
+    """
+    enum, _, member = variable.rpartition('::')
+    enum = enum.rsplit('::', 1)[-1]
+    if enum in enum_keys:
+        candidates = [enum_keys[enum].get(member, [])]
+    else:
+        candidates = [keys[member] for keys in enum_keys.values() if member in keys]
+    if len(candidates) != 1 or not candidates[0]:
+        return None
+    keys = candidates[0]
+    return next((key for key in keys if key in enum_values), keys[0])
 
 
 def deterministic_enum_value(variable: str, enum_values: list[str]) -> str | None:
@@ -43,7 +63,11 @@ def deterministic_enum_value(variable: str, enum_values: list[str]) -> str | Non
     return None
 
 
-def map_missing_variables(cv: ConditionalVisibility, config_def: dict):
+def map_missing_variables(
+        cv: ConditionalVisibility,
+        config_def: dict,
+        enum_keys: dict[str, dict[str, list[str]]] | None = None,
+):
     # Only keep the config_def "enum_values" field and the key, throw away the rest.
     config_def = {
         k: v['enum_values']
@@ -94,7 +118,10 @@ def map_missing_variables(cv: ConditionalVisibility, config_def: dict):
     for request in mapping_request:
         unresolved = []
         for variable in request['variables']:
-            value = deterministic_enum_value(variable, request['enum_values'])
+            value = (
+                upstream_enum_value(variable, request['enum_values'], enum_keys or {})
+                or deterministic_enum_value(variable, request['enum_values'])
+            )
             if value is None:
                 unresolved.append(variable)
             else:
