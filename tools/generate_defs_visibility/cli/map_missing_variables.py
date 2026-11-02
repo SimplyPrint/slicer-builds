@@ -28,7 +28,7 @@ def normalize_enum_token(value: str) -> str:
 def deterministic_enum_value(variable: str, enum_values: list[str]) -> str | None:
     member = variable.rsplit('::', 1)[-1]
     tokens = [member]
-    for prefix in ('bt', 'ds', 'gcf', 'gft', 'ip', 'sms', 'sp', 'wtw'):
+    for prefix in ('bt', 'ds', 'gcf', 'gft', 'ip', 'pte', 'sms', 'sp', 'wtw'):
         if member.lower().startswith(prefix) and len(member) > len(prefix):
             tokens.append(member[len(prefix):])
 

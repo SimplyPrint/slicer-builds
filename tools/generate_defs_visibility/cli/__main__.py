@@ -100,6 +100,35 @@ NATIVE_FUNCTION_DEFINITIONS = {
 }
 
 
+# File-local helpers the toggle function calls. The browser cannot call them, so each
+# call is replaced by the helper's body as one expression before parsing.
+INLINE_HELPERS = {
+    'CrealityPrint': {
+        # 7.3.0: Field infill sets its own density through interior_coefficient.
+        'has_effective_sparse_infill': (
+            'config->option<ConfigOptionPercent>("sparse_infill_density")->value > 0'
+            ' || (config->opt_enum<InfillPattern>("sparse_infill_pattern") == ipField'
+            ' && config->option<ConfigOptionPercent>("interior_coefficient")->value > 0)'
+        ),
+    },
+}
+
+# Undeclared helpers the web evaluator implements itself (LEGACY_VISIBILITY_FUNCTIONS
+# in web's visibility-evaluator.ts). It rejects a file that calls any other helper
+# without a function definition.
+BROWSER_FUNCTIONS = {'is_auto', 'is_tree', 'creality::is_k2_series_printer_from_string', 'extruderValues'}
+
+
+def inline_helpers(code: str, helpers: dict[str, str]) -> str:
+    for name, expression in helpers.items():
+        code = re.sub(rf'\b{re.escape(name)}\s*\(\s*config\s*\)', f'({expression})', code)
+    return code
+
+
+def undefined_functions(cv: ConditionalVisibility) -> list[str]:
+    return sorted(set(cv.functions) - set(cv.function_definitions) - BROWSER_FUNCTIONS)
+
+
 def extract_function(code: str, function_name: str) -> str | None:
     pattern = re.compile(
         rf'((?:[\w\s:*&<>]+)?{re.escape(function_name)}\s*\(.*?\)\s*{{)',
@@ -192,6 +221,7 @@ def main():
 
     ref = args.ref or default_ref
     code = fetch_and_extract(tuple(url.format(ref) for url in code_urls), func_name)
+    code = inline_helpers(code, INLINE_HELPERS.get(args.slicer, {}))
 
     # Process input.
     p = ParseConditionalVisibility(
@@ -219,6 +249,9 @@ def main():
     map_missing_variables(cv, config_def)
 
     cv.format_conditions()
+
+    if undefined := undefined_functions(cv):
+        raise SystemExit(f"{args.slicer} {ref}: visibility calls helpers the browser cannot evaluate: {undefined}")
 
     with (work_dir / 'conditional_visibility.json').open('w') as f:
         f.write(cv.model_dump_json(indent=2))
