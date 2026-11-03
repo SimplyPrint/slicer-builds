@@ -182,6 +182,14 @@ jobs:
 
           pushd "$folder_name"
             uvx generate-defs-visibility --slicer ${{ matrix.slicer }} --ref "$ref" --cache-dir "../.cache/${folder_name}"
+
+            # Value limits the GUI enforces in code. Warns about value-setting calls the
+            # previous release did not have, so a version bump surfaces new GUI rules.
+            compare_to=()
+            if [[ -n "$latest_stored_tag" && "$latest_stored_tag" != "$folder_name" && -f "../$latest_stored_tag/gui_value_limits.json" ]]; then
+              compare_to=(--compare-to "../$latest_stored_tag/gui_value_limits.json")
+            fi
+            uvx --from generate-defs-visibility extract-gui-value-limits --slicer ${{ matrix.slicer }} --ref "$ref" "${compare_to[@]}"
           popd
 
           created_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
@@ -201,6 +209,7 @@ jobs:
           if [[ "${{ matrix.build-type }}" == "nightly" && "${latest_release_at_head:-false}" == "true" ]]; then
             mkdir -p "$latest_release_tag"
             cp -rf nightly/conditional_visibility.json "$latest_release_tag" || true
+            cp -rf nightly/gui_value_limits.json "$latest_release_tag" || true
             ../../../tools/update_slicer_index.py \
               --index _index.json \
               --version "$latest_release_tag" \
