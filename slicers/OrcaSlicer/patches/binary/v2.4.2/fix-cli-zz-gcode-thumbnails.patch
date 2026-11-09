@@ -1,0 +1,140 @@
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+index 3de3843..5259d90 100644
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -53,6 +53,7 @@ using namespace nlohmann;
+ #include "libslic3r/Geometry.hpp"
+ #include "libslic3r/GCode.hpp"
+ #include "libslic3r/GCode/PostProcessor.hpp"
++#include "libslic3r/GCode/Thumbnails.hpp"
+ #include "libslic3r/Model.hpp"
+ #include "libslic3r/ModelArrange.hpp"
+ #include "libslic3r/Platform.hpp"
+@@ -463,6 +464,46 @@ void record_exit_reson(std::string outputdir, int code, int plate_id, std::strin
+ #endif
+ }
+ 
++// Orca CLI: write the G-code thumbnails into a G-code file exported without them, where
++// GCode::_do_export writes them: after the header block, or first when there is none.
++static bool cli_insert_gcode_thumbnails(const std::string& gcode_path, const std::string& thumbnails)
++{
++    namespace fs = boost::filesystem;
++    const fs::path source(gcode_path);
++    boost::nowide::ifstream in(gcode_path, std::ios::binary);
++    if (!in.good())
++        return false;
++    std::string head(1 << 20, '\0');
++    in.read(head.data(), std::streamsize(head.size()));
++    head.resize(size_t(in.gcount()));
++    const std::string header_end = "; HEADER_BLOCK_END\n\n";
++    const size_t      found      = head.find(header_end);
++    const size_t      offset     = found == std::string::npos ? 0 : found + header_end.size();
++
++    const fs::path target = source.parent_path() / (source.filename().string() + ".thumbnails.tmp");
++    {
++        boost::nowide::ofstream out(target.string(), std::ios::binary | std::ios::trunc);
++        if (!out.good())
++            return false;
++        out.write(head.data(), std::streamsize(offset));
++        out.write(thumbnails.data(), std::streamsize(thumbnails.size()));
++        out.write(head.data() + offset, std::streamsize(head.size() - offset));
++        std::vector<char> buffer(1 << 20);
++        while (in.read(buffer.data(), std::streamsize(buffer.size())) || in.gcount() > 0)
++            out.write(buffer.data(), in.gcount());
++        if (!out.good())
++            return false;
++    }
++    in.close();
++    boost::system::error_code ec;
++    fs::rename(target, source, ec);
++    if (ec) {
++        fs::remove(target, ec);
++        return false;
++    }
++    return true;
++}
++
+ static int decode_png_to_thumbnail(std::string png_file, ThumbnailData& thumbnail_data)
+ {
+     if (!boost::filesystem::exists(png_file))
+@@ -6536,7 +6577,33 @@ int CLI::run(int argc, char **argv)
+             }
+         }
+ 
+-        if (need_regenerate_thumbnail || need_regenerate_no_light_thumbnail || need_regenerate_top_thumbnail) {
++        // Orca CLI: the G-code was exported without a thumbnail callback, so a printer that reads
++        // its thumbnails from the G-code (any but a Bambu Lab one, as GCode::_do_export decides)
++        // got none. Render them below, with the plate thumbnails, for every sliced plate that asks.
++        std::vector<std::pair<int, const Print *>> gcode_thumbnail_plates;
++        for (int i = 0; i < partplate_list.get_plate_count(); i++) {
++            if ((plate_to_slice != 0) && (plate_to_slice != (i + 1)))
++                continue;
++            Slic3r::GUI::PartPlate *part_plate = partplate_list.get_plate(i);
++            if (!part_plate->get_slice_result() || !part_plate->is_slice_result_valid())
++                continue;
++            PrintBase                *plate_print_base = nullptr;
++            Slic3r::GUI::GCodeResult *plate_result     = nullptr;
++            int                       plate_print_index = 0;
++            part_plate->get_print(&plate_print_base, &plate_result, &plate_print_index);
++            const Print *plate_print = dynamic_cast<const Print *>(plate_print_base);
++            if (plate_print == nullptr || plate_print->is_BBL_printer())
++                continue;
++            auto [definitions, errors] = GCodeThumbnails::make_and_check_thumbnail_list(plate_print->full_print_config());
++            if (errors != enum_bitmask<ThumbnailError>() || definitions.empty())
++                continue;
++            if (!boost::filesystem::exists(part_plate->get_tmp_gcode_path()))
++                continue;
++            gcode_thumbnail_plates.emplace_back(i, plate_print);
++        }
++        const bool need_gcode_thumbnails = !gcode_thumbnail_plates.empty();
++
++        if (need_regenerate_thumbnail || need_regenerate_no_light_thumbnail || need_regenerate_top_thumbnail || need_gcode_thumbnails) {
+             std::vector<std::string> colors;
+             if (filament_color) {
+                 colors= filament_color->vserialize();
+@@ -6901,6 +6968,45 @@ int CLI::run(int argc, char **argv)
+                                 BOOST_LOG_TRIVIAL(info) << boost::format("plate %1%: add thumbnail data for top and pick into group")%(i+1);
+                             }
+                         }
++
++                        // Orca CLI: the G-code thumbnails, rendered as the GUI's callback renders them
++                        // (Plater::priv::generate_thumbnails, orthographic camera) and encoded by
++                        // GCodeThumbnails in every format the printer asks for.
++                        for (const auto &[plate_index, plate_print] : gcode_thumbnail_plates) {
++                            ThumbnailsGeneratorCallback gcode_thumbnail_cb = [&](const ThumbnailsParams &params) {
++                                ThumbnailsList rendered;
++                                for (const Vec2d &size : params.sizes) {
++                                    ThumbnailData data;
++                                    const Point   isize(size);
++                                    switch (Slic3r::GUI::OpenGLManager::get_framebuffers_type()) {
++                                    case Slic3r::GUI::OpenGLManager::EFramebufferType::Arb:
++                                        Slic3r::GUI::GLCanvas3D::render_thumbnail_framebuffer(data, isize.x(), isize.y(), params, partplate_list,
++                                            model.objects, glvolume_collection, colors_out, shader, Slic3r::GUI::Camera::EType::Ortho);
++                                        break;
++                                    case Slic3r::GUI::OpenGLManager::EFramebufferType::Ext:
++                                        Slic3r::GUI::GLCanvas3D::render_thumbnail_framebuffer_ext(data, isize.x(), isize.y(), params, partplate_list,
++                                            model.objects, glvolume_collection, colors_out, shader, Slic3r::GUI::Camera::EType::Ortho);
++                                        break;
++                                    default: break;
++                                    }
++                                    if (data.is_valid())
++                                        rendered.push_back(std::move(data));
++                                }
++                                return rendered;
++                            };
++                            const GCodeThumbnails::GCodeThumbnailDefinitionsList definitions =
++                                GCodeThumbnails::make_and_check_thumbnail_list(plate_print->full_print_config()).first;
++                            std::string thumbnails_gcode;
++                            GCodeThumbnails::export_thumbnails_to_file(
++                                gcode_thumbnail_cb, plate_index, definitions, [&thumbnails_gcode](const char *sz) { thumbnails_gcode += sz; }, []() {});
++                            Slic3r::GUI::PartPlate *thumbnail_plate = partplate_list.get_plate(plate_index);
++                            if (thumbnails_gcode.empty())
++                                BOOST_LOG_TRIVIAL(warning) << boost::format("plate %1%: no G-code thumbnails rendered") % (plate_index + 1);
++                            else if (!cli_insert_gcode_thumbnails(thumbnail_plate->get_tmp_gcode_path(), thumbnails_gcode))
++                                BOOST_LOG_TRIVIAL(error) << boost::format("plate %1%: could not write the G-code thumbnails to %2%") % (plate_index + 1) % thumbnail_plate->get_tmp_gcode_path();
++                            else
++                                BOOST_LOG_TRIVIAL(info) << boost::format("plate %1%: wrote %2% G-code thumbnail(s)") % (plate_index + 1) % definitions.size();
++                        }
+                     }
+                 }
+             }
