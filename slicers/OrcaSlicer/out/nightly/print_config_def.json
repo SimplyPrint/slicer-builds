@@ -19,7 +19,7 @@
     "activate_air_filtration": {
         "type": "bools",
         "label": "Activate air filtration",
-        "tooltip": "Activate for better air filtration. G-code command: M106 P3 S(0-255)",
+        "tooltip": "Activate for better air filtration.\nG-code command: M106 P3 S(0-255)",
         "mode": "simple",
         "default_value": "0"
     },
@@ -42,7 +42,7 @@
     "activate_chamber_temp_control": {
         "type": "bools",
         "label": "Activate temperature control",
-        "tooltip": "Enable this option for automated chamber temperature control. This option activates the emitting of an M191 command before the \"machine_start_gcode\"\n which sets the chamber temperature and waits until it is reached. In addition, it emits an M141 command at the end of the print to turn off the chamber heater, if present.\n\nThis option relies on the firmware supporting the M191 and M141 commands either via macros or natively and is usually used when an active chamber heater is installed.",
+        "tooltip": "Enable this option for automated chamber temperature control. This option activates the emitting of an M191 command before the \"machine_start_gcode\" which sets the chamber temperature and waits until it is reached. In addition, it emits an M141 command at the end of the print to turn off the chamber heater, if present.\n\nThis option relies on the firmware supporting the M191 and M141 commands either via macros or natively and is usually used when an active chamber heater is installed.",
         "mode": "simple",
         "default_value": "0"
     },
@@ -118,7 +118,7 @@
     "adaptive_pressure_advance_bridges": {
         "type": "floats",
         "label": "Static pressure advance for bridges",
-        "tooltip": "Static pressure advance value for bridges. Set to 0 to apply the same pressure advance as \nequivalent walls (using adaptive settings if enabled).\n\nA lower PA value when printing bridges helps reduce the appearance of slight under-extrusion immediately after bridges. This is caused by the pressure drop in the nozzle when printing in the air and a lower PA helps counteract this.",
+        "tooltip": "Static pressure advance value for bridges. Set to 0 to apply the same pressure advance as equivalent walls (using adaptive settings if enabled).\n\nA lower PA value when printing bridges helps reduce the appearance of slight under-extrusion immediately after bridges. This is caused by the pressure drop in the nozzle when printing in the air and a lower PA helps counteract this.",
         "max": "2",
         "mode": "advanced",
         "default_value": "0"
@@ -143,7 +143,7 @@
     "additional_cooling_fan_speed": {
         "type": "ints",
         "label": "Fan speed",
-        "tooltip": "Speed of auxiliary part cooling fan. Auxiliary fan will run at this speed during printing except the first several layers which is defined by no cooling layers.\nPlease enable auxiliary_fan in printer settings to use this feature. G-code command: M106 P2 S(0-255)",
+        "tooltip": "Speed of auxiliary part cooling fan. Auxiliary fan will run at this speed during printing except the first several layers which is defined by no cooling layers.\nPlease enable auxiliary_fan in printer settings to use this feature.\nG-code command: M106 P2 S(0-255)",
         "sidetext": "%",
         "min": "0",
         "max": "100",
@@ -176,7 +176,7 @@
     "auxiliary_fan": {
         "type": "bool",
         "label": "Auxiliary part cooling fan",
-        "tooltip": "Enable this option if machine has auxiliary part cooling fan. G-code command: M106 P2 S(0-255).",
+        "tooltip": "Enable this option if machine has auxiliary part cooling fan.\nG-code command: M106 P2 S(0-255).",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -247,7 +247,7 @@
     "bed_mesh_max": {
         "type": "point",
         "label": "Bed mesh max",
-        "tooltip": "This option sets the max point for the allowed bed mesh area. Due to the probe's XY offset, most printers are unable to probe the entire bed. To ensure the probe point does not go outside the bed area, the minimum and maximum points of the bed mesh should be set appropriately. OrcaSlicer ensures that adaptive_bed_mesh_min\/adaptive_bed_mesh_max values do not exceed these min\/max points. This information can usually be obtained from your printer manufacturer. The default setting is (99999, 99999), which means there are no limits, thus allowing probing across the entire bed.",
+        "tooltip": "This option sets the max point for the allowed bed mesh area. Due to the probe's XY offset, most printers are unable to probe the entire bed. To ensure the probe point does not go outside the bed area, the minimum and maximum points of the bed mesh should be set appropriately. OrcaSlicer ensures that adaptive_bed_mesh_min\/adaptive_bed_mesh_max values do not exceed these min\/max points. This information can usually be obtained from your printer manufacturer.\n\nThe default setting is (99999, 99999), which means there are no limits, thus allowing probing across the entire bed.",
         "sidetext": "mm",
         "mode": "advanced",
         "default_value": "99999,99999"
@@ -255,7 +255,7 @@
     "bed_mesh_min": {
         "type": "point",
         "label": "Bed mesh min",
-        "tooltip": "This option sets the min point for the allowed bed mesh area. Due to the probe's XY offset, most printers are unable to probe the entire bed. To ensure the probe point does not go outside the bed area, the minimum and maximum points of the bed mesh should be set appropriately. OrcaSlicer ensures that adaptive_bed_mesh_min\/adaptive_bed_mesh_max values do not exceed these min\/max points. This information can usually be obtained from your printer manufacturer. The default setting is (-99999, -99999), which means there are no limits, thus allowing probing across the entire bed.",
+        "tooltip": "This option sets the min point for the allowed bed mesh area. Due to the probe's XY offset, most printers are unable to probe the entire bed. To ensure the probe point does not go outside the bed area, the minimum and maximum points of the bed mesh should be set appropriately. OrcaSlicer ensures that adaptive_bed_mesh_min\/adaptive_bed_mesh_max values do not exceed these min\/max points. This information can usually be obtained from your printer manufacturer.\n\nThe default setting is (-99999, -99999), which means there are no limits, thus allowing probing across the entire bed.",
         "sidetext": "mm",
         "mode": "advanced",
         "default_value": "-99999,-99999"
@@ -520,7 +520,7 @@
             },
             {
                 "icon_filename": "param_spiralinset.svg",
-                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M12.00,12.00 L12.00,11.96 L12.01,11.92 L12.03,11.89 L12.05,11.85 L12.08,11.82 L12.12,11.80 L12.16,11.78 L12.20,11.76 L12.25,11.75 L12.30,11.75 L12.35,11.75 L12.40,11.77 L12.46,11.79 L12.51,11.81 L12.56,11.85 L12.61,11.89 L12.66,11.94 L12.70,12.00 L12.74,12.06 L12.77,12.14 L12.79,12.21 L12.80,12.29 L12.81,12.38 L12.81,12.47 L12.80,12.56 L12.77,12.65 L12.74,12.74 L12.70,12.83 L12.65,12.92 L12.58,13.01 L12.51,13.09 L12.43,13.17 L12.33,13.24 L12.23,13.30 L12.12,13.36 L12.00,13.40 L11.87,13.43 L11.74,13.46 L11.61,13.46 L11.47,13.46 L11.33,13.45 L11.18,13.41 L11.04,13.37 L10.90,13.31 L10.76,13.24 L10.63,13.15 L10.50,13.05 L10.38,12.93 L10.27,12.81 L10.17,12.67 L10.08,12.51 L10.01,12.35 L9.95,12.18 L9.90,12.00 L9.87,11.81 L9.86,11.62 L9.86,11.43 L9.88,11.23 L9.92,11.03 L9.98,10.83 L10.06,10.64 L10.15,10.45 L10.27,10.27 L10.40,10.09 L10.55,9.93 L10.72,9.78 L10.90,9.64 L11.10,9.52 L11.31,9.41 L11.53,9.32 L11.76,9.25 L12.00,9.20 L12.25,9.17 L12.50,9.17 L12.75,9.18 L13.01,9.22 L13.27,9.29 L13.52,9.37 L13.76,9.48 L14.00,9.62 L14.23,9.77 L14.44,9.95 L14.64,10.15 L14.83,10.37 L15.00,10.60 L15.14,10.86 L15.27,11.12 L15.37,11.41 L15.45,11.70 L15.50,12.00 L15.53,12.31 L15.52,12.62 L15.49,12.94 L15.44,13.25 L15.35,13.56 L15.23,13.87 L15.09,14.16 L14.92,14.45 L14.72,14.72 L14.50,14.98 L14.25,15.22 L13.98,15.44 L13.69,15.63 L13.38,15.80 L13.06,15.94 L12.72,16.06 L12.36,16.15 L12.00,16.20 L11.63,16.22 L11.26,16.21 L10.88,16.17 L10.51,16.09 L10.14,15.98 L9.78,15.84 L9.43,15.66 L9.10,15.46 L8.78,15.22 L8.48,14.95 L8.21,14.65 L7.96,14.33 L7.74,13.99 L7.54,13.62 L7.38,13.24 L7.25,12.84 L7.16,12.42 L7.10,12.00 L7.08,11.57 L7.10,11.14 L7.15,10.70 L7.25,10.27 L7.38,9.85 L7.55,9.43 L7.76,9.03 L8.01,8.65 L8.29,8.29 L8.60,7.95 L8.94,7.64 L9.32,7.35 L9.72,7.10 L10.14,6.88 L10.58,6.70 L11.04,6.56 L11.52,6.46 L12.00,6.40 L12.49,6.38 L12.99,6.41 L13.48,6.48 L13.97,6.59 L14.45,6.75 L14.92,6.95 L15.37,7.19 L15.80,7.47 L16.21,7.79 L16.59,8.15 L16.94,8.54 L17.25,8.97 L17.53,9.42 L17.77,9.90 L17.97,10.40 L18.13,10.92 L18.24,11.45 L18.30,12.00 L18.31,12.55 L18.28,13.11 L18.20,13.66 L18.07,14.21 L17.89,14.74 L17.66,15.27 L17.38,15.77 L17.06,16.25 L16.70,16.70 L16.30,17.12 L15.86,17.51 L15.38,17.86 L14.88,18.17 L14.34,18.43 L13.78,18.65 L13.20,18.82 L12.61,18.93 L12.00,19.00 L11.39,19.01 L10.77,18.97 L10.16,18.87 L9.55,18.72 L8.96,18.52 L8.38,18.26 L7.83,17.96 L7.30,17.60 L6.80,17.20 L6.34,16.75 L5.92,16.26 L5.53,15.73 L5.20,15.17 L4.91,14.58 L4.68,13.96 L4.49,13.32 L4.37,12.67 L4.30,12.00 L4.29,11.33 L4.34,10.65 L4.45,9.98 L4.62,9.31 L4.85,8.66 L5.13,8.03 L5.47,7.43 L5.86,6.85 L6.31,6.31 L6.80,5.80 L7.34,5.34 L7.92,4.93 L8.53,4.56 L9.18,4.25 L9.86,4.00 L10.55,3.80 L11.27,3.67 L12.00,3.60\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M4.125,4.125H19.875V19.875H4.125V6.75H17.25V17.25H6.75V9.375H14.625V14.625H9.375V12H12\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
             {
                 "icon_filename": "param_hilbertcurve.svg",
@@ -745,7 +745,7 @@
         "type": "ints",
         "label": "Minimal",
         "full_label": "Chamber minimal temperature",
-        "tooltip": "This is the chamber temperature at which printing should start, while the chamber continues heating toward the \"Target\" chamber temperature. For example, set the Target to 60 and the Minimal to 50 to begin printing once the chamber reaches 50℃, without waiting for the full 60℃.\n\nIt sets a G-code variable named chamber_minimal_temperature, which can be passed to your print start macro or a heat soak macro, like this: PRINT_START (other variables) CHAMBER_MIN_TEMP=[chamber_minimal_temperature].\n\nUnlike the \"Target\" chamber temperature, this option does not emit any M141\/M191 commands; it only exposes the value to your custom G-code. It should not exceed the \"Target\" chamber temperature.",
+        "tooltip": "This is the chamber temperature at which printing should start, while the chamber continues heating toward the \"Target\" chamber temperature. For example, set the Target to 60 and the Minimal to 50 to begin printing once the chamber reaches 50℃, without waiting for the full 60℃.\n\nIt sets a G-code variable named chamber_minimal_temperature, which can be passed to your print start macro or a heat soak macro, like this:\nPRINT_START (other variables) CHAMBER_MIN_TEMP=[chamber_minimal_temperature]\n\nUnlike the \"Target\" chamber temperature, this option does not emit any M141\/M191 commands; it only exposes the value to your custom G-code. It should not exceed the \"Target\" chamber temperature.",
         "sidetext": "℃",
         "min": "0",
         "max": "1500",
@@ -756,7 +756,7 @@
         "type": "ints",
         "label": "Chamber temperature",
         "full_label": "Chamber temperature",
-        "tooltip": "For high-temperature materials like ABS, ASA, PC, and PA, a higher chamber temperature can help suppress or reduce warping and potentially lead to higher interlayer bonding strength. However, at the same time, a higher chamber temperature will reduce the efficiency of air filtration for ABS and ASA.\n\nFor PLA, PETG, TPU, PVA, and other low-temperature materials, this option should be disabled (set to 0) as the chamber temperature should be low to avoid extruder clogging caused by material softening at the heat break.\n\nIf enabled, this parameter also sets a G-code variable named chamber_temperature, which can be used to pass the desired chamber temperature to your print start macro, or a heat soak macro like this: PRINT_START (other variables) CHAMBER_TEMP=[chamber_temperature]. This may be useful if your printer does not support M141\/M191 commands, or if you desire to handle heat soaking in the print start macro if no active chamber heater is installed.",
+        "tooltip": "For high-temperature materials like ABS, ASA, PC, and PA, a higher chamber temperature can help suppress or reduce warping and potentially lead to higher interlayer bonding strength. However, at the same time, a higher chamber temperature will reduce the efficiency of air filtration for ABS and ASA.\n\nFor PLA, PETG, TPU, PVA, and other low-temperature materials, this option should be disabled (set to 0) as the chamber temperature should be low to avoid extruder clogging caused by material softening at the heat break.\n\nIf enabled, this parameter also sets a G-code variable named chamber_temperature, which can be used to pass the desired chamber temperature to your print start macro, or a heat soak macro like this:\nPRINT_START (other variables) CHAMBER_TEMP=[chamber_temperature]\nThis may be useful if your printer does not support M141\/M191 commands, or if you desire to handle heat soaking in the print start macro if no active chamber heater is installed.",
         "sidetext": "℃",
         "min": "0",
         "max": "1500",
@@ -2176,7 +2176,7 @@
     "filament_pre_cooling_temperature_nc": {
         "type": "ints",
         "label": "Hotend change",
-        "tooltip": "To prevent oozing, the nozzle temperature will be cooled during ramming. Note: only a cooldown command and fan activation are triggered, reaching the target temperature is not guaranteed. 0 means disabled.",
+        "tooltip": "To prevent oozing, the nozzle temperature will be cooled during ramming. 0 means disabled.\n\nNote: only a cooldown command and fan activation are triggered, reaching the target temperature is not guaranteed.",
         "sidetext": "℃",
         "min": "0",
         "mode": "advanced",
@@ -2929,7 +2929,7 @@
     "gcode_comments": {
         "type": "bool",
         "label": "Verbose G-code",
-        "tooltip": "Enable this to get a commented G-code file, with each line explained by a descriptive text. If you print from SD card, the additional weight of the file could make your firmware slow down.",
+        "tooltip": "Enable this to get a commented G-code file, with each line explained by a descriptive text.\n\nIf you print from SD card, the additional weight of the file could make your firmware slow down.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -2957,7 +2957,7 @@
     "gcode_label_objects": {
         "type": "bool",
         "label": "Label objects",
-        "tooltip": "Enable this to add comments into the G-code labeling print moves with what object they belong to, which is useful for the Octoprint CancelObject plug-in. This setting is NOT compatible with Single Extruder Multi Material setup and Wipe into Object \/ Wipe into Infill.",
+        "tooltip": "Enable this to add comments into the G-code labeling print moves with what object they belong to, which is useful for the Octoprint CancelObject plug-in.\n\nThis setting is NOT compatible with Single Extruder Multi Material setup and Wipe into Object \/ Wipe into Infill.",
         "mode": "advanced",
         "default_value": "1"
     },
@@ -3051,7 +3051,7 @@
     "gcode_skip_config_block": {
         "type": "bool",
         "label": "Skip G-code config block",
-        "tooltip": "Do not write the CONFIG_BLOCK (slicer configuration key\/value pairs) into the G-code file. This can help with printers whose firmware crashes when parsing these comment lines (e.g. Anycubic go-klipper). Note: the G-code file will no longer contain slicer settings, so importing it back into OrcaSlicer will not restore the configuration.",
+        "tooltip": "Do not write the CONFIG_BLOCK (slicer configuration key\/value pairs) into the G-code file. This can help with printers whose firmware crashes when parsing these comment lines (e.g. Anycubic go-klipper).\n\nNote: the G-code file will no longer contain slicer settings, so importing it back into OrcaSlicer will not restore the configuration.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -3116,7 +3116,7 @@
     "high_precision_gcode": {
         "type": "bool",
         "label": "High precision G-code (experimental)",
-        "tooltip": "Write X, Y, Z, I and J with 4 decimal places instead of 3, and E with 6 instead of 5, to reduce rounding errors in the G-code. With relative E distances, the rounding error of each move is also carried over to the next one. Supports are removed after printing, so they keep the standard precision. This may help stabilize extrusion with small nozzles (e.g. 0.2 mm) and thin layers (e.g. 0.08 mm or less), where each move extrudes so little material that rounding errors matter most. The effect depends strongly on how well the rest of the settings are tuned and may be hard to notice unless the print profile is well calibrated. The G-code file becomes about 10 percent larger, which may slow down printers that parse G-code slowly.",
+        "tooltip": "Write X, Y, Z, I and J with 4 decimal places instead of 3, and E with 6 instead of 5, to reduce rounding errors in the G-code. With relative E distances, the rounding error of each move is also carried over to the next one. Supports are removed after printing, so they keep the standard precision. This may help stabilize extrusion with small nozzles (e.g. 0.2 mm) and thin layers (e.g. 0.08 mm or less), where each move extrudes so little material that rounding errors matter most. The effect depends strongly on how well the rest of the settings are tuned and may be hard to notice unless the print profile is well calibrated.\n\nThe G-code file becomes about 10 percent larger, which may slow down printers that parse G-code slowly.",
         "mode": "",
         "default_value": "0"
     },
@@ -3914,7 +3914,7 @@
             },
             {
                 "icon_filename": "param_spiralinset.svg",
-                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M12.00,12.00 L12.00,11.96 L12.01,11.92 L12.03,11.89 L12.05,11.85 L12.08,11.82 L12.12,11.80 L12.16,11.78 L12.20,11.76 L12.25,11.75 L12.30,11.75 L12.35,11.75 L12.40,11.77 L12.46,11.79 L12.51,11.81 L12.56,11.85 L12.61,11.89 L12.66,11.94 L12.70,12.00 L12.74,12.06 L12.77,12.14 L12.79,12.21 L12.80,12.29 L12.81,12.38 L12.81,12.47 L12.80,12.56 L12.77,12.65 L12.74,12.74 L12.70,12.83 L12.65,12.92 L12.58,13.01 L12.51,13.09 L12.43,13.17 L12.33,13.24 L12.23,13.30 L12.12,13.36 L12.00,13.40 L11.87,13.43 L11.74,13.46 L11.61,13.46 L11.47,13.46 L11.33,13.45 L11.18,13.41 L11.04,13.37 L10.90,13.31 L10.76,13.24 L10.63,13.15 L10.50,13.05 L10.38,12.93 L10.27,12.81 L10.17,12.67 L10.08,12.51 L10.01,12.35 L9.95,12.18 L9.90,12.00 L9.87,11.81 L9.86,11.62 L9.86,11.43 L9.88,11.23 L9.92,11.03 L9.98,10.83 L10.06,10.64 L10.15,10.45 L10.27,10.27 L10.40,10.09 L10.55,9.93 L10.72,9.78 L10.90,9.64 L11.10,9.52 L11.31,9.41 L11.53,9.32 L11.76,9.25 L12.00,9.20 L12.25,9.17 L12.50,9.17 L12.75,9.18 L13.01,9.22 L13.27,9.29 L13.52,9.37 L13.76,9.48 L14.00,9.62 L14.23,9.77 L14.44,9.95 L14.64,10.15 L14.83,10.37 L15.00,10.60 L15.14,10.86 L15.27,11.12 L15.37,11.41 L15.45,11.70 L15.50,12.00 L15.53,12.31 L15.52,12.62 L15.49,12.94 L15.44,13.25 L15.35,13.56 L15.23,13.87 L15.09,14.16 L14.92,14.45 L14.72,14.72 L14.50,14.98 L14.25,15.22 L13.98,15.44 L13.69,15.63 L13.38,15.80 L13.06,15.94 L12.72,16.06 L12.36,16.15 L12.00,16.20 L11.63,16.22 L11.26,16.21 L10.88,16.17 L10.51,16.09 L10.14,15.98 L9.78,15.84 L9.43,15.66 L9.10,15.46 L8.78,15.22 L8.48,14.95 L8.21,14.65 L7.96,14.33 L7.74,13.99 L7.54,13.62 L7.38,13.24 L7.25,12.84 L7.16,12.42 L7.10,12.00 L7.08,11.57 L7.10,11.14 L7.15,10.70 L7.25,10.27 L7.38,9.85 L7.55,9.43 L7.76,9.03 L8.01,8.65 L8.29,8.29 L8.60,7.95 L8.94,7.64 L9.32,7.35 L9.72,7.10 L10.14,6.88 L10.58,6.70 L11.04,6.56 L11.52,6.46 L12.00,6.40 L12.49,6.38 L12.99,6.41 L13.48,6.48 L13.97,6.59 L14.45,6.75 L14.92,6.95 L15.37,7.19 L15.80,7.47 L16.21,7.79 L16.59,8.15 L16.94,8.54 L17.25,8.97 L17.53,9.42 L17.77,9.90 L17.97,10.40 L18.13,10.92 L18.24,11.45 L18.30,12.00 L18.31,12.55 L18.28,13.11 L18.20,13.66 L18.07,14.21 L17.89,14.74 L17.66,15.27 L17.38,15.77 L17.06,16.25 L16.70,16.70 L16.30,17.12 L15.86,17.51 L15.38,17.86 L14.88,18.17 L14.34,18.43 L13.78,18.65 L13.20,18.82 L12.61,18.93 L12.00,19.00 L11.39,19.01 L10.77,18.97 L10.16,18.87 L9.55,18.72 L8.96,18.52 L8.38,18.26 L7.83,17.96 L7.30,17.60 L6.80,17.20 L6.34,16.75 L5.92,16.26 L5.53,15.73 L5.20,15.17 L4.91,14.58 L4.68,13.96 L4.49,13.32 L4.37,12.67 L4.30,12.00 L4.29,11.33 L4.34,10.65 L4.45,9.98 L4.62,9.31 L4.85,8.66 L5.13,8.03 L5.47,7.43 L5.86,6.85 L6.31,6.31 L6.80,5.80 L7.34,5.34 L7.92,4.93 L8.53,4.56 L9.18,4.25 L9.86,4.00 L10.55,3.80 L11.27,3.67 L12.00,3.60\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M4.125,4.125H19.875V19.875H4.125V6.75H17.25V17.25H6.75V9.375H14.625V14.625H9.375V12H12\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
             {
                 "icon_filename": "param_hilbertcurve.svg",
@@ -4615,7 +4615,7 @@
     "min_width_top_surface": {
         "type": "floatorpercent",
         "label": "One wall threshold",
-        "tooltip": "If a top surface has to be printed and it's partially covered by another layer, it won't be considered at a top layer where its width is below this value. This can be useful to not let the 'one perimeter on top' trigger on surface that should be covered only by perimeters. This value can be a mm or a % of the perimeter extrusion width.\nWarning: If enabled, artifacts can be created if you have some thin features on the next layer, like letters. Set this setting to 0 to remove these artifacts.",
+        "tooltip": "If a top surface has to be printed and it's partially covered by another layer, it won't be considered at a top layer where its width is below this value. This can be useful to not let the 'one perimeter on top' trigger on surface that should be covered only by perimeters. This value can be a mm or a % of the perimeter extrusion width.\n\nWarning: If enabled, artifacts can be created if you have some thin features on the next layer, like letters. Set this setting to 0 to remove these artifacts.",
         "sidetext": "mm or %",
         "min": "0",
         "mode": "advanced",
@@ -5074,7 +5074,7 @@
     "precise_outer_wall": {
         "type": "bool",
         "label": "Precise wall",
-        "tooltip": "Improve shell precision by adjusting outer wall spacing. This also improves layer consistency. NOTE: This option will be ignored for outer-inner or inner-outer-inner wall sequences.",
+        "tooltip": "Improve shell precision by adjusting outer wall spacing. This also improves layer consistency.\n\nNote: This option will be ignored for outer-inner or inner-outer-inner wall sequences.",
         "mode": "simple",
         "default_value": "1"
     },
@@ -5582,7 +5582,7 @@
     "reduce_infill_retraction": {
         "type": "bool",
         "label": "Reduce infill retraction",
-        "tooltip": "Don't retract when the travel is entirely within an infill area. That means the oozing can't been seen. This can reduce times of retraction for complex model and save printing time, but make slicing and G-code generating slower. Note that Z-hop is also not performed in areas where retraction is skipped.",
+        "tooltip": "Don't retract when the travel is entirely within an infill area. That means the oozing can't been seen. This can reduce times of retraction for complex model and save printing time, but make slicing and G-code generating slower.\n\nNote that Z-hop is also not performed in areas where retraction is skipped.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -5783,7 +5783,7 @@
     "scarf_joint_speed": {
         "type": "floatorpercent",
         "label": "Scarf joint speed",
-        "tooltip": "This option sets the printing speed for scarf joints. It is recommended to print scarf joints at a slow speed (less than 100 mm\/s). It's also advisable to enable 'Extrusion rate smoothing' if the set speed varies significantly from the speed of the outer or inner walls. If the speed specified here is higher than the speed of the outer or inner walls, the printer will default to the slower of the two speeds. When specified as a percentage (e.g., 80%), the speed is calculated based on the respective outer or inner wall speed. The default value is set to 100%.",
+        "tooltip": "This option sets the printing speed for scarf joints. It is recommended to print scarf joints at a slow speed (less than 100 mm\/s). It's also advisable to enable 'Extrusion rate smoothing' if the set speed varies significantly from the speed of the outer or inner walls.\n\nIf the speed specified here is higher than the speed of the outer or inner walls, the printer will default to the slower of the two speeds. When specified as a percentage (e.g., 80%), the speed is calculated based on the respective outer or inner wall speed. The default value is set to 100%.",
         "sidetext": "mm\/s or %",
         "min": "1",
         "mode": "advanced",
@@ -6113,7 +6113,7 @@
     "slowdown_for_curled_perimeters": {
         "type": "bools",
         "label": "Slow down for curled perimeters",
-        "tooltip": "Enable this option to slow down printing in areas where perimeters may have curled upwards.\nFor example, additional slowdown will be applied when printing overhangs on sharp corners like the front of the Benchy hull, reducing curling which compounds over multiple layers.\n\nIt is generally recommended to have this option switched on unless your printer cooling is powerful enough or the print speed is slow enough that perimeter curling does not happen. \nIf printing with a high external perimeter speed, this parameter may introduce wall artifacts when slowing down, due to the potentially large variance in print speeds causing the extruder to be unable to keep up with the requested flow change.\nRoot cause of these artifacts is most likely PA tuning being slightly off, especially when combined with a high PA smooth time.\n\nRecommendations when enabling this option:\n1. Reduce Pressure Advance smooth time to 0.015 - 0.02 so the extruder reacts quickly to the speed changes.\n2. Increase the minimum print speeds to limit the magnitude of the slowdown and reduce the variance between fast and slow segments.\n3. If artifacts still appear, enable Extrusion Rate Smoothing (ERS) to further smooth the flow transitions.\n\nNote: When this option is enabled, overhang perimeters are treated like overhangs, meaning the overhang speed is applied even if the overhanging perimeter is part of a bridge.\nFor example, when the perimeters are 100% overhanging, with no wall supporting them from underneath, the 75% overhang speed will be applied, limited by the bridge speed.",
+        "tooltip": "Enable this option to slow down printing in areas where perimeters may have curled upwards.\nFor example, additional slowdown will be applied when printing overhangs on sharp corners like the front of the Benchy hull, reducing curling which compounds over multiple layers.\n\nIt is generally recommended to have this option switched on unless your printer cooling is powerful enough or the print speed is slow enough that perimeter curling does not happen.\nIf printing with a high external perimeter speed, this parameter may introduce wall artifacts when slowing down, due to the potentially large variance in print speeds causing the extruder to be unable to keep up with the requested flow change.\nRoot cause of these artifacts is most likely PA tuning being slightly off, especially when combined with a high PA smooth time.\n\nRecommendations when enabling this option:\n1. Reduce Pressure Advance smooth time to 0.015 - 0.02 so the extruder reacts quickly to the speed changes.\n2. Increase the minimum print speeds to limit the magnitude of the slowdown and reduce the variance between fast and slow segments.\n3. If artifacts still appear, enable Extrusion Rate Smoothing (ERS) to further smooth the flow transitions.\n\nNote: When this option is enabled, overhang perimeters are treated like overhangs, meaning the overhang speed is applied even if the overhanging perimeter is part of a bridge.\nFor example, when the perimeters are 100% overhanging, with no wall supporting them from underneath, the 75% overhang speed will be applied, limited by the bridge speed.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -6181,7 +6181,7 @@
     "solid_infill_rotate_template": {
         "type": "string",
         "label": "Solid infill rotation template",
-        "tooltip": "This parameter adds a rotation of solid infill direction to each layer according to the specified template. The template is a comma-separated list of angles in degrees, e.g. '0,90'. The first angle is applied to the first layer, the second angle to the second layer, and so on. If there are more layers than angles, the angles will be repeated. Note that not all solid infill patterns support rotation.",
+        "tooltip": "This parameter adds a rotation of solid infill direction to each layer according to the specified template. The template is a comma-separated list of angles in degrees, e.g. '0,90'. The first angle is applied to the first layer, the second angle to the second layer, and so on. If there are more layers than angles, the angles will be repeated.\n\nNote that not all solid infill patterns support rotation.",
         "sidetext": "°",
         "mode": "advanced",
         "default_value": ""
@@ -6404,7 +6404,7 @@
     "sparse_infill_rotate_template": {
         "type": "string",
         "label": "Sparse infill rotation template",
-        "tooltip": "Rotate the sparse infill direction per layer using a template of angles. Enter comma-separated degrees (e.g., '0,30,60,90'). Angles are applied in order by layer and repeat when the list ends. Advanced syntax is supported: '+5' rotates +5° every layer; '+5#5' rotates +5° every 5 layers. See the Wiki for details. When a template is set, the standard infill direction setting is ignored. Note: some infill patterns (e.g., Gyroid) control rotation themselves; use with care.",
+        "tooltip": "Rotate the sparse infill direction per layer using a template of angles. Enter comma-separated degrees (e.g., '0,30,60,90'). Angles are applied in order by layer and repeat when the list ends.\n\nAdvanced syntax is supported: '+5' rotates +5° every layer; '+5#5' rotates +5° every 5 layers. See the Wiki for details.\n\nWhen a template is set, the standard infill direction setting is ignored.\n\nNote: some infill patterns (e.g., Gyroid) control rotation themselves; use with care.",
         "sidetext": "°",
         "mode": "advanced",
         "default_value": ""
@@ -6735,7 +6735,7 @@
             },
             {
                 "icon_filename": "param_spiralinset.svg",
-                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M12.00,12.00 L12.00,11.96 L12.01,11.92 L12.03,11.89 L12.05,11.85 L12.08,11.82 L12.12,11.80 L12.16,11.78 L12.20,11.76 L12.25,11.75 L12.30,11.75 L12.35,11.75 L12.40,11.77 L12.46,11.79 L12.51,11.81 L12.56,11.85 L12.61,11.89 L12.66,11.94 L12.70,12.00 L12.74,12.06 L12.77,12.14 L12.79,12.21 L12.80,12.29 L12.81,12.38 L12.81,12.47 L12.80,12.56 L12.77,12.65 L12.74,12.74 L12.70,12.83 L12.65,12.92 L12.58,13.01 L12.51,13.09 L12.43,13.17 L12.33,13.24 L12.23,13.30 L12.12,13.36 L12.00,13.40 L11.87,13.43 L11.74,13.46 L11.61,13.46 L11.47,13.46 L11.33,13.45 L11.18,13.41 L11.04,13.37 L10.90,13.31 L10.76,13.24 L10.63,13.15 L10.50,13.05 L10.38,12.93 L10.27,12.81 L10.17,12.67 L10.08,12.51 L10.01,12.35 L9.95,12.18 L9.90,12.00 L9.87,11.81 L9.86,11.62 L9.86,11.43 L9.88,11.23 L9.92,11.03 L9.98,10.83 L10.06,10.64 L10.15,10.45 L10.27,10.27 L10.40,10.09 L10.55,9.93 L10.72,9.78 L10.90,9.64 L11.10,9.52 L11.31,9.41 L11.53,9.32 L11.76,9.25 L12.00,9.20 L12.25,9.17 L12.50,9.17 L12.75,9.18 L13.01,9.22 L13.27,9.29 L13.52,9.37 L13.76,9.48 L14.00,9.62 L14.23,9.77 L14.44,9.95 L14.64,10.15 L14.83,10.37 L15.00,10.60 L15.14,10.86 L15.27,11.12 L15.37,11.41 L15.45,11.70 L15.50,12.00 L15.53,12.31 L15.52,12.62 L15.49,12.94 L15.44,13.25 L15.35,13.56 L15.23,13.87 L15.09,14.16 L14.92,14.45 L14.72,14.72 L14.50,14.98 L14.25,15.22 L13.98,15.44 L13.69,15.63 L13.38,15.80 L13.06,15.94 L12.72,16.06 L12.36,16.15 L12.00,16.20 L11.63,16.22 L11.26,16.21 L10.88,16.17 L10.51,16.09 L10.14,15.98 L9.78,15.84 L9.43,15.66 L9.10,15.46 L8.78,15.22 L8.48,14.95 L8.21,14.65 L7.96,14.33 L7.74,13.99 L7.54,13.62 L7.38,13.24 L7.25,12.84 L7.16,12.42 L7.10,12.00 L7.08,11.57 L7.10,11.14 L7.15,10.70 L7.25,10.27 L7.38,9.85 L7.55,9.43 L7.76,9.03 L8.01,8.65 L8.29,8.29 L8.60,7.95 L8.94,7.64 L9.32,7.35 L9.72,7.10 L10.14,6.88 L10.58,6.70 L11.04,6.56 L11.52,6.46 L12.00,6.40 L12.49,6.38 L12.99,6.41 L13.48,6.48 L13.97,6.59 L14.45,6.75 L14.92,6.95 L15.37,7.19 L15.80,7.47 L16.21,7.79 L16.59,8.15 L16.94,8.54 L17.25,8.97 L17.53,9.42 L17.77,9.90 L17.97,10.40 L18.13,10.92 L18.24,11.45 L18.30,12.00 L18.31,12.55 L18.28,13.11 L18.20,13.66 L18.07,14.21 L17.89,14.74 L17.66,15.27 L17.38,15.77 L17.06,16.25 L16.70,16.70 L16.30,17.12 L15.86,17.51 L15.38,17.86 L14.88,18.17 L14.34,18.43 L13.78,18.65 L13.20,18.82 L12.61,18.93 L12.00,19.00 L11.39,19.01 L10.77,18.97 L10.16,18.87 L9.55,18.72 L8.96,18.52 L8.38,18.26 L7.83,17.96 L7.30,17.60 L6.80,17.20 L6.34,16.75 L5.92,16.26 L5.53,15.73 L5.20,15.17 L4.91,14.58 L4.68,13.96 L4.49,13.32 L4.37,12.67 L4.30,12.00 L4.29,11.33 L4.34,10.65 L4.45,9.98 L4.62,9.31 L4.85,8.66 L5.13,8.03 L5.47,7.43 L5.86,6.85 L6.31,6.31 L6.80,5.80 L7.34,5.34 L7.92,4.93 L8.53,4.56 L9.18,4.25 L9.86,4.00 L10.55,3.80 L11.27,3.67 L12.00,3.60\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M4.125,4.125H19.875V19.875H4.125V6.75H17.25V17.25H6.75V9.375H14.625V14.625H9.375V12H12\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
             {
                 "icon_filename": "param_rectilinear_interlaced.svg",
@@ -6916,7 +6916,7 @@
     "support_style": {
         "type": "enum",
         "label": "Style",
-        "tooltip": "Style and shape of the support. For normal support, projecting the supports into a regular grid will create more stable supports (default), while snug support towers will save material and reduce object scarring.\nFor tree support, slim and organic style will merge branches more aggressively and save a lot of material (default organic), while hybrid style will create similar structure to normal support under large flat overhangs.",
+        "tooltip": "Style and shape of the support.\n\nFor normal support, projecting the supports into a regular grid will create more stable supports (default), while snug support towers will save material and reduce object scarring.\n\nFor tree support, slim and organic style will merge branches more aggressively and save a lot of material (default organic), while hybrid style will create similar structure to normal support under large flat overhangs.",
         "enum_values": [
             "default",
             "grid",
@@ -6953,7 +6953,7 @@
     "support_threshold_angle": {
         "type": "int",
         "label": "Threshold angle",
-        "tooltip": "Support will be generated for overhangs whose slope angle is below the threshold. The smaller this value is, the steeper the overhang that can be printed without support.\nNote: If set to 0, normal supports use the Threshold overlap instead, while tree supports fall back to a default value of 30.",
+        "tooltip": "Support will be generated for overhangs whose slope angle is below the threshold. The smaller this value is, the steeper the overhang that can be printed without support.\n\nNote: If set to 0, normal supports use the Threshold overlap instead, while tree supports fall back to a default value of 30.",
         "sidetext": "°",
         "min": "0",
         "max": "90",
@@ -7132,7 +7132,7 @@
     "timelapse_type": {
         "type": "enum",
         "label": "Timelapse",
-        "tooltip": "If smooth or traditional mode is selected, a timelapse video will be generated for each print. After each layer is printed, a snapshot is taken with the chamber camera. All of these snapshots are composed into a timelapse video when printing completes. If smooth mode is selected, the toolhead will move to the excess chute after each layer is printed and then take a snapshot. Since the melt filament may leak from the nozzle during the process of taking a snapshot, a prime tower is required for smooth mode to wipe the nozzle.",
+        "tooltip": "If smooth or traditional mode is selected, a timelapse video will be generated for each print. After each layer is printed, a snapshot is taken with the chamber camera. All of these snapshots are composed into a timelapse video when printing completes.\n\nIf smooth mode is selected, the toolhead will move to the excess chute after each layer is printed and then take a snapshot. Since the melt filament may leak from the nozzle during the process of taking a snapshot, a prime tower is required for smooth mode to wipe the nozzle.",
         "enum_values": [
             "0",
             "1"
@@ -7147,7 +7147,7 @@
     "tool_change_on_wipe_tower": {
         "type": "bool",
         "label": "Tool change on wipe tower",
-        "tooltip": "Force the toolhead to travel to the wipe tower before issuing the tool change command (Tx). Only relevant for multi-extruder (multi-toolhead) printers using a Type 2 wipe tower. By default Orca skips the travel on multi-toolhead machines because the firmware handles the head swap, which can result in the Tx command being issued above the printed part. Enable this option if you want the tool change to always be issued above the wipe tower instead.",
+        "tooltip": "Force the toolhead to travel to the wipe tower before issuing the tool change command (Tx).\n\nOnly relevant for multi-extruder (multi-toolhead) printers using a Type 2 wipe tower. By default Orca skips the travel on multi-toolhead machines because the firmware handles the head swap, which can result in the Tx command being issued above the printed part. Enable this option if you want the tool change to always be issued above the wipe tower instead.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -7385,7 +7385,7 @@
             },
             {
                 "icon_filename": "param_spiralinset.svg",
-                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M12.00,12.00 L12.00,11.96 L12.01,11.92 L12.03,11.89 L12.05,11.85 L12.08,11.82 L12.12,11.80 L12.16,11.78 L12.20,11.76 L12.25,11.75 L12.30,11.75 L12.35,11.75 L12.40,11.77 L12.46,11.79 L12.51,11.81 L12.56,11.85 L12.61,11.89 L12.66,11.94 L12.70,12.00 L12.74,12.06 L12.77,12.14 L12.79,12.21 L12.80,12.29 L12.81,12.38 L12.81,12.47 L12.80,12.56 L12.77,12.65 L12.74,12.74 L12.70,12.83 L12.65,12.92 L12.58,13.01 L12.51,13.09 L12.43,13.17 L12.33,13.24 L12.23,13.30 L12.12,13.36 L12.00,13.40 L11.87,13.43 L11.74,13.46 L11.61,13.46 L11.47,13.46 L11.33,13.45 L11.18,13.41 L11.04,13.37 L10.90,13.31 L10.76,13.24 L10.63,13.15 L10.50,13.05 L10.38,12.93 L10.27,12.81 L10.17,12.67 L10.08,12.51 L10.01,12.35 L9.95,12.18 L9.90,12.00 L9.87,11.81 L9.86,11.62 L9.86,11.43 L9.88,11.23 L9.92,11.03 L9.98,10.83 L10.06,10.64 L10.15,10.45 L10.27,10.27 L10.40,10.09 L10.55,9.93 L10.72,9.78 L10.90,9.64 L11.10,9.52 L11.31,9.41 L11.53,9.32 L11.76,9.25 L12.00,9.20 L12.25,9.17 L12.50,9.17 L12.75,9.18 L13.01,9.22 L13.27,9.29 L13.52,9.37 L13.76,9.48 L14.00,9.62 L14.23,9.77 L14.44,9.95 L14.64,10.15 L14.83,10.37 L15.00,10.60 L15.14,10.86 L15.27,11.12 L15.37,11.41 L15.45,11.70 L15.50,12.00 L15.53,12.31 L15.52,12.62 L15.49,12.94 L15.44,13.25 L15.35,13.56 L15.23,13.87 L15.09,14.16 L14.92,14.45 L14.72,14.72 L14.50,14.98 L14.25,15.22 L13.98,15.44 L13.69,15.63 L13.38,15.80 L13.06,15.94 L12.72,16.06 L12.36,16.15 L12.00,16.20 L11.63,16.22 L11.26,16.21 L10.88,16.17 L10.51,16.09 L10.14,15.98 L9.78,15.84 L9.43,15.66 L9.10,15.46 L8.78,15.22 L8.48,14.95 L8.21,14.65 L7.96,14.33 L7.74,13.99 L7.54,13.62 L7.38,13.24 L7.25,12.84 L7.16,12.42 L7.10,12.00 L7.08,11.57 L7.10,11.14 L7.15,10.70 L7.25,10.27 L7.38,9.85 L7.55,9.43 L7.76,9.03 L8.01,8.65 L8.29,8.29 L8.60,7.95 L8.94,7.64 L9.32,7.35 L9.72,7.10 L10.14,6.88 L10.58,6.70 L11.04,6.56 L11.52,6.46 L12.00,6.40 L12.49,6.38 L12.99,6.41 L13.48,6.48 L13.97,6.59 L14.45,6.75 L14.92,6.95 L15.37,7.19 L15.80,7.47 L16.21,7.79 L16.59,8.15 L16.94,8.54 L17.25,8.97 L17.53,9.42 L17.77,9.90 L17.97,10.40 L18.13,10.92 L18.24,11.45 L18.30,12.00 L18.31,12.55 L18.28,13.11 L18.20,13.66 L18.07,14.21 L17.89,14.74 L17.66,15.27 L17.38,15.77 L17.06,16.25 L16.70,16.70 L16.30,17.12 L15.86,17.51 L15.38,17.86 L14.88,18.17 L14.34,18.43 L13.78,18.65 L13.20,18.82 L12.61,18.93 L12.00,19.00 L11.39,19.01 L10.77,18.97 L10.16,18.87 L9.55,18.72 L8.96,18.52 L8.38,18.26 L7.83,17.96 L7.30,17.60 L6.80,17.20 L6.34,16.75 L5.92,16.26 L5.53,15.73 L5.20,15.17 L4.91,14.58 L4.68,13.96 L4.49,13.32 L4.37,12.67 L4.30,12.00 L4.29,11.33 L4.34,10.65 L4.45,9.98 L4.62,9.31 L4.85,8.66 L5.13,8.03 L5.47,7.43 L5.86,6.85 L6.31,6.31 L6.80,5.80 L7.34,5.34 L7.92,4.93 L8.53,4.56 L9.18,4.25 L9.86,4.00 L10.55,3.80 L11.27,3.67 L12.00,3.60\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
+                "icon_svg_data": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M4.125,4.125H19.875V19.875H4.125V6.75H17.25V17.25H6.75V9.375H14.625V14.625H9.375V12H12\" style=\"fill:none;stroke:#009688;stroke-linecap:round;stroke-linejoin:round\"\/><rect x=\"1.5\" y=\"1.5\" width=\"21\" height=\"21\" rx=\"2\" style=\"fill:none;stroke:#949494;stroke-linecap:round;stroke-linejoin:round\"\/><\/svg>"
             },
             {
                 "icon_filename": "param_hilbertcurve.svg",
@@ -7635,7 +7635,7 @@
     "wait_for_temp_on_wipe_tower": {
         "type": "bool",
         "label": "Wait for temperature on wipe tower",
-        "tooltip": "Pick up the new tool without waiting for it to reach printing temperature, travel to the wipe tower, and wait for the temperature there, right before purging. Ooze from the heat-up lands on the tower instead of the model, and the travel overlaps with the heating. Only relevant for multi-extruder (multi-toolhead) printers using a Type 2 wipe tower. The firmware or tool change macro must not wait for the temperature itself. When disabled, the temperature wait is issued right after the tool change command.",
+        "tooltip": "Pick up the new tool without waiting for it to reach printing temperature, travel to the wipe tower, and wait for the temperature there, right before purging. Ooze from the heat-up lands on the tower instead of the model, and the travel overlaps with the heating.\n\nOnly relevant for multi-extruder (multi-toolhead) printers using a Type 2 wipe tower. The firmware or tool change macro must not wait for the temperature itself. When disabled, the temperature wait is issued right after the tool change command.",
         "mode": "advanced",
         "default_value": "0"
     },
@@ -7736,7 +7736,7 @@
     "wall_transition_filter_deviation": {
         "type": "percent",
         "label": "Wall transitioning filter margin",
-        "tooltip": "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of extrusion widths which follow to [Minimum wall width - margin, 2 * Minimum wall width + margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts\/stops and travel time. However, large extrusion width variation can lead to under- or overextrusion problems. It's expressed as a percentage over nozzle diameter.",
+        "tooltip": "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of extrusion widths which follow to [Minimum wall width - margin, 2 * Minimum wall width + margin].\n\nIncreasing this margin reduces the number of transitions, which reduces the number of extrusion starts\/stops and travel time. However, large extrusion width variation can lead to under- or overextrusion problems.\n\nIt's expressed as a percentage over nozzle diameter.",
         "sidetext": "%",
         "min": "0",
         "mode": "advanced",
@@ -7777,14 +7777,14 @@
     "wipe_inward": {
         "type": "bool",
         "label": "Wipe inward",
-        "tooltip": "Applies only to external walls, including hole boundaries. Moves the hot nozzle toward printed inner walls during wiping to reduce reheating of freshly printed plastic and seam marks.\n\nEspecially useful at layer heights below 0.1 mm, where wipe marks are more visible.\n\nUses the regular wipe if no adjacent inner wall is already printed (single-wall areas or Outer\/Inner wall order), or if no supported inward path can be found, for example at tight corners or seam gaps.",
+        "tooltip": "Applies only to external walls, including hole boundaries. Moves the hot nozzle toward the inner walls during wiping to reduce reheating of freshly printed plastic and seam marks.\n\nEspecially useful at layer heights below 0.1 mm, where wipe marks are more visible.\n\nUses the regular wipe where the outer wall has no adjacent inner wall, such as in single-wall areas, or if no supported inward path can be found, for example at tight corners or seam gaps.",
         "mode": "",
         "default_value": "0"
     },
     "wipe_inward_distance": {
         "type": "floatorpercent",
         "label": "Wipe inward distance",
-        "tooltip": "The distance the wipe path is shifted away from the external perimeter, specified in millimeters or as a percentage of the actual outer-wall extrusion width.\n\nFor example, 50% shifts the path by half of the outer-wall width. The effective offset is limited by both the actual outer-wall width and the available spacing to the adjacent wall, so values above 100% or an equivalent absolute distance have no additional effect. Set to 0 to disable the offset.",
+        "tooltip": "The distance the wipe path is shifted away from the external perimeter, specified in millimeters or as a percentage of the actual outer-wall extrusion width.\n\nFor example, 50% shifts the path by half of the outer-wall width. The effective offset is limited by both the actual outer-wall width and the available spacing to the adjacent wall, so values above 100% or an equivalent absolute distance have no additional effect. Set to 0 to disable the offset.\n\nWith Outer\/Inner or Inner\/Outer\/Inner wall order, the offset is limited to 50% of the actual outer-wall width because the adjacent inner wall is printed after the outer wall. This also applies to equivalent distances specified in millimeters.",
         "sidetext": "mm or %",
         "min": "0",
         "max": "100",
