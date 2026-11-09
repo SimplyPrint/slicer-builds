@@ -430,12 +430,24 @@ def _resolve_executable(candidates: Sequence[Path], expected_architecture: str) 
 
 
 def _dependency_closure(
-    executable: Path, library_roots: Sequence[Path]
+    executable: Path,
+    library_roots: Sequence[Path],
+    bundled_names: Sequence[str] = (),
 ) -> dict[Path, set[str]]:
-    """Map each bundled real library to the loader names that reference it."""
+    """Map each bundled real library to the loader names that reference it.
+
+    ``bundled_names`` are loader names taken from the library roots even when
+    the build host's system has them too (OrcaSlicer 2.5's libpython3.12: the
+    runner has one, the runtime image does not).
+    """
     # Most builds encode exact private dependency directories in RUNPATH. Avoid
     # recursively walking a large Conan/dependency cache unless ldd proves that
     # an older build layout actually needs the fallback search path.
+    preferred_dirs = (
+        _resolve_missing_search_dirs(library_roots, bundled_names, executable.parent)
+        if bundled_names
+        else []
+    )
     pending: deque[Path] = deque([executable])
     inspected: set[Path] = set()
     by_source: dict[Path, set[str]] = defaultdict(set)
@@ -446,7 +458,7 @@ def _dependency_closure(
         if binary in inspected:
             continue
         inspected.add(binary)
-        search_dirs: list[Path] = []
+        search_dirs: list[Path] = list(preferred_dirs)
         while True:
             try:
                 dependencies = _hermetic_dependencies(binary, list(search_dirs))
@@ -979,7 +991,16 @@ def stage_bundle(args: argparse.Namespace) -> BundleResult:
         raise BundleError(f"refusing unsafe output path: {output}")
     output_parent.mkdir(parents=True, exist_ok=True)
 
-    libraries = _dependency_closure(executable, library_roots)
+    bundle_library = getattr(args, "bundle_library", None) or []
+    libraries = _dependency_closure(executable, library_roots, bundle_library)
+    missing = sorted(
+        set(bundle_library)
+        - {name for names in libraries.values() for name in names}
+    )
+    if missing:
+        raise BundleError(
+            f"--bundle-library names the executable does not load: {', '.join(missing)}"
+        )
     staging = Path(tempfile.mkdtemp(prefix=f".{output.name}.", dir=output_parent))
     try:
         bin_dir = staging / "bin"
@@ -1091,6 +1112,15 @@ def _parser() -> argparse.ArgumentParser:
         default=[],
         type=Path,
         help="build/dependency root eligible for shared-library bundling",
+    )
+    parser.add_argument(
+        "--bundle-library",
+        action="append",
+        default=[],
+        help=(
+            "loader name (SONAME) to bundle from the library roots even when the "
+            "build host's system provides it; repeat for several"
+        ),
     )
     parser.add_argument("--strip", action="store_true", help="strip staged ELF files")
     parser.add_argument(
