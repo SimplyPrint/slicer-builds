@@ -20,6 +20,19 @@ contexts that cannot be represented safely by the legacy INI profile shape. The
 four legacy configuration artifacts remain available for existing consumers.
 Building the 3.0 dependency stack requires CMake 3.26 or newer.
 
+Version folders of the slicers with conditional visibility also hold
+`gui_value_limits.json`: value limits the slicer GUI enforces in code
+(`ConfigManipulation.cpp`) rather than in the option definition, e.g. BambuStudio
+resetting `ironing_spacing` below 0.05. `limits` maps a setting to `min`/`max`
+(inclusive unless `exclusive_min`/`exclusive_max` is true), the GUI's `reset` value
+and source `lines`; a vector setting applies them to each item. They tighten, and
+never replace, the definition's own `min`/`max`. `unclassified` lists the other
+value-setting calls, which are not simple limits. The visibility workflow
+regenerates the file and warns when a version adds unclassified calls; run it with
+`uv run --project tools/generate_defs_visibility extract-gui-value-limits --slicer <Slicer> --ref <git ref> -w slicers/<Slicer>/out/<version> --list-unclassified`,
+and its tests with `uv run python -m unittest discover -s tests -t .` from
+`tools/generate_defs_visibility`.
+
 All slicer step scripts are run from the repository root with `slicer-src` and `slicer-out` available.
 
 ## Licensing
