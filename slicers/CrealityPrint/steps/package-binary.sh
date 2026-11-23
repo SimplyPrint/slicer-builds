@@ -6,10 +6,8 @@ strip_args=()
 [[ "${SLICER_STRIP:-1}" == 0 ]] || strip_args+=(--strip)
 
 if [[ -z "${SLICER_RESOURCE_INCLUDES+x}" ]]; then
-  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/BBL/cli_config.json\nprofiles/BBL/machine_full/**\nprofiles/BBL/filament_full/**\nshaders/**'
+  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/BBL/cli_config.json\nshaders/**'
 fi
-
-python3 tools/stage_cli_profiles.py slicer-src/resources
 
 python3 tools/stage_bundle.py \
   --executable slicer-src/build/src/CrealityPrint \

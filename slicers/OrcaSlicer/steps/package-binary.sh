@@ -6,7 +6,7 @@ strip_args=()
 [[ "${SLICER_STRIP:-1}" == 0 ]] || strip_args+=(--strip)
 
 if [[ -z "${SLICER_RESOURCE_INCLUDES+x}" ]]; then
-  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/BBL/cli_config.json\nprofiles/BBL/machine_full/**\nprofiles/BBL/filament_full/**\nshaders/**'
+  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/BBL/cli_config.json\nshaders/**'
 fi
 
 # OrcaSlicer 2.5 links the libpython its deps build compiles (for plugins).
@@ -18,8 +18,6 @@ for python_lib in slicer-src/deps/build/*/usr/local/libpython/lib/libpython3*.so
   bundle_args+=(--bundle-library "$(basename "$python_lib")")
 done
 shopt -u nullglob
-
-python3 tools/stage_cli_profiles.py slicer-src/resources
 
 python3 tools/stage_bundle.py \
   --executable slicer-src/build/src/Release/orca-slicer \
