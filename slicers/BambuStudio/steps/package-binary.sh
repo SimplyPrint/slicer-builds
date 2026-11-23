@@ -6,8 +6,10 @@ strip_args=()
 [[ "${SLICER_STRIP:-1}" == 0 ]] || strip_args+=(--strip)
 
 if [[ -z "${SLICER_RESOURCE_INCLUDES+x}" ]]; then
-  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/BBL/cli_config.json\nshaders/**'
+  export SLICER_RESOURCE_INCLUDES=$'info/**\nprofiles/BBL/cli_config.json\nprofiles/BBL/machine_full/**\nshaders/**'
 fi
+
+python3 tools/stage_machine_models.py slicer-src/resources
 
 python3 tools/stage_bundle.py \
   --executable slicer-src/build/src/bambu-studio \
