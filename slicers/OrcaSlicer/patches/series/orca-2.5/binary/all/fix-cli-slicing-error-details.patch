@@ -1,0 +1,31 @@
+diff --git a/src/OrcaSlicer.cpp b/src/OrcaSlicer.cpp
+--- a/src/OrcaSlicer.cpp
++++ b/src/OrcaSlicer.cpp
+@@ -7238,8 +7238,10 @@
+                                                         if (status.message_type == PrintStateBase::SlicingEmptyGcodeLayers
+                                                             || status.message_type == PrintStateBase::SlicingGcodeOverlap)
+                                                         {
++                                                            const std::string error_message = status.text.empty() ? cli_errors[CLI_SLICING_ERROR] : status.text;
++                                                            boost::nowide::cerr << "Slicing error: " << error_message << std::endl;
+                                                             sliced_info.sliced_plates.push_back(sliced_plate_info);
+-                                                            record_exit_reson(outfile_dir, CLI_SLICING_ERROR, index+1, cli_errors[CLI_SLICING_ERROR], sliced_info);
++                                                            record_exit_reson(outfile_dir, CLI_SLICING_ERROR, index+1, error_message, sliced_info);
+                                                             flush_and_exit(CLI_SLICING_ERROR);
+                                                         }
+                                                     }
+@@ -7350,9 +7352,13 @@
+                                 flush_and_exit(CLI_SLICING_ERROR);
+                             } catch (const std::exception &ex) {
+                                 BOOST_LOG_TRIVIAL(error) << "found slicing or export error for partplate "<<index+1 << std::endl;
+-                                boost::nowide::cerr << ex.what() << std::endl;
++                                std::string error_message;
++                                error_message = ex.what();
++                                if (error_message.empty())
++                                    error_message = cli_errors[CLI_SLICING_ERROR];
++                                boost::nowide::cerr << "Slicing error: " << error_message << std::endl;
+                                 //continue;
+-                                record_exit_reson(outfile_dir, CLI_SLICING_ERROR, index+1, cli_errors[CLI_SLICING_ERROR], sliced_info);
++                                record_exit_reson(outfile_dir, CLI_SLICING_ERROR, index+1, error_message, sliced_info);
+                                 flush_and_exit(CLI_SLICING_ERROR);
+                             }
+                         }
