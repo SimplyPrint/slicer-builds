@@ -1,0 +1,409 @@
+{
+  "source": "src/slic3r/GUI/ConfigManipulation.cpp",
+  "limits": {
+    "elefant_foot_compensation": {
+      "max": 1,
+      "lines": [
+        378
+      ],
+      "reset": 0
+    },
+    "filament_max_volumetric_speed": {
+      "min": 0.5,
+      "lines": [
+        133
+      ],
+      "reset": 0.5
+    },
+    "initial_layer_print_height": {
+      "min": 0.0001,
+      "lines": [
+        326
+      ],
+      "reset": 0.2
+    },
+    "ironing_spacing": {
+      "min": 0.05,
+      "lines": [
+        277
+      ],
+      "reset": 0.1
+    },
+    "layer_height": {
+      "min": 0.0001,
+      "max": 0.6001,
+      "lines": [
+        215,
+        228
+      ],
+      "reset": 0.2
+    },
+    "support_ironing_spacing": {
+      "min": 0.05,
+      "lines": [
+        288
+      ],
+      "reset": 0.1
+    },
+    "xy_contour_compensation": {
+      "min": -2,
+      "max": 2,
+      "lines": [
+        353
+      ],
+      "reset": 0
+    },
+    "xy_hole_compensation": {
+      "min": -2,
+      "max": 2,
+      "lines": [
+        338
+      ],
+      "reset": 0
+    }
+  },
+  "unclassified": [
+    {
+      "key": "filament_scarf_height",
+      "function": "check_filament_scarf_setting",
+      "line": 161,
+      "condition": "(reset && wxGetApp().initialized())"
+    },
+    {
+      "key": "seam_slope_start_height",
+      "function": "update_print_fff_config",
+      "line": 267,
+      "condition": "(reset_slope_start_height)"
+    },
+    {
+      "key": "support_interface_spacing",
+      "function": "update_print_fff_config",
+      "line": 315,
+      "condition": "(dialog.ShowModal() == wxID_YES)"
+    },
+    {
+      "key": "support_interface_pattern",
+      "function": "update_print_fff_config",
+      "line": 317,
+      "condition": "(config->opt_enum<SupportMaterialInterfacePattern>(\"support_interface_pattern\") == SupportMaterialInterfacePattern::smipGrid)"
+    },
+    {
+      "key": "enable_support_ironing",
+      "function": "update_print_fff_config",
+      "line": 319,
+      "condition": "(dialog.ShowModal() == wxID_YES)"
+    },
+    {
+      "key": "xy_contour_compensation",
+      "function": "update_print_fff_config",
+      "line": 372,
+      "condition": "(config->opt_bool(\"enable_circle_compensation\"))"
+    },
+    {
+      "key": "xy_hole_compensation",
+      "function": "update_print_fff_config",
+      "line": 373,
+      "condition": "(config->opt_bool(\"enable_circle_compensation\"))"
+    },
+    {
+      "key": "interlocking_beam_width",
+      "function": "update_print_fff_config",
+      "line": 401,
+      "condition": "(config->opt_bool(\"interlocking_beam\") && config->opt_float(\"interlocking_beam_width\") <= 0.)"
+    },
+    {
+      "key": "enable_wrapping_detection",
+      "function": "update_print_fff_config",
+      "line": 410,
+      "condition": "(!DevPrinterConfigUtil::support_wrapping_detection(printer_type))"
+    },
+    {
+      "key": "timelapse_type",
+      "function": "update_print_fff_config",
+      "line": 455,
+      "condition": "(!is_global_config)"
+    },
+    {
+      "key": "z_direction_outwall_speed_continuous",
+      "function": "update_print_fff_config",
+      "line": 456,
+      "condition": "(!is_global_config)"
+    },
+    {
+      "key": "enable_wrapping_detection",
+      "function": "update_print_fff_config",
+      "line": 457,
+      "condition": "(!is_global_config)"
+    },
+    {
+      "key": "timelapse_type",
+      "function": "update_print_fff_config",
+      "line": 460,
+      "condition": "(answer == wxID_YES)"
+    },
+    {
+      "key": "z_direction_outwall_speed_continuous",
+      "function": "update_print_fff_config",
+      "line": 461,
+      "condition": "(answer == wxID_YES)"
+    },
+    {
+      "key": "enable_wrapping_detection",
+      "function": "update_print_fff_config",
+      "line": 462,
+      "condition": "(answer == wxID_YES)"
+    },
+    {
+      "key": "wall_loops",
+      "function": "update_print_fff_config",
+      "line": 464,
+      "condition": "(config->opt_bool(\"spiral_mode\"))"
+    },
+    {
+      "key": "top_shell_layers",
+      "function": "update_print_fff_config",
+      "line": 465,
+      "condition": "(config->opt_bool(\"spiral_mode\"))"
+    },
+    {
+      "key": "sparse_infill_density",
+      "function": "update_print_fff_config",
+      "line": 466,
+      "condition": "(config->opt_bool(\"spiral_mode\"))"
+    },
+    {
+      "key": "enable_support",
+      "function": "update_print_fff_config",
+      "line": 467,
+      "condition": "(config->opt_bool(\"spiral_mode\"))"
+    },
+    {
+      "key": "enforce_support_layers",
+      "function": "update_print_fff_config",
+      "line": 468,
+      "condition": "(config->opt_bool(\"spiral_mode\"))"
+    },
+    {
+      "key": "ensure_vertical_shell_thickness",
+      "function": "update_print_fff_config",
+      "line": 469,
+      "condition": "(config->opt_bool(\"spiral_mode\"))"
+    },
+    {
+      "key": "detect_thin_wall",
+      "function": "update_print_fff_config",
+      "line": 470,
+      "condition": "(config->opt_bool(\"spiral_mode\"))"
+    },
+    {
+      "key": "alternate_extra_wall",
+      "function": "update_print_fff_config",
+      "line": 471,
+      "condition": "(config->opt_bool(\"spiral_mode\"))"
+    },
+    {
+      "key": "spiral_mode",
+      "function": "update_print_fff_config",
+      "line": 479,
+      "condition": "(answer == wxID_YES)"
+    },
+    {
+      "key": "spiral_mode",
+      "function": "update_print_fff_config",
+      "line": 484,
+      "condition": "(plate->config()->has(\"spiral_mode\") && plate->config()->opt_bool(\"spiral_mode\"))"
+    },
+    {
+      "key": "wall_filament",
+      "function": "update_print_fff_config",
+      "line": 502,
+      "condition": "(is_global_config && (config->opt_int(\"wall_filament\") || config->opt_int(\"sparse_infill_filament\") || config->opt_int(\"solid_infill_filament\") ))"
+    },
+    {
+      "key": "sparse_infill_filament",
+      "function": "update_print_fff_config",
+      "line": 503,
+      "condition": "(is_global_config && (config->opt_int(\"wall_filament\") || config->opt_int(\"sparse_infill_filament\") || config->opt_int(\"solid_infill_filament\") ))"
+    },
+    {
+      "key": "solid_infill_filament",
+      "function": "update_print_fff_config",
+      "line": 504,
+      "condition": "(is_global_config && (config->opt_int(\"wall_filament\") || config->opt_int(\"sparse_infill_filament\") || config->opt_int(\"solid_infill_filament\") ))"
+    },
+    {
+      "key": "wall_generator",
+      "function": "update_print_fff_config",
+      "line": 553,
+      "condition": "(dialog.ShowModal() == wxID_YES)"
+    },
+    {
+      "key": "fuzzy_skin_mode",
+      "function": "update_print_fff_config",
+      "line": 555,
+      "condition": "(dialog.ShowModal() == wxID_YES)"
+    },
+    {
+      "key": "adaptive_layer_height",
+      "function": "update_print_fff_config",
+      "line": 593,
+      "condition": "(config->opt_bool(\"adaptive_layer_height\"))"
+    },
+    {
+      "key": "independent_support_layer_height",
+      "function": "update_print_fff_config",
+      "line": 596,
+      "condition": "(config->opt_bool(\"independent_support_layer_height\"))"
+    },
+    {
+      "key": "enable_prime_tower",
+      "function": "update_print_fff_config",
+      "line": 599,
+      "condition": "(answer == wxID_YES)"
+    },
+    {
+      "key": "support_top_z_distance",
+      "function": "update_print_fff_config",
+      "line": 614,
+      "condition": "(top_gap != top_gap_raw /* || bottom_gap != bottom_gap_raw*/)"
+    },
+    {
+      "key": "support_style",
+      "function": "update_print_fff_config",
+      "line": 662,
+      "condition": "(set.find(support_style) == set.end())"
+    },
+    {
+      "key": "sparse_infill_pattern",
+      "function": "update_print_fff_config",
+      "line": 690,
+      "condition": "(is_object_config || answer == wxID_YES)"
+    },
+    {
+      "key": "sparse_infill_density",
+      "function": "update_print_fff_config",
+      "line": 695,
+      "condition": "(it_pattern != fill_pattern_def->enum_values.end())"
+    },
+    {
+      "key": "key",
+      "function": "update_print_fff_config",
+      "line": 723,
+      "condition": "(out_of_range || is_mixed)"
+    },
+    {
+      "key": "skirt_height",
+      "function": "update_print_fff_config",
+      "line": 735,
+      "condition": "(config->opt_enum<PrintSequence>(\"print_sequence\") == PrintSequence::ByObject && config->opt_int(\"skirt_height\") > 1 && config->opt_int(\"skirt_loops\") > 0)"
+    },
+    {
+      "key": "infill_lock_depth",
+      "function": "update_print_fff_config",
+      "line": 748,
+      "condition": "(config->opt_float(\"infill_lock_depth\") > skin_depth)"
+    },
+    {
+      "key": "ensure_vertical_shell_thickness",
+      "function": "update_print_fff_config",
+      "line": 769,
+      "condition": "(answer == wxID_YES)"
+    },
+    {
+      "key": "wall_loops",
+      "function": "update_print_fff_config",
+      "line": 771,
+      "condition": "(answer == wxID_YES)"
+    },
+    {
+      "key": "sparse_infill_density",
+      "function": "update_print_fff_config",
+      "line": 772,
+      "condition": "(answer == wxID_YES)"
+    },
+    {
+      "key": "spiral_mode",
+      "function": "update_print_fff_config",
+      "line": 773,
+      "condition": "(answer == wxID_YES)"
+    },
+    {
+      "key": "alternate_extra_wall",
+      "function": "update_print_fff_config",
+      "line": 777,
+      "condition": "(answer == wxID_YES)"
+    },
+    {
+      "key": "ensure_vertical_shell_thickness",
+      "function": "update_print_fff_config",
+      "line": 819,
+      "condition": "(evt_enabled)"
+    },
+    {
+      "key": "wall_loops",
+      "function": "update_print_fff_config",
+      "line": 822,
+      "condition": "(walls_not_rec)"
+    },
+    {
+      "key": "sparse_infill_density",
+      "function": "update_print_fff_config",
+      "line": 824,
+      "condition": "(density_zero)"
+    },
+    {
+      "key": "k",
+      "function": "apply_null_fff_config",
+      "line": 837,
+      "condition": "(/*k == \"adaptive_layer_height\" || */k == \"independent_support_layer_height\" || k == \"enable_support\" || k == \"detect_thin_wall\")"
+    },
+    {
+      "key": "k",
+      "function": "apply_null_fff_config",
+      "line": 839,
+      "condition": "(k == \"wall_loops\")"
+    },
+    {
+      "key": "k",
+      "function": "apply_null_fff_config",
+      "line": 841,
+      "condition": "(k == \"top_shell_layers\" || k == \"enforce_support_layers\")"
+    },
+    {
+      "key": "k",
+      "function": "apply_null_fff_config",
+      "line": 848,
+      "condition": "(k == \"sparse_infill_density\")"
+    },
+    {
+      "key": "k",
+      "function": "apply_null_fff_config",
+      "line": 851,
+      "condition": "(k == \"detect_overhang_wall\")"
+    },
+    {
+      "key": "k",
+      "function": "apply_null_fff_config",
+      "line": 853,
+      "condition": "(k == \"sparse_infill_pattern\")"
+    },
+    {
+      "key": "support_head_penetration",
+      "function": "update_print_sla_config",
+      "line": 1131,
+      "condition": "(dialog.ShowModal() == wxID_OK)"
+    },
+    {
+      "key": "support_head_front_diameter",
+      "function": "update_print_sla_config",
+      "line": 1147,
+      "condition": "(dialog.ShowModal() == wxID_OK)"
+    },
+    {
+      "key": "param_key",
+      "function": "build_support_recommended_config",
+      "line": 1313,
+      "condition": "(opt && opt->deserialize(serialized))"
+    }
+  ]
+}

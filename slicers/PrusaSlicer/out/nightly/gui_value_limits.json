@@ -1,0 +1,108 @@
+{
+  "source": "src/slic3r-shared/src/Slic3r/Biz/Preset/AbstractConfigManipulation.cpp",
+  "limits": {},
+  "unclassified": [
+    {
+      "key": "layer_height",
+      "function": "update_print_fff_config",
+      "line": 54,
+      "condition": "(config->opt_float(\"layer_height\") < Domain::EPSILON)"
+    },
+    {
+      "key": "first_layer_height",
+      "function": "update_print_fff_config",
+      "line": 66,
+      "condition": "(config->option<ConfigOptionFloatOrPercent>(\"first_layer_height\")->value < Domain::EPSILON)"
+    },
+    {
+      "key": "perimeters",
+      "function": "update_print_fff_config",
+      "line": 100,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "top_solid_layers",
+      "function": "update_print_fff_config",
+      "line": 101,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "fill_density",
+      "function": "update_print_fff_config",
+      "line": 102,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "support_material",
+      "function": "update_print_fff_config",
+      "line": 103,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "support_material_enforce_layers",
+      "function": "update_print_fff_config",
+      "line": 104,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "thin_walls",
+      "function": "update_print_fff_config",
+      "line": 105,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "spiral_vase",
+      "function": "update_print_fff_config",
+      "line": 110,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "support_material_synchronize_layers",
+      "function": "update_print_fff_config",
+      "line": 139,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "wipe_tower",
+      "function": "update_print_fff_config",
+      "line": 142,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "support_material_extruder",
+      "function": "update_print_fff_config",
+      "line": 162,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "support_material_interface_extruder",
+      "function": "update_print_fff_config",
+      "line": 163,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "wipe_tower",
+      "function": "update_print_fff_config",
+      "line": 166,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "overhangs",
+      "function": "update_print_fff_config",
+      "line": 187,
+      "condition": "(ask_user(_u8L(\"Support Generator\"), msg_text))"
+    },
+    {
+      "key": "fill_pattern",
+      "function": "update_print_fff_config",
+      "line": 220,
+      "condition": "(!is_global_config || answer)"
+    },
+    {
+      "key": "fill_density",
+      "function": "update_print_fff_config",
+      "line": 225,
+      "condition": "(auto label = fill_pattern_def->enum_def->enum_to_label(fill_pattern); label.has_value())"
+    }
+  ]
+}
