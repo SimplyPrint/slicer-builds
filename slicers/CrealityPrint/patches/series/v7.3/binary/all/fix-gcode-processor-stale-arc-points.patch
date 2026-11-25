@@ -1,0 +1,14 @@
+diff --git a/src/libslic3r/GCode/GCodeProcessor.cpp b/src/libslic3r/GCode/GCodeProcessor.cpp
+index bad9fb3..ae0783c 100644
+--- a/src/libslic3r/GCode/GCodeProcessor.cpp
++++ b/src/libslic3r/GCode/GCodeProcessor.cpp
+@@ -10866,7 +10866,8 @@ void GCodeProcessor::store_move_vertex(EMoveType type, EMovePathType path_type)
+         //BBS: add arc move related data
+         path_type,
+         Vec3f(m_arc_center(0, 0) + m_x_offset, m_arc_center(1, 0) + m_y_offset, m_arc_center(2, 0)) + m_extruder_offsets[m_extruder_id],
+-        m_interpolation_points,
++        // m_interpolation_points keeps the last arc's points until the next G2/G3, so only an arc move takes them
++        (path_type == EMovePathType::Arc_move_cw || path_type == EMovePathType::Arc_move_ccw) ? m_interpolation_points : std::vector<Vec3f>(),
+     });
+     m_result.object_id_by_move_id.push_back(m_object_id);
+ 
