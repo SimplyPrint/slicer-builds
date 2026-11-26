@@ -1,0 +1,13 @@
+diff --git a/src/libslic3r/GCode/GCodeProcessor.hpp b/src/libslic3r/GCode/GCodeProcessor.hpp
+index 5b62411..ab5cf2c 100644
+--- a/src/libslic3r/GCode/GCodeProcessor.hpp
++++ b/src/libslic3r/GCode/GCodeProcessor.hpp
+@@ -479,7 +479,7 @@ enum class PathologicalProbeLifecycle {
+         }
+ 
+ 
+-        void  take(const GCodeProcessorResult& other) {
++        void  take(GCodeProcessorResult&& other) {
+             const bool preserve_completed_probe =
+                 pathological_probe_lifecycle == PathologicalProbeLifecycle::Completed
+                 && pathological_probe_session_id != 0
